@@ -396,6 +396,32 @@ mechanical one (U7 edits `Theorem55.lean` only if a `have` goes unused at its ca
 drop is its own commit (PAD) immediately before U10, as it is mechanical across four Lean files
 while U10 is a crux node with an uncompiled route.
 
+## 1k. The PI's decision after U11's recon (2026-10-29)
+
+The coordinator put §4's *KT Proposition 2.3 at KT's own genericity* to the PI on one form, after
+U11's recon (§2, *U11's recon*) and before U11's build. The question text and option descriptions
+are the coordinator's wording; the answer is the PI's selection:
+
+> Q: "U11 will formalize def:dof-generic's genericity as IsMaxRankHingePoints: rank as large as any nondegenerate hinge-point realization, at every edge set. That is KT's own sense, and every assignment 'generic for row independence' satisfies it. The recon compiled KT Proposition 2.3 (rank formula ⇔ deficiency ⇔ matroid rank) at every such realization, which is stronger than prop:rigidity-matrix-prop11's current pin. Taking it repins that node to KT's statement exactly and moves formalization.yaml's Jackson–Jordán Thm 6.1/Cor 6.3 alignment row (not a main result): ~20 Lean lines, no extra commit if taken now, one if later. M1 (a main result) could follow the same way, ~1 extra commit (its rank formula is compiled, the iff is not). Should 41e take either?"
+> A: "Prop 2.3 and M1" (the option described as: "Prop 2.3 in U11 as above, plus M1 (a main result) at KT's genericity in its own commit after U11: about one more commit.")
+
+What it settles:
+
+1. **KT Proposition 2.3 at KT's genericity rides on U11.** `prop:rigidity-matrix-prop11` is
+   restated with a hinge-point assignment generic in `def:dof-generic`'s sense
+   (`IsMaxRankHingePoints`), KT's statement exactly, and pinned first by the witness's
+   `tfae_finrank_span_rigidityRows_ofHinge_deficiency_of_isMaxRankHingePoints`, transcribed;
+   today's pin, at row-independence genericity, follows from it by the bridge and stays as the
+   form the chain uses. `formalization.yaml`'s Jackson–Jordán Thm 6.1 / Cor 6.3 alignment row is
+   re-read and restated with it. No commit of its own.
+2. **M1 at KT's genericity, its own commit after U11** (41e's item M1K). M1, the main result
+   `isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees`, and its rank
+   formula hold at every maximum-rank hinge-point assignment. The rank formula is U11's
+   `finrank_span_rigidityRows_ofHinge_of_isMaxRankHingePoints`; the iff is new, about one commit.
+   Its shape (a sibling that becomes the `main_results` row, the generic form derived from it by
+   the bridge, or the main result restated in place, renamed) is the item's to settle, with the
+   row, its description and its non-vacuity witnesses re-read and the axioms re-checked.
+
 ## 2. The open's recon (2026-10-24; Claude Opus 5.5, read-only, at `95e2f418`)
 
 **Evidence**, committed in `notes/reconcile-formal/`:
@@ -988,7 +1014,7 @@ dropped, `hsplit` given `P` at every admissible label, in 41e before U4.
 | **RESTATE** | 41b (closed 2026-10-25) | done: `HasGenericFullRankRealization`'s link conjunct and `F-324`'s derivable `hD`s dropped; `IsNonparallel`, and Theorems 5.5 and 5.6 with their `d = 3` instances concluding it for simple `G` (route B, §1c); `molecular_conjecture` on one body or more, hinges on `E(G)`, nonparallel panels (§1d); the multigraph rows and `IsHingeCoplanar` on `E(G)`; `cor:theorem-55-d3-spanning` from `theorem_55_d3`; S1's panel and body-hinge theorems at every generic realization on `G` under `hcard`, one body or more (§1e, §1f.3); G6's row, the twentieth main result; witnesses at the single edge and the triangle; S18 as KT Proposition 2.3, conditional (§1f.1); the scope and degenerate-hinge sentences; the link conjuncts the field makes redundant (`notes/Phase41b.md`) | 23, the open and the close included (planned 13–16) |
 | **MULTIGRAPH** | 41c (closed 2026-10-28) | done: the upper bound asked at the non-loop links (§1f.4); M1, the generic body-hinge theorem (JJ 2010 Theorem 6.1) for every spanning multigraph, loops allowed, from the multigraph Theorem 5.6, with witnesses at the double edge and the double edge with a loop; KT Proposition 2.3 as KT state it, at every generic hinge-point assignment, pinned by `prop:rigidity-matrix-prop11`, its conditional form under `prop:rank-formula-of-motion-bound` (§1f.1) (`notes/Phase41c.md`) | 6, the open, the re-read and the close included (planned 3–5), besides three verification fixups |
 | **RELABEL** | 41d (opened and closed 2026-10-29 with the PI, §1i) | done: the bound on the edge labels (`hcard`, `hfresh`) dropped from the six main results that carried it (§1h.2), by route B, a transport at the boundary with the induction untouched (§1i.1; §2's *RELABEL's recon*): `embedEdges` moved up with minimality through deficiencies (B1), the pullbacks and KT Theorems 5.5 and 5.6 without the bound (B2), the cascade, the blueprint and `formalization.yaml` (B3); and R, a read-only recon of dropping `hfresh` from `minimal_kdof_reduction` (§1i.3; §2's *Item R's recon*: route A's combinatorial half, proved in a witness, 1 commit, for the PI) (`notes/Phase41d.md`) | 7, the open, a corrective and the close included (planned 7–10) |
-| **UNSTATED** | 41e (opened 2026-10-29 with the PI, §1j; Phase 41's last sub-phase) | the claims no declaration states, the full list (§1h.1), with §4(a): twelve items sized and ordered by its open's recon (§2, *UNSTATED's open recon*), U1–U12; item R's build before U4, so U4 is stated without `hfresh` (§1j.1); the rows form restated without `hfresh` and `thm:theorem-55-6-rows`'s `\uses` edge repointed, riding on U6 (§1j.2, §1j.4); `G.shadowGraph`'s padding dropped just before U10, as PAD (§1j.3); `def:dof-generic` needs its own recon (done: §2, under U11) and S3 a spike; only S3 touches carrier code (`case_II_placement_eq612`) (`notes/Phase41e.md`) | 17–23, the open and the close included (the recon's 15–21, plus R's build and PAD; the report: 13–23) |
+| **UNSTATED** | 41e (opened 2026-10-29 with the PI, §1j; Phase 41's last sub-phase) | the claims no declaration states, the full list (§1h.1), with §4(a): twelve items sized and ordered by its open's recon (§2, *UNSTATED's open recon*), U1–U12; item R's build before U4, so U4 is stated without `hfresh` (§1j.1); the rows form restated without `hfresh` and `thm:theorem-55-6-rows`'s `\uses` edge repointed, riding on U6 (§1j.2, §1j.4); `G.shadowGraph`'s padding dropped just before U10, as PAD (§1j.3); `def:dof-generic` needs its own recon (done: §2, under U11) and S3 a spike; only S3 touches carrier code (`case_II_placement_eq612`) (`notes/Phase41e.md`) | 18–24, the open and the close included (the recon's 15–21, plus R's build, PAD and M1K, §1k; the report: 13–23) |
 
 **Why the switch was one commit** (CARRIER): under the lint gate a field cannot be staged file by
 file without a temporary twin structure, as an unused proof argument fails `unusedArguments`;
@@ -1036,4 +1062,5 @@ The program closes with the phase: ROADMAP's RECONCILE bullet compressed, and th
   the 20 main results: about 20 Lean lines, no extra commit if answered before U11 builds, one
   after. M1 (a main result) and its rank formula could follow the same way: the rank formula is
   compiled, the iff is not; about one commit. Neither is needed for U11, which adds declarations
-  only.
+  only. **Answered by the PI** (§1k): both, Proposition 2.3 riding on U11 and M1 as 41e's item
+  M1K after it.

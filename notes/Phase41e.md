@@ -2,11 +2,11 @@
 
 **Status:** in progress (opened 2026-10-29 with the PI), a sub-phase of Phase 41 and planned as its
 last, so its close closes Phase 41 and the RECONCILE program. The phase's design, the PI's decisions
-(here §1h.1, the scope, and §1j, the open) and UNSTATED's open recon are in
+(here §1h.1, the scope, §1j, the open, and §1k, after U11's recon) and UNSTATED's open recon are in
 `notes/Phase41-design.md`; the recon's Lean witnesses are
 `notes/reconcile-formal/UnstatedWitness.lean`, for item R and U4
-`notes/reconcile-formal/ReductionWitness.lean`, and for U11 `DofGenericWitness.lean`. Fourteen build items, a recon, a spike and the
-close (planned 17–23 commits, the open included); U1–U10, R, PAD and U11's recon have landed.
+`notes/reconcile-formal/ReductionWitness.lean`, and for U11 `DofGenericWitness.lean`. Fifteen build items, two recons, a spike and the
+close (planned 18–24 commits, the open included); U1–U10, R, PAD and U11's recon have landed.
 Next: U11's build.
 
 ## Current state
@@ -153,14 +153,23 @@ ScrewSpace carrier). Witness names are in `ReconUnstated` (`UnstatedWitness.lean
   arbitrary extensors or panels; nondegeneracy asked only between distinct bodies, a loop's hinge
   free (§1f.4's pattern); `dof` and `IsMaxRankHingePoints` (uncurried `q`) faithful, satisfiable at
   the single and double edge, the triangle and with a loop, not met by two equal hinges; KT
-  Proposition 2.3 holds at every such realization (compiled), its repin the PI's (*Blockers*).
+  Proposition 2.3 holds at every such realization (compiled), taken by the PI with M1 (§1k).
 - [ ] **U11. `def:dof-generic` built** as its recon settles (design doc §2, *U11's recon*, *U11's
   build* and *The blueprint*): in `GenericLift/HingeGeneric.lean`, `dof`, `dof_eq_zero_iff`,
   `IsMaxRankHingePoints`, the bridge from `IsGenericHingePoints`, existence, and the rank formula
   and `dof` at every such realization, transcribed from the witness; `def:dof-generic` pinned and
   `\leanok` with its fmlnote rewritten, the paragraph after
   `lem:generic-hinge-points-nondegenerate` made `lem:generic-hinge-points-max-rank` (loops
-  allowed), a new `cor:dof-generic-realization`, and two restated sentences. 1 commit.
+  allowed), a new `cor:dof-generic-realization`, and two restated sentences. With it, as the PI
+  decided (design doc §1k.1): `prop:rigidity-matrix-prop11` restated at `IsMaxRankHingePoints`
+  and pinned first by the witness's
+  `tfae_finrank_span_rigidityRows_ofHinge_deficiency_of_isMaxRankHingePoints`, today's pin kept
+  after it, and `formalization.yaml`'s JJ Thm 6.1 / Cor 6.3 alignment row restated. 1 commit.
+- [ ] **M1K. M1 at KT's genericity** (design doc §1k.2; no ledger ID), after U11: the main result
+  `isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees` at every
+  `IsMaxRankHingePoints` assignment, its rank formula U11's; the shape (a sibling made the
+  `main_results` row, or restated in place and renamed) the item's to settle; the row, its
+  description, witnesses and axioms re-read. About 1 commit.
 - [ ] **U12, spike. S3's route** (compiler-checked, read-only): in `CaseII.lean` (zone), the count
   in steps 7–14 of `case_II_realization_all_k`'s proof (`:295`, about 710 lines) extracted as a
   lemma, a realization of `G_v^{ab}` of rank `N` giving `rank R(G, q₀) ≥ N + D − 1`
@@ -183,7 +192,7 @@ ScrewSpace carrier). Witness names are in `ReconUnstated` (`UnstatedWitness.lean
   anchors counted first); the dispatch log groomed; the project-organization review. The loop
   stops for the PI's push (§1j.5); ORIGAMI opens later, with the PI.
 
-**Estimate.** 17–23 commits, the open and the close included: U1–U7 one each, R and PAD one each,
+**Estimate.** 18–24 commits, the open and the close included (M1K's commit added by §1k.2): U1–U7 one each, R and PAD one each,
 U8–U11 one or two each, U12 two, U11's recon and U12's spike none or one each. The recon's 15–21
 moved by R's build (+1, §1j.1) and PAD as its own commit (+1, §1j.3); the riders of §1j.2 and
 §1j.4 add none.
@@ -192,22 +201,19 @@ moved by R's build (+1, §1j.1) and PAD as its own commit (+1, §1j.3); the ride
 
 - None blocking. U12's spike may return to the PI, if the route does not compose (U12's size
   moves with it).
-- **For the PI, not blocking U11** (design doc §4, *KT Proposition 2.3 at KT's own genericity*):
-  restate `prop:rigidity-matrix-prop11` at `def:dof-generic`'s genericity, a strengthening proved
-  in the witness, which moves `formalization.yaml`'s Jackson–Jordán alignment row (not a main
-  result); no extra commit if answered before U11 builds, one after. M1 could follow (a main
-  result; about one commit). U11 builds as planned either way.
 
 ## Hand-off / next phase
 
 **U11's build** (checklist item *U11*, `def:dof-generic`), one commit: the declarations, nodes
 and fmlnote of the design doc's §2 entry *U11's recon*, transcribed from
-`notes/reconcile-formal/DofGenericWitness.lean` (run its `lake lean` first). If the PI has taken §4's
-KT Proposition 2.3 question by then, the repin rides on it.
+`notes/reconcile-formal/DofGenericWitness.lean` (run its `lake lean` first), with KT Proposition
+2.3's restatement at `IsMaxRankHingePoints` riding on it (§1k.1). Then M1K.
 
 ## Decisions made during this phase
 
 - **The PI's decisions at the open** (2026-10-29): `notes/Phase41-design.md` §1j, verbatim.
+- **The PI's decision after U11's recon** (2026-10-29): §1k, verbatim; KT Proposition 2.3 at
+  KT's genericity rides on U11, and M1 follows as item M1K.
 - **The placements** (the open's call under §1j): R its own commit before U4; the riders on U6,
   the earliest item that edits both `Theorem55.lean` (the rows form's file) and
   `panel-layer.tex`, and a mechanical one; PAD its own commit before U10, mechanical where U10 is

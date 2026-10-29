@@ -1242,7 +1242,7 @@ as the floor, stronger forms considered; `IsHingeCoplanar` and the multigraph ro
 stable code: **CARRIER** (41a, ✓ closed 2026-10-24), **RESTATE** (41b, ✓ closed 2026-10-25),
 **MULTIGRAPH** (41c, ✓ closed 2026-10-28), **RELABEL** (41d, ✓ closed 2026-10-29) and
 **UNSTATED** (41e, in progress since 2026-10-29, the last; the claims no declaration states;
-17–23 commits). **41a**
+18–24 commits). **41a**
 put the field on the structure, its API first and the switch last, as in Phase 22l: the link
 predicate and a tactic that fills in the link proof at the constructors, then the switch itself,
 123 declarations in 27 files in one build-green commit; then `withGraph` restricted to subgraphs,
@@ -1285,15 +1285,16 @@ non-vacuity witnesses use fewer labels than the old bound. A last item found tha
 reduction principle, which the transport cannot reach, can drop its supply in one commit, its chain
 re-proved when the new edge reuses the label of an edge at the split vertex. All 20 main results'
 axioms are unchanged. **41e** (UNSTATED; opened with the PI on 2026-10-29, the design doc's §1j;
-planned 17–23 commits) gives a declaration and a blueprint pin to each claim that no declaration
+planned 18–24 commits) gives a declaration and a blueprint pin to each claim that no declaration
 stated: PROSE's S22–S25, S31, S3, S16 and S19, G5's three (the pebble game's blocking witness, the
 degree of freedom and genericity of a body-hinge framework, the Plücker expansion) and `F-061`'s
 forest lemma, with `rigidityMatrix_prop11`'s nondegeneracy asked only between distinct bodies.
 With them, as the PI decided: KT Theorem 4.9's reduction principle drops its label supply before
 its sequence form is stated, so the sequence assumes nothing of the labels; a form of Theorem 5.6
 that nothing calls drops its supply too; and the molecule's multigraph loses the spare labels it
-carried for the old bound. Its close closes Phase 41 and the RECONCILE program, and the loop stops for the PI's push.
-**Next**: 41e's U11 build (the degree of freedom and the genericity of a body-hinge framework, `def:dof-generic`, one commit as its recon settled: the realizations are the hinge-point frameworks with nondegenerate hinges, and no main result moves; U1, the pebble game's blocking witness, U2, the matroid union's rank formula, U3, the circuit's tree partition, R, KT Theorem 4.9's principle without `hfresh`, U4, its reduction sequence, U5, Case I's rank identity, U6, `rigidityMatrix_prop11` with the hinge asked only between distinct bodies, U7, `hasPanelRealization_of_generic` for graphs with loops, U8, the independent rows of a forest of nondegenerate hinges, U9, the coordinates of an extensor as its Plücker coordinates, PAD, the padding of `G.shadowGraph` dropped, U10, S31, the rigid molecular realizations and the rigid squares, and U11's recon have landed). Detail →
+carried for the old bound. After U11's recon the PI added KT Proposition 2.3 and M1 at KT's own
+genericity, the maximum rank over the hinge-point realizations (§1k). Its close closes Phase 41 and the RECONCILE program, and the loop stops for the PI's push.
+**Next**: 41e's U11 build (the degree of freedom and the genericity of a body-hinge framework, `def:dof-generic`, one commit as its recon settled: the realizations are the hinge-point frameworks with nondegenerate hinges, with KT Proposition 2.3 at that genericity riding on it, then M1 at it, item M1K (§1k); U1, the pebble game's blocking witness, U2, the matroid union's rank formula, U3, the circuit's tree partition, R, KT Theorem 4.9's principle without `hfresh`, U4, its reduction sequence, U5, Case I's rank identity, U6, `rigidityMatrix_prop11` with the hinge asked only between distinct bodies, U7, `hasPanelRealization_of_generic` for graphs with loops, U8, the independent rows of a forest of nondegenerate hinges, U9, the coordinates of an extensor as its Plücker coordinates, PAD, the padding of `G.shadowGraph` dropped, U10, S31, the rigid molecular realizations and the rigid squares, and U11's recon have landed). Detail →
 `notes/Phase41a.md`, `notes/Phase41b.md`, `notes/Phase41c.md`, `notes/Phase41d.md`,
 `notes/Phase41e.md` + `notes/Phase41-design.md`.
 
