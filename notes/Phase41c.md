@@ -4,7 +4,7 @@
 stays in progress. The phase's design, the PI's decisions (here §1f.4, loops, and §1g, the open)
 and the open's recon are in `notes/Phase41-design.md`; the recon's Lean witness is
 `notes/reconcile-formal/MultigraphWitness.lean`. Every checklist item landed, in 6 commits with the
-open, the re-read and the close. Next: UNSTATED, for the PI to open (*Hand-off*).
+open, the re-read and the close. Next: a recon of RELABEL, then the PI opens 41d (*Hand-off*).
 
 ## Current state
 
@@ -42,15 +42,17 @@ target nodes.
 
 ## Blockers / open questions
 
-- None. Two options the open's recon left unplanned are open questions for the PI in the design
-  doc's §4: dropping `hcard` from M1 and KT Proposition 2.3, and relaxing `rigidityMatrix_prop11`'s
-  `hC` to the non-loop links.
+- None. The two options the open's recon left unplanned went to the PI (design doc §1h): relaxing
+  `rigidityMatrix_prop11`'s `hC` joined UNSTATED, and dropping `hcard` from M1 and KT Proposition
+  2.3 gets a recon over every main result carrying the bound (RELABEL).
 
 ## Hand-off / next phase
 
-**Successor: UNSTATED**, the claims no declaration states (design doc §3, 13–23 commits), the
-last sub-phase of Phase 41, **for the PI to open**: no letter is minted and no work log exists
-until then. ORIGAMI opens after Phase 41.
+**Next: RELABEL's read-only recon** (design doc §3): one relabelling transport that drops the bound
+on the edge labels from every main result carrying it, sized and returned to the PI before any
+build. **Then the PI chooses** which of RELABEL and UNSTATED (the claims no declaration states;
+its open's recon in the design doc's §2, 15–21 commits) opens as 41d (§1h); no letter is minted and
+no work log exists until then. ORIGAMI opens after Phase 41.
 
 ## Decisions made during this phase
 

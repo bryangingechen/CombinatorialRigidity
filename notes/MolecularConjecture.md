@@ -792,7 +792,8 @@ with the condition built into the structure and no main result restated; the sec
 nonparallel panels, and the generic theorems cover every simple graph on one body or more. The
 third, 41c (MULTIGRAPH), opened and closed 2026-10-28: the generic body-hinge theorem holds for
 every multigraph, loops allowed, and KT Proposition 2.3 at every generic hinge-point assignment.
-The last, UNSTATED, is for the PI to open. Summary: ROADMAP §41. Still queued, codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
+Next, a recon of dropping the bound on the edge labels (RELABEL); then the PI opens 41d, RELABEL or
+UNSTATED. Summary: ROADMAP §41. Still queued, codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
 conjecture, `notes/Origami.md` — the next phase to open after Phase 41), **PIN** (a second,
 independent proof of the 2-d molecular conjecture by Jackson–Jordán 2008's
 pin-collinear route, re-scoped at 40a's close; unplanned), **UPSTREAM** (mathlib upstreaming) and

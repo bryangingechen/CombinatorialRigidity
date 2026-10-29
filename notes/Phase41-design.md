@@ -13,8 +13,10 @@ push ran CI green (*Build & deploy site* at `4c892cb6` and `ae6a852c`, 2026-10-2
 **41c** (MULTIGRAPH) opened 2026-10-28 with the PI (§1g) and closed the same day, work log
 `notes/Phase41c.md`: M1, the generic body-hinge theorem, holds for every multigraph, loops allowed,
 and KT Proposition 2.3 is proved as KT state it at every generic hinge-point assignment; §2's
-MULTIGRAPH arc is compressed to a cited verdict. **Next:** UNSTATED (13–23 commits, §3), the last
-sub-phase, for the PI to open; §4 holds the two options 41c's recon left unplanned.
+MULTIGRAPH arc is compressed to a cited verdict. The same day the PI set UNSTATED's scope, took
+§4(a) into it, and asked for a recon of §4(b), the label bound, now the code RELABEL (§1h, §3);
+UNSTATED's open recon is in §2. **Next:** RELABEL's read-only recon (§3); then the PI chooses which
+of RELABEL and UNSTATED opens as 41d.
 
 The phase is the last part of the RECONCILE program (`notes/Reconcile.md`, with its standing rules
 in §2 and the plan of this phase in §3 *The phase*). Its input is PROSE's findings report
@@ -35,7 +37,8 @@ open (§1b), the recons (§2), the sub-phases (§3) and the open questions (§4)
 - Within the same sub-phases: S13, S18, G6 (the generic panel theorem's own row),
   `cor:theorem-55-d3-spanning`, the footprint's docstrings that round 3 moved here, and `F-323` and
   `F-324`. Then M1 (the multigraph generic body-hinge theorem, JJ 2010 Theorem 6.1) and the claims
-  no declaration states (S22–S25, S31, S3, S16, S19, G5, `F-061`'s forest lemma).
+  no declaration states (S22–S25, S31, S3, S16, S19, G5, `F-061`'s forest lemma), with §4(a); and,
+  if the PI takes it after its recon, the label bound dropped from the main results (RELABEL, §1h).
 
 ## 1. The PI's decisions at the open (2026-10-24)
 
@@ -246,6 +249,57 @@ What each answer settles:
    unconditional pin of `prop:rigidity-matrix-prop11` (§1f.1). UNSTATED stays for the PI after it.
 2. **41c runs as a `/coordinate-phase` loop**, under the configuration above.
 
+## 1h. The PI's decisions after MULTIGRAPH's close (2026-10-28)
+
+The coordinator put four questions. The PI's answers, verbatim (the option descriptions are the
+coordinator's wording on the question form; the bracketed lines are the coordinator's notes):
+
+> Q: "Phase 41d would open UNSTATED, the last sub-phase of Phase 41, with 13–23 commits estimated. It covers S22–S25, S31, the optional S3, S16 and S19, G5 (def:blockingWitness, def:dof-generic, the Plücker expansion) and F-061's forest lemma. Under your RECONCILE call ("kind E is formalized, not restated"), each gets a declaration and a repin. What scope should the open use?"
+> A: "Full list (Recommended)" (the option described as: "Every item, the optional S3, S16 and S19 included, as Reconcile.md §1 and §3(c) plan it. The open's recon sizes and orders them.")
+
+> Q: "The design doc's §4 leaves two options open for you. (a) Relax rigidityMatrix_prop11's hC to the non-loop links: free under your §1f.3 policy, but no caller needs it. (b) Drop the label bound hcard from M1 and KT Proposition 2.3: this needs a transport to a larger label type and is not sized. 41d is Phase 41's last sub-phase. Should it take either?"
+> A: "Can you explain (b) in more detail?"
+> [The coordinator explained what `hcard` is, why the fresh-label supply needs it, a user's workaround (relabel into a bigger type), what dropping it needs, and that Theorem 5.6 and the panel theorem carry the same bound, then re-asked (a)/(b).]
+> A: "So I definitely want to include (a) since it seems free. Regarding (b), is some kind of tracking of labeling inevitable here? Should we have set the graph theory up in a way that uses more explicit maps rather than trying to reuse types?"
+> [The coordinator answered (below), then asked:] Q: "Should 41d take on (b), dropping the label bound? It sits on Theorem 5.5 (as hfresh), Theorem 5.6, both forms of the molecular conjecture, the generic panel theorem, M1 and KT Prop. 2.3: about seven main results. The likely fix is one relabelling transport at the boundary (embed β into β ⊕ Fin N; rows, deficiency, matroid rank and genericity unchanged), with the internal induction kept as is. (a), the free hC relaxation, is already in."
+> A: "Recon (b), every row (Recommended)" (the option described as: "A read-only recon item in 41d sizes one transport that drops the bound from every main result carrying it. It comes back to you with an estimate before any build.")
+
+> Q: "How should the loop run? Last time (41c) the 10-run cap was lifted, mechanical fixups were pre-authorized, and Sonnet and Opus were both dispatchable."
+> A: "Same as 41c (Recommended)" (the option described as: "No run cap; mechanical fixups (rescue §1) pre-authorized; Sonnet and Opus dispatchable; stop when 41d closes.")
+
+> Q: "When 41d closes, Phase 41 and the RECONCILE program close with it. ORIGAMI is next (attended). What should the loop do at the close?"
+> A: "Stop for your push (Recommended)" (the option described as: "As at 41b's close: the loop stops and you push. ORIGAMI opens later, with you.")
+
+Later the same session, after these answers:
+
+> "I'm thinking that UNSTATED might end up being 41e if the labeling stuff turns out to be a big project; let's keep that open as a possibility."
+
+What each answer settles:
+
+1. **UNSTATED's scope is the full list**: every item of `notes/Reconcile.md` §1 and §3(c), the
+   optional S3, S16 and S19 included, and §4(a) (answer 2). Its open's recon sizes and orders them
+   (§2, *UNSTATED's open recon*).
+2. **§4(a) is in UNSTATED**: `rigidityMatrix_prop11`'s `hC` asked at the links between distinct
+   bodies. **§4(b) gets a read-only recon** that sizes one relabelling transport dropping the
+   label bound from every main result carrying it, and returns to the PI with an estimate before
+   any build: the first item of RELABEL (§3).
+3. **The loop runs as 41c's**: no run cap, mechanical fixups (rescue §1) pre-authorized, Sonnet and
+   Opus dispatchable.
+4. **At Phase 41's close the loop stops for the PI's push**; ORIGAMI opens later, with the PI.
+   Answers 3 and 4 were given for 41d as Phase 41's last sub-phase; if RELABEL opens first,
+   whether its close also stops the loop is asked at its open.
+5. **No letter is minted yet.** RELABEL may open first, as 41d, with UNSTATED as 41e; the PI
+   chooses after RELABEL's recon. UNSTATED's open recon is recorded under its code (§2) so that
+   either open transcribes it.
+
+**The coordinator's answer to the PI's design question** (the coordinator's, not the PI's; the
+framing for RELABEL's recon, not a verdict). KT's induction adds edges (the split-off adds `ab`), and
+in Lean a new edge needs a name: a fixed label type with a budget (`hcard`/`hfresh`), a type that
+grows (`Graph α (Option β)` per step), or an infinite one. Mathlib's `Graph α β` keeps subgraphs,
+deletion, contraction and `induce` in fixed types, which the induction leans on; a growing type moves
+a transport into every step, and an infinite `β` clashes with the families indexed by the whole label
+type under `[Finite β]` (§2). So the fix belongs once, at the boundary: a transport along `β ↪ β'`.
+
 ## 2. The open's recon (2026-10-24; Claude Opus 5.5, read-only, at `95e2f418`)
 
 **Evidence**, committed in `notes/reconcile-formal/`:
@@ -402,8 +456,129 @@ wraps in 18 files). KT Proposition 2.3 (p. 655) is the three-way equivalence at 
 hinge-point assignment (item 3), pinned by `prop:rigidity-matrix-prop11`; `rigidityMatrix_prop11`,
 which Theorem 5.6's proofs use, moved to `prop:rank-formula-of-motion-bound`, as the KT label's
 `\uses` would otherwise cycle through `lem:hinge-point-witness`. Not planned: §4's two open
-questions; the generic panel theorems stay for simple graphs, as in the meet model a double edge's
-two hinges coincide (§1b.1).
+questions (taken up in §1h); the generic panel theorems stay for simple graphs, as in the meet
+model a double edge's two hinges coincide (§1b.1).
+
+**UNSTATED's open recon** (2026-10-29; Claude Opus 5.5, design pass, at `3b9f766b`; recorded under
+the code, so that the sub-phase that opens as UNSTATED transcribes it into its work log). Evidence:
+`notes/reconcile-formal/UnstatedWitness.lean` (`lake lean`: no errors or warnings, its seven
+`#print axioms` the three standard axioms; `#lint` on a copy: only `unusedArguments` at four `Prop`
+targets, which carry the instances of the planned theorems). It proves S22, S24's rank form, S25 with
+`def:blockingWitness`, S19, §4(a) and S16's one new step, and states the other targets as `Prop`s
+that elaborate (names below are the witness's, in `ReconUnstated`). Every node, pin and declaration
+was re-read at `3b9f766b`, as the report predates RECONCILE's rounds and 41a–41c.
+
+*Corrections to the plan.* G5's packing move and `lem:forest-surgery-unsplit` are settled: the
+descent calls `lem:packing-move`'s pin since round 3 (`F-087`, `9840dd2c`), and the second node was
+restated as its pin's case and filled in round 2 (`F-091`, `F-234`, `43c5c8d7`); G5 is the other
+three. S19 touches no carrier code: `lem:case-I` as PROSE stated it (`85e0e4f8`, before the
+report) takes the contraction's realization at the target rank, so its identity is arithmetic from
+KT Lemma 3.5, as its proof's first paragraph says; the block-form rank addition with content is the
+proof's, and stays prose under the crux carve-out. Only S3 touches `case_II_placement_eq612` (§3's
+row said both). `F-061`'s forest lemma backs no blueprint claim at HEAD (round 2 replaced "any
+spanning forest" by the star forest), so it lands with a new node. S31 needs no label bound: on
+`G.shadowGraph`, whose labels carry their own supply (`lem:molecule-graph-carrier`), as the molecule
+rank formula is stated, so it does not wait on RELABEL.
+
+*The checklist*, in the recommended order: the isolated one-commit items first, the zone's
+one-commit items next, then the items with a rebuild-heavy or crux footprint, and last the two that
+need their own recon. No item depends on another, except that `def:blockingWitness` lands with S25.
+"Zone" is the fragility zone (`Molecular/AlgebraicInduction/`, `Molecular/RigidityMatrix/`, the
+ScrewSpace carrier).
+- **U1. S25 and `def:blockingWitness`** (`F-041`; `F-038`, `F-008`'s part). New
+  `SimpleGraph.IsBlockingWitness G k ℓ s := ℓ ≤ k * s.card ∧ k * s.card < (G.edgesIn ↑s).ncard + ℓ`
+  beside `IsSparse` (`Sparsity.lean`), with `not_isSparse_of_isBlockingWitness`; and
+  `PartialOrientation.runPebbleGameWith_isBlockingWitness` (`PebbleGame/Correctness.lean`): under
+  `ℓ < 2k`, a `.inl w` return from the empty orientation on a list of edges of `G` (`hmem` only)
+  gives `G.IsBlockingWitness k ℓ w.V'`, by `runPebbleGameWith_witness_bridges` and
+  `certifies_against` (proved). `def:blockingWitness` pinned and filled; `thm:pebble-game-correct`
+  gains the pin. Outside the zone. 1 commit.
+- **U2. S24** (`F-051`). `Matroid.Union_rk_eq`, the rank of every `X` in the union of a finite family
+  in `Union_pow_rk_eq`'s form (proved), and `Matroid.Union_indep_iff_count`,
+  `(Matroid.Union Ms).Indep X ↔ ∀ Y ⊆ X, Y.ncard ≤ ∑ i, (Ms i).rk Y`, by `Union_pow_indep_iff_count`'s
+  proof (`S24IndepTarget`); `Matroid/Constructions/Union.lean` (ported from Peter Nelson's
+  `Matroid`: credit). `thm:matroid-partition-rank` pins both; its note goes. 1 commit.
+- **U3. S23** (`F-083`). `Graph.circuit_diff_isSpanningTreePacking` (`Induction/Operations.lean`):
+  for a circuit `X` of `M(G̃)` and `e ∈ X`,
+  `(((G.mulTilde n) ↾ (X \ {e})).induce (G.fiberSpan n X)).IsSpanningTreePacking (bodyBarDim n)`
+  (`S23Target`), by `circuit_induces_isTight`, `isSparse_diff_singleton_of_isCircuit` carried to
+  the induced graph, `IsTight.connected` and `isSpanningTreePacking_of_isTight`; the friction is the
+  `induce`/`restrict` bookkeeping (`E = X \ {e}`, `V = V(X)`). `lem:circuit-induces-rigid`'s third
+  pin; its note goes. 1 commit.
+- **U4. S22** (`F-101`). `Graph.minimal_kdof_reduction_sequence` (`ForestSurgery/Reduction.lean`):
+  `Relation.ReflTransGen` of a step relation (`KTReductionStep`: to a minimal `0`-dof-graph, by a
+  split-off at a vertex of degree two or the contraction of a proper rigid subgraph) from `G` to a
+  double edge, under `minimal_kdof_reduction`'s `3 ≤ D` and `hfresh` (proved, ~40 lines from that
+  principle, `isMinimalKDof_ncard_le_two_trichotomy`, `splitOff_isMinimalKDof` and
+  `rigidContract_isMinimalKDof`). `thm:minimal-kdof-reduction` pins it beside (ii)'s; the note's
+  first sentence goes. It carries `hfresh`, as the principle does; neither is a main result. 1 commit.
+- **U5. S19** (`F-116`). `BodyHingeFramework.case_I_rank_add_iff` (proved): for a proper rigid `H`
+  with `r ∈ V(H)` and frameworks `F`, `F₂`, if `rank R(F₂) = D(|V(G/E(H))| − 1) − def` of the
+  contraction, then `rank R(F) = D(|V(G)| − 1) − def(G̃)` iff
+  `rank R(F) = D(|V(H)| − 1) + rank R(F₂)`, by `rigidContract_deficiency_eq` and
+  `rigidContract_vertexSet_ncard`, with no minimality (the node's `G` minimal is a special case).
+  Additive, beside the block-pin criteria in `Pinning.lean`; no fragile proof is touched.
+  `lem:case-I` pins it first; its note's "No pinned theorem mentions the contraction" is rewritten;
+  the three block-pin pins stay (the first is live) unless the label check moves them. 1 commit.
+- **U6. §4(a)** (no ledger entry: a new ID). `rigidityMatrix_prop11`'s `hC` becomes
+  `∀ e u v, F.graph.IsLink e u v → u ≠ v → F.supportExtensor e ≠ 0` (`rigidityMatrix_prop11'`,
+  proved: one argument fewer); its three callers in `Theorem55.lean` wrap
+  (`fun e u v h _ => hC e u v h`). `prop:rank-formula-of-motion-bound` asks the hinge at the edges
+  whose ends differ. Zone, mechanical. 1 commit.
+- **U7. S16** (`F-124`). `hasPanelRealization_of_generic` without `[G.Loopless]` (`S16Target`): the
+  framework is `Q.toBodyHinge` with the hinge at each loop at `u` replaced by `C(n_u, n_w)` for a body
+  `w ≠ u` (`2 ≤ |V(G)|`), which lies in `u`'s panel (`exists_extensor_eq_panelSupportExtensor_gen`)
+  and is nonzero by general position; the rows' span is unchanged, as a loop's rows are zero
+  (`span_rigidityRows_eq_of_eq_off_loops`, proved). `GenericityDevice.lean`, zone; the three callers
+  pass the instance today, so check for a now-unused `have : G.Loopless`. The node's note on loops
+  goes. 1 commit.
+- **U8. `F-061`'s forest lemma.** `BodyHingeFramework.exists_independent_rigidityRows_of_isForest`
+  (`ForestTarget`): for a forest `T ≤ F.graph` (`Graph.IsForest`) with a nonzero hinge at each edge,
+  `D − 1` rows per edge, jointly independent, in `exists_independent_rigidityRows_of_starForest`'s
+  shape. Route: induction on `|E(T)|` removing a pendant edge (`IsForest.exists_isPendant`,
+  `IsForest.anti`); its rows stay independent on the assignments supported at the pendant body,
+  where the others vanish, and `linearIndependent_sum_pinned_block` joins them.
+  `RigidityMatrix/Basic.lean`, zone: an interface change there rebuilds the molecular chain. A new
+  node after `lem:own-end-rows-independent`. 1–2 commits.
+- **U9. The Plücker expansion** (`F-059`). The coordinates of `extensor v` in
+  `(Pi.basisFun K (Fin (d+1))).exteriorPower j` are the Plücker coordinates times KT's sign
+  (`PluckerTarget`), by mathlib's `exteriorPower.basis_repr_apply` and `ιMultiDual_apply_ιMulti`
+  (the minor), against `pluckerCoord`'s `orderEmbOfFin` submatrix: the friction is the index bridge
+  (`Set.powersetCard.ofFinEmbEquiv` against `Finset.orderEmbOfFin`) and a transpose.
+  `Molecular/Extensor.lean`, the chain's root (a full rebuild). A lemma node after
+  `def:plucker-coords`; its note goes. 1–2 commits.
+- **U10. S31** (`F-174`, `F-183`). `SimpleGraph.molecular_rigid_iff_square_rigid` (`S31Target`),
+  under `[Nonempty V]` and `hmin`: some selector recording the links of `G.shadowGraph` and centres
+  distinct at each edge give an infinitesimally rigid molecular framework iff `G²` has an
+  infinitesimally rigid placement. (⇒) nondegenerate hinges (`lineExtensor_ne_zero_of_ne`) and
+  `screwDim_add_deficiency_le_finrank_infinitesimalMotions` give `def = 0`, then
+  `molecule_generic_rigid` at `exists_isGenericPlacement`; (⇐) the rigid placement bounds the generic
+  rank (`finrank_range_rigidityMap_le_genericRank`), `molecule_rank_formula` and
+  `deficiency_nonneg` give `def = 0`, and `exists_molecular_rankHypothesis_generalPosition` (its
+  bound met by `card_shadowLabel_lt`) with `rankHypothesis_zero_iff` gives the framework, its
+  centres distinct by general position. `Molecule/Application.lean`. The theorem's second pin; its
+  note's last sentences go. A crux node: its exposition-ledger entry is re-read. 1–2 commits.
+- **U11. `def:dof-generic`** (`F-008`'s part). **Needs its own read-only recon** (the
+  definition-faithfulness gate). The witness's candidates: `dof F = D(|V(G)| − 1) − rank R(G,p)`, and
+  `IsMaxRankHingePoints G q` (nondegenerate at the non-loop links, and at every `E' ⊆ E(G)` the rows
+  of `ofHinge (G ↾ E') q` of the largest rank over the hinge-point assignments with that property),
+  which the paragraph after `lem:generic-hinge-points-nondegenerate` derives from
+  `IsGenericHingePoints` for loopless `G`. Open: which carrier stands for "all realizations of `G`";
+  loops, whose hinge points genericity leaves free; whether KT Proposition 2.3 then holds at every
+  such realization (a main result's statement, the PI's). `GenericLift/HingeGeneric.lean`, after
+  RELABEL if RELABEL restates that file. 1–2 commits.
+- **U12. S3** (`F-150`; the dead pin, `F-152`'s part). A declaration for
+  `lem:case-II-realization-placement` as stated, from a realization of `G_v^{ab}`: the count in
+  steps 7–14 of `case_II_realization_all_k`'s proof extracted as a lemma (a realization of
+  `G_v^{ab}` of rank `N` gives `rank R(G, q₀) ≥ N + D − 1`; `D(|V(G)| − 1) − 1` at a rigid one),
+  which `case_II_realization_all_k` then calls; `case_II_placement_eq612`, dead and unmeetable in
+  Cases II and III, deleted with the repin (the deletion gate). **Needs a compiler-checked spike
+  first**: a route-composition question inside a ~600-line proof in `CaseII.lean`, zone. 2 commits.
+- **Close**: the ledger's remaining `reported` and `left` entries given dispositions and ROADMAP's
+  RECONCILE bullet compressed (`notes/Reconcile.md` §3), if UNSTATED is Phase 41's last sub-phase.
+
+*Estimate.* U1–U7 one commit each, U8–U11 one or two, U12 two; with U11's recon and U12's spike, the
+open's transcription and the close, **15–21 commits** (the report's 13–23).
 
 ## 3. Sub-phases, by code
 
@@ -412,7 +587,8 @@ two hinges coincide (§1b.1).
 | **CARRIER** | 41a (closed 2026-10-24) | done: `reaimSub` retired; the link predicate, its lemmas and the fill-in tactic; the four R statements; the spike; the switch (the field, 123 declarations in 27 files) and the footprint's docstrings; `withGraph` restricted; `reaim` deleted with `hC` on links; the two genuine forms merged (`notes/Phase41a.md`) | 9, besides the build-time detour P1–P5 |
 | **RESTATE** | 41b (closed 2026-10-25) | done: `HasGenericFullRankRealization`'s link conjunct and `F-324`'s derivable `hD`s dropped; `IsNonparallel`, and Theorems 5.5 and 5.6 with their `d = 3` instances concluding it for simple `G` (route B, §1c); `molecular_conjecture` on one body or more, hinges on `E(G)`, nonparallel panels (§1d); the multigraph rows and `IsHingeCoplanar` on `E(G)`; `cor:theorem-55-d3-spanning` from `theorem_55_d3`; S1's panel and body-hinge theorems at every generic realization on `G` under `hcard`, one body or more (§1e, §1f.3); G6's row, the twentieth main result; witnesses at the single edge and the triangle; S18 as KT Proposition 2.3, conditional (§1f.1); the scope and degenerate-hinge sentences; the link conjuncts the field makes redundant (`notes/Phase41b.md`) | 23, the open and the close included (planned 13–16) |
 | **MULTIGRAPH** | 41c (closed 2026-10-28) | done: the upper bound asked at the non-loop links (§1f.4); M1, the generic body-hinge theorem (JJ 2010 Theorem 6.1) for every spanning multigraph, loops allowed, from the multigraph Theorem 5.6, with witnesses at the double edge and the double edge with a loop; KT Proposition 2.3 as KT state it, at every generic hinge-point assignment, pinned by `prop:rigidity-matrix-prop11`, its conditional form under `prop:rank-formula-of-motion-bound` (§1f.1) (`notes/Phase41c.md`) | 6, the open, the re-read and the close included (planned 3–5), besides three verification fixups |
-| **UNSTATED** | — | the claims no declaration states, the report's estimates: S22 1–2, S23 1, S24 2–3, S25 1, S31 2–3, S3 0–2, S16 1, S19 0–3, G5 3–5, `F-061` 1–2; after CARRIER, since S3 and S19 touch carrier code (`case_II_placement_eq612`) | 13–23 |
+| **UNSTATED** | — (41d or 41e, the PI's choice after RELABEL's recon, §1h.5) | the claims no declaration states, the full list (§1h.1), with §4(a): twelve items sized and ordered by its open's recon (§2, *UNSTATED's open recon*), U1–U12; `def:dof-generic` needs its own recon and S3 a spike; only S3 touches carrier code (`case_II_placement_eq612`) | 15–21, the open and the close included (the report: 13–23) |
+| **RELABEL** | — (its letter and its order against UNSTATED wait on its recon and the PI, §1h.5) | the bound on the edge labels (`hcard`, `hfresh`) dropped from the main results that carry it (§1h.2). First item, a **read-only recon** that returns to the PI with an estimate before any build: enumerate every main result and statement carrying the bound, and size one relabelling transport along `β ↪ β'` (into `β ⊕ Fin N`) that shows each quantity they state unchanged (rows, deficiency, matroid rank, genericity). Leads to check: `IsGenericHingePoints` (`HingeGeneric.lean`) quantifies every selector and compares with points on all of `β` (the coordinator's hypothesis); mathlib's `Graph` has a vertex `map` (`Mathlib/Combinatorics/Graph/Maps.lean`) but no edge relabelling was found; `pencil_realization_theorem` asks no label bound (`Pencil/X0.lean`, `rem:fresh-edge-supply`), and the molecule rows fix their labels in `G.shadowGraph` (`Molecule/Carrier.lean`), two precedents | the recon; the rest unsized |
 
 **Why the switch was one commit** (CARRIER): under the lint gate a field cannot be staged file by
 file without a temporary twin structure, as an unused proof argument fails `unusedArguments`;
@@ -432,11 +608,8 @@ The program closes with the phase: ROADMAP's RECONCILE bullet compressed, and th
   multigraphs; the row's "every generic realization" is the project's strengthening.
 - **The generic panel theorems on one body** (§2, *Item 9's recon*): settled by the PI (§1e), the
   rank formula and the iff take `V(G).Nonempty`; landed with 41b's item 9a.
-- **Open, for the PI: dropping `hcard` from M1 and KT Proposition 2.3** (§2, *MULTIGRAPH's open
-  recon*). The rank formula, its two iffs and the three-way equivalence take Theorem 5.6's bound on
-  the labels, `D(|V| − 1) < |β|`, the fresh-label supply of the witness. Dropping it needs a
-  transport to a larger label type; not planned.
-- **Open, for the PI: relaxing `rigidityMatrix_prop11`'s `hC` to the non-loop links** (§2,
-  *MULTIGRAPH's open recon*). Since 41c's item 1 its proof's upper bound asks the hinge only at
-  the links whose two ends differ, so the relaxation is free under §1f.3; no caller needs it, so it
-  was not taken.
+- **Dropping `hcard` from M1 and KT Proposition 2.3** (§2, *MULTIGRAPH's open recon*): the PI
+  asked for a read-only recon of one transport that drops the bound from every main result carrying
+  it (§1h.2), RELABEL's first item (§3). It returns to the PI with an estimate before any build.
+- **Relaxing `rigidityMatrix_prop11`'s `hC` to the non-loop links**: in UNSTATED (§1h.2), its item
+  U6 (§2, *UNSTATED's open recon*).

@@ -34,8 +34,9 @@ docstrings wait for the phase (§3). The round's log also proposed that the labe
 join the project's gates for a commit that moves a pin; the PI adopted it on 2026-10-24
 (`blueprint/lint.sh` check 9). Phase 41's plan, its
 open's recon and the PI's decisions there are in `notes/Phase41-design.md`. **Next concrete task:**
-the PI opens UNSTATED, the phase's last sub-phase (`notes/Phase41c.md` *Hand-off*; the design
-doc's §3); the PI's push ran CI green on 2026-10-25.
+a read-only recon of RELABEL, the label bound dropped from the main results (the design doc's §1h
+and §3); then the PI chooses whether RELABEL or UNSTATED, the claims no declaration states, opens as
+41d (`notes/Phase41c.md` *Hand-off*); the PI's push ran CI green on 2026-10-25.
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions
