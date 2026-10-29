@@ -253,9 +253,10 @@ hyperplane $\{x \in \R^d : x \cdot p_v = 1\}$ for a vector
 $p_v \in \R^d$~\cite[\S7]{jacksonJordan2009}. Its normal is
 $(p_v, -1)$ (the remarks after \cref{def:panel-support-extensor}).
 
-Our main result is Jackson and Jord\'an's rank formula, KT
-Proposition~2.3 (\cref{prop:rigidity-matrix-prop11}), at every generic
-assignment of normals to a simple graph
+Our main result is Jackson and Jord\'an's rank formula, which Katoh
+and Tanigawa state for body-hinge frameworks as their Proposition~2.3
+(\cref{prop:rigidity-matrix-prop11}), at every generic assignment of
+normals to a simple graph
 (\cref{thm:panel-generic-rank}). Here $\tilde G = (D-1) \cdot G$, and
 $\operatorname{def}(\tilde G)$ is its deficiency
 (\cref{def:D-deficiency}). For a multigraph the formula can fail. At a
@@ -1559,7 +1560,8 @@ in every dimension, by comparing the rows.
   \label{prop:rigidity-matrix-prop11}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.tfae_finrank_span_rigidityRows_ofHinge_deficiency}
   \leanok
-  \uses{thm:bodyhinge-generic-rank, thm:def-eq-corank}
+  \uses{def:generic-hinge-points, def:D-deficiency, def:matroid-MG,
+    thm:bodyhinge-generic-rank, thm:def-eq-corank}
   Let $d \ge 2$, let $K$ be an infinite field, and let $G = (V, E)$ be
   a multigraph, with parallel edges and loops allowed, with $V$ finite
   and nonempty. Let $q$ be a hinge-point assignment of $G$ that is
