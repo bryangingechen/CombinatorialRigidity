@@ -7,14 +7,26 @@ last, so its close closes Phase 41 and the RECONCILE program. The phase's design
 `notes/reconcile-formal/UnstatedWitness.lean`, for item R and U4
 `notes/reconcile-formal/ReductionWitness.lean`, for U11 `DofGenericWitness.lean`, and for U12
 `CaseIIPlacementWitness.lean`. Fifteen build items, two recons, a spike and the close (planned
-18–24 commits, the open included); every item and the close's first part have landed. Next: the
-close's second part, which closes Phase 41 and the RECONCILE program.
+18–24 commits, the open included); every item, the close's first part and its re-reads and
+compressions have landed. Next: the close's last commit, the status surfaces, which closes Phase 41
+and the RECONCILE program.
 
 ## Current state
 
-**The next concrete commit is the close's second part** (*Hand-off*): the re-reads, the status
-surfaces and the compressions. Its first part landed the gates on the final Lean tree (no Lean
-change: whole-project `lake build` 6145 jobs with 0 warnings, `lake lint`, and the 20 main results'
+**The next concrete commit is the close's last** (*Hand-off*, part 2b): the status surfaces and the
+row, which close Phase 41 and the RECONCILE program. Part 2 was split as the hand-off allowed; its
+first commit, part 2a, landed the re-reads and the compressions, with no Lean change. The re-read
+of the chapters 41e restated cut the copy of Case II's count from `lem:case-II-realization`'s proof,
+which now applies `lem:case-II-realization-placement`'s count; moved `cor:dof-generic-realization`
+before `prop:rigidity-matrix-prop11`, whose proof uses it; restated `generic-lift.tex`'s body-hinge
+opening at KT's genericity; and repointed Case III's two "one row short" pointers to the placement
+node. The exposition ledger has 41e's judgment, no new entries, and two entries restated; the design
+doc's UNSTATED arc and *Item R's recon* are compressed to cited verdicts (1109 → 781 lines), their
+13 Lean anchors counted, all in the evidence files and resolving. The project-organization review
+found no fix due: the auto-loaded `CLAUDE.md` suite is unchanged since 2026-10-25, and
+FRICTION's two `[resolved]` entries (41a's) wait for the next archive sweep. Part 1 landed the
+gates on the final Lean tree (no Lean change: whole-project `lake build` 6145 jobs with 0
+warnings, `lake lint`, and the 20 main results'
 `#print axioms` byte-identical to 41d's close net of M1K's rename, each `[propext, Classical.choice,
 Quot.sound]`; the harness `scratch/41e-close/Axioms.lean`, gitignored), every ledger entry `done`
 or `left` (307 and 25, none `reported`; the ledger's header), `F-301`'s remark in `pencil.tex`, and
@@ -169,6 +181,15 @@ ScrewSpace carrier). Witness names are in `ReconUnstated` (`UnstatedWitness.lean
     program closed); the row, §41, README, the home page, `intro.tex`, `formalization.yaml`, the
     queue row, `notes/MolecularConjecture.md`; the design doc's UNSTATED arc; the rest of the
     project-organization review; the blueprint gates again. The dispatch log is the coordinator's.
+    Split in two commits, as the hand-off allowed:
+    - [x] Part 2a (the commit "Phase 41e close, part 2a: the re-reads and the compressions"): the
+      re-read of the restated chapters and the exposition ledger; the design doc's UNSTATED arc,
+      with *Item R's recon*, compressed, its anchors counted first; the rest of the
+      project-organization review; `blueprint/lint.sh` and `verify.sh` (*Current state*).
+    - [ ] Part 2b, the commit that closes: ROADMAP's RECONCILE bullet and `notes/Reconcile.md`'s
+      **Status**; the row, §41, README, the home page, `intro.tex`, `formalization.yaml`, the queue
+      row, `notes/MolecularConjecture.md`; the design doc's status header and §3's UNSTATED row;
+      this note in closed form; the blueprint gates again.
 
 **Estimate.** 18–24 commits, the open and the close included (M1K's commit added by §1k.2): U1–U7 one each, R and PAD one each,
 U8–U11 one or two each, U12 two, U11's recon and U12's spike none or one each. The recon's 15–21
@@ -181,14 +202,18 @@ moved by R's build (+1, §1j.1) and PAD as its own commit (+1, §1j.3); the ride
 
 ## Hand-off / next phase
 
-**The close's second part** (checklist item *Close*, part 2), the commit that closes Phase 41 and
-the RECONCILE program (`PHASE-BOUNDARIES.md` *When this commit closes a phase*, the full-phase
-close). Part 1 ran the Lean gates and the axioms on the final tree and set the ledger's last
-dispositions; part 2 changes no Lean, so they stand, and it re-runs `blueprint/lint.sh` and
-`verify.sh` and `check-phase-note.py`. If it is too large for one commit, land the re-reads and the
-compressions first, and the status surfaces (ROADMAP's row, §41 and RECONCILE bullet, README, the
-home page, `intro.tex`, `formalization.yaml`, the queue row) last, in the commit that flips the row
-and closes. The dispatch log's grooming is the coordinator's.
+**The close's last commit** (checklist item *Close*, part 2b), which closes 41e, Phase 41 and the
+RECONCILE program (`PHASE-BOUNDARIES.md` *When this commit closes a phase*, the full-phase close).
+Part 1 ran the Lean gates and the axioms on the final tree and set the ledger's last dispositions,
+and part 2a made the re-reads and the compressions; part 2b changes no Lean, so they stand. It
+flips ROADMAP's row to ✓ and compresses §41 to one paragraph and the RECONCILE bullet
+(`notes/Reconcile.md` §3, its **Status** marked closed); re-summarizes README, the home page,
+`intro.tex` and `formalization.yaml`, jargon-free (README and ROADMAP §34 name M1's generic form,
+which M1K kept beside the row's maximum-rank form); sets `.claude/autopilot/queue.toml`'s
+`RECONCILE-FORMAL` row `done = true`; syncs `notes/MolecularConjecture.md`; flips the design doc's
+status header and §3's UNSTATED row; and puts this note in closed form. It re-runs
+`blueprint/lint.sh`, `verify.sh` and `check-phase-note.py`. ORIGAMI is not opened, and nothing is
+pushed: the loop stops for the PI's push (§1j.5). The dispatch log's grooming is the coordinator's.
 
 ## Decisions made during this phase
 
@@ -199,6 +224,12 @@ and closes. The dispatch log's grooming is the coordinator's.
   the earliest item that edits both `Theorem55.lean` (the rows form's file) and
   `panel-layer.tex`, and a mechanical one; PAD its own commit before U10, mechanical where U10 is
   a crux node with an uncompiled route.
+- **The close's re-read** (part 2a): `lem:case-II-realization`'s proof applies the placement node's
+  count instead of repeating it, as its pin calls `case_II_placement_rank`; and
+  `cor:dof-generic-realization` moves before `prop:rigidity-matrix-prop11`, whose proof uses it (a
+  forward reference, cured by the PI's node-order rule, `blueprint/AUTHORING.md` E). The other new
+  forward `\uses` of 41e cross chapters (U5's `lem:case-I` into `pencil.tex`, U8's, U10's and
+  U12's) and stay.
 - **`exists_independent_panelRow_transport` stays** (the close's review): it states KT eq. (6.13)'s
   step, `lem:case-II-placement-old-rows`, which `rem:case-II-kt-steps` frames; the PI keeps KT's
   route with Lean behind its nodes (`notes/Reconcile.md` §1), and round 3 kept such pins.

@@ -369,7 +369,12 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   the label `prop:rigidity-matrix-prop11` is KT's three-way equivalence at every
   generic hinge-point assignment of a multigraph (`generic-lift.tex`), the
   analytic half from `thm:bodyhinge-generic-rank` and the matroidal half from
-  `thm:def-eq-corank`. The formula is KT
+  `thm:def-eq-corank`. Since Phase 41e's U11 (`80d2a46f`;
+  `notes/Phase41-design.md` §1k.1) the node is stated at KT's own genericity, the
+  largest ranks over the realizations (`def:dof-generic`): its analytic half is
+  `cor:dof-generic-realization`, a pinch between a row-independence generic
+  assignment's formula and the genericity-free bound, and the row-independence form
+  is its second pin. The formula is KT
   Proposition 2.3 (p. 655), as the
   blueprint names it since PROSE round 3 task 2.1; this entry said Prop 1.1,
   which is Tay and Whiteley's theorem (p. 648), until that round's close.
@@ -611,9 +616,10 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   (`case-ii.tex` / `case-iii.tex`, prose final since 22h; markers flipped 22k-close; since PROSE
   round 3 task 2.9 the proof of `lem:case-II-realization` gives KT's construction, then
   eq. (6.12) with `L = q(ab)`, which the panel model forces, and the row form of KT's column
-  operation; since task 2.10 `lem:case-II-realization-placement`'s proof gives that count at a
-  rigid `G_v^{ab}`, one row short, and its note says that its pin assumes a rigid subgraph of `G`
-  avoiding `v` instead)] **(a)**. **Stable insight:** KT's construction (Lemma 6.8, eq. 6.12) is
+  operation; since Phase 41e's U12 (`90dc64a4`) that count is `lem:case-II-realization-placement`'s,
+  made in its proof from a realization of `G_v^{ab}` of any rank (`N + D − 1`, one row short at a
+  rigid one) and pinned as stated, and the proof of `lem:case-II-realization` applies it with
+  `t = 1`)] **(a)**. **Stable insight:** KT's construction (Lemma 6.8, eq. 6.12) is
   *row-side with a degenerate placement* — `p1(vb) = q(ab)` places `v`'s new
   hinge *at the* `e₀=ab` *hinge of the inductive realization*, so column ops make
   `R(G,p1)` block-triangular with the `vb`-row reproducing the `e₀`-row; a slight
@@ -1747,6 +1753,25 @@ checked the entries naming a node 41d restated or moved: the Phase 26 entry's pa
 `main-component.tex` are dated to their phases; since 41d the padding is unneeded
 (`lem:molecule-graph-carrier`'s note) and `def:pencil-embed-edges` sits beside
 `rem:fresh-edge-supply`. Neither judgment changes, as both nodes are project-side.
+**Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
+
+### Phase 41e (UNSTATED: the claims no declaration stated, structural edit — no new chapter)
+
+**No new entries — judged at the close (2026-10-29), which closes Phase 41.** The sub-phase gave a
+declaration and a pin to claims the blueprint already stated and proved in prose: the pebble game's
+blocking witness, the matroid union's rank formula, the circuit's tree partition, KT Theorem 4.9's
+sequence, Case I's rank identity, the forest's independent rows, the Plücker expansion, the rigid
+molecular realizations and the rigid squares, and the degree of freedom and genericity of a
+body-hinge framework (`notes/Phase41e.md`). Each is either standard or written in its node, and
+the one reroute, Case II's count (U12, after a spike), replaced a pin whose hypothesis no graph of
+Cases II and III meets, a project-side defect. Two new arguments are short and in their nodes: KT
+Proposition 2.3 at KT's own genericity, a pinch (`cor:dof-generic-realization`), and the loop
+convention of `def:dof-generic`, a definition's reading. The close checked the entries naming a
+node 41e restated: the `prop:rigidity-matrix-prop11` and eq. (6.12) entries now say what the nodes
+state, and the close's re-read cut the copy of Case II's count from `lem:case-II-realization`'s
+proof, which now applies the placement node's; the Phase 25 dictionary entry already
+records U10's pin; the Phase 26 entry's padded carrier is dated, the padding dropped since 41e's
+PAD. The `lem:case-I` entry holds: its new first pin is the proof's arithmetic paragraph.
 **Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
 
 ## Retroactive coverage

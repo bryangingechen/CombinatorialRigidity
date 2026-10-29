@@ -19,12 +19,15 @@ UNSTATED's open recon is in §2, and so is RELABEL's (route B, a transport at th
 in a witness; 6–9 commits). On 2026-10-29 the PI took RELABEL by route B and opened it as **41d**
 (§1i), work log `notes/Phase41d.md`, with a read-only recon of `minimal_kdof_reduction`'s `hfresh`
 as its last item, and closed it the same day: no main result bounds the edge labels (B1–B3), and
-§2's RELABEL arc is compressed to a cited verdict. Item R's verdict (§2, *Item R's recon*, kept
-whole as the source of its build: one commit drops `hfresh` from KT Theorem 4.9's principle) went
-to the PI with 41d's other open questions. The PI took it, with the rows form's restatement, the
-padding drop and the `\uses` fix (§1j), and UNSTATED opened the same day as **41e**, work log
-`notes/Phase41e.md`, planned as Phase 41's last sub-phase. U11's recon is in §2, under U11.
-**Next:** 41e's U11 build.
+§2's RELABEL arc is compressed to a cited verdict. Item R's verdict (§2, *Item R's recon*: one
+commit drops `hfresh` from KT Theorem 4.9's principle) went to the PI with 41d's other open
+questions. The PI took it, with the rows form's restatement, the padding drop and the `\uses` fix
+(§1j), and UNSTATED opened the same day as **41e**, work log `notes/Phase41e.md`, planned as
+Phase 41's last sub-phase. After U11's recon the PI took KT Proposition 2.3 and M1 at KT's own
+genericity (§1k). Every 41e item has landed (U1–U12, R, PAD and M1K, with U11's recon and U12's
+spike), and §2's UNSTATED arc and *Item R's recon* are compressed to cited verdicts at 41e's
+close. **Next:** the close's last commit, which closes 41e, Phase 41 and the RECONCILE program
+(`notes/Phase41e.md` *Hand-off*).
 
 The phase is the last part of the RECONCILE program (`notes/Reconcile.md`, with its standing rules
 in §2 and the plan of this phase in §3 *The phase*). Its input is PROSE's findings report
@@ -581,314 +584,71 @@ which Theorem 5.6's proofs use, moved to `prop:rank-formula-of-motion-bound`, as
 questions (taken up in §1h); the generic panel theorems stay for simple graphs, as in the meet
 model a double edge's two hinges coincide (§1b.1).
 
-**UNSTATED's open recon** (2026-10-29; Claude Opus 5.5, design pass, at `3b9f766b`; recorded under
-the code, so that the sub-phase that opens as UNSTATED transcribes it into its work log). Evidence:
-`notes/reconcile-formal/UnstatedWitness.lean` (`lake lean`: no errors or warnings, its seven
-`#print axioms` the three standard axioms; `#lint` on a copy: only `unusedArguments` at four `Prop`
-targets, which carry the instances of the planned theorems). It proves S22, S24's rank form, S25 with
-`def:blockingWitness`, S19, §4(a) and S16's one new step, and states the other targets as `Prop`s
-that elaborate (names below are the witness's, in `ReconUnstated`). Every node, pin and declaration
-was re-read at `3b9f766b`, as the report predates RECONCILE's rounds and 41a–41c. **Transcribed at
-41e's open** into `notes/Phase41e.md`, re-read at `0a63c7ef` after 41d: its checklist, with item R
-before U4, U4 without `hfresh`, the riders on U6 and the padding dropped before U10 (§1j), is the
-live one where the two differ.
-
-*Corrections to the plan.* G5's packing move and `lem:forest-surgery-unsplit` are settled: the
-descent calls `lem:packing-move`'s pin since round 3 (`F-087`, `9840dd2c`), and the second node was
-restated as its pin's case and filled in round 2 (`F-091`, `F-234`, `43c5c8d7`); G5 is the other
-three. S19 touches no carrier code: `lem:case-I` as PROSE stated it (`85e0e4f8`, before the
-report) takes the contraction's realization at the target rank, so its identity is arithmetic from
-KT Lemma 3.5, as its proof's first paragraph says; the block-form rank addition with content is the
-proof's, and stays prose under the crux carve-out. Only S3 touches `case_II_placement_eq612` (§3's
-row said both). `F-061`'s forest lemma backs no blueprint claim at HEAD (round 2 replaced "any
-spanning forest" by the star forest), so it lands with a new node. S31 needs no label bound: on
-`G.shadowGraph`, whose labels carry their own supply (`lem:molecule-graph-carrier`), as the molecule
-rank formula is stated, so it does not wait on RELABEL.
-
-*The checklist*, in the recommended order: the isolated one-commit items first, the zone's
-one-commit items next, then the items with a rebuild-heavy or crux footprint, and last the two that
-need their own recon. No item depends on another, except that `def:blockingWitness` lands with S25.
-"Zone" is the fragility zone (`Molecular/AlgebraicInduction/`, `Molecular/RigidityMatrix/`, the
-ScrewSpace carrier).
-- **U1. S25 and `def:blockingWitness`** (`F-041`; `F-038`, `F-008`'s part). New
-  `SimpleGraph.IsBlockingWitness G k ℓ s := ℓ ≤ k * s.card ∧ k * s.card < (G.edgesIn ↑s).ncard + ℓ`
-  beside `IsSparse` (`Sparsity.lean`), with `not_isSparse_of_isBlockingWitness`; and
-  `PartialOrientation.runPebbleGameWith_isBlockingWitness` (`PebbleGame/Correctness.lean`): under
-  `ℓ < 2k`, a `.inl w` return from the empty orientation on a list of edges of `G` (`hmem` only)
-  gives `G.IsBlockingWitness k ℓ w.V'`, by `runPebbleGameWith_witness_bridges` and
-  `certifies_against` (proved). `def:blockingWitness` pinned and filled; `thm:pebble-game-correct`
-  gains the pin. Outside the zone. 1 commit.
-- **U2. S24** (`F-051`). `Matroid.Union_rk_eq`, the rank of every `X` in the union of a finite family
-  in `Union_pow_rk_eq`'s form (proved), and `Matroid.Union_indep_iff_count`,
-  `(Matroid.Union Ms).Indep X ↔ ∀ Y ⊆ X, Y.ncard ≤ ∑ i, (Ms i).rk Y`, by `Union_pow_indep_iff_count`'s
-  proof (`S24IndepTarget`); `Matroid/Constructions/Union.lean` (ported from Peter Nelson's
-  `Matroid`: credit). `thm:matroid-partition-rank` pins both; its note goes. 1 commit.
-- **U3. S23** (`F-083`). `Graph.circuit_diff_isSpanningTreePacking` (`Induction/Operations.lean`):
-  for a circuit `X` of `M(G̃)` and `e ∈ X`,
-  `(((G.mulTilde n) ↾ (X \ {e})).induce (G.fiberSpan n X)).IsSpanningTreePacking (bodyBarDim n)`
-  (`S23Target`), by `circuit_induces_isTight`, `isSparse_diff_singleton_of_isCircuit` carried to
-  the induced graph, `IsTight.connected` and `isSpanningTreePacking_of_isTight`; the friction is the
-  `induce`/`restrict` bookkeeping (`E = X \ {e}`, `V = V(X)`). `lem:circuit-induces-rigid`'s third
-  pin; its note goes. 1 commit.
-- **U4. S22** (`F-101`). `Graph.minimal_kdof_reduction_sequence` (`ForestSurgery/Reduction.lean`):
-  `Relation.ReflTransGen` of a step relation (`KTReductionStep`: to a minimal `0`-dof-graph, by a
-  split-off at a vertex of degree two or the contraction of a proper rigid subgraph) from `G` to a
-  double edge, under `minimal_kdof_reduction`'s `3 ≤ D` and `hfresh` (proved, ~40 lines from that
-  principle, `isMinimalKDof_ncard_le_two_trichotomy`, `splitOff_isMinimalKDof` and
-  `rigidContract_isMinimalKDof`). `thm:minimal-kdof-reduction` pins it beside (ii)'s; the note's
-  first sentence goes. It carries `hfresh`, as the principle does; neither is a main result. 1 commit.
-- **U5. S19** (`F-116`). `BodyHingeFramework.case_I_rank_add_iff` (proved): for a proper rigid `H`
-  with `r ∈ V(H)` and frameworks `F`, `F₂`, if `rank R(F₂) = D(|V(G/E(H))| − 1) − def` of the
-  contraction, then `rank R(F) = D(|V(G)| − 1) − def(G̃)` iff
-  `rank R(F) = D(|V(H)| − 1) + rank R(F₂)`, by `rigidContract_deficiency_eq` and
-  `rigidContract_vertexSet_ncard`, with no minimality (the node's `G` minimal is a special case).
-  Additive, beside the block-pin criteria in `Pinning.lean`; no fragile proof is touched.
-  `lem:case-I` pins it first; its note's "No pinned theorem mentions the contraction" is rewritten;
-  the three block-pin pins stay (the first is live) unless the label check moves them. 1 commit.
-- **U6. §4(a)** (no ledger entry: a new ID). `rigidityMatrix_prop11`'s `hC` becomes
-  `∀ e u v, F.graph.IsLink e u v → u ≠ v → F.supportExtensor e ≠ 0` (`rigidityMatrix_prop11'`,
-  proved: one argument fewer); its three callers in `Theorem55.lean` wrap
-  (`fun e u v h _ => hC e u v h`). `prop:rank-formula-of-motion-bound` asks the hinge at the edges
-  whose ends differ. Zone, mechanical. 1 commit.
-- **U7. S16** (`F-124`). `hasPanelRealization_of_generic` without `[G.Loopless]` (`S16Target`): the
-  framework is `Q.toBodyHinge` with the hinge at each loop at `u` replaced by `C(n_u, n_w)` for a body
-  `w ≠ u` (`2 ≤ |V(G)|`), which lies in `u`'s panel (`exists_extensor_eq_panelSupportExtensor_gen`)
-  and is nonzero by general position; the rows' span is unchanged, as a loop's rows are zero
-  (`span_rigidityRows_eq_of_eq_off_loops`, proved). `GenericityDevice.lean`, zone; the three callers
-  pass the instance today, so check for a now-unused `have : G.Loopless`. The node's note on loops
-  goes. 1 commit.
-  - **`[Finite α]` dropped too, adopted under §1f.3** (the coordinator's call under the PI's
-    standing authorization, recorded here at `d04cbf9e`): the built framework needs no finiteness of
-    the bodies, so `lake lint`'s `unusedArguments` flagged the binder. The change touches only this
-    theorem, which is not a main result or a pencil row; its callers in `Theorem55.lean` all carry
-    `[Finite α]` anyway. It follows the pattern of 41c's one-body relaxation.
-- **U8. `F-061`'s forest lemma.** `BodyHingeFramework.exists_independent_rigidityRows_of_isForest`
-  (`ForestTarget`): for a forest `T ≤ F.graph` (`Graph.IsForest`) with a nonzero hinge at each edge,
-  `D − 1` rows per edge, jointly independent, in `exists_independent_rigidityRows_of_starForest`'s
-  shape. Route: induction on `|E(T)|` removing a pendant edge (`IsForest.exists_isPendant`,
-  `IsForest.anti`); its rows stay independent on the assignments supported at the pendant body,
-  where the others vanish, and `linearIndependent_sum_pinned_block` joins them.
-  `RigidityMatrix/Basic.lean`, zone: an interface change there rebuilds the molecular chain. A new
-  node after `lem:own-end-rows-independent`. 1–2 commits.
-- **U9. The Plücker expansion** (`F-059`). The coordinates of `extensor v` in
-  `(Pi.basisFun K (Fin (d+1))).exteriorPower j` are the Plücker coordinates times KT's sign
-  (`PluckerTarget`), by mathlib's `exteriorPower.basis_repr_apply` and `ιMultiDual_apply_ιMulti`
-  (the minor), against `pluckerCoord`'s `orderEmbOfFin` submatrix: the friction is the index bridge
-  (`Set.powersetCard.ofFinEmbEquiv` against `Finset.orderEmbOfFin`) and a transpose.
-  `Molecular/Extensor.lean`, the chain's root (a full rebuild). A lemma node after
-  `def:plucker-coords`; its note goes. 1–2 commits.
-- **U10. S31** (`F-174`, `F-183`). `SimpleGraph.molecular_rigid_iff_square_rigid` (`S31Target`),
-  under `[Nonempty V]` and `hmin`: some selector recording the links of `G.shadowGraph` and centres
-  distinct at each edge give an infinitesimally rigid molecular framework iff `G²` has an
-  infinitesimally rigid placement. (⇒) nondegenerate hinges (`lineExtensor_ne_zero_of_ne`) and
-  `screwDim_add_deficiency_le_finrank_infinitesimalMotions` give `def = 0`, then
-  `molecule_generic_rigid` at `exists_isGenericPlacement`; (⇐) the rigid placement bounds the generic
-  rank (`finrank_range_rigidityMap_le_genericRank`), `molecule_rank_formula` and
-  `deficiency_nonneg` give `def = 0`, and `exists_molecular_rankHypothesis_generalPosition` (its
-  bound met by `card_shadowLabel_lt`) with `rankHypothesis_zero_iff` gives the framework, its
-  centres distinct by general position. `Molecule/Application.lean`. The theorem's second pin; its
-  note's last sentences go. A crux node: its exposition-ledger entry is re-read. 1–2 commits.
-  - **Landed without `[Nonempty V]`, adopted under §1f.3** (the coordinator's call under the PI's
-    standing authorization, recorded here at `0a0817a0`): both sides hold when `V` is empty, as
-    the node's statement says, at three lines of proof. The change touches only this new theorem,
-    which is not a main result or a pencil row, and it follows 41c's one-body relaxation. The
-    route also left the plan: `molecule_generic_rigid` and `molecule_rank_formula` pin
-    corollaries that depend on this node, so the proof runs through the dictionary
-    `molecular_finrank_motions_eq_square_ker` and the generic-rank lemmas, as the node's prose
-    does.
-- **U11. `def:dof-generic`** (`F-008`'s part). **Needs its own read-only recon** (the
-  definition-faithfulness gate). The witness's candidates: `dof F = D(|V(G)| − 1) − rank R(G,p)`, and
-  `IsMaxRankHingePoints G q` (nondegenerate at the non-loop links, and at every `E' ⊆ E(G)` the rows
-  of `ofHinge (G ↾ E') q` of the largest rank over the hinge-point assignments with that property),
-  which the paragraph after `lem:generic-hinge-points-nondegenerate` derives from
-  `IsGenericHingePoints` for loopless `G`. Open: which carrier stands for "all realizations of `G`";
-  loops, whose hinge points genericity leaves free; whether KT Proposition 2.3 then holds at every
-  such realization (a main result's statement, the PI's). `GenericLift/HingeGeneric.lean`, after
-  RELABEL if RELABEL restates that file. 1–2 commits.
+**UNSTATED's open recon** (2026-10-29; Claude Opus 5.5, design pass, at `3b9f766b`; landed as 41e's
+items, and compressed at 41e's close to a cited verdict, the full arc in git up to `1ff52359`).
+Evidence: `notes/reconcile-formal/UnstatedWitness.lean` (`lake lean`: no errors or warnings, its
+seven `#print axioms` the three standard axioms; `#lint` on a copy: only `unusedArguments` at four
+`Prop` targets, which carry the instances of the planned theorems), in `ReconUnstated`. It proved
+S22, S24's rank form, S25 with `def:blockingWitness`, S19, §4(a) and S16's one new step, and stated
+the other targets as `Prop`s that elaborate. Every node, pin and declaration was re-read at
+`3b9f766b`; the checklist was transcribed at 41e's open into `notes/Phase41e.md` and re-read there
+at `0a63c7ef`, after 41d. That checklist, with item R before U4, U4 without `hfresh`, the riders on
+U6 and the padding dropped before U10 (§1j), records what landed, each declaration by name. The
+items, in the recon's order (the isolated one-commit items, then the fragility zone's, then the
+rebuild-heavy and crux ones, then the two that needed a recon or a spike): **U1** S25 with
+`def:blockingWitness`, **U2** S24, **U3** S23, **U4** S22, **U5** S19, **U6** §4(a), **U7** S16,
+**U8** `F-061`'s forest lemma, **U9** the Plücker expansion, **U10** S31, **U11** `def:dof-generic`
+and **U12** S3, each one commit, U12 two with its spike. *Corrections to the plan:* G5's packing
+move and `lem:forest-surgery-unsplit` were already settled (round 3's `F-087`, round 2's `F-091`),
+so G5 was the other three; S19 touched no carrier code, its identity being arithmetic from KT Lemma
+3.5; only S3 touched `case_II_placement_eq612`; `F-061`'s forest lemma backed no claim at HEAD and
+landed with a new node; S31 needed no label bound. Two planned forms changed with the PI's answers
+(§1j): U4 had carried `hfresh` (item R, below, dropped it), and U10's "its bound met by
+`card_shadowLabel_lt`" went, as since 41d's B3 it had no bound to meet. Adopted under §1f.3 at
+landing, the coordinator's calls: U7 without `[Finite α]` (`d04cbf9e`; the built framework needs
+no finiteness of the bodies) and U10 without `[Nonempty V]` (`0a0817a0`; both sides hold at
+`V = ∅`); U10's proof runs through the dictionary `molecular_finrank_motions_eq_square_ker`, as
+`molecule_generic_rigid` and `molecule_rank_formula` pin corollaries of that node. Estimate 15–21
+commits (the report's 13–23); with R, PAD and M1K, 41e planned 18–24.
   - **U11's recon** (41e's item *U11, recon*; 2026-10-29; Claude Opus 5.5, design pass, at
     `5b521137`). Evidence: `notes/reconcile-formal/DofGenericWitness.lean` (`lake lean`: no errors
     or warnings, its seven `#print axioms` the three standard axioms; `#lint` on a copy: no errors in
-    9 declarations), in `ReconDofGeneric`; it supersedes `UnstatedWitness.lean`'s G5 copy. **Verdict:
-    the candidates are faithful in reading (a) below, with the loop convention of Q2; U11 is one
-    build commit, adds declarations only, and moves no main result's statement and no
-    `formalization.yaml` row.** An optional strengthening of KT Proposition 2.3 goes to the PI, not
-    blocking U11 (§4).
-    - *The sources.* Katoh and Tanigawa's body-hinge framework puts a `(d−2)`-dimensional affine
-      subspace at each edge (§2.3, p. 653), and is generic "if the ranks of `R(G,p)` and its
-      edge-induced submatrices take the maximum values over all realizations of `G`" (§2.4, p.
-      654), citing Jackson and Jordán. Their body-and-hinge realizations are such frameworks, with
-      hinges at infinity and prismatic hinges excluded (2010 §3.3, p. 578), and an edge-induced
-      submatrix deletes the `D − 1` rows of each edge of a subset (§6, p. 583). KT's multigraphs
-      have no loops (§2.5); JJ say nothing of loops.
-    - *Q1, the carrier.* (a) `ofHinge G q` over the hinge-point assignments whose hinges are
-      nondegenerate: up to the choice of the points, these are the realizations (the paragraph
-      after `lem:generic-hinge-points-nondegenerate`; a hinge determines its extensor up to a
-      scalar, the remark after `def:hinge-constraint`). Over an infinite field, finite bodies and
-      labels, `G` spanning and nonempty, the largest rank at `E'` is `D(|V|−1) − def((G ↾ E')~)`:
-      `lem:relative-deficiency-rank-bound` bounds every realization, and a generic assignment over
-      `G ↾ E'` attains it. **The sources' reading.** Allowing degenerate hinges is not: a zero
-      extensor's hinge-row block is every form, so the hinge welds its bodies (rank `D` at a single
-      edge), and for `d ≥ 3` an assignment with every hinge degenerate would be "generic" at every
-      `G`; the candidate's first conjunct is what excludes it. (b) Body-hinge frameworks on `G`
-      with any supporting extensor: with zero allowed, the welded maximum; with nonzero ones, the same
-      maxima as (a) under (a)'s hypotheses, by the same two bounds (not compiled). But the class
-      holds frameworks that are no realization (hinges at infinity, and for `d ≥ 3` screws that are
-      not extensors), and over a finite field nothing ties its maxima to (a)'s. Not the sources'.
-      (c) Panel-hinge frameworks: an edge's hinge is the meet of its ends' panels, so parallel
-      edges share a hinge, and the double edge's largest rank is `D − 1`, not `D` (§1f.1). KT's
-      realizations are body-hinge, and panel genericity is JJ §7's (`def:generic-normals`). Not
-      the sources'.
-    - *Q2, loops.* A loop's rows are zero whatever its hinge
-      (`span_rigidityRows_eq_of_eq_off_loops`, `RigidityMatrix/Basic.lean:579`), so the maxima are
-      the same whether the realizations compared ask a loop's hinge nondegenerate or not.
-      **Recommended: ask nondegeneracy at the links between distinct bodies only, of `(G,q)` and of
-      the realizations compared**, the project's convention since §1f.4 (the upper bound's `hC`) and
-      §1h.2 (U6), and `IsGenericHingePoints`'s, which leaves a loop's points free. Every
-      row-independence generic assignment then qualifies, loops allowed. The divergence, for the
-      fmlnote: a framework with a degenerate hinge at a loop counts as generic, where KT have no
-      loops. The strict reading (nondegenerate at every edge) builds as easily, but its bridge
-      needs `G` loopless or the loops' hinges asked separately; not recommended. It follows a
-      pattern the PI took (§1f.4, §1h.2), so it needs no PI decision.
-    - *Q3, the candidates.* `dof` is faithful as written: KT's formula (p. 654), in `ℤ`, with
-      `V = V(G)`; the screw assignments live on all the bodies `α`, and the rows involve only those
-      of `V(G)`. It is `0` exactly at rigidity on `V(G)` (`dof_eq_zero_iff`, compiled), and
-      `dim Z − D` when `G` spans. `IsMaxRankHingePoints` is faithful in reading (a) under Q2's
-      convention; restated with `IsGenericHingePoints`'s uncurried assignment
-      `q : β × Fin k × Fin (k + 1) → K`, so the bridge composes. `E' = E(G)` gives `R(G,q)` itself
-      (`Graph.restrict_self`). *Cheapest satisfying witness:* at a graph with no link between
-      distinct bodies, every assignment (the single loop, compiled, a degenerate hinge included);
-      otherwise one at the maximum on every set of edges: at the single edge any nondegenerate
-      assignment, at the double edge any with independent hinges, at the triangle any with three
-      independent hinges (by hand); over an infinite field, a generic one always.
-      **Satisfiable** (compiled, over `ℝ`): the single edge and the double edge in `d = 3`, the
-      triangle (`(⊤ : SimpleGraph (Fin 3)).shadowGraph`) and the double edge with a loop in
-      `d = 2`, and the single loop. **Not vacuous:** at the double edge, two hinges at the same
-      points do not qualify (`not_isMaxRankHingePoints_banana_of_eq`). The paragraph's derivation
-      from `IsGenericHingePoints` holds for every multigraph, loops allowed
-      (`isMaxRankHingePoints_of_isGenericHingePoints`): its "no loops" only made `(G,q)`
-      nondegenerate at a loop, and the proof replaces a compared assignment's degenerate hinges by
-      a fixed family, its rows unchanged, then takes
-      `exists_independent_panelRow_subfamily_of_le_finrank` (`GenericityDevice.lean:499`) and
-      transfers by genericity.
-    - *Q4, KT Proposition 2.3.* It holds at every maximum-rank realization (compiled, the witness's
-      `tfae_finrank_span_rigidityRows_ofHinge_deficiency_of_isMaxRankHingePoints`): a generic
-      assignment `q₀` has the formula (`HingeGeneric.lean:974`), a maximum-rank `q` has at least
-      its rank at `E' = E(G)`, and `finrank_span_rigidityRows_add_deficiency_le`
-      (`GenericityDevice.lean:411`) bounds `q` above, its hinges at the links between distinct
-      bodies being nondegenerate. As every row-independence generic assignment has maximum rank,
-      this is a strengthening of today's pin `tfae_finrank_span_rigidityRows_ofHinge_deficiency`
-      (`:1098`). U11 below adds the rank and `dof` forms as a new corollary, which no main result and
-      no `formalization.yaml` row reads; restating `prop:rigidity-matrix-prop11` itself at KT's own
-      genericity is the PI's (§4).
-    - *U11's build* (1 commit; `GenericLift/HingeGeneric.lean`, a new section before *KT
-      Proposition 2.3, unconditional*, transcribed from the witness; near the chain's end, so the
-      edit rebuilds only the file and its few importers). In
-      `CombinatorialRigidity.Molecular.BodyHingeFramework`:
-      `noncomputable def dof (F : BodyHingeFramework K k α β) : ℤ :=
-      screwDim k * ((V(F.graph).ncard : ℤ) - 1) - Module.finrank K (Submodule.span K F.rigidityRows)`;
-      `theorem dof_eq_zero_iff [Finite α] (F : BodyHingeFramework K k α β)
-      (hne : V(F.graph).Nonempty) : F.dof = 0 ↔ F.IsInfinitesimallyRigidOn V(F.graph)`;
-      `def IsMaxRankHingePoints (G : Graph α β) (q : β × Fin k × Fin (k + 1) → K) : Prop :=
-      (∀ e u v, G.IsLink e u v → u ≠ v → (ofHinge G fun e a b => q (e, a, b)).supportExtensor e ≠ 0)
-      ∧ ∀ E' ⊆ E(G), ∀ q' : β × Fin k × Fin (k + 1) → K, (∀ e u v, G.IsLink e u v → u ≠ v →
-      (ofHinge G fun e a b => q' (e, a, b)).supportExtensor e ≠ 0) → Module.finrank K
-      (Submodule.span K (ofHinge (G ↾ E') fun e a b => q' (e, a, b)).rigidityRows) ≤
-      Module.finrank K (Submodule.span K (ofHinge (G ↾ E') fun e a b => q (e, a, b)).rigidityRows)`;
-      `theorem isMaxRankHingePoints_of_isGenericHingePoints [Finite α] [Finite β] (hk1 : 1 ≤ k)
-      {G : Graph α β} {q : β × Fin k × Fin (k + 1) → K} (hq : IsGenericHingePoints G q) :
-      IsMaxRankHingePoints G q`; `theorem exists_isMaxRankHingePoints [Infinite K] [Finite α]
-      [Finite β] (hk1 : 1 ≤ k) (G : Graph α β) : ∃ q, IsMaxRankHingePoints G q`; and, with
-      `finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints`'s hypotheses (`[Infinite K]
-      [Finite α] [Finite β] {n : ℕ} (hk1 : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
-      (G : Graph α β) (hne : V(G).Nonempty) (hspan : V(G) = Set.univ)`) and
-      `(hq : IsMaxRankHingePoints G q)` in place of its `hq`,
-      `finrank_span_rigidityRows_ofHinge_of_isMaxRankHingePoints` (its conclusion) and
-      `dof_ofHinge_of_isMaxRankHingePoints : (ofHinge G fun e a b => q (e, a, b)).dof =
-      G.deficiency n`. The TFAE and the witnesses stay in the evidence file.
-    - *The blueprint, in the same commit.* `def:dof-generic` pins `dof`, `dof_eq_zero_iff` and
-      `IsMaxRankHingePoints`, `\leanok`, its statement unchanged; its fmlnote becomes: "The
-      formalization writes $d = k + 1$, as in the note after \cref{def:hinge-constraint}. The first
-      pin is the degree of freedom, an integer, with $V$ the vertex set of $G$; the screw
-      assignments are defined on all the bodies, and the rows of $R(G,p)$ involve only those of
-      $V(G)$. The second says that it is $0$ exactly when $(G,p)$ is infinitesimally rigid on
-      $V(G)$, for $V(G)$ nonempty. The third is genericity for the frameworks $(G,q)$ of
-      hinge-point assignments (\cref{def:generic-hinge-points}), which up to the choice of the
-      points are the realizations of $G$: $(G,q)$ is generic if its hinges are nondegenerate and,
-      for every set of edges, its rows at those edges have the largest rank over the hinge-point
-      assignments whose hinges are nondegenerate. Nondegeneracy is asked only at the edges whose
-      two ends differ: the rows of a loop are zero whatever its hinge, which is left free, as in
-      \cref{prop:rank-formula-of-motion-bound}. Over an infinite field generic realizations exist,
-      and each has $\operatorname{def}(\tilde G)$ degrees of freedom
-      (\cref{lem:generic-hinge-points-max-rank}, \cref{cor:dof-generic-realization})." In
-      `generic-lift.tex`, the paragraph "Let $d \ge 2$, let $G$ have no loops, …" becomes
-      `lem:generic-hinge-points-max-rank` (the bridge and existence pinned; every multigraph,
-      loops allowed; the paragraph as proof, with the loop replacement; `\uses` `def:dof-generic`,
-      `def:generic-hinge-points`, `lem:generic-hinge-points-nondegenerate`,
-      `lem:exists-generic-hinge-points`); its lead-in and its sentence on welding stay as prose. A
-      new `cor:dof-generic-realization` after `prop:rigidity-matrix-prop11` pins the rank and `dof`
-      forms ("every generic realization of `G` has `def(G̃)` degrees of freedom"; its proof the
-      pinch, `\uses` `thm:bodyhinge-generic-rank`, `lem:generic-hinge-points-max-rank`,
-      `lem:relative-deficiency-rank-bound`). Restated claims: `prop:rank-formula-of-motion-bound`'s
-      fmlnote ("The formalization has no notion of a generic framework in the sense of
-      \cref{def:dof-generic}" goes; the formula at those frameworks is the new corollary), and
-      `deficiency.tex`'s sentence before `def:k-dof` cites the corollary. Gates: `verify.sh`,
-      `lint.sh`, `check-docstring-labels.py` diffed against the parent (new pins), the honesty gate
-      on the new `\leanok`s, and this entry as the definition-faithfulness gate.
-- **U12. S3** (`F-150`; the dead pin, `F-152`'s part). A declaration for
-  `lem:case-II-realization-placement` as stated, from a realization of `G_v^{ab}`: the count in
-  steps 7–14 of `case_II_realization_all_k`'s proof extracted as a lemma (a realization of
-  `G_v^{ab}` of rank `N` gives `rank R(G, q₀) ≥ N + D − 1`; `D(|V(G)| − 1) − 1` at a rigid one),
-  which `case_II_realization_all_k` then calls; `case_II_placement_eq612`, dead and unmeetable in
-  Cases II and III, deleted with the repin (the deletion gate). **Needs a compiler-checked spike
-  first**: a route-composition question inside a ~600-line proof in `CaseII.lean`, zone. 2 commits.
+    9 declarations), in `ReconDofGeneric`; it superseded `UnstatedWitness.lean`'s G5 copy.
+    **Verdict: the candidates are faithful in reading (a), with Q2's loop convention; one build
+    commit, landed as U11 (`80d2a46f`).** KT's genericity (§2.4, p. 654, after JJ 2010 §6) is the
+    largest rank of `R(G,p)` and of its edge-induced submatrices over the realizations of `G`.
+    *Q1, the carrier.* (a) `ofHinge G q` over the hinge-point assignments whose hinges are
+    nondegenerate, which up to the choice of the points are the realizations: the sources' reading.
+    (b) Any supporting extensor admits frameworks that are no realization, and with zero allowed the
+    welded maximum, as a degenerate hinge welds its bodies. (c) Panel-hinge frameworks share a
+    hinge at parallel edges. *Q2, loops.* A loop's rows are zero whatever its hinge
+    (`span_rigidityRows_eq_of_eq_off_loops`), so nondegeneracy is asked only at the links between
+    distinct bodies, the project's convention since §1f.4 and §1h.2; a degenerate hinge at a loop
+    then counts as generic, where KT have no loops. *Q3.* `dof` (in `ℤ`, with `V = V(G)`) and
+    `IsMaxRankHingePoints` are faithful. The cheapest witness is a graph with no link between
+    distinct bodies, the single loop; satisfiable at the single and double edge, the triangle and
+    the double edge with a loop; not vacuous (`not_isMaxRankHingePoints_banana_of_eq`); every
+    assignment generic for row independence qualifies, loops allowed
+    (`isMaxRankHingePoints_of_isGenericHingePoints`). *Q4, KT Proposition 2.3.* It holds at every
+    maximum-rank realization (`tfae_finrank_span_rigidityRows_ofHinge_deficiency_of_isMaxRankHingePoints`,
+    compiled): a generic `q₀` has the formula, a maximum-rank `q` has at least its rank, and the
+    deficiency bound caps it. A strengthening of the pin, so for the PI (§4), who took it with M1
+    (§1k).
   - **U12's spike** (41e's item *U12, spike*; 2026-10-29; Claude Opus 5.5, at `9c67712f`).
     Evidence: `notes/reconcile-formal/CaseIIPlacementWitness.lean` (`lake lean`: no errors or
     warnings, its three `#print axioms` the three standard axioms; `#lint` on a copy: no errors in 3
     declarations), in `ReconCaseIIPlacement`. **Verdict: the route composes with no `sorry`, and the
-    node as stated is what the lemma carries.** The count, in `PanelHingeFramework`
-    (`ofNormals`, `finrank`, `span` short for their full names):
-    `theorem case_II_placement_rank [DecidableEq α] [Finite α] [Finite β] (G : Graph α β)
-    {v a b : α} {e_a e_b e₀ : β} (hav : a ≠ v) (hbv : b ≠ v) (hG_ea : G.IsLink e_a v a)
-    (hG_eb : G.IsLink e_b v b) (hclv : ∀ e x, G.IsLink e v x → e = e_a ∨ e = e_b)
-    (he₀ : e₀ ∉ E(G.removeVertex v)) (ends : β → α × α) (hlinks : RecordsLinks G ends)
-    (endsv : β → α × α) (hlinksv : RecordsLinks (G.splitOff v a b e₀) endsv)
-    {q : α × Fin (k + 2) → K} (hne : ∀ e, (G.splitOff v a b e₀).IsLink e (endsv e).1 (endsv e).2 →
-    (ofNormals (G.splitOff v a b e₀) endsv q).toBodyHinge.supportExtensor e ≠ 0) {N : ℕ}
-    (hN : N ≤ finrank K (span K (ofNormals (G.splitOff v a b e₀) endsv q).toBodyHinge.rigidityRows))
-    {t : K} (ht : t ≠ 0) (q₀ : α × Fin (k + 2) → K) (hq₀ : q₀ = fun p => if p.1 = v then
-    ((fun i => q (a, i)) + t • (fun i => q (b, i))) p.2 else q p) : (∀ e, G.IsLink e (ends e).1
-    (ends e).2 → (ofNormals G ends q₀).toBodyHinge.supportExtensor e ≠ 0) ∧
-    N + (screwDim k - 1) ≤ finrank K (span K (ofNormals G ends q₀).toBodyHinge.rigidityRows)`.
-    The node's form `case_II_placement` takes `hrig : (ofNormals (G.splitOff v a b e₀) endsv
-    q).toBodyHinge.IsInfinitesimallyRigidOn V(G.splitOff v a b e₀)` for `N` and `hN`, and concludes
-    `∃ s, (∀ i ∈ s, G.IsLink i.1 (ends i.1).1 (ends i.1).2) ∧ Nat.card s = screwDim k *
-    (V(G).ncard - 1) - 1 ∧ LinearIndependent K (fun i : s =>
-    (ofNormals G ends q₀).toBodyHinge.panelRow ends i)` (`finrank_span_rigidityRows_of_rigidOn`,
-    `exists_independent_panelRow_subfamily_of_le_finrank`).
-    - *The call site.* In `case_II_realization_all_k`, after step 6 (`hNrank_q`) and step 9's
-      `hne_q` (moved up): `obtain ⟨hne_G, hcount⟩ := case_II_placement_rank G hav hbv hG_ea hG_eb
-      hclv (Graph.notMem_edgeSet_removeVertex he₀ v) ends (PanelHingeFramework.recordsLinks_endsOf
-      G) Q.ends hQrec hne_q hNrank_q one_ne_zero q₀ rfl`, with `q₀ = q[v ↦ n_a + 1 • n_b]`. Steps 15
-      and 20 stay, step 19 becomes `sub_toNat_eq_of_add_pred_eq` and `hcount`, and `hgab` and
-      `hrec'` go: the proof falls from about 710 lines to 290, its statement unchanged (the
-      witness's `example`).
-    - *For U12's build.* The node's hypotheses are the lemma's, with the selectors,
-      `e₀ ∉ E(G − v)`, `a, b ≠ v` and the degree-two closure as carrier data; `q(a)`, `q(b)`
-      independent comes from the nondegenerate hinge of `ab` (the old pin's `hgab` goes), and
-      `t ≠ 0` serves only the hinge of `va`. The route uses neither
-      `exists_independent_panelRow_transport` (`lem:case-II-placement-old-rows`) nor
-      `_subfamily_of_rigidOn_linking`: the rows of `G_v` enter through the row space, their hinges
-      equal up to sign, as in `lem:case-II-realization`'s proof. The transport lemma's one caller is
-      `case_II_placement_eq612`, so the deletion leaves it uncalled (kept pinned at U12, the
-      coordinator's call; the close's project-organization review takes it), and the node's
-      `\uses` follow the route. U12 landed as planned here. `case_II_placement_eq612` is called nowhere
-      (tree-wide `git grep`, bare name): its declaration, two docstrings (`CaseII.lean:294`,
-      `GenericityDevice.lean:258`), the node's pin, ROADMAP (§22's history) and the notes.
-- **Close**: the ledger's remaining `reported` and `left` entries given dispositions and ROADMAP's
-  RECONCILE bullet compressed (`notes/Reconcile.md` §3), if UNSTATED is Phase 41's last sub-phase.
-
-*Estimate.* U1–U7 one commit each, U8–U11 one or two, U12 two; with U11's recon and U12's spike, the
-open's transcription and the close, **15–21 commits** (the report's 13–23).
+    node as stated is what the lemma carries; landed as planned as U12 (`90dc64a4`).** The count
+    `case_II_placement_rank`: a realization of `G_v^{ab}` with nondegenerate hinges and rank at
+    least `N`, the label of `ab` outside `E(G − v)` and `t ≠ 0` give `(G, q₀)`, with
+    `q₀(v) = q(a) + t q(b)`, nondegenerate hinges and rank at least `N + D − 1`. The node's form
+    `case_II_placement` takes it at a realization rigid on `V(G_v^{ab})`, and
+    `case_II_realization_all_k` calls it at `t = 1`, its statement unchanged and its proof from
+    about 710 lines to 290. The rows of `G_v` enter through the row space, so the route uses neither
+    `exists_independent_panelRow_transport` (`lem:case-II-placement-old-rows`, uncalled since and
+    kept pinned at the close's review, `notes/Phase41e.md` *Decisions made*) nor
+    `_subfamily_of_rigidOn_linking`. `case_II_placement_eq612`, dead and unmeetable in Cases II and
+    III, was deleted under the deletion gate.
 
 **RELABEL's recon** (2026-10-29; Claude Opus 5.5, design pass, at `e51acb76`; landed as 41d's
 B1–B3, and compressed at 41d's close to a cited verdict, the full arc in git up to `8ea9f2b1`).
@@ -924,130 +684,45 @@ Estimate 6–9 commits, the open and the close included; landed in 7 (the open `
 Its *For the PI* went to the PI, whose answers are §1i.
 
 **Item R's recon** (41d's item R; 2026-10-29; Claude Opus 5.5, read-only, at `953367f0`; the PI's
-§1i.3). Evidence: `notes/reconcile-formal/ReductionWitness.lean` (`lake lean`: no errors or
-warnings, its six `#print axioms` the three standard axioms; `#lint` on a copy: no errors in 15
-declarations). It proves with no `sorry` each lemma below under the weaker hypothesis, the
-principle without `hfresh` and U4 without `hfresh`; names are the witness's, in
-`Graph.Recon41Reduction`, a primed name being the landed declaration under `e₀ ∉ E(G − v)`. Line
-numbers are at `953367f0`, files under `Molecular/Induction/`.
-
-*The premise, re-read.* The principle (`ForestSurgery/Reduction.lean:578`) has no caller (`:289`
-and `:654` are docstrings) and calls one lemma that takes the label, `splitOff_isMinimalKDof`
-(`:151`, KT Lemma 4.8(i)), at the `e₀` that `hfresh` gives (`:624`). That lemma uses only the upper
-bound of `dof_tracking` (`:183–185`), and `edgeSet_mulTilde_splitOff_diff_fiber`,
-`circuit_splitOff_meets_fiber` and `removeVertex_le_splitOff`. `splitOff_isMinimalKDof_of_pos`
-(`:1711`, KT Lemma 4.8(ii)) is off this path: Case II calls it (`CaseII.lean:427`). The formal
-`G.splitOff v a b e₀` (`Operations.lean:620`) deletes every edge labelled `e₀` and adds `ab` as
-`e₀`, so it is `G_v^{ab}` exactly when `e₀ ∉ E(G − v)`, as `fmlnote:graph-operations` says. When
-`eₐ` and `e_b` are the only edges at `v`, that is `e₀ ∉ E(G)` or `e₀ ∈ {eₐ, e_b}`
-(`notMem_edgeSet_removeVertex_iff`), so the label `eₐ` is always admissible. Katoh and Tanigawa
-note that `G_v^{ab}` is isomorphic to `G` with `va` or `vb` contracted (p. 660); contracting `vb`
-keeps the label `eₐ` on the edge `ab`, which gives `G.splitOff v a b eₐ`.
-
-*Sub-question 1: each use of `e₀ ∉ E(G)`, read from the bodies.*
-- `removeVertex_le_splitOff` (`Operations.lean:702`): one use (`:712`), that a link of `G − v` is
-  not `e₀`. **GO**, one line (`removeVertex_le_splitOff'`).
-- `edgeSet_mulTilde_splitOff_diff_fiber` (`ForestSurgery/EdgeSplitting.lean:98`): two uses
-  (`:112–113`), the same fact for a link whose ends differ from `v`. **GO**, one line each.
-- `circuit_splitOff_meets_fiber` (`Reduction.lean:66`): it only passes the hypothesis to the two
-  above (`:80`, `:83`). **GO**.
-- `dof_tracking` (`SplitOffDeficiency.lean:579`). Its upper bound `splitOff_deficiency_le`
-  (`:165`) is the private `splitOff_deficiency_le_aux` (`:49`), which already takes
-  `e₀ ∉ E(G) ∨ e₀ = eₐ` and uses it once, in `he₀cross` (`:83–89`, "`e₀` crosses no part"). That
-  is false at `e₀ = e_b`, but the proof needs only that no crossing edge other than `e_b` is `e₀`.
-  This holds under `e₀ ∉ E(G − v)`, as such an edge avoids `v` (the argument of `:113–130`).
-  **GO**, about 20 lines (`splitOff_deficiency_le'`). Its lower bound `splitOff_deficiency_ge`
-  (`:286`) uses `eₐ, e_b ≠ e₀` (`:307–308`) only to show that `eₐ` and `e_b` are not edges of
-  `G_v^{ab}` (`:310–323`). The proof needs only that an edge of `G_v^{ab}` other than `e₀` is
-  neither of them, which holds for every `e₀`. So the lower bound **asks nothing of `e₀`**
-  (`splitOff_deficiency_ge'`, about 25 lines), and `dof_tracking'` follows. The principle needs
-  neither.
-- `splitOff_isMinimalKDof` (`Reduction.lean:151`): it passes the hypothesis to the four above
-  (`:183`, `:194`, `:208`, `:215`), and its count over a base missing `ẽ` (`:228–283`) reads
-  `edgeSet_splitOff` and never uses it. **GO** (`splitOff_isMinimalKDof'`, which calls the upper
-  bound directly). Then `eₐ ≠ e_b`, which only the lower bound used, is unused and is dropped.
-- `splitOff_isMinimalKDof_of_pos` (`:1711`): **NO-GO as a local change, and not needed.** Its
-  forest surgery (KT Lemmas 4.1 and 4.2) uses the full hypothesis at steps that fail under the
-  weaker one: `hr_notin` (`:1128–1132`, that no copy of `ab` lies in a forest of `G̃`); `hhe₀K`
-  (`:1847–1848`, `e₀ ∉ E(K)` for a `K` that contains `v`); and `eₐ, e_b ≠ e₀` in
-  `splitOff_reroute_packing` (`EdgeSplitting.lean:776–777`, used at `:846–847`, `:964–966` and
-  `:1188–1190`). Recycling there is route A's algebraic half (Case II at `k > 0`), which §1i left
-  out.
-
-*Sub-question 2: `hsplit` restated.* In each form below `hfresh` is gone.
-- **(b)** `(∀ e₀, e₀ ∉ E(G − v) → P (G.splitOff v a b e₀)) → P G` (`minimal_kdof_reduction'`;
-  `hsplit` no longer binds `e₀`): `P` holds at every formal `G_v^{ab}`. This form implies the
-  landed principle: the landed hypotheses, `hfresh` among them, give its `hsplit`
-  (`minimal_kdof_reduction_of'`). So it is a strict strengthening. It also implies (a).
-- **(a)** `e₀ ∉ E(G − v) → P (G.splitOff v a b e₀) → P G`
-  (`minimal_kdof_reduction_of_one_label`): `P` holds at one formal `G_v^{ab}`. This is not a
-  strengthening of the landed statement, as its `hsplit` must also handle the recycled labels,
-  which the landed one never meets.
-- `e₀ ∈ {eₐ, e_b} ∨ e₀ ∉ E(G)` is the same condition as `e₀ ∉ E(G − v)` here. The latter is
-  `fmlnote:graph-operations`' own condition, so it is the one to state.
-
-The proof is the landed one: it calls `hsplit` at the two edges at `v`, with the induction
-hypothesis at each admissible label (`splitOff_isMinimalKDof'`, on one vertex fewer).
-Faithfulness: Katoh and Tanigawa state Theorem 4.9 as the sequence (p. 666). Its induction is the
-blueprint's (ii), whose clause (b), "`P(G_v^{ab})` implies `P(G)`", names `G_v^{ab}` with no label,
-and form (b) asks `P` of each formal `G_v^{ab}`. So `thm:minimal-kdof-reduction`'s statement stays
-as it is, and its fmlnote no longer mentions the supply. **GO**, form (b) recommended.
-
-*Sub-question 3: U4.* `minimal_kdof_reduction_sequence` drops `hfresh`, and the split clause of
-`KTReductionStep` asks `e₀ ∉ E(G − v)` (the formal `G_v^{ab}`) instead of a fresh label. The proof
-is form (b) at `e₀ = eₐ`; the witness's last section is `UnstatedWitness.lean`'s proof with a few
-lines changed. Under the landed principle a graph that uses every label has no split step, which is
-why U4 carried `hfresh`. U4 stays one commit if R's build lands first; if U4 landed first, its
-statement would change twice. If the PI keeps `hfresh`, U4 stays as planned.
-
-*A transport, against the arc's claim.* Route B's pullback cannot reach the principle. `P` is any
-predicate on `Graph α β`, and at `β ⊕ Fin N` the new edge of a split-off carries a label outside
-`β`, where no pullback evaluates `P`. Letting `P` range over label types would turn the theorem
-into a family, which is not KT's theorem. A relabelling **inside the step** does reach it, since it
-transports `splitOff_isMinimalKDof`, not `P`. At `Option β`, the label `none` is fresh for
-`G.embedEdges some`, the landed lemma gives minimality there, and
-`(G.splitOff v a b eₐ).embedEdges σ = (G.embedEdges some).splitOff v a b none` for the embedding
-`σ` that sends `eₐ` to `none`. It needs minimality reflected along `embedEdges` (T5's converse),
-the absence of proper rigid subgraphs carried to `G.embedEdges some`, and that equality: about
-120–150 new lines, **not compiled**, against route A's roughly 100, all compiled. Its one merit is
-that no internal statement changes. Not recommended.
-
-*Which statements change* (route A, form (b)):
-- `minimal_kdof_reduction`: `hfresh` dropped, `hsplit` as (b).
-- `splitOff_isMinimalKDof` (`lem:reduction-step`'s pin): `e₀ ∉ E(G − v)`, and `eₐ ≠ e_b`
-  dropped. `chainData_extract` (`ChainExtraction.lean:1284`) adapts its call.
-- `circuit_splitOff_meets_fiber`: `e₀ ∉ E(G − v)`; its one caller is the lemma above.
-- `splitOff_deficiency_le` (`lem:splitoff-deficiency`'s pin): `e₀ ∉ E(G − v)`. Its callers
-  (`Reduction.lean:1466`, `:1534` and `dof_tracking`) pass `e₀ ∉ E(G)` through a one-line helper.
-
-All four are strengthenings. Added: the helper (`notMem_edgeSet_removeVertex`) and the weaker forms
-of `removeVertex_le_splitOff` and `edgeSet_mulTilde_splitOff_diff_fiber`. The landed forms keep
-their statements: the first has five callers in `CaseIII/Realization.lean`, two in `link_le_tac`
-(`PanelHinge.lean:320–321`) and two in the `k > 0` surgery, the second four in that surgery. No
-file of `AlgebraicInduction/` is edited, and the rebuild runs from `Operations.lean` through the
-molecular chain. The blueprint changes at four nodes: `thm:minimal-kdof-reduction`'s fmlnote;
-`rem:fresh-edge-supply`'s list, which loses the principle; `lem:splitoff-edge-substitution` (the
-new pin under the additive-successor gate, and its fmlnote); and `lem:splitoff-deficiency-reuse`'s
-fmlnote. `formalization.yaml`'s KT Theorem 4.9 row (`alignment`) names no label condition, today
-or after. Optional and not needed: `splitOff_deficiency_ge` without `he₀`, and `dof_tracking` under
-`e₀ ∉ E(G − v)` (both compiled), which would be two more strengthenings.
-
-*Estimate.* **1 commit**: the witness transcribed, about 100 Lean lines changed or added in five
-files, the blueprint nodes above and one full build. Placed in UNSTATED before U4, it lets U4
-state KT Theorem 4.9 (i) with nothing assumed of the labels, and UNSTATED's 15–21 commits become
-**16–22**. As its own sub-phase, with an open and a close, it is 3 commits.
-
-*For the PI.* `minimal_kdof_reduction` (the induction principle of KT Theorem 4.9; not a main
-result, and nothing calls it) can drop `hfresh` in one commit. The chain it calls holds when the
-new edge of `G_v^{ab}` reuses the label of an edge at `v`: the hypothesis becomes
-`e₀ ∉ E(G − v)`, exactly the labels at which the formal splitting off is `G_v^{ab}`. Five lemmas
-are re-proved and four statements strengthened, none in the algebraic induction's files, and the
-witness proves it all. The principle's split case would be given `P` at `G_v^{ab}` for every such
-label, a strict strengthening of today's statement, and U4 (KT Theorem 4.9 (i), in UNSTATED) would
-assume nothing of the labels. The questions: drop it (recommended), placed in UNSTATED before U4?
-Give `hsplit` `P` at every admissible label (recommended, a strengthening) or at one (a weaker
-theorem, at the same cost)? Or keep `hfresh` (no cost, and U4 as planned)? **Answered** (§1j.1):
-dropped, `hsplit` given `P` at every admissible label, in 41e before U4.
+§1i.3; landed as 41e's item R, `836bb645`, and compressed at 41e's close to a cited verdict, the
+full arc in git up to `1ff52359`). Evidence: `notes/reconcile-formal/ReductionWitness.lean` (`lake
+lean`: no errors or warnings, its six `#print axioms` the three standard axioms; `#lint` on a copy:
+no errors in 15 declarations), in `Graph.Recon41Reduction`, a primed name being the landed
+declaration under `e₀ ∉ E(G − v)`. **Verdict: route A's combinatorial half holds; one commit.** The
+principle `minimal_kdof_reduction` had no caller and called one lemma that takes the label,
+`splitOff_isMinimalKDof` (KT Lemma 4.8(i)). The formal `G.splitOff v a b e₀` deletes every edge
+labelled `e₀` and adds `ab` as `e₀`, so it is `G_v^{ab}` exactly when `e₀ ∉ E(G − v)`
+(`fmlnote:graph-operations`); as `eₐ` and `e_b` are the only edges at `v`, the label `eₐ` is always
+admissible (KT p. 660: `G_v^{ab}` is isomorphic to `G` with `vb` contracted, which keeps `eₐ` on
+`ab`).
+- *Sub-question 1, each use of `e₀ ∉ E(G)`, read from the bodies.* `removeVertex_le_splitOff`,
+  `edgeSet_mulTilde_splitOff_diff_fiber` and `circuit_splitOff_meets_fiber` need only that a link
+  avoiding `v` is not `e₀`: **GO**, one line each. The upper bound `splitOff_deficiency_le` of
+  `dof_tracking` needs only that no crossing edge other than `e_b` is `e₀`: **GO**, about 20 lines;
+  its lower bound asks nothing of `e₀`. `splitOff_isMinimalKDof` passes the hypothesis on: **GO**,
+  and `eₐ ≠ e_b` is then unused. `splitOff_isMinimalKDof_of_pos` (KT Lemma 4.8(ii), Case II's):
+  **NO-GO** as a local change, and not needed; its forest surgery uses the full hypothesis, route
+  A's algebraic half, which §1i left out.
+- *Sub-question 2, `hsplit` without `hfresh`.* **Form (b)**,
+  `(∀ e₀, e₀ ∉ E(G − v) → P (G.splitOff v a b e₀)) → P G`, gives `P` at every formal `G_v^{ab}` and
+  implies the landed principle (`minimal_kdof_reduction_of'`), a strict strengthening:
+  recommended. **Form (a)**, `P` at one admissible label, is not a strengthening. Faithful: KT state
+  Theorem 4.9 as the sequence (p. 666), and the blueprint's clause (b) names `G_v^{ab}` with no
+  label, so `thm:minimal-kdof-reduction`'s statement stays.
+- *Sub-question 3, U4.* It drops `hfresh`, its split step asking `e₀ ∉ E(G − v)`; under the landed
+  principle a graph that uses every label has no split step, which is why U4 carried `hfresh`.
+- *Not recommended:* a relabelling inside the step (at `Option β`), which reaches the principle with
+  no statement change, about 120–150 uncompiled lines; route B's pullback cannot reach it, as `P` is
+  a predicate on `Graph α β`.
+- *Statements changed* (route A, form (b)): `minimal_kdof_reduction`, `splitOff_isMinimalKDof`,
+  `circuit_splitOff_meets_fiber` and `splitOff_deficiency_le`, all strengthenings, with a helper
+  (`notMem_edgeSet_removeVertex`) and weaker forms of `removeVertex_le_splitOff` and
+  `edgeSet_mulTilde_splitOff_diff_fiber`, whose landed forms keep their callers; no file of
+  `AlgebraicInduction/` edited; four blueprint nodes. Estimate 1 commit, before U4.
+- *For the PI.* Drop `hfresh` (recommended), with `hsplit` given `P` at every admissible label
+  (recommended, a strengthening) or at one (a weaker theorem, at the same cost); or keep it (no
+  cost, U4 as planned). **Answered** (§1j.1): dropped, `hsplit` given `P` at every admissible label,
+  in 41e before U4.
 
 ## 3. Sub-phases, by code
 

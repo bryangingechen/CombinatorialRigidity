@@ -273,48 +273,30 @@ this form.
   $q_0(v) = n_a + n_b$ and $q_0(w) = q(w)$ for every body $w \neq v$,
   and let $(G, q_0)$ be the panel-hinge framework on $G$ with these
   normals. As $C$ is bilinear and $C(n,n) = 0$
-  (\cref{def:panel-support-extensor}),
-  \[
-    C(n_a + n_b,\, n_b) \;=\; C(n_a, n_b),
-    \qquad
-    C(n_a + n_b,\, n_a) \;=\; -C(n_a, n_b).
-  \]
-  So, up to sign, the edges $vb$ and $va$ of $(G, q_0)$ have the hinge
-  $C = C(n_a, n_b)$ of the edge $ab$ of $(G_v^{ab}, q)$, and it is
-  nonzero. Replacing the normal of $v$ in $(G_v^{ab}, q)$ by
-  $n_a + n_b$ changes no hinge, as $v$ lies on no edge of $G_v^{ab}$
-  (\cref{lem:with-normal-preserves}). So each edge of $G_v$ has the same
-  hinge in $(G, q_0)$ as in $(G_v^{ab}, q)$, and this hinge is nonzero
-  (\cref{lem:general-position-support-nonzero}).
+  (\cref{def:panel-support-extensor}), the edges $vb$ and $va$ of
+  $(G, q_0)$ have, up to sign, the hinge $C(n_a, n_b)$ of the edge $ab$
+  of $(G_v^{ab}, q)$. Every other edge of $G$ is an edge of $G_v$, and
+  so of $G_v^{ab}$ (\cref{lem:splitoff-edge-substitution}). Its ends
+  differ from $v$, so it has the same hinge in both frameworks, up to
+  sign.
 
   We now count rows as Katoh and Tanigawa do, with a row operation in
-  place of their column operation, as in the proof of
-  \cref{lem:case-II-realization-placement} with $t = 1$. Let $r_1, \dots, r_{D-1}$ be a basis
-  of the linear forms on the screws that vanish on $C$
-  (\cref{def:hinge-row-block}). As the hinges of $vb$, $va$ and $ab$
-  agree up to sign, we may take this basis for all three. Up to sign,
-  the rows of $R(G, q_0)$ at $vb$ and at $va$ are the forms
-  $S \mapsto r_i(S(v) - S(b))$ and $S \mapsto r_i(S(v) - S(a))$. The
-  rows of $R(G_v^{ab}, q)$ at $ab$ are their differences:
-  \[
-    r_i\bigl(S(a) - S(b)\bigr) \;=\;
-      r_i\bigl(S(v) - S(b)\bigr) - r_i\bigl(S(v) - S(a)\bigr).
-  \]
-  The rows of $R(G_v^{ab}, q)$ at the other edges are, up to sign, rows
-  of $R(G, q_0)$. So every row of $R(G_v^{ab}, q)$ lies in the row space
-  of $R(G, q_0)$.
-
-  Choose $D(|V(G)| - 2) - (k - 1)$ linearly independent rows of
-  $R(G_v^{ab}, q)$. As no edge of $G_v^{ab}$ has $v$ as an end, they
-  vanish on every screw assignment that is zero at the bodies other
-  than $v$. On these assignments the rows of $vb$ are, up to sign, the
-  forms $S \mapsto r_i(S(v))$, which are linearly independent. By
-  \cref{lem:rigidityRows-pinned-placement-rank-add},
+  place of their column operation. The hinges of $(G_v^{ab}, q)$ are
+  nondegenerate, as its normals are in general position
+  (\cref{lem:general-position-support-nonzero}). So the count of
+  \cref{lem:case-II-realization-placement}, with $t = 1$ and
+  $N = D(|V(G)| - 2) - (k - 1)$, shows that the hinges of $(G, q_0)$
+  are nondegenerate and that
   \[
     \operatorname{rank} R(G, q_0) \;\ge\;
       (D - 1) + D\bigl(|V(G)| - 2\bigr) - (k - 1)
     \;=\; D\bigl(|V(G)| - 1\bigr) - k.
   \]
+  Its proof places every row of $R(G_v^{ab}, q)$ in the row space of
+  $R(G, q_0)$, a row at $ab$ being the difference of a row at $vb$ and
+  a row at $va$, and adds $D - 1$ rows at $vb$. These are linearly
+  independent on the screw assignments that vanish off $v$, where the
+  rows of $R(G_v^{ab}, q)$ vanish.
   For $k = 0$, the graph $G_v^{ab}$ would be a minimal $0$-dof-graph,
   and the same count would give one row less than the target rank (KT
   p.~680).

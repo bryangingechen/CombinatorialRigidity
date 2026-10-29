@@ -55,7 +55,8 @@ of normals or of hinge points has nondegenerate hinges. It attains the
 largest ranks over the assignments whose hinges are nondegenerate, as
 Jackson and Jord\'an's are. For hinge points these assignments are
 their realizations, so a generic hinge-point assignment is generic in
-their sense. The panel, body-bar and body-hinge sections each compare
+their sense (\cref{lem:generic-hinge-points-max-rank}, where loops are
+allowed). The panel, body-bar and body-hinge sections each compare
 the two notions.
 
 \Cref{sec:generic-lift-abundance} shows that the placements that are
@@ -1005,13 +1006,20 @@ zero set of a nonzero polynomial
 generic choices exist.
 
 Our main result is Jackson and Jord\'an's rank formula, KT
-Proposition~2.3 (\cref{prop:rigidity-matrix-prop11}), at every generic
-hinge-point assignment of a multigraph, with parallel edges and
-loops allowed (\cref{thm:bodyhinge-generic-rank}). Jackson and Jord\'an
-prove the formula for every multigraph (their Theorem~6.1). Our proof
-starts from the realization that KT Theorem~5.6 gives for every
-multigraph (\cref{thm:theorem-55-6-multigraph}). At deficiency zero the formula gives the
-theorem of Tay and Whiteley at every generic hinge-point assignment
+Proposition~2.3 (\cref{prop:rigidity-matrix-prop11}), for every
+multigraph, with parallel edges and loops allowed. We prove it first at
+every hinge-point assignment that is generic for row independence
+(\cref{thm:bodyhinge-generic-rank}), and then at every realization
+that is generic in the sense of Jackson and Jord\'an and of Katoh and
+Tanigawa, with the largest ranks over all realizations
+(\cref{def:dof-generic}, \cref{cor:dof-generic-realization}). An assignment that is generic for
+row independence is generic in their sense
+(\cref{lem:generic-hinge-points-max-rank}). Jackson and
+Jord\'an prove the formula for every multigraph (their Theorem~6.1).
+Our proof starts from the realization that KT Theorem~5.6 gives for
+every multigraph (\cref{thm:theorem-55-6-multigraph}). At deficiency
+zero the formula gives the theorem of Tay and Whiteley at every generic
+hinge-point assignment, in either sense
 (\cref{cor:bodyhinge-generic-tree-packing}).
 
 For one hinge-point assignment at the target rank
@@ -1515,6 +1523,38 @@ in every dimension, by comparing the rows.
   $\operatorname{rank} R(G,q) \ge D(|V|-1) - \operatorname{def}(\tilde G)$.
 \end{proof}
 
+\begin{corollary}[A generic realization has $\operatorname{def}(\tilde G)$ degrees of freedom]
+  \label{cor:dof-generic-realization}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_span_rigidityRows_ofHinge_of_isMaxRankHingePoints,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.dof_ofHinge_of_isMaxRankHingePoints}
+  \leanok
+  \uses{def:dof-generic, def:D-deficiency, thm:bodyhinge-generic-rank,
+    lem:generic-hinge-points-max-rank, lem:relative-deficiency-rank-bound}
+  Let $d \ge 2$, let $K$ be an infinite field, and let $G = (V, E)$ be
+  a multigraph, with parallel edges and loops allowed, with $V$ finite
+  and nonempty. Let $q$ be a hinge-point assignment of $G$ that is
+  generic in the sense of \cref{def:dof-generic}. Then
+  $\operatorname{rank} R(G,q) = D(|V|-1) - \operatorname{def}(\tilde G)$.
+  So $(G,q)$ has $\operatorname{def}(\tilde G)$ degrees of freedom.
+\end{corollary}
+\begin{proof}
+  \leanok
+  \uses{thm:bodyhinge-generic-rank, lem:generic-hinge-points-max-rank,
+    lem:relative-deficiency-rank-bound}
+  Some $q_0$ is generic for row independence
+  (\cref{lem:exists-generic-hinge-points}), so by
+  \cref{thm:bodyhinge-generic-rank},
+  $\operatorname{rank} R(G,q_0) = D(|V|-1) - \operatorname{def}(\tilde G)$.
+  The hinges of $q_0$ at the links between distinct bodies are
+  nondegenerate, so $q_0$ is a realization
+  (\cref{lem:generic-hinge-points-nondegenerate}). As $q$ is generic in
+  the sense of \cref{def:dof-generic}, the rank of $R(G,q)$ is at least
+  that of $R(G,q_0)$. It is at most
+  $D(|V|-1) - \operatorname{def}(\tilde G)$ by
+  \cref{lem:relative-deficiency-rank-bound}, as the hinges of $q$ at
+  the links between distinct bodies are nondegenerate.
+\end{proof}
+
 \begin{proposition}[KT Proposition 2.3]
   \label{prop:rigidity-matrix-prop11}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.tfae_finrank_span_rigidityRows_ofHinge_deficiency_of_isMaxRankHingePoints,
@@ -1551,38 +1591,6 @@ in every dimension, by comparing the rows.
   independence is generic in this sense
   (\cref{lem:generic-hinge-points-max-rank}), and
   \cref{thm:bodyhinge-generic-rank} gives the formula there directly.
-\end{proof}
-
-\begin{corollary}[A generic realization has $\operatorname{def}(\tilde G)$ degrees of freedom]
-  \label{cor:dof-generic-realization}
-  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_span_rigidityRows_ofHinge_of_isMaxRankHingePoints,
-    CombinatorialRigidity.Molecular.BodyHingeFramework.dof_ofHinge_of_isMaxRankHingePoints}
-  \leanok
-  \uses{def:dof-generic, def:D-deficiency, thm:bodyhinge-generic-rank,
-    lem:generic-hinge-points-max-rank, lem:relative-deficiency-rank-bound}
-  Let $d \ge 2$, let $K$ be an infinite field, and let $G = (V, E)$ be
-  a multigraph, with parallel edges and loops allowed, with $V$ finite
-  and nonempty. Let $q$ be a hinge-point assignment of $G$ that is
-  generic in the sense of \cref{def:dof-generic}. Then
-  $\operatorname{rank} R(G,q) = D(|V|-1) - \operatorname{def}(\tilde G)$.
-  So $(G,q)$ has $\operatorname{def}(\tilde G)$ degrees of freedom.
-\end{corollary}
-\begin{proof}
-  \leanok
-  \uses{thm:bodyhinge-generic-rank, lem:generic-hinge-points-max-rank,
-    lem:relative-deficiency-rank-bound}
-  Some $q_0$ is generic for row independence
-  (\cref{lem:exists-generic-hinge-points}), so by
-  \cref{thm:bodyhinge-generic-rank},
-  $\operatorname{rank} R(G,q_0) = D(|V|-1) - \operatorname{def}(\tilde G)$.
-  The hinges of $q_0$ at the links between distinct bodies are
-  nondegenerate, so $q_0$ is a realization
-  (\cref{lem:generic-hinge-points-nondegenerate}). As $q$ is generic in
-  the sense of \cref{def:dof-generic}, the rank of $R(G,q)$ is at least
-  that of $R(G,q_0)$. It is at most
-  $D(|V|-1) - \operatorname{def}(\tilde G)$ by
-  \cref{lem:relative-deficiency-rank-bound}, as the hinges of $q$ at
-  the links between distinct bodies are nondegenerate.
 \end{proof}
 
 \begin{corollary}[Every generic body-and-hinge realization of a
@@ -1663,8 +1671,9 @@ in every dimension, by comparing the rows.
 \end{proof}
 
 \begin{fmlnote}
-  The formalization states \cref{prop:rigidity-matrix-prop11} and the
-  two corollaries above twice: first at the assignments that are
+  The formalization states \cref{prop:rigidity-matrix-prop11},
+  \cref{cor:bodyhinge-generic-rigid} and
+  \cref{cor:bodyhinge-generic-tree-packing} twice: first at the assignments that are
   generic in the sense of \cref{def:dof-generic}, Katoh and Tanigawa's,
   then at those that are generic for row independence. The
   proposition's second form follows from its first
