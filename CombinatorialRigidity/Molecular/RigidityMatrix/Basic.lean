@@ -9,6 +9,7 @@ public import Mathlib.Combinatorics.Graph.Basic
 public import Mathlib.Combinatorics.Graph.Delete
 public import Mathlib.LinearAlgebra.Dual.Lemmas
 public import Mathlib.LinearAlgebra.Matrix.Rank
+public import Matroid.Graph.Forest
 public import CombinatorialRigidity.Mathlib.Algebra.MvPolynomial.Funext
 public import CombinatorialRigidity.Mathlib.LinearAlgebra.Dimension.Constructions
 public import CombinatorialRigidity.Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
@@ -29,9 +30,10 @@ dimension is written `d = k + 1`, so that the screw space is `⋀^k K^(k+2)`, of
 * the hinge constraint `S u − S v ∈ span C(e)` and its form as `D − 1` linear equations
   (`def:hinge-constraint`, `def:hinge-row-block`);
 * the rows of `R(G,p)` and the infinitesimal motions, the space on which all the rows vanish
-  (`def:rigidity-matrix`); the independence of the rows of an edge, and of the rows of edges with
-  ends of their own (`lem:edge-rows-independent`, `lem:own-end-rows-independent`); and the row space
-  as the forms that vanish on the motions (`lem:span-rigidityRows-eq-of-motions-eq`);
+  (`def:rigidity-matrix`); the independence of the rows of an edge, of the rows of edges with ends
+  of their own, and of the rows of a forest (`lem:edge-rows-independent`,
+  `lem:own-end-rows-independent`, `lem:forest-rows-independent`); and the row space as the forms
+  that vanish on the motions (`lem:span-rigidityRows-eq-of-motions-eq`);
 * the trivial motions and the bound `rank R(G,p) ≤ D(|V| − 1)` (`def:trivial-motions-rigid`,
   `lem:trivial-motions-rank-bound`); KT Lemmas 5.1 and 5.3 (`lem:rank-delete-vertex`,
   `lem:rank-parallel-full`); and the comparison of two frameworks whose hinges have nested spans
@@ -1241,6 +1243,88 @@ theorem exists_independent_rigidityRows_of_starForest (F : BodyHingeFramework K 
   refine ⟨fun p => hingeRow (u p.1) (other p.1) (c p.1 p.2),
     linearIndependent_hingeRow_starForest hu hsep hc, fun p => ?_⟩
   exact ⟨e p.1, u p.1, other p.1, hlink p.1, c p.1 p.2, hmem p.1 p.2, rfl⟩
+
+/-- **The rows of a forest of nondegenerate hinges are independent**
+(`lem:forest-rows-independent`). Let `T ≤ F.graph` be a forest (`Graph.IsForest`) with
+`F.supportExtensor e ≠ 0` at each edge `e` of `T`, the edge labels being finite. Then there is a
+linearly independent family of members of `F.rigidityRows` indexed by
+`Σ _ : T.edgeSet, Fin (screwDim k − 1)`, `D − 1` rows per edge. Unlike
+`exists_independent_rigidityRows_of_starForest`, no edge needs an end of its own: a path with three
+edges is a forest.
+
+The proof is by induction on the number of edges, for rows at the links of `T` itself. A forest
+with an edge has a pendant edge `e` at a body `x` (`Graph.IsForest.exists_isPendant`), and `T` less
+`e` is a forest (`Graph.IsForest.anti`) none of whose edges is at `x`. Its rows vanish on the screw
+assignments supported at `x`, where the `D − 1` rows `hingeRow x y (c i)` of `e`, for a basis `c` of
+its hinge-row block (`finrank_hingeRowBlock`), read `c`; so `linearIndependent_sum_pinned_block`
+makes the two families jointly independent, and they are the rows of `T` reindexed. -/
+theorem exists_independent_rigidityRows_of_isForest [Finite β] (F : BodyHingeFramework K k α β)
+    {T : Graph α β} (hT : T.IsForest) (hTF : T ≤ F.graph)
+    (he : ∀ e ∈ T.edgeSet, F.supportExtensor e ≠ 0) :
+    ∃ r : (Σ _ : T.edgeSet, Fin (screwDim k - 1)) → Module.Dual K (α → ScrewSpace K k),
+      LinearIndependent K r ∧ ∀ p, r p ∈ F.rigidityRows := by
+  classical
+  have : FiniteDimensional K (ScrewSpace K k) := inferInstance
+  -- The stronger claim, by induction on the number of edges: each row is one of a link of `T`.
+  suffices key : ∀ (n : ℕ) (T : Graph α β), T.IsForest → T.edgeSet.ncard = n →
+      (∀ e ∈ T.edgeSet, F.supportExtensor e ≠ 0) →
+      ∃ r : (Σ _ : T.edgeSet, Fin (screwDim k - 1)) → Module.Dual K (α → ScrewSpace K k),
+        LinearIndependent K r ∧
+          ∀ p, ∃ u v, T.IsLink p.1 u v ∧ ∃ ρ ∈ F.hingeRowBlock p.1, r p = hingeRow u v ρ by
+    obtain ⟨r, hr, hmem⟩ := key _ T hT rfl he
+    refine ⟨r, hr, fun p => ?_⟩
+    obtain ⟨u, v, hl, ρ, hρ, hp⟩ := hmem p
+    exact ⟨p.1, u, v, hl.of_le hTF, ρ, hρ, hp⟩
+  intro n
+  induction n with
+  | zero =>
+    intro T _ hn _
+    have hE : T.edgeSet = ∅ := (Set.ncard_eq_zero T.edgeSet.toFinite).1 hn
+    have : IsEmpty (Σ _ : T.edgeSet, Fin (screwDim k - 1)) :=
+      ⟨fun p => by simpa [hE] using p.1.2⟩
+    exact ⟨isEmptyElim, linearIndependent_empty_type, isEmptyElim⟩
+  | succ n ih =>
+    intro T hT hn he
+    have : T.EdgeFinite := ⟨T.edgeSet.toFinite⟩
+    obtain ⟨e, x, hpend⟩ := hT.exists_isPendant (Set.nonempty_of_ncard_ne_zero (by omega))
+    obtain ⟨y, hyx, hxy⟩ := hpend.isNonloopAt
+    have heT := hpend.edge_mem
+    -- `T` less its pendant edge `e`: a forest with `n` edges, none of them at `x`.
+    have hn' : (T.deleteEdges {e}).edgeSet.ncard = n := by
+      rw [Graph.edgeSet_deleteEdges, Set.ncard_sdiff_singleton_of_mem heT]; omega
+    obtain ⟨r', hr', hmem'⟩ := ih (T.deleteEdges {e}) (hT.anti Graph.deleteEdges_le) hn'
+      fun f hf => he f hf.1
+    obtain ⟨c, hc, hcmem⟩ := (F.hingeRowBlock e).exists_linearIndependent_fin_of_finrank_eq
+      (F.finrank_hingeRowBlock (he e heT))
+    -- The old rows vanish on the assignments supported at `x`; `e`'s rows read `c` there.
+    have hold : ∀ (p : Σ _ : (T.deleteEdges {e}).edgeSet, Fin (screwDim k - 1))
+        (s : ScrewSpace K k), r' p (Function.update (0 : α → ScrewSpace K k) x s) = 0 := by
+      intro p s
+      obtain ⟨u, v, hl, ρ, -, hp⟩ := hmem' p
+      have hl := hl.of_le Graph.deleteEdges_le
+      have hu : u ≠ x := fun h => p.1.2.2 (hpend.edge_unique (h ▸ hl.inc_left))
+      have hv : v ≠ x := fun h => p.1.2.2 (hpend.edge_unique (h ▸ hl.inc_right))
+      simp [hp, hu, hv]
+    have hnew : LinearIndependent K fun i => (hingeRow (k := k) x y (c i)).comp
+        (LinearMap.single K (fun _ : α => ScrewSpace K k) x) := by
+      convert hc using 1
+      ext i s
+      simp [hingeRow_apply, hyx]
+    have hjoint := linearIndependent_sum_pinned_block hold hnew hr'
+    -- Reindex: the edges of `T` are `e` and those of `T` less `e`.
+    let σ : (Σ _ : T.edgeSet, Fin (screwDim k - 1)) →
+        Fin (screwDim k - 1) ⊕ (Σ _ : (T.deleteEdges {e}).edgeSet, Fin (screwDim k - 1)) :=
+      fun p => if h : p.1.1 = e then .inl p.2 else .inr ⟨⟨p.1.1, p.1.2, h⟩, p.2⟩
+    have hσ : Function.Injective σ := by
+      rintro ⟨⟨f, hf⟩, i⟩ ⟨⟨g, hg⟩, j⟩ h
+      by_cases hfe : f = e <;> by_cases hge : g = e <;> simp_all [σ, Subtype.ext_iff]
+    refine ⟨Sum.elim (fun i => hingeRow x y (c i)) r' ∘ σ, hjoint.comp σ hσ, ?_⟩
+    rintro ⟨⟨f, hf⟩, i⟩
+    by_cases hfe : f = e
+    · subst hfe
+      exact ⟨x, y, hxy, c i, hcmem i, by simp [σ]⟩
+    · obtain ⟨u, v, hl, ρ, hρ, hp⟩ := hmem' ⟨⟨f, hf, hfe⟩, i⟩
+      exact ⟨u, v, hl.of_le Graph.deleteEdges_le, ρ, hρ, by simp [σ, hfe, hp]⟩
 
 /-! ## Trivial motions, rigidity and the rank lemmas (KT §§2.3–2.4 and 5)
 

@@ -6,11 +6,11 @@ last, so its close closes Phase 41 and the RECONCILE program. The phase's design
 `notes/Phase41-design.md`; the recon's Lean witnesses are
 `notes/reconcile-formal/UnstatedWitness.lean` and, for item R and U4,
 `notes/reconcile-formal/ReductionWitness.lean`. Fourteen build items, a recon, a spike and the
-close (planned 17–23 commits, the open included); U1–U7 and R have landed. Next: U8.
+close (planned 17–23 commits, the open included); U1–U8 and R have landed. Next: U9.
 
 ## Current state
 
-**The next concrete commit is U8** (*Hand-off*); U1–U7 and R have landed. Each claim of the full
+**The next concrete commit is U9** (*Hand-off*); U1–U8 and R have landed. Each claim of the full
 list (§1h.1) gets a declaration and a pin: S22–S25, S31, S3, S16, S19, G5's three
 (`def:blockingWitness`, `def:dof-generic`, the Plücker expansion) and `F-061`'s forest lemma, with
 §4(a). The PI also took, at the open (§1j): item R's build, which drops `hfresh` from KT Theorem
@@ -186,16 +186,15 @@ ScrewSpace carrier). Witness names are in `ReconUnstated` (`UnstatedWitness.lean
   `RigidityMatrix/Basic.lean`, the file of `rigidityRows`. In `Theorem55.lean`, two
   `have hloop : G.Loopless` and one `have := hloop` went. The node's proof names the loop's hinge,
   and its note went) (`F-124`).
-- [ ] **U8. `F-061`'s forest lemma.**
-  `BodyHingeFramework.exists_independent_rigidityRows_of_isForest` (`ForestTarget`, stated): for a
-  forest `T ≤ F.graph` (`Graph.IsForest`) with a nonzero hinge at each edge, `D − 1` rows per
-  edge, jointly independent, in `exists_independent_rigidityRows_of_starForest`'s shape
-  (`RigidityMatrix/Basic.lean:1205`). Route: induction on `|E(T)|` removing a pendant edge (the
-  `Matroid` package's `IsForest.exists_isPendant` and `IsForest.anti`); its rows stay independent
-  on the assignments supported at the pendant body, where the others vanish, and
-  `linearIndependent_sum_pinned_block` (`:902`) joins them. Zone: an interface change in
-  `Basic.lean` rebuilds the molecular chain. A new node after `lem:own-end-rows-independent`.
-  1–2 commits.
+- [x] **U8. `F-061`'s forest lemma** (landed as planned, one commit:
+  `BodyHingeFramework.exists_independent_rigidityRows_of_isForest` in `RigidityMatrix/Basic.lean`
+  after `exists_independent_rigidityRows_of_starForest`, `ForestTarget`'s statement with
+  `T.edgeSet` for `E(T)`. The induction on `|E(T)|` runs inside the proof, for rows at the links of
+  `T`; the pendant step is `linearIndependent_sum_pinned_block`, and an injection reindexes the
+  joint family. The new `public import Matroid.Graph.Forest` adds the `Matroid` package's graph
+  library upstream of `Basic`, `Bricks`, `Claim612` and `Molecule/ScrewVelocity`, the only modules
+  downstream of `Basic` without it. New node `lem:forest-rows-independent` after
+  `lem:own-end-rows-independent`, its proof `\uses` the two nodes its pin calls) (`F-061`).
 - [ ] **U9. The Plücker expansion** (`F-059`). The coordinates of `extensor v` in
   `(Pi.basisFun K (Fin (d+1))).exteriorPower j` are the Plücker coordinates times KT's sign
   (`PluckerTarget`, stated), by mathlib's `exteriorPower.basis_repr_apply` and
@@ -276,14 +275,13 @@ moved by R's build (+1, §1j.1) and PAD as its own commit (+1, §1j.3); the ride
 
 ## Hand-off / next phase
 
-**U8** (`F-061`'s forest lemma, checklist item U8):
-`BodyHingeFramework.exists_independent_rigidityRows_of_isForest` from the witness's `ForestTarget`
-(stated only: compile its section with `lake lean` first), by induction on `|E(T)|` removing a
-pendant edge, in `RigidityMatrix/Basic.lean` beside `exists_independent_rigidityRows_of_starForest`
-(an interface change there rebuilds the molecular chain), with a new node after
-`lem:own-end-rows-independent`. Zone. One or two commits: if the induction does not fit one, the
-first lands the pendant-edge step as a complete unpinned lemma: independent rows of `T` less a
-pendant edge, joined with that edge's own `D − 1`, stay independent.
+**U9** (the Plücker expansion, `F-059`, checklist item U9): from the witness's `PluckerTarget`
+(stated only: compile its section with `lake lean` first), the coordinates of `extensor v` in
+`(Pi.basisFun K (Fin (d+1))).exteriorPower j` as the Plücker coordinates times KT's sign, in
+`Molecular/Extensor.lean` beside `pluckerCoord` (`:430`), the chain's root (a full rebuild), with
+a lemma node after `def:plucker-coords`, whose note goes. One or two commits: if the lemma does
+not fit one, the first lands the index bridge (`Set.powersetCard.ofFinEmbEquiv` against
+`Finset.orderEmbOfFin`) as a complete unpinned lemma.
 
 ## Decisions made during this phase
 

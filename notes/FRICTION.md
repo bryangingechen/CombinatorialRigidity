@@ -3235,6 +3235,21 @@ corresponding entry in [Mirrored](#mirrored) below.
   does for two members.
 - **Status:** idiom.
 
+### [idiom] Splitting a family over `Σ _ : E(T), Fin m` at one edge: an injection, and `Subtype.ext_iff` for `simp`
+- **Where it bit:** Phase 41e U8, `RigidityMatrix/Basic.lean`'s
+  `exists_independent_rigidityRows_of_isForest`: the joint family is indexed by
+  `Fin m ⊕ Σ _ : (T.deleteEdges {e}).edgeSet, Fin m` and the target by `Σ _ : T.edgeSet, Fin m`.
+  Composing `Equiv.Set.insert`, `Equiv.sigmaEquivProd` and a sum-product distribution is longer
+  than the need. And in the injectivity proof `simp` left `⟨f, ⋯⟩ = ⟨g, ⋯⟩` (subtypes of an edge
+  set, after `Sigma.mk.inj_iff`) unreduced, `Subtype.mk.injEq` reported unused.
+- **Resolution:** a `dite` map `p ↦ if h : p.1.1 = e then .inl p.2 else .inr ⟨⟨p.1.1, p.1.2, h⟩, p.2⟩`
+  and `LinearIndependent.comp` with its injectivity, which is
+  `by_cases hfe : f = e <;> by_cases hge : g = e <;> simp_all [σ, Subtype.ext_iff]`. Two MCP
+  iterations. Also met: `Graph.deleteEdges`'s `simps` lemma is `Graph.edgeSet_deleteEdges`, not
+  `deleteEdges_edgeSet`; `Set.ncard_diff_singleton_of_mem` is deprecated for
+  `Set.ncard_sdiff_singleton_of_mem`.
+- **Status:** idiom.
+
 ## Anti-patterns / known dead ends
 
 Tried-and-rejected approaches, deprecated patterns, and tactic

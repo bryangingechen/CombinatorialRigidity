@@ -193,7 +193,7 @@ $R(G,p)$, which is
   $R(G,p)$, and the last the description of $Z(G,p)$ by the rows.
 \end{fmlnote}
 
-We record two facts about the rows of $R(G,p)$. First, the rows of an
+We record three facts about the rows of $R(G,p)$. First, the rows of an
 edge with distinct ends are linearly independent.
 
 \begin{lemma}[The rows of an edge are independent]
@@ -262,6 +262,46 @@ if their other ends are distinct bodies other than $w$.
 \begin{fmlnote}
   The first pin is the claim for linear forms, the second its form for
   rows, and the third the case of a star.
+\end{fmlnote}
+
+Third, the rows of the edges of a forest are jointly independent. A
+forest need not satisfy the hypothesis of
+\cref{lem:own-end-rows-independent}: in a path with three edges, each
+end of the middle edge is also an end of another edge.
+
+\begin{lemma}[Independent rows of a forest]
+  \label{lem:forest-rows-independent}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.exists_independent_rigidityRows_of_isForest}
+  \leanok
+  \uses{def:rigidity-matrix}
+  Let $(G,p)$ be a body-hinge framework, and let $T$ be a forest with
+  finitely many edges that is a subgraph of $G$, with $C(p(e)) \neq 0$
+  at each edge $e$ of $T$. Then $R(G,p)$ has $(D-1)|E(T)|$ linearly
+  independent rows.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{def:hinge-row-block, lem:case-II-placement-block-independent}
+  We show that the rows of the edges of $T$ are linearly independent,
+  by induction on the number of edges of $T$; there is nothing to prove
+  when $T$ has none. Otherwise $T$ has a pendant edge $e$: an edge with
+  distinct ends $x$ and $y$, where $x$ is an end of no other edge of $T$
+  (the first edge of a longest path, say). Deleting $e$ leaves a forest
+  $T - e$, whose rows are linearly independent by induction. Each of
+  them is a form $S \mapsto r \cdot (S(u) - S(w))$ for an edge of
+  $T - e$ with ends $u$ and $w$, neither of which is $x$, so it vanishes
+  on the screw assignments that vanish off $x$. On such an assignment,
+  with value $s$ at $x$, the $D - 1$ rows of $e$ take the values
+  $r_i(p(e)) \cdot s$, and these forms in $s$ are linearly independent
+  (\cref{def:hinge-row-block}). So the rows of $e$ and those of $T - e$
+  are linearly independent together
+  (\cref{lem:case-II-placement-block-independent}), and they are the
+  rows of $T$.
+\end{proof}
+
+\begin{fmlnote}
+  The pin asks the set of edge labels to be finite, so that every
+  forest in $G$ has finitely many edges.
 \end{fmlnote}
 
 The next definitions are Katoh and
