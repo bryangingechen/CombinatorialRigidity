@@ -180,7 +180,7 @@ ScrewSpace carrier). Witness names are in `ReconUnstated` (`UnstatedWitness.lean
     exposition ledger; ROADMAP's RECONCILE bullet (and `notes/Reconcile.md`'s **Status**: the
     program closed); the row, §41, README, the home page, `intro.tex`, `formalization.yaml`, the
     queue row, `notes/MolecularConjecture.md`; the design doc's UNSTATED arc; the rest of the
-    project-organization review; the blueprint gates again. The dispatch log is the coordinator's.
+    project-organization review; the blueprint gates again. The dispatch log: groomed by the coordinator before 2b.
     Split in two commits, as the hand-off allowed:
     - [x] Part 2a (the commit "Phase 41e close, part 2a: the re-reads and the compressions"): the
       re-read of the restated chapters and the exposition ledger; the design doc's UNSTATED arc,
@@ -213,7 +213,7 @@ which M1K kept beside the row's maximum-rank form); sets `.claude/autopilot/queu
 `RECONCILE-FORMAL` row `done = true`; syncs `notes/MolecularConjecture.md`; flips the design doc's
 status header and §3's UNSTATED row; and puts this note in closed form. It re-runs
 `blueprint/lint.sh`, `verify.sh` and `check-phase-note.py`. ORIGAMI is not opened, and nothing is
-pushed: the loop stops for the PI's push (§1j.5). The dispatch log's grooming is the coordinator's.
+pushed: the loop stops for the PI's push (§1j.5). The dispatch log is groomed (the coordinator's commit before 2b).
 
 ## Decisions made during this phase
 

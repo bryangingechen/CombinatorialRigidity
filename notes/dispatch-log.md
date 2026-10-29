@@ -49,22 +49,6 @@ keeps only what git cannot show.
 
 | Date | Task (short + sha) | Rung | Exception | Notes |
 |---|---|---|---|---|
-| 2026-10-24 | 41b item 3 `b2d0839a` | sonnet | coordinator artifact refuted (F19) | My scope-pin predicted that `rankHypothesis_genuine_of_theorem_55_gen`, the rows form and `theorem_55_6_multigraph_of_two_le` would lose `hD` to `unusedArguments`; they already derived `3 ≤ D` locally (round 3's `F-298`), so none changed. The builder checked instead of obeying. The prediction was read off the call sites' `hD` argument without opening the callers' binders. Also: the ledger dispositions said "item 3's commit", not a sha; item 4a filled it in. |
-| 2026-10-25 | 41b item 4c `4960364d` | sonnet | phase-note gate red at landing | The return attested the module builds, `checkdecls` and `blueprint/lint.sh`, but neither `lake lint` nor `check-phase-note.py`; the note failed forward-weighting (finished 70 ≥ forward 68), as items 2–4c each kept its full spec beside a "Done:" paragraph. The coordinator re-ran the whole build and `lake lint` (green) and compressed the done items to one-line verdicts in a fixup, with the design doc's and `Reconcile.md`'s stale next-task pointers. |
-| 2026-10-25 | 41b item 7 `6d261725` | sonnet | gate-invisible defects caught in verification | Two Lean docstrings cited "the coordinator's adjudication": process text, and one misattributed the PI's §1.4 to the coordinator. The return also said dispositions live in commit messages and skipped the ledger (`notes/Reconcile.md` §2). Caught by the full-diff read and a grep; fixed as neighbouring edits at item 8. From item 8 on, prompts say Lean docstrings describe mathematics, never process. |
-| 2026-10-25 | 41b item 8 `8c2d4475` | sonnet | design pin refuted before dispatch | The checklist's "`_hSimple` dropped" (the open's recon, design doc §2) would have made the restated corollary false: deriving it from `theorem_55_d3` needs simplicity, and the double edge on two bodies is a minimal 0-dof-graph at d = 3 whose meet-model hinges coincide. Caught by the pre-dispatch derivation guard against the recon's own banana witness; the prompt pinned a used `hSimple`. |
-| 2026-10-25 | 41b item 9 recon `418803bc` | opus | coordinator artifact refuted (F19) | My prompt listed `HingeGeneric`, three pencil files and `BodyBar/GenericLift` as consumers of `PanelGeneric`'s declarations, from a `grep -w`; every hit was a docstring (only the root module imports the file). The recon checked Lean uses apart from mentions and refuted the list. Lesson: a consumer list from grep separates code uses from docstring mentions; item 10's prompt asked for that. |
-| 2026-10-25 | 41b item 11 `c26edc57` | opus | faithfulness defect caught by the PI's question | `prop:rigidity-matrix-prop11` stated KT Prop. 2.3 for panel-hinge realizations of multigraphs, false in the meet model at the double edge; KT (p. 655) state it for body-hinge frameworks, credited to Jackson–Jordán (`F-331`). The PI's "Is this node one from KT?" sent the coordinator to the PDF; PROSE's S18 and the open's recon had read only the pin's conditionality. Lesson: an S finding on a pin also checks the node's statement against the source. |
-| 2026-10-28 | 41c item 1 `e348a3e8` | sonnet | gate-invisible defect caught in verification | The new ledger entry `F-332` justified "false without `hC`" with the direction reversed: a zero hinge "removes the D − 1 equations", where `isInfinitesimalMotion_iff`'s span of a zero extensor forces `S u = S v`, D equations. Caught by the tier's read of new prose against the definitions; the coordinator first mis-derived it too, from `annihRow`'s zero rows, before opening `infinitesimalMotions`. Fixed in a coordinator commit. Lesson: a counting claim about a degenerate case is checked against the carrier's definition body. |
-| 2026-10-28 | 41c item 2 `aeac5f6e` | sonnet | gate-invisible defect caught in verification | Widening the body-hinge theorem to multigraphs, the builder deleted "simple" from README's and the home page's joint 41b sentence about the body-hinge theorem *and* its panel-hinge companion, so both now "held for every graph" since 41b, false for the companion and for 41b; the yaml note said 41b and 41c both made them hold for every multigraph. Caught by the tier's read of new prose; fixed in a coordinator commit. Lesson: a sentence naming two results is narrowed per result, never by deleting a shared qualifier. |
-| 2026-10-29 | 41d item B1 `c6bc7762` | sonnet | gate-invisible defect caught in verification | The new node `lem:embed-edges-minimal` `\uses` a remark, not a node, and missed three proof edges; `verify.sh` was green, `blueprint-deps.py --label` caught them. B1 also left `Simple.embedEdges` and `deficiency_embedEdges` pinned on the pencil chapter's `lem:pencil-jj-embed-edges`, though the witness's Theorem 5.5/5.6 transports call both: after B2, KT 5.5's closure would have reached the pencil chapter. Fixed by an opus corrective (this commit) moving the two pins to a panel-layer node. Lesson: a move-up item moves its blueprint pins with its Lean, and new nodes get the deps audit. |
-| 2026-10-29 | 41d item B3 `953367f0` | opus | coordinator artifact refuted (F19) | My scope-pin listed `thm:theorem-55-6-rows → thm:theorem-55-6-genuine` among the `unbacked (no Lean basis)` edges that pinning the renamed `…_of_supply` forms would back; the builder found it prose-only since before 41d (the rows forms build from Theorem 5.5 and call neither genuine pin) and rightly left it. My list came from one `--label` run at `9d6a43d9` with no parent baseline. Lesson: a claim that an edit backs an edge needs the parent's report beside it. |
-| 2026-10-29 | 41e U1 `31154638`, U2 `47556b0c` | sonnet | gate-invisible defects caught in verification | Two docstring defects in a row, each fixed by a coordinator commit (`a9fc07db`, `cb0afa0d`). U1 called the blocking witness "the pair" a reject verdict carries; it is the verdict's vertex set. U2 credited the family independence criterion to Edmonds 1965, Theorem 1, which is the `k`-copies case; the chapter credits the family form to the matroid-union theorem. Both caught by reading each new docstring against its statement and the chapter (F44). U3's prompt then asked for chapter-backed credits only, and it landed clean. |
-| 2026-10-29 | 41e item R `836bb645` | sonnet | gate attested partly; defect caught in verification | The return named `verify.sh` green but not `lint.sh`, which was red: check 9's docstring-label ratchet rose 0 → 3, as three unpinned helpers led with a bare node label. My re-run of `lint.sh` caught it; the fix (`708a6d9e`) also repointed a stale lemma citation and `lem:reduction-step`'s `\uses` from `lem:dof-tracking` to the bound its pin now calls. U4's prompt then named `lint.sh` and the `a step of <label>` form, and it landed clean. Lesson: `verify.sh` green says nothing of `lint.sh`; ask for both by name. |
-| 2026-10-29 | 41e U5 `c0a88ffe` | opus | gate-invisible defect caught in verification | The checklist placed the lemma in `Pinning.lean`; its new imports put three Induction files upstream of `Pinning`, `PanelHinge` and `GenericityDevice`, which had compiled beside them. The builder named the cost when asked; the coordinator moved the lemma to `CaseI.lean` (`28ba330b`). Later prompts asked every builder to name any new upstream import; U8's (`Matroid.Graph.Forest` above `RigidityMatrix/Basic`) was accepted, its cost confined to clean builds. Lesson: an import edge is a gate no build checks. |
-| 2026-10-29 | 41e U10 `0a0817a0` | opus | plan pin refuted at build | The checklist's route called `molecule_generic_rigid` and `molecule_rank_formula`, which pin corollaries that depend on U10's own node: a `\uses` cycle. The builder took the node's prose route through the dictionary instead, and dropped `[Nonempty V]` at no cost (recorded under §1f.3, `5b521137`). Lesson: a route through a downstream corollary of the node being proved is a cycle the plan's prose does not show; check the cited pins' nodes against the target's position. |
-| 2026-10-29 | 41e coordinator, `a1dff333` → `5b521137` | opus | coordinator process defect | A coordinator commit chained `check-phase-note.py && … \|\| echo …; git commit`, so the commit ran after the gate failed (forward-weighting 88 ≥ 88). Caught on reading the output; the note was compressed and the unpushed commit amended before any dispatch. Lesson: gate a commit with `if <gate>; then git commit …; fi`, never a `&&`/`\|\|` chain. |
-| 2026-10-29 | 41e U12 spike `138447ff` → build `90dc64a4` | opus | resume and land (F43) | The spike returned the whole build compiled (no `sorry`, re-run by the coordinator), so it was resumed to land rather than sliced. The resume ended at about 400k tokens, the F46 threshold; it landed clean, with the deletion gate and every gate green. |
 
 **Phases 29–34 rows, 2026-07-09 → 07-18: 17 pruned at the 41a grooming
 (2026-10-24); the full rows are in git history at `3a627b3d`.** Those phases
@@ -137,7 +121,28 @@ again: a compression prompt that did not carry the rule); 1 kill resumed
 (rescue §3); 1 gate-mechanics row under memory pressure (F49); 1 stale trailer
 pin (`phase-builder-sonnet.md`, fixed at `022dd016`).
 
-
+**Phase 41b–41e rows, 2026-10-24 → 10-29: 16 pruned at 41e's close
+(2026-10-29); the full rows are in git history at `24d631b5`.** Profile, by
+the exception column's own wording (a row can match several classes): 6
+gate-invisible defects in 5 rows, caught in verification. Five were caught by
+reading new prose against the definitions, the chapter or the source (F44):
+process text in two Lean docstrings, a degenerate-case count with its
+direction reversed (`F-332`), a qualifier deleted from a sentence naming two
+results, a blocking witness misnamed and a criterion credited to its special
+case. The sixth, a new node's missing `\uses` edges with pins left behind by
+a move-up, was caught by `blueprint-deps.py --label`, not `verify.sh`. The
+other rows: 3 coordinator artifacts refuted by the dispatch they primed (F19):
+a prediction read off call sites without opening the callers' binders, a
+consumer list from `grep -w` that counted docstring mentions as uses, and a
+claim that an edit backs an edge, made without the parent's report; 2 pins
+refuted, one by the pre-dispatch derivation guard (a dropped `hSimple`, false
+at the double edge) and one at build (a route through corollaries downstream
+of the target node, a `\uses` cycle); 2 partial gate attestations (F54); 1
+faithfulness defect the PI's question caught (a node checked against KT, not
+only its pin); 1 import edge no build checks (a lemma whose imports put three
+files upstream of the chain; later prompts asked each builder to name any new
+upstream import); 1 coordinator gate-chaining defect (F55); and 1
+resume-and-land (F43) that ended at the F46 threshold, clean.
 
 ## Findings
 
@@ -681,3 +686,22 @@ recurrence into *Verification tiers*.
   autopilot's "arcs: on". Kept: `session-usage.py`'s `--since`/`--until`
   bounds and cache columns. The two arc rows are in git history at
   `78c3f1e4`.
+- **F54 — a gate attestation covers only the gates it names (two rows: 41b
+  item 4c, 41e item R).** One return attested the module build, `checkdecls`
+  and `lint.sh` but not `lake lint` or `check-phase-note.py`, and the note
+  failed forward-weighting. The other named `verify.sh` green while `lint.sh`
+  was red (check 9's docstring-label ratchet, 0 → 3). The two scripts are
+  disjoint: `verify.sh` builds the blueprint and runs `checkdecls`, and
+  `lint.sh` runs the static reference checks. The coordinator's re-run caught
+  both. From U4 on, the prompts named each gate, and no return missed one.
+  Promoted: the builder core attests each gate by name, and the playbook's
+  below-top-rung tier re-runs `blueprint/lint.sh` on a commit that touches the
+  blueprint or a docstring's blueprint label.
+- **F55 — a gated commit is guarded by `if`, never by `&&`/`||` (41e, a
+  coordinator commit).** `check-phase-note.py && … || echo …; git commit`
+  committed after the gate failed (forward-weighting 88 ≥ 88): the `||`
+  swallowed the exit status and the `;` ran the commit anyway. It was caught
+  on reading the output, and the unpushed commit was amended before any
+  dispatch. This log's header already said so for `check-log-rows.py`, and
+  41e's later prompts carried the rule. Promoted: step 4's docs gates and the
+  builder core's commit bullet.

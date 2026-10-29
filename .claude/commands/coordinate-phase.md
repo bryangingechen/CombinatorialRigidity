@@ -288,8 +288,10 @@ The step-4/5 checks below always run. On top of them, by rung:
   the failure mode at these rungs is upstream plan/pin error, which
   gates can't catch.
 - **below top rung (sonnet builds):** read the **full diff** (not
-  `--stat`) before the next dispatch; re-run `lake lint`; sorry-grep
-  the touched `.lean` files. Read every new docstring and prose
+  `--stat`) before the next dispatch; re-run `lake lint`, and
+  `blueprint/lint.sh` when the commit touches the blueprint or a
+  docstring's blueprint label (`verify.sh` green says nothing of it,
+  dispatch-log F54); sorry-grep the touched `.lean` files. Read every new docstring and prose
   sentence against the statement it describes: on a transcription
   slice that prose is the one part no gate checks (dispatch-log F44).
   Check each claim the diff makes about the tree's state ("deleted by
@@ -596,6 +598,8 @@ CLAUDE.md at phase close.
      commit touched a phase note → `python3
      notes/check-phase-note.py`; touched the gap map → `python3
      notes/check-gapmap-cells.py`. Exit 1 names the offending surface.
+     A coordinator commit gated on any of them runs `if <gate>; then
+     git commit …; fi`, never an `&&`/`||`/`;` chain (F55).
    - **"Gates green" is an attestation, not evidence.** The step-5
      gate always runs; apply the playbook's verification tier for the
      dispatched rung (full-diff read + `lake lint` + sorry-grep below

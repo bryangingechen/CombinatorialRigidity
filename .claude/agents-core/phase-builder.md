@@ -80,7 +80,11 @@ pre-commit checklists; this file pins the loop contract):
   notes (attestation-before-evidence is the same offense class as a
   fabricated gate claim). Attest gates only from the final run's
   actual output — a warning-bearing build is not clean; paste real
-  output, not a summary.
+  output, not a summary. Name each gate you ran: one you do not name
+  reads as one you did not run, and `blueprint/verify.sh` green says
+  nothing of `blueprint/lint.sh` (dispatch-log F54). Gate the commit
+  with `if <gate>; then git commit …; fi`, never an `&&`/`||` chain,
+  which commits after a failed gate (F55).
 - **Before committing, re-read the pinned checklist / design section
   VERBATIM** and confirm every pinned sub-clause is either delivered
   in this commit or explicitly re-flagged in the hand-off — never
