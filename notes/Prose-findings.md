@@ -2554,7 +2554,7 @@ declaration's name as its header writes it:
   (`thm:bodyhinge-generic-rank`, cited, not `\uses`d); for a multigraph it waits on MULTIGRAPH's M1,
   at which the node is repinned unconditionally (`notes/Phase41-design.md` §1f.1, §3).
   Phase 41c, item 3 (the commit "Phase 41c item 3: KT Proposition 2.3, unconditional, at every
-  generic hinge-point assignment of a multigraph"): done. `prop:rigidity-matrix-prop11` moves to
+  generic hinge-point assignment of a multigraph", `5ab192e3`): done. `prop:rigidity-matrix-prop11` moves to
   `generic-lift.tex`, after `cor:bodyhinge-generic-tree-packing`, and states KT's three-way
   equivalence, pinned on `tfae_finrank_span_rigidityRows_ofHinge_deficiency`. The conditional node
   keeps its place and its pin `rigidityMatrix_prop11` under `prop:rank-formula-of-motion-bound`,
@@ -3632,7 +3632,7 @@ declaration's name as its header writes it:
   $D - 1$, so at two bodies joined by one edge with a zero hinge $\dim Z = D < D + 1$.
   *Evidence:* read (the node's statement and proof against the pin's binder).
   *Found:* Phase 41c's open recon.
-  *Disposition:* done (the commit "Phase 41c item 1: the upper bound asked at the non-loop links"; before: open,
+  *Disposition:* done (the commit "Phase 41c item 1: the upper bound asked at the non-loop links", `e348a3e8`; before: open,
   `notes/Phase41c.md`, item 1): the statement now carries the hypothesis at the edges whose two
   ends differ, as the pin does after the commit; `lem:relative-deficiency-rank-bound` asks it at the
   edges that are not loops.
@@ -7381,7 +7381,7 @@ declaration's name as its header writes it:
   `thm:theorem-55-6-multigraph` realizes every spanning multigraph with nonzero hinges. The
   multigraph generic form is `RECONCILE-FORMAL`'s (b).
   *Disposition:* done (the commit "Phase 41c item 2: M1, the generic body-hinge theorem for
-  multigraphs, loops allowed"; before: round 1 above, then open, `notes/Phase41c.md`, item 2): the
+  multigraphs, loops allowed", `aeac5f6e`; before: round 1 above, then open, `notes/Phase41c.md`, item 2): the
   rank formula and the two corollaries lose `hSimple`, the witness assembly starts from the
   multigraph Theorem 5.6, and `body-hinge.tex` and the status surfaces say multigraph.
 - **F-228** · M · the credit for Laman's theorem (`intro.tex`, `laman.tex`, `laman-theorem.tex`,

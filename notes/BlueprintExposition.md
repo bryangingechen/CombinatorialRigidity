@@ -358,12 +358,18 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   most that many). The
   `def > 0` feed (`thm:theorem-55-6-d3`, 22k) is the one that needed the
   spanning-strip lift; the `def = 0` feed landed in 22h. The full two-by-two
-  account is in the opening of `prop:rigidity-matrix-prop11`'s subsection and the
+  account is in the opening of `prop:rank-formula-of-motion-bound`'s subsection
+  (`sec:molecular-algebraic-induction-prop11`) and the
   proof of `thm:theorem-55-6-genuine` (`panel-layer.tex`; `thm:theorem-55-6-d3` is
   the case $d = 3$ of `thm:theorem-55-6`, which follows from the latter; PROSE round
   3, task 2.3, and round 5, task 3.6). Since Phase 41b's item 11 the node states
   the analytic half in conditional form, the generic bound its hypothesis, and its
-  proof is that hypothesis with the genericity-free bound. The formula is KT
+  proof is that hypothesis with the genericity-free bound. Since Phase 41c's item 3
+  (`5ab192e3`) that conditional node is `prop:rank-formula-of-motion-bound`, and
+  the label `prop:rigidity-matrix-prop11` is KT's three-way equivalence at every
+  generic hinge-point assignment of a multigraph (`generic-lift.tex`), the
+  analytic half from `thm:bodyhinge-generic-rank` and the matroidal half from
+  `thm:def-eq-corank`. The formula is KT
   Proposition 2.3 (p. 655), as the
   blueprint names it since PROSE round 3 task 2.1; this entry said Prop 1.1,
   which is Tay and Whiteley's theorem (p. 648), until that round's close.
@@ -1707,6 +1713,23 @@ entries naming a restated node: the conditioned-motive entry quoted `thm:theorem
 generic conjunct and the `lem:theorem-56-general-position` entry named two of its three
 polynomials; both now say what the nodes state. The `prop:rigidity-matrix-prop11` entry already
 records item 11's conditional form.
+**Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
+
+### Phase 41c (MULTIGRAPH: the generic body-hinge theorem for multigraphs, structural edit — no new chapter)
+
+**No new entries — judged at the sub-phase close (2026-10-28).** The sub-phase widened the generic
+body-hinge theorem from simple graphs to every multigraph, loops allowed. Its source is Jackson and
+Jordán's Theorem 6.1, not KT, and the criterion transfers as in Phase 34's section. The one new
+argument, that a nonzero extensor in a panel is an extensor of panel vectors
+(`lem:extensor-in-panel-decomposable`), is the definition's; the witness's new start, the
+multigraph Theorem 5.6, is stated in the opening of `sec:generic-lift-bodyhinge` and in
+`lem:hinge-point-witness`; why a loop is not asked for a nondegenerate hinge is in
+`lem:deficiency-rank-bound`'s proof; and KT Proposition 2.3's three-way equivalence is a two-line
+corollary in its node. No crux proof rerouted. The close checked the entries naming a restated
+node: the `prop:rigidity-matrix-prop11` entry pointed at that label's subsection for the two-halves
+account, which since item 3 is `prop:rank-formula-of-motion-bound`'s, and now says so; Phase 34's
+"transplanting the KT Theorem-5.6 panel witness" holds for the multigraph form; the
+`lem:relative-deficiency-rank-bound` mentions name the node, not its hypothesis.
 **Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
 
 ## Retroactive coverage

@@ -10,10 +10,11 @@ panel and body-hinge theorems hold at every generic realization of every simple 
 or more, the panel rank formula a twentieth main result; and `prop:rigidity-matrix-prop11` is KT
 Proposition 2.3 in conditional form. §2's RESTATE arcs are compressed to cited verdicts. The PI's
 push ran CI green (*Build & deploy site* at `4c892cb6` and `ae6a852c`, 2026-10-25). Sub-phase
-**41c** (MULTIGRAPH) opened 2026-10-28 with the PI (§1g), work log `notes/Phase41c.md`: M1 for
-multigraphs with loops allowed, then KT Proposition 2.3 repinned unconditionally; the open's recon
-(§2) built both in a witness file. **Next:** 41c's item 1, the upper bound at the non-loop links.
-UNSTATED (13–23 commits) remains for the PI after 41c.
+**41c** (MULTIGRAPH) opened 2026-10-28 with the PI (§1g) and closed the same day, work log
+`notes/Phase41c.md`: M1, the generic body-hinge theorem, holds for every multigraph, loops allowed,
+and KT Proposition 2.3 is proved as KT state it at every generic hinge-point assignment; §2's
+MULTIGRAPH arc is compressed to a cited verdict. **Next:** UNSTATED (13–23 commits, §3), the last
+sub-phase, for the PI to open; §4 holds the two options 41c's recon left unplanned.
 
 The phase is the last part of the RECONCILE program (`notes/Reconcile.md`, with its standing rules
 in §2 and the plan of this phase in §3 *The phase*). Its input is PROSE's findings report
@@ -385,50 +386,24 @@ needed and no pencil statement moved.
   `k`-form. Item 11's conditional form needed no Lean bridge from it to that lemma's `hgen`
   (rank–nullity, hypothesis); the unconditional repin is MULTIGRAPH's (§3).
 
-**MULTIGRAPH's open recon** (41c's open; 2026-10-28; Claude Opus 5.5, design pass, at `ae6a852c`).
-Evidence: `notes/reconcile-formal/MultigraphWitness.lean` (`lake lean`: no errors or warnings, its
-eleven `#print axioms` the three standard axioms; `#lint` on a copy: no errors in 15 declarations).
-It proves every Lean statement below in the namespace `Recon41cMultigraph`, so the items transcribe.
-- **The route (Q2).** The lower bound starts from the multigraph Theorem 5.6,
-  `theorem_55_6_multigraph_gen` (`2 ≤ n`, `hcard`, `hspan`, `[Nonempty α]`), whose realization is
-  hinge-coplanar: `F.graph = G`, a nonzero hinge at every label, and at each link both ends'
-  `ExtensorInPanel`. That predicate's body is `∃ p, C.val = extensor p ∧ ∀ i, p i ⬝ᵥ n = 0`, so a
-  hinge in a panel is decomposable by definition, and a nonzero one has `p 0 ≠ 0`
-  (`extensor_ne_zero_iff_linearIndependent`). That is the one new leaf,
-  `exists_extensor_eq_of_extensorInPanel`, 15 lines; the rest of the witness assembly is the
-  library's with `F0` for `Q0.toBodyHinge`. The coordinator's hypothesis holds: the containment
-  model's hinges are decomposable, and the meet model's `exists_extensor_eq_panelSupportExtensor_gen`
-  is not needed.
-- **M1's statements (Q1).** `exists_hingePoints_independent_hingePointRow`, the rank formula and
-  its two iffs lose `hSimple` and keep `hk1`, `hn` (the `k`-form), `hcard` (Theorem 5.6's
-  fresh-label supply), `hne` and `hspan`; `IsGenericHingePoints` is unchanged (rows at a loop are
-  zero, so genericity is silent there). Replaced in place, no twin: only `Nonvacuity.lean` uses the
-  names outside `HingeGeneric.lean`. The main row (`…_iff_spanningTrees`) widens from simple graphs
-  to every spanning multigraph, loops allowed. JJ 2010 Theorem 6.1 (EJC 31, p. 582, confirmed
-  against `.refs/`) is the maximum rank over all realizations of a 2-edge-coloured multigraph; JJ
-  never mention loops, which the formalization admits as a loop constrains no motion.
-- **Loops (Q3), one extra commit.** The upper bound asks `hC` at every link, and genericity says
-  nothing of a loop's hinge. But every use of `hC` in `screwDim_add_deficiency_le_…`,
-  `screwDim_mul_compl_add_deficiency_le_…` and `finrank_span_rigidityRows_add_deficiency_le` is at
-  an edge between two parts, never a loop, so asking it at `u ≠ v` costs one line per proof and
-  24 mechanical caller wraps in 18 files (41c's item 1). The nondegeneracy lemma loses
-  `G.Loopless` and concludes at the non-loop links, inside M1's commit (one caller). The loopless
-  route would be items 2–3 alone, so loops add exactly item 1, within §1f.4's bound. Not taken: the
-  route that leaves the upper bound alone (a loop's rows are zero, so a loop's hinge can be
-  replaced inside M1 by a nondegenerate one), no extra commit, but not §1f.4's reading.
-- **The repin (Q4).** KT Proposition 2.3 (p. 655) is a three-way equivalence for every `k`:
-  (i) `rank R(G,p) = D(|V|−1) − k`, (ii) `def(G̃) = k`, (iii) `rank M(G̃) = D(|V|−1) − k`. A new
-  corollary states it at a generic hinge-point assignment (`List.TFAE`; M1 and
-  `Graph.rank_add_deficiency_eq`), and `prop:rigidity-matrix-prop11` pins it. `rigidityMatrix_prop11`
-  stays, as Theorem 5.6's proofs use it, under a new label: if the KT label kept `\uses` from
-  `thm:theorem-55-6-multigraph`, the dep-graph would cycle through `lem:hinge-point-witness`.
-- **Non-vacuity (Q5).** In the plane, at the double edge (not simple) and at the double edge with
-  a loop at one body (not loopless): some hinge-point assignment is generic, and at every generic
-  one the framework is infinitesimally rigid; the loop leaves the deficiency `0`
-  (`deficiency_le_deficiency_of_le_vertexSet_eq`).
-- **The plan (Q6)**: three items and the close, in `notes/Phase41c.md`. Not planned: dropping
-  `hcard` (a transport to a larger label type); the generic panel theorems stay for simple graphs,
-  as in the meet model a double edge's two hinges coincide (§1b.1).
+**MULTIGRAPH's open recon** (41c's open; 2026-10-28; Claude Opus 5.5, design pass, at `ae6a852c`;
+compressed at 41c's close to a cited verdict, the full arc in git up to `79df20c0`). Evidence:
+`notes/reconcile-formal/MultigraphWitness.lean` (`lake lean`: no errors or warnings, its eleven
+`#print axioms` the three standard axioms; `#lint` on a copy: no errors in 15 declarations), which
+proved every statement in the namespace `Recon41cMultigraph`; items 1–3 transcribed it
+(`notes/Phase41c.md`). M1's lower bound starts from the multigraph Theorem 5.6
+(`theorem_55_6_multigraph_gen`), whose hinges lie in the panels and so are extensors of panel
+vectors by definition (`exists_extensor_eq_of_extensorInPanel`, the one new leaf); the rank formula
+and its two iffs lose `hSimple` and nothing else. JJ 2010 Theorem 6.1 (EJC 31, p. 582, against
+`.refs/`) is a maximum-rank statement for 2-edge-coloured multigraphs and never mentions loops,
+which the formalization admits, as a loop constrains no motion. Loops cost one commit (§1f.4): the
+upper bound uses `hC` only at edges between two parts, so it asks it at `u ≠ v` (item 1, 24 caller
+wraps in 18 files). KT Proposition 2.3 (p. 655) is the three-way equivalence at every generic
+hinge-point assignment (item 3), pinned by `prop:rigidity-matrix-prop11`; `rigidityMatrix_prop11`,
+which Theorem 5.6's proofs use, moved to `prop:rank-formula-of-motion-bound`, as the KT label's
+`\uses` would otherwise cycle through `lem:hinge-point-witness`. Not planned: §4's two open
+questions; the generic panel theorems stay for simple graphs, as in the meet model a double edge's
+two hinges coincide (§1b.1).
 
 ## 3. Sub-phases, by code
 
@@ -436,7 +411,7 @@ It proves every Lean statement below in the namespace `Recon41cMultigraph`, so t
 |---|---|---|---|
 | **CARRIER** | 41a (closed 2026-10-24) | done: `reaimSub` retired; the link predicate, its lemmas and the fill-in tactic; the four R statements; the spike; the switch (the field, 123 declarations in 27 files) and the footprint's docstrings; `withGraph` restricted; `reaim` deleted with `hC` on links; the two genuine forms merged (`notes/Phase41a.md`) | 9, besides the build-time detour P1–P5 |
 | **RESTATE** | 41b (closed 2026-10-25) | done: `HasGenericFullRankRealization`'s link conjunct and `F-324`'s derivable `hD`s dropped; `IsNonparallel`, and Theorems 5.5 and 5.6 with their `d = 3` instances concluding it for simple `G` (route B, §1c); `molecular_conjecture` on one body or more, hinges on `E(G)`, nonparallel panels (§1d); the multigraph rows and `IsHingeCoplanar` on `E(G)`; `cor:theorem-55-d3-spanning` from `theorem_55_d3`; S1's panel and body-hinge theorems at every generic realization on `G` under `hcard`, one body or more (§1e, §1f.3); G6's row, the twentieth main result; witnesses at the single edge and the triangle; S18 as KT Proposition 2.3, conditional (§1f.1); the scope and degenerate-hinge sentences; the link conjuncts the field makes redundant (`notes/Phase41b.md`) | 23, the open and the close included (planned 13–16) |
-| **MULTIGRAPH** | 41c (opened 2026-10-28) | the upper bound at the non-loop links (§1f.4); M1: the multigraph generic body-hinge theorem (JJ 2010 Theorem 6.1), loops allowed, from the multigraph Theorem 5.6; then `prop:rigidity-matrix-prop11`, restated by 41b's item 11 as KT's body-hinge form proved conditionally, repinned unconditionally on M1 (§1f.1) (`notes/Phase41c.md`) | 3 items and the close (planned 3–5) |
+| **MULTIGRAPH** | 41c (closed 2026-10-28) | done: the upper bound asked at the non-loop links (§1f.4); M1, the generic body-hinge theorem (JJ 2010 Theorem 6.1) for every spanning multigraph, loops allowed, from the multigraph Theorem 5.6, with witnesses at the double edge and the double edge with a loop; KT Proposition 2.3 as KT state it, at every generic hinge-point assignment, pinned by `prop:rigidity-matrix-prop11`, its conditional form under `prop:rank-formula-of-motion-bound` (§1f.1) (`notes/Phase41c.md`) | 6, the open, the re-read and the close included (planned 3–5), besides three verification fixups |
 | **UNSTATED** | — | the claims no declaration states, the report's estimates: S22 1–2, S23 1, S24 2–3, S25 1, S31 2–3, S3 0–2, S16 1, S19 0–3, G5 3–5, `F-061` 1–2; after CARRIER, since S3 and S19 touch carrier code (`case_II_placement_eq612`) | 13–23 |
 
 **Why the switch was one commit** (CARRIER): under the lint gate a field cannot be staged file by
@@ -457,3 +432,11 @@ The program closes with the phase: ROADMAP's RECONCILE bullet compressed, and th
   multigraphs; the row's "every generic realization" is the project's strengthening.
 - **The generic panel theorems on one body** (§2, *Item 9's recon*): settled by the PI (§1e), the
   rank formula and the iff take `V(G).Nonempty`; landed with 41b's item 9a.
+- **Open, for the PI: dropping `hcard` from M1 and KT Proposition 2.3** (§2, *MULTIGRAPH's open
+  recon*). The rank formula, its two iffs and the three-way equivalence take Theorem 5.6's bound on
+  the labels, `D(|V| − 1) < |β|`, the fresh-label supply of the witness. Dropping it needs a
+  transport to a larger label type; not planned.
+- **Open, for the PI: relaxing `rigidityMatrix_prop11`'s `hC` to the non-loop links** (§2,
+  *MULTIGRAPH's open recon*). Since 41c's item 1 its proof's upper bound asks the hinge only at
+  the links whose two ends differ, so the relaxation is free under §1f.3; no caller needs it, so it
+  was not taken.
