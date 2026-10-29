@@ -4,11 +4,13 @@
 design, the PI's decisions (here §1f.4, loops, and §1g, the open) and the open's recon are in
 `notes/Phase41-design.md`; the recon's Lean witness is
 `notes/reconcile-formal/MultigraphWitness.lean`. Three build items and the close (planned 3–5);
-items 1, 2 and 3 have landed. Next: the close (*Hand-off*).
+items 1, 2 and 3 have landed, and so has the close's re-read. Next: the close (*Hand-off*).
 
 ## Current state
 
-**The next concrete commit is the close** (*Hand-off*); items 1, 2 and 3 have landed. The open's recon
+**The next concrete commit is the close** (*Hand-off*); items 1, 2 and 3 have landed, and the
+close's end-to-end re-read of the restated nodes fixed four sentences in its own commit (the commit
+"Phase 41c, the close's re-read"). The open's recon
 (design doc §2, *MULTIGRAPH's open recon*) built the whole sub-phase in a witness file against
 `ae6a852c`, with no `sorry`: M1, the generic
 body-hinge theorems for every spanning multigraph, parallel edges and loops allowed, and KT
@@ -68,9 +70,11 @@ item transcribes it into the library, with its blueprint and status surfaces.
 
 ## Hand-off / next phase
 
-**The close** (an Opus coordinator dispatch): the gates (whole-project build with 0 warnings,
-`lake lint`, the blueprint gates, the 20 main results' axioms), ROADMAP's row and §41, the design
-doc's MULTIGRAPH arc compressed, UNSTATED named next. `F-121` and `F-222` are done.
+**The close** (an Opus coordinator dispatch): the re-read is done (the commit "Phase 41c, the
+close's re-read"), so the close checks only its four fixed sentences, then the gates (whole-project
+build with 0 warnings, `lake lint`, the blueprint gates, the 20 main results' axioms), ROADMAP's
+row and §41, the design doc's MULTIGRAPH arc compressed, UNSTATED named next. `F-121` and `F-222`
+are done.
 
 ## Decisions made during this phase
 

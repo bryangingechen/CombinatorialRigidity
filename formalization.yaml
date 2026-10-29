@@ -400,8 +400,10 @@ status:
       Proposition 2.3, which CombinatorialRigidity.Molecular.rigidityMatrix_prop11 states in
       conditional form (phase 41b: at a body-hinge framework with a nonzero hinge at every edge,
       the bound dim Z <= D + def(G~), which a generic framework meets, gives the formula; the
-      unconditional Proposition 2.3 is the Jackson-Jordán Thm 6.1 / Cor 6.3 row below), and with
-      the def = corank bridge (Katoh-Tanigawa eq. (2.4)) that rank is the rank of M(G~).
+      unconditional Proposition 2.3, at every generic hinge-point assignment of a multigraph, is
+      CombinatorialRigidity.Molecular.BodyHingeFramework.tfae_finrank_span_rigidityRows_ofHinge_deficiency,
+      from the rank formula of the Jackson-Jordán Thm 6.1 / Cor 6.3 row below), and with the
+      def = corank bridge (Katoh-Tanigawa eq. (2.4)) that rank is the rank of M(G~).
     sorry_count: 0
     axioms: ["propext", "Classical.choice", "Quot.sound"]
     comparator_config: ""
