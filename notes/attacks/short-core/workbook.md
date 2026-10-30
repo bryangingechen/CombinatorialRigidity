@@ -284,3 +284,320 @@ Then `⟨p_a, y₁⟩ ≠ L` meets `L` in a line `⟨v⟩`. And `v ∦ p_b`: oth
 `⟨y₃, p_b⟩ ∩ ⟨p_a, y₁⟩ ⊆ Π_b ∩ ⟨p_a, y₁⟩ ⊆ L ∩ ⟨p_a, y₁⟩ = ⟨v⟩`, and `v ∉ ⟨y₃, p_b⟩`: otherwise
 `v = αy₃ + βp_b` with `α ≠ 0`, so `y₃ ∈ ⟨v, p_b⟩`. So `p_a, y₁, y₃, p_b` are independent. The `κ = 1`
 step stands, as the review confirmed. ∎
+
+## S13 — session 2's consumer diff: no mismatch (session 2, 2026-10-30)
+
+Read against the tree at `3b6dd7e9`, from the declaration bodies in
+`Molecular/Molecule/Pencil/MainComponent/Short.lean` (the brief's path omits `Molecular/`). The
+hypotheses of `Graph.X0Attains.of_openEar_three` (line 929) are, one for one, brief §1's list:
+`[Infinite K] [Finite α] [Finite β]`, `hG`, `hcover`, `hinj`, `hxV₁`, `ha`, `hb`, `hab`,
+`hpath : ∀ i : Fin 4`, `hsep`, `h₁`, `h₂ : (G.splitOff (x 1) (x 0) (x 2) (e 1)).X0Attains K`, with
+conclusion `G.X0Attains K`; `of_openEar_four` (line 782) is the same at `Fin 5`. `Graph.IsX0Graph`
+(`Cut.lean:118`) is simple, connected and degree at least 2; `Graph.X0Attains` (`Carrier.lean:342`)
+is brief §1's reading. `of_openEar_splitOff` (line 588) still takes `hins` at every base datum and
+every `ρ`, as the brief's O1 says. The base data (`exists_earBase_splitOff`, line 382) take `la`, `lb`
+from a height `zs ∈ L_{G''}(q')` on the closed neighbourhoods `N_{G''}[a] ∋ x 0`, `N_{G''}[b]`, chosen off
+`R₁ ∘ restrict` and `R₂` only. The `Pᵈ` consumer does not exist yet, so the diff is of the model.
+
+## S14 — in the `P²` framework, relative rigidity puts `a` and `b` in one connected rigid set (session 2)
+
+**Setting.** `F` is a finite simple graph on `V₁`, with `a ≠ b` in `V₁` not adjacent, and `F' = F + ab`.
+A *`P²` framework* of `F` gives each edge `uv` a hinge `h_uv ∈ Λ²K³`, and its motions are the maps
+`S : V₁ → Λ²K³` with `S(u) − S(v) ∈ K·h_uv` on each edge. `Z(·)` is the motion space. `def` is the
+deficiency at `D = 3`: `def(F) = max_P [3(|P| − 1) − 2·d_F(P)]` over the partitions `P` of `V₁`, where
+`d_F(P)` counts the edges crossing `P`. This is Lean's `F.deficiency 2`, by the body of
+`Graph.partitionDef` (`Deficiency.lean:206`, `bodyBarDim 2 = 3`). Write `val_F(P)` for the bracket.
+
+**Statement.** Suppose every hinge of `F'` is nonzero, `dim Z(F') = 3 + def(F')`, and `S(a) = S(b)` for
+every `S ∈ Z(F)`. Then there is an `X ⊆ V₁` with `a, b ∈ X` such that `F[X]` is connected and every
+motion of `F` is constant on `X`.
+
+**Proof.**
+0. *Constant-on-parts motions.* For a partition `P` of `V₁` and a graph `F₀ ∈ {F, F'}` with nonzero
+   hinges, the motions of `F₀` constant on each part form a space of dimension at least
+   `3|P| − 2·d_{F₀}(P) = 3 + val_{F₀}(P)`. There are three unknowns per part, an edge inside a part
+   imposes nothing, and a crossing edge imposes the two conditions `S_X − S_Y ∈ K·h`. So
+   `dim Z(F₀) ≥ 3 + def(F₀)`, by an optimal `P`.
+1. `Z(F') = Z(F)`. `Z(F') = {S ∈ Z(F) : S(a) − S(b) ∈ K·h_ab}`, and `S(a) − S(b) = 0` on `Z(F)`.
+2. `def(F') ≥ def(F)`. By 0 and 1, `3 + def(F) ≤ dim Z(F) = dim Z(F') = 3 + def(F')`.
+3. *Every `F'`-optimal partition has `a` and `b` in one part.* `val_{F'}(P) = val_F(P) − 2·[P
+   separates a, b]`. A separating `P` has `val_{F'}(P) ≤ def(F) − 2 < def(F')`.
+4. *Motions are constant on the parts.* Fix an `F'`-optimal `P`, and let `X` be its part holding `a`
+   and `b`. By 0, the motions of `F'` constant on the parts of `P` have dimension at least
+   `3 + def(F') = dim Z(F')`, so they are all of `Z(F')`, which is `Z(F)` by 1.
+5. *`F[X]` is connected.* Let `F[X]` have components `C₁, …, C_m` with `m ≥ 2`. Splitting `X` into them
+   gives a partition `P*`. The only edge of `F'` that newly crosses is `ab`, if `a` and `b` fall in
+   different components. So `val_{F'}(P*) ≥ val_{F'}(P) + 3(m − 1) − 2 > def(F')`, a contradiction. ∎
+
+`a ≁ b` is used only to make `F'` simple, which the rank input below asks. Step 3 is
+`Graph.deficiencyMerged` (`Deficiency.lean:3576`) in words. The hypothesis `dim Z(F') = 3 + def(F')` is
+the generic `P²` rank. In the project it is `PanelHingeFramework.finrank_span_rigidityRows_of_isGenericNormals`
+(`GenericLift/PanelGeneric.lean`) at `n = 2`, with rank and nullity. That theorem is Katoh and Tanigawa's
+Theorem 5.6 at `d = 2` (`rankHypothesis_of_theorem_55_gen`), made generic. At grade 1 the panel hinge
+`panelSupportExtensor n_u n_v = complementIso (n_u ∧ n_v)` (`PanelLayer.lean:202`) is the image of
+`n_u ∧ n_v` under a fixed isomorphism `Λ²K³ ≅ Λ¹K³`. So `ofNormals (k := 1)` at normals `q̂` has the
+motions of the `P²` point-join framework `h_uv = q̂_u ∧ q̂_v`, carried by that isomorphism.
+
+## S15 — a general picture is generic for the `P²` rank (session 2)
+
+**Statement.** Let `F'` be a finite simple graph with at least one body. Some nonzero polynomial `P` in
+the picture `q : V(F') × Fin 2 → K` has the following property. At every `q` off its zero set, the `P²`
+point-join framework with hinges `q̂_u ∧ q̂_v`, `q̂_v = (q_v, 1)`, has nonzero hinges and
+`dim Z(F') = 3 + def(F')`.
+
+**Proof.** `PanelHingeFramework.exists_isGenericNormals_abundance` (`PanelGeneric.lean:171`) gives a
+nonzero abundance polynomial `A` in the normals `n : V × Fin 3 → K`, whose non-roots are generic. The
+citation was corrected by S24; it first read `exists_isGenericNormals`, which gives no polynomial. Pick `n` off `A · ∏_v n_{v,2}`, possible since
+`K` is infinite. At `n`, `finrank_span_rigidityRows_of_isGenericNormals` (`n = 2`) gives rank
+`3(|V| − 1) − def(F')`. Put `q̂_v = n_v / n_{v,2}`. Each panel hinge is multiplied by the unit
+`(n_{u,2} n_{v,2})⁻¹` (`normalsJoin_smul_left` and its right form), so the spans of the hinges are
+unchanged, and so is the motion space. So the picture `q⁰_v = (n_{v,0}, n_{v,1})/n_{v,2}` attains the
+rank. The rank is at least `r` exactly where some `r`-minor of rows polynomial in `q` does not vanish.
+That minor is nonzero at `q⁰`, so it is a nonzero polynomial. Multiply it by `∏_{uv ∈ E}(q_{u,0} − q_{v,0})`
+for nonzero hinges. Off the product, the rank is at least the target, and it is at most the target by
+the bound with nonzero hinges (S14 step 0, which is `screwDim_add_deficiency_le_finrank_infinitesimalMotions`). ∎
+
+This is the step `exists_mvPolynomial_le_finrank_ofNormals_bind` performs at grade 2 for the ear data.
+The scaling is what moves the generic normals into the affine chart `n_{v,2} = 1`, where pictures live.
+
+## S16 — the cell `κ = 3`, `k = 3` is not a danger cell at general base data (session 2)
+
+**Statement.** Let `a` and `b` each have at least two neighbours in `V₁`. Let the picture `q` be general:
+closed neighbourhoods in `V₁` with three or more members have non-collinear pictures, distinct points
+on edges, and `q` off S15's polynomial for `F' = G[V₁] + ab` when `a ≁ b`. Let the base heights
+`z = (z¹, z²) ∈ L(q) = L₁(q)²` (S9 (i)) have `z¹` off the kernel of the linear map
+`L₁(q) → (K³)*`, `z¹ ↦ λ_a − λ_b`, whenever that map is nonzero. If `κ = 3`, then `ρ ⊆ Λ²Π`, so
+`dim W ≤ 3` at `k = 3`, and the cell is not a danger cell.
+
+**Proof.**
+1. *`κ = 3` forces `P²` relative rigidity.* Write `z ↦ λ` for S9 (ii)'s correspondence. With at least
+   two neighbours, `λ_a` is the plane through the lifted closed neighbourhood of `a`, because
+   `λ_a − λ_v` vanishes at `q̂_v` for each neighbour `v`. So `λ_a` is determined by `z` and is linear in
+   it. The image of `z¹ ↦ λ_a − λ_b` is `ρ⁽²⁾`, since every `P²` motion comes from some `z¹`. `κ = 3`
+   means `la = lb`, so `λ¹_a = λ¹_b`, and by the choice of `z¹`, `ρ⁽²⁾ = 0`.
+2. *`a ~ b`.* The edge gives `ρ ⊆ K·b_a∧b_b` (S3's telescoping), and `b_b ∈ Π` since `b ∈ N[a]`.
+3. *`a ≁ b`.* S14 applies to the `P²` framework of `F = G[V₁]` at `q`, with S15 for `F'`. It gives an
+   `X ∋ a, b` with `G[X]` connected and every `P²` motion constant on `X`. So `X ⊆ H`, the rigid class
+   of S11 (iii), whose points lie in `Π` (`b_v = (q̂_v, Λ_a q̂_v)`). An a–b path in `G[X]` has every
+   hinge in `Λ²Π`, so `ρ ⊆ Λ²Π`, by S3's telescoping.
+4. At `k = 3` and `κ = 3`, `J(y) ⊆ Λ²Π` (S5), so `W = ρ + J ⊆ Λ²Π`, of dimension 3 < 7. ∎
+
+**Consequence.** With S4, S6–S8 and S12, SHORT-CORE holds at every danger cell, at general ear data,
+for base data general in S16's sense. This uses the actual `ρ` only at `κ = 3`, `k = 3`, and there only
+through S16. S10 and S11 (i)–(ii) are no longer needed: S16 bounds `ρ` directly. What remains is to
+fold S16's conditions on the base data into the `P⁴` interface (O1d, O4), and the single-neighbour case.
+In that case `la` is chosen by the base data, and at a general choice `la ≠ lb` (session-1 S9, last
+paragraph), so `κ ≤ 2`.
+
+## S17 — exact control for S14, S16 and S9 (iii) (session 2)
+
+`python3 notes/attacks/short-core/drivers/p2_path.py --seed N --trials 60`, `N = 1, 2, 3`, all
+`OK` (exit 0). **Population.** The draws are connected simple graphs on 5–8 bodies: a random
+spanning tree plus 1 to `n` or `n/2 + 1` extra edges, or a triangle strip with a flexible pendant
+cycle. Pictures are integer, in `[−40, 40]²`, and the heights are random combinations of a basis of
+`L₁(q)`, computed from its definition. There is one draw per graph, 179 graphs in all.
+**Results.**
+- Every graph met `dim Z(F) = 3 + def(F)` at its draw, which certifies its generic `P²` rank.
+- **S14.** There were 932 non-adjacent `P²`-relatively-rigid pairs. At every one, `F + ab` met S14's
+  hypothesis at the draw. Every one passed: `def(F') ≥ def(F)`; every `F'`-optimal partition has
+  `a`, `b` in one part `X`, with `F[X]` connected and `X ⊆ H`; and `a`, `b` lie in one component of
+  `F[H]`. In 237 of them, `H ≠ V`.
+- **S9 (iii).** There were 2602 pairs, each end with two or more neighbours. At every one,
+  `κ = 3 − min(2, dim ρ⁽²⁾)`.
+- **S16.** There were 2189 pairs with `κ = 3`, every one guarded. At each, `ρ ⊆ Λ²Π_a`; in fact
+  `ρ = 0`, as S10 with S16 forces. In 674 of them, `F` is not `P²`-rigid.
+- **Control.** Of the 413 pairs with `κ ≤ 2`, 24 have `ρ ⊄ Λ²Π_a`, so the containment test can fail.
+The deficiency is by enumerating set partitions, independent of `strata.py`'s DP. Each figure is one
+draw per graph, so it is evidence about this sampler's support. S14 and S16 are the proofs.
+`blindaxes.py --imports --population` lists only the partition generator. By reading, the fences are:
+- `C = 40`, the picture range;
+- `n ∈ [5, 8]`;
+- the extra edges;
+- the strip family on every fourth trial;
+- the height coefficients, in `[−9, 9] ∖ {0}`.
+The draws vary the graph, the picture and the heights, the variables of S14 and S16.
+
+## S18 — control on T3's cells: no danger cell has `κ = 3` (session 2)
+
+`python3 notes/attacks/short-core/drivers/t3_kappa.py --seed 1` (exit 0). The script redraws stage 1
+of `strata.py`'s `short_cell` at each of T3's 72 danger cells at `d = 4`, the ones `short_danger` fixes
+independently of the seed. It reports `κ = dim(Π_a ∩ Π_b)` and the number of neighbours of `a` and
+of `b` in `V₁`. **Result:**
+- `κ = 1` at 67 cells and `κ = 2` at 5. No cell has `κ = 3`, as S16 predicts.
+- At `k = 3, 4, 5`, all 36 cells have `κ = 1`. The five `κ = 2` cells are at `k = 7, 8`, where
+  `a` and `b` may be adjacent: two `th3` cells at arc length 1, two `same` cells and one `neck` cell.
+- `a` and `b` have two or three neighbours in `V₁` at every cell. T3 holds no single-neighbour case.
+
+`κ` is upper semicontinuous with `dim Π_a = dim Π_b = 3`, so each draw certifies `κ ≤` its value at
+general base data of that cell. The cells are a capped search (`SHORT_PER = 2` per family, `d` and
+`k`; Strata Result 24), not a census. The other fences are `strata.py`'s: `SHORT_TRIES`, `SHORT_NMAX`,
+and `COORD = 1000` for the coordinates. `blindaxes.py` resolves no population inside the driver itself.
+
+## S19 — the reduction's inputs at `D = 10`: two by reading, the insertion by hand (session 2)
+
+(a) **The ear rank formula.** `BodyHingeFramework.finrank_span_rigidityRows_ear_eq` (`Ear.lean:296`)
+is stated for `BodyHingeFramework K d` at every grade `d`. Its hypotheses are the ear's shape and
+nonzero ear hinges (`hC`). At grade 3, `ScrewSpace K 3 = Λ³K⁵` has dimension 10, and the formula reads
+`rank G = rank G[V₁] + 9(k + 1) + dim(ρ + Λ) − 10` for an ear with `k` interior bodies.
+
+(b) **The deficiency bounds.** `Graph.splitOff_deficiency_le_of_eq_left` (`SplitOffDeficiency.lean:181`)
+and `Graph.deficiency_induce_add_le_of_ear` (`Ear.lean:429`) are stated at every `n` with
+`1 ≤ bodyBarDim n`, and `bodyBarDim 4 = 10`.
+
+(c) **The insertion, in `Λ²V` for any `V = K^{N+1}`, `D = dim Λ²V`, `K` infinite.**
+- *(I1, gain.)* Let `R ⊆ Λ²V` and `y, y', u ∈ V`, and suppose `y∧u ∉ W := R + K·y∧y'`. Then some `t ≠ 0`
+  has `dim(R + span{y∧(y + tu), (y + tu)∧y'}) ≥ dim W + 1`.
+  *Proof.* For `t ≠ 0`, write `N_t` for this span. It holds `y∧u = t⁻¹·y∧(y + tu)` and
+  `(y + tu)∧y' = y∧y' + t·u∧y'`.
+  - If `y∧y' ∈ R`, then `W = R` and `N_t ⊇ R + K·y∧u`, which has dimension `dim W + 1`.
+  - Otherwise `dim W = dim R + 1`, and `y∧y' ∉ R + K·y∧u`. (If `y∧y' = r + c·y∧u` with `r ∈ R`, then
+    `c ≠ 0`, and `y∧u ∈ W`.) A vector off a subspace stays off it along a line at some nonzero
+    parameter, which is `exists_ne_zero_add_smul_notMem`, a statement in any module. So some `t ≠ 0` has
+    `(y + tu)∧y' ∉ R + K·y∧u`, and then `dim N_t ≥ dim R + 2 = dim W + 1`. ∎
+- *(I2, star.)* Let `y₁, y₃` be affine (last coordinate 1), and `W = R + K·y₁∧y₃`. Suppose that
+  `star(y₁) + star(y₃) ⊆ W` implies `W = Λ²V`. Then some affine `x₂` has
+  `dim(R + span{y₁∧x₂, x₂∧y₃}) ≥ min(dim W + 1, D)`.
+  *Proof.*
+  - If `W` holds both stars, then `W = Λ²V`. Take `x₂ = y₁`; the span is `W`, of dimension `D`.
+  - If `star(y₁) ⊄ W`: `V = K·y₁ ⊕ {u_N = 0}` and `y₁∧y₁ = 0`, so `star(y₁)` is spanned by the
+    `y₁∧u` with `u_N = 0`. Some such `u` has `y₁∧u ∉ W`. I1 with `(y, y') = (y₁, y₃)` gives `t ≠ 0`,
+    and `x₂ = y₁ + tu` is affine.
+  - If `star(y₃) ⊄ W`: the same with `(y, y') = (y₃, y₁)`. `W` and the new span are symmetric in the
+    two ends, because `y₃∧y₁ = −y₁∧y₃`. ∎
+
+This is the proof of `exists_insertion_gain` and `exists_insertion_of_star_sup_star` (`Lines.lean:488`
+and after), with `finrank_screwSpace_two = 6` replaced by `D`. Nothing else in them reads the
+dimension. At `d = 4`, `D = 10`, and the step uses I2 with `R = ρ +` the joins of `G''`'s ear other
+than `y₁∧y₃`, as `exists_insertion_three` and `-four` do.
+
+## S20 — the `P⁴` factoring at `k = 3, 4, 5`, by hand (session 2; O1d)
+
+**Statement.** Take `G`, `V₁`, the open ear `a − x₁ − ⋯ − x_k − b` with `k ∈ {3, 4, 5}`, and `G''`
+(`x₂` suppressed), as in brief §1, with `G[V₁]` and `G''` attaining in `P⁴`. Suppose the base data
+`(q, z, la, lb, ρ)` are those of the `P⁴` reading of `Graph.exists_earBase_splitOff`, with two more
+properties:
+- (P) `p_a` and `p_b` are independent;
+- (B) `la ≠ lb`, or `ρ ⊆ Λ²Π_a` (`Π_a = graph la`).
+Then `G` attains in `P⁴`. So `of_openEar_splitOff`'s `hins` transcribes to `d = 4` once it is restricted
+to base data with (P) and (B). S21 supplies them.
+
+**Proof.** Follow `of_openEar_splitOff` (`Short.lean:588–766`) with `D = 10`.
+1. *Ear data of `G''`.* Three polynomials: `G''` at target (nonzero at the base data's `s₁`), the
+   admissible pictures, and `Qx` (step 3). Take a common non-root `sy`.
+2. *`dim W`.* The ear rank formula at `G''` (S19 (a); `k − 1` interior bodies and `k` joins) reads
+   `rank G'' = rank G[V₁] + 9k + dim W − 10`. With `rank G'' ≥ 10(|V₁| + k − 2) − def(G'')` and
+   `rank G[V₁] = 10(|V₁| − 1) − f`, it gives `dim W ≥ k + f − def(G'')`.
+3. *`Qx` and the insertion.* I2 (S19 (c)) gives an affine `x₂` with
+   `dim(ρ + Λ_G) ≥ min(dim W + 1, 10)`, wherever `W ⊇ S(y)` implies `W = Λ²V`. That implication holds
+   off a nonzero polynomial in the ear datum `y`, in four cases:
+   - `k = 4`: S7, for every `ρ` and `κ`;
+   - `k = 5`: S8, likewise;
+   - `k = 3` with `la ≠ lb` (so `κ ≤ 2`): S6, with S12's existence, which uses (P);
+   - `k = 3` with `la = lb` and `ρ ⊆ Λ²Π_a`: `y₁, y₃ ∈ Π_a`, so `W ⊆ Λ²Π_a` has dimension at most 3, less
+     than `dim S(y) = 7` once `y₁, y₃` are independent. The premise fails off a nonzero 2-minor of `(y₁, y₃)`.
+   The ear points are affine-linear in the ear data `s`, and affine points are Zariski-dense in `Π_a`,
+   `Π_b` and `V`, so each condition is a nonzero polynomial `Qx` in `s`.
+4. *Counts.* `dim(ρ + Λ_G) ≥ min(k + 1 + f − def(G''), 10) ≥ min(k + 1 + f − def(G), 10) = n₀ :=
+   k + 1 + f − def(G)`. This uses `def(G'') ≤ def(G)` and `f + k + 1 − 10 ≤ def(G)` (S19 (b)).
+5. *Ear data of `G`.* The bound `dim(ρ + Λ_G) ≥ n₀` holds at `sy` with `x₂` at its body, so it holds
+   off a nonzero polynomial. Take a common non-root `s₀` with the main-picture polynomial of `G`. The
+   ear rank formula at `G` gives `rank G = rank G[V₁] + 9(k + 1) + dim(ρ + Λ_G) − 10 ≥
+   10(|V₁| + k − 1) − def(G)`, the target. ∎
+
+Against `P³`, three things change: 6 becomes 10, the insertion is I2 in `Λ²K⁵`, and `hins` takes (P)
+and (B). At `k = 4, 5` it needs neither (S7, S8). At `k = 3`, S2 shows that the hypothesis is needed.
+The formal ports (the `P⁴` carrier, `earConfig`, the polynomial lemmas at grade 3) are PD-STATE's and
+PD-STEPS', not this attack's.
+
+## S21 — the base data can be chosen with (P) and (B) (session 2; O4)
+
+**Statement.** The `P⁴` reading of `Graph.exists_earBase_splitOff` can also deliver (P) and (B).
+
+**Proof.** The `P³` lemma picks `q'` off `P₁ P₂ Pm`, then picks `zs ∈ L_{G''}(q')` as a common non-root
+of `R₁ ∘ restrict` and `R₂`, and reads `la, lb` off `zs`. Make two additions.
+- *On `q'`, extra factors.* `q_{a,0} − q_{b,0}`, which gives (P), since `p_a, p_b` are affine. The
+  3×3 picture determinants of triples in the closed neighbourhoods of `a` and `b`, in `G[V₁]` and in
+  `G''`. And, when `a ≁ b`, S15's polynomial for `G[V₁] + ab`.
+- *On `zs`, a linear form `ℓ`.* `la` solves `z_v = la·q̂_v` on three non-collinear members of
+  `N_{G''}[a]`, so it is linear in `zs`, and likewise `lb`. Let `ℓ` be a coordinate of `la − lb` that is
+  nonzero somewhere on `L_{G''}(q')`, if there is one. `L_{G''}(q')` is a vector space over the infinite
+  `K`, so the three have a common non-root.
+
+If `ℓ` exists, then `la ≠ lb` at `zs`. Otherwise `la = lb` on all of `L_{G''}(q')`, and two cases remain.
+- *`a` has a single neighbour `w` in `V₁`* (or `b`, symmetrically). Then `z_{x₁}` is free in
+  `L_{G''}(q')`. Every closed neighbourhood holding `x₁` has three members: `N_{G''}[a] = {a, w, x₁}`,
+  `N_{G''}[x₁] = {a, x₁, x₃}` and `N_{G''}[x₃]`, where `x₃` is the next ear body of `G''` at every `k`
+  and has degree 2. Three points
+  with non-collinear pictures always lift into a 3-space (S9 (i)). So `la(q̂_{x₁}) = z_{x₁}` varies,
+  while `lb` does not read `z_{x₁}`, because `x₁ ∉ N_{G''}[b]`. So this case does not arise.
+- *Both have two or more neighbours in `V₁`.* Then `la − lb = (λ¹_a − λ¹_b, λ²_a − λ²_b)` reads only
+  `z|_{V₁}`. The restriction `L_{G''}(q') → L_{G[V₁]}(q') = L₁(q')²` is onto: it is
+  `Graph.earExtend_mem_liftingSpace`, used coordinatewise. So `z¹ ↦ λ_a − λ_b` vanishes on `L₁(q')`,
+  and `ρ⁽²⁾ = 0` (S16 step 1). S16 steps 2–3 then give `ρ ⊆ Λ²Π_a` at every height. ∎
+
+**Consequence.** With S14–S21, SHORT-CORE and the `P⁴` step it serves hold at `k = 3, 4, 5` by hand.
+The statement proved is the brief's §3 at base data general in S21's sense, a nonempty Zariski-open
+condition that the step's own choice of base data meets. It is not proved at every base datum where
+`G[V₁]` and `G''` attain.
+
+## S22 — every `d`, `k = 3`: S6's two curves force divisibility by `p_a ∧ p_b` (session 2)
+
+**Setting.** `V = K^{d+1}`, `d ≥ 4`. The wedge pairs `Λ²V × Λ^{d−1}V → Λ^{d+1}V` perfectly. Let
+`Q = V/⟨y₁, y₃⟩`, and write `ω̄` for an image in `Λ^• Q`. Then `S(y)° = T(y) = y₁∧y₃∧Λ^{d−3}V`, the
+`ω` with `ω∧y₁ = ω∧y₃ = 0`, of dimension `C(d − 1, 2)`. S1 holds verbatim. Put
+`M(y)ζ = y₁∧y₃∧ζ mod R` on `Λ^{d−3}V`, and let `U₁` be as in S6.
+
+**Statement.** Let `k = 3`, let `ρ` be any subspace, and let `y ∈ U₁` with `p_a, y₁, y₃, p_b` independent.
+If `W(y) ⊇ S(y)` and `W(y) ≠ Λ²V`, then `ker M(y) ≠ 0` modulo `⟨y₁,y₃⟩∧Λ^{d−4}V`. Every `ζ` in the kernel
+has `ζ̄ ∈ p̄_a∧p̄_b∧Λ^{d−5}Q`. At `d = 4` this is `ζ̄ = 0`, which is S6.
+
+**Proof.** As in S6, `J ⊆ S`, so `R ∩ T = R ∩ J° ≠ 0`, and the kernel is nonzero. Curve A,
+`(y₁ + t p_a, y₃)`, gives `δ_A = p_a∧y₃∧ζ + y₁∧y₃∧ζ' ∈ R`. Its first term shares `p_a, y₃, y₃` with the
+three joins, and its second lies in `T ⊆ J°`. So `δ_A ∈ T`, and `δ_A ∧ y₁ = ±y₁∧y₃∧p_a∧ζ = 0`. That is,
+`p̄_a∧ζ̄ = 0` in `Λ^{d−2}Q`. `p̄_a ≠ 0`, and the Koszul complex of a nonzero vector is exact, so
+`ζ̄ ∈ p̄_a∧Λ^{d−4}Q`. Curve B gives `ζ̄ ∈ p̄_b∧Λ^{d−4}Q` in the same way. With `p̄_a, p̄_b` independent,
+`ζ̄ ∈ p̄_a∧p̄_b∧Λ^{d−5}Q`. ∎
+
+**What it leaves at `d = 5`.** Here `ker M(y) ⊆ K·p̄_a∧p̄_b`, so `y₁∧y₃∧p_a∧p_b ∈ R`. A third curve
+`(y₁ + t u, y₃)`, with `u ∈ Π_a` general, has first term `u∧y₃∧p_a∧p_b`, which shares a vector with
+each of the three joins. It gives `u∧y₃∧p_a∧p_b∧y₁ = 0`. That is false when `Π_a ∩ ⟨y₃, p_b⟩ = 0`, which
+a general `y₃ ∈ Π_b` meets when `κ = 0`, or when `κ = 1` with `p_b ∉ Π_a` (a sketch, not checked
+beyond this paragraph). *Not yet written as a result:* the case `κ = 2` at `d = 5`,
+and `k ≥ 4` at `d ≥ 5`. `κ = 3` closes at every `d` by S14–S16 read at `d − 2` heights: `ρ⁽²⁾ = 0` again
+gives `ρ ⊆ Λ²Π`, and `dim Λ²Π = 3 < 2d − 1`.
+
+## S23 — control for the secondary target: `κ` on T3's 126 cells at `d = 5` (session 2)
+
+`python3 notes/attacks/short-core/drivers/t3_kappa.py --seed 1 --dims 5` (exit 0; it fails only on a
+`κ = 3` cell at `d = 4`). `κ = 0` at 115 cells, `κ = 1` at 5 and `κ = 2` at 6. In SHORT's range at
+`d = 5`, `3 ≤ k ≤ C(4, 2) + 2 = 8`, all 72 cells have `κ = 0`, and every `κ ≥ 1` cell has `k ≥ 9`. As in
+S18, each draw certifies `κ ≤` its value at general base data of that cell. The cells are a capped
+search, not a census. So S22's third curve, which needs `κ = 0` or `κ = 1` with `p_b ∉ Π_a`, covers
+every `d = 5`, `k = 3` cell T3 holds.
+
+## S24 — the independent reading of S14–S16 (session 2)
+
+**Review.** A fresh `general-purpose` reader checked S14, S15 and S16 by hand against the definition
+bodies (`partitionDef`, `bodyBarDim`, `infinitesimalMotions` and the hinge row blocks,
+`panelSupportExtensor`, `IsGenericNormals`). It ran no numerics. **Verdict: all three CONFIRMED.**
+- **S14.** Every step holds. Step 0 needs only the crossing hinges nonzero. Step 3's change `−2·[P
+  separates a, b]` is `partitionDef` at `n = 2`. Step 5 holds even when `ab` is the only edge joining
+  two components of `F[X]`.
+- **S15.** The mathematics holds.
+  - *Citation slip, corrected in S15.* The polynomial comes from `exists_isGenericNormals_abundance`.
+  - *The minor step* is `PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking`
+    (`GenericityDevice.lean:765`), at every grade, pulled back along `q ↦ (q, 1)`.
+  - *Scaling.* `infinitesimalMotions` reads only `K ∙ supportExtensor e`, so scaling a normal leaves
+    the rows literally unchanged.
+- **S16.** Every step holds.
+  - Degree-1 bodies of `G[V₁]` can only be `a` or `b`, by `hsep` and minimum degree 2, and a pendant
+    body is never in `H` anyway.
+  - A disconnected `G[V₁]` gives `κ ≤ 2`.
+  - `P⁴` motions enter only through S3's telescoping. S10 is not used.
+
+**Formalization costs it named (not gaps).**
+- `hspan : V(G) = Set.univ` forces the `P²` framework of `G[V₁] + ab` onto the subtype `↥V₁`, with
+  the deficiency carried along (`partitionDef_map`).
+- The new edge `ab` needs a label outside `E(G[V₁])`; an ear label can be reused.
+- `exists_mvPolynomial_le_finrank_ofNormals_bind` is stated at `k := 2` only, so it needs a `k := 1`
+  sibling.
