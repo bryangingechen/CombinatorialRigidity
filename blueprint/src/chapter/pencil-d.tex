@@ -838,7 +838,9 @@ most zero at $d = 2$ has value at most zero at every $d \ge 2$
 some dimension has deficiency zero in every higher one
 (\cref{lem:deficiency-rigid-higher}). We keep the planar notions of
 \cref{sec:main-component-sparse}: the singleton value $s$, sparse graphs
-and tight sets. We write $v_d(P)$ for the value of a partition $P$ at
+and tight sets. A tight set $X$ has $\operatorname{def}_3(G[X]) = 0$
+(\cref{lem:deficiency-tight-rigid}), so $\operatorname{def}_d(G[X]) = 0$
+for every $d \ge 3$. We write $v_d(P)$ for the value of a partition $P$ at
 $d$, and $d_G(P)$ for the number of edges of $G$ joining distinct parts
 of $P$.
 
@@ -2049,4 +2051,196 @@ as in \cref{lem:pencil-contract-additive-kernel}.
   \cref{lem:deficiency-rigid-higher} and \cref{cor:pencil-d-jj-flat}. The
   standing hypotheses of the core and the planar deficiency of the
   contraction do not depend on $d$.
+\end{proof}
+
+\subsection{Splitting off a body of degree two in every dimension}
+\label{sec:pencil-d-splitoff}
+
+This section proves the split-off step of the induction in dimension $d$
+(\cref{thm:pencil-d-splitoff}). At $d = 3$ it is
+\cref{thm:pencil-x0-splitoff}, and we keep its proof
+(\cref{sec:main-component-splitoff}). Let $x$ be a body of degree two
+whose neighbours $a$ and $b$ are not adjacent, let
+$V_1 = V(G) \setminus \{x\}$, and let $G''$ be $G[V_1]$ with a new edge
+$ab$. The step assumes
+\[
+  \delta_d \;=\; \operatorname{def}_d(G[V_1]) -
+  \operatorname{def}_d(G[V_1]; a, b) \;\ge\; D - 1,
+\]
+where the step at $d = 3$ assumes $\delta_3 \ge 5$. We put $x$ back on
+the line through the points of $a$ and $b$, where it raises the rank by
+exactly $D - 1$ (\cref{lem:pencil-splitoff-special-rank}). Then we move
+its picture along a line to a general point, and the heights along a
+line of solutions of the lifting system of $G[V_1]$.
+
+The lemmas of \cref{sec:main-component-splitoff} serve in dimension $d$
+unchanged. Three of them are planar: the alternative that places the
+special position (\cref{lem:pencil-splitoff-flexes}), the line of
+solutions (\cref{lem:pencil-splitoff-curve}) and the height at the ear
+body (\cref{lem:pencil-splitoff-ear-extension}). In dimension $d$ we
+apply them to each of the $d - 2$ heights. The other two concern
+panel-hinge frameworks with normals in any dimension: the rank at the
+special position (\cref{lem:pencil-splitoff-special-rank}) and the rank
+along a polynomial curve (\cref{lem:pencil-curve-limit}).
+
+At a chain $a - x - b$ on $V_1$ with one interior body, the last clause
+of \cref{def:pencil-d-usable-chain} is the bound $\delta_d \ge D - 1$.
+This bound holds when no set of at least two bodies containing $x$ is
+rigid in dimension $d$ (\cref{lem:deficiency-one-body-chain-d}). In a
+sparse graph the ends $a$ and $b$ of such a chain are not adjacent, by
+part~(1) of \cref{lem:deficiency-one-body-chain}, which is planar.
+
+\begin{theorem}[Splitting off a body of degree two, in every dimension]
+  \label{thm:pencil-d-splitoff}
+  \uses{def:pencil-d-x0-attains, def:pencil-x0-standing, def:open-ear,
+        def:graph-operations, def:D-deficiency, def:deficiency-merged}
+  Let $K$ be infinite and $d \ge 3$, with $D = \binom{d+1}{2}$, and let
+  $G$ satisfy the standing hypotheses (\cref{def:pencil-x0-standing}).
+  Let $a - x - b$ be an open ear of $G$ on $V_1$ with one interior body
+  (\cref{def:open-ear}), whose ends $a$ and $b$ are not adjacent. Let
+  $G''$ be the splitting-off $G_x^{ab}$ (\cref{def:graph-operations})
+  whose new edge $ab$ takes the label of the edge $ax$. Suppose
+  $\operatorname{def}_d(G[V_1]; a, b) + D - 1 \le
+  \operatorname{def}_d(G[V_1])$ (\cref{def:deficiency-merged}). If the
+  general configuration of $G''$ attains in dimension $d$
+  (\cref{def:pencil-d-x0-attains}), then the general configuration of
+  $G$ attains in dimension $d$.
+\end{theorem}
+\begin{proof}
+  \uses{lem:splitoff-deficiency-merged, lem:deficiency-ear,
+        lem:splitoff-deficiency-reuse, thm:pencil-jj-equality,
+        lem:pencil-lifting-space-deficiency,
+        lem:pencil-x0-main-picture-open, def:pencil-lifting-system,
+        lem:pencil-splitoff-flexes, lem:pencil-splitoff-curve,
+        lem:pencil-weighted-lifting-system-local,
+        lem:pencil-splitoff-special-rank, lem:pencil-rank-congr,
+        lem:pencil-d-config-realization, def:panel-support-extensor,
+        lem:pencil-curve-limit, lem:pencil-splitoff-ear-extension,
+        lem:pencil-d-x0-one-witness}
+  We follow the proof of \cref{thm:pencil-x0-splitoff}, with $d - 2$
+  heights.
+
+  \emph{The counts.} The new edge $ab$ lowers by $D - 1$ the value of
+  every partition of $V_1$ that separates $a$ and $b$. By hypothesis the
+  other partitions have value at most
+  $\operatorname{def}_d(G[V_1]) - (D - 1)$. So
+  $\operatorname{def}_d(G'') + D - 1 \le \operatorname{def}_d(G[V_1])$
+  (\cref{lem:splitoff-deficiency-merged}, at $D$). The ear $a - x - b$
+  has one interior body, so
+  $\operatorname{def}_d(G[V_1]) \le \operatorname{def}_d(G) + D - 2$
+  (\cref{lem:deficiency-ear}, at $k = 1$). Together these give
+  $\operatorname{def}_d(G'') + 1 \le \operatorname{def}_d(G)$. Also
+  $\operatorname{def}_2(G'') \le \operatorname{def}_2(G)$
+  (\cref{lem:splitoff-deficiency-reuse}, at $D = 3$).
+
+  \emph{The picture.} As $a$ and $b$ are not adjacent, $G''$ is simple,
+  and each of its closed neighbourhoods has as many members as in $G$,
+  at least three. So Jackson and Jord\'an's equality applies to $G''$
+  (\cref{thm:pencil-jj-equality}). Take a picture $q$ off the zero sets
+  of three nonzero polynomials: that of the attainment at $G''$ in
+  dimension $d$, that of the equality at $G''$, and the main-picture
+  polynomial of $G$ (\cref{lem:pencil-x0-main-picture-open}). Then $q$
+  is admissible for $G''$ and a main picture of $G$, and some
+  $z'' \in L_{G''}(q)^{d-2}$ gives $G''$ its target. Also
+  \[
+    \dim L_{G''}(q) \;=\; 3 + \operatorname{def}_2(G'') \;\le\;
+    3 + \operatorname{def}_2(G) \;\le\; \dim L_G(q)
+  \]
+  (\cref{lem:pencil-lifting-space-deficiency}). For each $i$ let
+  $y_0^i = (z''^i, h^i)$ be a solution of the lifting system of $G''$ at
+  $q$ with heights $z''^i$ (\cref{def:pencil-lifting-system}). Each
+  closed neighbourhood in $G[V_1]$ lies inside the one in $G''$, so
+  $y_0^i$ is a solution for $G[V_1]$. As $ab$ is an edge of $G''$, the
+  affine function $h^i_a - h^i_b$ vanishes at $(q_a, 1)$ and at
+  $(q_b, 1)$.
+
+  \emph{The special position.} If some solution for $G[V_1]$ has
+  $h_a - h_b$ nonzero at $(q_a, 1)$ or at $(q_b, 1)$, then for all but
+  at most one $s$ it is nonzero at $(1 - s)(q_a, 1) + s\,(q_b, 1)$.
+  Otherwise every solution for $G[V_1]$ has $h_a = h_b$
+  (\cref{lem:pencil-splitoff-flexes}). This alternative reads the
+  solutions for $G[V_1]$ at $q$, and not the heights $z''$. As $K$ is
+  infinite, we may therefore fix one $s \neq 0, 1$ accordingly for all
+  $d - 2$ heights. Put $q^0_x = (1 - s)\,q_a + s\,q_b$, and let
+  $\varphi_0(z, h) = (h_a - h_b) \cdot (q^0_x, 1)$ and
+  $\psi(z, h) = (h_a - h_b) \cdot (q_x - q^0_x, 0)$. Then $\varphi_0$ is
+  nonzero somewhere on the solutions for $G[V_1]$, or $\varphi_0$ and
+  $\psi$ both vanish on them. Each $\varphi_0(y_0^i)$ is zero, as
+  $(q^0_x, 1)$ is an affine combination of $(q_a, 1)$ and $(q_b, 1)$.
+  By \cref{lem:pencil-splitoff-curve}, applied once for each height,
+  there are solutions $w^i$ for $G[V_1]$ such that
+  $y^i(t) = y_0^i + t\,w^i$ satisfies
+  $\varphi_0(y^i(t)) + t\,\psi(y^i(t)) = 0$ for every $t$.
+
+  \emph{The curve.} Let $q(t)$ be $q$ with the picture of $x$ moved to
+  $q^0_x + t\,(q_x - q^0_x)$, so that $q(1) = q$. As $q(t)$ agrees with
+  $q$ on $V_1$, each $y^i(t)$ is a solution for $G[V_1]$ at $q(t)$
+  (\cref{lem:pencil-weighted-lifting-system-local}). Write
+  $y^i(t) = (u^i(t), h^i(t))$. The identity above says that
+  $h^i_a(t) - h^i_b(t)$ vanishes at $(q(t)_x, 1)$. Let $z^i(t)$ agree
+  with $u^i(t)$ on $V_1$ and take the value $h^i_a(t) \cdot (q(t)_x, 1)$
+  at $x$, and let $z(t) = (z^1(t), \dots, z^{d-2}(t))$. The points of the
+  configuration $(q(t), z(t))$ in dimension $d$ are polynomials in $t$.
+
+  At $t = 0$ they are at the special position. On $V_1$ they are the
+  points $p_v$ of $(q, z'')$, as $y^i(0) = y_0^i$. At $x$ the picture
+  point is $q^0_x$, and the $i$-th height is
+  \[
+    h^i_a \cdot \bigl((1 - s)\,(q_a, 1) + s\,(q_b, 1)\bigr)
+    \;=\; (1 - s)\,z''^i_a + s\,z''^i_b,
+  \]
+  as $h^i_a$ takes the values $z''^i_a$ and $z''^i_b$ at $q_a$ and
+  $q_b$. The last coordinate of each point is $1 = (1 - s) + s$. So the
+  point at $x$ is $p_x = (1 - s)\,p_a + s\,p_b$ in $K^{d+1}$. The points
+  $p_a$ and $p_b$ are linearly independent: their last coordinates are
+  $1$, and $q_a \neq q_b$, as $q$ is admissible for $G''$, in which $a$
+  and $b$ are adjacent. So at $t = 0$ the rank of $G$ is that of $G''$
+  at $(q, z'')$ plus $D - 1$ (\cref{lem:pencil-splitoff-special-rank},
+  with normals in $K^{d+1}$, and \cref{lem:pencil-rank-congr}). This is
+  $\operatorname{tgt}_d(G'') + D - 1$.
+
+  \emph{A good parameter.} Every hinge of $G$ is nonzero at $t = 0$. At
+  the edges $ax$ and $xb$ the picture point $q^0_x$ differs from $q_a$
+  and from $q_b$, as $s \neq 0, 1$. So the points at the two ends, whose
+  last coordinates are $1$, are linearly independent. Every other edge of
+  $G$ is an edge of $G''$, and the points of $(q, z'')$ at its ends are
+  linearly independent (\cref{lem:pencil-d-config-realization}). A hinge
+  $C(p_u, p_v)$ with $p_u$ and $p_v$ independent is nonzero
+  (\cref{def:panel-support-extensor}). By \cref{lem:pencil-curve-limit},
+  the rank of $G$ at $(q(t), z(t))$ is therefore at least its value at
+  $t = 0$ for all but finitely many $t$. The main-picture polynomial of
+  $G$ at $q(t)$ is a polynomial in $t$, nonzero at $t = 1$, so $q(t)$ is
+  a main picture of $G$ for all but finitely many $t$. Take $t$ outside
+  both finite sets. Then $q(t)$ is admissible for $G$, and each $z^i(t)$
+  lies in $L_G(q(t))$ (\cref{lem:pencil-splitoff-ear-extension}, at
+  $q(t)$), so $z(t) \in L_G(q(t))^{d-2}$. As $|V(G)| = |V_1| + 1$ and
+  $\operatorname{def}_d(G'') + 1 \le \operatorname{def}_d(G)$, the rank
+  of $G$ at $(q(t), z(t))$ is at least
+  \[
+    D(|V_1| - 1) - \operatorname{def}_d(G'') + D - 1 \;=\;
+    D(|V(G)| - 1) - \operatorname{def}_d(G'') - 1 \;\ge\;
+    \operatorname{tgt}_d(G).
+  \]
+  As $G$ has a body, \cref{lem:pencil-d-x0-one-witness} applies, and the
+  general configuration of $G$ attains in dimension $d$.
+
+  At $d = 3$ this is \cref{thm:pencil-x0-splitoff}. There the dimension
+  enters in three places. First, the count reads $\delta_3 \ge 5$, the
+  five that $x$ adds to the rank at the special position, the bound
+  $\operatorname{def}_3(G[V_1]) \le \operatorname{def}_3(G) + 4$ along
+  the ear, and the target, through $6(|V(G)| - 1)$. In dimension $d$
+  these are $D - 1$, $D - 1$, $D - 2$ and $D(|V(G)| - 1)$.
+  \Cref{lem:splitoff-deficiency-merged} and \cref{lem:deficiency-ear}
+  hold at every $D$, and the count closes as at $d = 3$. Second, the height is one vector. In dimension $d$ each of
+  the $d - 2$ heights has its own solution $y_0^i$, its own line
+  $y^i(t)$ and its own value at $x$. The alternative that fixes $s$, and
+  the functionals $\varphi_0$ and $\psi$, read only the lifting system of
+  $G[V_1]$ at $q$, which is planar. So one special position serves every
+  height. Third, at $d = 3$ the special position puts the point of $x$ on
+  the line through those of $a$ and $b$ in $K^4$. In dimension $d$ it
+  lies on that line in $K^{d+1}$, since each of its heights is the value
+  of an affine function at an affine combination of the picture points
+  of $a$ and $b$. The rank at the special position and the rank along a
+  polynomial curve are lemmas on panel-hinge frameworks with normals in
+  any dimension.
 \end{proof}
