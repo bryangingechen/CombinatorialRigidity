@@ -2,17 +2,18 @@
 
 **Status:** in progress, opened 2026-10-30 by the PI (design doc §3's scope as written), a
 sub-phase of Phase 42 beside 42a. Forward mode, the Lean under `/coordinate-phase`: the dep-graph
-is `blueprint/src/chapter/pencil-d.tex` §`sec:pencil-d-stable`, 9 nodes, 3 green (`lem:deficiency-stable`, `def:pencil-d-embedding`,
-`lem:pencil-d-embedding-join`), 6 red.
+is `blueprint/src/chapter/pencil-d.tex` §`sec:pencil-d-stable`, 9 nodes, 4 green (`lem:deficiency-stable`, `def:pencil-d-embedding`,
+`lem:pencil-d-embedding-join`, `lem:pencil-d-x0-attains-distinct`), 5 red.
 The open corrected the deficiency lemma (it needs `G` connected) and found its proof gives a
-sharper range; the PI widened the theorem to `def_2 ≤ 3` (*Architectural choices*). Next concrete task: `lem:pencil-d-x0-attains-distinct`.
+sharper range; the PI widened the theorem to `def_2 ≤ 3` (*Architectural choices*). Next concrete task: `lem:screw-embedding-rank`.
 
 ## Current state
 
-**Next:** `lem:pencil-d-x0-attains-distinct`, a leaf: the every-`d` form of
-`Graph.X0Attains.hasDistinctPencilRealization` (four lines, `MainComponent/Configuration.lean`)
-through `Graph.IsAdmissiblePicture.hasGradedDistinctPencilRealization`. Then the other leaf,
-`lem:screw-embedding-rank`, whose size is unassessed (*Lemma checklist*).
+**Next:** `lem:screw-embedding-rank`, the other leaf, whose size is unassessed (*Lemma checklist*).
+
+**Landed (latest):** `lem:pencil-d-x0-attains-distinct`, `Graph.X0AttainsGrade.hasGradedDistinctPencilRealization`
+in `Pencil/Grade/Configuration.lean`: the four-line grade form of
+`Graph.X0Attains.hasDistinctPencilRealization`, no surprises.
 
 **Landed:** `def:pencil-d-embedding` and `lem:pencil-d-embedding-join` (green), new file
 `Pencil/Grade/Embedding.lean`: `gradeEmbed` (`ι`), `screwEmbed` (`φ`), their injectivity, `ι`'s
@@ -77,7 +78,7 @@ may refine a name, and the pin lands with the Lean.
   `Graph.padHeights_mem_liftingSpaceGrade`
 - [ ] `lem:pencil-d-x0-attains-of-le` — `Graph.X0AttainsGrade.of_le` (`[Infinite K]`, `G` connected,
   `G.deficiency (m' + 2) = G.deficiency (m + 2)`)
-- [ ] `lem:pencil-d-x0-attains-distinct` (**next**) — `Graph.X0AttainsGrade.hasGradedDistinctPencilRealization`
+- [x] `lem:pencil-d-x0-attains-distinct` — `Graph.X0AttainsGrade.hasGradedDistinctPencilRealization`
 - [ ] `thm:pencil-d-deficiency-two-le-three` — `Graph.x0AttainsGrade_of_deficiency_two_le_three`,
   `Graph.hasGradedDistinctPencilRealization_of_deficiency_two_le_three` (`G.IsX0Graph`, `1 ≤ m`)
 
@@ -92,8 +93,7 @@ may refine a name, and the pin lands with the Lean.
 
 ## Hand-off / next phase
 
-The next commit is `lem:pencil-d-x0-attains-distinct` (*Current state*). The other leaf is
-`lem:screw-embedding-rank` (size unassessed: say whether it is one commit or two once its motion
+The next commit is `lem:screw-embedding-rank` (*Current state*; size unassessed: say whether it is one commit or two once its motion
 count is laid out); then the statement and configuration forms, `lem:pencil-d-x0-attains-of-le`,
 and the theorem last, at `def_2 ≤ 3` (the PI's widening from `≤ 1`, *Architectural choices*).
 

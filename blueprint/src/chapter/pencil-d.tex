@@ -726,6 +726,8 @@ $\operatorname{def}_2(G) \le 3$.
 
 \begin{lemma}[The general configuration attaining gives an adjacent-distinct realization, in every dimension]
   \label{lem:pencil-d-x0-attains-distinct}
+  \lean{Graph.X0AttainsGrade.hasGradedDistinctPencilRealization}
+  \leanok
   \uses{def:pencil-d-x0-attains, def:pencil-d-distinct-motive}
   Let $K$ be infinite. If the general configuration of $G$ attains in
   dimension $d$ (\cref{def:pencil-d-x0-attains}), then $G$ has an
@@ -733,6 +735,7 @@ $\operatorname{def}_2(G) \le 3$.
   (\cref{def:pencil-d-distinct-motive}).
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-d-config-realization}
   As $K$ is infinite, the nonzero polynomial $P$ of
   \cref{def:pencil-d-x0-attains} has a non-root $q$. This picture is
