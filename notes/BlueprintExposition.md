@@ -1774,6 +1774,24 @@ records U10's pin; the Phase 26 entry's padded carrier is dated, the padding dro
 PAD. The `lem:case-I` entry holds: its new first pin is the proof's arithmetic paragraph.
 **Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
 
+### `pencil-d.tex` — Phase 42c (PD-STABLE: the pencil from a lower dimension)
+
+**No new entries — judged at the sub-phase close (2026-10-30).** The source is the project's own
+(`notes/Strata.md` Results 15–17); the criterion transfers as in the `pencil.tex` section. Each of
+the section's nine nodes carries its argument in full in its proof. Three departures from the plan,
+none a compressed step of a source: the deficiency lemma needs a connected graph, and its proof's
+own chain gives the sharper range `def_2(G) + 3 ≤ D′` (`lem:deficiency-stable`; both the open's
+corrections of Result 16 as first written); the rank of an embedded framework counts the motions
+constant on `V(G)` instead of splitting off a complement of the image (`lem:screw-embedding-rank`),
+a shorter argument written in its proof; and the realization form holds at a fixed deficiency
+parameter (`lem:pencil-d-embed-realization`), a statement shape whose arithmetic is one line of the
+proof. The close's end-to-end re-read of `sec:pencil-d-stable` cut one clause of formalization
+narration (Tier 0's proof cited the deficiency lemma's "main form"; it now names `d′ = 3`), and
+restated the chapter's and the section's openings, which claimed "the theorem" in every dimension,
+to the attaining of the general configuration that the section proves. 42b's close judged the
+chapter's first two sections, with no entry.
+**Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
+
 ## Retroactive coverage
 
 - **Molecular program (Phases 17–22a): scanned 2026-06-04** — candidates folded

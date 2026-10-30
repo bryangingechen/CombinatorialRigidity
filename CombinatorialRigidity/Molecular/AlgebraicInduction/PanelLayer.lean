@@ -1568,6 +1568,13 @@ theorem _root_.Graph.bodyBarDim_eq_screwDim_sub_one {n : ℕ} (hn : 1 ≤ n) :
   rw [Graph.bodyBarDim, screwDim, Nat.choose_two_right,
     show n - 1 + 2 = n + 1 by omega, show n + 1 - 1 = n by omega, Nat.mul_comm]
 
+/-- **`bodyBarDim (k + 1) = screwDim k`**, the form of `bodyBarDim_eq_screwDim_sub_one` with the
+grade `k` given and `n = k + 1` (so no `1 ≤ n` side condition). It reconciles the body-bar and
+screw-space conventions for `D`. -/
+theorem _root_.Graph.bodyBarDim_add_one_eq_screwDim (k : ℕ) :
+    Graph.bodyBarDim (k + 1) = screwDim k :=
+  Graph.bodyBarDim_eq_screwDim_sub_one (Nat.le_add_left 1 k)
+
 /-- **The deficiency bound** (`lem:deficiency-rank-bound`): for a nonempty finite set of bodies,
 with the hinge nondegenerate at the edges of `G` whose two ends differ (`hC`; a loop never crosses a
 partition), `D + def(G̃) ≤ dim Z(G,p)`, the deficiency
@@ -1586,10 +1593,7 @@ theorem screwDim_add_deficiency_le_finrank_infinitesimalMotions [Nonempty α] [F
   have : Fintype α := Fintype.ofFinite α
   -- `D = screwDim k = bodyBarDim (k+1)` reconciles the screw-space and body-bar `D` conventions.
   have hDcast : (Graph.bodyBarDim (k + 1) : ℤ) = (screwDim k : ℤ) := by
-    have : Graph.bodyBarDim (k + 1) = screwDim k := by
-      rw [Graph.bodyBarDim, screwDim, Nat.choose_two_right,
-        show k + 2 - 1 = k + 1 from rfl, Nat.mul_comm]
-    exact_mod_cast this
+    exact_mod_cast Graph.bodyBarDim_add_one_eq_screwDim k
   -- Pick a partition `f` of `V(G)` attaining `def(G̃)` (a finite supremum under `[Finite α]`).
   obtain ⟨f, hf⟩ := exists_eq_ciSup_of_finite (f := F.graph.partitionDef (k + 1))
   rw [Graph.deficiency, ← hf]

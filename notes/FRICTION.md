@@ -110,6 +110,112 @@ moment you resolve the entry) is what makes the sweep a pure
 to be re-derived by re-reading entries later.
 
 ## Open
+### [idiom] `LinearIndependent.map'` returns `f ∘ ![a, b]`, not `![f a, f b]`; `dotPerp` has no antitone lemma
+- **Where it bit:** Phase 42c, `lem:pencil-d-embed-realization`: `linearIndependent_gradeEmbed_pair`
+  (`Pencil/Grade/Embedding.lean`) and `exists_eq_panelSupportExtensor_of_ne_zero` (a basis of a
+  submodule, through `Submodule.subtype`; `Pencil/Grade/Realization.lean`).
+- **Friction:** both close by `convert h.map' f hker using 1; funext i; fin_cases i <;> rfl`, the
+  shape `exteriorPower_map_normalsJoin` already uses for `⋀²f`. Taking orthogonals of
+  `dotPerp P ≤ dotPerp Q` is `LinearMap.BilinForm.orthogonal_le` through the definition, accepted
+  only with the result's type ascribed (`have : dotPerp (dotPerp Q) ≤ dotPerp (dotPerp P) := …`).
+  The project's `span_range_eq_dotPerp_of_linearIndependent` is in `span (range ![n₁, n₂])` form, the
+  new lemmas in `span {n₁, n₂}`: `Matrix.range_cons_cons_empty` bridges them.
+- **Proposed fix:** none for two sites; a `dotPerp_le_dotPerp_iff` beside `dotPerp_dotPerp` if a
+  third orthogonal comparison appears.
+- **Status:** idiom.
+
+### [idiom] `gradeEmbed`'s coordinate lemmas index by `Fin.castLE`; a configuration point's height by `i.castSucc.succ.succ`
+- **Where it bit:** Phase 42c, `pencilConfigPointGrade_padHeights` (`Pencil/Grade/ZeroHeights.lean`,
+  `lem:pencil-d-embed-config-rank`), after `Fin.cases`, `Fin.cases`, `Fin.lastCases` on the index.
+- **Friction:** at a height `i < m'`, `gradeEmbed_apply_castLE` needs the index as `Fin.castLE _ j`:
+  a `Fin.ext (by simp)` identity `i.castSucc.succ.succ = Fin.castLE _ ((i.castLT hi).succ.succ)`,
+  then `← Fin.succ_castSucc` twice to reach `pencilConfigPointGrade_apply_height`'s form. At the
+  indices `0` and `1`, `exact (gradeEmbed_apply_castLE _ x 0).symm` closes by defeq where `simpa
+  using` fails (`Fin.castLE _ 1` does not simp to `Fin.succ 0`), and `x` must be given explicitly or
+  the `Field` instance is stuck. In `Graph.padHeights_mem_liftingSpaceGrade`, the zero column
+  `fun w => 0` left by `simp [padHeights, hi]` closes with `← Pi.zero_def` in the simp set.
+- **Proposed fix:** none for one consumer; a value-bound `gradeEmbed_apply_of_lt`
+  (`gradeEmbed h x j = x ⟨j, _⟩` for `↑j < k' + 1`) would shorten a second.
+- **Status:** idiom.
+
+### [open] `BodyHingeFramework.map` and the zero-hinge motion lemmas sit in `Pencil/Grade/Embedding.lean`, not beside `mapExtensor`
+- **Where it bit:** Phase 42c, `lem:screw-embedding-rank` (`Pencil/Grade/Embedding.lean`). The
+  grade-changing `BodyHingeFramework.map` (hinges `φ C(p(e))`) belongs beside `mapExtensor` in
+  `RigidityMatrix/Basic.lean`, `isInfinitesimalMotion_iff_of_supportExtensor_eq_zero` there too, and
+  `finrank_infinitesimalMotions_of_supportExtensor_eq_zero` in `GenericityDevice.lean`, beside the
+  rigid-on-`V(G)` count it specializes. A new declaration in either rebuilds most of `Molecular/`,
+  so they landed in the leaf file, which now imports `GenericityDevice.lean` for rank–nullity.
+- **Friction (minor, in-proof):** `Φ S' u` for `Φ := φ.compLeft α` needed `change φ (S' u) - …`
+  (`LinearMap.compLeft_apply` gives `φ ∘ S'`, then `comp_apply`); a link `he : F₀.graph.IsLink …`
+  of a `let`-bound zero-hinge `F₀ := ⟨F.graph, 0⟩` needed the ascription `(he : F.graph.IsLink …)`
+  before `simp [he.left_mem]` fired; and `linarith` over the `zify`d rank–nullity equations failed
+  until `rw [← hN]` put `D * (|V| + |Vᶜ|)` for `D * Nat.card α` (it reads `D * N` as an atom). In a
+  scratch under `open scoped Graph`, `linear_combination h1 - h2 - h3` hit TACTICS-QUIRKS § 48.
+- **Proposed fix:** move the three with the next commit that edits `Basic.lean` or
+  `GenericityDevice.lean` for another reason.
+- **Status:** open (tracked under PD-CARRIER / PD-STEPS / PD-COVERAGE, `notes/Phase42-design.md` §3).
+
+### [open] No linear-equivalence form of `contragredient`; the `normalsJoin` map lemma sits outside `PanelLayer.lean`
+- **Where it bit:** Phase 42b, `lem:pencil-d-rank-collineation` (`Pencil/Grade/Collineation.lean`,
+  `panelSupportExtensor_linearEquiv_eq_det_smul` and its caller). The screw map
+  `screwEquivOfLinearEquiv` takes a `LinearEquiv`, and `Meet.lean`'s `contragredient` is a `LinearMap`;
+  `exists_contragredient_linearEquiv` (`Pencil/Arms.lean`) is an equiv, but in the dot-product form
+  with `g` on the left (a five-step `rw` to `complementIso_map_contragredient_eq`'s `toDual` form),
+  and its pin is `lem:pencil-cut-nondegeneracy`, an edge `blueprint-deps.py` reports missing.
+- **Friction:** built inline, `toDualEquiv ≪≫ₗ g.symm.dualMap ≪≫ₗ toDualEquiv.symm`, which is
+  `contragredient g` by definition, so `contragredient_toDual_pairing g` types it. Also: the join of
+  `g n₁, g n₂` as `exteriorPower.map 2 g (normalsJoin n₁ n₂)` took `rw [normalsJoin, normalsJoin,
+  exteriorPower.map_apply_ιMulti]; congr 1; funext i; fin_cases i <;> rfl`; mathlib's
+  `LinearEquiv.smulOfUnit` has no `_apply` lemma (`smulOfNeZero` has one, so `M` uses it); and
+  `LinearMap.det ↑g ≠ 0` for an equiv is `LinearEquiv.coe_det g ▸ (LinearEquiv.det g).ne_zero`.
+- **Proposed fix:** `contragredientEquiv` beside `contragredient` in `Meet.lean`, still open. The
+  `normalsJoin` half landed with Phase 42c's `lem:pencil-d-embedding-join` as
+  `exteriorPower_map_normalsJoin` (any linear `f : K^(k'+2) → K^(k+2)`), in
+  `Pencil/Grade/Embedding.lean`. Its natural home is `PanelLayer.lean`, beside `normalsJoin`, where
+  `Collineation.lean`'s inline proof above could call it; the move is deferred, since a new
+  declaration there rebuilds most of `Molecular/`. The `k + 2 - 2` cast to `ScrewSpace K k` was no
+  friction: `rfl` closes `det g • ⋀^(k+2-2) h (complementIso _ X) = det g • screwEquivOfLinearEquiv h (…)`.
+- **Status:** open (`contragredientEquiv`; and the move of `exteriorPower_map_normalsJoin` to
+  `PanelLayer.lean`, with the next commit that edits that file; both tracked under PD-CARRIER /
+  PD-STEPS / PD-COVERAGE, `notes/Phase42-design.md` §3).
+
+### [resolved] A `∘ₗ` composite into `ScrewSpace K k` through `complementIso` elaborates, but `rw [LinearMap.comp_apply]` cannot match it
+- **Where it bit:** Phase 42c, `def:pencil-d-embedding` (`Pencil/Grade/Embedding.lean`,
+  `screwEmbed = complementIso ∘ₗ exteriorPower.map 2 ι ∘ₗ complementIso.symm`, typed
+  `ScrewSpace K k' →ₗ[K] ScrewSpace K k`). The definition elaborates by unfolding `ScrewSpace` and
+  `k + 2 - 2`, but a scratch proof of the next node, `rw [screwEmbed, LinearMap.comp_apply]`, failed:
+  "not type-correct under the `implicit` transparency level", `⋀^(k+2-2) … →ₗ` against
+  `→ₗ ScrewSpace K k` in the `comp`'s instance arguments.
+- **Fix:** `screwEmbed_apply`, by `rfl`, states `φ C = complementIso (map 2 ι (complementIso.symm C))`,
+  the form of `panelSupportExtensor`'s body; then `rw [screwEmbed_apply, panelSupportExtensor,
+  panelSupportExtensor, LinearEquiv.symm_apply_apply, exteriorPower_map_normalsJoin]` closes
+  `screwEmbed_panelSupportExtensor` (`lem:pencil-d-embedding-join`). Also: `omega` does not read
+  `hi : gradeEmbedIndex h (Fin.last _) = j` as a bound on `↑j`; `subst hi` first
+  (`gradeEmbed_apply_eq_zero`).
+- **Status:** resolved (project helper `screwEmbed_apply`).
+
+### [mirror-candidate] Grade-general extensor and panel lemmas live in `Pencil/Grade/Realization.lean`
+- **Where it bit:** Phase 42b, `lem:pencil-d-point-configuration`. The project had only grade-2 or
+  `K⁴` forms: `span_range_eq_of_extensor_eq` (`Meet.lean`, two vectors),
+  `extensorInPanel_panelSupportExtensor` (`PanelLayer.lean`, `Fin 4`) and
+  `dotProduct_eq_zero_of_mem_span` (`Pencil/Statement.lean`, two vectors of `K⁴`).
+- **Friction:** proved in every grade locally: `span_range_eq_of_extensor_eq_grade` (by
+  `ExteriorAlgebra.ιMulti_succ_apply` and `linearIndependent_finCons`, shorter than the grade-2
+  proof), `extensorInPanel_panelSupportExtensor_gen`, `dotProduct_eq_zero_of_mem_span_range`.
+- **Proposed fix:** move the first to `Meet.lean` and the second to `PanelLayer.lean`, each beside
+  its grade-2 form, which then becomes a one-line corollary. Not done here: both files are upstream
+  of most of the tree, and the commit stays on one file.
+- **Status:** open (mirror-candidate, project-internal).
+
+### [idiom] `C ≠ 0 → C.val ≠ 0` for a screw is `ScrewSpace.val_injective.ne hC`
+- **Where it bit:** Phase 42b, `Pencil/Grade/Realization.lean` (three sites). `ScrewSpace` has no
+  `val_ne_zero`; earlier files write `fun h0 => hC (ScrewSpace.ext (h0.trans
+  ScrewSpace.val_zero.symm))`, and a `rw [Ne, ← ScrewSpace.val_zero, val_injective.eq_iff]` chain
+  works too.
+- **Friction:** none once known: `ScrewSpace.val_zero` is `rfl`, so `val_injective.ne hC`, of type
+  `C.val ≠ (0 : ScrewSpace K k).val`, is accepted where `C.val ≠ 0` is expected.
+- **Status:** idiom.
+
 ### [idiom] `simp [h, annihRow_apply_self]` does not fire: the `@[simp]` `annihRow_apply` unfolds the row first
 - **Where it bit:** Phase 41e, item U12's spike (`case_II_placement_rank`, `CaseII.lean`, the rows of
   `G_v^{ab}` at an edge `e ≠ e₀`): with `h : FG.supportExtensor e = -FGab.supportExtensor e`, the
@@ -5839,6 +5945,25 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Status:** mirrored.
 - **Mirror file:** `Mathlib/Data/Matrix/Mul.lean` (new mirror file).
 
+### [mirrored] `isRefl_dotProductBilin` / `nondegenerate_dotProductBilin` — the dot product is a reflexive nondegenerate bilinear form
+- **Where it bit:** Phase 42b, `def:pencil-d-realization` (`Pencil/Grade/Realization.lean`): the
+  orthogonal `Π^⊥` of a subspace of `K^n` is `dotPerp P := LinearMap.BilinForm.orthogonal
+  (dotProductBilin K K) P`, and `dotPerp_dotPerp` / `finrank_dotPerp` are mathlib's
+  `orthogonal_orthogonal` / `finrank_orthogonal`, which ask the form to be reflexive and
+  nondegenerate. Mathlib defines `dotProductBilin` but states neither (`lean_loogle`
+  `LinearMap.BilinForm.Nondegenerate, dotProductBilin`: none).
+- **Friction:** `(dotProductBilin K K : LinearMap.BilinForm K _).IsRefl` elaborates as
+  `LinearMap.IsRefl` (dot notation on the underlying `LinearMap` type), which does not unify with
+  the `LinearMap.BilinForm.IsRefl` (a `def`, not an `abbrev`) that `orthogonal_orthogonal` asks for,
+  nor does `LinearMap.BilinForm.IsRefl` feed `LinearMap.IsRefl.nondegenerate_iff_separatingLeft`;
+  write `LinearMap.BilinForm.IsRefl (…)` explicitly. `.Nondegenerate` is fine (`BilinForm`'s is an
+  `abbrev`). Also, in `hasPencilPlaneRealization_two_iff`, `simp [hq]` would not rewrite `point v`
+  inside `Module.finrank K ↥(K ∙ point v)` (TACTICS-QUIRKS § 112); `rw` did.
+- **Resolution:** mirrored over a `CommSemiring` and any `Fintype` index, each a three-line proof
+  (`dotProduct_comm`; the coordinate `x ⬝ᵥ Pi.single i 1 = x i`).
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/LinearAlgebra/Matrix/BilinearForm.lean` (new mirror file).
+
 ### [idiom] `(Set.ncard_le_ncard fun _ hw => hw.2).trans h` can't pin the two sets — state the inclusion as a typed `have`
 - **Where it bit:** RECONCILE round 3 task 38.9 (`Molecular/Molecule/Pencil/Reseed.lean`,
   `exists_pencilSeed_of_nondeg`), bounding `(G.closedHubNbhd v).ncard ≤ 3` at `v ∉ V(G)` through
@@ -5853,6 +5978,23 @@ limitations. Worth a once-over so future agents don't re-litigate.
   length of `s.toFinset.toList` as `s.ncard` takes two bridging `rw`s (`Finset.length_toList`,
   `← Set.ncard_eq_toFinset_card'`); one use, so no mirror.
 - **Status:** resolved in-proof (one `lake lean` cycle).
+
+### [idiom] Configuration points at every grade: `rfl` between the ranks at `k := 1 + 1` and `k := 2` times out; the simp-normal height index is `i.castSucc.succ.succ`
+- **Where it bit:** Phase 42b, `Pencil/Grade/Carrier.lean` (`def:pencil-d-configuration`).
+- **Friction 1:** the row ranks of `ofNormals (k := 1 + 1)` at `pencilConfigPointGrade q z` and of
+  `ofNormals (k := 2)` at `pencilConfigPoint q (fun v => z (v, 0))` are definitionally equal, but
+  `rfl` hit *"(deterministic) timeout at `isDefEq`"* (200k heartbeats), and `simp only` with the
+  point lemma made no progress under `Module.finrank K ↥(span …)` (TACTICS-QUIRKS § 112). **Fix:**
+  `rw` an equation between the two normal lambdas (`funext` of the point lemma); the closing `rfl`
+  of `rw` is then instant. Packaged as
+  `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_pencilConfigPointGrade_one`: at one
+  height, rewrite with it rather than `rfl` or `change`.
+- **Friction 2:** a `@[simp]` coordinate lemma stated at the index `i.succ.succ.castSucc` failed
+  `simpNF` (`Fin.castSucc_succ` turns it into `i.castSucc.succ.succ`, the form now stated). The
+  last coordinate needed `simp [pencilConfigPointGrade, ← Fin.succ_last]`: `simp` folds
+  `(Fin.last m).succ.succ` into `Fin.last (m + 1 + 1)`, at which `vecCons` and `Fin.snoc` no longer
+  evaluate.
+- **Status:** idiom (resolved in-proof; one lint cycle).
 
 ## Archived: Resolved (project-internal)
 

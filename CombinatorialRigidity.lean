@@ -39,6 +39,16 @@ public import CombinatorialRigidity.Molecular.Molecule.Dictionary
 public import CombinatorialRigidity.Molecular.Molecule.Duality
 public import CombinatorialRigidity.Molecular.Molecule.GeneralPosition4
 public import CombinatorialRigidity.Molecular.Molecule.Modelling
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Carrier
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Collineation
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Configuration
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Contract
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Embedding
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.JoinIndependence
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Realization
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Stable
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Witness
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.ZeroHeights
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Bridge
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Carrier
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Configuration

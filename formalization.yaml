@@ -290,7 +290,14 @@ status:
     result has a closed witness that its hypotheses can all be met; and each claim the blueprint
     made without a Lean declaration was given one. Phase 42 (in progress) asks whether the pencil
     realization theorem holds in every dimension, in projective d-space with each body's hinges
-    containing a common (d-3)-flat and lying in a hyperplane; it has no Lean yet.
+    containing a common (d-3)-flat and lying in a hyperplane; a new blueprint chapter states pencil
+    realizations in every dimension, their agreement with the three-dimensional ones, and the tools
+    a proof in every dimension would use, all formalized, and its last section embeds a lower
+    dimension in a higher one and so proves, over any infinite field and in every dimension, that a
+    simple connected graph of minimum degree at least two whose deficiency in the plane is at most
+    three has a pencil realization at the deficiency rank
+    (Graph.hasGradedDistinctPencilRealization_of_deficiency_two_le_three). In general the theorem
+    is open from dimension four.
   sorry_count: 0
   sorry_in_definitions: 0
   axioms: ["propext", "Classical.choice", "Quot.sound"]          # only Lean/mathlib standard axioms; no project-specific axioms

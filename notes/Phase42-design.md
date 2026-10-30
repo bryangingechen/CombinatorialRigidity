@@ -1,19 +1,18 @@
 # Phase 42 — PENCIL-D: design (cross-phase plan and recon)
 
 **Status:** opened 2026-10-29 with the PI, sub-lettered, research first. **42a** (PD-RECON,
-`notes/Phase42a.md`) is open: no Lean, no blueprint. The step table (§2.1): of 22 rows, 10
-generalize as they stand and 6 given routine or formal work (CERT, CARRIER); 4 fail as written
-(the short ears, the one-body and orbit ears, route B); the coverage (row 18) waits on the ear
-rows, and nondegeneracy's lift (row 21) is open. The thresholds are `d = 4, 5`, the content
-`def[3] ≥ d − 2` (§2.5). T1–T5 have landed (§2.4): the flat formulas hold, CERT holds at
-`d ≤ 6`, every content cell measured attains, X3 leaves SHORT only SHORT-CORE (`k = 3–5` at
-`d = 4`), and Theorem S holds at every `D ≥ 6`. At the PI's call ONE-CLASS's lemma is proved (§2.3, Result
-27): a graph whose chains are all one-body has a core or `def[6] = 0`, and then Phase 40 embeds.
-So **the coverage at `d ≥ 4` needs SHORT-CORE and no ONE-EAR**; ONE-EAR waits for GENERIC. Next
-concrete task: PD-STATE's open as the next sub-phase (§1's defaults); the research next is
-SHORT-CORE's attack track, as a second read found rows 9 and 12 dimension-general (§2.1). The
-route is the PI's (§1): R2's steps, Result 15's embedding as the base row, any induction on `d`
-left to Tier 2. Evidence: `notes/Strata.md`, Results 12–27.
+`notes/Phase42a.md`) is open: the step table (§2.1), the thresholds `d = 4, 5` and the content
+`def[3] ≥ C(d,2) − 2` (§2.5; T1–T5 drew on the old, wider `def[3] ≥ d − 2`), T1–T5 (§2.4) and ONE-CLASS's lemma (§2.3, Result 27) have landed, so
+**the coverage at `d ≥ 4` needs SHORT-CORE and no ONE-EAR**; ONE-EAR waits for GENERIC. The route
+is the PI's (§1): R2's steps, Result 15's embedding as the base row, any induction on `d` left to
+Tier 2. SHORT-CORE's attack track is running, on branch `attack-short-core`. **42b** (PD-STATE,
+`notes/Phase42b.md`) ran beside it and **closed 2026-10-30**: the statement layer in `Pᵈ`, its
+chapter `blueprint/src/chapter/pencil-d.tex` formalized (17 nodes), on the carrier the PI took
+(§1, option (a); §2.3 CARRIER). **42c** (PD-STABLE, `notes/Phase42c.md`) opened the same day at
+the PI's word (§1) and **closed 2026-10-30**: the embedding, the sharp deficiency lemma and `Pᵈ` at
+`def[3] ≤ 3` (Tier 0, which the PI widened from `≤ 1`, §1), the last section of `pencil-d.tex`,
+formalized (9 nodes; verdict §3). Which sub-phase opens next (§3) goes to the PI. Evidence:
+`notes/Strata.md`, Results 12–27.
 
 This file is the phase's entry point: the target (§0), the PI's decisions (§1), the recon (§2),
 the layers by stable code (§3) and the open questions (§4). Letters are minted when a sub-phase
@@ -29,7 +28,8 @@ heights `z¹, …, z^{d−2} ∈ L(q)`. Then the hinges `b_u ∧ b_v`, with
 through Phase 39's reduction.
 
 Status: `d = 2, 3` are proved and formalized (Phases 40a, 40). Every `d` with `def_3 ≤ 1` is
-`Strata.md` Result 17. `d = 4, 5, 6` are measured (Results 11, 19), not found below target under
+`Strata.md` Result 17, and every `d` at `def_3 ≤ 3` follows from Result 17's proof with the sharp
+deficiency lemma, proved and formalized (42c, `thm:pencil-d-deficiency-two-le-three`). `d = 4, 5, 6` are measured (Results 11, 19), not found below target under
 the `--d4` population's cap (`n ≤ 12`, 36 simple graphs) and 8 graphs past it. Where the
 conjecture has content, that is 47 cells on 18 graphs, six of them cycles (§2.5).
 
@@ -71,6 +71,10 @@ fibre-intersection lemma and Jackson–Jordán's equality.
 
   The order put: T1, T2 and the content-range graphs; then T3 and T4 at `d = 4, 5` on the content
   range, sizing SHORT and ONE-EAR; then attack tracks, with PD-STATE and PD-STABLE in parallel.
+
+  *Note, 2026-10-30 (not the PI's text):* by the sharp Result 16 (`notes/Strata.md`), Tier 1's `P⁴`
+  theorem reaches every `d` at `def[3] ≤ 7`, not `≤ 2`, and Tier 0 is `def[3] ≤ 3` (the PI's
+  2026-10-30 entry below). The content range is `def[3] ≥ C(d,2) − 2`.
 - **PI, 2026-10-29 (after T5), the research call of §4:** "ONE-CLASS first (Recommended)". The
   options put: ONE-CLASS's lemma first, on deficiencies alone and checkable exactly against T5's
   population, its size unknown; ONE-EAR's attack at `d = 5` (the motive, a `Pᵈ` insertion lemma,
@@ -84,6 +88,32 @@ fibre-intersection lemma and Jackson–Jordán's equality.
   structure with Result 15's embedding as the base row, and leave an outer induction on `d` to
   Tier 2, where it may enter only through CERT's open ears at `d ≥ 7`. PD-STABLE states the
   embedding at every `d′ ≤ d`, not only at `d′ = 3`, so that Tier 1 reaches every `d` by it.
+- **PI, 2026-10-30 (42b's open), the carrier:** "(a) 3-space as data (Rec.)". The question put:
+  "PD-STATE's carrier: your default was the dual form, "a point per body, each closed
+  neighbourhood in a plane". Taken literally as a condition on the normals, it fails against Phase
+  39's definitions in two ways. (W1) Where adjacent panels coincide, the hinges are no longer fixed
+  by the normals. Two bodies with one panel and three hinges forming a triangle pass the
+  normal-span test but are not a pencil (checked in Lean). (W2) If hinges are always the meet of
+  the two panels, parallel edges share one hinge, so the double edge can't reach rank D, which
+  Phase 39's bare conjunct reaches. Which reading should the chapter state?" The options put:
+  (a) 3-space as data (Rec.): your dual form, with each body's plane Π_v ∋ b_v carried as data and
+  every hinge at v containing Π_v^⊥; at d = 3 it is exactly Phase 39's definition; about 3
+  commits; what the chapter already states. (b) Primal (b_v, A_v): the same mathematics and cost,
+  the data named the other way round. (c) Meet form only: cheapest, but the Pᵈ headline loses the
+  bare multigraph conjunct, against §0. (d) Normals-only: fails W1, not viable.
+- **PI, 2026-10-30 (PD-STABLE's open):** "Open as 42c, §3 scope (Recommended)". The scope: §3's
+  items 1–3 as written, with FRICTION's `normalsJoin` map lemma landing with item 1.
+- **PI, 2026-10-30 (PD-STABLE, the sharp range):** "Widen to def_2 ≤ 3 (Recommended)". The
+  question as put: "The open found that the deficiency lemma's own proof gives a sharper range. On
+  a connected G, def at dimension d′ equals def at every d ≥ d′ once def_2(G) + 3 ≤ C(d′+1, 2),
+  rather than at d′ ≥ def_2 + 2. The range is tight on cycles: C₇ has def_2 = 4, def_3 = 1 and
+  def_4 = 0. With d′ = 3 (C(4,2) = 6), Phase 40 plus the embedding then proves the pencil in every
+  dimension at def_2(G) ≤ 3, not just ≤ 1. I checked this by hand. Should Tier 0's theorem,
+  thm:pencil-d-deficiency-two-le-one, widen?" The option read: "Same proof; only the hypothesis
+  and the node's name and wording change. No extra commits. The Tier 0 sentence on ROADMAP and
+  the status surfaces says ≤ 3." (Notation: `def_2` = `def[3]`, `def_3` = `def[6]`.) The
+  range's second consequence (§3 item 1's Tier 1 reach, §2.5's content range) the PI relays to
+  the SHORT-CORE attack track.
 
 ## 2. PD-RECON (42a)
 
@@ -92,7 +122,7 @@ fibre-intersection lemma and Jackson–Jordán's equality.
   in a hyperplane, and adds one height in `L(q)`. Phase 40 is the step `2 → 3` from the flat base.
 - **(R2) Direct.** Phase 40's induction, run once with `d − 2` heights.
 
-Either way, Result 15 limits the work for each graph to `d ≤ 2 + def_3(G)`.
+Either way, Result 15 (by the sharp Result 16) limits the work for each graph to `3 ≤ d ≤ d*`, `d*` the least `d′` with `D_{d′} ≥ def_3(G) + 3`.
 
 ### 2.1 The step table (2026-10-29)
 
@@ -256,16 +286,21 @@ Result 17's `def[3] ≤ 1` one step further.
   `D ≥ 15`, an unshared chain at `D = 10`) is not needed, and is not what holds: cells with no
   core occur at every `D` measured, all with `def[3] ≤ 2`, so outside the content range at
   `d ≥ 5`. Checked by `oneclass.py` (§2.4).
-- **CARRIER** (rows 3, 9, 12, 19–21): PD-STATE's. The point-based `HasPencilPanelRealization` is
-  the wrong object at `d ≥ 4`. Primal (a `(d−3)`-flat `A_v` in a hyperplane) or dual (a point in a
-  3-space); the collineation lemma; nondegeneracy's lift. The all-`d` polarity exists:
-  `complementIso` (`j := 2`, every `k`; `Molecular/Meet.lean`) underlies `panelSupportExtensor`,
-  and `finrank_span_rigidityRows_mapExtensor` is `k`-general. So rows 9 and 12 need only
-  conjugation through it (second read, §2.1); `screwComplementIso` and `pointJoinFramework` are
-  the `P³` route's. Their `P³` pins to restate: `def:pencil-x0-attains`, the one-witness lemma,
-  the magnified rank, the scale-shift and the join-independence lemmas (`Fin 4`, one height).
-  Also name `bodyBarDim (k+1) = screwDim k`, now inline in `PanelLayer.lean`. Rows 19–21 were
-  not re-read.
+- **CARRIER** (rows 3, 9, 12, 19–21): PD-STATE's, **done at 42b's close** (2026-10-30,
+  `notes/Phase42b.md`). The point-based `HasPencilPanelRealization` is the wrong object at
+  `d ≥ 4`: at `k ≥ 3` the hinges at a body pass through one point and need share no line
+  (`rem:pencil-d-point-type`). The all-`d` polarity is `complementIso` (`Molecular/Meet.lean`), so
+  rows 9 and 12 needed only conjugation through it; rows 19 and 21 were not re-read (PD-REDUCTION's
+  and GENERIC's). **Verdict, checked against the definition bodies at 42b's open** (Claude Opus
+  5.5; the two surprises by `lake lean` witnesses, scratch, not retained): read literally, the dual
+  form fails both ways. (W1) On the containment carrier the encoding "normals on each closed
+  neighbourhood span ≤ 3" is strictly weaker than Phase 39's at `d = 3`: two bodies, three
+  parallel edges, one panel, hinges `e₁e₂`, `e₁e₃`, `e₂e₃` with no common point. (W2) On the meet
+  carrier parallel edges share one hinge, so the double edge cannot reach rank `D`, as Phase 39's
+  bare conjunct does. What agrees is the dual form with each body's 3-space `Π_v ∋ b_v` as data,
+  every hinge at `v` through `Π_v^⊥`: Phase 39's definition at `k = 2` (`Π_v = q_v^⊥`), the meet
+  form its adjacent-distinct case. The PI took it (§1, option (a)); it is
+  `def:pencil-d-realization`.
 - **GENERIC** (row 22): route B in `Pᵈ`, an irreducible parametrization of the nondegenerate
   realizations, and the one-ear step at `d ≥ 5`. D's candidate witness against the good-ear lemma
   supplying a common neighbour: `C₆` with the chord `14` and `y` joined to `2, 5` (by hand,
@@ -316,7 +351,7 @@ Result 17's `def[3] ≤ 1` one step further.
   the seeded point (the driver checks both, exactly, and lists the cell), so the bound holds on a dense subset of the locus.
   **Second half run** (`Strata.md` Result 25; `--orbit`, seeds 1–3, the rows seed-independent).
   The orbit cells: open ears with `k = 1, 2` interior bodies at non-adjacent ends and
-  `def[D](G[V₁]) > def[D](G)`, where row 12 does not apply, on the content range at `d = 3..6`.
+  `def[D](G[V₁]) > def[D](G)`, where row 12 does not apply, on the content range at `d = 3..6` (the old range `def[3] ≥ d − 2`; ibid.).
   The population is T3's six families, `n ≤ 40`, every deficiency certified, M certified per cell.
   - `k = 1`: 46 cells, Result 23's two `d = 4` cells among them, all with M. `G[V₁]` attains on
     the locus at every one, `d = 6` included, and `(⋆)` holds: `dim(ρ + Λ) = min(dim ρ + 2, D)`,
@@ -365,7 +400,7 @@ Result 17's `def[3] ≤ 1` one step further.
     every chain one-body, and no core.
   - **Measured.** The population is subdivisions of ten cores of minimum degree 3 (`θ₃`, `θ₄`,
     two small multigraphs, `K₄`, `W₄`, the prism, `K₃,₃`, the cube, Petersen), each core edge a
-    path of 1–4 edges, simple, sparse and in the content range. That is every length vector up to
+    path of 1–4 edges, simple, sparse and in the old content range `def[3] ≥ d − 2`. That is every length vector up to
     isomorphism on the five smallest cores and 60 drawn on the others: 1077, 1059, 1021 and 957
     cells at `d = 3..6`. At `d = 4, 5, 6` every cell has a GEN row, so no cell needs SHORT-CORE or
     ONE-EAR. A core is present at every one, and is the only GEN row at 20, 9 and 6. So the cover
@@ -406,17 +441,18 @@ free in `P³` become conditions. That gives two kinds of threshold:
   point `Π_a ∩ Π_b`, which is gone at `d ≥ 5`. T4 (`d = 5, 6`) asks whether 5 is the last
   threshold. Rows 13, 15 and 22 are where Phase 40 found new mathematics at `d = 3` (SHORT, ORBIT
   and route B; ROADMAP §40).
-- **The graph's threshold, `2 + def[3](G)`.** Inside the outer induction on `d` (§2.2), `G` attains
-  at `d` from `P^{d−1}` whenever `def[3](G) ≤ d − 3`. Then `D_{d−1} = C(d, 2) ≥ C(3 + def[3], 2)`, and
-  Result 16 makes `def[D_{d−1}] = def[D_d] = def_∞`. So the work at `d` is the graphs with
-  `def[3](G) ≥ d − 2`. That class is nonempty at every `d`, so no fixed `d` suffices; a `P⁴` theorem
-  gives every `d` at `def[3] ≤ 2`. Such a `G` has a partition with
+- **The graph's threshold, the least `d′` with `D_{d′} ≥ def[3](G) + 3`** (the first form was `2 + def[3](G)`; the sharp lemma's, §3 item 2). Inside the outer induction on `d` (§2.2), `G` attains
+  at `d` from `P^{d−1}` whenever `def[3](G) + 3 ≤ D_{d−1} = C(d, 2)`. Then
+  the sharp Result 16 makes `def[D_{d−1}] = def[D_d] = def_∞`. So the work at `d` is the graphs with
+  `def[3](G) ≥ C(d,2) − 2` (≥ 4 at `d = 4`, ≥ 8 at `d = 5`). That class is nonempty at every `d`, so no
+  fixed `d` suffices; a `P⁴` theorem gives every `d` at `def[3] ≤ 7`. (This was first written as
+  `def[3] ≥ d − 2`, a superset at every `d ≥ 3`; the figures below were drawn on it.) Such a `G` has a partition with
   `e(P) ≤ (3|P| − 3 − def[3])/2`, a quotient of average degree below 3 and rich in ears, which is
   where rows 13–15 sit.
 
 **The evidence where the conjecture has content**, read off `strata.py --pd --seed 1`. Of the 36
 simple capped graphs, 24 have `def[3] ≤ 1` and are settled at every `d` by Result 17. The cells at
-`d ≥ 4` with `def[3] ≥ d − 2` are 47, on 18 graphs (12 capped, 6 past the cap). Result 19's 41
+`d ≥ 4` with `def[3] ≥ d − 2` (the old, wider range) are 47, on 18 graphs (12 capped, 6 past the cap). Result 19's 41
 leaves out each graph's top cell, `d = 2 + def[3]`, which also carries content.
 - **Six are cycles.** Every body has degree 2, so the pencil condition is empty (three points span
   a plane), and these cells are KT's case.
@@ -444,7 +480,7 @@ leaves out each graph's top cell, `d = 2 + def[3]`, which also carries content.
   - D's candidate witness (§2.3, GENERIC).
 
   A shortfall redirects the phase. A match is the first evidence where the failing rows bite.
-- **Run T3–T5 at each `d` only on graphs with `def[3] ≥ d − 2`**, and run T3 at `d = 5` as well.
+- **Run T3–T5 at each `d` only on graphs with `def[3] ≥ d − 2`** (the instruction as run, on the old, wider range; the content range is now `def[3] ≥ C(d,2) − 2`, T3's cells all lie in it, and T4's and T5's "content range" counts include graphs the embedding now settles), and run T3 at `d = 5` as well.
 - **Attack each obligation at its own threshold:** SHORT at `d = 4`, ONE-EAR at `d = 5`, each
   checked one dimension up. `d = 4` stays the first milestone (every `d` at `def[3] ≤ 2`), but its
   ONE-EAR case must not lean on `Π_a ∩ Π_b ≠ 0`. (Since Result 27 the coverage needs no ONE-EAR,
@@ -453,23 +489,61 @@ leaves out each graph's top cell, `d = 2 + def[3]`, which also carries content.
 ## 3. Layers (stable codes)
 
 - **PD-RECON** (42a, open): settle R1 or R2 on paper, or refute with a certificate (§2).
-- **PD-STATE**: the `Pᵈ` statement layer on the general-`d` panel carrier, agreeing with Phase 39's
-  `P³` definitions. The candidate encoding (Result 13) is a panel realization whose normals on each
-  closed neighbourhood span at most three dimensions. Check it against the carrier's definition
-  bodies at open; docstrings are not evidence.
-- **PD-STABLE**: Results 15–17, formally: the embedding, the deficiency lemma, and `Pᵈ` for
-  `def_3 ≤ 1`. It needs PD-STATE and Phase 40, but not the recon. State the embedding at every
-  `d′ ≤ d` (the route, §1): if `G` attains in `P^{d′}`, it attains in `Pᵈ` wherever
-  `def[D_{d′}](G) = def[D_d](G)`. Its `d′ = 3` case is the form PD-COVERAGE consumes,
-  `def[6](G) = def[D](G)`, and settles ONE-CLASS (Result 27); its `d′ = 4` case takes Tier 1 to
-  every `d`.
+- **PD-STATE** (42b, **closed 2026-10-30**, `notes/Phase42b.md`): the `Pᵈ` statement layer,
+  formalized in `Pencil/Grade/`, agreeing with Phase 39's `P³` definitions. Its dep-graph is
+  `blueprint/src/chapter/pencil-d.tex`, 17 nodes: the carrier definitions (an extensor through a
+  subspace, pencil realizations in dimension `d` with each body's 3-space as data, their rank and
+  adjacent-distinct forms), the `d = 3` agreement, the dual form's bridge (independent adjacent
+  normals give the meet form, and configurations over admissible pictures are pencil
+  realizations), and CARRIER's restatements (configurations, attaining, the collineation, the
+  scale-shift, one witness, the magnified rank, join independence). Nondegeneracy's lift is
+  GENERIC's (§4).
+- **PD-STABLE** (**42c**, opened and **closed 2026-10-30** at the PI's word, §1;
+  `notes/Phase42c.md`): Results 15–17, formally, as `pencil-d.tex` §`sec:pencil-d-stable` (9
+  nodes, all green), which is authoritative for the statements. `def[D_d]` is Lean's
+  `G.deficiency d`, so `def[3]` is `G.deficiency 2` and `def[6]` is `G.deficiency 3`; the Lean
+  encoding (grade `k = d − 1`, `m = d − 2` heights, the deficiency's `n` a parameter) is
+  `notes/Phase42b.md` *Architectural choices*. Verdicts:
+  1. *The embedding, at every `d′ ≤ d`* (Result 15; the route, §1). `ι` inserts zeros before the
+     last coordinate and `φ` is the screw map it induces. On a connected `G` any injective `φ`
+     adds `(D_d − D_{d′})(|V| − 1)` to the rank (`lem:screw-embedding-rank`, through the constant
+     motions rather than a complement). The statement form holds at a fixed deficiency parameter
+     (`lem:pencil-d-embed-realization`), and the configuration form from `d′ = 2`
+     (`Graph.X0AttainsGrade.of_le`). Its `d′ = 3` case is the form PD-COVERAGE consumes,
+     `def[6](G) = def[D](G)`, and settles ONE-CLASS (Result 27); its `d′ = 4` case takes Tier 1 to
+     every `d`. FRICTION's `normalsJoin` map lemma landed with it (`exteriorPower_map_normalsJoin`).
+  2. *The deficiency lemma* (Result 16, sharp form; `lem:deficiency-stable`): on a **connected**
+     `G` (corrected at the open: two bodies and no edge have `def[D] = D`), `def[3](G) + 3 ≤ D_{d′}`
+     and `d′ ≤ d` give `def[D_{d′}](G) = def[D_d](G)`; the first form, `2 + def[3](G) ≤ d′`, is
+     its "in particular".
+  3. *`Pᵈ` at `def[3] ≤ 3`* (Result 17 widened; Tier 0; `thm:pencil-d-deficiency-two-le-three`):
+     Phase 40 at `d′ = 3` with items 1–2 (`def[3] + 3 ≤ 6 = C(4, 2)`), which covers `def[3] = 0`
+     too. `Graph.x0AttainsGrade_of_deficiency_two_le_three` and
+     `Graph.hasGradedDistinctPencilRealization_of_deficiency_two_le_three` use the three standard
+     axioms.
 - **PD-CARRIER**, **PD-STEPS**, **PD-COVERAGE**: Phase 40b–40m in `Pᵈ`, on R2's steps (§1).
+  **Deferred to them from PD-STATE**, each optional until a consumer needs it: Phase 40's `k = 2`
+  collineation (`PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv`) re-proved
+  as the grade lemma at `k := 2`, and its scale-shift
+  (`Graph.finrank_span_rigidityRows_ofNormals_smul_add_affineLifts`) as the grade one at one
+  height, `T = t`, through the bridge to `pencilConfigPoint`; the grade scale-shift's `t • id`
+  case at every `m` (not a one-line add, for the same bridge); and the hinge form of join
+  independence (the hinges `C(b_u, b_w)` rather than the joins, through the complement
+  isomorphism), for the cycle and long-ear steps (rows 10–11). Each makes a `P³` file import
+  `Pencil/Grade/`, which 42b's additive commits avoided. **Deferred to them from PD-STABLE**, each
+  with the next commit that edits the file it names (a new declaration there rebuilds most of
+  `Molecular/`): FRICTION's moves of `exteriorPower_map_normalsJoin` to `PanelLayer.lean`, beside
+  `normalsJoin`, and of `BodyHingeFramework.map` and the zero-hinge motion lemmas to
+  `RigidityMatrix/Basic.lean` and `GenericityDevice.lean`; and FRICTION's open `contragredientEquiv`
+  in `Meet.lean`, which `Grade/Collineation.lean`'s inline contragredient would then call.
 - **PD-REDUCTION**, **PD-HEAD**: Phase 39's reduction in `Pᵈ`; the headline `PencilPair`, and the
-  flag strata as corollaries.
+  flag strata as corollaries. **At Phase 42's close**, Tier 0 joins `formalization.yaml`'s
+  `main_results` and `alignment` unless the headline subsumes it, with a closed non-vacuity witness
+  in `CombinatorialRigidity/Nonvacuity.lean` (`PHASE-BOUNDARIES.md`); 42c's intermediate close
+  added no row, as Phase 40's sub-phases did not.
 
-PD-STATE and PD-STABLE do not depend on the route, so they can run beside PD-RECON. The PI kept
-them out of the open; by the planning defaults (§1) they open beside it now that T1 and T2 have
-landed.
+PD-STATE and PD-STABLE do not depend on the route, so they ran beside PD-RECON (§1's defaults).
+PD-STATE opened and closed as 42b on 2026-10-30, and PD-STABLE as 42c the same day.
 
 ## 4. Open questions
 
@@ -478,16 +552,22 @@ unless a finding argues otherwise:
 - `d = 4` first, as Tier 1 of three. SHORT is attacked at `d = 4` and ONE-EAR at `d = 5`, as
   attack tracks once T3 and T4 size them (§2.5). Both have: SHORT's attack is SHORT-CORE, `k = 3,
   4, 5` at `d = 4`. ONE-EAR (the motive, the insertion and X2 at `d = 5`) has left the coverage
-  (Result 27, §2.3), so it waits for GENERIC.
+  (Result 27, §2.3), so it waits for GENERIC. SHORT-CORE's scope does not shrink at `d = 4`: its
+  targets never occur at `def[3] ≤ 3`, and at every danger cell `def_3(G) ≥ 2d − 3` (SHORT-CORE's
+  review 2, workbook S50, branch `attack-short-core`, commit `38f41bf9`, not on master).
 - The headline ships the bare and distinct conjuncts first, GENERIC after (row 22). Nondegeneracy
   enters `PencilPair` only in the generic conjunct (`Pencil/Motive.lean`), so with row 22's reading
   its `Pᵈ` lift is deferred with it.
-- The carrier in dual form (CARRIER); PD-STATE checks it against the definition bodies at open.
-- PD-STATE and PD-STABLE open beside the research once T1 and T2 land (they have).
+- The carrier in dual form (CARRIER). Checked at 42b's open: it agrees with Phase 39's
+  definitions once each body's 3-space is data (§2.3), the reading the PI took (§1).
+- PD-STATE and PD-STABLE open beside the research once T1 and T2 land: they did, as 42b and 42c,
+  both closed 2026-10-30.
 
 Settled by the PI (§1): the route. R2's steps with Result 15's embedding as the base row; an outer
 induction on `d` is Tier 2's question, entering if at all through CERT's open ears at `d ≥ 7`.
-Nothing is open for the PI at this stage.
+The carrier: each body's 3-space as data (§2.3 CARRIER, option (a)). Nothing is open for the PI here: SHORT-CORE's attack track is running, and the sharp deficiency range
+`def[3] + 3 ≤ D′` (tight on cycles) is settled: Tier 0 widened to `def[3] ≤ 3` (§1), §2.5's content range
+restated `def[3] ≥ C(d,2) − 2` and Tier 1's reach `def[3] ≤ 7` (the dated note under §1's planning entry).
 
 Settled by the table: Phase 39's reduction is `d`-general for the bare and distinct conjuncts,
 given CARRIER (row 19). Settled by the PI's call (§1) and Result 27: ONE-CLASS, not ONE-EAR. Its

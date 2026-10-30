@@ -2199,7 +2199,10 @@ parenthesizing doesn't help as reliably as **not writing the raw arithmetic at a
 substitution, not re-parsed source text — `have heq1 := Nat.sub_add_cancel (show 1 ≤ i by
 omega)` (E2d-1's `chainData_of_isPath`, `ChainExtraction.lean`). Phase 22i L1i
 (`ForestSurgery.lean`); Phase 23g E2d-1 (`ChainExtraction.lean`).
-See FRICTION [resolved] *Chained subtraction fails to parse in Graph scope*.
+See FRICTION [resolved] *Chained subtraction fails to parse in Graph scope*. A proof chain
+`linear_combination h1 - h2 - h3` is poisoned the same way, its error an "Application type
+mismatch" on `h2` "expected `ℤ`" beside the parse error (Phase 42c `lem:screw-embedding-rank`
+scratch): parenthesize it, or drop the scope (the dot form `F.graph.vertexSet`, § 67).
 
 **Fork-era root fix, and its RETIREMENT (2026-08-20).** From 2026-07-02 the poison was
 fixed at the source by a one-commit fork pin (`bryangingechen/Matroid`, branch

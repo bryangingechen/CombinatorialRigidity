@@ -2440,6 +2440,60 @@ theorem Connected.deficiency_three_le_deficiency_two [Finite α] [Finite β] {G 
     (hG : G.Connected) : G.deficiency 3 ≤ G.deficiency 2 :=
   hG.deficiency_le_deficiency_of_le (by norm_num)
 
+/-- **The deficiency stops changing** (`lem:deficiency-stable`; this project's, `notes/Strata.md`
+Result 16): on a connected graph, for `n' ≤ n` with
+`def₂(G) + 3 ≤ bodyBarDim n'`, `def_{n'}(G) = def_n(G)`. The value of a partition `P` at `D` is
+`|P| − 1 − (D − 1)·c(P)` with `c(P) = d_G(P) − (|P| − 1) ≥ 0`. At `D ≥ bodyBarDim n'` it is at
+most `0` when `c(P) ≥ 1` (it is at most `def₂(G) − (D − 3)·c(P)` by the value at `D = 3`), and
+`|P| − 1`, independent of `D`, when `c(P) = 0`. `G` connected is needed: two bodies and no edge
+have `def_n = bodyBarDim n`. -/
+theorem Connected.deficiency_eq_of_deficiency_two_add_three_le [Finite α] [Finite β]
+    {G : Graph α β} (hG : G.Connected) {n' n : ℕ} (hn : n' ≤ n)
+    (h : G.deficiency 2 + 3 ≤ (bodyBarDim n' : ℤ)) : G.deficiency n' = G.deficiency n := by
+  have : Nonempty α := ⟨hG.nonempty.some⟩
+  refine le_antisymm ?_ (hG.deficiency_le_deficiency_of_le hn)
+  refine ciSup_le fun f => ?_
+  have hc := hG.numParts_le_ncard_crossingEdges_add_one f
+  have h2 := G.partitionDef_le_deficiency 2 f
+  have hD : (bodyBarDim n' : ℤ) ≤ bodyBarDim n := by
+    have : bodyBarDim n' ≤ bodyBarDim n := by
+      unfold bodyBarDim; exact Nat.div_le_div_right (Nat.mul_le_mul hn (Nat.succ_le_succ hn))
+    exact_mod_cast this
+  have hb2 : (bodyBarDim 2 : ℤ) = 3 := by simp [bodyBarDim]
+  unfold partitionDef at h2 ⊢
+  rw [hb2] at h2
+  set p : ℤ := (G.numParts f : ℤ) with hp
+  set m : ℤ := ((G.crossingEdges f).ncard : ℤ) with hm
+  have hpm : p - 1 ≤ m := by rw [hp, hm]; omega
+  rcases eq_or_lt_of_le hpm with heq | hlt
+  · -- a tree quotient: the same value at every dimension
+    have := G.partitionDef_le_deficiency n f
+    unfold partitionDef at this
+    rw [← hp, ← hm, ← heq] at this
+    rw [← heq]
+    nlinarith
+  · -- a cycle in the quotient: value at most `0`
+    have hdef_nn := G.deficiency_nonneg 2 hG.nonempty
+    have h0 := G.deficiency_nonneg n hG.nonempty
+    nlinarith
+
+/-- **The deficiency stops changing, design-doc form** (`lem:deficiency-stable`, "in particular"):
+on a connected graph, for `n' ≤ n` with `2 + def₂(G) ≤ n'`, `def_{n'}(G) = def_n(G)`. Here
+`bodyBarDim n' ≥ n' + 1 ≥ def₂(G) + 3`, as `def₂(G) ≥ 0` forces `n' ≥ 2`. -/
+theorem Connected.deficiency_eq_of_two_add_deficiency_two_le [Finite α] [Finite β]
+    {G : Graph α β} (hG : G.Connected) {n' n : ℕ} (hn : n' ≤ n)
+    (h : 2 + G.deficiency 2 ≤ (n' : ℤ)) : G.deficiency n' = G.deficiency n := by
+  have h0 := G.deficiency_nonneg 2 hG.nonempty
+  have h2 : 2 ≤ n' := by omega
+  refine hG.deficiency_eq_of_deficiency_two_add_three_le hn ?_
+  have : n' + 1 ≤ bodyBarDim n' := by
+    unfold bodyBarDim
+    rw [Nat.le_div_iff_mul_le (by norm_num)]
+    nlinarith
+  have : ((n' + 1 : ℕ) : ℤ) ≤ bodyBarDim n' := by exact_mod_cast this
+  push_cast at this
+  omega
+
 /-! ## Weak duality (`lem:weak-duality`)
 
 For `D ≥ 1`, `V(G)` nonempty and every partition `P` of `V(G)`,

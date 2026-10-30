@@ -794,7 +794,11 @@ state it (MULTIGRAPH); no main result bounds the edge labels (RELABEL); and each
 declaration stated has one, with KT Proposition 2.3 and the generic body-hinge theorem at KT's own
 genericity (UNSTATED). Summary: ROADMAP §41. **Phase 42** (PENCIL-D,
 `notes/Phase42-design.md`) opened 2026-10-29 with the PI: the pencil realization theorem in every
-dimension, research first (42a, PD-RECON). Summary: ROADMAP §42. Still queued,
+dimension, research first (42a, PD-RECON), with the statement layer beside it (42b, PD-STATE,
+closed 2026-10-30 with its chapter `pencil-d.tex` formalized, `notes/Phase42b.md`); PD-STABLE
+ran the same day (42c, closed 2026-10-30, `notes/Phase42c.md`): every `d` from Phase 40 at
+`def_3 ≤ 3`, Tier 0. The next sub-phase's open goes to the PI.
+Summary: ROADMAP §42. Still queued,
 codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
 conjecture, `notes/Origami.md` — the next phase to open after PENCIL-D, with the PI), **PIN** (a second,
 independent proof of the 2-d molecular conjecture by Jackson–Jordán 2008's
