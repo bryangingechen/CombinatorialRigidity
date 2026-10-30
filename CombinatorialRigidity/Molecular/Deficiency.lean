@@ -2440,9 +2440,8 @@ theorem Connected.deficiency_three_le_deficiency_two [Finite α] [Finite β] {G 
     (hG : G.Connected) : G.deficiency 3 ≤ G.deficiency 2 :=
   hG.deficiency_le_deficiency_of_le (by norm_num)
 
-/-- **The deficiency stops changing** (`lem:deficiency-stable`; Katoh–Tanigawa, *Rooted-tree
-decompositions with matroid constraints and the infinitesimal rigidity of frameworks with
-boundaries*, Result 16 as in the chapter): on a connected graph, for `n' ≤ n` with
+/-- **The deficiency stops changing** (`lem:deficiency-stable`; this project's, `notes/Strata.md`
+Result 16): on a connected graph, for `n' ≤ n` with
 `def₂(G) + 3 ≤ bodyBarDim n'`, `def_{n'}(G) = def_n(G)`. The value of a partition `P` at `D` is
 `|P| − 1 − (D − 1)·c(P)` with `c(P) = d_G(P) − (|P| − 1) ≥ 0`. At `D ≥ bodyBarDim n'` it is at
 most `0` when `c(P) ≥ 1` (it is at most `def₂(G) − (D − 3)·c(P)` by the value at `D = 3`), and

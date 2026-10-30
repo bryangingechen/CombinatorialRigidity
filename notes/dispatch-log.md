@@ -49,6 +49,7 @@ keeps only what git cannot show.
 
 | Date | Task (short + sha) | Rung | Exception | Notes |
 |---|---|---|---|---|
+| 2026-10-30 | 42c `lem:deficiency-stable` `4be9b34f` | sonnet | gate-invisible defect (a citation), coordinator-seeded | The coordinator's prompt said "docstrings cite Result 16 as the chapter does"; the chapter cites nothing (Result 16 is the project's own, `notes/Strata.md`). The builder filled the gap with a real but unrelated Katoh–Tanigawa title. Caught on the full-diff docstring read (F44), fixed in the coordinator's follow-up. Lesson (F19): a prompt's "as X does" is a claim about X; open X before writing it. Also 1 gate in a shell `timeout`, disclosed, harmless (F6 family). |
 
 **Phases 29–34 rows, 2026-07-09 → 07-18: 17 pruned at the 41a grooming
 (2026-10-24); the full rows are in git history at `3a627b3d`.** Those phases
