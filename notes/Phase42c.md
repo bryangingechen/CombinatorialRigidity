@@ -2,27 +2,22 @@
 
 **Status:** in progress, opened 2026-10-30 by the PI (design doc §3's scope as written), a
 sub-phase of Phase 42 beside 42a. Forward mode, the Lean under `/coordinate-phase`: the dep-graph
-is `blueprint/src/chapter/pencil-d.tex` §`sec:pencil-d-stable`, 9 nodes, 6 green (`lem:deficiency-stable`, `def:pencil-d-embedding`,
+is `blueprint/src/chapter/pencil-d.tex` §`sec:pencil-d-stable`, 9 nodes, 7 green (`lem:deficiency-stable`, `def:pencil-d-embedding`,
 `lem:pencil-d-embedding-join`, `lem:pencil-d-x0-attains-distinct`, `lem:screw-embedding-rank`,
-`lem:pencil-d-embed-config-rank`), 3 red.
+`lem:pencil-d-embed-config-rank`, `lem:pencil-d-x0-attains-of-le`), 2 red.
 The open corrected the deficiency lemma (it needs `G` connected) and found its proof gives a
-sharper range; the PI widened the theorem to `def_2 ≤ 3` (*Architectural choices*). Next concrete task: `lem:pencil-d-x0-attains-of-le`.
+sharper range; the PI widened the theorem to `def_2 ≤ 3` (*Architectural choices*). Next concrete task: `thm:pencil-d-deficiency-two-le-three` (or `lem:pencil-d-embed-realization`).
 
 ## Current state
 
-**Next:** `lem:pencil-d-x0-attains-of-le`, `Graph.X0AttainsGrade.of_le` (then the theorem); likely
-one commit. The blueprint proof transcribes: from `G.X0AttainsGrade K m'` take `ends`, `P`, `hlinks`;
-a non-root of `P` is admissible, so `Graph.exists_mvPolynomial_isMainPicture`
-(`lem:pencil-x0-main-picture-open`) gives a polynomial whose non-roots are main pictures; a non-root
-`q₀` of the product, then `z' ∈ L(q₀)^m'` at the target rank (the `R` clause); pad it
-(`Graph.padHeights_mem_liftingSpaceGrade`, and the rank by
-`Graph.finrank_span_rigidityRows_ofNormals_pencilConfigPointGrade_padHeights` with `G` connected);
-close by `Graph.x0AttainsGrade_of_exists` (`[Finite α] [Finite β]`, `V(G)` nonempty, the same
-`ends`). The arithmetic: `D′(|V| − 1) − def_{m'+2} + (D − D′)(|V| − 1) = D(|V| − 1) − def_{m+2}` by
-the deficiency hypothesis. Home: `Pencil/Grade/ZeroHeights.lean`, which then imports
-`Grade/Witness.lean`. The other leaf, `lem:pencil-d-embed-realization`, is off that path.
+**Next:** `thm:pencil-d-deficiency-two-le-three` (`Graph.x0AttainsGrade_of_deficiency_two_le_three`,
+`Graph.hasGradedDistinctPencilRealization_of_deficiency_two_le_three`), last, at `def_2 ≤ 3`; the
+other leaf, `lem:pencil-d-embed-realization`, lands in any slot. Assess whether the theorem is one
+commit once its route is read.
 
-**Landed (latest):** `lem:pencil-d-embed-config-rank` (green, one commit), new file
+**Landed (latest):** `lem:pencil-d-x0-attains-of-le` (green, one commit): `Graph.X0AttainsGrade.of_le`
+in `Pencil/Grade/ZeroHeights.lean`, which now imports `Grade/Witness.lean`; `hloop` is `⟨fun e v hl =>
+hadm.1 e v v hl rfl⟩`, the arithmetic closes by `rw` then `ring`. Before it: `lem:pencil-d-embed-config-rank` (green, one commit), new file
 `Pencil/Grade/ZeroHeights.lean` (over `Grade/Carrier.lean` and `Grade/Embedding.lean`): `padHeights`
 (zero heights appended; no `m' ≤ m` argument, which the linter would flag unused),
 `pencilConfigPointGrade_padHeights` (`ι` of the point, by `Fin.cases` on the index), the rank in `ℤ`
@@ -100,7 +95,7 @@ may refine a name, and the pin lands with the Lean.
 - [x] `lem:pencil-d-embed-config-rank` — `padHeights`, `pencilConfigPointGrade_padHeights` (`ι` of
   the point), `Graph.finrank_span_rigidityRows_ofNormals_pencilConfigPointGrade_padHeights`
   (`G` connected, `[Finite α]`), `Graph.padHeights_mem_liftingSpaceGrade`
-- [ ] `lem:pencil-d-x0-attains-of-le` — `Graph.X0AttainsGrade.of_le` (`[Infinite K]`, `G` connected,
+- [x] `lem:pencil-d-x0-attains-of-le` — `Graph.X0AttainsGrade.of_le` (`[Infinite K]`, `G` connected,
   `G.deficiency (m' + 2) = G.deficiency (m + 2)`)
 - [x] `lem:pencil-d-x0-attains-distinct` — `Graph.X0AttainsGrade.hasGradedDistinctPencilRealization`
 - [ ] `thm:pencil-d-deficiency-two-le-three` — `Graph.x0AttainsGrade_of_deficiency_two_le_three`,
@@ -112,9 +107,9 @@ may refine a name, and the pin lands with the Lean.
 
 ## Hand-off / next phase
 
-The next commit is `lem:pencil-d-x0-attains-of-le` (*Current state*: the route, likely one commit);
-then the theorem last, at `def_2 ≤ 3` (the PI's widening from `≤ 1`, *Architectural choices*). The
-statement form `lem:pencil-d-embed-realization` lands in any slot.
+The next commit is the theorem `thm:pencil-d-deficiency-two-le-three` (*Current state*), at
+`def_2 ≤ 3` (the PI's widening from `≤ 1`, *Architectural choices*); the statement form
+`lem:pencil-d-embed-realization` lands in any slot.
 
 ## Decisions made during this phase
 

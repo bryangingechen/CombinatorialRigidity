@@ -7,6 +7,7 @@ module
 
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Carrier
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Embedding
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Witness
 
 /-!
 # Zero heights
@@ -35,6 +36,8 @@ So the panel-hinge framework of `(q, z)` is that of `(q, z')` mapped along the s
 * `Graph.finrank_span_rigidityRows_ofNormals_pencilConfigPointGrade_padHeights`: the rank of
   `(q, z)` is that of `(q, z')` plus `(D − D')(|V(G)| − 1)` (`lem:pencil-d-embed-config-rank`).
 * `Graph.padHeights_mem_liftingSpaceGrade`: heights in `L(q)^m'` pad to heights in `L(q)^m`.
+* `Graph.X0AttainsGrade.of_le`: attaining in dimension `m' + 2` gives attaining in `m + 2` when the
+  deficiencies agree (`lem:pencil-d-x0-attains-of-le`).
 -/
 
 @[expose] public section
@@ -123,5 +126,34 @@ theorem _root_.Graph.padHeights_mem_liftingSpaceGrade {G : Graph α β} {q : α 
   by_cases hi : (i : ℕ) < m'
   · simpa [padHeights, hi] using hz (i.castLT hi)
   · simp [padHeights, hi, ← Pi.zero_def]
+
+/-- **Attaining in a lower dimension** (`lem:pencil-d-x0-attains-of-le`): let `K` be infinite and
+`G` connected, `m' ≤ m` with `def_{m'+2}(G) = def_{m+2}(G)`. If the general configuration of `G`
+attains in dimension `m' + 2` (`Graph.X0AttainsGrade`), it attains in dimension `m + 2`.
+A non-root of `P` is admissible, so `G` is loopless with three members in each closed
+neighbourhood, and `Graph.exists_mvPolynomial_isMainPicture` gives a main picture `q₀` off `P`.
+Some `z' ∈ L(q₀)^{m'}` attains the rank; `padHeights` gives `z ∈ L(q₀)^m` of the rank plus
+`(D − D')(|V(G)| − 1)`
+(`Graph.finrank_span_rigidityRows_ofNormals_pencilConfigPointGrade_padHeights`), which is the
+target in dimension `m + 2`, and `Graph.x0AttainsGrade_of_exists` applies. -/
+theorem _root_.Graph.X0AttainsGrade.of_le [Infinite K] [Finite α] [Finite β] {G : Graph α β}
+    (hG : G.Connected) (h : m' ≤ m) (hdef : G.deficiency (m' + 2) = G.deficiency (m + 2))
+    (hatt : G.X0AttainsGrade K m') : G.X0AttainsGrade K m := by
+  obtain ⟨ends, P, hends, hP, hPq⟩ := hatt
+  obtain ⟨q₁, hq₁⟩ := MvPolynomial.exists_eval_ne_zero hP
+  have hadm := (hPq q₁ hq₁).1
+  have hloop : G.Loopless := ⟨fun e v hl => hadm.1 e v v hl rfl⟩
+  obtain ⟨Pm, hPm, hPmq⟩ := Graph.exists_mvPolynomial_isMainPicture (K := K) hloop
+    fun v hv => hadm.three_le_ncard_closedNbhd hv
+  obtain ⟨q₀, hq₀⟩ := MvPolynomial.exists_eval_ne_zero (mul_ne_zero hP hPm)
+  rw [MvPolynomial.eval_mul] at hq₀
+  obtain ⟨R, ⟨z', hz', hRz'⟩, hR⟩ := (hPq q₀ (left_ne_zero_of_mul hq₀)).2
+  have hrk := hR z' hz' hRz'
+  have hid := Graph.finrank_span_rigidityRows_ofNormals_pencilConfigPointGrade_padHeights hG
+    hends h q₀ z'
+  refine Graph.x0AttainsGrade_of_exists hG.nonempty ends hends (hPmq q₀ (right_ne_zero_of_mul hq₀))
+    (Graph.padHeights_mem_liftingSpaceGrade (m := m) hz') (le_of_eq ?_)
+  rw [hid, hrk, ← hdef]
+  ring
 
 end CombinatorialRigidity.Molecular

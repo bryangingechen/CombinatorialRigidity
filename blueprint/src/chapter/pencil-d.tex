@@ -724,6 +724,8 @@ $\operatorname{def}_2(G) \le 3$.
 
 \begin{lemma}[Attaining in a lower dimension]
   \label{lem:pencil-d-x0-attains-of-le}
+  \lean{Graph.X0AttainsGrade.of_le}
+  \leanok
   \uses{def:pencil-d-x0-attains, def:D-deficiency}
   Let $K$ be infinite, let $G$ be connected, and let $2 \le d' \le d$
   with $\operatorname{def}_{d'}(G) = \operatorname{def}_d(G)$. If the
@@ -731,6 +733,7 @@ $\operatorname{def}_2(G) \le 3$.
   (\cref{def:pencil-d-x0-attains}), it attains in dimension $d$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-d-embed-config-rank, lem:pencil-d-x0-one-witness,
         lem:pencil-x0-main-picture-open}
   Let $P$ be the polynomial of \cref{def:pencil-d-x0-attains} in
