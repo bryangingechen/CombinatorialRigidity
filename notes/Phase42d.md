@@ -5,8 +5,8 @@ target is an informal proof, at every `d`, of the conditioned pair's three conju
 adjacent-distinct and a generic one), written as red nodes of `pencil-d.tex` before any more
 formalization. Three tracks, CERT, NONDEG and WRITE-UP, run in parallel from one central session,
 `/coordinate-tracks 42d`, with a Lean track, COUNT, for the coverage's counting at every `D`
-(COUNT-A and COUNT-B landed: 11 green nodes; W1 written). CERT is closed; NONDEG's definition is
-C2-same (the PI). **Next:** slice W2, `pencil-d.tex`'s next writer. Plan and the PI's decisions:
+(COUNT-A and COUNT-B landed: 11 green nodes; W1 and W2 written). CERT is closed; NONDEG's definition is
+C2-same (the PI). **Next:** slice W3, `pencil-d.tex`'s next writer. Plan and the PI's decisions:
 `notes/Phase42-design.md` (§1, §3 PD-ALL).
 
 ## Current state
@@ -18,7 +18,8 @@ of that chapter in flight at a time). **COUNT-A has landed**: `pencil-d.tex`'s n
 a review. NONDEG session 1 has landed and the PI chose C2-same; session 2 works on its carrier.
 Slice W1 has landed (`sec:pencil-d-induction`, `sec:pencil-d-flat`: four red nodes and a remark).
 **COUNT-B has landed**: six more green nodes in `sec:pencil-d-deficiency` (*Lean now*), which
-closes the COUNT track. The next concrete step is the hub's: dispatch slice W2.
+closes the COUNT track. Slice W2 has landed (`sec:pencil-d-cut`: three red nodes). The next
+concrete step is the hub's: dispatch slice W3.
 
 In place at the open: the hub command (`.claude/commands/coordinate-tracks.md`), the write-up
 agent (`.claude/agents/writeup-opus.md`), `worktree.baseRef: head` in `.claude/settings.json`
@@ -34,7 +35,7 @@ The hub's registry. Count-free: each attack's status is its `state.md` (`HARNESS
 |---|---|---|---|---|
 | CERT | attack | `notes/attacks/cert/` | `attack-opus` | closed at review 1: R1 proved by hand at every `d` (workbook S1–S9) |
 | NONDEG | attack (a question) | `notes/attacks/nondeg/` | `attack-opus` | ready: the PI chose C2-same; session 2 works on its `Pᵈ` carrier (R-L, S13) |
-| WRITE-UP | write-up | `blueprint/src/chapter/pencil-d.tex`, new sections | `writeup-opus` | ready: slice W2 |
+| WRITE-UP | write-up | `blueprint/src/chapter/pencil-d.tex`, new sections | `writeup-opus` | ready: slice W3 |
 | COUNT | lean | *Lean now* below; nodes in `pencil-d.tex` | `phase-builder-opus` | done: A and B landed; C waits for formalization |
 
 `pencil-d.tex` has one writer in flight at a time: COUNT's commits and the write-up's slices
@@ -67,7 +68,7 @@ Conventions, binding on `writeup-opus`:
 Slices, leaf-first, one session each (a slice's nodes may `\uses` only nodes already written):
 - [x] **W1** the setting: configurations at every `d`, the flat rank `D(n − 1) + 3 − dim L(q)`
   (row 5), Jackson–Jordán's equality as consumed (row 6).
-- [ ] **W2** cut vertices and chains of bridges (rows 7–8).
+- [x] **W2** cut vertices and chains of bridges (rows 7–8).
 - [ ] **W3** contraction at an additive core (row 9, with its second read).
 - [ ] **W4** split-off (row 16) and the sparse estimates at `D` (row 17); the estimates are
   COUNT-A's green nodes in `sec:pencil-d-deficiency`, cited, not rewritten.
@@ -144,8 +145,8 @@ landing them.
 
 ## Hand-off / next phase
 
-Next concrete step: the `/coordinate-tracks 42d` hub dispatches slice W2 (cut vertices and chains
-of bridges, rows 7–8) as the next `pencil-d.tex` writer; it merges NONDEG session 2 as it lands
+Next concrete step: the `/coordinate-tracks 42d` hub dispatches slice W3 (contraction at an additive
+core, row 9, with its second read) as the next `pencil-d.tex` writer; it merges NONDEG session 2 as it lands
 (CERT is closed; COUNT is done). 42d closes when the new sections give an informal proof at every
 `d` of the conjuncts the PI keeps, with CERT and NONDEG closed. Formalization (PD-CARRIER, PD-STEPS, PD-COVERAGE, PD-REDUCTION, PD-HEAD; design doc
 §3) follows at the PI's word.
