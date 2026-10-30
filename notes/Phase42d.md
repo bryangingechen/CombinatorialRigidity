@@ -5,8 +5,9 @@ target is an informal proof, at every `d`, of the conditioned pair's three conju
 adjacent-distinct and a generic one), written as red nodes of `pencil-d.tex` before any more
 formalization. Three tracks, CERT, NONDEG and WRITE-UP, run in parallel from one central session,
 `/coordinate-tracks 42d`, with a Lean track, COUNT, for the coverage's counting at every `D`
-(COUNT-A landed: 5 green nodes). CERT is closed; NONDEG's definition is C2-same (the PI).
-**Next:** the hub merges W1, then dispatches COUNT-B as the next `pencil-d.tex` writer. Plan and the PI's decisions: `notes/Phase42-design.md` (§1, §3 PD-ALL).
+(COUNT-A landed: 5 green nodes; W1 written). CERT is closed; NONDEG's definition is C2-same (the
+PI). **Next:** COUNT-B, then W2, as `pencil-d.tex`'s writers in turn. Plan and the PI's decisions:
+`notes/Phase42-design.md` (§1, §3 PD-ALL).
 
 ## Current state
 
@@ -15,8 +16,8 @@ session 1, each in its own isolated worktree, and COUNT-A as the `pencil-d.tex` 
 of that chapter in flight at a time). **COUNT-A has landed**: `pencil-d.tex`'s new section
 `sec:pencil-d-deficiency`, five green nodes (*Lean now*). **CERT is closed** after one session and
 a review. NONDEG session 1 has landed and the PI chose C2-same; session 2 works on its carrier.
-Slice W1 is in flight; the next concrete step is the hub's: merge it as it lands, then dispatch
-COUNT-B as the next `pencil-d.tex` writer.
+Slice W1 has landed (`sec:pencil-d-induction`, `sec:pencil-d-flat`: four red nodes and a remark).
+The next concrete step is the hub's: dispatch COUNT-B as the next `pencil-d.tex` writer, then W2.
 
 In place at the open: the hub command (`.claude/commands/coordinate-tracks.md`), the write-up
 agent (`.claude/agents/writeup-opus.md`), `worktree.baseRef: head` in `.claude/settings.json`
@@ -32,7 +33,7 @@ The hub's registry. Count-free: each attack's status is its `state.md` (`HARNESS
 |---|---|---|---|---|
 | CERT | attack | `notes/attacks/cert/` | `attack-opus` | closed at review 1: R1 proved by hand at every `d` (workbook S1–S9) |
 | NONDEG | attack (a question) | `notes/attacks/nondeg/` | `attack-opus` | ready: the PI chose C2-same; session 2 works on its `Pᵈ` carrier (R-L, S13) |
-| WRITE-UP | write-up | `blueprint/src/chapter/pencil-d.tex`, new sections | `writeup-opus` | ready: slice W1 |
+| WRITE-UP | write-up | `blueprint/src/chapter/pencil-d.tex`, new sections | `writeup-opus` | ready: slice W2, after COUNT-B |
 | COUNT | lean | *Lean now* below; nodes in `pencil-d.tex` | `phase-builder-opus` | ready: COUNT-B (A landed) |
 
 `pencil-d.tex` has one writer in flight at a time: COUNT's commits and the write-up's slices
@@ -61,7 +62,7 @@ Conventions, binding on `writeup-opus`:
 - A step that fails stops the slice; the gap goes to the coordinator, and to the PI.
 
 Slices, leaf-first, one session each (a slice's nodes may `\uses` only nodes already written):
-- [ ] **W1** the setting: configurations at every `d`, the flat rank `D(n − 1) + 3 − dim L(q)`
+- [x] **W1** the setting: configurations at every `d`, the flat rank `D(n − 1) + 3 − dim L(q)`
   (row 5), Jackson–Jordán's equality as consumed (row 6).
 - [ ] **W2** cut vertices and chains of bridges (rows 7–8).
 - [ ] **W3** contraction at an additive core (row 9, with its second read).
@@ -135,10 +136,10 @@ landing them.
 
 ## Hand-off / next phase
 
-Next concrete step: the `/coordinate-tracks 42d` hub merges slice W1 and NONDEG session 2 as
-they land (CERT is closed), then dispatches the next `pencil-d.tex` writer, COUNT-B (one
-`phase-builder-opus` commit, from `scratch/42d/theorem_s_spike.lean` with *Lean now*'s renames).
-42d closes when
+Next concrete step: the `/coordinate-tracks 42d` hub dispatches the next `pencil-d.tex` writer,
+COUNT-B (one `phase-builder-opus` commit, from `scratch/42d/theorem_s_spike.lean` with *Lean
+now*'s renames), then slice W2; it merges NONDEG session 2 as it lands (CERT is closed). 42d closes
+when
 the new sections give an informal proof at every `d` of the conjuncts the PI keeps, with CERT and
 NONDEG closed. Formalization (PD-CARRIER, PD-STEPS, PD-COVERAGE, PD-REDUCTION, PD-HEAD; design doc
 §3) follows at the PI's word.
