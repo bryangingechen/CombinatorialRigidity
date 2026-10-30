@@ -1291,9 +1291,13 @@ where the step's hypotheses hold, so a repaired step is not refuted; where they 
 provably fall short. A third mode tested the short ears where their step can fail: on 198 such
 cells at `d = 4, 5` the obstruction never occurs, and for ears of at least `C(d−1, 2) + 3`
 interior bodies it is ruled out at every graph, so their new mathematics is confined to 3–5
-interior bodies at `d = 4`. Next, by the PI's defaults (2026-10-29), in either order: the
-statement layer and the `def_3 ≤ 1` corollary open beside the research, and a test sizes the
-one-body ear at `d = 5, 6`. The targets are three tiers: every `d` at `def_3 ≤ 1`, at
+interior bodies at `d = 4`. A fourth mode tested the one- and two-body ears where adding the ear
+lowers the deficiency, at `d = 3..6`. Wherever Phase 40's merged hypothesis holds, both steps'
+counts hold and Phase 40's two-body route reaches them; where it fails, the route falls one short
+at every `d`, `d = 3` included. So the one-body ear's new mathematics is a motive at `d ≥ 5`, an
+insertion lemma and one containment, measured only. Next, by the PI's defaults (2026-10-29), in
+either order: the statement layer and the `def_3 ≤ 1` corollary open beside the research, and a
+test of the coverage at `d = 4, 5`. The targets are three tiers: every `d` at `def_3 ≤ 1`, at
 `def_3 ≤ 2` (a `P⁴` theorem), and every `d`.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)

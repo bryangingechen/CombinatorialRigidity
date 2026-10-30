@@ -7,14 +7,14 @@ waits on the ear rows, nondegeneracy's lift is open, and 4 rows fail as written:
 the one-body and orbit ears (rows 14–15), and route B. §2.5 places the thresholds at `d = 4, 5`
 and the content at `def[3] ≥ d − 2`. T1, T2 and the content-range graphs have landed (§2.4,
 §2.5): row 5's formulas hold, CERT holds at `d ≤ 6` over every field, and 38 more content cells
-reach their target, on graphs where rows 14 and 22 fail as written. T4's first half has landed
-(§2.4): where the `d = 3` one-body step's hypotheses hold, `G[V₁]` attains on the incidence locus
-at every cell measured, `d = 4, 5`, so ONE-EAR's first option stands there. T3 has landed
+reach their target, on graphs where rows 14 and 22 fail as written. T4 has landed (§2.4): wherever
+the `d = 3` steps' merged hypothesis holds, at every cell measured, `d = 3..6`, `G[V₁]` attains on
+the incidence locus and the one- and two-body ear steps reach `(⋆)`. Where it fails, the two-body
+route falls one short at every `d`, as at `d = 3`. So ONE-EAR's first option stands. T3 has landed
 (§2.3–2.4): on 198 danger cells at `d = 4, 5` the short ears' obstruction never occurs, and X3
 holds for `k ≥ C(d−1, 2) + 3` at every graph, so SHORT is left at `k ≤ 5` at `d = 4` (`k ≤ 8` at
-`d = 5`). Next concrete task: PD-STATE's open as the next sub-phase, or T4's second half, in
-either order (§1's defaults). The route stays open (§4). Evidence: `notes/Strata.md`, Results
-12–24.
+`d = 5`). Next concrete task: PD-STATE's open as the next sub-phase, or T5 (coverage), in either
+order (§1's defaults). The route stays open (§4). Evidence: `notes/Strata.md`, Results 12–25.
 
 This file is the phase's entry point: the target (§0), the PI's decisions (§1), the recon (§2),
 the layers by stable code (§3) and the open questions (§4). Letters are minted when a sub-phase
@@ -171,8 +171,22 @@ Result 17's `def[3] ≤ 1` one step further.
 - **ONE-EAR** (rows 14–15): either a motive that asks `G[V₁]` to attain on the locus where `Π_a`
   and `Π_b` meet above a general `q_x`, or another step for `k = 1, 2` at non-adjacent ends, plus
   a `Pᵈ` insertion lemma (at `d ≥ 5` every reachable hinge lies in `Λ²(A+B)`, of dimension ≤ 10).
-  The first option's demand holds at every cell T4 measured where the step's merged hypothesis
-  holds, and fails, provably, at one where it does not (§2.4, `Strata.md` Result 23).
+  **T4 sized it** (§2.4; `Strata.md` Results 23, 25): the first option stands wherever the `d = 3`
+  steps' merged hypothesis **M**, `def[3](G[V₁]; a, b) + 2 ≤ def[3](G[V₁])`, holds, at every cell
+  measured, `d = 3..6`, and fails only where M fails, as at `d = 3`. Its open parts, for an
+  attack at `d = 5`:
+  - **The motive:** `G[V₁]` attains at a general configuration of `G[V₁]` plus the ear
+    `a − x − b`, restricted to `V₁`. At `d = 3` this is `lem:pencil-one-ear-base`; at `d = 4`
+    without a shared neighbour the incidence is free, as two planes of `P⁴` meet in one point.
+    New at `d ≥ 5`, and at `d = 4` with a shared neighbour. At `k = 2` every configuration of
+    `G₁` lies on the locus, so `G₁` attaining and the motive are two open conditions on one
+    irreducible space, and meet.
+  - **The insertion:** `dim(ρ + Λ) ≥ min(s + 1, dim(ρ + Λ²(A+B)))`, the `Pᵈ` form of
+    `lem:pencil-insertion-two`, and **X2**: where M holds, `W ⊉ Λ²(A+B)` unless `W = Λ²`. X2 is
+    free where `Π_a + Π_b = K^{d+1}`, so `Λ²(A+B)` is everything: at `d = 3`, where M gives
+    `Π_a ≠ Π_b`, and at `d = 4` when `Π_a ∩ Π_b = ⟨y⟩`. Both are measured only beyond that.
+  - **`(⋆)` at `k = 1` with `def[D](G[V₁]) > def[D](G)`,** only if the coverage needs it (T5):
+    measured at 46 cells, with `dim(ρ + Λ) = min(dim ρ + 2, D)`.
 - **CARRIER** (rows 3, 9, 19–21): PD-STATE's. The point-based `HasPencilPanelRealization` is the
   wrong object at `d ≥ 4`. Primal (a `(d−3)`-flat `A_v` in a hyperplane) or dual (a point in a
   3-space); an all-`d` polarity `Λ²K^{d+1} ≅ Λ^{d−1}K^{d+1}` (`screwComplementIso` is grade 2
@@ -183,7 +197,7 @@ Result 17's `def[3] ≤ 1` one step further.
   feasibility unchecked). It has `def[3] = 0` (Result 22), so its rank is Result 17's; the
   question it raises is GENERIC's alone.
 
-### 2.4 Proposed tests (T1, T2, T3 and T4's first half run; T4's second half and T5 not run)
+### 2.4 Proposed tests (T1, T2, T3 and T4 run; T5 not run)
 
 - **T1** (row 5): at `d = 4` on the `--d4` population, the flat rank `10(n−1) + 3 − dim L(q)` and
   R1's base `10(n−1) − def[6]`. **Run** at `d = 4, 5, 6` (`Strata.md` Result 20): both formulas
@@ -225,6 +239,23 @@ Result 17's `def[3] ≤ 1` one step further.
   (`Strata.md` Result 1) wherever the path's hinges span `Λ²K^{d+1}` (so `k ≥ D`), and `G₁` ranks at most
   `D(n₁ − 1) − 1`. Both conditions are open on `G`'s irreducible configuration space and hold at
   the seeded point (the driver checks both, exactly, and lists the cell), so the bound holds on a dense subset of the locus.
+  **Second half run** (`Strata.md` Result 25; `--orbit`, seeds 1–3, the rows seed-independent).
+  The orbit cells: open ears with `k = 1, 2` interior bodies at non-adjacent ends and
+  `def[D](G[V₁]) > def[D](G)`, where row 12 does not apply, on the content range at `d = 3..6`.
+  The population is T3's six families, `n ≤ 40`, every deficiency certified, M certified per cell.
+  - `k = 1`: 46 cells, Result 23's two `d = 4` cells among them, all with M. `G[V₁]` attains on
+    the locus at every one, `d = 6` included, and `(⋆)` holds: `dim(ρ + Λ) = min(dim ρ + 2, D)`,
+    so `ρ` supplies the `need − 2 = f − def[D](G)` that the `d = 3` hypothesis
+    `def(G̃[V₁]) ≤ def(G̃)` makes at most zero.
+  - `k = 2`: 69 cells with `def[D](G₁) = def[D](G)`, so `(⋆)` needs `s + 1`, `s = dim W` at
+    `G₁`'s configuration. 16 are danger cells at `d = 5, 6` with M: `10 ≤ s ≤ D − 1`, so
+    `W` could hold `Λ²(A+B)`. At every cell `G₁` and `G[V₁]` attain on the locus and a general
+    insertion reaches `min(s + 1, c)`, `c = dim(ρ + Λ²(A+B))`. At all 62 with M, `W ⊉ Λ²(A+B)`
+    and the insertion gains `(⋆)`'s one dimension, so the route goes through.
+  - The 7 cells without M, at every `d` from 3 to 6, are necklaces whose ends lie in two diamonds
+    joined by one edge. Each diamond's points lie in one 3-space, the edge's ends lie in both, and
+    `y` makes three, so the locus forces `Π_a = Π_b` (`dim Λ²(A+B) = 3`). There `c = 3 < 4 =
+    need` and the route fails, at `d = 3` as at `d = 6`; `G` attains at its own configuration.
 - **T5** (coverage): the graphs whose only row at `D = 10, 15` is a `k = 1, 2` orbit cell. C's hand
   count: `K₄` with every edge subdivided twice takes the orbit cell at `D = 6` and row 12 at `D = 10`.
 
@@ -309,8 +340,8 @@ landed.
 The PI's planning defaults (§1) answer most of the calls put at the open. A session follows them
 unless a finding argues otherwise:
 - `d = 4` first, as Tier 1 of three. SHORT is attacked at `d = 4` and ONE-EAR at `d = 5`, as
-  attack tracks once T3 and T4 size them (§2.5). T3 has: SHORT's attack is SHORT-CORE, `k = 3, 4,
-  5` at `d = 4` (§2.3).
+  attack tracks once T3 and T4 size them (§2.5). Both have: SHORT's attack is SHORT-CORE, `k = 3,
+  4, 5` at `d = 4`; ONE-EAR's is the motive, the insertion and X2 at `d = 5` (§2.3).
 - The headline ships the bare and distinct conjuncts first, GENERIC after (row 22). Nondegeneracy
   enters `PencilPair` only in the generic conjunct (`Pencil/Motive.lean`), so with row 22's reading
   its `Pᵈ` lift is deferred with it.

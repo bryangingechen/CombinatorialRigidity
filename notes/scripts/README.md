@@ -1501,6 +1501,7 @@ Its per-mode prose is its module docstring, and its reading is
 | `python3 notes/scripts/strata/strata.py --content --seed N`, `N ∈ {1, 2, 3}` | 4 s | `notes/Strata.md` *Evidence* (Results 20–22: Phase 42a's T1, T2 and the content-range graphs); `cert_search`, `cert_top` and `elementary_divisors` are direction-local |
 | `python3 notes/scripts/strata/strata.py --oneear --seed N`, `N ∈ {1, 2, 3}` | 1 s | `notes/Strata.md` *Evidence* (Result 23: Phase 42a's T4, first half) |
 | `python3 notes/scripts/strata/strata.py --short --seed N`, `N ∈ {1, 2, 3}` | 70 s | `notes/Strata.md` *Evidence* (Result 24: Phase 42a's T3, the short ears' danger cells); `def_certified` (a partition matched by a generic rank, past the DP cap), `rel_screws` and the ear specs are direction-local |
+| `python3 notes/scripts/strata/strata.py --orbit --seed N`, `N ∈ {1, 2, 3}` | 60 s | `notes/Strata.md` *Evidence* (Result 25: Phase 42a's T4, second half, the orbit ears); `orbit_search`, `orbit_meet` and `orbit_cell` are direction-local |
 
 Per-driver prose — *what* each mode asserts — stays in the four per-directory
 READMEs (`escape/README.md`, `kbare/README.md`, `w4/README.md`,

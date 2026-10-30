@@ -127,6 +127,24 @@ output byte-identical; `notes/Phase42-design.md` sections 2.3-2.4):
       chapter proves them, and everywhere: the ear rank formula, every
       deficiency by a partition matched by a generic-hinge rank.
 
+Added for Phase 42a's T4, second half (2026-10-29; the thirteen modes above
+unchanged, their output byte-identical; `notes/Phase42-design.md` sections
+2.3-2.4):
+
+  python3 notes/scripts/strata/strata.py --orbit [--seed N]
+      The orbit ears, ONE-EAR (sec:main-component-orbit): an open ear with
+      k = 1, 2 interior bodies at non-adjacent ends where def_D(G[V1]) >
+      def_D(G), so row 12 does not cover the step, at d = 3..6 on the
+      content range; --short's families, the cells from a box search seeded
+      by (family, d, k) alone.  k = 1: G[V1] on the incidence locus and the
+      step's (*).  k = 2: the d = 3 route, G_1 (x_2 suppressed) on the
+      locus, W = rho + its two joins, then x_2 put back at a general point
+      of the end planes A, B, against the ceiling dim(rho + Lambda^2(A+B));
+      and (*) at G's own configuration.  The d = 3 steps' merged hypothesis
+      is certified per cell.  Asserted: the ear rank formula, every
+      deficiency certified, the merged hypothesis putting each end off the
+      other's plane, and at d = 3 lem:pencil-insertion-two.
+
 Verdict: the last line is `OK: every target met`, or `FAILED: ...` with exit
 status 1; a mismatch in any mode counts.
 
@@ -140,7 +158,8 @@ per graph.  The per-body modes draw their per-body data afresh per graph.
 Coordinates are integers in [-COORD, COORD]; combination coefficients are
 nonzero integers in that range.  Exact Q throughout (`fractions.Fraction`,
 no GF(p)).  The deficiency DP is exponential (3^n), hence n <= 12; `--short`
-works past it, with each deficiency certified by a partition and a rank.
+and `--orbit` work past it, with each deficiency certified by a partition and
+a rank.
 """
 import argparse
 import os
@@ -2129,8 +2148,311 @@ def mode_short(s):
     return bad
 
 
+# ---------------- Phase 42a: T4's second half, the orbit ears (ONE-EAR) ----------------
+
+ORBIT_DIMS = (3, 4, 5, 6)
+ORBIT_PER = 2       # cells drawn per (family, d, k, class)
+ORBIT_TRIES = 400   # box draws per (family, d, k)
+ORBIT_NMAX = 40     # bodies of G
+ORBIT_REDRAWS = 3   # fresh points per cell after a failed degeneracy guard
+# Result 23's two d = 4 cells where (*) at k = 1 asks for 3: theta(2,2,9)
+# and theta(2,3,8), the ear a 2-path, G[V1] = C_11 (core lengths of "th3")
+ORBIT_FIXED = {("th3", 4, 1): ((2, 9), (3, 8))}
+
+
+def orbit_meet(s, spec, d):
+    """dim(Pi_a cap Pi_b) on the incidence locus, at a configuration of G_1
+    (the ear a - x_1 - b) drawn from the sampler s; Pi_v the plane of v in
+    G_1.  Besides the point of x_1 the meet holds whatever the structure of
+    G[V1] forces: shared neighbours, or an edge between the ends' blocks."""
+    n2, E2, _, _, a, b = spec.graph(1)
+    pts, _ = orbit_config(s, n2, E2, d)
+    A, B = plane_of(pts, E2, a), plane_of(pts, E2, b)
+    need(len(A) == 3 and len(B) == 3, "the planes of a, b")
+    return len(span_cap(A, B))
+
+
+def orbit_spec(fam, lengths, k):
+    core = SHORT_FAMS[fam][0]
+    return CoreEar(core, list(lengths) + [k + 1])
+
+
+def orbit_counts(spec, d, k):
+    """The deficiencies of the search (`path_partitions_def`; `orbit_cell`
+    certifies them), or None if the spec is outside the population: n >
+    ORBIT_NMAX, ends adjacent, def_3(G) < d - 2 (outside the content range),
+    or def_D(G[V1]) <= def_D(G) (row 12 covers the step: k + 1 independent
+    joins give (*))."""
+    D = (d + 1) * d // 2
+    n, E, paths, blocks, a, b = spec.graph(k)
+    n1, E1, paths1, blocks1 = spec.base()
+    if n > ORBIT_NMAX or a == b or {a, b} in map(set, E1):
+        return None
+    if path_partitions_def(n, E, paths, 3, blocks) < d - 2:
+        return None
+    dG = path_partitions_def(n, E, paths, D, blocks)
+    f = path_partitions_def(n1, E1, paths1, D, blocks1)
+    if f <= dG:
+        return None
+    nb = [{w for e in E1 if v in e for w in e} - {v} for v in (a, b)]
+    out = dict(dG=dG, f=f, sh=len(nb[0] & nb[1]))
+    if k == 2:
+        n2, E2, paths2, blocks2, _, _ = spec.graph(1)
+        out["dG1"] = path_partitions_def(n2, E2, paths2, D, blocks2)
+    return out
+
+
+def orbit_search(fam, d, k):
+    """The cells for (fam, d, k): ORBIT_FIXED's, then a search of fam's box
+    seeded by (fam, d, k) alone, so the same at every --seed.  Every cell has
+    an open ear with k interior bodies at non-adjacent ends, def_3(G) >= d-2
+    and def_D(G[V1]) > def_D(G) (`orbit_counts`).  At k = 2 also def_D(G_1) =
+    def_D(G), G_1 = G with x_2 suppressed (no slack: (*) needs one dimension
+    more than W), and the cells split in two classes: 'danger', where
+    s = 2 + f - def_D(G_1), the predicted dim W, is at least C(6 - meet, 2),
+    the dimension of Lambda^2(A+B) (so W can contain it), and at most D-1;
+    'plain' otherwise.  The meet is `orbit_meet`'s, at a configuration drawn
+    from a sampler seeded by (fam, d, k) too.  Up to ORBIT_PER cells per
+    class."""
+    D = (d + 1) * d // 2
+    classes = ("plain", "danger") if k == 2 else ("plain",)
+    found = {c: [] for c in classes}
+    S = Sampler(2000000 + 10000 * list(SHORT_FAMS).index(fam) + 100 * d + k)
+
+    def take(spec):
+        c = orbit_counts(spec, d, k)
+        if c is None or (k == 2 and c["dG1"] != c["dG"]):
+            return
+        cls = "plain"
+        if k == 2:
+            try:
+                m = orbit_meet(S, spec, d)
+            except Degenerate:
+                return
+            if (6 - m) * (5 - m) // 2 <= 2 + c["f"] - c["dG1"] <= D - 1:
+                cls = "danger"
+        if len(found[cls]) < ORBIT_PER:
+            found[cls].append((cls, spec))
+
+    for ls in ORBIT_FIXED.get((fam, d, k), ()):
+        take(orbit_spec(fam, ls, k))
+    R = random.Random(1000000 + 10000 * list(SHORT_FAMS).index(fam) + 100 * d + k)
+    seen = set()
+    for _ in range(ORBIT_TRIES):
+        if all(len(v) == ORBIT_PER for v in found.values()):
+            break
+        spec = short_draw(R, fam, D, k)
+        if spec is None or spec.key in seen:
+            continue
+        seen.add(spec.key)
+        take(spec)
+    return [x for c in classes for x in found[c]]
+
+
+def orbit_config(s, n, E, d):
+    """A pencil configuration of (n, E) in P^d: a seeded picture, d-2 heights
+    in L(q); the points and the hinges."""
+    q = [s.vec(2) for _ in range(n)]
+    b, H = pd_pencil(s, n, E, d, q, lifting_space(n, E, q))
+    body_guard(n, E, H)
+    return b, H
+
+
+def orbit_cell(s, spec, d, k):
+    """One cell.  k = 1 (row 14, thm:pencil-x0-open-ear-one): G's configuration,
+    on V1 a point of the incidence locus b_x in Pi_a cap Pi_b; G[V1]'s rank
+    there, rho, and (*)'s dim(rho + Lambda), Lambda = span(p_a x, x p_b).
+    k = 2 (row 15, thm:pencil-x0-open-ear-two-orbit): the d = 3 route, G_1's
+    configuration (the locus, y the point of x_1), W = rho + span(p_a y,
+    y p_b), A, B the planes of a, b there, Lambda^2(A+B) the span of every
+    hinge an insertion x_1 in A, x_2 in B can reach; then a general such
+    insertion; and, apart from the route, G's own configuration, where
+    G[V1] is general."""
+    D = (d + 1) * d // 2
+    n, E, paths, blocks, a, b = spec.graph(k)
+    n1, E1, paths1, blocks1 = spec.base()
+    c = dict(D=D, n=n, dG=def_certified(s, n, E, paths, D, blocks),
+             f=def_certified(s, n1, E1, paths1, D, blocks1),
+             d3=def_certified(s, n, E, paths, 3, blocks))
+    c["need"] = k + 1 + c["f"] - c["dG"]
+    c["t1"], c["tG"] = D * (n1 - 1) - c["f"], D * (n - 1) - c["dG"]
+    nb = [{w for e in E1 if v in e for w in e} - {v} for v in (a, b)]
+    c["sh"] = len(nb[0] & nb[1])
+    # the d = 3 steps' merged hypothesis def_3(G[V1]; a, b) + 2 <= def_3(G[V1]):
+    # adding ab lowers def_3 by at most 2, and by 2 exactly when it holds
+    # (the partitions keeping a, b together do not change)
+    c["M"] = (def_certified(s, n1, E1, paths1, 3, blocks1)
+              - def_certified(s, n1, E1 + [(a, b)], paths1 + [[a, b]], 3, blocks1)) == 2
+
+    def at(pts, edges):
+        """G[V1]'s rank, rho, the planes of a and b in the graph of pts and
+        their meet, and whether each end's point is off the other's plane."""
+        base = pts[:n1]
+        H1 = [ext([base[u], base[v]]) for u, v in E1]
+        A, B = plane_of(pts, edges, a), plane_of(pts, edges, b)
+        need(len(A) == 3 and len(B) == 3, "the planes of a, b")
+        off = rank(A + [pts[b]]) == 4 and rank(B + [pts[a]]) == 4
+        return motion_rank(n1, E1, H1), rel_screws(n1, E1, H1, a, b), A, B, off
+
+    def joins(ps):
+        return [ext([p, p2]) for p, p2 in zip(ps, ps[1:])]
+
+    if k == 1:
+        bG, H = orbit_config(s, n, E, d)
+        c["rG"] = motion_rank(n, E, H)
+        c["r1"], rho, A, B, c["off"] = at(bG, E)
+        c["meet"], c["rho"] = len(span_cap(A, B)), len(rho)
+        c["s"] = rank(rho + joins([bG[a], bG[n1], bG[b]]))
+        c["formula"] = c["rG"] == c["r1"] + (D - 1) + c["s"] - 1
+        return c
+    n2, E2, paths2, blocks2, _, _ = spec.graph(1)
+    c["dG1"] = def_certified(s, n2, E2, paths2, D, blocks2)
+    c["tG1"] = D * (n2 - 1) - c["dG1"]
+    b1, H1p = orbit_config(s, n2, E2, d)
+    c["rG1"] = motion_rank(n2, E2, H1p)
+    c["r1"], rho, A, B, c["off"] = at(b1, E2)
+    c["meet"], c["rho"] = len(span_cap(A, B)), len(rho)
+    y = b1[n1]
+    c["s"] = rank(rho + joins([b1[a], y, b1[b]]))
+    AB = [(A + B)[i] for i in _pivots(A + B)]
+    c["lam"] = rank([ext([u, v]) for u, v in combinations(AB, 2)])
+    c["c"] = rank(rho + [ext([u, v]) for u, v in combinations(AB, 2)])
+    x1, x2 = point_over(A, s.vec(2)), point_over(B, s.vec(2))
+    c["ins"] = rank(rho + joins([b1[a], x1, x2, b1[b]]))
+    pts = b1[:n1] + [x1, x2]
+    body_guard(n, E, joins_of(pts, E))
+    rR = motion_rank(n, E, joins_of(pts, E))
+    c["formula"] = (c["rG1"] == c["r1"] + (D - 1) + c["s"] - 1
+                    and rR == c["r1"] + 2 * (D - 1) + c["ins"] - 1)
+    c["rR"] = rR
+    bG, H = orbit_config(s, n, E, d)
+    c["rG"] = motion_rank(n, E, H)
+    r1g, rhog, Ag, Bg, _ = at(bG, E)
+    c["gen"] = rank(rhog + joins([bG[a], bG[n1], bG[n1 + 1], bG[b]]))
+    c["r1g"], c["meetg"] = r1g, len(span_cap(Ag, Bg))
+    c["formula"] &= c["rG"] == r1g + 2 * (D - 1) + c["gen"] - 1
+    return c
+
+
+def joins_of(pts, E):
+    return [ext([pts[u], pts[v]]) for u, v in E]
+
+
+def mode_orbit(s):
+    print("T4's second half (Phase 42a; Phase42-design.md sections 2.3-2.4, "
+          "ONE-EAR): the orbit ears, an open ear a - x_1 (- x_2) - b on V1 with "
+          "k = 1, 2 interior bodies at non-adjacent ends, where def_D(G[V1]) > "
+          "def_D(G), so row 12 does not cover the step and (*) asks dim(rho + "
+          "Lambda) >= need = k + 1 + f - def_D(G) >= k + 2 "
+          "(sec:main-component-orbit; f = def_D(G[V1])).  Content range only "
+          "(def_3(G) >= d - 2).  Cells from the families of --short (`orbit_"
+          "search`, seeded by (family, d, k) alone), plus Result 23's two d = 4 "
+          "cells.  k = 1: at G's configuration, whose restriction to V1 lies on "
+          "the incidence locus: G[V1] (sh1 = t1 - its rank), s = dim(rho + "
+          "Lambda) against need, G.  k = 2, the d = 3 route: G_1 = G with x_2 "
+          "suppressed at its own configuration (the locus; y the point of x_1); "
+          "sh1, shG1 = G[V1], G_1 below target; s = dim W, W = rho + span(p_a y, "
+          "y p_b); lam = dim Lambda^2(A+B), A, B the planes of a, b; c = dim(rho "
+          "+ Lambda^2(A+B)), the most any insertion x_1 in A, x_2 in B reaches; "
+          "ins = dim(rho + Lambda) at a general one; then, apart from the route, "
+          "gen = dim(rho + Lambda) at G's own configuration, where G[V1] is "
+          "general.  meet = dim(Pi_a cap Pi_b) (k = 2: at G_1's configuration | "
+          "at G's).  o: each end's point off the other end's plane.  Flags: 'I' "
+          "ins < min(s+1, c) (a P^d form of lem:pencil-insertion-two fails), "
+          "'X' c < need (every insertion falls short: the route is obstructed), "
+          "'*' ins < need, '!' gen < need, '~' a redraw.  Asserted at every "
+          "cell: every deficiency certified (`def_certified`), the ear rank "
+          "formula (lem:block-rank-ear) at each configuration, every rank at most "
+          "its count, s = 2 + f - def_D(G_1) where G[V1] and G_1 attain, and o "
+          "wherever M (M puts each end off the other's plane at d = 3, and a "
+          "P^d configuration projects to a P^3 one).  At d = 3 wherever o, "
+          "where the chapter proves the step: lam = 6 and ins >= min(s+1, 6) "
+          "(lem:pencil-insertion-two).  M: the d = 3 steps' merged hypothesis "
+          "def_3(G[V1]; a, b) + 2 <= def_3(G[V1]), certified as def_3(G[V1]) - "
+          "def_3(G[V1] + ab) = 2.")
+    print("families (G[V1]; a, b): " + "; ".join(f"{g}: {v[2]}" for g, v in SHORT_FAMS.items()))
+    bad, tally = 0, {}
+    cols1 = ("cells", "G[V1] at target on the locus", "(*)", "G at target")
+    cols2 = ("cells", "G_1 at target", "G[V1] at target on the locus",
+             "W contains Lambda^2(A+B), W proper", "ins >= min(s+1, c)",
+             "the route's (*): ins >= need", "c >= need", "gen >= need", "G at target")
+    for k in (1, 2):
+        print(f"k = {k}" + (" (row 14, one-body ear)" if k == 1 else
+                            " (row 15, two-body ear at non-adjacent ends)"))
+        if k == 1:
+            print(f"{'fam':5}{'lengths':18}{'d':>2}{'n':>4}{'sh':>3}{'M':>2}{'d3':>4}"
+                  f"{'f':>4}{'dG':>4}{'sh1':>4}{'meet':>5}{'o':>2}{'rho':>4}{'s':>4}"
+                  f"{'need':>5}{'G':>12}")
+        else:
+            print(f"{'fam':5}{'cls':>7}{'lengths':>18}{'d':>2}{'n':>4}{'sh':>3}{'M':>2}{'d3':>4}"
+                  f"{'f':>4}{'dG':>4}{'dG1':>4}{'sh1':>4}{'shG1':>5}{'meet':>6}{'o':>2}"
+                  f"{'rho':>4}{'s':>4}{'lam':>4}{'c':>4}{'ins':>4}{'need':>5}{'gen':>4}"
+                  f"{'G':>12}")
+        for d in ORBIT_DIMS:
+            D = (d + 1) * d // 2
+            for fam in SHORT_FAMS:
+                for cls, spec in orbit_search(fam, d, k):
+                    for draws in range(ORBIT_REDRAWS + 1):
+                        try:
+                            c = orbit_cell(s, spec, d, k)
+                            break
+                        except Degenerate as e:
+                            err = e
+                    else:
+                        bad += 1
+                        print(f"{fam:5}{spec.label():18}{d:>2}  degenerate: {err}")
+                        continue
+                    sh1 = c["t1"] - c["r1"]
+                    bad += not c["formula"]
+                    bad += c["M"] and not c["off"]
+                    bad += min(sh1, c["tG"] - c["rG"]) < 0
+                    Gc = f"{c['rG']}/{c['tG']}" + ("" if c["rG"] == c["tG"] else "<")
+                    t = tally.setdefault((k, fam, d), [0] * (len(cols1) if k == 1 else len(cols2)))
+                    if k == 1:
+                        star = c["s"] < c["need"]
+                        flags = ("*" if star else "") + "~" * draws
+                        for i, v in enumerate((1, sh1 == 0, not star, c["rG"] == c["tG"])):
+                            t[i] += v
+                        print(f"{fam:5}{spec.label():18}{d:>2}{c['n']:>4}{c['sh']:>3}"
+                              f"{'y' if c['M'] else 'n':>2}{c['d3']:>4}{c['f']:>4}{c['dG']:>4}{sh1:>4}{c['meet']:>5}"
+                              f"{'o' if c['off'] else '.':>2}{c['rho']:>4}{c['s']:>4}"
+                              f"{c['need']:>5}{Gc:>12} {flags}")
+                        continue
+                    shG1 = c["tG1"] - c["rG1"]
+                    bad += min(shG1, c["tG"] - c["rR"]) < 0
+                    bad += sh1 == shG1 == 0 and c["s"] != 2 + c["f"] - c["dG1"]
+                    ins_ok = c["ins"] >= min(c["s"] + 1, c["c"])
+                    if d == 3 and c["off"]:
+                        bad += c["lam"] != 6 or c["ins"] < min(c["s"] + 1, 6)
+                    contain = c["c"] == c["s"] < D
+                    flags = (("I" if not ins_ok else "") + ("X" if c["c"] < c["need"] else "")
+                             + ("*" if c["ins"] < c["need"] else "")
+                             + ("!" if c["gen"] < c["need"] else "") + "~" * draws)
+                    for i, v in enumerate((1, shG1 == 0, sh1 == 0, contain, ins_ok,
+                                           c["ins"] >= c["need"], c["c"] >= c["need"],
+                                           c["gen"] >= c["need"], c["rG"] == c["tG"])):
+                        t[i] += v
+                    print(f"{fam:5}{cls:>7}{spec.label():>18}{d:>2}{c['n']:>4}{c['sh']:>3}"
+                          f"{'y' if c['M'] else 'n':>2}{c['d3']:>4}{c['f']:>4}{c['dG']:>4}{c['dG1']:>4}{sh1:>4}{shG1:>5}"
+                          f"{str(c['meet']) + '|' + str(c['meetg']):>6}"
+                          f"{'o' if c['off'] else '.':>2}{c['rho']:>4}{c['s']:>4}{c['lam']:>4}"
+                          f"{c['c']:>4}{c['ins']:>4}{c['need']:>5}{c['gen']:>4}{Gc:>12} {flags}")
+        cols = cols1 if k == 1 else cols2
+        print(f"per family and d (k = {k}), the columns: " + "; ".join(cols))
+        for d in ORBIT_DIMS:
+            row = [0] * len(cols)
+            for (kk, fam, dd), t in tally.items():
+                if kk == k and dd == d:
+                    print(f"  d={d} {fam:5}" + " ".join(f"{v:>4}" for v in t))
+                    row = [x + v for x, v in zip(row, t)]
+            print(f"  d={d} all  " + " ".join(f"{v:>4}" for v in row))
+    print(f"mismatches (asserted): {bad}")
+    return bad
+
+
 MODES = ("linear", "mixed", "perbody", "examples", "selftest",
-         "complexes", "residual4", "d4", "lifting", "pd", "content", "oneear", "short")
+         "complexes", "residual4", "d4", "lifting", "pd", "content", "oneear", "short",
+         "orbit")
 
 
 def main():

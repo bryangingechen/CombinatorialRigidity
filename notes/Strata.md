@@ -3,7 +3,7 @@
 **Status:** its `Pᵈ` pencil part opened as **Phase 42** (PENCIL-D, the PI, 2026-10-29; plan
 `notes/Phase42-design.md`). Three sessions with the PI after Phase 40: the first found
 Results 1–10; the second checked the literature (*Literature*) and ran Results 9–11's tests; the
-third set the `Pᵈ` picture, Results 12–19. Phase 42a's tests added Results 20–24. Next concrete
+third set the `Pᵈ` picture, Results 12–19. Phase 42a's tests added Results 20–25. Next concrete
 task: Phase 42a's (`notes/Phase42a.md`). No Lean, no blueprint here. Evidence driver:
 `notes/scripts/strata/strata.py` (exact ℚ, seeded). Editing discipline as for phase notes (≤ 8-line
 entries). `HARNESS.md` *Evidence* and *Reproducibility* bind this work; it is not an attack track.
@@ -238,6 +238,14 @@ in every `Pᵈ` (Results 12–19), which PENCIL-D sets out to prove.
     certificate proves for every graph, and below that `ρ`'s image supplies the rest, in general
     position. The 24 cells at `d = 3`, where the chapter proves the step, are the control. The
     argument and the cells: `notes/Phase42-design.md` §2.3–2.4.
+25. `[MEASURED]` **The orbit ears follow the merged hypothesis** (Phase 42a's T4, second half;
+    `--orbit`, seeds 1–3). Open ears with one or two interior bodies at non-adjacent ends where
+    `def_D(G[V₁]) > def_D(G)`, so row 12 does not apply; content range, `d = 3..6`, `n ≤ 40`. At all
+    46 one-body cells `G[V₁]` attains on the incidence locus and `(⋆)` holds, with
+    `dim(ρ + Λ) = min(dim ρ + 2, D)`. At all 69 two-body cells Phase 40's route reaches
+    `min(s + 1, dim(ρ + Λ²(A+B)))`; that is `(⋆)` at all 62 where the merged hypothesis holds.
+    Where it fails (7 cells, `d = 3` included) the locus forces `Π_a = Π_b`, the route falls one
+    short, and `G` still attains. The cells: `notes/Phase42-design.md` §2.4.
 
 ## The PENCIL-D program
 
@@ -283,11 +291,12 @@ Hunt, *J. Mechanisms* 2 (1967) 307–327, doi:10.1016/0022-2569(67)90005-5.
 
 ## Evidence
 
-Six commands, `N ∈ {1, 2, 3}`, verdict `OK: every target met` at all three:
+Seven commands, `N ∈ {1, 2, 3}`, verdict `OK: every target met` at all three:
 `python3 notes/scripts/strata/strata.py --linear --mixed --perbody --examples --selftest
 --seed N` and `... --complexes --residual4 --d4 --lifting --seed N` (~20 s each), `... --pd
 --seed N` and `... --content --seed N` (~4 s each), `... --oneear --seed N` (~1 s) and
-`... --short --seed N` (~70 s). Output is byte-identical under `PYTHONHASHSEED` 0 and 7.
+`... --short --seed N` (~70 s) and `... --orbit --seed N` (~60 s). Output is byte-identical
+under `PYTHONHASHSEED` 0 and 7.
 - **First command** (session 1; byte-identical after sessions 2 and 3): 184 linear cells
   (23 graphs × 8 rungs) where the rank at a point, the count and the rank at the per-edge
   linear envelope agree; 7 mixed cases; every per-body cell (molecular, panel, pencil, flat
@@ -330,6 +339,18 @@ Six commands, `N ∈ {1, 2, 3}`, verdict `OK: every target met` at all three:
   `SHORT_PER = 2` danger cells per family, `d` and `k`, by a box search seeded by them alone
   (`SHORT_TRIES = 400`, `n ≤ 40`), so the cells and their figures do not vary with the seed; the
   four-path theta has none at `d = 5`, `k ≥ 11`, under that cap.
+- **`--orbit`** (Phase 42a's T4, second half; the thirteen earlier modes' output byte-identical at
+  seeds 1–3 against the previous driver): Result 25. Asserted at every cell: each deficiency
+  certified (`def_certified`), the ear rank formula at every configuration, every rank at most
+  its count, `dim W = 2 + f − def_D(G₁)` where `G[V₁]` and `G₁` attain, and each end off the
+  other's plane wherever the merged hypothesis holds (certified per cell as
+  `def_3(G[V₁]) − def_3(G[V₁] + ab) = 2`). At `d = 3` where the ends are off,
+  `lem:pencil-insertion-two`'s bound. Support: per cell one configuration of `G` (`k = 1`), or
+  of `G₁` then a general insertion, and one of `G` (`k = 2`). Population: `--short`'s families,
+  `ORBIT_PER = 2` cells per family, `d`, `k` and class (`danger` where `dim W` can hold
+  `Λ²(A+B)`, its meet measured at a configuration seeded with the cell), by a box search seeded
+  by them alone (`ORBIT_TRIES = 400`, `n ≤ 40`), plus Result 23's two `d = 4` cells; the rows do
+  not vary with the seed, and no point was redrawn. The four-path theta has none at `d = 6`.
 - **Bounds:** a point's rank is a lower bound for the stratum's generic rank, and each count
   an upper bound (Results 3, 5, and `D(n−1) − def_D` in `Pᵈ`), so a match certifies the
   generic rank on that graph. A shortfall at a point would prove nothing.

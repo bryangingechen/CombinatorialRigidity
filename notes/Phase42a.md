@@ -2,18 +2,18 @@
 
 **Status:** in progress, opened 2026-10-29 with the PI, attended. Research only: no Lean, no
 blueprint. Landed: the step table and thresholds (design doc §2.1–§2.5); T1, T2 and the
-content-range graphs (`Strata.md` Results 20–22), with no shortfall; T4's first half (Result 23),
-where ONE-EAR's first option holds at every cell meeting the `d = 3` step's merged hypothesis; T3
-(Result 24), where SHORT's obstruction never occurs and SHORT shrinks to SHORT-CORE.
-Next concrete task: T4's second half, or PD-STATE's open, in either order.
+content-range graphs (`Strata.md` Results 20–22), with no shortfall; T3 (Result 24), where SHORT's
+obstruction never occurs and SHORT shrinks to SHORT-CORE; T4 (Results 23, 25), where ONE-EAR's
+first option holds wherever the merged hypothesis M does, `d = 3..6`.
+Next concrete task: T5 (coverage), or PD-STATE's open, in either order.
 Plan and decisions: `notes/Phase42-design.md`; evidence: `notes/Strata.md`.
 
 ## Current state
 
 **Next, in either order** (the PI's defaults, design doc §1):
-- **T4's second half** (ONE-EAR; design doc §2.4), one `strata.py` mode committed with its
-  figures: at `d = 5, 6`, `dim(ρ + Λ²(A+B))` against `3 + f − def[D](G)` on the content range,
-  and Result 23's two `d = 4` cells where (⋆) at `k = 1` asks for 3. T5 (coverage) after.
+- **T5** (coverage; design doc §2.4), one `strata.py` mode committed with its figures: the
+  graphs whose only row at `D = 10, 15` is a `k = 1, 2` orbit cell, and whether any needs a
+  `k = 1` cell with `def[D](G[V₁]) > def[D](G)` (ONE-EAR's third open part, §2.3).
 - **PD-STATE's open** beside the research, its letter minted then (`PHASE-BOUNDARIES.md` *When
   this commit opens a phase*): check the dual-form carrier (§2.3 CARRIER) against the definition
   bodies, and lay out PD-STABLE.
@@ -30,6 +30,10 @@ Then T3, `strata.py --short` (Result 24, §2.3–2.4): on 198 danger cells at `d
 families, `W` never contains a star unless `W = Λ²`, and `x₂` put back gains what (⋆) needs. X3
 is proved for `k ≥ C(d−1, 2) + 3` (a CERT polygon in the quotient by the stars), so SHORT's open
 part is SHORT-CORE, `k = 3–5` at `d = 4` (`3–8` at `d = 5`), where `ρ` must fill that quotient.
+Then T4's second half, `strata.py --orbit` (Result 25, §2.3–2.4): the orbit ears at `d = 3..6`.
+At 46 one-body cells `G[V₁]` attains on the locus and `(⋆)` holds; at 69 two-body cells Phase
+40's route (`G₁` on the locus, then `x₂` put back) reaches `min(s + 1, dim(ρ + Λ²(A+B)))`, which
+is `(⋆)` at all 62 with M. The 7 without M fail as at `d = 3`: the locus forces `Π_a = Π_b`.
 
 ## Architectural choices made up front
 
@@ -53,13 +57,14 @@ part is SHORT-CORE, `k = 3–5` at `d = 4` (`3–8` at `d = 5`), where `ρ` must
 - [x] **T4's first half** (§2.4): `G[V₁]` on `G`'s configurations at `d = 4, 5` (Result 23).
 - [x] **T3** (§2.4): SHORT's danger cells at `d = 3, 4, 5` (Result 24); X3 for
   `k ≥ C(d−1, 2) + 3` proved (§2.3).
-- [ ] **T4's second half, T5** (§2.4), on graphs with `def[3] ≥ d − 2` only: T4 at `d = 5, 6`,
-  the coverage rows at `D = 10, 15`. Each sizes an obligation before any attack on it. T4's
-  second half is next (*Current state*).
+- [x] **T4's second half** (§2.4): the orbit cells at `d = 3..6` (Result 25); ONE-EAR sized as
+  the motive, the insertion and X2 (§2.3).
+- [ ] **T5** (§2.4), on graphs with `def[3] ≥ d − 2` only: the coverage rows at `D = 10, 15`. It
+  sizes the coverage before any attack builds on it. Next (*Current state*).
 - [ ] **A second read of rows 9 and 12** (contraction; (⋆) and the two-body ear), before an attack
   track or PD-CARRIER builds on them.
 - [ ] **SHORT-CORE, ONE-EAR** (§2.3): attack tracks, SHORT-CORE at `d = 4` (`k = 3, 4, 5`;
-  sized by T3) and ONE-EAR at `d = 5` once T4's second half sizes it.
+  sized by T3) and ONE-EAR at `d = 5` (the motive, the insertion, X2; sized by T4).
 
 ## Blockers / open questions
 
@@ -68,13 +73,13 @@ part is SHORT-CORE, `k = 3–5` at `d = 4` (`3–8` at `d = 5`), where `ρ` must
 
 ## Hand-off / next phase
 
-Two commits are open, in either order (*Current state*). One is T4's second half, a new
-`strata.py` mode committed with its figures (`HARNESS.md` *Reproducibility*); the other is
-PD-STATE's open as the next sub-phase. T4's first half left ONE-EAR's first option standing where
-the step's merged hypothesis holds; its insertion count is the second half's. T3 sized SHORT: an
-attack track on SHORT-CORE at `d = 4` (`k = 3, 4, 5`), whose `d = 3` model is the chapter's
-`k = 3` case split on `ρ`. Whether ONE-EAR takes one session or several is unknown until T4's
-second half sizes it.
+Two commits are open, in either order (*Current state*). One is T5, a new `strata.py` mode
+committed with its figures (`HARNESS.md` *Reproducibility*); the other is PD-STATE's open as the
+next sub-phase. T3 and T4 have sized both attack tracks. SHORT-CORE is at `d = 4` (`k = 3, 4, 5`),
+and its `d = 3` model is the chapter's `k = 3` case split on `ρ`. ONE-EAR is at `d = 5`, three
+lemmas (design doc §2.3): the motive, which is new mathematics; a `Pᵈ` insertion lemma in
+`lem:pencil-insertion-two`'s form; and X2, measured only. The insertion lemma is likely one
+session. Whether the motive is one session or several is unknown.
 
 ## Decisions made during this phase
 
@@ -94,6 +99,11 @@ second half sizes it.
   step's two hypotheses per cell, since the motive is needed only where that step is taken. Its
   one miss is proved from asserted premises, not read off a point. A past-cap cell is certified
   when `G₁`'s own configuration reaches `D(n₁ − 1)`, so it is marked `<`, not `?`.
+- **T4's second half is its own mode**, `strata.py --orbit`, on T3's families, so `--short`'s
+  figures do not move. Only orbit cells (`def[D](G[V₁]) > def[D](G)`, where row 12 does not apply),
+  at `k = 2` only those with no slack (`def[D](G₁) = def[D](G)`). The danger class reads the meet
+  at a configuration seeded with the cell: a prediction from shared neighbours missed the
+  diamond-edge cells. M is certified past the DP cap as `def_3(G[V₁]) − def_3(G[V₁] + ab) = 2`.
 - **T3 tests only the danger cells**, `strata.py --short`: off them the `d`-general insertion
   lemma already settles the step. Its graphs are mostly past the DP cap, so each deficiency is
   a partition's value matched by a generic-hinge rank. Cells come from a box search seeded by
