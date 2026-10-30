@@ -4811,7 +4811,8 @@ dimension three (\cref{lem:pencil-d-nondegenerate-feasible}).
 
 % Source: NONDEG workbook (notes/attacks/nondeg/workbook.md), S7: the candidate C2-same,
 % the PI's choice after session 1 (notes/attacks/nondeg/brief.md, header), with S7 (c)
-% for the openness of the three conditions.
+% for the openness of the three conditions. A link includes a loop, as in the formalized
+% definition at d = 3, with which this one agrees (lem:pencil-d-nondegenerate-three).
 \begin{definition}[Nondegenerate pencil realization in every dimension]
   \label{def:pencil-d-nondegenerate}
   \uses{def:pencil-d-realization, def:pencil-nondegenerate,
@@ -4819,9 +4820,10 @@ dimension three (\cref{lem:pencil-d-nondegenerate-feasible}).
   Let $d \ge 3$. A pencil realization of a multigraph $G$ in dimension
   $d$ (\cref{def:pencil-d-realization}), with normals $b_v$ and
   subspaces $\Pi_v$, is \emph{nondegenerate} when the normals of the two
-  ends of every link are linearly independent; when, at every body $v$
-  that is not a pencil hub, the normals of the closed neighbourhood of
-  $v$ are linearly independent; and when, at every body $v$ and every
+  ends of every link, a loop included, are linearly independent; when,
+  at every body $v$ that is not a pencil hub, the normals of the closed
+  neighbourhood of $v$ are linearly independent; and when, at every body
+  $v$ and every
   set $S$ of at least two members of the closed hub-neighbourhood of $v$
   (\cref{def:pencil-nondegenerate}),
   \[
@@ -4835,6 +4837,10 @@ dimension three (\cref{lem:pencil-d-nondegenerate-feasible}).
   (\cref{def:pencil-d-rank-hypothesis}).
 \end{definition}
 
+A loop at $v$ is a link whose two ends are both $v$, so the normals of
+its two ends are equal, and not linearly independent. So a multigraph
+with a loop has no nondegenerate realization in dimension $d$, as at
+$d = 3$.
 By \cref{lem:pencil-d-point-configuration}, the hinge of every link of a
 nondegenerate realization is a nonzero multiple of $C(b_u, b_v)$. These
 scalars change neither the three conditions nor the rank, so we describe
@@ -6065,10 +6071,11 @@ after the points of $X$ (\cref{lem:pencil-d-ear-extend}).
 \begin{lemma}[Extending the points of the rigid set]
   \label{lem:pencil-d-ear-extend}
   \uses{lem:pencil-d-good-ear, lem:pencil-d-steer}
-  Let $G$ be simple and nondegeneracy-feasible, let $W_0$ and $x$ be as
-  in \cref{lem:pencil-d-good-ear}, let $X = W_0 \setminus \{x\}$ and
-  $Y = G[X]$, and let $L$ be the set of pencil hubs of $G$ in $X$. For
-  $v \in X$ let $H_L[v]$ be the members of $L$ in the closed
+  Let $K$ be infinite, let $G$ be simple and nondegeneracy-feasible, let
+  $W_0$ and $x$ be as in \cref{lem:pencil-d-good-ear}, let
+  $X = W_0 \setminus \{x\}$ and $Y = G[X]$, and let $L$ be the set of
+  pencil hubs of $G$ in $X$. For $v \in X$ let $H_L[v]$ be the members
+  of $L$ in the closed
   neighbourhood of $v$ in $Y$. Let $\Gamma_L$ be the space of tuples $t$
   of vectors of $K^4$: a vector $m_h$ at every $h \in L$ and three
   auxiliary vectors at every $v \in X$. At $t$ let
@@ -6097,8 +6104,9 @@ after the points of $X$ (\cref{lem:pencil-d-ear-extend}).
   $v \in L \setminus H_L[v']$, are then independent and can be completed
   to a basis by auxiliary vectors of $v'$. Each requirement on the
   auxiliary vectors of $v'$ is then a polynomial in them that is nonzero
-  somewhere, so one choice meets them all. Each condition holds off the
-  zero set of a polynomial nonzero at $t'$, and $E_L$ is their product.
+  somewhere, so, as $K$ is infinite, one choice meets them all. Each
+  condition holds off the zero set of a polynomial nonzero at $t'$, and
+  $E_L$ is their product.
 
   \emph{The extension.} Let $E_L(t) \ne 0$ and write $b_v = b_v(t)$. For
   every hub $u$ of $G$ outside $W_0$ with a neighbour in $X$, let
@@ -6167,15 +6175,31 @@ after the points of $X$ (\cref{lem:pencil-d-ear-extend}).
         lem:pencil-condition-linear, lem:pencil-x0-fibre-intersection,
         lem:pencil-feasible-hub-conditions, def:pencil-main-picture}
   \emph{Three conditions.} For vectors $b_v \in K^4$, $v \in X$, consider:
-  (a) the vectors of every closed neighbourhood of $Y$ span a
-  three-dimensional subspace; (b) the vectors of $X$ span $K^4$;
+  (a) the vectors of every closed neighbourhood of $Y$ have rank at least
+  three; (b) the vectors of $X$ span $K^4$;
   (c) $\dim \widetilde L_Y(b) \le |X| + 4$, where $\widetilde L_Y$ is the
-  space of \cref{lem:pencil-d-lift-one-witness} for $Y$. Each is a
-  condition on minors, and none changes when the vectors are rescaled. By
-  (b), $\psi \mapsto (\psi(b_v))_v$ is injective, so the maps of the
-  trivial lifts form a four-dimensional subspace of $L_Y(b)$. Under (a),
-  $\dim \widetilde L_Y(b) = \dim L_Y(b) + |X|$, as the linear forms
-  vanishing on a closed neighbourhood form a line. So under (a), (b) and
+  space of \cref{lem:pencil-d-lift-one-witness} for $Y$. Each holds where
+  some minor of a fixed size is nonzero, so it is open, and none changes
+  when the vectors are rescaled. By (b), $\psi \mapsto (\psi(b_v))_v$ is
+  injective, so the maps of the trivial lifts form a four-dimensional
+  subspace of $L_Y(b)$.
+
+  The vectors of every closed neighbourhood of $Y$ also have rank at most
+  three wherever (a) is read below. On $\Gamma_L$, a body $v \in L$ lies
+  in $H_L[w]$ for every $w$ in its closed neighbourhood in $Y$. So $m_v$
+  is one of the vectors whose product is $b_w(t)$. These vectors $b_w(t)$
+  are all zero if $m_v = 0$, and otherwise lie in the three-dimensional
+  $m_v^{\perp}$. A body of $X$ outside $L$ is not a hub, so its closed
+  neighbourhood has at most three members. The same holds at the normals
+  $b^0_v(s)$ for $s \in \Gamma(G)$, as $n_v = m_v$ at a hub $v$
+  (\cref{lem:pencil-d-steer}). At the points of a configuration of $Y$,
+  and at a realization whose subspaces contain the normals of the closed
+  neighbourhoods, the vectors of the closed neighbourhood of $v$ lie in
+  the plane of $v$, or in its subspace. So wherever it is read, (a) says
+  that the vectors of every closed neighbourhood span a three-dimensional
+  subspace. Where it holds, the linear forms vanishing on a closed
+  neighbourhood form a line, and
+  $\dim \widetilde L_Y(b) = \dim L_Y(b) + |X|$. So under (a), (b) and
   (c), $L_Y(b)$ consists of the maps of the trivial lifts. At a
   realization whose subspaces contain the normals of the closed
   neighbourhoods, (a) makes each subspace the span of these normals, so
