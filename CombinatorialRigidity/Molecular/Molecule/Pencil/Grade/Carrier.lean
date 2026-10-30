@@ -33,6 +33,8 @@ are uncurried, as pictures, normals and the variables of the rank polynomials ar
 
 * `pencilConfigPointGrade`: the point `(x_w, y_w, z_w, 1) ∈ K^(m+3)` of the configuration `(q, z)`
   with `m` heights.
+* `Graph.liftingSpaceGrade` and `Graph.X0AttainsGrade`: the lifting space `L(q)^m` of `m` heights,
+  and the general configuration attaining in dimension `m + 2` (`def:pencil-d-x0-attains`).
 
 ## Main results
 
@@ -44,6 +46,8 @@ are uncurried, as pictures, normals and the variables of the rank polynomials ar
   height, the configuration point of `def:pencil-configuration`, and its rank.
 * `Graph.finrank_span_rigidityRows_ofNormals_heights_linearEquiv_add_affineLifts`: a linear change
   and affine shifts of the heights keep the rank (`lem:pencil-d-rank-scale-shift`).
+* `Graph.x0AttainsGrade_one_iff`: at one height, `Graph.X0AttainsGrade` is `Graph.X0Attains`
+  (`lem:pencil-d-x0-attains-three`).
 -/
 
 @[expose] public section
@@ -311,5 +315,85 @@ theorem _root_.Graph.finrank_span_rigidityRows_ofNormals_heights_linearEquiv_add
     simp [add_assoc]
   exact PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv_grade hends g
     (fun w hw => (hg w hw).symm)
+
+/-! ## The general configuration attains -/
+
+/-- **The lifting space of `m` heights, `L(q)^m`** (`def:pencil-d-x0-attains`): the heights
+`z : α × Fin m → K` each of whose `m` columns `w ↦ z (w, i)` lies in the lifting space `L(q)` of the
+planar picture `q` (`Graph.liftingSpace`). -/
+def _root_.Graph.liftingSpaceGrade (G : Graph α β) (q : α × Fin 2 → K) (m : ℕ) :
+    Submodule K (α × Fin m → K) :=
+  ⨅ i : Fin m, (G.liftingSpace q).comap (LinearMap.funLeft K K fun w : α => (w, i))
+
+theorem _root_.Graph.mem_liftingSpaceGrade {G : Graph α β} {q : α × Fin 2 → K}
+    {z : α × Fin m → K} :
+    z ∈ G.liftingSpaceGrade q m ↔ ∀ i : Fin m, (fun w => z (w, i)) ∈ G.liftingSpace q := by
+  simp [Graph.liftingSpaceGrade, Submodule.mem_iInf]
+  rfl
+
+/-- **The general configuration of `G` attains in dimension `m + 2`** (`def:pencil-d-x0-attains`,
+`m` heights): `Graph.X0Attains` at `m` heights, `m = 1` being space
+(`Graph.x0AttainsGrade_one_iff`).
+There are a selector `ends` recording every link of `G` and a nonzero polynomial `P` in the picture
+coordinates such that every picture `q` off the zero set of `P` is admissible, and the heights
+`z ∈ L(q)^m` (`Graph.liftingSpaceGrade`) at which the configuration `(q, z)` has the deficiency
+rank,
+that of the panel-hinge framework `PanelHingeFramework.ofNormals (k := m + 1) G ends` at the points
+`pencilConfigPointGrade q z` equal to `screwDim (m + 1) * (|V(G)| − 1) − def_(m+2)(G)`, contain a
+nonempty Zariski-open subset of `L(q)^m`: the non-roots in `L(q)^m` of a polynomial `R` in the `m`
+height coordinates of each body, at least one of which lies in `L(q)^m`. The deficiency is taken at
+the dimension `m + 2`.
+
+As for `Graph.X0Attains`, `P ≠ 0` means "off a proper Zariski-closed set of pictures" only over an
+infinite field; the lemmas that use it assume `[Infinite K]`. -/
+def _root_.Graph.X0AttainsGrade (K : Type*) [Field K] (m : ℕ) (G : Graph α β) : Prop :=
+  ∃ (ends : β → α × α) (P : MvPolynomial (α × Fin 2) K)
+    (hlinks : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2), P ≠ 0 ∧
+    ∀ q : α × Fin 2 → K, MvPolynomial.eval q P ≠ 0 →
+      G.IsAdmissiblePicture q ∧
+      ∃ R : MvPolynomial (α × Fin m) K,
+        (∃ z ∈ G.liftingSpaceGrade q m, MvPolynomial.eval z R ≠ 0) ∧
+        ∀ z ∈ G.liftingSpaceGrade q m, MvPolynomial.eval z R ≠ 0 →
+          (Module.finrank K (Submodule.span K
+            (PanelHingeFramework.ofNormals (k := m + 1) G ends
+              (fun p => pencilConfigPointGrade q z p.1 p.2)).toBodyHinge.rigidityRows) : ℤ)
+            = screwDim (m + 1) * ((V(G).ncard : ℤ) - 1) - G.deficiency (m + 2)
+
+/-- **Attaining in dimension three** (`lem:pencil-d-x0-attains-three`): with one height,
+`Graph.X0AttainsGrade` is `Graph.X0Attains` of `def:pencil-x0-attains`. The heights move along
+`α × Fin 1 ≃ α` and the polynomials by `MvPolynomial.rename`. -/
+theorem _root_.Graph.x0AttainsGrade_one_iff {G : Graph α β} :
+    G.X0AttainsGrade K 1 ↔ G.X0Attains K := by
+  have hc : ∀ z : α × Fin 1 → K, z = fun p => (fun v => z (v, 0)) p.1 := by
+    intro z; funext p; obtain ⟨a, i⟩ := p; rw [Subsingleton.elim i 0]
+  have hmem : ∀ {q : α × Fin 2 → K} {z : α × Fin 1 → K},
+      z ∈ G.liftingSpaceGrade q 1 ↔ (fun v => z (v, 0)) ∈ G.liftingSpace q := by
+    intro q z
+    rw [Graph.mem_liftingSpaceGrade]
+    exact ⟨fun h => h 0, fun h i => by rwa [Subsingleton.elim i 0]⟩
+  constructor
+  · rintro ⟨ends, P, hlinks, hP, H⟩
+    refine ⟨ends, P, hlinks, hP, fun q hq => ?_⟩
+    obtain ⟨hadm, R, ⟨z, hz, hRz⟩, hR⟩ := H q hq
+    refine ⟨hadm, MvPolynomial.rename Prod.fst R, ⟨fun v => z (v, 0), hmem.1 hz, ?_⟩, ?_⟩
+    · have h : ((fun v => z (v, 0)) ∘ Prod.fst) = z := (hc z).symm
+      rw [MvPolynomial.eval_rename, h]; exact hRz
+    · intro z' hz' hRz'
+      rw [MvPolynomial.eval_rename] at hRz'
+      have := hR (fun p => z' p.1) (hmem.2 hz') hRz'
+      rw [PanelHingeFramework.finrank_span_rigidityRows_ofNormals_pencilConfigPointGrade_one
+        hlinks q _] at this
+      exact this
+  · rintro ⟨ends, P, hlinks, hP, H⟩
+    refine ⟨ends, P, hlinks, hP, fun q hq => ?_⟩
+    obtain ⟨hadm, R, ⟨z, hz, hRz⟩, hR⟩ := H q hq
+    refine ⟨hadm, MvPolynomial.rename (fun a => (a, (0 : Fin 1))) R,
+      ⟨fun p => z p.1, hmem.2 hz, ?_⟩, ?_⟩
+    · rw [MvPolynomial.eval_rename]; exact hRz
+    · intro z' hz' hRz'
+      rw [MvPolynomial.eval_rename] at hRz'
+      rw [PanelHingeFramework.finrank_span_rigidityRows_ofNormals_pencilConfigPointGrade_one
+        hlinks q _]
+      exact hR _ (hmem.1 hz') hRz'
 
 end CombinatorialRigidity.Molecular

@@ -2,15 +2,16 @@
 
 **Status:** in progress, opened 2026-10-30 beside 42a (the PI's planning default, design doc §1,
 item 4), the Lean under `/coordinate-phase`. Forward mode: the dep-graph is
-`blueprint/src/chapter/pencil-d.tex`, 17 nodes, 4 green (the collineation lemma, the
-configuration, the scale-shift, the contraction's rank), Lean in `Pencil/Grade/`. The carrier is the PI's (2026-10-30, design doc §1): the
+`blueprint/src/chapter/pencil-d.tex`, 17 nodes, 6 green (the collineation lemma, the
+configuration, the scale-shift, the contraction's rank, the attaining definition and its `d = 3` agreement), Lean in `Pencil/Grade/`. The carrier is the PI's (2026-10-30, design doc §1): the
 dual form with each body's 3-space as data, as the chapter states. Next concrete task:
-`def:pencil-d-x0-attains` (`Graph.X0AttainsGrade`); the realization chain can interleave.
+`def:extensor-through-flat` (`ExtensorThroughSubspace`), the realization chain's leaf; `lem:pencil-d-x0-one-witness` can interleave.
 
 ## Current state
 
-**Next:** `def:pencil-d-x0-attains` (planned `Graph.X0AttainsGrade K m G`, `m` heights); read its
-chapter statement first. The realization chain (`def:extensor-through-flat` first) can interleave.
+**Next:** `def:extensor-through-flat` (planned `ExtensorThroughSubspace`), the leaf of the realization
+chain; read its chapter statement first. `lem:pencil-d-x0-one-witness` (`Graph.x0AttainsGrade_of_exists`)
+can interleave; it uses `Graph.liftingSpaceGrade` below.
 
 **Landed:** the open (the chapter, its nodes red with planned names; the carrier check, design doc
 §2.3; PD-STABLE's statements, design doc §3). `lem:pencil-d-rank-collineation`
@@ -26,6 +27,11 @@ an automorphism of `K^m`, `a_i ∈ Aff(q)`, the block map with inverse `T⁻¹`;
 per height, the heights `contractHeight W t (x i)` along the curve and `x i (inl w)` at `(q, z)`;
 no kernel hypothesis, no `r ∈ W`. The block helpers `gradeMk`, `gradeHeights` and their lemmas
 were lifted to file level in `Grade/Carrier.lean` (scale-shift re-proved on them).
+`def:pencil-d-x0-attains` and `lem:pencil-d-x0-attains-three` (`Grade/Carrier.lean`):
+`Graph.X0AttainsGrade K m G` (`R : MvPolynomial (α × Fin m) K`, heights in `Graph.liftingSpaceGrade q m`
+= `L(q)^m`, an `⨅` of comaps of `L(q)`, with `Graph.mem_liftingSpaceGrade`; target
+`screwDim (m + 1) * (|V| − 1) − deficiency (m + 2)`), and `Graph.x0AttainsGrade_one_iff` (named for
+`m = 1`; `rename` along `Prod.fst` and `(·, 0)`, the one-height rank lemma rewriting the normals).
 
 ## Architectural choices made up front
 
@@ -57,7 +63,7 @@ were lifted to file level in `Grade/Carrier.lean` (scale-shift re-proved on them
 Planned `\lean{...}` names (namespace `CombinatorialRigidity.Molecular` unless `Graph.`); a builder
 may refine a name, and the pin lands with the Lean.
 
-- [ ] `def:extensor-through-flat` — `ExtensorThroughSubspace`
+- [ ] `def:extensor-through-flat` — `ExtensorThroughSubspace` (**next**)
 - [ ] `lem:extensor-through-flat-point` — `extensorThroughSubspace_span_singleton_iff`
 - [ ] `def:pencil-d-realization` — `HasPencilPlaneRealization`
 - [ ] `lem:pencil-d-agrees-three` — `hasPencilPlaneRealization_two_iff`
@@ -72,8 +78,8 @@ may refine a name, and the pin lands with the Lean.
   `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_pencilConfigPointGrade_one`
 - [ ] `lem:pencil-d-config-realization` — `Graph.IsAdmissiblePicture.hasGradedDistinctPencilRealization`
   (at grade `m + 1` for `m` heights)
-- [ ] `def:pencil-d-x0-attains` — `Graph.X0AttainsGrade` (`K m G`, `m` heights) (**next**)
-- [ ] `lem:pencil-d-x0-attains-three` — `Graph.x0AttainsGrade_one_iff` (one height; through
+- [x] `def:pencil-d-x0-attains` — `Graph.X0AttainsGrade` (`K m G`, `m` heights), `Graph.liftingSpaceGrade`
+- [x] `lem:pencil-d-x0-attains-three` — `Graph.x0AttainsGrade_one_iff` (one height; through
   `…_ofNormals_pencilConfigPointGrade_one`)
 - [x] `lem:pencil-d-rank-collineation` — `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv_grade`,
   `panelSupportExtensor_linearEquiv_eq_det_smul`
@@ -95,8 +101,8 @@ may refine a name, and the pin lands with the Lean.
 
 ## Hand-off / next phase
 
-The next commit is `def:pencil-d-x0-attains` (*Current state*), with its `\lean` and `\leanok`; the
-realization chain (`def:extensor-through-flat` first) can interleave. Optional, any time: the `k = 2` form
+The next commit is `def:extensor-through-flat` (*Current state*), with its `\lean` and `\leanok`;
+`lem:pencil-d-x0-one-witness` can interleave. Optional, any time: the `k = 2` form
 `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv` is the new lemma at
 `k := 2` verbatim, so it could be re-proved from it once `Configuration.lean` imports
 `Grade/Collineation.lean` (not done: the commits stay additive).

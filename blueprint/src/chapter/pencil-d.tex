@@ -272,6 +272,8 @@ each closed neighbourhood lie in a plane.
 
 \begin{definition}[The general configuration attains, in every dimension]
   \label{def:pencil-d-x0-attains}
+  \lean{Graph.X0AttainsGrade, Graph.liftingSpaceGrade, Graph.mem_liftingSpaceGrade}
+  \leanok
   \uses{def:pencil-d-configuration, def:pencil-admissible-picture,
         def:pencil-lifting-space, def:D-deficiency}
   Let $D = \binom{d+1}{2}$. The \emph{general configuration of $G$
@@ -284,12 +286,15 @@ each closed neighbourhood lie in a plane.
 
 \begin{lemma}[Attaining in dimension three]
   \label{lem:pencil-d-x0-attains-three}
+  \lean{Graph.x0AttainsGrade_one_iff}
+  \leanok
   \uses{def:pencil-d-x0-attains, def:pencil-x0-attains}
   The general configuration of $G$ attains in dimension three
   (\cref{def:pencil-d-x0-attains}) exactly when it attains in the sense
   of \cref{def:pencil-x0-attains}.
 \end{lemma}
 \begin{proof}
+  \leanok
   At $d = 3$ there is one height, and the two definitions read the same
   rank of the same framework.
 \end{proof}
