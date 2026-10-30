@@ -1273,3 +1273,61 @@ S9, S33, S34, S36, S40–S42, tried to refute each, and ran `path_span.py --seed
 - **Repairs, made in place:** S45 (iv) names the ear bodies for any `k`; S45 (iii) says `F/P` is connected; S46's
   setting says why restriction is an isomorphism at `k = 3`; S46 (b) asks `e₂`'s line to miss the origin; S47 (i)
   takes the base configuration in `U₁` and the failure locus; S47 notes that runs inside a part are never used.
+
+## S50 — review 2: G1 waits on a need question; 42c's lemma does not shrink the scope (2026-10-30)
+
+**Review.** `/review-attack short-core` after session 5, by a fresh reader. It read S35, S41 and
+S45–S48 by hand, and spot-checked S48's counts, `path_span.py`'s certificate (rank 28 at one path,
+a lower bound for the generic rank) and S41 (b)'s main-picture test (`dim L_G(q)` at its generic
+minimum `3 + def₃(G)`). **No break found.** It re-ran `strata.py --short --seed 1`
+(`PYTHONHASHSEED=0`, exit 0, 0 mismatches).
+- *Consumer.* Brief §1 matches `Graph.X0Attains.of_openEar_three` hypothesis by hypothesis and the
+  body of `Graph.IsX0Graph`; master's `Graph.X0AttainsGrade` matches §1's `P⁴` reading. One stale
+  claim: brief §6 read a counterexample as redirecting only the coverage, which S41 (read by S42)
+  contradicts.
+- *Signals.* They agree with `check.py --history`: the break changed at every commit, and the count
+  by piece was flat at 2 over sessions 3–5 (G1 recounted as G1a, G1b). The three-session flag of
+  `HARNESS.md` *Attack track* fires.
+- *Honesty.* The break is specific. But G1a is defined by exclusion ("cells with no cut of S46
+  bridges or S47 runs"), so closing families cannot lower the count. G1's consumer, the `Pᵈ` step's
+  `hins` at `k = 3`, is not shown necessary at `d ≥ 7`: T5 (`--coverage`) stops at `d ≤ 6`, and its
+  need witnesses are Petersen with 4-paths at `d = 4` (`k = 3`) and 6-paths at `d = 5` (`k = 5`,
+  closed by S35).
+- *Kills and shape.* No `log.md` entry is contradicted by the current state; no session was sweeps
+  only (S43 came with S40, S41).
+- *Reach.* `d = 4`, `k ≥ 4` in every `d` (S35) and `k = 3` at `d ≤ 6` (S31–S33) are discharged. The
+  rest has drifted from brief §6's `d`-general argument to `d = 7` by family: S46–S48 use `d = 7`'s
+  facts (`Λ²(V/H)` a line, `dim rad α ≤ 6` in `K⁸`, seven bridges), and by S41 G1 is the `Pᵈ`
+  statement itself on the danger class.
+
+**42c's lemma, relayed by the PI.** `Graph.Connected.deficiency_eq_of_deficiency_two_add_three_le`
+(master, `Molecular/Deficiency.lean`, `lem:deficiency-stable`; Lean's `deficiency 2` is `def₃`): on a
+connected graph, `def₃(G) + 3 ≤ D′ ≤ D` gives `def_{D′}(G) = def_D(G)`. With Result 15's embedding,
+given the tier below, a graph needs new mathematics at `d` only if `def₃(G) ≥ C(d, 2) − 2` (4 at
+`d = 4`, where the tier below is Phase 40's).
+
+**Proposition.** At a danger cell, at any `d ≥ 4` and `k`, `def₃(G) ≥ f + (D − 3)c + k − 2 ≥ 2d − 3`,
+where `c` is the cycle rank of `F/P` for a `D`-optimal partition `P` of `F = G[V₁]` (S45).
+*Proof.* `|P| − 1 = f + (D − 1)c` (S45 (iii); `F/P` is connected), so
+`val₃(P) = 3(|P| − 1) − 2(|P| − 1 + c) = f + (D − 3)c`. Add the `k` ear bodies as single parts: `k`
+more parts and, by `hsep`, exactly the `k + 1` ear edges more crossing, so `val₃` rises by
+`3k − 2(k + 1) = k − 2`. Finally `f ≥ dim ρ` (S42) and `dim ρ ≥ dim W − k ≥ 2d − 1 − k` on a danger
+cell. ∎
+
+**Consequences.**
+- At `d = 4` every danger cell has `def₃(G) ≥ 5`, above the threshold 4, so every one needs
+  SHORT-CORE: 42c's lemma does not shrink the scope at `d = 4`. Petersen with every edge a 4-path
+  has `def₃ ≥ 42` (its singleton partition: `3·54 − 2·60`).
+- At `d ≥ 5`, `c ≥ 1` gives `def₃(G) ≥ D + 2d − 6 > C(d, 2) − 2`. Only cells whose `F/P` is a tree
+  can fall below the threshold, and, given the tier below, those with `def₃(G) ≤ C(d, 2) − 3` embed.
+  At `d = 7` S46 closes them anyway; at `d ≥ 8` this takes some out of G1b.
+- *Measured* (the re-run above, read off its `d3`, `f` and `k` columns): T3's 72 cells at `d = 4`
+  have `def₃` from 12 to 28, its 126 at `d = 5` from 19 to 33, and the bound holds at all 222 cells,
+  the 24 at `d = 3` included. T3's filter `def₃ ≥ d − 2` (Result 16's old range) admits a superset of
+  the new range, so no figure of T3 or S43 moves.
+
+**The PI's ruling.** **PI, 2026-10-30:** "OK, please record the verdict and modify the brief as
+needed so that the next attack session will carry out your suggestions." The verdict: stop G1a's
+family-by-family route at `d = 7`. The next deliverable is the need question N (brief §6). G1 resumes
+only if N finds a graph that needs it, and then first on S47's identity at `d ≥ 8`. Brief §6's
+counterexample sentence now follows S41, and §4 records 42c's lemma and this proposition.

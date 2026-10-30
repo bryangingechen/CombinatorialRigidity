@@ -1,6 +1,6 @@
 # Attack short-core — state
 
-Sessions so far: 5 · last session: 2026-10-30 · baseline HEAD: ab64d1e0 · review 1: 2026-10-30 (S25)
+Sessions so far: 5 · last session: 2026-10-30 · baseline HEAD: ab64d1e0 · review 1: 2026-10-30 (S25) · review 2: 2026-10-30 (S50)
 
 ## Statement <!-- budget 10 -->
 SHORT-CORE (brief §3, restated at review 1 on the PI's word) for the `Pᵈ` analogue of
@@ -30,7 +30,11 @@ S31–S33 (`k = 3`).
     closes the cell.
   - S48: `G[V₁]` a cycle (T3's first family) is closed at every length, the no-coloop step by `path_span.py`.
 
-Open obligations (2 by piece), each consumed by the `Pᵈ` step's `hins` at `k = 3` (PD-STEPS, brief §6):
+**Review 2 (S50, the PI's word): G1 waits on N (brief §6): does the coverage at `d ≥ 7` need a `k = 3`
+danger row at all? G1a's `d = 7` families are paused until N is answered (their next steps: this file at `d6137072`).**
+
+Open obligations (2 by piece), consumed by the `Pᵈ` step's `hins` at `k = 3` (PD-STEPS) only if N finds a graph
+that needs that row (T5 stops at `d ≤ 6`; brief §6):
 - **G1a** `d = 7`: the cells with no `a`–`b` cut of S46 bridges or S47 runs. Known members: the thetas (`th4`, `k4`,
   `same`, `hub`: runs exist, no-coloop unchecked); necklaces and Case-2 parts without free bodies.
 - **G1b** `d ≥ 8`: `ρ` onto `Λ²Ē` (S34, S40). S46 needs `C(d − 5, 2)` independent bridge wedges; S47's identity
@@ -55,18 +59,18 @@ data must be heights inside a part (`δΛ ∈ Z_{ab}⊗E`), for which S47's iden
   one motion with every `t_i ≠ 0` suffices (S47 (ii)).
 
 ## Next steps <!-- budget 5 -->
-1. No-coloop on theta runs: show `r_e = D` for an edge in the middle of a path of length at least 10 on a theta
-   with `Σℓ ≥ 66`, by a uniform certificate (S45's rank count reduces it to one rank at one configuration per shape).
-2. Necklaces: S47 on the connecting paths when they carry six or more free bodies; else derive S47 (i) for height
-   moves `ḃ_v = δλ_X(q̂_v)·m` inside a part.
-3. G1b: the run lemma restricted to motions with `S_b − S_a ∈ H∧V`.
+1. N by hand (brief §6): T5's second argument (design doc §2.4) with three-body chains, `D/3 > 4`, and S45's
+   structure (cycles of `F/P` at least `D` long, `f ≥ 2d − 4`); read T5's argument first.
+2. N measured, if 1 stalls: extend the coverage driver to `d = 7, 8` in 42c's range `def₃ ≥ C(d, 2) − 2`, with
+   S35's `short` rows and R1's base row free and `short_danger`'s test at `k = 3`; name population and caps.
+3. Only if N finds a graph: G1b's run lemma restricted to motions with `S_b − S_a ∈ H∧V`, before G1a's families.
 
 ## Worries <!-- budget 5 -->
-- S45–S48 have one reader (S49, all confirmed); S35, S40, S41 one each. A review is due (sessions 3–5).
-- S41 (a) changes brief §6's reading: a counterexample refutes `def:pencil-d-x0-attains` at `G`, not only the
-  coverage. That is the PI's to rule on.
+- S45–S48 have one reader (S49), S35, S40, S41 one each; review 2 re-read S35, S41 and S45–S48 (no break, S50).
+- N's free rows at `d ≥ 7` assume CERT's open ears (unsettled there) and the tier below; its answer is
+  conditional on both, and says so.
 - S47's "free" excludes `N[a] ∪ N[b]`; at a single-neighbour `a` the plane `Π_a` is base data (S9), not a point span.
 
 ## Signals <!-- budget 2 -->
 - Sessions since "Where it breaks" last changed: 0 (from "`Ψ ≠ 0` on `M` at Case 2" to S47's no-coloop step)
-- Open obligations: 2 by piece (G1a, G1b; G1 counted them as one at sessions 3–4): flat over sessions 3–5
+- Open obligations: 2 by piece (G1a, G1b; one at sessions 3–4): flat over sessions 3–5, flagged at review 2 (S50)

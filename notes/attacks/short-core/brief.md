@@ -2,7 +2,9 @@
 > corrected that day on the PI's direction, after session 1's consumer diff (workbook S2).
 > Re-aimed at review 1, 2026-10-30, on the PI's word (workbook S25): §3 takes base data general
 > in S21's sense, §6 makes the secondary target the next deliverable, and §1's carrier and the
-> Lean paths are brought up to date.**
+> Lean paths are brought up to date. Re-aimed at review 2, 2026-10-30, on the PI's word (workbook
+> S50): §6 makes the need question N the next deliverable and holds G1 until N is answered; §6's
+> counterexample sentence follows S41; §4 records 42c's deficiency lemma.**
 > Written 2026-10-29 by an agent (Claude
 > Opus 5.5) against the tree at `fa295157`, from the owning sections: `notes/Phase42-design.md`
 > §2.1 rows 12–13, §2.3 SHORT and §2.4 T3; `notes/Strata.md` Result 24; the short-ear subsection
@@ -154,6 +156,11 @@ to fill, not one, so the dichotomy becomes a stratification by that rank.
   `k ≥ C(d − 1, 2) + 3` at every graph, and the reduction to danger cells.
 - **Why it is needed** (T5, Result 26): at `d = 4`, the Petersen graph with every edge a 4-path is
   carried only by `k = 3` ears in this range, so the coverage at `d = 4` needs this statement.
+- **Not reached by 42c's lemma** (workbook S50). `Graph.Connected.deficiency_eq_of_deficiency_two_add_three_le`
+  (master) gives `def_{D′}(G) = def_D(G)` for connected `G` and `def₃(G) + 3 ≤ D′ ≤ D`. So, given
+  the tier below, a graph needs new mathematics at `d` only if `def₃(G) ≥ C(d, 2) − 2`. A danger
+  cell has `def₃(G) ≥ 2d − 3` (S50), so every danger cell at `d = 4` (`def₃ ≥ 5`) needs this
+  statement. T3's cells have `def₃` from 12 to 28 at `d = 4`.
 
 ## 5. A route (session 1 chooses; `HARNESS.md` binds)
 
@@ -201,13 +208,46 @@ The deliverable is a proof of §3 at `d = 4` by hand, landed in the workbook as 
 seeded and exact, and reuse `notes/scripts/strata/` read-only.
 
 The secondary target is a `d`-general argument, `3 ≤ k ≤ C(d − 1, 2) + 2`, checked on T3's 126
-cells at `d = 5`. The every-`d` tier needs it, and with `d = 4` reported it is the next
-deliverable. At `k = 3` its statement names the actual `ρ` wherever `κ ≥ 7 − d`, where the
-every-`ρ` form fails (workbook S26), as at `d = 4`, `κ = 3`.
+cells at `d = 5`. The every-`d` tier needs it wherever the coverage at `d` uses it. At `k = 3`
+its statement names the actual `ρ` wherever `κ ≥ 7 − d`, where the every-`ρ` form fails
+(workbook S26), as at `d = 4`, `κ = 3`. At `k = 3`, `d ≥ 7` the use is not shown, which is N.
+
+**The next deliverable (review 2, workbook S50): N, the need question at `d ≥ 7`.** Is there a
+graph satisfying the standing hypotheses (`Graph.IsX0Graph`), past the coverage's rows 1–5, with
+`def₃(G) ≥ C(d, 2) − 2` (42c's range, §4), at some `d ≥ 7`, whose only row not free of new
+mathematics is SHORT-CORE's `k = 3` row at a danger cell (§3's sense)? Read "free" as T5 does
+(`cov_tag`, design doc §2.4), updated by what this attack has proved. `short` rows with `k ≥ 4` are
+free (S35, with S20's factoring). R1's base row, `def_{C(d,2)}(G) = def_D(G)`, is free given the
+tier below, and 42c's lemma gives it wherever `def₃(G) ≤ C(d, 2) − 3`. Row 12 and the long ears rest
+on CERT's open ears, unsettled at `d ≥ 7` (design doc §2.3). So N is asked given CERT and the tier
+below, and its answer says so.
+- *By hand first.* T5's second argument (design doc §2.4, "Where ONE-EAR can be load-bearing";
+  claimed proved by one session, so read it before building on it) shows that a graph with no free
+  row has a chain with `k ≥ 3`, or is ONE-CLASS. With S35, a chain with `k ≥ 4` gives a free row,
+  so every chain left has at most three bodies. T5's count for chains of at most two bodies,
+  `s_D(V₁) ≤ e(3 − D/3) − 3 < 0`, is the model. Try it for three-body chains, where `D/3 > 4`
+  from `d = 5` on, together with S45's structure: every cycle of `F/P` is at least `D` long, and
+  `f ≥ 2d − 4`.
+- *Measured, if the hand argument stalls.* Write a driver under `drivers/` that extends
+  `strata.py`'s coverage (`cov_population`, `cov_cell`, `cov_tag`; fenced at `COV_DIMS = 3..6` and
+  `COV_LMAX = 4`) to `d = 7, 8`. It uses the content range `def₃ ≥ C(d, 2) − 2`, treats the
+  `short` rows as above, refined to `short_danger`'s danger test at `k = 3`, counts R1's base row,
+  and allows paths longer than four edges where the count needs them. Name the population and
+  the caps; a "none found" carries them.
+- *Outcome.* If no graph needs a `k = 3` danger row, G1 has no consumer. That holds whether N is
+  proved or only measured, in which case the population and caps go with the conclusion. Record
+  it, park G1 as an obligation of the every-`d` tier, and stop for the PI. If a graph needs one,
+  it is G1's population. G1 then resumes at S47's identity at `d ≥ 8`, restricted to motions with
+  `S_b − S_a ∈ H∧V` (`state.md`), before any further `d = 7` family: that step decides whether
+  S45–S48 work in every `d`.
+
+Until N is answered, no session works on G1a's `d = 7` families (the theta no-coloop step, the
+necklaces).
 
 A counterexample is also a result: a danger cell where `W` holds both stars and is proper at
-general data, certified exactly. It would redirect the coverage, not the conjecture, since T3's
-graphs all attain.
+general data, certified exactly. By S41 (read by S42), where `G[V₁]` and `G''` attain, that is
+exactly `G` failing `def:pencil-d-x0-attains`, so it would refute the `Pᵈ` statement at `G`, not
+only redirect the coverage. T3's graphs and S43's 41 graphs all attain.
 
 A proof settles the coverage's last new mathematics at `d = 4`, with ONE-CLASS (Result 27). It
 does not settle the formal steps, CERT's open ears at `d ≥ 7`, or the generic conjunct (GENERIC).
@@ -230,4 +270,7 @@ PENCIL-D does not use.
   `Carrier.lean` (`Graph.X0Attains`); `Cut.lean` (`Graph.IsX0Graph`); `Bridge.lean`
   (`Graph.exists_mvPolynomial_finrank_liftingSpace_eq`, `thm:pencil-jj-equality`).
 - The `Pᵈ` carrier: `blueprint/src/chapter/pencil-d.tex` and `notes/Phase42b.md`, on master.
-- Driver: `notes/scripts/strata/strata.py` (`short_danger`, `short_cell`, `mode_short`).
+- 42c's lemma, on master: `Graph.Connected.deficiency_eq_of_deficiency_two_add_three_le`
+  (`CombinatorialRigidity/Molecular/Deficiency.lean`; `lem:deficiency-stable` in `pencil-d.tex`).
+- Driver: `notes/scripts/strata/strata.py` (`short_danger`, `short_cell`, `mode_short`; for N, the
+  coverage: `cov_population`, `cov_cell`, `cov_tag`, `mode_coverage`).
