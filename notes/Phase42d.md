@@ -6,7 +6,7 @@ adjacent-distinct and a generic one), written as red nodes of `pencil-d.tex` bef
 formalization. Three tracks, CERT, NONDEG and WRITE-UP, run in parallel from one central session,
 `/coordinate-tracks 42d`, with a Lean track, COUNT, for the coverage's counting at every `D`
 (COUNT-A and COUNT-B landed: 11 green nodes; W1–W5 written). CERT is closed; NONDEG, under
-the PI's C2-same, works on (W) and O8. **Next:** W6 and NONDEG session 3. Plan and the PI's
+the PI's C2-same, claims (W) (session 3). **Next:** W6 and NONDEG's review 2. Plan and the PI's
 decisions:
 `notes/Phase42-design.md` (§1, §3 PD-ALL).
 
@@ -23,7 +23,7 @@ Slice W1 has landed (`sec:pencil-d-induction`, `sec:pencil-d-flat`: four red nod
 closes the COUNT track. Slices W2 (`sec:pencil-d-cut`) and W3 (`sec:pencil-d-contract`) have
 landed, three red nodes each, and W4 (`sec:pencil-d-splitoff`), one. NONDEG's review 1 said
 "continue" with two findings (F1, F2), which session 3 records first (the PI). The next concrete
-step is the hub's: merge NONDEG session 3 (in flight). W5 (`sec:pencil-d-chains`, two red nodes)
+step is the hub's: NONDEG session 3 claims (W) (S34–S36), and the PI called review 2 now. W5 (`sec:pencil-d-chains`, two red nodes)
 has landed; dispatch W6.
 
 In place at the open: the hub command (`.claude/commands/coordinate-tracks.md`), the write-up
@@ -39,7 +39,7 @@ The hub's registry. Count-free: each attack's status is its `state.md` (`HARNESS
 | Track | Kind | Home | Agent | Status |
 |---|---|---|---|---|
 | CERT | attack | `notes/attacks/cert/` | `attack-opus` | closed at review 1: R1 proved by hand at every `d` (workbook S1–S9) |
-| NONDEG | attack (a question) | `notes/attacks/nondeg/` | `attack-opus` | ready: session 3 repairs S21 (F2), adds O8 (F1), then attacks (W) (review 1) |
+| NONDEG | attack (a question) | `notes/attacks/nondeg/` | `attack-opus` | review due: review 2 on S32–S38 (the PI); if it passes, the track stops |
 | WRITE-UP | write-up | `blueprint/src/chapter/pencil-d.tex`, new sections | `writeup-opus` | ready: slice W6 |
 | COUNT | lean | *Lean now* below; nodes in `pencil-d.tex` | `phase-builder-opus` | done: A and B landed; C waits for formalization |
 
@@ -56,7 +56,9 @@ alternate.
   `d`, S9). Session 2: the carrier is the lifts of a `P³` realization (motive `RL_d`), every arm
   of the reduction lifts, and one obligation is open, (W) (O7; certified on every graph with at most
   nine bodies, S30). Review 1: continue, after F1 (O8, the good-ear lemma returning `W₀`) and F2
-  (S21's cut-edge glue) are recorded; session 3 does both first, then attacks (W).
+  (S21's cut-edge glue) are recorded. Session 3: S32 repairs S21, S33 states O8 (W10's node), and
+  S34–S36 claim (W) at every `W₀`-ear (one reader; S37 certifies 6,217 ears on 6–16 bodies). Left:
+  O8's write-up and the coverage (A). The PI called review 2 now.
 
 ## Write-up
 
@@ -155,7 +157,7 @@ landing them.
 ## Hand-off / next phase
 
 Next concrete step: the `/coordinate-tracks 42d` hub dispatches slice W6 (short ears) as the next
-`pencil-d.tex` writer, and merges NONDEG session 3 (F2, O8, then (W)) as it lands (CERT is
+`pencil-d.tex` writer, and runs NONDEG's review 2 (S32–S38; if it passes, NONDEG stops and S38 goes to the write-up) (CERT is
 closed; COUNT is done). 42d closes when the new sections give an informal proof at every `d` of the conjuncts the PI keeps, with CERT and NONDEG closed. Formalization (PD-CARRIER, PD-STEPS, PD-COVERAGE, PD-REDUCTION, PD-HEAD; design doc
 §3) follows at the PI's word.
 

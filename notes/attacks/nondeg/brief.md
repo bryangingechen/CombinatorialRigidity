@@ -24,6 +24,11 @@
 > S21's (T1) is false as written (the cut-edge glue), with a one-paragraph repair. On the PI's word
 > (asked "May NONDEG session 3 record F1 and F2 in its state before attacking (W)?", answered "(a)
 > Yes, both first"): session 3's first results are the S21 repair and O8 in the state, then (W).
+> After session 3, 2026-10-30, on the PI's word (asked "S36 claims (W) at every W₀-ear, the last
+> piece of new mathematics in NONDEG's scope; with it the Pᵈ generic conjunct under C2-same needs
+> only (A) and O8's write-up (S38). What next?", answered "(a) Review 2 now", whose option read
+> "Review 2 now on S32–S38 (/review-attack nondeg). If it passes, stop the track and hand S38's five
+> pieces to the write-up as red nodes, with O8 as W10's node.").
 > Written 2026-10-30 by an agent (Claude
 > Opus 5.5) against the tree at `947fa75d`, from the owning sections: `notes/Phase42-design.md`
 > §2.1 rows 19–22, §2.2, §2.3 ONE-EAR, CARRIER and GENERIC, §2.4 T4 and §2.5; `pencil.tex`'s
