@@ -28,7 +28,7 @@ Lean.
   deficiency lemma; `Pᵈ` at `def[3] ≤ 1`, Tier 0), with FRICTION's open `normalsJoin`
   `exteriorPower.map 2` lemma landing with item 1.
 - **PI, 2026-10-30 (the sharp range):** "Widen to def_2 ≤ 3 (Recommended)". The question as put:
-  "The open found the deficiency lemma's own proof gives a sharper range. On a connected G, def at
+  "The open found that the deficiency lemma's own proof gives a sharper range. On a connected G, def at
   dimension d′ equals def at every d ≥ d′ once def_2(G) + 3 ≤ C(d′+1, 2), rather than at
   d′ ≥ def_2 + 2. The range is tight on cycles: C₇ has def_2 = 4, def_3 = 1 and def_4 = 0. With
   d′ = 3 (C(4,2) = 6), Phase 40 plus the embedding then proves the pencil in every dimension at
