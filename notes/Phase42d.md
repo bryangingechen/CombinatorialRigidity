@@ -4,16 +4,17 @@
 target is an informal proof, at every `d`, of the conditioned pair's three conjuncts (bare,
 adjacent-distinct and a generic one), written as red nodes of `pencil-d.tex` before any more
 formalization. Three tracks, CERT, NONDEG and WRITE-UP, run in parallel from one central session,
-`/coordinate-tracks 42d`, with a Lean track, COUNT, for the coverage's counting at every `D`.
-**Next:** a `/coordinate-tracks 42d` session runs its first round. Plan and the PI's decisions:
-`notes/Phase42-design.md` (§1, §3 PD-ALL).
+`/coordinate-tracks 42d`, with a Lean track, COUNT, for the coverage's counting at every `D`
+(COUNT-A landed: 5 green nodes). **Next:** the hub's round goes on, with COUNT-B or W1 as the
+next `pencil-d.tex` writer. Plan and the PI's decisions: `notes/Phase42-design.md` (§1, §3 PD-ALL).
 
 ## Current state
 
-Opened 2026-10-30. The next concrete step is a `/coordinate-tracks 42d` session. Its first round
-dispatches CERT session 1 and NONDEG session 1, each in its own isolated worktree, and one
-`pencil-d.tex` writer, COUNT-A or slice W1 (one writer of that chapter in flight at a time), and
-merges what lands.
+Opened 2026-10-30. The first `/coordinate-tracks 42d` round dispatched CERT session 1 and NONDEG
+session 1, each in its own isolated worktree, and COUNT-A as the `pencil-d.tex` writer (one writer
+of that chapter in flight at a time). **COUNT-A has landed**: `pencil-d.tex`'s new section
+`sec:pencil-d-deficiency`, five green nodes (*Lean now*). The next concrete step is the hub's: merge
+CERT and NONDEG as they land, and dispatch the next writer, COUNT-B or slice W1.
 
 In place at the open: the hub command (`.claude/commands/coordinate-tracks.md`), the write-up
 agent (`.claude/agents/writeup-opus.md`), `worktree.baseRef: head` in `.claude/settings.json`
@@ -30,7 +31,7 @@ The hub's registry. Count-free: each attack's status is its `state.md` (`HARNESS
 | CERT | attack | `notes/attacks/cert/` | `attack-opus` | ready: session 1 checks R1 (brief §5) |
 | NONDEG | attack (a question) | `notes/attacks/nondeg/` | `attack-opus` | ready: session 1 settles §4's `[READING]` items |
 | WRITE-UP | write-up | `blueprint/src/chapter/pencil-d.tex`, new sections | `writeup-opus` | ready: slice W1 |
-| COUNT | lean | *Lean now* below; nodes in `pencil-d.tex` | `phase-builder-opus` | ready: COUNT-A |
+| COUNT | lean | *Lean now* below; nodes in `pencil-d.tex` | `phase-builder-opus` | ready: COUNT-B (A landed) |
 
 `pencil-d.tex` has one writer in flight at a time: COUNT's commits and the write-up's slices
 alternate.
@@ -59,7 +60,8 @@ Slices, leaf-first, one session each (a slice's nodes may `\uses` only nodes alr
   (row 5), Jackson–Jordán's equality as consumed (row 6).
 - [ ] **W2** cut vertices and chains of bridges (rows 7–8).
 - [ ] **W3** contraction at an additive core (row 9, with its second read).
-- [ ] **W4** split-off (row 16) and the sparse estimates at `D` (row 17).
+- [ ] **W4** split-off (row 16) and the sparse estimates at `D` (row 17); the estimates are
+  COUNT-A's green nodes in `sec:pencil-d-deficiency`, cited, not rewritten.
 - [ ] **W5** Theorem S at `D` (§2.4 T5), ONE-CLASS (`notes/Strata.md` Result 27) and S53's
   counting (SHORT-CORE's workbook).
 - [ ] **W6** short ears (row 13): SHORT-CORE's `d = 4`, `k = 3, 4, 5`; `k ≥ 4` in every `d`;
@@ -76,7 +78,8 @@ Slices, leaf-first, one session each (a slice's nodes may `\uses` only nodes alr
 - [ ] **NONDEG** closed: Q0–Q4 answered; the PI has chosen the `Pᵈ` nondegeneracy (or dropped
   the conjunct at `d ≥ 4`).
 - [ ] **WRITE-UP** W1–W10.
-- [ ] **COUNT-A** and **COUNT-B** (*Lean now*), the PI's call: A and B now, C at formalization.
+- [ ] **COUNT-A** (landed) and **COUNT-B** (*Lean now*), the PI's call: A and B now, C at
+  formalization.
 
 ## Lean now
 
@@ -108,8 +111,16 @@ every screw dimension", after `sec:pencil-d-stable`; slices W4 and W5 then cite 
 starts from the spikes (`scratch/42d/count_spike.lean`, then `theorem_s_spike.lean`), whose
 statements it re-reads against the hand proofs (design doc §2.4 T5, §2.3 ONE-CLASS) before
 landing them.
-- [ ] **COUNT-A**: the two glue lemmas and the sparse estimates at `n`, as above.
-- [ ] **COUNT-B**: `ChainUsableAt n`, Theorem S at `n ≥ 3`, ONE-CLASS, and S52 if it fits.
+- [x] **COUNT-A** (landed 2026-10-30): `sec:pencil-d-deficiency`, five green nodes
+  (`lem:deficiency-planar-nonpos`, `-rigid-higher`, `-core-bound-d`, `-one-body-chain-d`,
+  `-two-body-chain-d`) in `SparseDeficiency.lean`; the `deficiency 3` lemmas are their `n = 3`
+  cases. The second glue lemma is general: rigid at `n ≥ 1` gives rigid at every `m ≥ n`.
+- [ ] **COUNT-B**: `ChainUsableAt n`, Theorem S at `n ≥ 3`, ONE-CLASS, and S52 if it fits. Its
+  spike's inline copies of COUNT-A's lemmas now clash with the landed ones: delete them and use
+  `deficiency_eq_zero_of_deficiency_eq_zero_of_le (by decide) hn` for `…_of_three hn`,
+  `partitionDef_induce_id_le_of_maximal_of_three_le_bodyBarDim` for `…_of_maximal'` and
+  `deficiencyMerged_two_add_two_le_of_three_le` for `…_two_add_two_le'` (the rest keep their
+  names). It may add `bodyBarDim_mono` (`notes/FRICTION.md`, the open `bodyBarDim` entry).
 
 ## Blockers / open questions
 
@@ -117,8 +128,9 @@ landing them.
 
 ## Hand-off / next phase
 
-Next concrete step: a `/coordinate-tracks 42d` session; its first round dispatches CERT session 1,
-NONDEG session 1 and one `pencil-d.tex` writer (COUNT-A or W1). 42d closes when
+Next concrete step: the `/coordinate-tracks 42d` hub merges CERT session 1 and NONDEG session 1
+as they land, and dispatches the next `pencil-d.tex` writer: COUNT-B (one `phase-builder-opus`
+commit, from `scratch/42d/theorem_s_spike.lean` with *Lean now*'s renames) or slice W1. 42d closes when
 the new sections give an informal proof at every `d` of the conjuncts the PI keeps, with CERT and
 NONDEG closed. Formalization (PD-CARRIER, PD-STEPS, PD-COVERAGE, PD-REDUCTION, PD-HEAD; design doc
 §3) follows at the PI's word.

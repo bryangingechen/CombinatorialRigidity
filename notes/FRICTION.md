@@ -110,6 +110,21 @@ moment you resolve the entry) is what makes the sweep a pure
 to be re-derived by re-reading entries later.
 
 ## Open
+### [open] `bodyBarDim` has no monotonicity or lower-bound lemma; each consumer unfolds it
+- **Where it bit:** Phase 42d, COUNT-A: `Graph.deficiencyMerged_two_add_two_le_of_three_le`
+  (`Molecular/Induction/SparseDeficiency.lean`, `lem:deficiency-two-body-chain-d`) gets
+  `1 ≤ bodyBarDim n` from `3 ≤ n` by `unfold bodyBarDim` and `Nat.le_div_iff_mul_le` with
+  `nlinarith`. `Connected.deficiency_le_deficiency_of_le` and
+  `Connected.deficiency_eq_of_deficiency_two_add_three_le` (`Molecular/Deficiency.lean`) each unfold
+  it for monotonicity (`Nat.div_le_div_right`), and COUNT-B's spike carries a `bodyBarDim_six_le`.
+- **Friction:** the `def` unfolded to `n * (n + 1) / 2` at each site.
+- **Proposed fix:** `Graph.bodyBarDim_mono : Monotone bodyBarDim` in `BodyBar/Framework.lean`,
+  beside `bodyBarDim_two` and `bodyBarDim_three`, then the three sites rewritten through it. Not
+  landed with COUNT-A, whose scope is one file: a new declaration in `BodyBar/Framework.lean`
+  rebuilds nearly every module. COUNT-B, which needs `6 ≤ bodyBarDim n` from `3 ≤ n`, would be
+  its fourth site and is the natural commit for it.
+- **Status:** open.
+
 ### [idiom] `LinearIndependent.map'` returns `f ∘ ![a, b]`, not `![f a, f b]`; `dotPerp` has no antitone lemma
 - **Where it bit:** Phase 42c, `lem:pencil-d-embed-realization`: `linearIndependent_gradeEmbed_pair`
   (`Pencil/Grade/Embedding.lean`) and `exists_eq_panelSupportExtensor_of_ne_zero` (a basis of a

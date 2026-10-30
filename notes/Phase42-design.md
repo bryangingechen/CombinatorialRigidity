@@ -577,7 +577,8 @@ leaves out each graph's top cell, `d = 2 + def[3]`, which also carries content.
     the factoring transcribes with `D` for 6 (written out at `d = 4` only, S20). At `k = 3`,
     `d = 5, 6`: S28–S33. At `k = 3`, `d ≥ 7`: not needed (S53), given CERT's open ears.
   - *PD-STEPS, the sparse estimates (row 17).* `lem:deficiency-core-bound` at every `D ≥ 3`, read
-    with "rigid" as `def[D] = 0` (S52 (iv)); its Lean pins are at `deficiency 3` only.
+    with "rigid" as `def[D] = 0` (S52 (iv)); formalized at every `D` by COUNT-A
+    (`lem:deficiency-core-bound-d`, `pencil-d.tex` `sec:pencil-d-deficiency`).
   - *PD-COVERAGE.* Theorem S at `D` (§2.4 T5); ONE-CLASS (§2.3); and S53: from `d = 5` on, a graph
     past rows 1–5 with a chain of two or three interior bodies has a chain with `k ≥ 4` or a core
     at `D`, so the coverage there needs neither the `k = 3` short row nor row 15.
