@@ -47,6 +47,7 @@ public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Embedding
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.JoinIndependence
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Realization
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Stable
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.TheoremS
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Witness
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.ZeroHeights
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Bridge

@@ -60,6 +60,8 @@ The estimates at `n = 3` are the cases `D = 6` of estimates at every `n`
   (`lem:deficiency-one-body-chain-d`) and `Graph.deficiencyMerged_two_add_two_le_of_three_le`
   (`lem:deficiency-two-body-chain-d`): the core bound and the chain estimates at `n`, with
   `+ (D - 1)` in place of `+ 5`.
+* `Graph.IsTightPartition.deficiency_induce_eq_zero` (`lem:deficiency-tight-part`): each part of a
+  tight partition has deficiency zero, at every `n`.
 
 `Graph.deficiencyMerged_le_deficiency` and `Graph.partitionDef_map`, which
 `lem:deficiency-merge-rigid` and `lem:deficiency-additive-core` also pin, are in
@@ -501,6 +503,37 @@ lemma exists_glue (G : Graph α β) (X : Set α) (g f : α → α) :
     simp only [ite_eq_right hu.2, ite_eq_right hw.2]
     refine ⟨fun h' => ?_, fun h' => by rw [h']⟩
     rw [← (hτm u hu).2, ← (hτm w hw).2, h']
+
+/-! ## A part of a tight partition (`lem:deficiency-tight-part`) -/
+
+/-- **A part of a tight partition has deficiency zero** (`lem:deficiency-tight-part`): if `f` is a
+tight partition of `G` (`IsTightPartition`) and `u ∈ V(G)`, then the part `Z` of `u` has
+`def(G̃[Z]) = 0`, at every `n`. Refining `Z` by a labeling `g` of it, and keeping `f` elsewhere
+(`exists_glue`), changes the value of `f` by the value of `g` in `G[Z]`
+(`partitionDef_split_of_sides`, `lem:separated-partition-value`), and `f` attains the deficiency. -/
+theorem IsTightPartition.deficiency_induce_eq_zero [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
+    {f : α → α} (hf : G.IsTightPartition n f) {u : α} (hu : u ∈ V(G)) :
+    (G.induce {z ∈ V(G) | f z = f u}).deficiency n = 0 := by
+  have : Nonempty (α → α) := ⟨id⟩
+  set Z : Set α := {z ∈ V(G) | f z = f u} with hZ
+  have hZV : Z ⊆ V(G) := fun z hz => hz.1
+  have huZ : u ∈ Z := ⟨hu, rfl⟩
+  refine le_antisymm (ciSup_le fun g => ?_) (deficiency_nonneg _ n ⟨u, huZ⟩)
+  obtain ⟨h, hsep, hZk, hRk⟩ := exists_glue G Z g f
+  have hsf : ∀ y ∈ Z, ∀ z ∈ V(G) \ Z, f y ≠ f z := by
+    rintro y ⟨-, hy⟩ z ⟨hz, hzZ⟩ hyz
+    exact hzZ ⟨hz, hyz ▸ hy⟩
+  have e1 := partitionDef_split_of_sides (n := n) hZV hsep
+  have e2 := partitionDef_split_of_sides (n := n) hZV hsf
+  have h0 : (G.induce Z).partitionDef n f = 0 :=
+    partitionDef_eq_zero_of_forall_eq (G := G.induce Z) huZ fun w hw => hw.2
+  have h1 : (G.induce Z).partitionDef n h = (G.induce Z).partitionDef n g :=
+    partitionDef_eq_of_forall_iff hZk
+  have h2 : (G.induce (V(G) \ Z)).partitionDef n h = (G.induce (V(G) \ Z)).partitionDef n f :=
+    partitionDef_eq_of_forall_iff hRk
+  have hle := G.partitionDef_le_deficiency n h
+  rw [IsTightPartition] at hf
+  linarith
 
 /-! ## A tight set is rigid (`lem:deficiency-tight-rigid`) -/
 

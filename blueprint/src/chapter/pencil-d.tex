@@ -28,7 +28,8 @@ of the general configuration (\cref{thm:pencil-x0-coverage}) from
 dimension three to every dimension, and so gives them adjacent-distinct
 pencil realizations at the deficiency rank in every dimension
 (\cref{sec:pencil-d-stable}). The fourth proves the estimates on
-partitions of \cref{sec:main-component-sparse} in every dimension
+partitions of \cref{sec:main-component-sparse} in every dimension, and
+with them a core to contract when no chain is usable
 (\cref{sec:pencil-d-deficiency}). The sections after it extend the
 induction of \cref{sec:main-component} to every dimension, beginning
 with its setting and the rank of a flat configuration
@@ -974,6 +975,212 @@ of $P$.
   $\operatorname{def}_d(G[Z]) = 0$ (\cref{lem:deficiency-rigid-higher}).
   Then $\operatorname{def}_d(G; a, b) = \operatorname{def}_d(G)$
   (\cref{lem:deficiency-merge-rigid}).
+\end{proof}
+
+\begin{lemma}[A part of a tight partition has deficiency zero]
+  \label{lem:deficiency-tight-part}
+  \lean{Graph.IsTightPartition.deficiency_induce_eq_zero}
+  \leanok
+  \uses{def:tight-partition}
+  Let $P$ be a partition of $V(G)$ of value
+  $\operatorname{def}_d(G)$ (\cref{def:tight-partition}). Then
+  $\operatorname{def}_d(G[Z]) = 0$ for every part $Z$ of $P$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:separated-partition-value}
+  If $Z = V(G)$, then $P$ has the one part $V(G)$ and value $0$, so
+  $\operatorname{def}_d(G) = 0$. Otherwise let $R$ be a partition of
+  $Z$, and let $P'$ be $P$ with $Z$ replaced by the parts of $R$. Both
+  $P$ and $P'$ have each part inside $Z$ or inside $V(G) \setminus Z$,
+  and they agree outside $Z$. So their values differ by the values of
+  $R$ and of $\{Z\}$ in $G[Z]$ (\cref{lem:separated-partition-value}),
+  and the second is zero. As $P$ attains the deficiency, the value of
+  $R$ in $G[Z]$ is at most zero, and $\{Z\}$ attains it.
+\end{proof}
+
+With these estimates the existence of a core when no chain is usable
+(\cref{thm:pencil-x0-theorem-s}) holds in every dimension, with
+rigidity read at $D$ and additivity in the plane. Let $d \ge 2$. A set
+$W$ of at least two bodies is \emph{rigid in dimension $d$} if
+$\operatorname{def}_d(G[W]) = 0$. A \emph{core in dimension $d$} of $G$
+is a set $W \subsetneq V(G)$ of at least two bodies, rigid in dimension
+$d$, such that no body outside $W$ is adjacent to two bodies of $W$,
+together with a body $r \in W$ such that
+\[
+  \operatorname{def}_2(G[W]) + \operatorname{def}_2(G/G[W]) \;\le\;
+  \operatorname{def}_2(G),
+\]
+where $G/G[W]$ contracts $W$ to $r$ (\cref{def:rigid-contraction}). At
+$d = 3$ it is the core of \cref{thm:pencil-x0-theorem-s}. The chains
+usable in dimension $d$ read the merged deficiencies at $D$, with
+$D - 1$ in place of $5$, and keep the planar condition at two interior
+bodies.
+
+\begin{definition}[Usable chains in every dimension]
+  \label{def:pencil-d-usable-chain}
+  \lean{Graph.ChainUsableAt}
+  \leanok
+  \uses{def:pencil-x0-chain, def:deficiency-merged}
+  Let $d \ge 2$ and $D = \binom{d+1}{2}$. A chain
+  $a - x_1 - \cdots - x_k - b$ on $V_1$ (\cref{def:pencil-x0-chain}) is
+  \emph{usable in dimension $d$} if $k \ge 3$; or $k = 2$ and either
+  $\operatorname{def}_d(G[V_1]; a, b) = \operatorname{def}_d(G[V_1])$, or
+  $a$ and $b$ are not adjacent and $\operatorname{def}_2(G[V_1]; a, b) +
+  2 \le \operatorname{def}_2(G[V_1])$; or $k = 1$ and either
+  $\operatorname{def}_d(G[V_1]; a, b) = \operatorname{def}_d(G[V_1])$ or
+  $\operatorname{def}_d(G[V_1]; a, b) + D - 1 \le
+  \operatorname{def}_d(G[V_1])$. At $d = 3$ these are the usable chains
+  of \cref{def:pencil-x0-usable-chain}.
+\end{definition}
+
+\begin{lemma}[A maximal rigid set is a core, in every dimension]
+  \label{lem:pencil-d-maximal-rigid-core}
+  \lean{Graph.IsX0Graph.exists_additiveCore_of_rigidAt}
+  \leanok
+  \uses{def:pencil-x0-standing, def:rigid-contraction}
+  Let $d \ge 2$, and let $G$ satisfy the standing hypotheses and be
+  sparse. Let $X_0$ be empty or a single body of degree at most two that
+  has at most one neighbour in every set rigid in dimension $d$ avoiding
+  it, and let $X_0$ be nonempty if $\operatorname{def}_d(G) = 0$. Let
+  $Y$ be a set of at least two bodies, rigid in dimension $d$ and
+  disjoint from $X_0$. Then $G$ has a core in dimension $d$ that avoids
+  $X_0$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:deficiency-add-body, lem:deficiency-core-bound-d,
+        lem:deficiency-additive-core}
+  As in the proof of \cref{thm:pencil-x0-theorem-s}, let $W$ be maximal
+  among the sets rigid in dimension $d$ that contain $Y$ and avoid
+  $X_0$, and let $r \in W$. Then $W \neq V(G)$, as $X_0$ is nonempty
+  when $G$ is rigid in dimension $d$. A body outside
+  $W$ and $X_0$ with two neighbours in $W$ would enlarge $W$
+  (\cref{lem:deficiency-add-body}, at $D \ge 3$), and the body of $X_0$
+  has at most one. By part~(2) of \cref{lem:deficiency-core-bound-d},
+  $s(W) \le s(X)$ for every $X \supseteq W$, and
+  \cref{lem:deficiency-additive-core} gives the inequality.
+\end{proof}
+
+\begin{theorem}[A core when no chain is usable, in every dimension]
+  \label{thm:pencil-d-theorem-s}
+  \lean{Graph.IsX0Graph.exists_additiveCoreAt}
+  \leanok
+  \uses{def:pencil-d-usable-chain, def:pencil-x0-standing,
+        def:rigid-contraction}
+  Let $d \ge 3$, and let $G$ satisfy the standing hypotheses, with
+  $G - v$ connected for every body $v$, some body of degree other than
+  two, and no planar-rigid set. If no chain of $G$ is usable in
+  dimension $d$, then $G$ has a core in dimension $d$.
+\end{theorem}
+\begin{proof}
+  \leanok
+  \uses{lem:pencil-d-maximal-rigid-core, lem:deficiency-sparse,
+        lem:pencil-x0-sparse-count, lem:pencil-x0-chain-exists,
+        lem:deficiency-one-body-chain-d, lem:deficiency-two-body-chain-d,
+        lem:deficiency-tight-rigid, lem:deficiency-rigid-higher,
+        lem:deficiency-merge-rigid, lem:deficiency-zero-connected}
+  The proof of \cref{thm:pencil-x0-theorem-s}, with rigidity in
+  dimension $d$. A set rigid in dimension three is rigid in dimension $d$
+  (\cref{lem:deficiency-rigid-higher}). As $G$ is sparse
+  (\cref{lem:deficiency-sparse}), it has bodies of degree two, each on a
+  chain (\cref{lem:pencil-x0-sparse-count},
+  \cref{lem:pencil-x0-chain-exists}). As no chain is usable, each has at
+  most two interior bodies. A chain $a - x_1 - x_2 - b$ on
+  $V_1$ has adjacent ends: otherwise
+  $\operatorname{def}_d(G[V_1]; a, b) \neq \operatorname{def}_d(G[V_1])$,
+  and \cref{lem:deficiency-two-body-chain-d} would make it usable. Its
+  $4$-cycle is tight, so rigid in dimension three
+  (\cref{lem:deficiency-tight-rigid}), and so in dimension $d$.
+
+  If $\operatorname{def}_d(G) > 0$, a chain gives a set rigid in
+  dimension $d$: its $4$-cycle, or, at one interior body $x$, a set
+  containing $x$, as otherwise the chain would be usable
+  (\cref{lem:deficiency-one-body-chain-d}). Then
+  \cref{lem:pencil-d-maximal-rigid-core} with $X_0$ empty gives the core.
+
+  If $\operatorname{def}_d(G) = 0$, take a body $x$ of degree two and a
+  set rigid in dimension $d$ that avoids it: off the $4$-cycle of a chain
+  with two interior bodies if two bodies of degree two are adjacent
+  (\cref{lem:pencil-x0-sparse-count} gives four bodies of degree two),
+  and otherwise inside $V(G) \setminus \{x\}$, which contains a set rigid
+  in dimension three as $s_6(V(G) \setminus \{x\}) \le 0$
+  (\cref{lem:pencil-x0-sparse-count}, \cref{lem:deficiency-sparse}). A
+  neighbour of $x$ in a set $W$ rigid in dimension $d$ avoiding $x$ has
+  two neighbours in $W$ (\cref{lem:deficiency-zero-connected}), so degree
+  at least three. Two such neighbours $a$ and $b$ would make $a - x - b$
+  a chain on $V(G) \setminus \{x\}$, usable as
+  $\operatorname{def}_d(G - x; a, b) = \operatorname{def}_d(G - x)$
+  (\cref{lem:deficiency-merge-rigid}). So
+  \cref{lem:pencil-d-maximal-rigid-core} with $X_0 = \{x\}$ gives the
+  core.
+\end{proof}
+
+\begin{lemma}[A core when the deficiency in dimension three is positive]
+  \label{lem:pencil-d-core-positive-deficiency}
+  \lean{Graph.IsX0Graph.exists_core_of_deficiency_three_pos}
+  \leanok
+  \uses{def:pencil-x0-standing, def:rigid-contraction}
+  Let $d \ge 3$, and let $G$ satisfy the standing hypotheses and be
+  sparse, with no two bodies of degree two adjacent. If
+  $\operatorname{def}_3(G) > 0$, then $G$ has a core in dimension $d$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:deficiency-tight-part, lem:deficiency-rigid-higher,
+        lem:pencil-x0-sparse-count, lem:deficiency-planar-nonpos,
+        lem:deficiency-singleton-bound,
+        lem:deficiency-core-bound-d, lem:deficiency-add-body,
+        lem:deficiency-additive-core}
+  Let $P$ be a partition of value $\operatorname{def}_3(G) > 0$. Each of
+  its parts is rigid in dimension three
+  (\cref{lem:deficiency-tight-part}), so in dimension $d$
+  (\cref{lem:deficiency-rigid-higher}). The partition into singletons
+  has value $6(|V(G)| - 1) - 5|E(G)| < 0$, as $5|E(G)| \ge 6|V(G)|$ when
+  no two bodies of degree two are adjacent (the count in the proof of
+  \cref{lem:pencil-x0-sparse-count}). So $P$ has a part $Z$ of at least
+  two bodies, and $Z$ is rigid in dimension $d$. As
+  $v_3(P) = 2\,v_2(P) - d_G(P) > 0$
+  (\cref{lem:deficiency-planar-nonpos}), $P$ has planar value at least
+  one, so $s(Z) \le s(V(G)) - 1$ (\cref{lem:deficiency-singleton-bound}).
+  Let $W$ have least singleton value $s(W)$ among the sets rigid in
+  dimension $d$, and let $r \in W$. Then $s(W) \le s(Z) < s(V(G))$, and
+  $W \neq V(G)$.
+
+  Suppose that some $X \supseteq W$ has $s(X) < s(W)$, and take one of
+  least size. Then $s(W) \le s(Q)$ whenever $W \subseteq Q \subsetneq X$,
+  so $X$ is rigid in dimension $d$ (part~(1) of
+  \cref{lem:deficiency-core-bound-d}), against the choice of $W$. So
+  $s(W) \le s(X)$ for every $X \supseteq W$. A body outside $W$ with two
+  neighbours in it would lower $s$ on joining $W$
+  (\cref{lem:deficiency-add-body}), and
+  \cref{lem:deficiency-additive-core} gives the inequality.
+\end{proof}
+
+\begin{lemma}[A core at an open ear of two or more interior bodies]
+  \label{lem:pencil-d-chain-core}
+  \lean{Graph.IsOpenEar.exists_additiveCoreAt_of_partitionDef_nonpos}
+  \leanok
+  \uses{def:open-ear, def:pencil-x0-standing, def:rigid-contraction}
+  Let $d \ge 2$ and $D = \binom{d+1}{2}$, and let $G$ satisfy the
+  standing hypotheses and be sparse. Let
+  $a - x_1 - \cdots - x_k - b$ be an open ear of $G$ on $V_1$
+  (\cref{def:open-ear}) with $k \ge 2$ and $s_D(V_1) \le 0$. Then $G$
+  has a core in dimension $d$ that avoids $x_1$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:deficiency-sparse, lem:deficiency-zero-connected,
+        lem:pencil-d-maximal-rigid-core}
+  As $a \neq b$ lie in $V_1$ and $s_D(V_1) \le 0$, $V_1$ contains a set
+  $Y$ rigid in dimension $d$ (\cref{lem:deficiency-sparse}), which
+  avoids $x_1$. As $G$ is simple, the interior bodies have degree two,
+  and the neighbours of $x_1$ are $a$ and $x_2$. A set $W$ rigid in
+  dimension $d$ that avoids $x_1$ does not contain $x_2$, since $x_2$
+  would have two neighbours in $W$ (\cref{lem:deficiency-zero-connected})
+  and one of its two neighbours is $x_1$. So $x_1$ has at most one
+  neighbour in $W$, and \cref{lem:pencil-d-maximal-rigid-core} with
+  $X_0 = \{x_1\}$ gives the core.
 \end{proof}
 
 \subsection{The induction in every dimension}

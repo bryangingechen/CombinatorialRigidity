@@ -121,9 +121,28 @@ to be re-derived by re-reading entries later.
 - **Proposed fix:** `Graph.bodyBarDim_mono : Monotone bodyBarDim` in `BodyBar/Framework.lean`,
   beside `bodyBarDim_two` and `bodyBarDim_three`, then the three sites rewritten through it. Not
   landed with COUNT-A, whose scope is one file: a new declaration in `BodyBar/Framework.lean`
-  rebuilds nearly every module. COUNT-B, which needs `6 ≤ bodyBarDim n` from `3 ≤ n`, would be
-  its fourth site and is the natural commit for it.
+  rebuilds nearly every module. COUNT-B, which needs `6 ≤ bodyBarDim n` from `3 ≤ n`, is its
+  fourth site: a `private six_le_bodyBarDim` in `Pencil/Grade/TheoremS.lean`, not landed in
+  `BodyBar/Framework.lean` for the same rebuild cost. The fix replaces it with `bodyBarDim_mono`.
 - **Status:** open.
+
+### [idiom] `Set.nonempty_of_ncard_ne_zero (by omega)` against `V(G.induce Y).Nonempty` needs `(s := Y)`
+- **Where it bit:** Phase 42d, COUNT-B: `Graph.IsX0Graph.exists_additiveCoreAt`
+  (`Pencil/Grade/TheoremS.lean`), passing `Y.Nonempty` to
+  `Graph.deficiency_eq_zero_of_deficiency_eq_zero_of_le` at `G.induce Y`.
+- **Friction:** the expected type `V(G.induce Y).Nonempty` assigns `s := V(G.induce Y)`, so the
+  `omega` goal is `V(G.induce Y).ncard ≠ 0`, an atom unrelated to `hY2 : 2 ≤ Y.ncard`; omega fails
+  with a counterexample.
+- **Fix:** `Set.nonempty_of_ncard_ne_zero (s := Y) (by omega)` (defeq to the expected type).
+- **Status:** idiom.
+
+### [idiom] `(1 : Fin (k + 1)).val` at a variable `k` needs `Fin.val_one'` and `Nat.mod_eq_of_lt`
+- **Where it bit:** Phase 42d, COUNT-B: `Graph.IsOpenEar.exists_additiveCoreAt_of_partitionDef_nonpos`
+  (`Pencil/Grade/TheoremS.lean`), `(⟨0, _⟩ : Fin k).succ = 1` with `hk : 2 ≤ k`.
+- **Friction:** `Fin.ext (by simp; omega)` leaves `1 % (k + 1)` for omega's atom; the
+  `pathVertex_eq_of_val_eq_succ` goals of the same proof closed by `simp; omega`.
+- **Fix:** `ext; simp only [Fin.val_succ, Fin.val_one', Nat.mod_eq_of_lt (show 1 < k + 1 by omega)]`.
+- **Status:** idiom.
 
 ### [idiom] `LinearIndependent.map'` returns `f ∘ ![a, b]`, not `![f a, f b]`; `dotPerp` has no antitone lemma
 - **Where it bit:** Phase 42c, `lem:pencil-d-embed-realization`: `linearIndependent_gradeEmbed_pair`

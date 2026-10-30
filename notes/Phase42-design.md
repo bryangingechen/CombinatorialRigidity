@@ -590,7 +590,12 @@ leaves out each graph's top cell, `d = 2 + def[3]`, which also carries content.
     (`lem:deficiency-core-bound-d`, `pencil-d.tex` `sec:pencil-d-deficiency`).
   - *PD-COVERAGE.* Theorem S at `D` (§2.4 T5); ONE-CLASS (§2.3); and S53: from `d = 5` on, a graph
     past rows 1–5 with a chain of two or three interior bodies has a chain with `k ≥ 4` or a core
-    at `D`, so the coverage there needs neither the `k = 3` short row nor row 15.
+    at `D`, so the coverage there needs neither the `k = 3` short row nor row 15. Theorem S at `D`,
+    ONE-CLASS and S52 are formalized at every `D` by COUNT-B (`thm:pencil-d-theorem-s`,
+    `lem:pencil-d-core-positive-deficiency`, `lem:pencil-d-chain-core`, `pencil-d.tex`
+    `sec:pencil-d-deficiency`, `Pencil/Grade/TheoremS.lean`); S53's chain count (COUNT-C) is not.
+    Its Theorem S duplicates Phase 40's `n = 3` proof (`Graph.IsX0Graph.exists_additiveCore`), which
+    can become its `n = 3` case once the coverage reads `Graph.ChainUsable` as `ChainUsableAt 3`.
   **Deferred to them from PD-STATE**, each optional until a consumer needs it: Phase 40's `k = 2`
   collineation (`PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv`) re-proved
   as the grade lemma at `k := 2`, and its scale-shift
