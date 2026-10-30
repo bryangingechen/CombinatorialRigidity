@@ -5,6 +5,8 @@
 > After session 1, 2026-10-30, on the PI's word (the question put: "How does CERT close?"; the
 > answer: "(b) Review, then close"): `/review-attack cert` runs next, and CERT closes on its
 > verdict.
+> Closed at review 1, 2026-10-30, on the PI's word: the review's verdict was "stop, close the
+> track as delivered" (R1 holds; (C1)–(C3) at every `d ≥ 3` over every field with `|K| ≥ 4`).
 > Written 2026-10-30 by an agent (Claude
 > Opus 5.5) against the tree at `947fa75d`, from the owning sections: `notes/Phase42-design.md`
 > §2.1 rows 10–12 and its second read of row 12, §2.3 CERT; `notes/Strata.md` Result 21;

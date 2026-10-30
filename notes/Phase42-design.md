@@ -249,7 +249,10 @@ Result 17's `def[3] ≤ 1` one step further.
   for PD-STEPS: a uniform construction for `m < D` and the open ears (or, at the cycle, KT, since a
   cycle's pencil condition is empty). Row 12's second read (§2.1) sizes the open ears at `d ≥ 7`.
   A certificate at `d′` stays one at every `d ≥ d′` (embed the heights; `Λ²` of an injective map
-  is injective), so only `D_{d−1} ≤ k + 1 ≤ D_d − 1` is new at `d`. Trails in the complete graph
+  is injective), so only `D_{d−1} ≤ k + 1 ≤ D_d − 1` is new at `d`. **42d: proved by hand at
+  every `d ≥ 3`, over every field with `|K| ≥ 4`** (CERT's R1, `notes/attacks/cert/` workbook
+  S1–S8; review 1 concurs; closed 2026-10-30), which settles what this bullet left for PD-STEPS.
+  Trails in the complete graph
   on an affine basis with first and last edges at height zero give every `k + 1 ∈ [4, D − 1]` at
   `d = 3, 4, 6`. At odd `d` parity caps them at `D − (d−1)/2` edges, so the top values need
   detours, as the `D`-gon's do (the reader's search, measured, script not retained).
@@ -272,7 +275,8 @@ Result 17's `def[3] ≤ 1` one step further.
   hypothesis transcribes there; `k = 3` at `d = 5, 6` (S28–S33). At `k = 3` the every-`ρ` form
   fails once `κ ≥ 7 − d` (S26), so the step must use `G[V₁]`'s own `ρ`. From `d = 5` on no graph
   past rows 1–5 needs the `k = 3` short row (S52–S53, given CERT's open ears), so `k = 3` at
-  `d ≥ 7` (G1) is parked, to revive only if CERT's open ears fail there (S56).
+  `d ≥ 7` (G1) was parked, to revive only if CERT's open ears fail there (S56); they do not
+  (CERT S6, S9), and G1 is retired on the PI's word (2026-10-30).
 - **ONE-EAR** (rows 14–15): either a motive that asks `G[V₁]` to attain on the locus where `Π_a`
   and `Π_b` meet above a general `q_x`, or another step for `k = 1, 2` at non-adjacent ends, plus
   a `Pᵈ` insertion lemma (at `d ≥ 5` every reachable hinge lies in `Λ²(A+B)`, of dimension ≤ 10).
