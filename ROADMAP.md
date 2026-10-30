@@ -1288,8 +1288,9 @@ that picks a step for each graph, needs it only on one class of graphs (ONE-CLAS
 call that class came first, and it is Phase 40's: a graph whose chains all have one interior body
 has a contractible core or `def_6 = 0`, and then Phase 40's witness embeds. So in every `Pᵈ` the
 coverage needs, beyond formal work, only SHORT-CORE; ONE-EAR waits for the generic conjunct.
-Next, by the PI's defaults: the statement layer and the `def_3 ≤ 1` corollary open beside the
-research, and SHORT-CORE's attack track follows a second read of contraction and the two-body ear.
+A second read found contraction and the two-body ear dimension-general. Next, by the PI's
+defaults: the statement layer and the `def_3 ≤ 1` corollary open beside the research, and
+SHORT-CORE's attack track.
 The targets are three tiers: every `d` at `def_3 ≤ 1`, at `def_3 ≤ 2` (a `P⁴` theorem), and every
 `d`.
 

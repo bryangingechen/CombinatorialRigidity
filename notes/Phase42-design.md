@@ -11,8 +11,8 @@ rows, and nondegeneracy's lift (row 21) is open. The thresholds are `d = 4, 5`, 
 27): a graph whose chains are all one-body has a core or `def[6] = 0`, and then Phase 40 embeds.
 So **the coverage at `d ≥ 4` needs SHORT-CORE and no ONE-EAR**; ONE-EAR waits for GENERIC. Next
 concrete task: PD-STATE's open as the next sub-phase (§1's defaults); the research next is
-SHORT-CORE's attack track, after the second read of rows 9 and 12 (§1). The route stays open
-(§4). Evidence: `notes/Strata.md`, Results 12–27.
+SHORT-CORE's attack track, as a second read found rows 9 and 12 dimension-general (§2.1). The
+route stays open (§4). Evidence: `notes/Strata.md`, Results 12–27.
 
 This file is the phase's entry point: the target (§0), the PI's decisions (§1), the recon (§2),
 the layers by stable code (§3) and the open questions (§4). Letters are minted when a sub-phase
@@ -106,10 +106,10 @@ are at `2168de79`. Notation: `def[D]` is `def:D-deficiency` at screw dimension `
 | 6 | Jackson–Jordán's equality (1169–1369) | none: planar, KT Theorem 5.6 at `d = 2` | GEN unchanged |
 | 7 | Cut vertex, the shared scheme (1384–1564) | count only (`lem:deficiency-cut-vertex`, every `D`) | GEN: the height is used only as a vector |
 | 8 | Chain of bridges (1566–1645) | count only | GEN |
-| 9 | Contraction at an additive core, its corollary (1647–2139) | none beyond row 3; KT Claim 6.4's Lean pin takes `Fin (k+2)` normals | GEN\|CARRIER: "rigid" is `def[D_d](H) = 0`; additivity stays planar, `def[3]`, under both routes |
+| 9 | Contraction at an additive core, its corollary (1647–2139) | the collineation (row 3), one-witness (row 4), flat attainment (row 5) and `def:pencil-x0-attains`; the KT-layer pins are `k`- or `n`-general | GEN\|CARRIER: "rigid" is `def[D_d](H) = 0`; additivity stays planar, `def[3]`; second read below |
 | 10 | Cycle `thm:pencil-x0-cycle` (2387) | the `K⁴` certificate `Y₀…Y₅` (2342) | GEN\|CERT: needs `λ ≥ min(m, D_d)` |
 | 11 | Long ear `thm:pencil-x0-open-ear` (2439) | "five interior bodies give six hinges" (2191); the hexagon placement | GEN\|CERT, for `k ≥ D_d − 1` only (9 at `d = 4`) |
-| 12 | (⋆) and the two-body ear `thm:pencil-x0-open-ear-two` (2534, 2896) | none: (⋆)'s `k + 1` holds at every `D` (`lem:block-rank-ear`) | GEN; covers every `k ≤ D_d − 1` with `def[D](G[V₁]) ≤ def[D](G)`, given `k + 1` independent joins (CERT) |
+| 12 | (⋆) and the two-body ear `thm:pencil-x0-open-ear-two` (2534, 2896) | mathematically none: (⋆)'s `k + 1` holds at every `D` (`lem:block-rank-ear`); every Lean pin is `P³` (`Fin 4`, one height, the hexagon) | GEN\|CARRIER at `k = 2` (a flat certificate in every `d`); `3 ≤ k ≤ D_d − 2` given CERT's open ears; second read below |
 | 13 | Short ears `k = 3, 4` (2960, 3081) and their line geometry (2601–2804) | the Klein pairing into `Λ⁴K⁴ = K`; four points' six joins span `Λ²K⁴`; two stars of codimension 1 | **FAILS** for `d ≥ 4`; the step itself unclear; its range grows to `3 ≤ k ≤ D_d − 2` (SHORT) |
 | 14 | One-body ear (3341–3491) | one affine function `D(z)` and its zero line (3346–3348) | **FAILS** for `d ≥ 5`, and at `d = 4` when `a, b` share a neighbour in `V₁` (ONE-EAR) |
 | 15 | Two-body ear at non-adjacent ends (3498–3627) | two hyperplanes of `K⁴` meet in a line; a tetrahedron | inherits 14; insertion plausible at `d = 4`, unclear at `d ≥ 5` (ONE-EAR) |
@@ -128,13 +128,34 @@ one `D′ > 3` forces a tree-quotient optimum, so `def[3] = def[D]` at every `D 
 class does not change with `d`). `lem:deficiency-antitone` (every `d ≤ d′`, connected `G`) is
 formalized. The rest is the agents' reading, cited by row.
 
+**Second read of rows 9 and 12** (2026-10-29, the PI's default 5; two read-only recons, Claude
+Opus 5.5, briefed to refute). Neither found a gap.
+- *Row 9* holds under R2 at every `d ≥ 4`, alike at `d = 4` and `d ≥ 5`. The step consumes `H`
+  and `G/H` attaining, each at its own general configuration, and no special locus. Every closed
+  condition in it (the lifting systems `M(t)`, `M(0)`, `L(q)`) is planar and acts on each height
+  separately; only the two rank conditions couple the heights, and both are open. Row 14 differs:
+  its incidence `b_x ∈ Π_a ∩ Π_b` is closed and couples the heights. `def[D]` enters only through
+  `H`'s standing hypotheses, `rigidContract_deficiency_eq` and `H`'s target, all `n`-general in
+  Lean, and the count closes. The limit at `t = 0` is not a pencil configuration of `G/H` at `r`,
+  but the step never needs one. Checked by the reader exactly over `GF(2⁶¹ − 1)` on 6 graphs at
+  `d = 4, 5`, cores `D`-rigid but not 6-rigid included, with a non-additive control (measured,
+  script not retained).
+- *Row 12* holds at every `d ≥ 2` for `k = 2`. With `k ≥ 2`, the ear only fixes `x₁`'s and `x_k`'s
+  heights given their picture points, so `G`'s configurations restrict onto `G[V₁]`'s. At height
+  zero the points lie in a 3-space whose `Λ²` embeds, so the `k = 2` certificate needs no hexagon.
+  For `3 ≤ k ≤ D − 2` the step is the long ear's height-finding with CERT's open ears, proved only
+  at `d ≤ 6` (§2.3 CERT). Also, by hand, checked here: `m` parts inside an ear force `m + 1`
+  crossings, so `def[D](G) ≤ def[D](G[V₁]) + max(0, k + 1 − D)`. For `k ≤ D − 1` the step's
+  hypothesis is therefore an equality, and for `2 ≤ k ≤ D − 2` it is the coverage's merged test.
+
 ### 2.2 Verdict on the routes
 
 **Neither route closes as written; the step structure is R2's.** Every step reads Phase 40's
 induction on `|V|` at a fixed `d` with all `d − 2` heights general. R1 as "fix `z¹…z^{d−3}` from a
 `P^{d−1}` witness and add one height" breaks contraction, whose heights must move along its curve
-(B), and does not help the one-body ear: every configuration of `G` restricted to `V₁` lies on the
-incidence locus, whatever the base (C). What R1 contributes is a **base row**: where `P^{d−1}`
+(B; the curve moves the picture, so this holds at `d = 3` too, and R2 runs it per height, §2.1's
+second read), and does not help the one-body ear: every configuration of `G` restricted to `V₁`
+lies on the incidence locus, whatever the base (C). What R1 contributes is a **base row**: where `P^{d−1}`
 attains at `G`, its base has rank `D_d(n−1) − def[D_{d−1}](G)` (row 5), so `G` attains in `Pᵈ`
 whenever `def[D_{d−1}](G) = def[D_d](G)`. That is Result 15 at `d′ = d − 1`; the class grows with
 `d` and contains R2's flat class `def[3] = def[D_d]`. The recon's proposal, for the PI: R2's
@@ -159,7 +180,12 @@ Result 17's `def[3] ≤ 1` one step further.
   `d ≤ 6`, over every field** (T2, `Strata.md` Result 21). The `D`-gon is a construction in every
   `d`: B's Euler circuit at even `d`, a matching and detours at odd `d`, checked at `d = 3, 5`. Left
   for PD-STEPS: a uniform construction for `m < D` and the open ears (or, at the cycle, KT, since a
-  cycle's pencil condition is empty).
+  cycle's pencil condition is empty). Row 12's second read (§2.1) sizes the open ears at `d ≥ 7`.
+  A certificate at `d′` stays one at every `d ≥ d′` (embed the heights; `Λ²` of an injective map
+  is injective), so only `D_{d−1} ≤ k + 1 ≤ D_d − 1` is new at `d`. Trails in the complete graph
+  on an affine basis with first and last edges at height zero give every `k + 1 ∈ [4, D − 1]` at
+  `d = 3, 4, 6`. At odd `d` parity caps them at `D − (d−1)/2` edges, so the top values need
+  detours, as the `D`-gon's do (the reader's search, measured, script not retained).
 - **SHORT** (row 13): ears with `3 ≤ k ≤ D_d − 2` and `def[D](G[V₁]) > def[D](G)`. Re-inserting
   `x₂` adds only joins in `star(y₁) + star(y₃)`, so the step needs X3: at general ear data, `W`
   containing both stars is `Λ²K^{d+1}`. It is needed only where `def[D](G'') = def[D](G)` and
@@ -221,10 +247,16 @@ Result 17's `def[3] ≤ 1` one step further.
   `D ≥ 15`, an unshared chain at `D = 10`) is not needed, and is not what holds: cells with no
   core occur at every `D` measured, all with `def[3] ≤ 2`, so outside the content range at
   `d ≥ 5`. Checked by `oneclass.py` (§2.4).
-- **CARRIER** (rows 3, 9, 19–21): PD-STATE's. The point-based `HasPencilPanelRealization` is the
-  wrong object at `d ≥ 4`. Primal (a `(d−3)`-flat `A_v` in a hyperplane) or dual (a point in a
-  3-space); an all-`d` polarity `Λ²K^{d+1} ≅ Λ^{d−1}K^{d+1}` (`screwComplementIso` is grade 2
-  only); the collineation lemma; nondegeneracy's lift.
+- **CARRIER** (rows 3, 9, 12, 19–21): PD-STATE's. The point-based `HasPencilPanelRealization` is
+  the wrong object at `d ≥ 4`. Primal (a `(d−3)`-flat `A_v` in a hyperplane) or dual (a point in a
+  3-space); the collineation lemma; nondegeneracy's lift. The all-`d` polarity exists:
+  `complementIso` (`j := 2`, every `k`; `Molecular/Meet.lean`) underlies `panelSupportExtensor`,
+  and `finrank_span_rigidityRows_mapExtensor` is `k`-general. So rows 9 and 12 need only
+  conjugation through it (second read, §2.1); `screwComplementIso` and `pointJoinFramework` are
+  the `P³` route's. Their `P³` pins to restate: `def:pencil-x0-attains`, the one-witness lemma,
+  the magnified rank, the scale-shift and the join-independence lemmas (`Fin 4`, one height).
+  Also name `bodyBarDim (k+1) = screwDim k`, now inline in `PanelLayer.lean`. Rows 19–21 were
+  not re-read.
 - **GENERIC** (row 22): route B in `Pᵈ`, an irreducible parametrization of the nondegenerate
   realizations, and the one-ear step at `d ≥ 5`. D's candidate witness against the good-ear lemma
   supplying a common neighbour: `C₆` with the chord `14` and `y` joined to `2, 5` (by hand,
@@ -328,7 +360,7 @@ Result 17's `def[3] ≤ 1` one step further.
     isomorphism on the five smallest cores and 60 drawn on the others: 1077, 1059, 1021 and 957
     cells at `d = 3..6`. At `d = 4, 5, 6` every cell has a GEN row, so no cell needs SHORT-CORE or
     ONE-EAR. A core is present at every one, and is the only GEN row at 20, 9 and 6. So the cover
-    rests on row 9, and the second read of rows 9 and 12 (§1) weighs more. A one-body box (paths
+    rests on row 9, and the second read of rows 9 and 12 (§1; landed, §2.1) weighs more. A one-body box (paths
     of 1–2 edges) gives 231, 180 and 131 cells at `d = 4, 5, 6`, all with `def[D](G) = 0` and
     every chain one-body, and each has a GEN row. At `d = 5, 6` each has a core, its only GEN row
     (row 14 the alternative), so ONE-CLASS is not met there. At `d = 4`, 228 have a core. The other

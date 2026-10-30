@@ -5,8 +5,8 @@ blueprint. Landed: the step table and thresholds (design doc §2.1–§2.5); T1�
 Results 20–26), with no shortfall: SHORT shrinks to SHORT-CORE, ONE-EAR's first option holds
 wherever M does, and at `D ≥ 10` the coverage needs ONE-EAR only on ONE-CLASS. Then, at the PI's
 call, ONE-CLASS's lemma (Result 27), which takes ONE-EAR out of the coverage. Next concrete task:
-PD-STATE's open; the research next is SHORT-CORE's attack track, after the second read of rows 9
-and 12. Plan and decisions: `notes/Phase42-design.md`; evidence: `notes/Strata.md`.
+PD-STATE's open; the research next is SHORT-CORE's attack track, rows 9 and 12 having passed a
+second read. Plan and decisions: `notes/Phase42-design.md`; evidence: `notes/Strata.md`.
 
 ## Current state
 
@@ -14,9 +14,8 @@ and 12. Plan and decisions: `notes/Phase42-design.md`; evidence: `notes/Strata.m
 - **PD-STATE's open** beside the research, its letter minted then (`PHASE-BOUNDARIES.md` *When
   this commit opens a phase*): check the dual-form carrier (§2.3 CARRIER) against the definition
   bodies, and lay out PD-STABLE.
-- **The second read of rows 9 and 12** (design doc §1), before anything builds on them.
 - **SHORT-CORE's attack track** (`/attack`, design doc §2.3), the coverage's only new mathematics
-  at `d ≥ 4` since Result 27.
+  at `d ≥ 4` since Result 27. Rows 9 and 12, which T5's cover rests on, passed a second read.
 
 **Landed:** the step table, its route verdict (§2.2: R2's step structure, R1's base row) and
 §2.5; then T1, T2 and the content-range graphs as one mode, `strata.py --content`. Row 5's
@@ -39,7 +38,10 @@ third part is never needed, and at `D ≥ 10` a graph with no GEN row has a chai
 lies in ONE-CLASS's shape (both by hand). On subdivisions of ten cores every cell at `d = 4, 5, 6`
 has a GEN row, a core at every one; Petersen's 4- and 6-path subdivisions need SHORT-CORE.
 Then ONE-CLASS, at the PI's call (Result 27, §2.3–2.4): a graph whose chains are all one-body has
-a core at every `D ≥ 6` or `def[6] = 0`, so Phase 40 embeds; checked by `oneclass.py`.
+a core at every `D ≥ 6` or `def[6] = 0`, so Phase 40 embeds; checked by `oneclass.py`. Then the
+second read of rows 9 and 12 (§2.1), by two recons in parallel: no gap. Contraction holds under
+R2 at every `d ≥ 4`; the two-body ear at every `d`, and longer ears up to `k = D − 2` given CERT,
+proved at `d ≤ 6`. Both need only CARRIER's restatements.
 
 ## Architectural choices made up front
 
@@ -67,8 +69,8 @@ a core at every `D ≥ 6` or `def[6] = 0`, so Phase 40 embeds; checked by `onecl
   the motive, the insertion and X2 (§2.3).
 - [x] **T5** (§2.4): the coverage at `D = 6..21` on subdivisions of ten cores (Result 26);
   Theorem S at `D` and the `D ≥ 10` reduction proved by hand.
-- [ ] **A second read of rows 9 and 12** (contraction; (⋆) and the two-body ear), before an attack
-  track or PD-CARRIER builds on them. T5's cover rests on row 9 at every cell at `d ≥ 4`.
+- [x] **A second read of rows 9 and 12** (design doc §2.1): no gap; GEN|CARRIER, row 12's
+  `3 ≤ k ≤ D − 2` given CERT's open ears (proved at `d ≤ 6`).
 - [ ] **SHORT-CORE** (§2.3): an attack track at `d = 4` (`k = 3, 4, 5`; sized by T3, needed by
   T5's Petersen cells).
 - [x] **ONE-CLASS** (§2.3; the PI's call over ONE-EAR): proved, `Strata.md` Result 27, checked
@@ -84,10 +86,11 @@ a core at every `D ≥ 6` or `def[6] = 0`, so Phase 40 embeds; checked by `onecl
 The next commit is PD-STATE's open as the next sub-phase (*Current state*). On the research side,
 Result 27 leaves SHORT-CORE as the coverage's only new mathematics at `d ≥ 4`: `k = 3, 4, 5` at
 `d = 4`, its `d = 3` model the chapter's `k = 3` case split on `ρ`, needed by T5's Petersen cells.
-Its attack track waits on the second read of rows 9 and 12, on which T5's cover rests (row 9 at
-every cell at `d ≥ 4`). PD-STABLE should state the embedding as the coverage consumes it,
-`def[6] = def[D]` (design doc §3). ONE-EAR (the motive, a `Pᵈ` insertion lemma, X2) is GENERIC's
-now, deferred with it.
+Rows 9 and 12, on which T5's cover rests, passed a second read, so its attack track (`/attack`)
+can open; it builds on (⋆) and the X3 range (design doc §2.3). PD-STABLE should state the
+embedding as the coverage consumes it, `def[6] = def[D]` (design doc §3). CERT's open ears at
+`d ≥ 7` (§2.3) are PD-STEPS's, for the every-`d` tier. ONE-EAR (the motive, a `Pᵈ` insertion
+lemma, X2) is GENERIC's now, deferred with it.
 
 ## Decisions made during this phase
 
@@ -104,6 +107,8 @@ now, deferred with it.
   cell is seeded by itself alone, and T5 and ONE-CLASS draw no point. T2's `D`-gon is built
   (`cert_top`): a `{−1, 0, 1}` search found none at `d = 5, 6` in 5000 tries (measured, script
   not retained).
+- **The second reads ran as two parallel read-only recons** (the PI, design doc §1), each briefed
+  to refute and to form its verdict before reading the table's; their probes are not retained.
 - **Proved where possible, not read off a point:** T4's one miss is forced from asserted premises;
   T5's two reductions and ONE-CLASS's lemma are proofs by hand (design doc §2.3–2.4), checked by
   their drivers. `oneclass.py` checks the proof's own set, not only a core's existence, and adds
