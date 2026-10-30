@@ -5,7 +5,8 @@ doc §1, item 4), a sub-phase of Phase 42, which stays in progress with 42a. For
 under `/coordinate-phase`: the dep-graph `blueprint/src/chapter/pencil-d.tex` has all 17 nodes
 green, the Lean in `Pencil/Grade/` (seven new files) and one lemma in `PanelLayer.lean`, in 15
 commits with the open and the close. The carrier is the PI's (2026-10-30, design doc §1): the dual
-form with each body's 3-space as data. Next (*Hand-off*): PD-STABLE's open, the PI's to start.
+form with each body's 3-space as data. Next (*Hand-off*): PD-STABLE, opened as 42c
+(`notes/Phase42c.md`).
 
 ## Current state
 

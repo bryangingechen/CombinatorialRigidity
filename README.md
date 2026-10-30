@@ -219,10 +219,12 @@ the theorem is formalized at `d = 2` and `d = 3`, and the general case
 would imply Katoh–Tanigawa's panel theorem in every dimension. A paper
 check found most of the `d = 3` proof dimension-general, with one step
 needing new mathematics from dimension four. Beside that research, a new
-blueprint chapter, now formalized throughout, states pencil realizations
-in every dimension, their agreement with the three-dimensional ones, and
-the tools a proof in every dimension would use; the theorem itself is
-open from dimension four.
+blueprint chapter states pencil realizations in every dimension, their
+agreement with the three-dimensional ones, and the tools a proof in every
+dimension would use, all formalized. Its last section, now being
+formalized, embeds a lower dimension in a higher one, and so derives the
+theorem in every dimension from dimension three for graphs of small
+deficiency. In general the theorem is open from dimension four.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries

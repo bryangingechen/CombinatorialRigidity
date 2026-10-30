@@ -8,9 +8,10 @@ is the PI's (§1): R2's steps, Result 15's embedding as the base row, any induct
 Tier 2. SHORT-CORE's attack brief awaits the PI's reading. **42b** (PD-STATE,
 `notes/Phase42b.md`) ran beside it and **closed 2026-10-30**: the statement layer in `Pᵈ`, its
 chapter `blueprint/src/chapter/pencil-d.tex` formalized (17 nodes), on the carrier the PI took
-(§1, option (a); §2.3 CARRIER). Next concrete tasks, each the PI's to start: PD-STABLE's open
-(§3), whose definitions have landed, and SHORT-CORE's attack track. Evidence: `notes/Strata.md`,
-Results 12–27.
+(§1, option (a); §2.3 CARRIER). **42c** (PD-STABLE, `notes/Phase42c.md`) opened the same day at
+the PI's word (§1): the embedding, the deficiency lemma and `Pᵈ` at `def[3] ≤ 1`, a new section of
+`pencil-d.tex`, red. Its open put a sharper deficiency range to the PI (§4). SHORT-CORE's attack
+track is the PI's to start. Evidence: `notes/Strata.md`, Results 12–27.
 
 This file is the phase's entry point: the target (§0), the PI's decisions (§1), the recon (§2),
 the layers by stable code (§3) and the open questions (§4). Letters are minted when a sub-phase
@@ -94,6 +95,8 @@ fibre-intersection lemma and Jackson–Jordán's equality.
   commits; what the chapter already states. (b) Primal (b_v, A_v): the same mathematics and cost,
   the data named the other way round. (c) Meet form only: cheapest, but the Pᵈ headline loses the
   bare multigraph conjunct, against §0. (d) Normals-only: fails W1, not viable.
+- **PI, 2026-10-30 (PD-STABLE's open):** "Open as 42c, §3 scope (Recommended)". The scope: §3's
+  items 1–3 as written, with FRICTION's `normalsJoin` map lemma landing with item 1.
 
 ## 2. PD-RECON (42a)
 
@@ -477,8 +480,9 @@ leaves out each graph's top cell, `d = 2 + def[3]`, which also carries content.
   realizations), and CARRIER's restatements (configurations, attaining, the collineation, the
   scale-shift, one witness, the magnified rank, join independence). Nondegeneracy's lift is
   GENERIC's (§4).
-- **PD-STABLE** (stable code; it states over PD-STATE's definitions, which have landed, so its open
-  is next, the PI's to start): Results 15–17, formally. It needs PD-STATE and Phase 40, not the recon. `G` satisfies
+- **PD-STABLE** (**42c**, opened 2026-10-30 at the PI's word, §1; `notes/Phase42c.md`, its
+  dep-graph `pencil-d.tex` §`sec:pencil-d-stable`, 9 nodes): Results 15–17, formally. It needs
+  PD-STATE and Phase 40, not the recon. `G` satisfies
   `def:pencil-x0-standing`; `def[D_d]` is Lean's `G.deficiency d` (`bodyBarDim d = D_d`), so
   `def[3]` is `G.deficiency 2` and `def[6]` is `G.deficiency 3`. Planned names are tentative.
   1. *The embedding, at every `d′ ≤ d`* (Result 15; the route, §1). Let `ι : K^{d′+1} → K^{d+1}`
@@ -501,14 +505,20 @@ leaves out each graph's top cell, `d = 2 + def[3]`, which also carries content.
      `def[D_{d′}](G) = def[D_d](G)`. Proof: a partition with cycle rank `c ≥ 1` positive at
      `D′ = D_{d′}` has `|P| − 1 > (D′ − 1)c`, so `def[3] ≥ |P| − 1 − 2c > (D′ − 3)c ≥ D′ − 3`,
      against `D′ ≥ C(def[3] + 3, 2)`; so above `D′` only tree quotients count, at a value free of
-     `D`. Holds for every multigraph. Planned `Graph.deficiency_eq_of_two_add_deficiency_two_le`,
-     beside `lem:deficiency-antitone`.
+     `D`. **Needs `G` connected** (corrected at 42c's open): two bodies and no edge have
+     `def[D] = D`, so `def[3] = 3` and `d′ = 5`, yet `def[15] ≠ def[21]`. The proof's own chain
+     stops at `D′ − 3 < def[3]`, so `def[3] + 3 ≤ D′` suffices, and the node states that range,
+     this one its "in particular" (`notes/Phase42c.md` *Decisions*, §4).
   3. *`Pᵈ` at `def[3] ≤ 1`* (Result 17; Tier 0): if `def[3](G) ≤ 1` and `d ≥ 3`, the general
      configuration of `G` attains in dimension `d`, so `G` has an adjacent-distinct pencil
      realization at the deficiency rank in dimension `d` (`lem:pencil-d-config-realization`).
      Proof: Phase 40 (`thm:pencil-x0-generic-attains`) at `d′ = 3`, item 2 (`def[3] ≤ 1 = d′ − 2`)
      and item 1. Result 17 embeds the planar witness at `def[3] = 0`; `d′ = 3` covers that case
      too, as there `def[6] = def[D] = 0`. Planned `Graph.x0AttainsGrade_of_deficiency_two_le_one`.
+
+  As opened (42c): the chapter section is authoritative for the statements, and
+  `notes/Phase42c.md` holds the planned names and the open's corrections (item 2 connected and in
+  its sharp range; the configuration form from `d′ = 2`; item 3's realization step its own node).
 
   From 42b: the Lean encoding (grade `k = d − 1`, `m = d − 2` heights, the deficiency's `n` a
   parameter) is `notes/Phase42b.md` *Architectural choices*. Item 1's join map,
@@ -528,8 +538,7 @@ leaves out each graph's top cell, `d = 2 + def[3]`, which also carries content.
   flag strata as corollaries.
 
 PD-STATE and PD-STABLE do not depend on the route, so they run beside PD-RECON (§1's defaults).
-PD-STATE opened and closed as 42b on 2026-10-30; its definitions have landed, so PD-STABLE can
-open.
+PD-STATE opened and closed as 42b on 2026-10-30; PD-STABLE opened as 42c the same day.
 
 ## 4. Open questions
 
@@ -545,12 +554,14 @@ unless a finding argues otherwise:
 - The carrier in dual form (CARRIER). Checked at 42b's open: it agrees with Phase 39's
   definitions once each body's 3-space is data (§2.3), the reading the PI took (§1).
 - PD-STATE and PD-STABLE open beside the research once T1 and T2 land: PD-STATE did, as 42b
-  (closed 2026-10-30); PD-STABLE's open is next.
+  (closed 2026-10-30), and PD-STABLE as 42c (open).
 
 Settled by the PI (§1): the route. R2's steps with Result 15's embedding as the base row; an outer
 induction on `d` is Tier 2's question, entering if at all through CERT's open ears at `d ≥ 7`.
 The carrier: each body's 3-space as data (§2.3 CARRIER, option (a)). Open for the PI: the reading
-of SHORT-CORE's DRAFT brief.
+of SHORT-CORE's DRAFT brief; and, from 42c's open, the sharp deficiency range `def[3] + 3 ≤ D′`
+(tight on cycles), which would widen Tier 0 to `def[3] ≤ 3` and shrink §2.5's content range and
+§1's tiers (`notes/Phase42c.md` *Blockers*).
 
 Settled by the table: Phase 39's reduction is `d`-general for the bare and distinct conjuncts,
 given CARRIER (row 19). Settled by the PI's call (§1) and Result 27: ONE-CLASS, not ONE-EAR. Its

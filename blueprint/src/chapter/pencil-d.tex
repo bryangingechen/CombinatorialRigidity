@@ -22,7 +22,10 @@ This chapter states pencil realizations in every dimension, and the
 objects of \cref{sec:main-component-carrier} that a proof in dimension
 $d$ along the lines of \cref{sec:main-component} would use. At $d = 3$ each of
 them is the object of \cref{sec:pencil} or \cref{sec:main-component}
-that it restates.
+that it restates. The last section embeds a lower dimension in a higher
+one, and derives the theorem in every dimension from the theorem in
+dimension three at the graphs of small deficiency
+(\cref{sec:pencil-d-stable}).
 
 We describe a pencil realization by its polar. The polarity of
 \cref{def:meet-complement-iso} takes the panel with normal $b_v$ to the
@@ -493,4 +496,257 @@ each closed neighbourhood lie in a plane.
   heights at a fixed picture. A finite family of vectors is linearly
   independent exactly when some maximal minor of its coordinate matrix
   is nonzero; take for $P$, or $R$, one such minor.
+\end{proof}
+
+\subsection{From a lower dimension}
+\label{sec:pencil-d-stable}
+
+A pencil realization in dimension $d'$ becomes one in dimension
+$d \ge d'$ under the inclusion of $K^{d'+1}$ in $K^{d+1}$ that inserts
+zero coordinates before the last one; at a configuration it appends zero
+heights. On a connected multigraph the rank grows by
+$(D - D')(|V(G)| - 1)$, where $D' = \binom{d'+1}{2}$ and
+$D = \binom{d+1}{2}$. Write $\operatorname{def}_d(G)$ for the deficiency
+at $D$ (\cref{def:D-deficiency}), as before
+\cref{lem:deficiency-antitone}. Then a realization at the deficiency
+rank in dimension $d'$ gives one in dimension $d$ when
+$\operatorname{def}_{d'}(G) = \operatorname{def}_d(G)$, and on a
+connected multigraph the deficiency stops changing once $D$ is large
+compared with $\operatorname{def}_2(G)$. So the theorem in dimension
+three gives the theorem in every dimension at the graphs with
+$\operatorname{def}_2(G) \le 1$.
+
+\begin{lemma}[The deficiency stops changing]
+  \label{lem:deficiency-stable}
+  \uses{def:D-deficiency}
+  Let $G$ be a connected multigraph, and let $d' \le d$ with
+  $\operatorname{def}_2(G) + 3 \le \binom{d'+1}{2}$, which holds in
+  particular when $\operatorname{def}_2(G) + 2 \le d'$. Then
+  $\operatorname{def}_{d'}(G) = \operatorname{def}_d(G)$.
+\end{lemma}
+\begin{proof}
+  \uses{lem:deficiency-antitone}
+  For a partition $P$ of $V(G)$ let $c(P) = d_G(P) - (|P| - 1)$, which
+  is nonnegative as $G$ is connected (the proof of
+  \cref{lem:deficiency-antitone}). The value of $P$ at $D$ is
+  $D(|P| - 1) - (D - 1)\,d_G(P) = |P| - 1 - (D - 1)\,c(P)$. At $D = 3$
+  it is at most $t = \operatorname{def}_2(G)$, so at $D \ge 3$ it is at
+  most $t - (D - 3)\,c(P)$. Let $D' = \binom{d'+1}{2}$, so that
+  $D' \ge t + 3$, and let $D \ge D'$. If $c(P) \ge 1$, the value of $P$
+  at $D$ is at most $t - (D' - 3) \le 0$. If $c(P) = 0$, it is
+  $|P| - 1$ at every $D$, and the partition $\{V(G)\}$ has value $0$.
+  So at every $D \ge D'$, in particular at $D'$ and at
+  $\binom{d+1}{2}$, the deficiency is the largest $|P| - 1$ over the
+  partitions with $c(P) = 0$, which does not depend on $D$. If
+  $t + 2 \le d'$, then $D' \ge \binom{t+3}{2} \ge t + 3$, as $t \ge 0$.
+\end{proof}
+
+\begin{definition}[Embedding a lower dimension]
+  \label{def:pencil-d-embedding}
+  \uses{def:screw-space, def:meet-complement-iso, def:join}
+  Let $2 \le d' \le d$. The \emph{embedding}
+  $\iota \colon K^{d'+1} \to K^{d+1}$ inserts $d - d'$ zero coordinates
+  before the last one:
+  \[
+    \iota(x_1, \dots, x_{d'}, x_{d'+1})
+      = (x_1, \dots, x_{d'}, 0, \dots, 0, x_{d'+1}).
+  \]
+  It induces the linear map $\bigwedge^2 \iota$ of
+  $\bigwedge^2 K^{d'+1}$ into $\bigwedge^2 K^{d+1}$ that takes each join
+  $u \vee w$ to $\iota u \vee \iota w$. The \emph{screw embedding}
+  $\varphi \colon \bigwedge^{d'-1} K^{d'+1} \to \bigwedge^{d-1} K^{d+1}$
+  is the inverse of the complement isomorphism of $K^{d'+1}$
+  (\cref{def:meet-complement-iso}), followed by $\bigwedge^2 \iota$ and
+  the complement isomorphism of $K^{d+1}$. Both $\iota$ and $\varphi$
+  are linear and injective.
+\end{definition}
+\begin{proof}
+  The map $\iota$ keeps every coordinate of its argument, and the map
+  $\pi$ that deletes the inserted coordinates is a linear left inverse
+  of it. Then $\bigwedge^2 \pi$ is a left inverse of $\bigwedge^2 \iota$,
+  so $\bigwedge^2 \iota$ is injective, and $\varphi$ is its composite
+  with two isomorphisms.
+\end{proof}
+
+\begin{lemma}[The screw embedding of a hinge of two panels]
+  \label{lem:pencil-d-embedding-join}
+  \uses{def:pencil-d-embedding, def:panel-support-extensor}
+  For $u, w \in K^{d'+1}$, the screw embedding takes the panel-support
+  extensor $C(u, w)$ (\cref{def:panel-support-extensor}) to
+  $C(\iota u, \iota w)$.
+\end{lemma}
+\begin{proof}
+  The extensor $C(u, w)$ is the image of the join $u \vee w$ under the
+  complement isomorphism (\cref{def:panel-support-extensor}). So
+  $\varphi(C(u, w))$ is the image of
+  $(\bigwedge^2 \iota)(u \vee w) = \iota u \vee \iota w$ under the
+  complement isomorphism of $K^{d+1}$, which is
+  $C(\iota u, \iota w)$.
+\end{proof}
+
+\begin{lemma}[An injective map of screw spaces adds to the rank]
+  \label{lem:screw-embedding-rank}
+  \uses{def:hinge-constraint, def:rigidity-matrix}
+  Let $d' \le d$, let $\varphi$ be an injective linear map of
+  $\bigwedge^{d'-1} K^{d'+1}$ into $\bigwedge^{d-1} K^{d+1}$, and let
+  $(G, p)$ be a body-hinge framework in $K^{d'}$ on a connected
+  multigraph $G$. Let $(G, \varphi p)$ be the body-hinge framework in
+  $K^d$ on $G$ whose supporting extensor at each edge $e$ is
+  $\varphi\, C(p(e))$. Then
+  \[
+    \operatorname{rank} R(G, \varphi p)
+      = \operatorname{rank} R(G, p) + (D - D')(|V(G)| - 1),
+  \]
+  where $D' = \binom{d'+1}{2}$ and $D = \binom{d+1}{2}$.
+\end{lemma}
+\begin{proof}
+  Let $T$ be a complement of the image of $\varphi$, of dimension
+  $D - D'$, and write a screw assignment of $(G, \varphi p)$ as
+  $\varphi \circ S + S_T$ with $S_T$ valued in $T$. At an edge $e$ with
+  ends $u$ and $v$, the hinge constraint asks the difference of the
+  values at $u$ and $v$ to lie in the span of $\varphi\, C(p(e))$,
+  which lies in the image of $\varphi$. As $\varphi$ is injective, it
+  holds exactly when $S_T(u) = S_T(v)$ and $S$ satisfies the hinge
+  constraint of $(G, p)$ at $e$. As $G$ is connected, $S_T$ is constant
+  on $V(G)$. So $\dim Z(G, \varphi p) = \dim Z(G, p) + (D - D')$
+  (\cref{def:rigidity-matrix}), and the ranks are
+  $D|V(G)| - \dim Z(G, \varphi p)$ and $D'|V(G)| - \dim Z(G, p)$.
+\end{proof}
+
+\begin{lemma}[A pencil realization in a lower dimension]
+  \label{lem:pencil-d-embed-realization}
+  \uses{def:pencil-d-embedding, def:pencil-d-realization,
+        def:pencil-d-rank-hypothesis, def:pencil-d-distinct-motive,
+        def:D-deficiency}
+  Let $G$ be connected and $2 \le d' \le d$, with $D'$ and $D$ as in
+  \cref{lem:screw-embedding-rank}. Let a pencil realization of $G$ in
+  dimension $d'$ (\cref{def:pencil-d-realization}) have hinges $C_e$,
+  normals $b_v$ and subspaces $\Pi_v$, and let its rigidity rows span a
+  space of dimension $r$. Then the framework on $G$ with the hinges
+  $\varphi(C_e)$, the normals $\iota b_v$ and the subspaces
+  $\iota \Pi_v$ (\cref{def:pencil-d-embedding}) is a pencil realization
+  of $G$ in dimension $d$. Its rigidity rows span a space of dimension
+  $r + (D - D')(|V(G)| - 1)$, and its normals are independent at every
+  link where the given ones are. So if
+  $\operatorname{def}_{d'}(G) = \operatorname{def}_d(G)$ and $G$ has a
+  pencil realization at the deficiency rank in dimension $d'$
+  (\cref{def:pencil-d-rank-hypothesis}), or an adjacent-distinct one
+  (\cref{def:pencil-d-distinct-motive}), then it has one in dimension
+  $d$.
+\end{lemma}
+\begin{proof}
+  \uses{lem:screw-embedding-rank, lem:pencil-d-embedding-join,
+        lem:pencil-d-point-configuration, lem:panel-support-extensor-join}
+  Let $e$ be a link $uv$. Its hinge $C_e$ is a nonzero extensor of
+  $d' - 1$ vectors spanning a subspace $A$ of $K^{d'+1}$, so $A^{\perp}$
+  has dimension two. That $C_e$ lies in the panel of $v$ says
+  $b_v \in A^{\perp}$, and that it passes through $\Pi_v^{\perp}$ says
+  $\Pi_v^{\perp} \subseteq A$, that is, $A^{\perp} \subseteq \Pi_v$;
+  likewise at $u$. Let $w_1, w_2$ be a basis of $A^{\perp}$. Then $C_e$
+  lies in the panels of $w_1$ and $w_2$, so it is a nonzero multiple of
+  $C(w_1, w_2)$, by the argument of part~(2) of
+  \cref{lem:pencil-d-point-configuration}. So $\varphi(C_e)$ is the same
+  multiple of $C(\iota w_1, \iota w_2)$
+  (\cref{lem:pencil-d-embedding-join}), a nonzero extensor of vectors
+  spanning the orthogonal of $\iota(A^{\perp})$
+  (\cref{lem:panel-support-extensor-join}). As
+  $\iota b_v \in \iota(A^{\perp}) \subseteq \iota \Pi_v$, the hinge
+  $\varphi(C_e)$ lies in the panel of $\iota b_v$ and passes through
+  $(\iota \Pi_v)^{\perp}$. As $\iota$ is injective, each $\iota \Pi_v$
+  has dimension three and contains $\iota b_v \neq 0$, and independent
+  normals stay independent; as $\varphi$ is injective, every hinge
+  $\varphi(C_e)$ is nonzero. The rows are
+  \cref{lem:screw-embedding-rank}. For the last claim,
+  $D'(|V(G)| - 1) - \operatorname{def}_{d'}(G) + (D - D')(|V(G)| - 1)
+  = D(|V(G)| - 1) - \operatorname{def}_d(G)$.
+\end{proof}
+
+\begin{lemma}[Zero heights add to the rank]
+  \label{lem:pencil-d-embed-config-rank}
+  \uses{def:pencil-d-configuration, def:pencil-d-embedding,
+        def:pencil-lifting-space}
+  Let $G$ be connected and $2 \le d' \le d$, with $D'$ and $D$ as in
+  \cref{lem:screw-embedding-rank}. Let $q$ be a picture of $G$ and
+  $z' = (z^1, \dots, z^{d'-2})$ heights, and let
+  $z = (z^1, \dots, z^{d'-2}, 0, \dots, 0)$ append $d - d'$ zero
+  heights. Then the rank of $(q, z)$ in dimension $d$ is the rank of
+  $(q, z')$ in dimension $d'$ plus $(D - D')(|V(G)| - 1)$. If every
+  $z^i$ lies in $L(q)$, so does every height of $z$.
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-d-embedding-join, lem:screw-embedding-rank}
+  The point of $(q, z)$ at each body is the image under $\iota$ of the
+  point of $(q, z')$ (\cref{def:pencil-d-configuration}). So the hinge
+  $C(b_u, b_v)$ at each edge of the panel-hinge framework of $(q, z)$ is
+  the image under $\varphi$ of that of $(q, z')$
+  (\cref{lem:pencil-d-embedding-join}), and
+  \cref{lem:screw-embedding-rank} applies. The lifting space $L(q)$ is a
+  subspace, so it contains the zero height.
+\end{proof}
+
+\begin{lemma}[Attaining in a lower dimension]
+  \label{lem:pencil-d-x0-attains-of-le}
+  \uses{def:pencil-d-x0-attains, def:D-deficiency}
+  Let $K$ be infinite, let $G$ be connected, and let $2 \le d' \le d$
+  with $\operatorname{def}_{d'}(G) = \operatorname{def}_d(G)$. If the
+  general configuration of $G$ attains in dimension $d'$
+  (\cref{def:pencil-d-x0-attains}), it attains in dimension $d$.
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-d-embed-config-rank, lem:pencil-d-x0-one-witness,
+        lem:pencil-x0-main-picture-open}
+  Let $P$ be the polynomial of \cref{def:pencil-d-x0-attains} in
+  dimension $d'$. As $K$ is infinite, $P$ has a non-root, which is an
+  admissible picture. So $G$ has no loop and each closed neighbourhood
+  has at least three members, and some nonzero polynomial has only main
+  pictures as non-roots (\cref{lem:pencil-x0-main-picture-open}). Its
+  product with $P$ has a non-root $q_0$, a main picture with
+  $P(q_0) \neq 0$. Some $z' \in L(q_0)^{d'-2}$ gives $(q_0, z')$ the rank
+  $D'(|V(G)| - 1) - \operatorname{def}_{d'}(G)$. Appending zero heights
+  gives $z \in L(q_0)^{d-2}$, and $(q_0, z)$ has rank
+  $D(|V(G)| - 1) - \operatorname{def}_{d'}(G)
+  = D(|V(G)| - 1) - \operatorname{def}_d(G)$
+  (\cref{lem:pencil-d-embed-config-rank}). As $G$ has a body,
+  \cref{lem:pencil-d-x0-one-witness} applies.
+\end{proof}
+
+\begin{lemma}[The general configuration attaining gives an adjacent-distinct realization, in every dimension]
+  \label{lem:pencil-d-x0-attains-distinct}
+  \uses{def:pencil-d-x0-attains, def:pencil-d-distinct-motive}
+  Let $K$ be infinite. If the general configuration of $G$ attains in
+  dimension $d$ (\cref{def:pencil-d-x0-attains}), then $G$ has an
+  adjacent-distinct pencil realization in dimension $d$
+  (\cref{def:pencil-d-distinct-motive}).
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-d-config-realization}
+  As $K$ is infinite, the nonzero polynomial $P$ of
+  \cref{def:pencil-d-x0-attains} has a non-root $q$. This picture is
+  admissible, and some $z \in L(q)^{d-2}$ gives $(q, z)$ the rank
+  $D(|V(G)| - 1) - \operatorname{def}_d(G)$. Apply
+  \cref{lem:pencil-d-config-realization} to $(q, z)$.
+\end{proof}
+
+\begin{theorem}[The pencil in every dimension when $\operatorname{def}_2(G) \le 1$]
+  \label{thm:pencil-d-deficiency-two-le-one}
+  \uses{def:pencil-x0-standing, def:pencil-d-x0-attains,
+        def:pencil-d-distinct-motive, def:D-deficiency}
+  Let $K$ be an infinite field and $d \ge 3$, and let $G$ satisfy the
+  standing hypotheses (\cref{def:pencil-x0-standing}) with
+  $\operatorname{def}_2(G) \le 1$. Then the general configuration of $G$
+  attains in dimension $d$ (\cref{def:pencil-d-x0-attains}), and $G$ has
+  an adjacent-distinct pencil realization in dimension $d$
+  (\cref{def:pencil-d-distinct-motive}).
+\end{theorem}
+\begin{proof}
+  \uses{thm:pencil-x0-coverage, lem:pencil-d-x0-attains-three,
+        lem:deficiency-stable, lem:pencil-d-x0-attains-of-le,
+        lem:pencil-d-x0-attains-distinct}
+  The general configuration of $G$ attains in dimension three
+  (\cref{thm:pencil-x0-coverage}, \cref{lem:pencil-d-x0-attains-three}).
+  As $G$ is connected and $\operatorname{def}_2(G) + 2 \le 3 \le d$,
+  $\operatorname{def}_3(G) = \operatorname{def}_d(G)$
+  (\cref{lem:deficiency-stable}). So it attains in dimension $d$
+  (\cref{lem:pencil-d-x0-attains-of-le}), and
+  \cref{lem:pencil-d-x0-attains-distinct} gives the realization.
 \end{proof}

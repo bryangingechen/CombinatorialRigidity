@@ -125,8 +125,8 @@ to be re-derived by re-reading entries later.
   `LinearMap.det ↑g ≠ 0` for an equiv is `LinearEquiv.coe_det g ▸ (LinearEquiv.det g).ne_zero`.
 - **Proposed fix:** `contragredientEquiv` beside `contragredient` in `Meet.lean`, and
   `exteriorPower_map_normalsJoin` in `PanelLayer.lean`; not added here, to keep the commit off two
-  files upstream of the whole tree. The second lands with PD-STABLE's embedding, which maps joins
-  by `Λ²ι` (`notes/Phase42-design.md` §3). The `k + 2 - 2` cast to `ScrewSpace K k` was no friction: `rfl`
+  files upstream of the whole tree. The second lands with Phase 42c's
+  `lem:pencil-d-embedding-join`, which maps joins by `Λ²ι` (`notes/Phase42c.md`). The `k + 2 - 2` cast to `ScrewSpace K k` was no friction: `rfl`
   closes `det g • ⋀^(k+2-2) h (complementIso _ X) = det g • screwEquivOfLinearEquiv h (…)`.
 - **Status:** open.
 

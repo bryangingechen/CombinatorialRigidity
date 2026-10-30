@@ -357,7 +357,9 @@ deficiency rank is in particular a hinge-coplanar one, so the theorem
 would strengthen KT Theorem~5.6 in every dimension. Its chapter
 (\cref{sec:pencil-d}) states pencil realizations in every dimension, and
 the objects of \cref{sec:main-component} that a proof in dimension $d$
-would use.
+would use. Its last section embeds a lower dimension in a higher one, and
+so derives the theorem in every dimension from the theorem in dimension
+three for the graphs of small deficiency.
 
 \subsection*{Reading this blueprint}
 
@@ -375,9 +377,12 @@ Phase~41 ended a review of the chapters against the Lean, which corrected
 the statements that claimed more or less than their Lean declarations
 and gave a Lean declaration to each claim the chapters made without one.
 Phase~42, in progress, has added the last chapter, on the pencil in
-every dimension (\cref{sec:pencil-d}). Its nodes are formalized too: they
-state the definitions and the tools a proof would use, while the theorem
-itself is open from dimension four.
+every dimension (\cref{sec:pencil-d}). Its first two sections are
+formalized too: they state the definitions and the tools a proof would
+use, while the theorem itself is open from dimension four. Its last
+section (\cref{sec:pencil-d-stable}), which derives the theorem in every
+dimension from dimension three for the graphs of small deficiency, is not
+yet formalized.
 From phase~6 on, the graph is written forward: a chapter's nodes and
 their edges come first, and the statement and proof sketch of a node not
 yet formalized are the plan for its Lean declaration. So the graph is
