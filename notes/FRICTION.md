@@ -5858,6 +5858,25 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Status:** mirrored.
 - **Mirror file:** `Mathlib/Data/Matrix/Mul.lean` (new mirror file).
 
+### [mirrored] `isRefl_dotProductBilin` / `nondegenerate_dotProductBilin` — the dot product is a reflexive nondegenerate bilinear form
+- **Where it bit:** Phase 42b, `def:pencil-d-realization` (`Pencil/Grade/Realization.lean`): the
+  orthogonal `Π^⊥` of a subspace of `K^n` is `dotPerp P := LinearMap.BilinForm.orthogonal
+  (dotProductBilin K K) P`, and `dotPerp_dotPerp` / `finrank_dotPerp` are mathlib's
+  `orthogonal_orthogonal` / `finrank_orthogonal`, which ask the form to be reflexive and
+  nondegenerate. Mathlib defines `dotProductBilin` but states neither (`lean_loogle`
+  `LinearMap.BilinForm.Nondegenerate, dotProductBilin`: none).
+- **Friction:** `(dotProductBilin K K : LinearMap.BilinForm K _).IsRefl` elaborates as
+  `LinearMap.IsRefl` (dot notation on the underlying `LinearMap` type), which does not unify with
+  the `LinearMap.BilinForm.IsRefl` (a `def`, not an `abbrev`) that `orthogonal_orthogonal` asks for,
+  nor does `LinearMap.BilinForm.IsRefl` feed `LinearMap.IsRefl.nondegenerate_iff_separatingLeft`;
+  write `LinearMap.BilinForm.IsRefl (…)` explicitly. `.Nondegenerate` is fine (`BilinForm`'s is an
+  `abbrev`). Also, in `hasPencilPlaneRealization_two_iff`, `simp [hq]` would not rewrite `point v`
+  inside `Module.finrank K ↥(K ∙ point v)` (TACTICS-QUIRKS § 112); `rw` did.
+- **Resolution:** mirrored over a `CommSemiring` and any `Fintype` index, each a three-line proof
+  (`dotProduct_comm`; the coordinate `x ⬝ᵥ Pi.single i 1 = x i`).
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/LinearAlgebra/Matrix/BilinearForm.lean` (new mirror file).
+
 ### [idiom] `(Set.ncard_le_ncard fun _ hw => hw.2).trans h` can't pin the two sets — state the inclusion as a typed `have`
 - **Where it bit:** RECONCILE round 3 task 38.9 (`Molecular/Molecule/Pencil/Reseed.lean`,
   `exists_pencilSeed_of_nondeg`), bounding `(G.closedHubNbhd v).ncard ≤ 3` at `v ∉ V(G)` through

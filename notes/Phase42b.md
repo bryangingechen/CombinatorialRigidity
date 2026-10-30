@@ -2,19 +2,30 @@
 
 **Status:** in progress, opened 2026-10-30 beside 42a (the PI's planning default, design doc §1,
 item 4), the Lean under `/coordinate-phase`. Forward mode: the dep-graph is
-`blueprint/src/chapter/pencil-d.tex`, 17 nodes, 8 green (the collineation lemma, the
-configuration, the scale-shift, the contraction's rank, the attaining definition and its `d = 3` agreement, `def:extensor-through-flat` and its point form), Lean in `Pencil/Grade/`. The carrier is the PI's (2026-10-30, design doc §1): the
+`blueprint/src/chapter/pencil-d.tex`, 17 nodes, 10 green (the collineation lemma, the
+configuration, the scale-shift, the contraction's rank, the attaining definition and its `d = 3` agreement, `def:extensor-through-flat` and its point form, `def:pencil-d-realization` and its `d = 3` agreement), Lean in `Pencil/Grade/`. The carrier is the PI's (2026-10-30, design doc §1): the
 dual form with each body's 3-space as data, as the chapter states. Next concrete task:
-`def:pencil-d-realization` (`HasPencilPlaneRealization`), whose leaf is now green; `lem:pencil-d-x0-one-witness` can interleave.
+`def:pencil-d-rank-hypothesis` (`HasGradedPencilRealization`); `lem:pencil-d-point-configuration` and `lem:pencil-d-x0-one-witness` can interleave.
 
 ## Current state
 
-**Next:** `def:pencil-d-realization` (planned `HasPencilPlaneRealization`), in `Grade/Realization.lean`
-beside `ExtensorThroughSubspace`; read its chapter statement first. `lem:pencil-d-x0-one-witness` (`Graph.x0AttainsGrade_of_exists`)
-can interleave; it uses `Graph.liftingSpaceGrade` below.
+**Next:** `def:pencil-d-rank-hypothesis` (planned `HasGradedPencilRealization`, grade `k`, `n` a
+parameter as in `HasPencilRealization`), in `Grade/Realization.lean`, instantiated in the same commit
+by the first equivalence of `lem:pencil-d-rank-agrees-three` (`hasGradedPencilRealization_two_iff`:
+`exists_hasPencilPlaneRealization_two_iff` at one framework, so at one rank). That node stays red,
+pinned to the landed name only, until its second equivalence (`def:pencil-d-distinct-motive`,
+through the polarity) lands. `lem:pencil-d-point-configuration` (uses `dotPerp_dotPerp`) and
+`lem:pencil-d-x0-one-witness` (`Graph.x0AttainsGrade_of_exists`, using `Graph.liftingSpaceGrade`)
+can interleave.
 
-**Landed:** `def:extensor-through-flat` and `lem:extensor-through-flat-point` (`Grade/Realization.lean`,
-importing `Pencil/Statement.lean`): `ExtensorThroughSubspace C A` is `ExtensorThroughPoint` with
+**Landed:** `def:pencil-d-realization` and `lem:pencil-d-agrees-three` (`Grade/Realization.lean`):
+`HasPencilPlaneRealization G F normal plane` (`plane : α → Submodule K (Fin (k + 2) → K)`, asked
+on `V(G)`), `dotPerp` with `mem_dotPerp`, `dotPerp_dotPerp`, `finrank_dotPerp` and
+`exists_eq_dotPerp_span_singleton`; `hasPencilPlaneRealization_two_iff` (pointwise, `hplane : ∀ v ∈
+V(G), plane v = dotPerp (K ∙ point v)`, no `point v ≠ 0` needed) and the `∃ plane ↔ ∃ point` form;
+`exists_hasPencilPlaneRealization_one_iff` (grade `1` is hinge-coplanarity, pinned on the def).
+`def:extensor-through-flat` and `lem:extensor-through-flat-point` (`Grade/Realization.lean`):
+`ExtensorThroughSubspace C A` is `ExtensorThroughPoint` with
 `A ≤ span (range p)`, and `extensorThroughSubspace_span_singleton_iff` is `span_singleton_le_iff_mem`;
 the zero element is not excluded (a dependent family has extensor `0`), so the hinge is asked
 nonzero separately. The open (the chapter, its nodes red with planned names; the carrier check, design doc
@@ -46,6 +57,11 @@ were lifted to file level in `Grade/Carrier.lean` (scale-shift re-proved on them
   adjacent-distinct case (`lem:pencil-d-point-configuration`). Why not the one-line encoding:
   design doc §2.3 CARRIER. **PI, 2026-10-30:** "(a) 3-space as data (Rec.)" (the question and
   the options as put: design doc §1).
+- **`Π^⊥` (2026-10-30):** `dotPerp P := LinearMap.BilinForm.orthogonal (dotProductBilin K K) P`
+  on `Fin n → K`; `mem_dotPerp` is the chapter's `x ⬝ᵥ y = 0` for all `y ∈ P`. Chosen over
+  `Meet.lean`'s `⨅ ker toDual.flip` / `dualAnnihilator.comap` form because `(P^⊥)^⊥ = P` and
+  `dim P^⊥ = n − dim P` are then mathlib's `orthogonal_orthogonal` / `finrank_orthogonal`, given the
+  mirrored reflexivity and nondegeneracy (`Mathlib/LinearAlgebra/Matrix/BilinearForm.lean`).
 - **The configuration, by its number of heights (2026-10-30):** `pencilConfigPointGrade q z w :
   Fin (m + 1 + 2) → K`, `z : α × Fin m → K` uncurried (as pictures and rank-polynomial variables
   are), `m = d − 2`, at grade `k = m + 1`: `vecCons x (vecCons y (Fin.snoc z 1))`. It fits the
@@ -69,11 +85,13 @@ may refine a name, and the pin lands with the Lean.
 
 - [x] `def:extensor-through-flat` — `ExtensorThroughSubspace`
 - [x] `lem:extensor-through-flat-point` — `extensorThroughSubspace_span_singleton_iff`
-- [ ] `def:pencil-d-realization` — `HasPencilPlaneRealization` (**next**)
-- [ ] `lem:pencil-d-agrees-three` — `hasPencilPlaneRealization_two_iff`
+- [x] `def:pencil-d-realization` — `HasPencilPlaneRealization`, `dotPerp`,
+  `exists_hasPencilPlaneRealization_one_iff`
+- [x] `lem:pencil-d-agrees-three` — `hasPencilPlaneRealization_two_iff`,
+  `exists_hasPencilPlaneRealization_two_iff`
 - [ ] `lem:pencil-d-point-configuration` — `PanelHingeFramework.hasPencilPlaneRealization_ofNormals`,
   `HasPencilPlaneRealization.supportExtensor_eq_smul_panelSupportExtensor`
-- [ ] `def:pencil-d-rank-hypothesis` — `HasGradedPencilRealization`
+- [ ] `def:pencil-d-rank-hypothesis` — `HasGradedPencilRealization` (**next**)
 - [ ] `def:pencil-d-distinct-motive` — `HasGradedDistinctPencilRealization`
 - [ ] `lem:pencil-d-rank-agrees-three` — `hasGradedPencilRealization_two_iff`,
   `hasGradedDistinctPencilRealization_two_iff`
@@ -100,18 +118,25 @@ may refine a name, and the pin lands with the Lean.
 
 ## Blockers / open questions
 
-- None for 42b. The carrier is settled (the PI, 2026-10-30, *Architectural choices*), so the
-  realization nodes are open to build; the leaf `def:extensor-through-flat` is green.
+- None for 42b. The carrier is settled (the PI, 2026-10-30, *Architectural choices*) and built:
+  `def:pencil-d-realization` is green, so the rest of the realization chain is open.
 
 ## Hand-off / next phase
 
-The next commit is `def:pencil-d-realization` (*Current state*), with its `\lean` and `\leanok`;
+The next commit is `def:pencil-d-rank-hypothesis` with the first equivalence of
+`lem:pencil-d-rank-agrees-three` (*Current state*); `lem:pencil-d-point-configuration` and
 `lem:pencil-d-x0-one-witness` can interleave. Optional, any time: the `k = 2` form
 `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv` is the new lemma at
 `k := 2` verbatim, so it could be re-proved from it once `Configuration.lean` imports
 `Grade/Collineation.lean` (not done: the commits stay additive).
 
 ## Decisions made during this phase
+
+- **The realization (2026-10-30):** `plane` is `Submodule`-valued data, asked about only on `V(G)`
+  (as `point` is). The `d = 3` agreement is stated pointwise under `plane v = dotPerp (K ∙ point v)`
+  on `V(G)`, with no `point v ≠ 0` (both sides force it: `finrank (q^⊥) = 3 ↔ q ≠ 0`), plus the
+  `∃ plane ↔ ∃ point` form `lem:pencil-d-rank-agrees-three` will use; the chapter statement gained
+  that sentence. The grade-`1` sanity lemma is pinned on the def beside the `d = 2` remark.
 
 - **The configuration (2026-10-30):** `Pencil/Grade/Carrier.lean`, importing only
   `MainComponent/Carrier.lean`; the encoding is *Architectural choices*. A `lake lean` witness at

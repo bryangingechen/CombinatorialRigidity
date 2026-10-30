@@ -70,6 +70,10 @@ $x$ with $x \cdot y = 0$ for every $y \in \Pi$.
 
 \begin{definition}[Pencil realization in every dimension]
   \label{def:pencil-d-realization}
+  \lean{CombinatorialRigidity.Molecular.HasPencilPlaneRealization,
+        CombinatorialRigidity.Molecular.dotPerp,
+        CombinatorialRigidity.Molecular.exists_hasPencilPlaneRealization_one_iff}
+  \leanok
   \uses{def:coplanar-panel-realization, def:extensor-through-flat}
   A \emph{pencil realization} of a multigraph $G$ in dimension $d$ is a
   hinge-coplanar panel realization of $G$ in $\bigwedge^{d-1} K^{d+1}$
@@ -83,7 +87,9 @@ $x$ with $x \cdot y = 0$ for every $y \in \Pi$.
 The subspace $\Pi_v^{\perp}$ has dimension $d - 2$ and lies in the
 hyperplane $b_v^{\perp}$: it is a $(d-3)$-flat of the panel of $v$, and
 every hinge at $v$ contains it. At $d = 3$ it is spanned by one point,
-through which the hinges at $v$ pass.
+through which the hinges at $v$ pass. At $d = 2$ it is zero, as $\Pi_v$
+is all of $K^3$, so the pencil realizations in dimension two are the
+hinge-coplanar panel realizations, with $\Pi_v = K^3$ at each body.
 
 The subspaces $\Pi_v$ are part of the data. At a link whose two normals
 are independent, the hinge is determined by them up to scale, and the
@@ -115,6 +121,9 @@ realization, though their hinges do not form a pencil.
 
 \begin{lemma}[Pencil realizations in dimension three]
   \label{lem:pencil-d-agrees-three}
+  \lean{CombinatorialRigidity.Molecular.hasPencilPlaneRealization_two_iff,
+        CombinatorialRigidity.Molecular.exists_hasPencilPlaneRealization_two_iff}
+  \leanok
   \uses{def:pencil-d-realization, def:pencil-panel-realization,
         lem:extensor-through-flat-point}
   Let $d = 3$, and let $q_v \in K^4$ be nonzero with
@@ -123,9 +132,13 @@ realization, though their hinges do not form a pencil.
   dimension three with the subspaces $\Pi_v$
   (\cref{def:pencil-d-realization}) exactly when it is a pencil
   realization with normals $b$ and points $q$
-  (\cref{def:pencil-panel-realization}).
+  (\cref{def:pencil-panel-realization}). As every three-dimensional
+  subspace of $K^4$ is $q^{\perp}$ for a nonzero $q$, it is a pencil
+  realization in dimension three for some subspaces exactly when it is a
+  pencil realization with normals $b$ for some points.
 \end{lemma}
 \begin{proof}
+  \leanok
   As the dot product of $K^4$ is nondegenerate, $\Pi_v^{\perp}$ is the
   span of $q_v$. So passing through $\Pi_v^{\perp}$ is passing through
   $q_v$ (\cref{lem:extensor-through-flat-point}), and $b_v \in \Pi_v$ is
