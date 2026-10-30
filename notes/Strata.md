@@ -171,18 +171,24 @@ in every `Pᵈ` (Results 12–19), which PENCIL-D sets out to prove.
     keeps Result 1's cycle term `rank{g_e ⊗ C_e}`, since `Λ²` of it is injective. So a `P^{d′}`
     configuration of rank `D_{d′}(n−1) − def_{D_{d′}}` maps to one of rank
     `D_d(n−1) − def_{D_{d′}}`, the `Pᵈ` target iff `def_{D_{d′}} = def_{D_d}`. By Result 16 this
-    holds when `d′ ≥ 2 + def_3(G)`. So for each `G` only `3 ≤ d ≤ 2 + def_3(G)` needs a proof,
-    and the top case implies every `d` above it. Jackson–Jordán's equality is not used.
-16. `[PROVED]` **The deficiency lemma.** With `t = def_3(G)` and `ℓ = 3 + t`,
-    `def_{C(ℓ,2)}(G) = def_∞(G)`, so `def_D = def_∞` for every `D ≥ C(ℓ,2)`. A partition with
-    `c(P) ≥ 1`, positive at `D′ = C(ℓ,2)`, has `|P| − 1 > (D′−1)c`, so
-    `t ≥ |P| − 1 − 2c > (D′−3)c ≥ C(t+3, 2) − 3 = (t² + 5t)/2`, impossible for `t ≥ 0`. So only
-    tree quotients count, and they give `def_∞` at every `D`. Asserted by `--pd` on all 38 graphs
-    of the `--d4` population, multigraphs included.
+    holds when `def_3(G) + 3 ≤ D_{d′}`. So for each `G` only `3 ≤ d ≤ d*` needs a proof, where `d*`
+    is the least `d′` with `D_{d′} ≥ def_3(G) + 3`, and the case `d*` implies every `d` above it
+    (the old threshold `2 + def_3` was the special case of Result 16's old form). Jackson–Jordán's
+    equality is not used.
+16. `[PROVED]` **The deficiency lemma (sharp form).** For a **connected** `G` with `t = def_3(G)`,
+    `def_{D′}(G) = def_D(G)` whenever `t + 3 ≤ D′ ≤ D`. A partition `P` whose quotient has cycle
+    rank `c ≥ 1` has value at `D` at most `t − (D − 3)c ≤ t − (D′ − 3) ≤ 0`, so it never beats
+    the trivial partition; a tree quotient has value `|P| − 1` at every `D`. It is tight on cycles
+    (`C₇`: `def_3 = 4`, `def_6 = 1`, `def_10 = 0`), and connectivity is needed (two bodies and no
+    edge have `def_D = D`). In particular, with `ℓ = 3 + t`, `def_{C(ℓ,2)}(G) = def_∞(G)`, so
+    `def_D = def_∞` for every `D ≥ C(ℓ,2)`: the old form, whose proof bounded `t ≥ |P| − 1 − 2c >
+    (D′−3)c ≥ C(t+3, 2) − 3 = (t² + 5t)/2`, impossible for `t ≥ 0`. `--pd` asserted the old form on
+    all 38 graphs of the `--d4` population, multigraphs included (a record of what it asserted).
+    Formalized in Phase 42c as `Graph.Connected.deficiency_eq_of_deficiency_two_add_three_le`.
 17. `[PROVED-MOD Phase 40]` **Corollary: the `Pᵈ` pencil theorem for every `d` when
-    `def_3(G) ≤ 1`.** For `G` under the main component's standing hypotheses
+    `def_3(G) ≤ 3`.** For `G` under the main component's standing hypotheses
     (`def:pencil-x0-standing`): at `def_3 = 0` embed the planar theorem's witness (`d′ = 2`,
-    Phase 40a); at `def_3 = 1` embed Phase 40's (`d′ = 3`). Then Results 15–16 apply. This is the
+    Phase 40a); at `1 ≤ def_3 ≤ 3` embed Phase 40's (`d′ = 3`, `D′ = 6 ≥ def_3 + 3`; the first widening of the old `def_3 ≤ 1`, by the sharp Result 16). Then Results 15–16 apply. The content range at `d` (graphs not settled from `P^{d−1}`) is `def_3 ≥ C(d,2) − 2` (`≥ 4` at `d = 4`, `≥ 8` at `d = 5`), and a `P⁴` theorem gives every `d` at `def_3 ≤ 7`. This is the
     first `Pᵈ` statement in reach of the existing formal proofs (PD-STABLE).
 18. `[PROVED-MOD Jackson–Jordán's equality]` **The universal configuration: stabilization in
     `d`.** Every coordinate of a configuration of Result 13 lies in `L(q)`, of dimension
@@ -215,7 +221,7 @@ in every `Pᵈ` (Results 12–19), which PENCIL-D sets out to prove.
     basis `P_i ∧ P_j`; at odd `d` one of `K_{d+1}` minus a perfect matching, with a detour through
     `P_j + P_k − P_i` per matching edge `ij` (checked at `d = 3, 5`).
 22. `[MEASURED]` **The content range where the `P³` proof breaks** (Phase 42a; `--content`, seeds
-    1–3). All 38 cells with `4 ≤ d ≤ 2 + def_3`, on 15 graphs, reach their target. `θ(2, 2, k)` for
+    1–3). All 38 cells with `4 ≤ d ≤ 2 + def_3`, on 15 graphs (drawn on the old, wider range `def_3 ≥ d − 2`, a superset of the content range of Result 17 at every `d ≥ 3`), reach their target. `θ(2, 2, k)` for
     `k = 4..10` has row 14's one-body ear with ends sharing a neighbour (`def_3 = k − 2` under the
     cap). `θ(2, 2, 2, k)` for `k = 5..10` has two hubs with three common neighbours
     (`def_3 = k − 3`). The diamond rings at `m = 6, 7` (`n = 24, 28`) carry a condition at every

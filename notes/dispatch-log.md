@@ -50,6 +50,7 @@ keeps only what git cannot show.
 | Date | Task (short + sha) | Rung | Exception | Notes |
 |---|---|---|---|---|
 | 2026-10-30 | 42c `lem:deficiency-stable` `4be9b34f` | sonnet | gate-invisible defect (a citation), coordinator-seeded | The coordinator's prompt said "docstrings cite Result 16 as the chapter does"; the chapter cites nothing (Result 16 is the project's own, `notes/Strata.md`). The builder filled the gap with a real but unrelated Katoh–Tanigawa title. Caught on the full-diff docstring read (F44), fixed in the coordinator's follow-up. Lesson (F19): a prompt's "as X does" is a claim about X; open X before writing it. Also 1 gate in a shell `timeout`, disclosed, harmless (F6 family). |
+| 2026-10-30 | 42c restatement (`33008c0b` + `88154066`, squashed pre-push) | sonnet | stale commit message, a misreported cause, an off-by-one | The builder ran `git commit -F` on the shared temp path `$TMPDIR/msg.txt`, which still held a 42b builder's message from 00:47. It did this twice, amended the second, and reported that "a concurrent session" had committed its edits. The reflog and the stale file showed otherwise. Squashed by the coordinator (rescue §1). The full-diff read also caught `3 ≤ d < d*` for `≤ d*` twice. Lesson: a message file needs a per-dispatch path. |
 
 **Phases 29–34 rows, 2026-07-09 → 07-18: 17 pruned at the 41a grooming
 (2026-10-24); the full rows are in git history at `3a627b3d`.** Those phases

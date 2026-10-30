@@ -1279,7 +1279,7 @@ Phase 39's reduction, and the headline. PD-RECON's step table finds most of Phas
 and Phase 39's reduction dimension-general, given routine or formal work. The short ears, the
 one-body and orbit ears and the generic statement's route B fail as written: in `P³` two bodies'
 planes always share a line, in `Pᵈ` they need not. The steps break at `d = 4` and `d = 5`, and the
-conjecture's new content at `d` is the sparse graphs with `def_3 ≥ d − 2`. Five test modes then
+conjecture's new content at `d` is the sparse graphs with `def_3 ≥ C(d,2) − 2`. Five test modes then
 measured where the proof breaks. Every graph built there reaches the generic rank, so the
 obstruction is the proof's, not the statement's. The short ears' obstruction never occurred, and
 a construction confines their new mathematics to 3–5 interior bodies at `d = 4` (SHORT-CORE). The
@@ -1299,10 +1299,10 @@ new section of `pencil-d.tex` embeds a pencil realization of a lower dimension, 
 gains, proves that the deficiency of a connected graph stops changing in the dimension, and
 derives every `Pᵈ` at `def_3 ≤ 3` from Phase 40. Its open found the deficiency lemma needs a
 connected graph, and that its proof gives a sharper range, `def_3 + 3 ≤ D`, which the PI took to
-widen the corollary from `def_3 ≤ 1` to `def_3 ≤ 3`. SHORT-CORE's attack track waits for the PI's
-reading of its brief.
-The targets are three tiers: every `d` at `def_3 ≤ 3`, a `P⁴` theorem (its reach under the sharp
-lemma is open with the PI, `notes/Phase42c.md` *Blockers*), and every `d`.
+widen the corollary from `def_3 ≤ 1` to `def_3 ≤ 3`. SHORT-CORE's attack track is running, on branch
+`attack-short-core`.
+The targets are three tiers: every `d` at `def_3 ≤ 3`, a `P⁴` theorem (every `d` at `def_3 ≤ 7`, by
+the sharp lemma), and every `d`.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 

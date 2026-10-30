@@ -98,12 +98,7 @@ may refine a name, and the pin lands with the Lean.
 
 ## Blockers / open questions
 
-- **(b), for the PI, relayed to the SHORT-CORE attack track (not blocking):** the sharp deficiency
-  range `def[3] + 3 ≤ D′` (tight on cycles: `C₇` has `def[3] = 4`, `def[6] = 1`, `def[10] = 0`)
-  also moves design doc §2.5's content range and §1's tiers, which rest on Result 16's form: `G`
-  attains at `d` from `P^{d−1}` once `def[3] + 3 ≤ D_{d−1}`, so the content at `d = 4` starts at
-  `def[3] ≥ 4` (not `≥ 2`), and a `P⁴` theorem gives every `d` at `def[3] ≤ 7` (not `≤ 2`). These
-  are 42a's notes, which that attack track's worktree keeps its own copies of; untouched here.
+- **(b) resolved (2026-10-30):** the surfaces resting on Result 16's old form are restated (Strata Results 15–17 and 22, design doc §1/§2.5/§3/§4, ROADMAP §42): content range `def_3 ≥ C(d,2) − 2`, Tier 1 reach `def_3 ≤ 7`. SHORT-CORE's review 2 (workbook S50, branch `attack-short-core`, commit `38f41bf9`, not on master): its scope is unchanged at `d = 4` and `def_3 ≥ 2d − 3` at every danger cell. `strata.py`'s filters keep the old, wider range.
 
 ## Hand-off / next phase
 
@@ -123,7 +118,7 @@ is one commit or two once `pencilConfigPointGrade_padHeights` is laid out); then
 - **Statement corrections at the open** (transcriptions, for the pre-build guard): (1) item 2
   needs `G` connected: two bodies and no edge have `def_n = bodyBarDim n`, so `def[3] = 3`,
   `d′ = 5`, yet `def[15] = 15 ≠ 21 = def[21]` (the coordinator's, by hand; `lake lean` witness);
-  (2) item 2 states the sharp range, §3's form its "in particular" (*Blockers*); (3) the
+  (2) item 2 states the sharp range, §3's form its "in particular" (Strata Result 16); (3) the
   configuration form at `2 ≤ d′`, not `3 ≤ d′` (no step uses a height); (4) the statement form
   carries the adjacent-distinct case; (5) item 3 split, `lem:pencil-d-x0-attains-distinct` (the
   every-`d` form of `lem:pencil-x0-attains-distinct`) its own node, on `thm:pencil-x0-coverage`.

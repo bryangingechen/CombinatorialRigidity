@@ -2,17 +2,17 @@
 
 **Status:** opened 2026-10-29 with the PI, sub-lettered, research first. **42a** (PD-RECON,
 `notes/Phase42a.md`) is open: the step table (§2.1), the thresholds `d = 4, 5` and the content
-`def[3] ≥ d − 2` (§2.5), T1–T5 (§2.4) and ONE-CLASS's lemma (§2.3, Result 27) have landed, so
+`def[3] ≥ C(d,2) − 2` (§2.5; T1–T5 drew on the old, wider `def[3] ≥ d − 2`), T1–T5 (§2.4) and ONE-CLASS's lemma (§2.3, Result 27) have landed, so
 **the coverage at `d ≥ 4` needs SHORT-CORE and no ONE-EAR**; ONE-EAR waits for GENERIC. The route
 is the PI's (§1): R2's steps, Result 15's embedding as the base row, any induction on `d` left to
-Tier 2. SHORT-CORE's attack brief awaits the PI's reading. **42b** (PD-STATE,
+Tier 2. SHORT-CORE's attack track is running, on branch `attack-short-core`. **42b** (PD-STATE,
 `notes/Phase42b.md`) ran beside it and **closed 2026-10-30**: the statement layer in `Pᵈ`, its
 chapter `blueprint/src/chapter/pencil-d.tex` formalized (17 nodes), on the carrier the PI took
 (§1, option (a); §2.3 CARRIER). **42c** (PD-STABLE, `notes/Phase42c.md`) opened the same day at
 the PI's word (§1): the embedding, the deficiency lemma and `Pᵈ` at `def[3] ≤ 3`, a new section of
 `pencil-d.tex`, red. Its open found a sharper deficiency range, and the PI widened Tier 0 to
 `def[3] ≤ 3` (§1). SHORT-CORE's attack
-track is the PI's to start. Evidence: `notes/Strata.md`, Results 12–27.
+track is running on branch `attack-short-core`. Evidence: `notes/Strata.md`, Results 12–27.
 
 This file is the phase's entry point: the target (§0), the PI's decisions (§1), the recon (§2),
 the layers by stable code (§3) and the open questions (§4). Letters are minted when a sub-phase
@@ -71,6 +71,10 @@ fibre-intersection lemma and Jackson–Jordán's equality.
 
   The order put: T1, T2 and the content-range graphs; then T3 and T4 at `d = 4, 5` on the content
   range, sizing SHORT and ONE-EAR; then attack tracks, with PD-STATE and PD-STABLE in parallel.
+
+  *Note, 2026-10-30 (not the PI's text):* by the sharp Result 16 (`notes/Strata.md`), Tier 1's `P⁴`
+  theorem reaches every `d` at `def[3] ≤ 7`, not `≤ 2`, and Tier 0 is `def[3] ≤ 3` (the PI's
+  2026-10-30 entry below). The content range is `def[3] ≥ C(d,2) − 2`.
 - **PI, 2026-10-29 (after T5), the research call of §4:** "ONE-CLASS first (Recommended)". The
   options put: ONE-CLASS's lemma first, on deficiencies alone and checkable exactly against T5's
   population, its size unknown; ONE-EAR's attack at `d = 5` (the motive, a `Pᵈ` insertion lemma,
@@ -118,7 +122,7 @@ fibre-intersection lemma and Jackson–Jordán's equality.
   in a hyperplane, and adds one height in `L(q)`. Phase 40 is the step `2 → 3` from the flat base.
 - **(R2) Direct.** Phase 40's induction, run once with `d − 2` heights.
 
-Either way, Result 15 limits the work for each graph to `d ≤ 2 + def_3(G)`.
+Either way, Result 15 (by the sharp Result 16) limits the work for each graph to `3 ≤ d ≤ d*`, `d*` the least `d′` with `D_{d′} ≥ def_3(G) + 3`.
 
 ### 2.1 The step table (2026-10-29)
 
@@ -347,7 +351,7 @@ Result 17's `def[3] ≤ 1` one step further.
   the seeded point (the driver checks both, exactly, and lists the cell), so the bound holds on a dense subset of the locus.
   **Second half run** (`Strata.md` Result 25; `--orbit`, seeds 1–3, the rows seed-independent).
   The orbit cells: open ears with `k = 1, 2` interior bodies at non-adjacent ends and
-  `def[D](G[V₁]) > def[D](G)`, where row 12 does not apply, on the content range at `d = 3..6`.
+  `def[D](G[V₁]) > def[D](G)`, where row 12 does not apply, on the content range at `d = 3..6` (the old range `def[3] ≥ d − 2`; ibid.).
   The population is T3's six families, `n ≤ 40`, every deficiency certified, M certified per cell.
   - `k = 1`: 46 cells, Result 23's two `d = 4` cells among them, all with M. `G[V₁]` attains on
     the locus at every one, `d = 6` included, and `(⋆)` holds: `dim(ρ + Λ) = min(dim ρ + 2, D)`,
@@ -396,7 +400,7 @@ Result 17's `def[3] ≤ 1` one step further.
     every chain one-body, and no core.
   - **Measured.** The population is subdivisions of ten cores of minimum degree 3 (`θ₃`, `θ₄`,
     two small multigraphs, `K₄`, `W₄`, the prism, `K₃,₃`, the cube, Petersen), each core edge a
-    path of 1–4 edges, simple, sparse and in the content range. That is every length vector up to
+    path of 1–4 edges, simple, sparse and in the old content range `def[3] ≥ d − 2`. That is every length vector up to
     isomorphism on the five smallest cores and 60 drawn on the others: 1077, 1059, 1021 and 957
     cells at `d = 3..6`. At `d = 4, 5, 6` every cell has a GEN row, so no cell needs SHORT-CORE or
     ONE-EAR. A core is present at every one, and is the only GEN row at 20, 9 and 6. So the cover
@@ -437,17 +441,18 @@ free in `P³` become conditions. That gives two kinds of threshold:
   point `Π_a ∩ Π_b`, which is gone at `d ≥ 5`. T4 (`d = 5, 6`) asks whether 5 is the last
   threshold. Rows 13, 15 and 22 are where Phase 40 found new mathematics at `d = 3` (SHORT, ORBIT
   and route B; ROADMAP §40).
-- **The graph's threshold, `2 + def[3](G)`.** Inside the outer induction on `d` (§2.2), `G` attains
-  at `d` from `P^{d−1}` whenever `def[3](G) ≤ d − 3`. Then `D_{d−1} = C(d, 2) ≥ C(3 + def[3], 2)`, and
-  Result 16 makes `def[D_{d−1}] = def[D_d] = def_∞`. So the work at `d` is the graphs with
-  `def[3](G) ≥ d − 2`. That class is nonempty at every `d`, so no fixed `d` suffices; a `P⁴` theorem
-  gives every `d` at `def[3] ≤ 2`. Such a `G` has a partition with
+- **The graph's threshold, the least `d′` with `D_{d′} ≥ def[3](G) + 3`** (the first form was `2 + def[3](G)`; the sharp lemma's, §3 item 2). Inside the outer induction on `d` (§2.2), `G` attains
+  at `d` from `P^{d−1}` whenever `def[3](G) + 3 ≤ D_{d−1} = C(d, 2)`. Then
+  the sharp Result 16 makes `def[D_{d−1}] = def[D_d] = def_∞`. So the work at `d` is the graphs with
+  `def[3](G) ≥ C(d,2) − 2` (≥ 4 at `d = 4`, ≥ 8 at `d = 5`). That class is nonempty at every `d`, so no
+  fixed `d` suffices; a `P⁴` theorem gives every `d` at `def[3] ≤ 7`. (This was first written as
+  `def[3] ≥ d − 2`, a superset at every `d ≥ 3`; the figures below were drawn on it.) Such a `G` has a partition with
   `e(P) ≤ (3|P| − 3 − def[3])/2`, a quotient of average degree below 3 and rich in ears, which is
   where rows 13–15 sit.
 
 **The evidence where the conjecture has content**, read off `strata.py --pd --seed 1`. Of the 36
 simple capped graphs, 24 have `def[3] ≤ 1` and are settled at every `d` by Result 17. The cells at
-`d ≥ 4` with `def[3] ≥ d − 2` are 47, on 18 graphs (12 capped, 6 past the cap). Result 19's 41
+`d ≥ 4` with `def[3] ≥ d − 2` (the old, wider range) are 47, on 18 graphs (12 capped, 6 past the cap). Result 19's 41
 leaves out each graph's top cell, `d = 2 + def[3]`, which also carries content.
 - **Six are cycles.** Every body has degree 2, so the pencil condition is empty (three points span
   a plane), and these cells are KT's case.
@@ -475,7 +480,7 @@ leaves out each graph's top cell, `d = 2 + def[3]`, which also carries content.
   - D's candidate witness (§2.3, GENERIC).
 
   A shortfall redirects the phase. A match is the first evidence where the failing rows bite.
-- **Run T3–T5 at each `d` only on graphs with `def[3] ≥ d − 2`**, and run T3 at `d = 5` as well.
+- **Run T3–T5 at each `d` only on graphs with `def[3] ≥ d − 2`** (the instruction as run, on the old, wider range; the content range is now `def[3] ≥ C(d,2) − 2`, T3's cells all lie in it, and T4's and T5's "content range" counts include graphs the embedding now settles), and run T3 at `d = 5` as well.
 - **Attack each obligation at its own threshold:** SHORT at `d = 4`, ONE-EAR at `d = 5`, each
   checked one dimension up. `d = 4` stays the first milestone (every `d` at `def[3] ≤ 2`), but its
   ONE-EAR case must not lean on `Π_a ∩ Π_b ≠ 0`. (Since Result 27 the coverage needs no ONE-EAR,
@@ -514,7 +519,7 @@ leaves out each graph's top cell, `d = 2 + def[3]`, which also carries content.
      `Graph.X0AttainsGrade.of_le`). Its `d′ = 3` case is the form PD-COVERAGE consumes,
      `def[6](G) = def[D](G)`, and settles ONE-CLASS (Result 27); its `d′ = 4` case takes Tier 1
      to every `d`.
-  2. *The deficiency lemma* (Result 16): if `2 + def[3](G) ≤ d′ ≤ d`, then
+  2. *The deficiency lemma* (Result 16, sharp form; first posed as `2 + def[3](G) ≤ d′`): if `def[3](G) + 3 ≤ D_{d′}` and `d′ ≤ d`, then
      `def[D_{d′}](G) = def[D_d](G)`. Proof: a partition with cycle rank `c ≥ 1` positive at
      `D′ = D_{d′}` has `|P| − 1 > (D′ − 1)c`, so `def[3] ≥ |P| − 1 − 2c > (D′ − 3)c ≥ D′ − 3`,
      against `D′ ≥ C(def[3] + 3, 2)`; so above `D′` only tree quotients count, at a value free of
@@ -560,7 +565,9 @@ unless a finding argues otherwise:
 - `d = 4` first, as Tier 1 of three. SHORT is attacked at `d = 4` and ONE-EAR at `d = 5`, as
   attack tracks once T3 and T4 size them (§2.5). Both have: SHORT's attack is SHORT-CORE, `k = 3,
   4, 5` at `d = 4`. ONE-EAR (the motive, the insertion and X2 at `d = 5`) has left the coverage
-  (Result 27, §2.3), so it waits for GENERIC.
+  (Result 27, §2.3), so it waits for GENERIC. SHORT-CORE's scope does not shrink at `d = 4`: its
+  targets never occur at `def[3] ≤ 3`, and at every danger cell `def_3(G) ≥ 2d − 3` (SHORT-CORE's
+  review 2, workbook S50, branch `attack-short-core`, commit `38f41bf9`, not on master).
 - The headline ships the bare and distinct conjuncts first, GENERIC after (row 22). Nondegeneracy
   enters `PencilPair` only in the generic conjunct (`Pencil/Motive.lean`), so with row 22's reading
   its `Pᵈ` lift is deferred with it.
@@ -571,11 +578,9 @@ unless a finding argues otherwise:
 
 Settled by the PI (§1): the route. R2's steps with Result 15's embedding as the base row; an outer
 induction on `d` is Tier 2's question, entering if at all through CERT's open ears at `d ≥ 7`.
-The carrier: each body's 3-space as data (§2.3 CARRIER, option (a)). Open for the PI: the reading
-of SHORT-CORE's DRAFT brief; and, from 42c's open, the sharp deficiency range `def[3] + 3 ≤ D′`
-(tight on cycles): (a) settled by the PI (§1), Tier 0 widened to `def[3] ≤ 3`; (b) its shrinking of
-§2.5's content range and Tier 1's reach is the PI's, relayed to SHORT-CORE's attack track
-(`notes/Phase42c.md` *Blockers*).
+The carrier: each body's 3-space as data (§2.3 CARRIER, option (a)). Nothing is open for the PI here: SHORT-CORE's attack track is running, and the sharp deficiency range
+`def[3] + 3 ≤ D′` (tight on cycles) is settled: Tier 0 widened to `def[3] ≤ 3` (§1), §2.5's content range
+restated `def[3] ≥ C(d,2) − 2` and Tier 1's reach `def[3] ≤ 7` (the dated note under §1's planning entry).
 
 Settled by the table: Phase 39's reduction is `d`-general for the bare and distinct conjuncts,
 given CARRIER (row 19). Settled by the PI's call (§1) and Result 27: ONE-CLASS, not ONE-EAR. Its
