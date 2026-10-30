@@ -46,6 +46,8 @@ $x$ with $x \cdot y = 0$ for every $y \in \Pi$.
 
 \begin{definition}[Extensor through a subspace]
   \label{def:extensor-through-flat}
+  \lean{CombinatorialRigidity.Molecular.ExtensorThroughSubspace}
+  \leanok
   \uses{def:screw-space, def:extensor}
   A screw element $C \in \bigwedge^{k} K^{k+2}$ \emph{passes through} a
   subspace $A$ of $K^{k+2}$ when $C$ is the extensor of $k$ vectors of
@@ -54,12 +56,15 @@ $x$ with $x \cdot y = 0$ for every $y \in \Pi$.
 
 \begin{lemma}[Through the span of one vector]
   \label{lem:extensor-through-flat-point}
+  \lean{CombinatorialRigidity.Molecular.extensorThroughSubspace_span_singleton_iff}
+  \leanok
   \uses{def:extensor-through-flat, def:extensor-through-point}
   A screw element passes through the span of a vector $q$
   (\cref{def:extensor-through-flat}) exactly when it passes through the
   point $q$ (\cref{def:extensor-through-point}).
 \end{lemma}
 \begin{proof}
+  \leanok
   A subspace contains the span of $q$ exactly when it contains $q$.
 \end{proof}
 
