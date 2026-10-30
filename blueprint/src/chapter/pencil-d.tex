@@ -600,6 +600,10 @@ $\operatorname{def}_2(G) \le 3$.
 
 \begin{lemma}[An injective map of screw spaces adds to the rank]
   \label{lem:screw-embedding-rank}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.map,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_span_rigidityRows_map_injective,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_infinitesimalMotions_map_injective}
+  \leanok
   \uses{def:hinge-constraint, def:rigidity-matrix}
   Let $d' \le d$, let $\varphi$ be an injective linear map of
   $\bigwedge^{d'-1} K^{d'+1}$ into $\bigwedge^{d-1} K^{d+1}$, and let
@@ -614,17 +618,30 @@ $\operatorname{def}_2(G) \le 3$.
   where $D' = \binom{d'+1}{2}$ and $D = \binom{d+1}{2}$.
 \end{lemma}
 \begin{proof}
-  Let $T$ be a complement of the image of $\varphi$, of dimension
-  $D - D'$, and write a screw assignment of $(G, \varphi p)$ as
-  $\varphi \circ S + S_T$ with $S_T$ valued in $T$. At an edge $e$ with
-  ends $u$ and $v$, the hinge constraint asks the difference of the
-  values at $u$ and $v$ to lie in the span of $\varphi\, C(p(e))$,
-  which lies in the image of $\varphi$. As $\varphi$ is injective, it
-  holds exactly when $S_T(u) = S_T(v)$ and $S$ satisfies the hinge
-  constraint of $(G, p)$ at $e$. As $G$ is connected, $S_T$ is constant
-  on $V(G)$. So $\dim Z(G, \varphi p) = \dim Z(G, p) + (D - D')$
-  (\cref{def:rigidity-matrix}), and the ranks are
-  $D|V(G)| - \dim Z(G, \varphi p)$ and $D'|V(G)| - \dim Z(G, p)$.
+  \leanok
+  Let $B \supseteq V(G)$ be the set of bodies and $m = |B \setminus V(G)|$.
+  Write $\varphi S$ for the screw assignment $u \mapsto \varphi(S(u))$,
+  and let $Z_0$ and $Z_0'$ be the screw assignments in dimensions $d$ and
+  $d'$ that take the same value at the two ends of every edge. As $G$ is
+  connected, these are the assignments constant on $V(G)$, so
+  $\dim Z_0 = D(1 + m)$ and $\dim Z_0' = D'(1 + m)$. As $\varphi$ is
+  injective, $\varphi(x)$ lies in the span of $\varphi\, C(p(e))$
+  exactly when $x$ lies in the span of $C(p(e))$. So $\varphi Z(G, p)$
+  and $Z_0$ lie in $Z(G, \varphi p)$. Conversely, let
+  $S \in Z(G, \varphi p)$ and $v_0 \in V(G)$. Each hinge constraint of
+  $(G, \varphi p)$ asks the difference of the values at the ends of an
+  edge to lie in the image of $\varphi$, so, as $G$ is connected,
+  $S(u) - S(v_0)$ lies in the image of $\varphi$ for every $u \in V(G)$.
+  Let $S_0 \in Z_0$ take the value $S(v_0)$ on $V(G)$ and agree with $S$
+  off it. Then $S - S_0 = \varphi S'$ for a screw assignment $S'$, which
+  lies in $Z(G, p)$, as $\varphi(S'(u) - S'(v)) = S(u) - S(v)$ at each
+  edge with ends $u$ and $v$. So $Z(G, \varphi p) = \varphi Z(G, p) + Z_0$.
+  An assignment $\varphi S'$ lies in $Z_0$ exactly when $S' \in Z_0'$,
+  and $Z_0' \subseteq Z(G, p)$, so the intersection of the two is
+  $\varphi Z_0'$. Hence
+  $\dim Z(G, \varphi p) + D'(1 + m) = \dim Z(G, p) + D(1 + m)$. The ranks
+  are $D|B| - \dim Z(G, \varphi p)$ and $D'|B| - \dim Z(G, p)$
+  (\cref{def:rigidity-matrix}), and $|B| = |V(G)| + m$.
 \end{proof}
 
 \begin{lemma}[A pencil realization in a lower dimension]

@@ -110,6 +110,23 @@ moment you resolve the entry) is what makes the sweep a pure
 to be re-derived by re-reading entries later.
 
 ## Open
+### [open] `BodyHingeFramework.map` and the zero-hinge motion lemmas sit in `Pencil/Grade/Embedding.lean`, not beside `mapExtensor`
+- **Where it bit:** Phase 42c, `lem:screw-embedding-rank` (`Pencil/Grade/Embedding.lean`). The
+  grade-changing `BodyHingeFramework.map` (hinges `φ C(p(e))`) belongs beside `mapExtensor` in
+  `RigidityMatrix/Basic.lean`, `isInfinitesimalMotion_iff_of_supportExtensor_eq_zero` there too, and
+  `finrank_infinitesimalMotions_of_supportExtensor_eq_zero` in `GenericityDevice.lean`, beside the
+  rigid-on-`V(G)` count it specializes. A new declaration in either rebuilds most of `Molecular/`,
+  so they landed in the leaf file, which now imports `GenericityDevice.lean` for rank–nullity.
+- **Friction (minor, in-proof):** `Φ S' u` for `Φ := φ.compLeft α` needed `change φ (S' u) - …`
+  (`LinearMap.compLeft_apply` gives `φ ∘ S'`, then `comp_apply`); a link `he : F₀.graph.IsLink …`
+  of a `let`-bound zero-hinge `F₀ := ⟨F.graph, 0⟩` needed the ascription `(he : F.graph.IsLink …)`
+  before `simp [he.left_mem]` fired; and `linarith` over the `zify`d rank–nullity equations failed
+  until `rw [← hN]` put `D * (|V| + |Vᶜ|)` for `D * Nat.card α` (it reads `D * N` as an atom). In a
+  scratch under `open scoped Graph`, `linear_combination h1 - h2 - h3` hit TACTICS-QUIRKS § 48.
+- **Proposed fix:** move the three with the next commit that edits `Basic.lean` or
+  `GenericityDevice.lean` for another reason.
+- **Status:** open.
+
 ### [open] No linear-equivalence form of `contragredient`; the `normalsJoin` map lemma sits outside `PanelLayer.lean`
 - **Where it bit:** Phase 42b, `lem:pencil-d-rank-collineation` (`Pencil/Grade/Collineation.lean`,
   `panelSupportExtensor_linearEquiv_eq_det_smul` and its caller). The screw map

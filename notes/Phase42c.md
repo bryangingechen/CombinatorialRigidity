@@ -2,18 +2,31 @@
 
 **Status:** in progress, opened 2026-10-30 by the PI (design doc §3's scope as written), a
 sub-phase of Phase 42 beside 42a. Forward mode, the Lean under `/coordinate-phase`: the dep-graph
-is `blueprint/src/chapter/pencil-d.tex` §`sec:pencil-d-stable`, 9 nodes, 4 green (`lem:deficiency-stable`, `def:pencil-d-embedding`,
-`lem:pencil-d-embedding-join`, `lem:pencil-d-x0-attains-distinct`), 5 red.
+is `blueprint/src/chapter/pencil-d.tex` §`sec:pencil-d-stable`, 9 nodes, 5 green (`lem:deficiency-stable`, `def:pencil-d-embedding`,
+`lem:pencil-d-embedding-join`, `lem:pencil-d-x0-attains-distinct`, `lem:screw-embedding-rank`), 4 red.
 The open corrected the deficiency lemma (it needs `G` connected) and found its proof gives a
-sharper range; the PI widened the theorem to `def_2 ≤ 3` (*Architectural choices*). Next concrete task: `lem:screw-embedding-rank`.
+sharper range; the PI widened the theorem to `def_2 ≤ 3` (*Architectural choices*). Next concrete task: `lem:pencil-d-embed-config-rank`.
 
 ## Current state
 
-**Next:** `lem:screw-embedding-rank`, the other leaf, whose size is unassessed (*Lemma checklist*).
+**Next:** `lem:pencil-d-embed-config-rank`, on the theorem's path (then
+`lem:pencil-d-x0-attains-of-le`, the theorem); size unassessed. It applies
+`BodyHingeFramework.finrank_span_rigidityRows_map_injective (F : BodyHingeFramework K k' α β)
+(hφ : Injective φ) (hG : F.graph.Connected) : (finrank (span (F.map φ).rigidityRows) : ℤ) =
+finrank (span F.rigidityRows) + ((screwDim k : ℤ) − screwDim k') * ((F.graph.vertexSet.ncard : ℤ) − 1)`
+at `φ = screwEmbed h` (`screwEmbed_injective`), once the configuration's framework at `(q, z)` is
+`(… at (q, z')).map (screwEmbed h)`; if they agree only at links, transfer the rank by
+`span_rigidityRows_eq_of_infinitesimalMotions_eq` and `infinitesimalMotions_eq_of_isLink_supportExtensor`.
+The other leaf, `lem:pencil-d-embed-realization` (the statement form), is off that path.
 
-**Landed (latest):** `lem:pencil-d-x0-attains-distinct`, `Graph.X0AttainsGrade.hasGradedDistinctPencilRealization`
-in `Pencil/Grade/Configuration.lean`: the four-line grade form of
-`Graph.X0Attains.hasDistinctPencilRealization`, no surprises.
+**Landed (latest):** `lem:screw-embedding-rank` (green, one commit), in `Pencil/Grade/Embedding.lean`,
+which now also imports `GenericityDevice.lean`: `BodyHingeFramework.map` (any linear `φ`,
+grade-changing), the motion count `finrank_infinitesimalMotions_map_injective` (in `ℕ`) and the rank
+form above (in `ℤ`, as `HasGradedPencilRealization` states its rank), with two zero-hinge helpers
+(*Decisions*).
+
+**Landed:** `lem:pencil-d-x0-attains-distinct`, `Graph.X0AttainsGrade.hasGradedDistinctPencilRealization`
+(`Pencil/Grade/Configuration.lean`), the grade form of `Graph.X0Attains.hasDistinctPencilRealization`.
 
 **Landed:** `def:pencil-d-embedding` and `lem:pencil-d-embedding-join` (green), new file
 `Pencil/Grade/Embedding.lean`: `gradeEmbed` (`ι`), `screwEmbed` (`φ`), their injectivity, `ι`'s
@@ -69,8 +82,9 @@ may refine a name, and the pin lands with the Lean.
   `gradeEmbed_injective`, `screwEmbed_injective` (`exteriorPower.map_injective_field`)
 - [x] `lem:pencil-d-embedding-join` — `exteriorPower_map_normalsJoin` (FRICTION; in `Embedding.lean`),
   `screwEmbed_panelSupportExtensor`
-- [ ] `lem:screw-embedding-rank` — `BodyHingeFramework.map` (hinges `φ C_e`, grade-changing),
-  `BodyHingeFramework.finrank_span_rigidityRows_map_injective` (`G` connected, `[Finite α]`)
+- [x] `lem:screw-embedding-rank` — `BodyHingeFramework.map` (hinges `φ C_e`, grade-changing),
+  `BodyHingeFramework.finrank_span_rigidityRows_map_injective` (`G` connected, `[Finite α]`),
+  `BodyHingeFramework.finrank_infinitesimalMotions_map_injective`
 - [ ] `lem:pencil-d-embed-realization` — `HasPencilPlaneRealization.map_gradeEmbed`,
   `hasGradedPencilRealization_of_le`, `hasGradedDistinctPencilRealization_of_le`
 - [ ] `lem:pencil-d-embed-config-rank` — `pencilConfigPointGrade_padHeights` (`ι` of the point),
@@ -93,9 +107,10 @@ may refine a name, and the pin lands with the Lean.
 
 ## Hand-off / next phase
 
-The next commit is `lem:screw-embedding-rank` (*Current state*; size unassessed: say whether it is one commit or two once its motion
-count is laid out); then the statement and configuration forms, `lem:pencil-d-x0-attains-of-le`,
-and the theorem last, at `def_2 ≤ 3` (the PI's widening from `≤ 1`, *Architectural choices*).
+The next commit is `lem:pencil-d-embed-config-rank` (*Current state*; size unassessed: say whether it
+is one commit or two once `pencilConfigPointGrade_padHeights` is laid out); then
+`lem:pencil-d-x0-attains-of-le`, and the theorem last, at `def_2 ≤ 3` (the PI's widening from `≤ 1`,
+*Architectural choices*). The statement form `lem:pencil-d-embed-realization` lands in any slot.
 
 ## Decisions made during this phase
 
@@ -121,3 +136,10 @@ and the theorem last, at `def_2 ≤ 3` (the PI's widening from `≤ 1`, *Archite
   `complementIso (j := 2)` at both grades, cast as `panelSupportExtensor` is; rewrite it by
   `screwEmbed_apply` (`rfl`), never `comp_apply` (FRICTION). The Lean holds at every `k' ≤ k`: the
   node's `2 ≤ d'` is the section's range, not a hypothesis.
+- **`lem:screw-embedding-rank`:** the route is `Z(φF) = φ ∘ Z(F) ⊔ Z₀`, `⊓ = φ ∘ Z₀′`, with `Z₀`,
+  `Z₀′` the motions of the zero-hinge frameworks (`finrank_sup_add_finrank_inf_eq`), not the
+  blueprint's complement `T`: the constant-on-`V(G)` count is then the existing
+  `finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet`. The carrier's bodies off
+  `V(G)` add `(D − D′)` each to the motion count and cancel in the rank; the blueprint proof now
+  counts them (`B ⊇ V(G)`). `map` and the zero-hinge helpers sit in `Embedding.lean`; their natural
+  home is upstream (FRICTION).

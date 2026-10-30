@@ -6,6 +6,7 @@ Authors: Bryan Gin-ge Chen
 module
 
 public import CombinatorialRigidity.Molecular.AlgebraicInduction.PanelLayer
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.GenericityDevice
 
 /-!
 # Embedding a lower dimension
@@ -26,10 +27,20 @@ embedding passes through the complement isomorphisms as the panel support extens
 (`panelSupportExtensor`, `AlgebraicInduction/PanelLayer.lean`): `⋀^(k+2−2) K^(k+2)` is
 `ScrewSpace K k` by unfolding, and `screwEmbed_apply` states `φ` in that form, by `rfl`.
 
+`lem:screw-embedding-rank`: a body-hinge framework `F` at grade `k'` maps along any injective
+linear map `φ` of screw spaces to the framework `F.map φ` at grade `k`, with the hinge `φ C(p(e))`
+at each edge `e`, and on a connected graph the rank grows by `(D − D′)(|V(G)| − 1)`. The motions
+of `F.map φ` are the sum of `φ ∘ Z(F)` and the assignments equal at the ends of every link, which
+are those of the framework with zero hinges; their intersection is `φ ∘ ·` of the same
+assignments at grade `k'`. Their dimensions, `D(|V(G)ᶜ| + 1)` and `D′(|V(G)ᶜ| + 1)`, count the
+bodies off `V(G)`, and rank–nullity at both grades cancels them.
+
 ## Main definitions
 
 * `gradeEmbed`: the embedding `ι`, for `k' ≤ k`.
 * `screwEmbed`: the screw embedding `φ`.
+* `BodyHingeFramework.map`: the framework with the hinges `φ C(p(e))`, for a linear map `φ` of
+  screw spaces.
 
 ## Main results
 
@@ -37,6 +48,8 @@ embedding passes through the complement isomorphisms as the panel support extens
   `exteriorPower.map_injective_field`.
 * `exteriorPower_map_normalsJoin`: `⋀²f (u ∨ w) = f u ∨ f w` for a linear map `f`.
 * `screwEmbed_panelSupportExtensor`: `φ C(u, w) = C(ι u, ι w)` (`lem:pencil-d-embedding-join`).
+* `BodyHingeFramework.finrank_span_rigidityRows_map_injective`: for `φ` injective and `G` connected,
+  `rank R(G, φp) = rank R(G, p) + (D − D′)(|V(G)| − 1)` (`lem:screw-embedding-rank`).
 -/
 
 @[expose] public section
@@ -161,5 +174,161 @@ theorem screwEmbed_panelSupportExtensor (h : k' ≤ k) (n₁ n₂ : Fin (k' + 2)
       = panelSupportExtensor (gradeEmbed h n₁) (gradeEmbed h n₂) := by
   rw [screwEmbed_apply, panelSupportExtensor, panelSupportExtensor, LinearEquiv.symm_apply_apply,
     exteriorPower_map_normalsJoin]
+
+/-! ## An injective map of screw spaces adds to the rank (`lem:screw-embedding-rank`) -/
+
+namespace BodyHingeFramework
+
+variable {α β : Type*}
+
+/-- **The framework mapped along a linear map of screw spaces** (`lem:screw-embedding-rank`): for a
+body-hinge framework `F` at grade `k'` and a linear map `φ : ScrewSpace K k' → ScrewSpace K k`, the
+framework at grade `k` on the same multigraph whose supporting extensor at each edge label `e` is
+`φ C(p(e))`. When `φ` is the screw embedding (`screwEmbed`), a hinge of two panels goes to the hinge
+of the embedded panels (`screwEmbed_panelSupportExtensor`). Unlike `mapExtensor`, it may change the
+grade. -/
+def map (F : BodyHingeFramework K k' α β) (φ : ScrewSpace K k' →ₗ[K] ScrewSpace K k) :
+    BodyHingeFramework K k α β where
+  graph := F.graph
+  supportExtensor e := φ (F.supportExtensor e)
+
+@[simp]
+theorem map_graph (F : BodyHingeFramework K k' α β) (φ : ScrewSpace K k' →ₗ[K] ScrewSpace K k) :
+    (F.map φ).graph = F.graph := rfl
+
+@[simp]
+theorem map_supportExtensor (F : BodyHingeFramework K k' α β)
+    (φ : ScrewSpace K k' →ₗ[K] ScrewSpace K k) (e : β) :
+    (F.map φ).supportExtensor e = φ (F.supportExtensor e) := rfl
+
+/-- **The motions of a framework with zero hinges** (a step of `lem:screw-embedding-rank`): if every
+supporting extensor is zero, a screw assignment is a motion exactly when it takes equal values at
+the two ends of every link, as the span of zero is zero. -/
+theorem isInfinitesimalMotion_iff_of_supportExtensor_eq_zero (F : BodyHingeFramework K k α β)
+    (h0 : ∀ e, F.supportExtensor e = 0) (S : α → ScrewSpace K k) :
+    F.IsInfinitesimalMotion S ↔ ∀ e u v, F.graph.IsLink e u v → S u = S v := by
+  simp only [isInfinitesimalMotion_iff, h0, Submodule.span_zero_singleton, Submodule.mem_bot,
+    sub_eq_zero]
+
+/-- **The dimension of the motions of a framework with zero hinges on a connected graph** (a step of
+`lem:screw-embedding-rank`): `D(|V(G)ᶜ| + 1)`. A motion takes equal values at the ends of every link
+(`isInfinitesimalMotion_iff_of_supportExtensor_eq_zero`), so it is constant on `V(G)`
+(`Graph.Preconnected.eq_of_forall_isLink`), and the count is
+`finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet`. -/
+theorem finrank_infinitesimalMotions_of_supportExtensor_eq_zero [Finite α]
+    (F : BodyHingeFramework K k α β) (hG : F.graph.Connected)
+    (h0 : ∀ e, F.supportExtensor e = 0) :
+    Module.finrank K F.infinitesimalMotions = screwDim k * ((F.graph.vertexSet)ᶜ.ncard + 1) :=
+  F.finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet hG.nonempty
+    fun S hS _ hu _ hv => hG.pre.eq_of_forall_isLink
+      ((F.isInfinitesimalMotion_iff_of_supportExtensor_eq_zero h0 S).mp hS) hu hv
+
+/-- **The motions of the mapped framework** (`lem:screw-embedding-rank`, its motion count): for an
+injective linear map `φ` of screw spaces and a framework `F` on a connected graph,
+`dim Z(G, φp) + D′(|V(G)ᶜ| + 1) = dim Z(G, p) + D(|V(G)ᶜ| + 1)`, where `D′ = screwDim k'` and
+`D = screwDim k`.
+
+Let `Z₀` and `Z₀′` be the motions of the frameworks with zero hinges at the two grades, the
+assignments equal at the ends of every link. Then `Z(G, φp) = φ ∘ Z(G, p) ⊔ Z₀`: as `φ` is
+injective, `φ x ∈ span {φ C} ↔ x ∈ span {C}`; and a motion `S` of `F.map φ` is constant modulo
+`range φ` on the connected `V(G)`, so its difference from the assignment `S₀` that is `S v₀` on
+`V(G)` and `S` off it is `φ ∘ S′` with `S′` a motion of `F`. The intersection is `φ ∘ Z₀′`, and
+`Submodule.finrank_sup_add_finrank_inf_eq` with
+`finrank_infinitesimalMotions_of_supportExtensor_eq_zero` gives the count. -/
+theorem finrank_infinitesimalMotions_map_injective [Finite α] (F : BodyHingeFramework K k' α β)
+    {φ : ScrewSpace K k' →ₗ[K] ScrewSpace K k} (hφ : Function.Injective φ)
+    (hG : F.graph.Connected) :
+    Module.finrank K (F.map φ).infinitesimalMotions
+        + screwDim k' * ((F.graph.vertexSet)ᶜ.ncard + 1)
+      = Module.finrank K F.infinitesimalMotions
+        + screwDim k * ((F.graph.vertexSet)ᶜ.ncard + 1) := by
+  classical
+  obtain ⟨v₀, hv₀⟩ := hG.nonempty
+  set Φ := φ.compLeft α
+  have hΦ : Function.Injective Φ := hφ.comp_left
+  let F₀ : BodyHingeFramework K k α β := ⟨F.graph, fun _ => 0⟩
+  let F₀' : BodyHingeFramework K k' α β := ⟨F.graph, fun _ => 0⟩
+  have hZ₀ := F₀.isInfinitesimalMotion_iff_of_supportExtensor_eq_zero fun _ => rfl
+  have hZ₀' := F₀'.isInfinitesimalMotion_iff_of_supportExtensor_eq_zero fun _ => rfl
+  have hspan : ∀ (C x : ScrewSpace K k'),
+      φ x ∈ Submodule.span K {φ C} ↔ x ∈ Submodule.span K {C} := by
+    intro C x
+    simp only [Submodule.mem_span_singleton, ← map_smul, hφ.eq_iff]
+  set A := F.infinitesimalMotions.map Φ
+  set B := F₀.infinitesimalMotions
+  have hsup : A ⊔ B = (F.map φ).infinitesimalMotions := by
+    refine le_antisymm (sup_le ?_ ?_) fun S hS => ?_
+    · rintro _ ⟨S', hS', rfl⟩ e u v he
+      rw [hingeConstraint, map_supportExtensor]
+      change φ (S' u) - φ (S' v) ∈ _
+      rw [← map_sub, hspan]
+      exact hS' e u v he
+    · intro S hS e u v he
+      rw [hingeConstraint, (hZ₀ S).mp hS e u v he, sub_self]
+      exact zero_mem _
+    -- `S` is constant modulo `range φ` on `V(G)`, so `S − S₀ ∈ range φ` at every body.
+    have hW : ∀ u ∈ F.graph.vertexSet, S u - S v₀ ∈ LinearMap.range φ := by
+      intro u hu
+      refine (Submodule.Quotient.eq _).mp (hG.pre.eq_of_forall_isLink
+        (s := fun w => (Submodule.Quotient.mk (S w) : _ ⧸ LinearMap.range φ))
+        (fun e x y he => (Submodule.Quotient.eq _).mpr ?_) hu hv₀)
+      exact Submodule.span_le.mpr (Set.singleton_subset_iff.mpr (LinearMap.mem_range_self _ _))
+        (hS e x y he)
+    let S₀ : α → ScrewSpace K k := fun u => if u ∈ F.graph.vertexSet then S v₀ else S u
+    have hS₀ : ∀ u, S u - S₀ u ∈ LinearMap.range φ := by
+      intro u
+      by_cases hu : u ∈ F.graph.vertexSet
+      · simpa [S₀, hu] using hW u hu
+      · simp [S₀, hu]
+    choose S' hS' using fun u => LinearMap.mem_range.mp (hS₀ u)
+    refine Submodule.mem_sup.mpr ⟨Φ S', ⟨S', fun e u v he => ?_, rfl⟩, S₀,
+      (hZ₀ S₀).mpr fun e u v (he : F.graph.IsLink e u v) => by
+        simp [S₀, he.left_mem, he.right_mem],
+      funext fun u => by simp [Φ, hS']⟩
+    rw [hingeConstraint, ← hspan, map_sub, hS', hS']
+    have h := hS e u v he
+    rw [hingeConstraint, map_supportExtensor] at h
+    simpa [S₀, he.left_mem, he.right_mem] using h
+  have hinf : A ⊓ B = F₀'.infinitesimalMotions.map Φ := by
+    ext S
+    simp only [Submodule.mem_inf, Submodule.mem_map, A, B]
+    constructor
+    · rintro ⟨⟨S', -, rfl⟩, hB⟩
+      exact ⟨S', (hZ₀' S').mpr fun e u v he => hφ ((hZ₀ _).mp hB e u v he), rfl⟩
+    · rintro ⟨S', hS', rfl⟩
+      refine ⟨⟨S', fun e u v he => ?_, rfl⟩, (hZ₀ _).mpr fun e u v he => ?_⟩
+      · rw [hingeConstraint, (hZ₀' S').mp hS' e u v he, sub_self]
+        exact zero_mem _
+      · change φ (S' u) = φ (S' v)
+        rw [(hZ₀' S').mp hS' e u v he]
+  have h := Submodule.finrank_sup_add_finrank_inf_eq A B
+  rw [hsup, hinf, ← (Submodule.equivMapOfInjective Φ hΦ _).finrank_eq,
+    ← (Submodule.equivMapOfInjective Φ hΦ _).finrank_eq,
+    F₀.finrank_infinitesimalMotions_of_supportExtensor_eq_zero hG fun _ => rfl,
+    F₀'.finrank_infinitesimalMotions_of_supportExtensor_eq_zero hG fun _ => rfl] at h
+  exact h
+
+/-- **An injective map of screw spaces adds to the rank** (`lem:screw-embedding-rank`): for an
+injective linear map `φ : ScrewSpace K k' → ScrewSpace K k` and a body-hinge framework `F` on a
+connected graph `G`, `rank R(G, φp) = rank R(G, p) + (D − D′)(|V(G)| − 1)`, where
+`D′ = screwDim k'` and `D = screwDim k`, stated in `ℤ`. The motion count
+`finrank_infinitesimalMotions_map_injective` and rank–nullity at both grades
+(`finrank_span_rigidityRows_add_finrank_infinitesimalMotions`), which count all of `α`, give it:
+the bodies off `V(G)` cancel. -/
+theorem finrank_span_rigidityRows_map_injective [Finite α] (F : BodyHingeFramework K k' α β)
+    {φ : ScrewSpace K k' →ₗ[K] ScrewSpace K k} (hφ : Function.Injective φ)
+    (hG : F.graph.Connected) :
+    (Module.finrank K (Submodule.span K (F.map φ).rigidityRows) : ℤ)
+      = Module.finrank K (Submodule.span K F.rigidityRows)
+        + ((screwDim k : ℤ) - screwDim k') * ((F.graph.vertexSet.ncard : ℤ) - 1) := by
+  have h1 := (F.map φ).finrank_span_rigidityRows_add_finrank_infinitesimalMotions
+  have h2 := F.finrank_span_rigidityRows_add_finrank_infinitesimalMotions
+  have h3 := F.finrank_infinitesimalMotions_map_injective hφ hG
+  have hN := Set.ncard_add_ncard_compl F.graph.vertexSet
+  zify at h1 h2 h3 hN
+  rw [← hN] at h1 h2
+  linarith
+
+end BodyHingeFramework
 
 end CombinatorialRigidity.Molecular
