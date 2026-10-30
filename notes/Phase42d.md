@@ -56,9 +56,11 @@ New sections of `blueprint/src/chapter/pencil-d.tex`, after `sec:pencil-d-stable
 section: the induction in every dimension, as red nodes (statements, `\uses`, full prose proofs; no `\lean`).
 Conventions, binding on `writeup-opus`:
 - Statements at every `d ≥ 3`, `D = C(d+1, 2)`, `def[D]`; `d = 3` is Phase 40's, cited.
-- Each node names the `main-component.tex` node and the step-table row it generalizes
-  (`notes/Phase42-design.md` §2.1), re-derives every step against `pencil-d.tex`'s carrier, and
-  names each place the `d = 3` proof used its dimension (the table's third column).
+- Each node names the `main-component.tex` node it generalizes, re-derives every step against
+  `pencil-d.tex`'s carrier, and names each place the `d = 3` proof used its dimension (the step
+  table's third column, `notes/Phase42-design.md` §2.1). The step-table rows go in the slice's
+  commit message, not the chapter (the PI, 2026-10-30, after W1: asked "Where should later slices
+  (W2–W10) record the step-table rows?", answered "Commit message").
 - A track's result enters as a red node citing its workbook S-number (SHORT-CORE, CERT, NONDEG).
 - A step that fails stops the slice; the gap goes to the coordinator, and to the PI.
 
