@@ -49,9 +49,6 @@ keeps only what git cannot show.
 
 | Date | Task (short + sha) | Rung | Exception | Notes |
 |---|---|---|---|---|
-| 2026-10-30 | 42b `lem:pencil-d-point-configuration`, `3b98404f` | opus | pin refuted before dispatch (open's planned name) | The open planned part (1) as `…_hasPencilPlaneRealization_ofNormals`. False: `HasCoplanarPanelRealization` asks a nonzero hinge at every label of `β`, and `ofNormals` can put `0` off `E(G)`. Caught by the coordinator's slot-trace against that body and Phase 40's `pencilConfigFramework` patch. The prompt named the trap, and the build landed `toPatchedBodyHinge` clean. A phase open's planned pins are hypotheses until a consumer's definition body is read. |
-| 2026-10-30 | 42b scale-shift, `bfdedeaf` | sonnet | gate-invisible prose defect (F44) | The note called the `t • id` case "a one-line corollary"; the builder's own return said it was not (it also needs the one-height bridge to `pencilConfigPoint`). Caught on the full-diff read; fixed by the next slice's `hygiene` line (`7e5f260b`). |
-| 2026-10-30 | 42b distinct form, `bb43a5b6` | sonnet | gate mechanics (F6 family) | The builder wrapped its first gate build in a shell `timeout` against the core's rule. It finished normally, the builder disclosed it, and later builds used the tool parameter. No harm; no change. |
 
 **Phases 29–34 rows, 2026-07-09 → 07-18: 17 pruned at the 41a grooming
 (2026-10-24); the full rows are in git history at `3a627b3d`.** Those phases
@@ -147,6 +144,18 @@ files upstream of the chain; later prompts asked each builder to name any new
 upstream import); 1 coordinator gate-chaining defect (F55); and 1
 resume-and-land (F43) that ended at the F46 threshold, clean.
 
+**Phase 42b (PD-STATE) rows, 2026-10-30: 3 pruned at 42b's close
+(2026-10-30); the full rows are in git history at `65f4f9e9`.** Over 13 build
+commits, none BLOCKED, escalated or killed. The three: 1 pin the open had
+planned, refuted before dispatch by the coordinator's slot-trace against the
+consumer's definition body (`HasCoplanarPanelRealization` asks a nonzero hinge
+at every label, so the point-configuration lemma's part (1) could not sit on
+`ofNormals`; the prompt named the trap and the build landed
+`toPatchedBodyHinge` clean); 1 gate-invisible prose defect caught on the
+full-diff read, a note calling a case "a one-line corollary" that its
+builder's own return said was not (F44); 1 gate build wrapped in a shell
+`timeout`, disclosed, harmless (F6 family).
+
 ## Findings
 
 (Distill recurring lessons here — one entry per lesson, rows cite it.
@@ -180,6 +189,15 @@ when the PI dropped it (F53). New findings: F50–F52. Promoted now: F50 into
 into the shaping paragraph, F52 into the `hygiene` block and
 `CombinatorialRigidity/CLAUDE.md`'s deletion gate, and F44's close-summary
 recurrence into *Verification tiers*.
+
+**42b grooming (2026-10-30, at the 42b close).** Its 3 rows are pruned to git
+history (profile under *Log*). No new finding: two rows are F44 and the F6
+family again, both promoted. The third's lesson, that a phase open's planned
+pins are hypotheses until a consumer's definition body is read, is already the
+playbook's pre-dispatch derivation guard (derive the leaf's statement against
+the definition body; a chapter open's own statements count as transcriptions)
+and root `CLAUDE.md` *Docstrings are not evidence*; the guard fired as written,
+before any Lean consumed the pin, so nothing is promoted.
 
 - **F1 — re-derive inventories at build time.** Promoted to
   `notes/CLAUDE.md` *One canonical home* (count again in the compressing

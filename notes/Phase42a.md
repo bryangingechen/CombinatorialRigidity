@@ -5,15 +5,16 @@ blueprint. Landed: the step table and thresholds (design doc §2.1–§2.5); T1�
 Results 20–26), with no shortfall: SHORT shrinks to SHORT-CORE, ONE-EAR's first option holds
 wherever M does, and at `D ≥ 10` the coverage needs ONE-EAR only on ONE-CLASS. Then, at the PI's
 call, ONE-CLASS's lemma (Result 27), which takes ONE-EAR out of the coverage; then the PI took the
-route (R2's steps, the embedding as the base row). PD-STATE opened beside it as 42b
-(`notes/Phase42b.md`). Next concrete task here: SHORT-CORE's attack track, once the PI has read its
+route (R2's steps, the embedding as the base row). PD-STATE ran beside it as 42b
+(`notes/Phase42b.md`, closed 2026-10-30). Next concrete task here: SHORT-CORE's attack track, once the PI has read its
 DRAFT brief. Plan and decisions: `notes/Phase42-design.md`; evidence: `notes/Strata.md`.
 
 ## Current state
 
 **Next** (the PI's defaults, design doc §1):
-- **PD-STATE** opened beside the research as **42b** (`notes/Phase42b.md`), with the carrier
-  check (design doc §2.3 CARRIER) and PD-STABLE's layout (§3); its Lean runs there.
+- **PD-STATE** ran beside the research as **42b** (`notes/Phase42b.md`) and closed 2026-10-30,
+  its chapter formalized; PD-STABLE's open (design doc §3), whose definitions have landed, goes
+  to the PI next.
 - **SHORT-CORE's attack track** (`/attack`, design doc §2.3), the coverage's only new mathematics
   at `d ≥ 4` since Result 27. Rows 9 and 12, which T5's cover rests on, passed a second read.
   Its brief is `notes/attacks/short-core/brief.md`, a DRAFT: once the PI has read it,

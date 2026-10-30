@@ -172,8 +172,11 @@ dimension: in projective $d$-space the hinges at a body form a pencil when
 they contain a common $(d-3)$-flat and lie in a hyperplane. The theorem is
 formalized at $d = 2$ and $d = 3$. A paper check found most of the $d = 3$
 proof dimension-general, with one step needing new mathematics from
-dimension four; beside that research, a new blueprint chapter states
-pencil realizations in every dimension, the start of their formalization.
+dimension four; beside that research, a new blueprint chapter, now
+formalized throughout, states pencil realizations in every dimension,
+their agreement with the three-dimensional ones, and the tools a proof in
+every dimension would use. The theorem itself is open from dimension
+four.
 
 ### How the pencil realization theorem is proved
 

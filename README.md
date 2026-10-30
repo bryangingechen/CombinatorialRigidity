@@ -219,8 +219,10 @@ the theorem is formalized at `d = 2` and `d = 3`, and the general case
 would imply Katoh–Tanigawa's panel theorem in every dimension. A paper
 check found most of the `d = 3` proof dimension-general, with one step
 needing new mathematics from dimension four. Beside that research, a new
-blueprint chapter states pencil realizations in every dimension, the
-start of their formalization.
+blueprint chapter, now formalized throughout, states pencil realizations
+in every dimension, their agreement with the three-dimensional ones, and
+the tools a proof in every dimension would use; the theorem itself is
+open from dimension four.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries
