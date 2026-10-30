@@ -13,6 +13,12 @@
 > Feasibility is Phase 39's word for word in every d (S9). Cost: an irreducible carrier in Pᵈ for
 > the planar-rigid case and the pendant-body and cut-edge arms (R-L, S13), the next sessions'
 > work."). Session 2 takes C2-same as the definition and works on its carrier.
+> After session 2, 2026-10-30, on the PI's word: asked "Who proves (W), the one remaining piece of
+> new mathematics for the Pᵈ generic conjunct under C2-same?", the PI answered "(a) NONDEG s3
+> attacks", whose option read "NONDEG session 3 attacks (W): extend a realization of G[W₀] that is
+> general for G[X] to a nondegenerate realization of G, one condition at a time, and hunt for
+> counterexamples beyond nine bodies." Asked whether review 1 runs early, the PI answered "Review
+> now": `/review-attack nondeg` runs before session 3.
 > Written 2026-10-30 by an agent (Claude
 > Opus 5.5) against the tree at `947fa75d`, from the owning sections: `notes/Phase42-design.md`
 > §2.1 rows 19–22, §2.2, §2.3 ONE-EAR, CARRIER and GENERIC, §2.4 T4 and §2.5; `pencil.tex`'s

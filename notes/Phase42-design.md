@@ -348,8 +348,10 @@ Result 17's `def[3] ≤ 1` one step further.
 - **GENERIC** (row 22): route B in `Pᵈ`, an irreducible parametrization of the nondegenerate
   realizations, and the one-ear step at `d ≥ 5`. D's candidate witness against the good-ear lemma
   supplying a common neighbour: `C₆` with the chord `14` and `y` joined to `2, 5` (by hand,
-  feasibility settled by 42d's NONDEG S11: it is feasible). It has `def[3] = 0` (Result 22), so its rank is Result 17's; the
-  question it raises is GENERIC's alone.
+  feasibility settled by 42d's NONDEG S11: it is feasible). It has `def[3] = 0` (Result 22), so
+  its rank is Result 17's; the question it raises is GENERIC's alone. **42d:** under C2-same, the
+  carrier is the lifts of a `P³` realization (motive `RL_d`), every arm of the reduction lifts, and
+  the one-ear step reduces to one open obligation, (W) (`notes/attacks/nondeg/state.md`, S18–S31).
 
 ### 2.4 Proposed tests (T1–T5 run)
 
