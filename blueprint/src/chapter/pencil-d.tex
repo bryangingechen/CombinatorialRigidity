@@ -22,12 +22,17 @@ This chapter states pencil realizations in every dimension, and the
 objects of \cref{sec:main-component-carrier} that a proof in dimension
 $d$ along the lines of \cref{sec:main-component} would use. At $d = 3$ each of
 them is the object of \cref{sec:pencil} or \cref{sec:main-component}
-that it restates. The last section embeds a lower dimension in a higher
-one. At the graphs of small deficiency it carries the attaining of the
-general configuration (\cref{thm:pencil-x0-coverage}) from dimension
-three to every dimension, and so gives them adjacent-distinct pencil
-realizations at the deficiency rank in every dimension
-(\cref{sec:pencil-d-stable}).
+that it restates. The third section embeds a lower dimension in a
+higher one. At the graphs of small deficiency it carries the attaining
+of the general configuration (\cref{thm:pencil-x0-coverage}) from
+dimension three to every dimension, and so gives them adjacent-distinct
+pencil realizations at the deficiency rank in every dimension
+(\cref{sec:pencil-d-stable}). The fourth proves the estimates on
+partitions of \cref{sec:main-component-sparse} in every dimension
+(\cref{sec:pencil-d-deficiency}). The sections after it extend the
+induction of \cref{sec:main-component} to every dimension, beginning
+with its setting and the rank of a flat configuration
+(\cref{sec:pencil-d-induction}).
 
 We describe a pencil realization by its polar. The polarity of
 \cref{def:meet-complement-iso} takes the panel with normal $b_v$ to the
@@ -970,3 +975,327 @@ of $P$.
   Then $\operatorname{def}_d(G; a, b) = \operatorname{def}_d(G)$
   (\cref{lem:deficiency-merge-rigid}).
 \end{proof}
+
+\subsection{The induction in every dimension}
+\label{sec:pencil-d-induction}
+
+From here on we extend the induction of \cref{sec:main-component} to
+every dimension $d \ge 3$, to show that the general configuration of
+every graph satisfying the standing hypotheses
+(\cref{def:pencil-x0-standing}) attains in dimension $d$
+(\cref{def:pencil-d-x0-attains}). At $d = 3$ this is
+\cref{thm:pencil-x0-coverage}. As there, we argue by strong induction on
+the number of bodies, at a fixed $d$, with all $d - 2$ heights of a
+configuration general. A graph also attains in dimension $d$ when it
+attains in a lower dimension $d'$ with
+$\operatorname{def}_{d'}(G) = \operatorname{def}_d(G)$
+(\cref{lem:pencil-d-x0-attains-of-le}).
+
+The planar objects of \cref{sec:main-component-carrier} serve in every
+dimension unchanged: the pictures and their admissibility, the lifting
+space $L(q)$ and its lifting system, and the main pictures
+(\cref{def:pencil-main-picture}, \cref{lem:pencil-x0-main-picture-open}).
+So does Jackson and Jord\'an's equality (\cref{thm:pencil-jj-equality}),
+which concerns $L(q)$ alone. A configuration in dimension $d$ takes each
+of its $d - 2$ heights from $L(q)$. The objects that read the points of
+a configuration are restated in \cref{sec:pencil-d-carrier}. This
+section fixes the notation, and shows that over an admissible picture
+the pencil configurations are those with every height in $L(q)$
+(\cref{lem:pencil-d-condition-linear}). The next section computes the
+rank of a flat configuration, which settles the graphs whose two
+deficiencies agree (\cref{sec:pencil-d-flat}).
+
+We fix the following notation and terms, for $d \ge 3$ and
+$D = \binom{d+1}{2}$. At $d = 3$ they are those of
+\cref{sec:main-component}.
+\begin{itemize}
+  \item $\operatorname{def}_d(G)$ is the deficiency at $D$
+    (\cref{def:D-deficiency}), and $\operatorname{def}_2(G)$, the
+    deficiency at $3$, is the \emph{planar deficiency}. On a connected
+    graph $\operatorname{def}_d(G) \le \operatorname{def}_2(G)$
+    (\cref{lem:deficiency-antitone}).
+  \item The \emph{target} of $G$ in dimension $d$ is its deficiency rank
+    $\operatorname{tgt}_d(G) = D(|V(G)| - 1) - \operatorname{def}_d(G)$
+    (\cref{def:pencil-d-rank-hypothesis}). We say that $G$ \emph{has its
+    target} at a configuration in dimension $d$ of rank
+    $\operatorname{tgt}_d(G)$ (\cref{def:pencil-d-configuration}).
+  \item $L(q)^{d-2}$ is the space of tuples $z = (z^1, \dots, z^{d-2})$
+    of heights in $L(q)$ (\cref{def:pencil-lifting-space}), a linear
+    subspace of the space of all tuples of $d - 2$ heights. A
+    configuration $(q, z)$ with $q$ admissible and $z \in L(q)^{d-2}$ is
+    \emph{attaining} if $G$ has its target at it, and its heights $z$
+    are then \emph{attaining heights}.
+  \item The configurations in dimension $d$ at which the points of every
+    closed neighbourhood span a subspace of dimension at most three form
+    the \emph{pencil configuration space} of $G$. Over an admissible
+    picture $q$ they are the configurations $(q, z)$ with
+    $z \in L(q)^{d-2}$ (\cref{lem:pencil-d-condition-linear}). The
+    \emph{main component} is the closure of the part of this space over
+    the main pictures. As at $d = 3$, we never form it
+    (\cref{rem:pencil-x0-main-component}).
+  \item \emph{General} means off the zero set of a nonzero polynomial: in
+    the picture coordinates, and over each picture in the heights
+    $z \in L(q)^{d-2}$. Over an infinite field, two polynomials that are
+    each nonzero somewhere on $L(q)^{d-2}$ are nonzero together somewhere
+    on it (\cref{lem:pencil-x0-fibre-intersection}).
+  \item A \emph{flat configuration} is a configuration $(q, 0)$ whose
+    $d - 2$ heights are all zero.
+  \item A set $W$ of at least two bodies is \emph{rigid in dimension $d$}
+    if $\operatorname{def}_d(G[W]) = 0$, and \emph{planar-rigid} if
+    $\operatorname{def}_2(G[W]) = 0$. A set rigid in some dimension is
+    rigid in every higher one (\cref{lem:deficiency-rigid-higher}). In
+    particular a planar-rigid set is rigid in dimension $d$.
+  \item A contraction step contracts a set $W \subsetneq V(G)$ of at
+    least two bodies, the \emph{core}, to one of its bodies. We write
+    $H = G[W]$ and $G/H$ for the contraction
+    (\cref{def:rigid-contraction}). The core is \emph{additive} in
+    dimension $d$ if it is rigid in dimension $d$ and
+    $\operatorname{def}_2(H) + \operatorname{def}_2(G/H) \le
+    \operatorname{def}_2(G)$. So rigidity is read at $D$, and additivity
+    in the plane.
+  \item A graph is \emph{smaller than} $G$ if it satisfies the standing
+    hypotheses and has fewer bodies than $G$.
+\end{itemize}
+
+At $d = 3$ the points of a closed neighbourhood are coplanar exactly
+when the height agrees with an affine function of the picture there
+(\cref{lem:pencil-condition-linear}). In dimension $d$ the same holds
+for each of the $d - 2$ heights.
+
+\begin{lemma}[Coplanarity is linear in the heights, in every dimension]
+  \label{lem:pencil-d-condition-linear}
+  \uses{def:pencil-d-configuration, def:pencil-lifting-space,
+        def:pencil-admissible-picture}
+  Let $d \ge 3$, let $q$ be an admissible picture of $G$ and
+  $z^1, \dots, z^{d-2}$ heights, and let $v$ be a body of $G$. The points
+  of the configuration $(q, z)$ (\cref{def:pencil-d-configuration}) at
+  the members of the closed neighbourhood of $v$ span a subspace of
+  $K^{d+1}$ of dimension at most three if and only if each $z^i$ agrees
+  on that neighbourhood with an affine function
+  $a^i x + c^i y + e^i$ of the picture. They then span the
+  three-dimensional image $\Pi_v$ of the injective linear map
+  \[
+    \sigma_v(\xi, \eta, \omega) = (\xi,\ \eta,\
+    a^1 \xi + c^1 \eta + e^1 \omega,\ \dots,\
+    a^{d-2} \xi + c^{d-2} \eta + e^{d-2} \omega,\ \omega),
+  \]
+  and $\Pi_v^{\perp}$ is spanned by the $d - 2$ vectors $n^i$ with
+  $n^i \cdot (\xi, \eta, \zeta^1, \dots, \zeta^{d-2}, \omega) =
+  a^i \xi + c^i \eta - \zeta^i + e^i \omega$. In particular the points of
+  every closed neighbourhood span a subspace of dimension at most three
+  if and only if every $z^i$ lies in $L(q)$
+  (\cref{def:pencil-lifting-space}).
+\end{lemma}
+\begin{proof}
+  Write $b$ for the points of $(q, z)$, and let
+  $\pi \colon K^{d+1} \to K^3$ keep the first, the second and the last
+  coordinate. Then $\pi(b_w) = (x_w, y_w, 1)$ is the homogeneous picture
+  point of $w$. As $q$ is admissible, three members of the closed
+  neighbourhood of $v$ have linearly independent homogeneous picture
+  points. Their points are therefore linearly independent, and the points
+  of the closed neighbourhood span a subspace $S$ with $\pi(S) = K^3$.
+
+  Suppose that $\dim S \le 3$. Then $\dim S = 3$, and $\pi$ restricts to
+  an isomorphism of $S$ onto $K^3$. Its inverse is a linear map
+  $\sigma \colon K^3 \to K^{d+1}$ with $\pi \circ \sigma$ the identity.
+  So $\sigma$ keeps the first, the second and the last coordinate, and its
+  coordinate of the $i$-th height is a linear form
+  $a^i \xi + c^i \eta + e^i \omega$. Each point $b_w$ of the closed
+  neighbourhood lies in $S$, and $\pi(b_w) = (x_w, y_w, 1)$, so
+  $b_w = \sigma(x_w, y_w, 1)$. Its $i$-th height is
+  $z^i_w = a^i x_w + c^i y_w + e^i$.
+
+  Conversely, suppose that $z^i_w = a^i x_w + c^i y_w + e^i$ for every
+  $w$ in the closed neighbourhood and every $i$. Then
+  $b_w = \sigma_v(x_w, y_w, 1)$ there. The map $\sigma_v$ is injective,
+  as $\pi \circ \sigma_v$ is the identity, so its image $\Pi_v$ has
+  dimension three. It contains $S$, and $S = \Pi_v$ since
+  $\pi(S) = K^3$. Each $n^i$ is orthogonal to $\Pi_v$, as
+  \[
+    n^i \cdot \sigma_v(\xi, \eta, \omega) = a^i \xi + c^i \eta
+    - (a^i \xi + c^i \eta + e^i \omega) + e^i \omega = 0.
+  \]
+  The vectors $n^i$ are linearly independent, since $n^i$ alone has a
+  nonzero coordinate at the $i$-th height. As the dot product of
+  $K^{d+1}$ is nondegenerate, $\Pi_v^{\perp}$ has dimension $d - 2$, so
+  the $n^i$ span it. The last claim is the first at every body
+  (\cref{def:pencil-lifting-space}).
+
+  At $d = 3$ this is \cref{lem:pencil-condition-linear}. There the
+  dimension enters in two places: the plane through the closed
+  neighbourhood is given by one normal vector, and the height is found by
+  solving the equation of that plane, which is not vertical. In
+  dimension $d$ the span $S$ has codimension $d - 2$, and no single
+  normal vector. The projection $\pi$ takes the place of the normal:
+  that $\pi$ is injective on $S$ says that $S$ is not vertical, and the
+  inverse of $\pi$ on $S$ gives all $d - 2$ heights at once.
+\end{proof}
+
+\subsection{The flat rank in every dimension}
+\label{sec:pencil-d-flat}
+
+This section computes the rank of a flat configuration $(q, 0)$ in
+dimension $d$ (\cref{thm:pencil-d-flat-rank}). As at $d = 3$
+(\cref{sec:main-component-flat}), with Jackson and Jord\'an's equality
+it settles the graphs whose two deficiencies agree
+(\cref{cor:pencil-d-jj-flat}). The points of a flat configuration have
+zero heights, and they are the homogeneous picture points with $d - 2$
+zero coordinates inserted before the last. So the flat configuration in
+dimension $d$ is the configuration of the picture in dimension two,
+embedded by $\iota$ (\cref{def:pencil-d-embedding}), and its rank is
+read off the plane framework of \cref{lem:pencil-lifting-planes-motions}.
+
+Over an infinite field and under the standing hypotheses, Jackson and
+Jord\'an's equality gives $\dim L(q) = 3 + \operatorname{def}_2(G)$ at a
+general picture (\cref{thm:pencil-jj-equality}). The flat configuration
+over such a picture then has rank
+$D(|V(G)| - 1) - \operatorname{def}_2(G)$, which is the target exactly
+when $\operatorname{def}_2(G) = \operatorname{def}_d(G)$. The later steps
+use the equality at the graphs that they compare with $G$, through
+$\dim L(q)$ alone.
+
+\begin{theorem}[The flat rank, in every dimension]
+  \label{thm:pencil-d-flat-rank}
+  \uses{def:pencil-d-configuration, def:pencil-lifting-space,
+        def:D-deficiency}
+  Let $d \ge 3$ and $D = \binom{d+1}{2}$, let $G$ be connected, and let
+  $q$ be an admissible picture of $G$. Then the flat configuration
+  $(q, 0)$ in dimension $d$, all of whose $d - 2$ heights are zero
+  (\cref{def:pencil-d-configuration}), has rank exactly
+  \[
+    D(|V(G)| - 1) + 3 - \dim L(q).
+  \]
+  Hence its rank is at most $D(|V(G)| - 1) - \operatorname{def}_2(G)$,
+  with equality if and only if $\dim L(q) = 3 + \operatorname{def}_2(G)$.
+\end{theorem}
+\begin{proof}
+  \uses{lem:pencil-d-embed-config-rank, lem:pencil-lifting-planes-motions,
+        lem:pencil-lifting-space-deficiency}
+  The configuration of $q$ in dimension two has no heights, and its point
+  at each body $v$ is the homogeneous picture point $(x_v, y_v, 1)$
+  (\cref{def:pencil-d-configuration}). So its rank is the rank of the
+  plane framework $P_q$ with these panel normals, which is
+  $3|V(G)| - \dim L(q)$ (\cref{lem:pencil-lifting-planes-motions}). The
+  flat configuration in dimension $d$ appends $d - 2$ zero heights to it.
+  As $G$ is connected, this adds $(D - 3)(|V(G)| - 1)$ to the rank
+  (\cref{lem:pencil-d-embed-config-rank}, with $d' = 2$). The sum is
+  \[
+    3|V(G)| - \dim L(q) + (D - 3)(|V(G)| - 1)
+    = D(|V(G)| - 1) + 3 - \dim L(q).
+  \]
+  The bound and its equality case follow from
+  $\dim L(q) \ge 3 + \operatorname{def}_2(G)$
+  (\cref{lem:pencil-lifting-space-deficiency}).
+
+  At $d = 3$ this is \cref{thm:pencil-flat-rank}, and its proof gives the
+  same count in every dimension. In dimension $d$ the hinge at an edge
+  $uv$ is the image of the join $b_u \vee b_v$ under the complement
+  isomorphism (\cref{def:panel-support-extensor}). Its inverse takes the
+  motions to the assignments of elements of $\bigwedge^2 K^{d+1}$ to the
+  bodies whose difference along each edge $uv$ is a multiple of
+  $b_u \vee b_v$. Let $\hat H \subseteq K^{d+1}$ be the
+  three-dimensional subspace of vectors with zero heights. The joins of
+  the points of $(q, 0)$ lie in $\bigwedge^2 \hat H$. As at $d = 3$, the
+  component of such an assignment in a complement of
+  $\bigwedge^2 \hat H$ is constant, as $G$ is connected, and its
+  component in $\bigwedge^2 \hat H$ is a family of lifting planes
+  (\cref{def:pencil-lifting-planes}). The complement has dimension
+  $D - 3$, where it has dimension $3$ at $d = 3$. So the motions have
+  dimension $D - 3 + \dim L(q)$, and rank--nullity in the
+  $D|V(G)|$-dimensional space of screw assignments gives the same rank.
+\end{proof}
+
+\begin{corollary}[When the flat configuration has the target, in every dimension]
+  \label{cor:pencil-d-flat-attains}
+  \uses{def:pencil-d-configuration, def:pencil-d-x0-attains,
+        def:D-deficiency}
+  Let $d \ge 3$ and $D = \binom{d+1}{2}$, let $G$ be connected, and let
+  $q$ be an admissible picture of $G$. The flat configuration $(q, 0)$ in
+  dimension $d$, all of whose heights are zero, has rank
+  $D(|V(G)| - 1) - \operatorname{def}_d(G)$ if
+  and only if $\dim L(q) = 3 + \operatorname{def}_d(G)$, and this holds
+  if and only if equality holds in
+  \cref{lem:pencil-lifting-space-deficiency} at $q$ and
+  $\operatorname{def}_2(G) = \operatorname{def}_d(G)$. If
+  $\dim L(q) \le 3 + \operatorname{def}_d(G)$, then the general
+  configuration of $G$ attains in dimension $d$
+  (\cref{def:pencil-d-x0-attains}).
+\end{corollary}
+\begin{proof}
+  \uses{thm:pencil-d-flat-rank, lem:pencil-lifting-space-deficiency,
+        lem:deficiency-antitone, def:pencil-main-picture,
+        lem:pencil-d-x0-one-witness}
+  The first equivalence is the exact rank of
+  \cref{thm:pencil-d-flat-rank}. As $G$ is connected and $2 \le d$, every
+  admissible picture $q'$ has
+  \[
+    \dim L(q') \;\ge\; 3 + \operatorname{def}_2(G) \;\ge\;
+    3 + \operatorname{def}_d(G)
+  \]
+  (\cref{lem:pencil-lifting-space-deficiency},
+  \cref{lem:deficiency-antitone}). At $q' = q$ this gives the second
+  equivalence.
+
+  Now suppose that $\dim L(q) \le 3 + \operatorname{def}_d(G)$. Then
+  $\dim L(q') \ge \dim L(q)$ at every admissible picture $q'$, so $q$ is
+  a main picture (\cref{def:pencil-main-picture}). By the exact rank, the
+  flat configuration $(q, 0)$ has rank at least
+  $D(|V(G)| - 1) - \operatorname{def}_d(G)$, and its heights, all zero,
+  lie in $L(q)^{d-2}$. As $G$ is connected, it has a body. So
+  \cref{lem:pencil-d-x0-one-witness} applies, and the general
+  configuration of $G$ attains in dimension $d$.
+
+  At $d = 3$ this is \cref{cor:pencil-flat-attains}. There the dimension
+  enters only through the flat rank and the comparison of
+  $\operatorname{def}_2$ with $\operatorname{def}_3$. Both hold in
+  dimension $d$, with $\operatorname{def}_d$ in place of
+  $\operatorname{def}_3$.
+\end{proof}
+
+\begin{corollary}[The general configuration attains when the two deficiencies agree, in every dimension]
+  \label{cor:pencil-d-jj-flat}
+  \uses{def:pencil-d-x0-attains, def:D-deficiency}
+  Let $K$ be infinite and $d \ge 3$, and let $G$ be connected and simple,
+  with at least three members in every closed neighbourhood. If
+  $\operatorname{def}_2(G) = \operatorname{def}_d(G)$, then the general
+  configuration of $G$ attains in dimension $d$
+  (\cref{def:pencil-d-x0-attains}).
+\end{corollary}
+\begin{proof}
+  \uses{thm:pencil-jj-equality, cor:pencil-d-flat-attains}
+  As $G$ is connected, it has a body. By Jackson and Jord\'an's equality
+  (\cref{thm:pencil-jj-equality}), some main picture $q$ of $G$ has
+  \[
+    \dim L(q) = 3 + \operatorname{def}_2(G) = 3 + \operatorname{def}_d(G).
+  \]
+  So the general configuration of $G$ attains in dimension $d$
+  (\cref{cor:pencil-d-flat-attains}). At $d = 3$ this is
+  \cref{cor:pencil-jj-flat}. The equality is planar, and the proof uses
+  it as it stands.
+\end{proof}
+
+The hypothesis of \cref{cor:pencil-d-jj-flat} does not depend on the
+dimension, so the corollary also follows from its case $d = 3$.
+
+\begin{remark}[Equal deficiencies in one dimension and in all]
+  \label{rem:pencil-d-flat-class}
+  Let $G$ be connected, and suppose that
+  $\operatorname{def}_2(G) = \operatorname{def}_d(G) = t$ for one
+  $d \ge 3$. Then $\operatorname{def}_{d'}(G) = t$ for every $d' \ge 2$.
+  Indeed, for a partition $P$ of $V(G)$ let
+  $c(P) = d_G(P) - (|P| - 1)$, which is nonnegative as $G$ is connected
+  (as in the proof of \cref{lem:deficiency-stable}). The value of $P$ at
+  a screw dimension $D'$ is then $|P| - 1 - (D' - 1)\,c(P)$. Let $P$
+  attain $\operatorname{def}_d(G)$, and let $D = \binom{d+1}{2} \ge 6$.
+  Then $|P| - 1 = t + (D - 1)\,c(P)$, so the planar value of $P$ is
+  $t + (D - 3)\,c(P)$. It is at most $\operatorname{def}_2(G) = t$, so
+  $c(P) = 0$. Then $|P| - 1 = t$, and $P$ has value $t$ at every $D'$.
+  So $\operatorname{def}_{d'}(G) \ge t$, and
+  $\operatorname{def}_{d'}(G) \le \operatorname{def}_2(G) = t$ for
+  $d' \ge 2$ (\cref{lem:deficiency-antitone}). In particular
+  $\operatorname{def}_3(G) = \operatorname{def}_d(G)$. So under the
+  hypotheses of \cref{cor:pencil-d-jj-flat} the general configuration of
+  $G$ attains in dimension three (\cref{cor:pencil-jj-flat},
+  \cref{lem:pencil-d-x0-attains-three}), and hence in dimension $d$
+  (\cref{lem:pencil-d-x0-attains-of-le}).
+\end{remark}
