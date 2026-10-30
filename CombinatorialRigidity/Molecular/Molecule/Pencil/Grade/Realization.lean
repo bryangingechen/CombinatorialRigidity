@@ -6,6 +6,7 @@ Authors: Bryan Gin-ge Chen
 module
 
 public import CombinatorialRigidity.Mathlib.LinearAlgebra.Matrix.BilinearForm
+public import CombinatorialRigidity.Molecular.GenericLift.HingeGeneric
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Statement
 public import Mathlib.LinearAlgebra.BilinearForm.Orthogonal
 
@@ -42,6 +43,10 @@ definition is hinge-coplanarity.
 * `HasGradedPencilRealization`: `def:pencil-d-rank-hypothesis`, the realization at the deficiency
   rank.
 * `hasGradedPencilRealization_two_iff`: the first equivalence of `lem:pencil-d-rank-agrees-three`.
+* `HasGradedDistinctPencilRealization`: `def:pencil-d-distinct-motive`, with independent normals at
+  every link.
+* `hasGradedDistinctPencilRealization_two_iff`: the second equivalence of
+  `lem:pencil-d-rank-agrees-three`.
 -/
 
 @[expose] public section
@@ -243,5 +248,45 @@ theorem hasGradedPencilRealization_two_iff (n : ℕ) (G : Graph α β) :
   · rintro ⟨F, normal, point, h, hrank⟩
     obtain ⟨plane, hplane⟩ := exists_hasPencilPlaneRealization_two_iff.2 ⟨point, h⟩
     exact ⟨F, normal, plane, hplane, hrank⟩
+
+/-- **An adjacent-distinct pencil realization in every dimension**
+(`def:pencil-d-distinct-motive`): a pencil realization at the deficiency rank
+(`HasGradedPencilRealization`) whose normals `b_u` and `b_v` are linearly independent at every link
+`uv`: the same framework, normals and subspaces realize it, and the independence is asked of the
+normals of the link, in the order of `HasGradedPencilRealization` (`K`, `k`, `n`, `G`). At grade `2`
+it is `HasDistinctPencilRealization`, whose independence is of the points, through the polarity
+(`hasGradedDistinctPencilRealization_two_iff`). -/
+def HasGradedDistinctPencilRealization (K : Type*) [Field K] (k n : ℕ) (G : Graph α β) : Prop :=
+  ∃ (F : BodyHingeFramework K k α β) (normal : α → Fin (k + 2) → K)
+    (plane : α → Submodule K (Fin (k + 2) → K)),
+    HasPencilPlaneRealization G F normal plane ∧
+    (∀ e u v, G.IsLink e u v → LinearIndependent K ![normal u, normal v]) ∧
+    (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
+      = screwDim k * ((V(G).ncard : ℤ) - 1) - G.deficiency n
+
+/-- **Adjacent-distinct, at the deficiency rank in dimension three**
+(`lem:pencil-d-rank-agrees-three`, second equivalence): a graph has an adjacent-distinct pencil
+realization in dimension three (`HasGradedDistinctPencilRealization` at grade `2`), with independent
+normals at the ends of every link, exactly when it has one in the sense of
+`HasDistinctPencilRealization`, with independent points. The polarity
+(`hasPencilPanelRealization_mapExtensor_screwComplementIso`) exchanges the normals and the points of
+a pencil realization, and keeps the rank (`finrank_span_rigidityRows_mapExtensor`); the plane form
+and the point form of one framework are `exists_hasPencilPlaneRealization_two_iff`. One polarity
+is applied in each direction. -/
+theorem hasGradedDistinctPencilRealization_two_iff (n : ℕ) (G : Graph α β) :
+    HasGradedDistinctPencilRealization K 2 n G ↔ HasDistinctPencilRealization K n G := by
+  constructor
+  · rintro ⟨F, normal, plane, h, hind, hrank⟩
+    obtain ⟨point, hpoint⟩ := exists_hasPencilPlaneRealization_two_iff.1 ⟨plane, h⟩
+    refine ⟨F.mapExtensor screwComplementIso, point, normal,
+      hasPencilPanelRealization_mapExtensor_screwComplementIso hpoint, hind, ?_⟩
+    rw [BodyHingeFramework.finrank_span_rigidityRows_mapExtensor]
+    exact hrank
+  · rintro ⟨F, normal, point, h, hind, hrank⟩
+    obtain ⟨plane, hplane⟩ := exists_hasPencilPlaneRealization_two_iff.2
+      ⟨normal, hasPencilPanelRealization_mapExtensor_screwComplementIso h⟩
+    refine ⟨F.mapExtensor screwComplementIso, point, plane, hplane, hind, ?_⟩
+    rw [BodyHingeFramework.finrank_span_rigidityRows_mapExtensor]
+    exact hrank
 
 end CombinatorialRigidity.Molecular

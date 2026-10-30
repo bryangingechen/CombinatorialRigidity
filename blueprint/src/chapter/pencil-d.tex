@@ -192,6 +192,8 @@ realization, though their hinges do not form a pencil.
 
 \begin{definition}[Adjacent-distinct pencil realization, in every dimension]
   \label{def:pencil-d-distinct-motive}
+  \lean{CombinatorialRigidity.Molecular.HasGradedDistinctPencilRealization}
+  \leanok
   \uses{def:pencil-d-rank-hypothesis}
   A multigraph $G$ has an \emph{adjacent-distinct} pencil realization
   in dimension $d$ when it has a pencil realization at the deficiency
@@ -207,7 +209,9 @@ scale of each hinge, which does not change the rank.
 
 \begin{lemma}[At the deficiency rank in dimension three]
   \label{lem:pencil-d-rank-agrees-three}
-  \lean{CombinatorialRigidity.Molecular.hasGradedPencilRealization_two_iff}
+  \lean{CombinatorialRigidity.Molecular.hasGradedPencilRealization_two_iff,
+        CombinatorialRigidity.Molecular.hasGradedDistinctPencilRealization_two_iff}
+  \leanok
   \uses{def:pencil-d-rank-hypothesis, def:pencil-d-distinct-motive,
         def:pencil-rank-hypothesis, def:pencil-distinct-motive}
   A multigraph has a pencil realization at the deficiency rank in
@@ -219,6 +223,7 @@ scale of each hinge, which does not change the rank.
   (\cref{def:pencil-distinct-motive}).
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-d-agrees-three, lem:pencil-self-dual, lem:screw-map-rows}
   The first equivalence is \cref{lem:pencil-d-agrees-three}, applied to
   one framework, so at one rank. For the second, the adjacent-distinct

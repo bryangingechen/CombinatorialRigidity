@@ -2,25 +2,26 @@
 
 **Status:** in progress, opened 2026-10-30 beside 42a (the PI's planning default, design doc §1,
 item 4), the Lean under `/coordinate-phase`. Forward mode: the dep-graph is
-`blueprint/src/chapter/pencil-d.tex`, 17 nodes, 11 green (the collineation lemma, the
-configuration, the scale-shift, the contraction's rank, the attaining definition and its `d = 3` agreement, `def:extensor-through-flat` and its point form, `def:pencil-d-realization` and its `d = 3` agreement, `def:pencil-d-rank-hypothesis`), Lean in `Pencil/Grade/`. The carrier is the PI's (2026-10-30, design doc §1): the
+`blueprint/src/chapter/pencil-d.tex`, 17 nodes, 13 green (the collineation lemma, the
+configuration, the scale-shift, the contraction's rank, the attaining definition and its `d = 3` agreement, `def:extensor-through-flat` and its point form, `def:pencil-d-realization` and its `d = 3` agreement, `def:pencil-d-rank-hypothesis`, `def:pencil-d-distinct-motive`, `lem:pencil-d-rank-agrees-three`), Lean in `Pencil/Grade/`. The carrier is the PI's (2026-10-30, design doc §1): the
 dual form with each body's 3-space as data, as the chapter states. Next concrete task:
-`def:pencil-d-distinct-motive` (`HasGradedDistinctPencilRealization`) with the second equivalence of
-`lem:pencil-d-rank-agrees-three`; `lem:pencil-d-point-configuration` and `lem:pencil-d-x0-one-witness` can interleave.
+`lem:pencil-d-point-configuration` (uses `dotPerp_dotPerp`) or `lem:pencil-d-x0-one-witness`; they interleave.
 
 ## Current state
 
-**Next:** `def:pencil-d-distinct-motive` (planned `HasGradedDistinctPencilRealization`: a
-`HasGradedPencilRealization` whose normals are linearly independent at every link), in
-`Grade/Realization.lean`, instantiated by the second equivalence of
-`lem:pencil-d-rank-agrees-three` (`hasGradedDistinctPencilRealization_two_iff`, through the
-polarity `lem:pencil-self-dual`, `lem:screw-map-rows`); check the `HasDistinctPencilRealization`
-carrier (normals vs points, same framework) before writing it. That node stays red, pinned to
-`hasGradedPencilRealization_two_iff` only, until then. `lem:pencil-d-point-configuration` (uses
-`dotPerp_dotPerp`) and `lem:pencil-d-x0-one-witness` (`Graph.x0AttainsGrade_of_exists`, using
-`Graph.liftingSpaceGrade`) can interleave.
+**Next:** `lem:pencil-d-point-configuration` (uses `dotPerp_dotPerp`) and `lem:pencil-d-x0-one-witness`
+(`Graph.x0AttainsGrade_of_exists`, using `Graph.liftingSpaceGrade`) can interleave; either is the
+next commit.
 
-**Landed:** `def:pencil-d-rank-hypothesis` (`Grade/Realization.lean`):
+**Landed:** `def:pencil-d-distinct-motive` and the second equivalence of `lem:pencil-d-rank-agrees-three`
+(`Grade/Realization.lean`): `HasGradedDistinctPencilRealization K k n G` is `HasGradedPencilRealization`
+plus independent normals `![normal u, normal v]` at every link; `hasGradedDistinctPencilRealization_two_iff`
+applies the polarity once per direction (the carrier check: `HasDistinctPencilRealization` asks
+independence of the POINTS, so the polar framework's points are the graded one's normals). The file
+now imports `GenericLift/HingeGeneric.lean` for `finrank_span_rigidityRows_mapExtensor`; the lemma
+node is green with both names and the chapter's proof text matches.
+
+`def:pencil-d-rank-hypothesis` (`Grade/Realization.lean`):
 `HasGradedPencilRealization K k n G` (order of `HasPencilRealization`, then `k`; `n` a parameter, the
 chapter's deficiency "at `D`" read at `n = k + 1`), and `hasGradedPencilRealization_two_iff`, the
 first equivalence of `lem:pencil-d-rank-agrees-three` (red until the second).
@@ -99,8 +100,8 @@ may refine a name, and the pin lands with the Lean.
 - [ ] `lem:pencil-d-point-configuration` — `PanelHingeFramework.hasPencilPlaneRealization_ofNormals`,
   `HasPencilPlaneRealization.supportExtensor_eq_smul_panelSupportExtensor`
 - [x] `def:pencil-d-rank-hypothesis` — `HasGradedPencilRealization`
-- [ ] `def:pencil-d-distinct-motive` — `HasGradedDistinctPencilRealization` (**next**)
-- [ ] `lem:pencil-d-rank-agrees-three` — `hasGradedPencilRealization_two_iff` (landed, node red),
+- [x] `def:pencil-d-distinct-motive` — `HasGradedDistinctPencilRealization`
+- [x] `lem:pencil-d-rank-agrees-three` — `hasGradedPencilRealization_two_iff`,
   `hasGradedDistinctPencilRealization_two_iff`
 - [x] `def:pencil-d-configuration` — `pencilConfigPointGrade`,
   `pencilConfigPointGrade_eq_pencilPicturePoint`, `pencilConfigPointGrade_eq_pencilConfigPoint`,
@@ -130,9 +131,8 @@ may refine a name, and the pin lands with the Lean.
 
 ## Hand-off / next phase
 
-The next commit is `def:pencil-d-distinct-motive` with the second equivalence of
-`lem:pencil-d-rank-agrees-three` (*Current state*); `lem:pencil-d-point-configuration` and
-`lem:pencil-d-x0-one-witness` can interleave. Optional, any time: the `k = 2` form
+The next commit is `lem:pencil-d-point-configuration` or `lem:pencil-d-x0-one-witness`
+(*Current state*; either, one session each). Optional, any time: the `k = 2` form
 `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv` is the new lemma at
 `k := 2` verbatim, so it could be re-proved from it once `Configuration.lean` imports
 `Grade/Collineation.lean` (not done: the commits stay additive).
