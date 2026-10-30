@@ -5,19 +5,19 @@ target is an informal proof, at every `d`, of the conditioned pair's three conju
 adjacent-distinct and a generic one), written as red nodes of `pencil-d.tex` before any more
 formalization. Its research tracks are closed: CERT (the certificates at every `d`) and NONDEG
 (C2-same, the PI's choice, with (W) proved). COUNT's Lean landed (11 green nodes). What remains
-is the write-up: W1–W9 written (the coverage checked by a fresh read), W10 to go. **Next:** W10. Plan
-and the PI's decisions: `notes/Phase42-design.md` (§1, §3 PD-ALL).
+is the write-up, W1–W10, all landed: an informal proof of all three conjuncts at every `d`, in
+draft. **Next:** a fresh read of W10's new parts, then the close. Plan and the PI's decisions: `notes/Phase42-design.md` (§1, §3 PD-ALL).
 
 ## Current state
 
 Opened 2026-10-30; the first `/coordinate-tracks 42d` sitting ran every track. **COUNT** is
 done: COUNT-A and COUNT-B, 11 green nodes in `sec:pencil-d-deficiency` (*Lean now*). **CERT**
-closed at review 1, **NONDEG** at review 2 (*Tracks*). **WRITE-UP**: W1–W9 have landed, one
-section of `pencil-d.tex` each (`sec:pencil-d-induction` and `-flat`, `-cut`, `-contract`,
-`-splitoff`, `-chains`, `-short`, `-long`, `-ear-deficiency`, `-coverage`, `-reduction`). The next
-concrete step is the hub's: dispatch W10, which takes NONDEG's pieces in the form the PI set
-(*Write-up*). A read-only fresh read (the PI's call) found `thm:pencil-d-coverage` holds as
-stated, with NONDEG's (A) a special case of it.
+closed at review 1, **NONDEG** at review 2 (*Tracks*). **WRITE-UP**: W1–W10 have landed (*Write-up*).
+A read-only fresh read (the PI's call) found `thm:pencil-d-coverage` holds as stated, with
+NONDEG's (A) a special case of it; a second one, on W10's new parts (the S9 quadric argument, the
+parametrized (W) proof, S25's restructuring, the assembly), is in flight. The next concrete step:
+record its verdict, then 42d's close (`PHASE-BOUNDARIES.md` *When this commit closes a phase*), in
+a later session (the PI: "Fresh read, then stop").
 
 In place at the open: the hub command (`.claude/commands/coordinate-tracks.md`), the write-up
 agent (`.claude/agents/writeup-opus.md`), `worktree.baseRef: head` in `.claude/settings.json`
@@ -33,7 +33,7 @@ The hub's registry. Count-free: each attack's status is its `state.md` (`HARNESS
 |---|---|---|---|---|
 | CERT | attack | `notes/attacks/cert/` | `attack-opus` | closed at review 1: R1 proved by hand at every `d` (workbook S1–S9) |
 | NONDEG | attack (a question) | `notes/attacks/nondeg/` | `attack-opus` | closed at review 2: C2-same, (W) proved (workbook S32–S38) |
-| WRITE-UP | write-up | `blueprint/src/chapter/pencil-d.tex`, new sections | `writeup-opus` | ready: slice W10 |
+| WRITE-UP | write-up | `blueprint/src/chapter/pencil-d.tex`, new sections | `writeup-opus` | done: W1–W10; a fresh read of W10 in flight |
 | COUNT | lean | *Lean now* below; nodes in `pencil-d.tex` | `phase-builder-opus` | done: A and B landed; C waits for formalization |
 
 `pencil-d.tex` has one writer in flight at a time: COUNT's commits and the write-up's slices
@@ -71,20 +71,23 @@ Conventions, binding on `writeup-opus`:
 - A step that fails stops the slice; the gap goes to the coordinator, and to the PI.
 
 Slices, leaf-first, one session each (a slice's nodes may `\uses` only nodes already written):
-- [x] **W1–W8** written, one section each (`sec:pencil-d-induction` and `-flat`, `-cut`,
+- [x] **W1–W10** written, one section each (`sec:pencil-d-induction` and `-flat`, `-cut`,
   `-contract`, `-splitoff`, `-chains`, `-short`, `-long`, `-ear-deficiency`, `-coverage`,
-  `-reduction`); their rows are in their commit messages. W4's `thm:pencil-d-splitoff` and W8's
+  `-reduction`, `-nondegenerate`, `-lift`, `-generic`); their rows are in their commit messages. W4's `thm:pencil-d-splitoff` and W8's
   `thm:pencil-d-open-ear-deficiency` have no consumer in the coverage and stay as standalone
   results (the PI, 2026-10-30, after W9: "(a) Keep standalone").
-- [ ] **W10** the generic conjunct under C2-same: S38's pieces, O8 (S33, the good-ear lemma
-  returning `W₀`), and S7 (a), S9 and S14, each a red node or cited by one; (W) by review 2's
-  shorter route (S36's base-generic witness placed in `S_L(Y)`, without S34's count or S35 (c)).
-  The PI, 2026-10-30, after review 2: "(b) Shorter route"; "Add S7 (a), S9, S14".
+  W10 follows the PI's form after NONDEG's review 2 ("(b) Shorter route"; "Add S7 (a), S9,
+  S14"), and keeps `cor:pencil-d-conditioned-pair`, the three conjuncts at `d`, as the headline
+  node (the PI, after W10: "(a) Keep it").
 
 ## Lemma checklist
 
 - [x] **CERT** closed (review 1); **NONDEG** closed (review 2; C2-same, the PI's).
-- [ ] **WRITE-UP** W1–W10.
+- [x] **WRITE-UP** W1–W10.
+- [ ] **Fresh read** of W10's new parts (in flight), its verdict recorded; a repair, if any, as
+  one more write-up slice.
+- [ ] **Close** 42d: `PHASE-BOUNDARIES.md`'s close checklist, with the chapter's end-to-end
+  re-read; formalization (design doc §3) then waits on the PI's word.
 - [x] **COUNT-A** and **COUNT-B** landed (*Lean now*); COUNT-C waits for formalization.
 
 ## Lean now
@@ -102,9 +105,9 @@ chain count behind S53 (a), is W5's red `lem:pencil-d-chain-count` until formali
 
 ## Hand-off / next phase
 
-Next concrete step: the `/coordinate-tracks 42d` hub dispatches W10, the generic conjunct under
-C2-same; the write-up then closes. CERT, NONDEG and COUNT are done.
-42d closes when the new sections give an informal proof at every `d` of the conjuncts the PI keeps.
+Next concrete step: record the fresh read of W10's new parts (a hub dispatched it at `cfb39281`;
+if it is lost, re-run it as a read-only `recon-opus`), then a session closes 42d by
+`PHASE-BOUNDARIES.md`. Every track is done. 42d closes when the new sections give an informal proof at every `d` of the conjuncts the PI keeps.
 Formalization (PD-CARRIER, PD-STEPS, PD-COVERAGE, PD-REDUCTION, PD-HEAD; design doc §3) follows
 at the PI's word.
 
