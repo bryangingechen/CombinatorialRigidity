@@ -518,6 +518,9 @@ $\operatorname{def}_2(G) \le 1$.
 
 \begin{lemma}[The deficiency stops changing]
   \label{lem:deficiency-stable}
+  \lean{Graph.Connected.deficiency_eq_of_deficiency_two_add_three_le,
+        Graph.Connected.deficiency_eq_of_two_add_deficiency_two_le}
+  \leanok
   \uses{def:D-deficiency}
   Let $G$ be a connected multigraph, and let $d' \le d$ with
   $\operatorname{def}_2(G) + 3 \le \binom{d'+1}{2}$, which holds in
@@ -525,6 +528,7 @@ $\operatorname{def}_2(G) \le 1$.
   $\operatorname{def}_{d'}(G) = \operatorname{def}_d(G)$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:deficiency-antitone}
   For a partition $P$ of $V(G)$ let $c(P) = d_G(P) - (|P| - 1)$, which
   is nonnegative as $G$ is connected (the proof of

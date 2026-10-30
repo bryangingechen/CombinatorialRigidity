@@ -2,22 +2,19 @@
 
 **Status:** in progress, opened 2026-10-30 by the PI (design doc §3's scope as written), a
 sub-phase of Phase 42 beside 42a. Forward mode, the Lean under `/coordinate-phase`: the dep-graph
-is `blueprint/src/chapter/pencil-d.tex` §`sec:pencil-d-stable`, 9 nodes, all red, no Lean yet.
+is `blueprint/src/chapter/pencil-d.tex` §`sec:pencil-d-stable`, 9 nodes, 1 green (`lem:deficiency-stable`), 8 red.
 The open corrected the deficiency lemma (it needs `G` connected) and found its proof gives a
-sharper range, put to the PI (*Blockers*). Next concrete task: `lem:deficiency-stable`.
+sharper range, put to the PI (*Blockers*). `lem:deficiency-stable` landed (the sharp form and §3's form, `Deficiency.lean`). Next concrete task: `def:pencil-d-embedding`.
 
 ## Current state
 
-**Next:** `lem:deficiency-stable`, a leaf (its `\uses` all green), in `Molecular/Deficiency.lean`
-beside `Graph.Connected.deficiency_le_deficiency_of_le`: on a connected `G`, `n' ≤ n` and
-`G.deficiency 2 + 3 ≤ bodyBarDim n'` give `G.deficiency n' = G.deficiency n`, and §3's form
-`2 + G.deficiency 2 ≤ n'` as a corollary (`bodyBarDim n' ≥ C(t + 3, 2) ≥ t + 3`). Route: `≥` is
-the antitone lemma; for `≤`, per labeling, `numParts ≤ crossings + 1`
-(`Connected.numParts_le_ncard_crossingEdges_add_one`) splits a tree quotient, whose value is the
-same at every `n`, from a cyclic one, whose value at `n'` is at most `0 ≤ def_n`, by `nlinarith`
-from `partitionDef_le_deficiency 2 f`. A scratch proof of the sharp form compiles
-(`scratch/42c/Sharp.lean`, gitignored; check it with `lake lean` first if still there). A new
-declaration in `Deficiency.lean` rebuilds its importers once (most of `Molecular/`).
+**Next:** `def:pencil-d-embedding` (`gradeEmbed`, `screwEmbed` and their injectivity), a leaf; then
+`lem:screw-embedding-rank` and `lem:pencil-d-x0-attains-distinct` (*Lemma checklist*).
+
+**Landed:** `lem:deficiency-stable` (green): `Graph.Connected.deficiency_eq_of_deficiency_two_add_three_le`
+(the sharp range, the scratch proof transcribed unchanged but for restoring `deficiency_nonneg n`,
+needed by the cyclic arm) and `Graph.Connected.deficiency_eq_of_two_add_deficiency_two_le`
+(§3's form, via `bodyBarDim n' ≥ n' + 1`, as `Nat.le_div_iff_mul_le` plus `nlinarith`).
 
 **Landed (the open):** the section `sec:pencil-d-stable`, its nodes red with planned names
 (*Lemma checklist*); the statement checks against the definition bodies (*Decisions*); the
@@ -48,9 +45,9 @@ Lean.
 Planned `\lean{...}` names (namespace `CombinatorialRigidity.Molecular` unless `Graph.`); a builder
 may refine a name, and the pin lands with the Lean.
 
-- [ ] `lem:deficiency-stable` — `Graph.Connected.deficiency_eq_of_deficiency_two_add_three_le`,
-  `Graph.Connected.deficiency_eq_of_two_add_deficiency_two_le` (**next**)
-- [ ] `def:pencil-d-embedding` — `gradeEmbed` (`ι`, for `k' ≤ k`), `screwEmbed` (`φ`),
+- [x] `lem:deficiency-stable` — `Graph.Connected.deficiency_eq_of_deficiency_two_add_three_le`,
+  `Graph.Connected.deficiency_eq_of_two_add_deficiency_two_le`
+- [ ] `def:pencil-d-embedding` (**next**) — `gradeEmbed` (`ι`, for `k' ≤ k`), `screwEmbed` (`φ`),
   `gradeEmbed_injective`, `screwEmbed_injective` (`exteriorPower.map_injective_field`)
 - [ ] `lem:pencil-d-embedding-join` — `exteriorPower_map_normalsJoin` (FRICTION),
   `screwEmbed_panelSupportExtensor`
@@ -81,9 +78,8 @@ may refine a name, and the pin lands with the Lean.
 
 ## Hand-off / next phase
 
-The next commit is `lem:deficiency-stable` (*Current state*), with its `\lean` and `\leanok` in
-`pencil-d.tex`. The other leaves are `def:pencil-d-embedding`, `lem:screw-embedding-rank` and
-`lem:pencil-d-x0-attains-distinct`; then `lem:pencil-d-embedding-join` (with FRICTION's
+The next commit is `def:pencil-d-embedding` (*Current state*). The other leaves are
+`lem:screw-embedding-rank` and `lem:pencil-d-x0-attains-distinct`; then `lem:pencil-d-embedding-join` (with FRICTION's
 `normalsJoin` map lemma), the statement and configuration forms, `lem:pencil-d-x0-attains-of-le`,
 and the theorem last. Whether the theorem's hypothesis widens to `def_2 ≤ 3` is the PI's
 (*Blockers*); no leaf waits on it.
