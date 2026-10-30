@@ -110,6 +110,25 @@ moment you resolve the entry) is what makes the sweep a pure
 to be re-derived by re-reading entries later.
 
 ## Open
+### [open] No linear-equivalence form of `contragredient`, and no `exteriorPower.map 2` lemma for `normalsJoin`
+- **Where it bit:** Phase 42b, `lem:pencil-d-rank-collineation` (`Pencil/Grade/Collineation.lean`,
+  `panelSupportExtensor_linearEquiv_eq_det_smul` and its caller). The screw map
+  `screwEquivOfLinearEquiv` takes a `LinearEquiv`, and `Meet.lean`'s `contragredient` is a `LinearMap`;
+  `exists_contragredient_linearEquiv` (`Pencil/Arms.lean`) is an equiv, but in the dot-product form
+  with `g` on the left (a five-step `rw` to `complementIso_map_contragredient_eq`'s `toDual` form),
+  and its pin is `lem:pencil-cut-nondegeneracy`, an edge `blueprint-deps.py` reports missing.
+- **Friction:** built inline, `toDualEquiv ≪≫ₗ g.symm.dualMap ≪≫ₗ toDualEquiv.symm`, which is
+  `contragredient g` by definition, so `contragredient_toDual_pairing g` types it. Also: the join of
+  `g n₁, g n₂` as `exteriorPower.map 2 g (normalsJoin n₁ n₂)` took `rw [normalsJoin, normalsJoin,
+  exteriorPower.map_apply_ιMulti]; congr 1; funext i; fin_cases i <;> rfl`; mathlib's
+  `LinearEquiv.smulOfUnit` has no `_apply` lemma (`smulOfNeZero` has one, so `M` uses it); and
+  `LinearMap.det ↑g ≠ 0` for an equiv is `LinearEquiv.coe_det g ▸ (LinearEquiv.det g).ne_zero`.
+- **Proposed fix:** `contragredientEquiv` beside `contragredient` in `Meet.lean`, and
+  `exteriorPower_map_normalsJoin` in `PanelLayer.lean`; not added here, to keep the commit off two
+  files upstream of the whole tree. The `k + 2 - 2` cast to `ScrewSpace K k` was no friction: `rfl`
+  closes `det g • ⋀^(k+2-2) h (complementIso _ X) = det g • screwEquivOfLinearEquiv h (…)`.
+- **Status:** open.
+
 ### [idiom] `simp [h, annihRow_apply_self]` does not fire: the `@[simp]` `annihRow_apply` unfolds the row first
 - **Where it bit:** Phase 41e, item U12's spike (`case_II_placement_rank`, `CaseII.lean`, the rows of
   `G_v^{ab}` at an edge `e ≠ e₀`): with `h : FG.supportExtensor e = -FGab.supportExtensor e`, the

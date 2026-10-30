@@ -7,10 +7,10 @@
 is the PI's (§1): R2's steps, Result 15's embedding as the base row, any induction on `d` left to
 Tier 2. SHORT-CORE's attack brief awaits the PI's reading. **42b** (PD-STATE,
 `notes/Phase42b.md`) opened beside it, the statement layer in `Pᵈ`: its chapter
-`blueprint/src/chapter/pencil-d.tex`, all red. The carrier check (§2.3 CARRIER) found the dual form
-right once each body's plane is data; that reading is for the PI's confirmation, and the first leaf
-does not depend on it. PD-STABLE is laid out in §3. Next concrete task: 42b's first leaf, the
-collineation lemma in every `d`. Evidence: `notes/Strata.md`, Results 12–27.
+`blueprint/src/chapter/pencil-d.tex`, its collineation lemma green. The carrier check (§2.3
+CARRIER) found the dual form right once each body's plane is data; that reading is for the PI's
+confirmation, and the configuration nodes do not depend on it. PD-STABLE is laid out in §3. Next
+concrete task: 42b's configuration in every `d` (`def:pencil-d-configuration`). Evidence: `notes/Strata.md`, Results 12–27.
 
 This file is the phase's entry point: the target (§0), the PI's decisions (§1), the recon (§2),
 the layers by stable code (§3) and the open questions (§4). Letters are minted when a sub-phase

@@ -288,6 +288,9 @@ lie in a plane.
 
 \begin{lemma}[A collineation of the normals preserves the rank, in every dimension]
   \label{lem:pencil-d-rank-collineation}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv_grade,
+        CombinatorialRigidity.Molecular.panelSupportExtensor_linearEquiv_eq_det_smul}
+  \leanok
   \uses{def:panel-hinge-framework, def:rigidity-matrix}
   Let $g$ be an invertible linear map of $K^{d+1}$. If panel normals $b$
   and $b'$ satisfy $b'_w = g(b_w)$ at every body $w$ of $G$, the
@@ -296,14 +299,16 @@ lie in a plane.
   the same rank.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{def:panel-support-extensor, lem:complement-iso-toDual,
-        lem:screw-map-rows}
+        def:induced-screw-map, lem:screw-map-rows}
   The hinge $C(b_u, b_v)$ is the image of the join $b_u \vee b_v$ under
   the complement isomorphism (\cref{def:panel-support-extensor}). By its
   defining property (\cref{lem:complement-iso-toDual}), that isomorphism
   takes the map induced by $g$ on $\bigwedge^2 K^{d+1}$ to $\det g$ times
-  the map induced on $\bigwedge^{d-1} K^{d+1}$ by the inverse transpose
-  of $g$, as in the proof of \cref{lem:meet-two-hyperplanes}. So
+  the screw map $\Lambda_h$ (\cref{def:induced-screw-map}) of the inverse
+  transpose $h$ of $g$, as in the proof of
+  \cref{lem:meet-two-hyperplanes}. So
   $C(g b_u, g b_v)$ is the
   image of $C(b_u, b_v)$ under one invertible linear map of the screw
   space, the same at every edge, and the two ranks agree
