@@ -694,6 +694,11 @@ $\operatorname{def}_2(G) \le 3$.
 
 \begin{lemma}[Zero heights add to the rank]
   \label{lem:pencil-d-embed-config-rank}
+  \lean{CombinatorialRigidity.Molecular.padHeights,
+        CombinatorialRigidity.Molecular.pencilConfigPointGrade_padHeights,
+        Graph.finrank_span_rigidityRows_ofNormals_pencilConfigPointGrade_padHeights,
+        Graph.padHeights_mem_liftingSpaceGrade}
+  \leanok
   \uses{def:pencil-d-configuration, def:pencil-d-embedding,
         def:pencil-lifting-space}
   Let $G$ be connected and $2 \le d' \le d$, with $D'$ and $D$ as in
@@ -705,9 +710,11 @@ $\operatorname{def}_2(G) \le 3$.
   $z^i$ lies in $L(q)$, so does every height of $z$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-d-embedding-join, lem:screw-embedding-rank}
   The point of $(q, z)$ at each body is the image under $\iota$ of the
-  point of $(q, z')$ (\cref{def:pencil-d-configuration}). So the hinge
+  point of $(q, z')$ (\cref{def:pencil-d-configuration}), as $\iota$
+  inserts its zeros before the last coordinate. So the hinge
   $C(b_u, b_v)$ at each edge of the panel-hinge framework of $(q, z)$ is
   the image under $\varphi$ of that of $(q, z')$
   (\cref{lem:pencil-d-embedding-join}), and

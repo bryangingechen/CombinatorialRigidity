@@ -110,6 +110,20 @@ moment you resolve the entry) is what makes the sweep a pure
 to be re-derived by re-reading entries later.
 
 ## Open
+### [idiom] `gradeEmbed`'s coordinate lemmas index by `Fin.castLE`; a configuration point's height by `i.castSucc.succ.succ`
+- **Where it bit:** Phase 42c, `pencilConfigPointGrade_padHeights` (`Pencil/Grade/ZeroHeights.lean`,
+  `lem:pencil-d-embed-config-rank`), after `Fin.cases`, `Fin.cases`, `Fin.lastCases` on the index.
+- **Friction:** at a height `i < m'`, `gradeEmbed_apply_castLE` needs the index as `Fin.castLE _ j`:
+  a `Fin.ext (by simp)` identity `i.castSucc.succ.succ = Fin.castLE _ ((i.castLT hi).succ.succ)`,
+  then `← Fin.succ_castSucc` twice to reach `pencilConfigPointGrade_apply_height`'s form. At the
+  indices `0` and `1`, `exact (gradeEmbed_apply_castLE _ x 0).symm` closes by defeq where `simpa
+  using` fails (`Fin.castLE _ 1` does not simp to `Fin.succ 0`), and `x` must be given explicitly or
+  the `Field` instance is stuck. In `Graph.padHeights_mem_liftingSpaceGrade`, the zero column
+  `fun w => 0` left by `simp [padHeights, hi]` closes with `← Pi.zero_def` in the simp set.
+- **Proposed fix:** none for one consumer; a value-bound `gradeEmbed_apply_of_lt`
+  (`gradeEmbed h x j = x ⟨j, _⟩` for `↑j < k' + 1`) would shorten a second.
+- **Status:** idiom.
+
 ### [open] `BodyHingeFramework.map` and the zero-hinge motion lemmas sit in `Pencil/Grade/Embedding.lean`, not beside `mapExtensor`
 - **Where it bit:** Phase 42c, `lem:screw-embedding-rank` (`Pencil/Grade/Embedding.lean`). The
   grade-changing `BodyHingeFramework.map` (hinges `φ C(p(e))`) belongs beside `mapExtensor` in

@@ -2,24 +2,34 @@
 
 **Status:** in progress, opened 2026-10-30 by the PI (design doc §3's scope as written), a
 sub-phase of Phase 42 beside 42a. Forward mode, the Lean under `/coordinate-phase`: the dep-graph
-is `blueprint/src/chapter/pencil-d.tex` §`sec:pencil-d-stable`, 9 nodes, 5 green (`lem:deficiency-stable`, `def:pencil-d-embedding`,
-`lem:pencil-d-embedding-join`, `lem:pencil-d-x0-attains-distinct`, `lem:screw-embedding-rank`), 4 red.
+is `blueprint/src/chapter/pencil-d.tex` §`sec:pencil-d-stable`, 9 nodes, 6 green (`lem:deficiency-stable`, `def:pencil-d-embedding`,
+`lem:pencil-d-embedding-join`, `lem:pencil-d-x0-attains-distinct`, `lem:screw-embedding-rank`,
+`lem:pencil-d-embed-config-rank`), 3 red.
 The open corrected the deficiency lemma (it needs `G` connected) and found its proof gives a
-sharper range; the PI widened the theorem to `def_2 ≤ 3` (*Architectural choices*). Next concrete task: `lem:pencil-d-embed-config-rank`.
+sharper range; the PI widened the theorem to `def_2 ≤ 3` (*Architectural choices*). Next concrete task: `lem:pencil-d-x0-attains-of-le`.
 
 ## Current state
 
-**Next:** `lem:pencil-d-embed-config-rank`, on the theorem's path (then
-`lem:pencil-d-x0-attains-of-le`, the theorem); size unassessed. It applies
-`BodyHingeFramework.finrank_span_rigidityRows_map_injective (F : BodyHingeFramework K k' α β)
-(hφ : Injective φ) (hG : F.graph.Connected) : (finrank (span (F.map φ).rigidityRows) : ℤ) =
-finrank (span F.rigidityRows) + ((screwDim k : ℤ) − screwDim k') * ((F.graph.vertexSet.ncard : ℤ) − 1)`
-at `φ = screwEmbed h` (`screwEmbed_injective`), once the configuration's framework at `(q, z)` is
-`(… at (q, z')).map (screwEmbed h)`; if they agree only at links, transfer the rank by
-`span_rigidityRows_eq_of_infinitesimalMotions_eq` and `infinitesimalMotions_eq_of_isLink_supportExtensor`.
-The other leaf, `lem:pencil-d-embed-realization` (the statement form), is off that path.
+**Next:** `lem:pencil-d-x0-attains-of-le`, `Graph.X0AttainsGrade.of_le` (then the theorem); likely
+one commit. The blueprint proof transcribes: from `G.X0AttainsGrade K m'` take `ends`, `P`, `hlinks`;
+a non-root of `P` is admissible, so `Graph.exists_mvPolynomial_isMainPicture`
+(`lem:pencil-x0-main-picture-open`) gives a polynomial whose non-roots are main pictures; a non-root
+`q₀` of the product, then `z' ∈ L(q₀)^m'` at the target rank (the `R` clause); pad it
+(`Graph.padHeights_mem_liftingSpaceGrade`, and the rank by
+`Graph.finrank_span_rigidityRows_ofNormals_pencilConfigPointGrade_padHeights` with `G` connected);
+close by `Graph.x0AttainsGrade_of_exists` (`[Finite α] [Finite β]`, `V(G)` nonempty, the same
+`ends`). The arithmetic: `D′(|V| − 1) − def_{m'+2} + (D − D′)(|V| − 1) = D(|V| − 1) − def_{m+2}` by
+the deficiency hypothesis. Home: `Pencil/Grade/ZeroHeights.lean`, which then imports
+`Grade/Witness.lean`. The other leaf, `lem:pencil-d-embed-realization`, is off that path.
 
-**Landed (latest):** `lem:screw-embedding-rank` (green, one commit), in `Pencil/Grade/Embedding.lean`,
+**Landed (latest):** `lem:pencil-d-embed-config-rank` (green, one commit), new file
+`Pencil/Grade/ZeroHeights.lean` (over `Grade/Carrier.lean` and `Grade/Embedding.lean`): `padHeights`
+(zero heights appended; no `m' ≤ m` argument, which the linter would flag unused),
+`pencilConfigPointGrade_padHeights` (`ι` of the point, by `Fin.cases` on the index), the rank in `ℤ`
+(the framework is `(q, z')`'s `.map (screwEmbed _)`, by `simp only` on the two fields), and
+`Graph.padHeights_mem_liftingSpaceGrade`.
+
+**Landed:** `lem:screw-embedding-rank` (green, one commit), in `Pencil/Grade/Embedding.lean`,
 which now also imports `GenericityDevice.lean`: `BodyHingeFramework.map` (any linear `φ`,
 grade-changing), the motion count `finrank_infinitesimalMotions_map_injective` (in `ℕ`) and the rank
 form above (in `ℤ`, as `HasGradedPencilRealization` states its rank), with two zero-hinge helpers
@@ -87,9 +97,9 @@ may refine a name, and the pin lands with the Lean.
   `BodyHingeFramework.finrank_infinitesimalMotions_map_injective`
 - [ ] `lem:pencil-d-embed-realization` — `HasPencilPlaneRealization.map_gradeEmbed`,
   `hasGradedPencilRealization_of_le`, `hasGradedDistinctPencilRealization_of_le`
-- [ ] `lem:pencil-d-embed-config-rank` — `pencilConfigPointGrade_padHeights` (`ι` of the point),
-  `Graph.finrank_span_rigidityRows_ofNormals_pencilConfigPointGrade_padHeights`,
-  `Graph.padHeights_mem_liftingSpaceGrade`
+- [x] `lem:pencil-d-embed-config-rank` — `padHeights`, `pencilConfigPointGrade_padHeights` (`ι` of
+  the point), `Graph.finrank_span_rigidityRows_ofNormals_pencilConfigPointGrade_padHeights`
+  (`G` connected, `[Finite α]`), `Graph.padHeights_mem_liftingSpaceGrade`
 - [ ] `lem:pencil-d-x0-attains-of-le` — `Graph.X0AttainsGrade.of_le` (`[Infinite K]`, `G` connected,
   `G.deficiency (m' + 2) = G.deficiency (m + 2)`)
 - [x] `lem:pencil-d-x0-attains-distinct` — `Graph.X0AttainsGrade.hasGradedDistinctPencilRealization`
@@ -102,10 +112,9 @@ may refine a name, and the pin lands with the Lean.
 
 ## Hand-off / next phase
 
-The next commit is `lem:pencil-d-embed-config-rank` (*Current state*; size unassessed: say whether it
-is one commit or two once `pencilConfigPointGrade_padHeights` is laid out); then
-`lem:pencil-d-x0-attains-of-le`, and the theorem last, at `def_2 ≤ 3` (the PI's widening from `≤ 1`,
-*Architectural choices*). The statement form `lem:pencil-d-embed-realization` lands in any slot.
+The next commit is `lem:pencil-d-x0-attains-of-le` (*Current state*: the route, likely one commit);
+then the theorem last, at `def_2 ≤ 3` (the PI's widening from `≤ 1`, *Architectural choices*). The
+statement form `lem:pencil-d-embed-realization` lands in any slot.
 
 ## Decisions made during this phase
 
@@ -138,3 +147,7 @@ is one commit or two once `pencilConfigPointGrade_padHeights` is laid out); then
   `V(G)` add `(D − D′)` each to the motion count and cancel in the rank; the blueprint proof now
   counts them (`B ⊇ V(G)`). `map` and the zero-hinge helpers sit in `Embedding.lean`; their natural
   home is upstream (FRICTION).
+- **`lem:pencil-d-embed-config-rank`:** home `Pencil/Grade/ZeroHeights.lean`, a sibling, as
+  `Embedding.lean`'s imports do not reach `Grade/Carrier.lean`; `padHeights` takes no `m' ≤ m` (the
+  lemmas do). The configuration's framework *equals* the mapped one (both fields agree everywhere),
+  so no transfer at links was needed. Friction: FRICTION's `gradeEmbed` index-form idiom.
