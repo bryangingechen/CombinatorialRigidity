@@ -1273,38 +1273,25 @@ panel theorem among them. `d = 2` (Jackson–Jordán's pin-collinear theorem) an
 are formalized; `d = 4, 5, 6` reach the generic rank at every graph measured (36 simple graphs with
 `n ≤ 12`, 8 past that cap), and every `d` follows from Phase 40 when `def_3(G) ≤ 1`. The phase is
 research first: **PD-RECON** (42a, `notes/Phase42a.md`) asks, step by step, whether Phase 40's
-induction runs in `Pᵈ`, by induction on `d` or directly. Then, by stable code: PD-STATE and
-PD-STABLE (the statement layer and the `def_3 ≤ 1` corollary, independent of the route), Phase
-40's carrier, steps and coverage in `Pᵈ`, Phase 39's reduction, and the headline. PD-RECON's step
-table (2026-10-29) finds the carrier, both lemmas, the flat rank, the cut, bridge, contraction and
-split-off steps, the partition estimates and Phase 39's reduction dimension-general, given routine
-or formal work. The short ears, the one-body and orbit ears and the generic statement's route B
-fail as written: in `P³` two bodies' planes always share a line, in `Pᵈ` they need not. The steps
-break at `d = 4` and `d = 5`, and the conjecture's new content at `d` is the sparse graphs with
-`def_3 ≥ d − 2`. One driver mode then tested the flat formulas (they hold) and the cycle and
-ear certificates. These exist at `d ≤ 6` over every field, the largest by a construction in
-every `d`. It also measured graphs built where the proof breaks. All 38 new cells there reach the
-generic rank, so on the graphs measured the obstruction is the proof's, not the statement's.
-A second mode then tested the one-body ear where it breaks. Phase 40's step needs the smaller
-graph at its generic rank on a special locus. In `P⁴` and `P⁵` it reaches it there at every cell
-where the step's hypotheses hold, so a repaired step is not refuted; where they fail it can
-provably fall short. A third mode tested the short ears where their step can fail: on 198 such
-cells at `d = 4, 5` the obstruction never occurs, and for ears of at least `C(d−1, 2) + 3`
-interior bodies it is ruled out at every graph, so their new mathematics is confined to 3–5
-interior bodies at `d = 4`. A fourth mode tested the one- and two-body ears where adding the ear
-lowers the deficiency, at `d = 3..6`. Wherever Phase 40's merged hypothesis holds, both steps'
-counts hold and Phase 40's two-body route reaches them; where it fails, the route falls one short
-at every `d`, `d = 3` included. So the one-body ear's new mathematics is a motive at `d ≥ 5`, an
-insertion lemma and one containment, measured only. A fifth mode tested the coverage, the case
-analysis that picks a step for each graph, at `d = 3..6`. By hand, its last case holds in every
-dimension, so the one-body ear's step with the larger deficiency is never needed, and from `d = 4`
-the one-body ear is needed at all only on one class of graphs (ONE-CLASS: `def_D = 0`, only
-one-body chains, no contractible core). On subdivisions of ten small graphs every graph at
-`d = 4, 5, 6` has a step that needs no new mathematics. Two subdivisions of Petersen's graph need
-the short ears. Next, by the PI's defaults (2026-10-29): the statement layer and the `def_3 ≤ 1`
-corollary open beside the research; whether ONE-EAR or ONE-CLASS is attacked first is the PI's
-call. The targets are three tiers: every `d` at `def_3 ≤ 1`, at `def_3 ≤ 2` (a `P⁴` theorem), and
-every `d`.
+induction runs in `Pᵈ`. Then, by stable code: PD-STATE and PD-STABLE (the statement layer and the
+`def_3 ≤ 1` corollary, independent of the route), Phase 40's carrier, steps and coverage in `Pᵈ`,
+Phase 39's reduction, and the headline. PD-RECON's step table finds most of Phase 40's induction
+and Phase 39's reduction dimension-general, given routine or formal work. The short ears, the
+one-body and orbit ears and the generic statement's route B fail as written: in `P³` two bodies'
+planes always share a line, in `Pᵈ` they need not. The steps break at `d = 4` and `d = 5`, and the
+conjecture's new content at `d` is the sparse graphs with `def_3 ≥ d − 2`. Five test modes then
+measured where the proof breaks. Every graph built there reaches the generic rank, so the
+obstruction is the proof's, not the statement's. The short ears' obstruction never occurred, and
+a construction confines their new mathematics to 3–5 interior bodies at `d = 4` (SHORT-CORE). The
+one-body ear needs new mathematics from `d = 5` (ONE-EAR), but the coverage, the case analysis
+that picks a step for each graph, needs it only on one class of graphs (ONE-CLASS). At the PI's
+call that class came first, and it is Phase 40's: a graph whose chains all have one interior body
+has a contractible core or `def_6 = 0`, and then Phase 40's witness embeds. So in every `Pᵈ` the
+coverage needs, beyond formal work, only SHORT-CORE; ONE-EAR waits for the generic conjunct.
+Next, by the PI's defaults: the statement layer and the `def_3 ≤ 1` corollary open beside the
+research, and SHORT-CORE's attack track follows a second read of contraction and the two-body ear.
+The targets are three tiers: every `d` at `def_3 ≤ 1`, at `def_3 ≤ 2` (a `P⁴` theorem), and every
+`d`.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 

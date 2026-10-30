@@ -1492,6 +1492,8 @@ catalogued §1 primitives only (`exactcore`, `kbare_common.exact_deficiency`,
 `pitch`'s `klein` / `det4` / `theta_edges`, `hybrid_gates.build_rigidity_extensors`).
 Its per-mode prose is its module docstring, and its reading is
 `notes/Strata.md`, which is also the evidence of PENCIL-D (Phase 42, `notes/Phase42-design.md`).
+`oneclass.py` (2026-10-29) is a second driver here that imports `strata.py` (`core_def` and the
+coverage helpers), so a change to `strata.py` obliges re-running `oneclass.py` too.
 
 | invocation | ~time | cited by |
 |---|---|---|
@@ -1503,6 +1505,7 @@ Its per-mode prose is its module docstring, and its reading is
 | `python3 notes/scripts/strata/strata.py --short --seed N`, `N ∈ {1, 2, 3}` | 70 s | `notes/Strata.md` *Evidence* (Result 24: Phase 42a's T3, the short ears' danger cells); `def_certified` (a partition matched by a generic rank, past the DP cap), `rel_screws` and the ear specs are direction-local |
 | `python3 notes/scripts/strata/strata.py --orbit --seed N`, `N ∈ {1, 2, 3}` | 60 s | `notes/Strata.md` *Evidence* (Result 25: Phase 42a's T4, second half, the orbit ears); `orbit_search`, `orbit_meet` and `orbit_cell` are direction-local |
 | `python3 notes/scripts/strata/strata.py --coverage --seed N`, `N ∈ {1, 2, 3}` | 110 s | `notes/Strata.md` *Evidence* (Result 26: Phase 42a's T5, the coverage read at `D`); `core_def` (exact `def_D` of a subdivision, a DP over its core), `cov_cell` and `cov_core` are direction-local |
+| `python3 notes/scripts/strata/oneclass.py --cores --necklaces`; `(for n in 4 5 6 7 8; do geng -C -d3 -q $n 0:12; done) \| python3 notes/scripts/strata/oneclass.py --g6 -` (nauty's `geng`, external) | 20 s; 50 s | `notes/Strata.md` *Evidence* (Result 27: Phase 42a's ONE-CLASS, a core at every `D ≥ 6` when `def_6 > 0` and no two bodies of degree two are adjacent); `least_rigid`, `necklace` and `BLOBS` are direction-local |
 
 Per-driver prose — *what* each mode asserts — stays in the four per-directory
 READMEs (`escape/README.md`, `kbare/README.md`, `w4/README.md`,

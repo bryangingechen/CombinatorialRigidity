@@ -3,10 +3,11 @@
 **Status:** its `Pᵈ` pencil part opened as **Phase 42** (PENCIL-D, the PI, 2026-10-29; plan
 `notes/Phase42-design.md`). Three sessions with the PI after Phase 40: the first found
 Results 1–10; the second checked the literature (*Literature*) and ran Results 9–11's tests; the
-third set the `Pᵈ` picture, Results 12–19. Phase 42a's tests added Results 20–26. Next concrete
-task: Phase 42a's (`notes/Phase42a.md`). No Lean, no blueprint here. Evidence driver:
-`notes/scripts/strata/strata.py` (exact ℚ, seeded). Editing discipline as for phase notes (≤ 8-line
-entries). `HARNESS.md` *Evidence* and *Reproducibility* bind this work; it is not an attack track.
+third set the `Pᵈ` picture, Results 12–19. Phase 42a's tests added Results 20–27. Next concrete
+task: Phase 42a's (`notes/Phase42a.md`). No Lean, no blueprint here. Evidence drivers:
+`notes/scripts/strata/strata.py` (exact ℚ, seeded) and `oneclass.py` beside it. Editing
+discipline as for phase notes (≤ 8-line entries). `HARNESS.md` *Evidence* and *Reproducibility*
+bind this work; it is not an attack track.
 
 ## The question
 
@@ -254,6 +255,15 @@ in every `Pᵈ` (Results 12–19), which PENCIL-D sets out to prove.
     1059, 1021, 957 cells at `d = 4, 5, 6`; 542 more with paths of 1–2) every cell has such a step,
     a core at all but three. Petersen with every edge a 4-path (`d = 4`) or a 6-path (`d = 5`) has
     only SHORT-CORE's rows. The arguments and cells: `notes/Phase42-design.md` §2.4.
+27. `[PROVED]`, checked `[MEASURED]`: **ONE-CLASS is Phase 40's** (Phase 42a; `oneclass.py`).
+    Let `G` be sparse, of minimum degree two, with no two bodies of degree two adjacent, and let
+    `D ≥ 6`. If `def_6(G) > 0`, a set of least `s_3` among those of `def_D` zero is a core at `D`.
+    So a graph whose chains are all one-body has a core at `D`, or `def_6(G) = 0 = def_D(G)`, and
+    then Phase 40's `P³` witness embeds (Result 15). ONE-CLASS needs no ONE-EAR, and with Result
+    26 the coverage at `D ≥ 10` needs no new mathematics beyond SHORT-CORE. Checked exactly at
+    `D = 6, 10, 15, 21`: the proof's set is a core at all 151 necklace cells with `def_6 > 0`. On
+    14 017 cells over T5's and nauty's cores `def_6 > 0` never occurs, and the 523 with no core
+    have `def_3 ≤ 2`. The proof: `notes/Phase42-design.md` §2.3.
 
 ## The PENCIL-D program
 
@@ -371,6 +381,19 @@ under `PYTHONHASHSEED` 0 and 7.
   `4^E ≤ COV_EXHAUST = 4096` (five cores), else `COV_PER = 60` of `COV_TRIES = 3000` draws seeded
   by core, `d` and box; simple, sparse, in the content range; then a box of paths of 1–2 edges.
   Fences: `d ≤ 6`, paths of at most 4 edges, cores of at most 10 bodies (`core_def` is `3^nc`).
+- **`oneclass.py`** (Phase 42a, ONE-CLASS; a new driver beside `strata.py`, importing it, so
+  no earlier figure can move): Result 27, by `python3 notes/scripts/strata/oneclass.py --cores
+  --necklaces` (~20 s) and `(for n in 4 5 6 7 8; do geng -C -d3 -q $n 0:12; done) | python3
+  notes/scripts/strata/oneclass.py --g6 -` (~50 s; nauty's `geng`, external). Asserted per cell
+  and `D ∈ {6, 10, 15, 21}`: a set of least `s_3` among those of `def_D` zero (a proper one on a
+  tie) is proper where `def_6 > 0`, is proper exactly where `cov_core` finds a core, and is
+  then a core, re-checked on the bodies by the `3^n` DP at `n ≤ 9`. Population: T5's ten
+  cores, then all 45 cores (2-connected, minimum degree 3) on 4–8 bodies with at most 12 edges,
+  every length vector in `{1, 2}^E` up to automorphism (Petersen: 60 of 3000 draws); 279 and
+  13 738 cells, `def_6 = 0` at every one. Then three necklaces (four or five diamonds, or a
+  `K₄ − e` and three diamonds, in a ring), every length: 432 cells, 151 with `def_6 > 0`.
+  `--cores --necklaces` is byte-identical under `PYTHONHASHSEED` 0 and 7. Fences: cores of at
+  most 10 bodies, no core path longer than 2 (the lemma's own hypothesis).
 - **Bounds:** a point's rank is a lower bound for the stratum's generic rank, and each count
   an upper bound (Results 3, 5, and `D(n−1) − def_D` in `Pᵈ`), so a match certifies the
   generic rank on that graph. A shortfall at a point would prove nothing.

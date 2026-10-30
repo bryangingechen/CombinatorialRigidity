@@ -1,24 +1,18 @@
 # Phase 42 — PENCIL-D: design (cross-phase plan and recon)
 
 **Status:** opened 2026-10-29 with the PI, sub-lettered, research first. **42a** (PD-RECON,
-`notes/Phase42a.md`) is open: no Lean, no blueprint. The step table has landed (§2.1). Of its 22
-rows, 10 generalize as they stand and 6 given routine or formal work (CERT, CARRIER); the coverage
-waits on the ear rows, nondegeneracy's lift is open, and 4 rows fail as written: the short ears,
-the one-body and orbit ears (rows 14–15), and route B. §2.5 places the thresholds at `d = 4, 5`
-and the content at `def[3] ≥ d − 2`. T1, T2 and the content-range graphs have landed (§2.4,
-§2.5): row 5's formulas hold, CERT holds at `d ≤ 6` over every field, and 38 more content cells
-reach their target, on graphs where rows 14 and 22 fail as written. T4 has landed (§2.4): wherever
-the `d = 3` steps' merged hypothesis holds, at every cell measured, `d = 3..6`, `G[V₁]` attains on
-the incidence locus and the one- and two-body ear steps reach `(⋆)`. Where it fails, the two-body
-route falls one short at every `d`, as at `d = 3`. So ONE-EAR's first option stands. T3 has landed
-(§2.3–2.4): on 198 danger cells at `d = 4, 5` the short ears' obstruction never occurs, and X3
-holds for `k ≥ C(d−1, 2) + 3` at every graph, so SHORT is left at `k ≤ 5` at `d = 4` (`k ≤ 8` at
-`d = 5`). T5 has landed (§2.4): the coverage's Theorem S holds at every `D ≥ 6`, so ONE-EAR's
-third part is never needed. At `D ≥ 10` ONE-EAR can be the only route only on ONE-CLASS
-(`def[D](G) = 0`, every chain one-body, no core), and through row 14 alone. On the subdivisions
-measured no cell needs SHORT-CORE or ONE-EAR, while two Petersen subdivisions need SHORT-CORE.
-Next concrete task: PD-STATE's open as the next sub-phase (§1's defaults), with the PI's call on
-ONE-CLASS (§4). The route stays open (§4). Evidence: `notes/Strata.md`, Results 12–26.
+`notes/Phase42a.md`) is open: no Lean, no blueprint. The step table (§2.1): of 22 rows, 10
+generalize as they stand and 6 given routine or formal work (CERT, CARRIER); 4 fail as written
+(the short ears, the one-body and orbit ears, route B); the coverage (row 18) waits on the ear
+rows, and nondegeneracy's lift (row 21) is open. The thresholds are `d = 4, 5`, the content
+`def[3] ≥ d − 2` (§2.5). T1–T5 have landed (§2.4): the flat formulas hold, CERT holds at
+`d ≤ 6`, every content cell measured attains, X3 leaves SHORT only SHORT-CORE (`k = 3–5` at
+`d = 4`), and Theorem S holds at every `D ≥ 6`. At the PI's call ONE-CLASS's lemma is proved (§2.3, Result
+27): a graph whose chains are all one-body has a core or `def[6] = 0`, and then Phase 40 embeds.
+So **the coverage at `d ≥ 4` needs SHORT-CORE and no ONE-EAR**; ONE-EAR waits for GENERIC. Next
+concrete task: PD-STATE's open as the next sub-phase (§1's defaults); the research next is
+SHORT-CORE's attack track, after the second read of rows 9 and 12 (§1). The route stays open
+(§4). Evidence: `notes/Strata.md`, Results 12–27.
 
 This file is the phase's entry point: the target (§0), the PI's decisions (§1), the recon (§2),
 the layers by stable code (§3) and the open questions (§4). Letters are minted when a sub-phase
@@ -76,6 +70,13 @@ fibre-intersection lemma and Jackson–Jordán's equality.
 
   The order put: T1, T2 and the content-range graphs; then T3 and T4 at `d = 4, 5` on the content
   range, sizing SHORT and ONE-EAR; then attack tracks, with PD-STATE and PD-STABLE in parallel.
+- **PI, 2026-10-29 (after T5), the research call of §4:** "ONE-CLASS first (Recommended)". The
+  options put: ONE-CLASS's lemma first, on deficiencies alone and checkable exactly against T5's
+  population, its size unknown; ONE-EAR's attack at `d = 5` (the motive, a `Pᵈ` insertion lemma,
+  X2), the default recorded at open; or SHORT-CORE first, needed either way. On the session's
+  work, where the options were this call, PD-STATE's open, or the second read of rows 9 and 12:
+  "Let's do 1 but dispatch subagents for the second reads if that can be done safely in
+  parallel."
 
 ## 2. PD-RECON (42a)
 
@@ -177,9 +178,10 @@ Result 17's `def[3] ≤ 1` one step further.
   a `Pᵈ` insertion lemma (at `d ≥ 5` every reachable hinge lies in `Λ²(A+B)`, of dimension ≤ 10).
   **T4 sized it** (§2.4; `Strata.md` Results 23, 25): the first option stands wherever the `d = 3`
   steps' merged hypothesis **M**, `def[3](G[V₁]; a, b) + 2 ≤ def[3](G[V₁])`, holds, at every cell
-  measured, `d = 3..6`, and fails only where M fails, as at `d = 3`. T5 (§2.4) bounds its role
-  in the coverage: at `D ≥ 10` it is the only route only on ONE-CLASS, through row 14, and on the
-  subdivisions measured nowhere. Its open parts, for an attack at `d = 5`:
+  measured, `d = 3..6`, and fails only where M fails, as at `d = 3`. T5 (§2.4) confined its role
+  in the coverage at `D ≥ 10` to row 14 on ONE-CLASS, and ONE-CLASS is Phase 40's (below), so
+  **the coverage never needs ONE-EAR**. It remains GENERIC's (row 22's one-ear step). Its open
+  parts, for an attack at `d = 5` when GENERIC opens:
   - **The motive:** `G[V₁]` attains at a general configuration of `G[V₁]` plus the ear
     `a − x − b`, restricted to `V₁`. At `d = 3` this is `lem:pencil-one-ear-base`; at `d = 4`
     without a shared neighbour the incidence is free, as two planes of `P⁴` meet in one point.
@@ -195,11 +197,30 @@ Result 17's `def[3] ≤ 1` one step further.
     `def[D](G[V₁]) ≤ def[D](G)` holds, or splits it off. Measured anyway at 46 cells (T4), with
     `dim(ρ + Λ) = min(dim ρ + 2, D)`.
 - **ONE-CLASS** (T5, §2.4): the graphs past rows 1–5 with `def[D](G) = 0`, only one-body chains
-  and no core at `D`, the only ones where the coverage at `D ≥ 10` can need ONE-EAR. The lemma
-  to prove: ONE-CLASS is empty at `D ≥ 15`, and at `D = 10` each of its graphs has a one-body
-  chain whose ends share no neighbour in `V₁`. With SHORT, it would make the coverage at `d ≥ 4`
-  free of ONE-EAR. Pure combinatorics, unattempted. Measured on the one-body box (542 cells):
-  none at `d = 5, 6`, three of 231 at `d = 4`, each with such a chain.
+  and no core at `D`, the only ones where the coverage at `D ≥ 10` could need ONE-EAR. **Settled
+  `[PROVED]`** (this session, Claude Opus 5.5, at the PI's call, §1; `Strata.md` Result 27):
+  each has `def[6](G) = 0`, so Phase 40's `P³` witness embeds (Result 15). The lemma: let `G` be
+  sparse, of minimum degree two, with no two bodies of degree two adjacent, and `D ≥ 6`. If
+  `def[6](G) > 0`, a set `W` of least `s_3` among those of two or more bodies with `def[D]` zero
+  is a core at `D`.
+  - *A set below `V`.* Let `P` attain `def[6](G) > 0`. Refining a part by a partition changes
+    `P`'s value by that partition's value in the part (`lem:separated-partition-value`), so each
+    part has `def[6]` zero, so `def[D]` zero (`lem:deficiency-antitone`). The singletons have
+    value `6(n − 1) − 5|E| < 0`, since no two bodies of degree two are adjacent gives `5|E| ≥ 6n`
+    (the count in `lem:pencil-x0-sparse-count` (2)). So some part `Z` has `|Z| ≥ 2`, and `Z ≠ V`.
+    As `v_6(P) = 2v_3(P) − e(P) > 0`, `v_3(P) ≥ 1`, and `lem:deficiency-singleton-bound` gives
+    `s_3(Z) ≤ s_3(V) − v_3(P) < s_3(V)`.
+  - *The core.* `s_3(W) ≤ s_3(Z) < s_3(V)`, so `W ≠ V`. If some `X ⊇ W` had `s_3(X) < s_3(W)`,
+    one of least size would have `s_3(Q) ≥ s_3(W)` whenever `W ⊆ Q ⊊ X`, so `def[D](G[X]) = 0`
+    (`lem:deficiency-core-bound` (1), read at `D` as in T5), against the choice of `W`. So
+    `s_3(W) ≤ s_3(X)` for every `X ⊇ W`: no body outside `W` has two neighbours in it
+    (`lem:deficiency-add-body`), and `lem:deficiency-additive-core` (2) gives the additivity.
+
+  The second half also shows that `G` has a core at `D` exactly when a set of least `s_3` among
+  those of `def[D]` zero can be taken proper. The lemma first posed here (ONE-CLASS empty at
+  `D ≥ 15`, an unshared chain at `D = 10`) is not needed, and is not what holds: cells with no
+  core occur at every `D` measured, all with `def[3] ≤ 2`, so outside the content range at
+  `d ≥ 5`. Checked by `oneclass.py` (§2.4).
 - **CARRIER** (rows 3, 9, 19–21): PD-STATE's. The point-based `HasPencilPanelRealization` is the
   wrong object at `d ≥ 4`. Primal (a `(d−3)`-flat `A_v` in a hyperplane) or dual (a point in a
   3-space); an all-`d` polarity `Λ²K^{d+1} ≅ Λ^{d−1}K^{d+1}` (`screwComplementIso` is grade 2
@@ -318,6 +339,15 @@ Result 17's `def[3] ≤ 1` one step further.
     has only SHORT-CORE's rows (`k = 3`, `k = 5`): `def[D](G) = 0` and no core (by hand, every
     proper subgraph has `ΣL > D·c`, so no proper set is `D`-rigid). So the coverage needs
     SHORT-CORE, and on this population ONE-EAR nowhere.
+- **ONE-CLASS** (the PI's call after T5, §1; `Strata.md` Result 27; `oneclass.py`, exact, no
+  draw). Proved by hand (§2.3) and checked at `D = 6, 10, 15, 21`. On T5's ten cores and every
+  core of nauty's on 4–8 bodies with at most 12 edges, paths of 1–2 edges (279 and 13 738 cells),
+  `def[6] > 0` never occurs: it needs a quotient with under `6/5` edges per part past the first,
+  a ring of rigid blobs. The 523 cells with no core all have `def[3] ≤ 2`. On three necklaces of
+  diamonds and `K₄ − e` (432 cells, 151 with `def[6] > 0`) the proof's set is a core at every
+  cell and `D`. **So with T5, a graph past rows
+  1–5 at `D ≥ 10` has a GEN row (the embedding of Phase 40 at `def[6] = def[D]` counted, Result
+  15) or a chain with `k ≥ 3`, and the coverage's only new mathematics is SHORT-CORE.**
 
 ### 2.5 Where the dimension bites: two frames (2026-10-29)
 
@@ -376,7 +406,8 @@ leaves out each graph's top cell, `d = 2 + def[3]`, which also carries content.
 - **Run T3–T5 at each `d` only on graphs with `def[3] ≥ d − 2`**, and run T3 at `d = 5` as well.
 - **Attack each obligation at its own threshold:** SHORT at `d = 4`, ONE-EAR at `d = 5`, each
   checked one dimension up. `d = 4` stays the first milestone (every `d` at `def[3] ≤ 2`), but its
-  ONE-EAR case must not lean on `Π_a ∩ Π_b ≠ 0`.
+  ONE-EAR case must not lean on `Π_a ∩ Π_b ≠ 0`. (Since Result 27 the coverage needs no ONE-EAR,
+  §2.3; it stays GENERIC's.)
 
 ## 3. Layers (stable codes)
 
@@ -386,7 +417,9 @@ leaves out each graph's top cell, `d = 2 + def[3]`, which also carries content.
   closed neighbourhood span at most three dimensions. Check it against the carrier's definition
   bodies at open; docstrings are not evidence.
 - **PD-STABLE**: Results 15–17, formally: the embedding, the deficiency lemma, and `Pᵈ` for
-  `def_3 ≤ 1`. It needs PD-STATE and Phase 40, but not the recon.
+  `def_3 ≤ 1`. It needs PD-STATE and Phase 40, but not the recon. State the embedding at
+  `d′ = 3` in the form PD-COVERAGE consumes: `G` attains in `Pᵈ` wherever
+  `def[6](G) = def[D](G)`. That row settles ONE-CLASS (Result 27).
 - **PD-CARRIER**, **PD-STEPS**, **PD-COVERAGE**: Phase 40b–40m in `Pᵈ`, shaped by PD-RECON's route.
 - **PD-REDUCTION**, **PD-HEAD**: Phase 39's reduction in `Pᵈ`; the headline `PencilPair`, and the
   flag strata as corollaries.
@@ -401,7 +434,8 @@ The PI's planning defaults (§1) answer most of the calls put at the open. A ses
 unless a finding argues otherwise:
 - `d = 4` first, as Tier 1 of three. SHORT is attacked at `d = 4` and ONE-EAR at `d = 5`, as
   attack tracks once T3 and T4 size them (§2.5). Both have: SHORT's attack is SHORT-CORE, `k = 3,
-  4, 5` at `d = 4`; ONE-EAR's is the motive, the insertion and X2 at `d = 5` (§2.3).
+  4, 5` at `d = 4`. ONE-EAR (the motive, the insertion and X2 at `d = 5`) has left the coverage
+  (Result 27, §2.3), so it waits for GENERIC.
 - The headline ships the bare and distinct conjuncts first, GENERIC after (row 22). Nondegeneracy
   enters `PencilPair` only in the generic conjunct (`Pencil/Motive.lean`), so with row 22's reading
   its `Pᵈ` lift is deferred with it.
@@ -411,12 +445,7 @@ unless a finding argues otherwise:
 Still open, for the PI:
 - The route: §2.2's proposal, R2's induction with R1's base row inside an induction on `d`. The
   defaults work inside it; it is not decided on its own.
-- **ONE-EAR's attack, or ONE-CLASS** (T5, §2.3–2.4). The defaults attack ONE-EAR at `d = 5` (the
-  motive, the insertion, X2). T5 confines what the coverage asks of ONE-EAR at `D ≥ 10` to row 14
-  on ONE-CLASS's graphs: none measured at `d = 5, 6`, three at `d = 4`, each carried without it.
-  Proving ONE-CLASS's lemma (§2.3), on deficiencies alone, would take ONE-EAR out of the coverage,
-  leaving the motive only to GENERIC's one-ear step (row 22). SHORT-CORE stays: Petersen's
-  subdivisions need it.
 
 Settled by the table: Phase 39's reduction is `d`-general for the bare and distinct conjuncts,
-given CARRIER (row 19).
+given CARRIER (row 19). Settled by the PI's call (§1) and Result 27: ONE-CLASS, not ONE-EAR. Its
+lemma is proved, so the coverage at `d ≥ 4` needs SHORT-CORE and no ONE-EAR (§2.3–2.4).
