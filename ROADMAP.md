@@ -1271,10 +1271,10 @@ pencil when they contain a common `(d−3)`-flat and lie in a hyperplane, the bo
 per-body flag conditions; a theorem there implies every one of them, Katoh–Tanigawa's all-`d`
 panel theorem among them. `d = 2` (Jackson–Jordán's pin-collinear theorem) and `d = 3` (Phase 40)
 are formalized; `d = 4, 5, 6` reach the generic rank at every graph measured (36 simple graphs with
-`n ≤ 12`, 8 past that cap), and every `d` follows from Phase 40 when `def_3(G) ≤ 1`. The phase is
+`n ≤ 12`, 8 past that cap), and every `d` follows from Phase 40 when `def_3(G) ≤ 3`. The phase is
 research first: **PD-RECON** (42a, `notes/Phase42a.md`) asks, step by step, whether Phase 40's
 induction runs in `Pᵈ`. Then, by stable code: PD-STATE and PD-STABLE (the statement layer and the
-`def_3 ≤ 1` corollary, independent of the route), Phase 40's carrier, steps and coverage in `Pᵈ`,
+`def_3 ≤ 3` corollary, independent of the route), Phase 40's carrier, steps and coverage in `Pᵈ`,
 Phase 39's reduction, and the headline. PD-RECON's step table finds most of Phase 40's induction
 and Phase 39's reduction dimension-general, given routine or formal work. The short ears, the
 one-body and orbit ears and the generic statement's route B fail as written: in `P³` two bodies'
@@ -1293,16 +1293,16 @@ statement layer ran beside the research as **PD-STATE** (42b, opened and closed 
 `notes/Phase42b.md`): the chapter `pencil-d.tex`, all 17 nodes formalized in `Pencil/Grade/`,
 states pencil realizations in dimension `d` in the polar form with each body's plane as data (the
 PI's reading, after the open found the plain polar form disagreeing with Phase 39's), their
-agreement with Phases 39–40 at `d = 3`, and Phase 40's carrier in dimension `d`. The `def_3 ≤ 1`
+agreement with Phases 39–40 at `d = 3`, and Phase 40's carrier in dimension `d`. The `def_3 ≤ 3`
 corollary then opened at the PI's word as **PD-STABLE** (42c, 2026-10-30, `notes/Phase42c.md`): a
 new section of `pencil-d.tex` embeds a pencil realization of a lower dimension, with the rank it
 gains, proves that the deficiency of a connected graph stops changing in the dimension, and
-derives every `Pᵈ` at `def_3 ≤ 1` from Phase 40. Its open found the deficiency lemma needs a
-connected graph, and that its proof gives a sharper range, `def_3 + 3 ≤ D`, which would widen the
-corollary to `def_3 ≤ 3`; that is put to the PI. SHORT-CORE's attack track waits for the PI's
+derives every `Pᵈ` at `def_3 ≤ 3` from Phase 40. Its open found the deficiency lemma needs a
+connected graph, and that its proof gives a sharper range, `def_3 + 3 ≤ D`, which the PI took to
+widen the corollary from `def_3 ≤ 1` to `def_3 ≤ 3`. SHORT-CORE's attack track waits for the PI's
 reading of its brief.
-The targets are three tiers: every `d` at `def_3 ≤ 1`, at `def_3 ≤ 2` (a `P⁴` theorem), and every
-`d`.
+The targets are three tiers: every `d` at `def_3 ≤ 3`, a `P⁴` theorem (its reach under the sharp
+lemma is open with the PI, `notes/Phase42c.md` *Blockers*), and every `d`.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 

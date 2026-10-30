@@ -514,7 +514,7 @@ $\operatorname{def}_{d'}(G) = \operatorname{def}_d(G)$, and on a
 connected multigraph the deficiency stops changing once $D$ is large
 compared with $\operatorname{def}_2(G)$. So the theorem in dimension
 three gives the theorem in every dimension at the graphs with
-$\operatorname{def}_2(G) \le 1$.
+$\operatorname{def}_2(G) \le 3$.
 
 \begin{lemma}[The deficiency stops changing]
   \label{lem:deficiency-stable}
@@ -731,13 +731,13 @@ $\operatorname{def}_2(G) \le 1$.
   \cref{lem:pencil-d-config-realization} to $(q, z)$.
 \end{proof}
 
-\begin{theorem}[The pencil in every dimension when $\operatorname{def}_2(G) \le 1$]
-  \label{thm:pencil-d-deficiency-two-le-one}
+\begin{theorem}[The pencil in every dimension when $\operatorname{def}_2(G) \le 3$]
+  \label{thm:pencil-d-deficiency-two-le-three}
   \uses{def:pencil-x0-standing, def:pencil-d-x0-attains,
         def:pencil-d-distinct-motive, def:D-deficiency}
   Let $K$ be an infinite field and $d \ge 3$, and let $G$ satisfy the
   standing hypotheses (\cref{def:pencil-x0-standing}) with
-  $\operatorname{def}_2(G) \le 1$. Then the general configuration of $G$
+  $\operatorname{def}_2(G) \le 3$. Then the general configuration of $G$
   attains in dimension $d$ (\cref{def:pencil-d-x0-attains}), and $G$ has
   an adjacent-distinct pencil realization in dimension $d$
   (\cref{def:pencil-d-distinct-motive}).
@@ -748,9 +748,11 @@ $\operatorname{def}_2(G) \le 1$.
         lem:pencil-d-x0-attains-distinct}
   The general configuration of $G$ attains in dimension three
   (\cref{thm:pencil-x0-coverage}, \cref{lem:pencil-d-x0-attains-three}).
-  As $G$ is connected and $\operatorname{def}_2(G) + 2 \le 3 \le d$,
+  As $G$ is connected and
+  $\operatorname{def}_2(G) + 3 \le 6 = \binom{4}{2}$,
   $\operatorname{def}_3(G) = \operatorname{def}_d(G)$
-  (\cref{lem:deficiency-stable}). So it attains in dimension $d$
+  (\cref{lem:deficiency-stable}, its main form). This is the PI's
+  widening from $\operatorname{def}_2(G) \le 1$. So it attains in dimension $d$
   (\cref{lem:pencil-d-x0-attains-of-le}), and
   \cref{lem:pencil-d-x0-attains-distinct} gives the realization.
 \end{proof}

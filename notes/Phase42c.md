@@ -4,7 +4,7 @@
 sub-phase of Phase 42 beside 42a. Forward mode, the Lean under `/coordinate-phase`: the dep-graph
 is `blueprint/src/chapter/pencil-d.tex` §`sec:pencil-d-stable`, 9 nodes, 1 green (`lem:deficiency-stable`), 8 red.
 The open corrected the deficiency lemma (it needs `G` connected) and found its proof gives a
-sharper range, put to the PI (*Blockers*). `lem:deficiency-stable` landed (the sharp form and §3's form, `Deficiency.lean`). Next concrete task: `def:pencil-d-embedding`.
+sharper range; the PI widened the theorem to `def_2 ≤ 3` (*Architectural choices*). `lem:deficiency-stable` landed (the sharp form and §3's form, `Deficiency.lean`). Next concrete task: `def:pencil-d-embedding`.
 
 ## Current state
 
@@ -27,6 +27,15 @@ Lean.
   §3 (the embedding at every `d′ ≤ d` in its rank, statement and configuration forms; the
   deficiency lemma; `Pᵈ` at `def[3] ≤ 1`, Tier 0), with FRICTION's open `normalsJoin`
   `exteriorPower.map 2` lemma landing with item 1.
+- **PI, 2026-10-30 (the sharp range):** "Widen to def_2 ≤ 3 (Recommended)". The question as put:
+  "The open found the deficiency lemma's own proof gives a sharper range. On a connected G, def at
+  dimension d′ equals def at every d ≥ d′ once def_2(G) + 3 ≤ C(d′+1, 2), rather than at
+  d′ ≥ def_2 + 2. The range is tight on cycles: C₇ has def_2 = 4, def_3 = 1 and def_4 = 0. With
+  d′ = 3 (C(4,2) = 6), Phase 40 plus the embedding then proves the pencil in every dimension at
+  def_2(G) ≤ 3, not just ≤ 1. I checked this by hand. Should Tier 0's theorem,
+  thm:pencil-d-deficiency-two-le-one, widen?" The option: "Same proof; only the hypothesis and the
+  node's name and wording change. No extra commits. The Tier 0 sentence on ROADMAP and the status
+  surfaces says ≤ 3." The node is now `thm:pencil-d-deficiency-two-le-three`.
 - **Notation:** design doc `def[3]` = blueprint `def_2` = Lean `G.deficiency 2` (`Strata.md`'s
   `def_3`); `def[6]` = `def_3` = `G.deficiency 3`. Grade `k = d − 1` and `m = d − 2` heights as
   42b (`notes/Phase42b.md` *Architectural choices*).
@@ -61,28 +70,24 @@ may refine a name, and the pin lands with the Lean.
 - [ ] `lem:pencil-d-x0-attains-of-le` — `Graph.X0AttainsGrade.of_le` (`[Infinite K]`, `G` connected,
   `G.deficiency (m' + 2) = G.deficiency (m + 2)`)
 - [ ] `lem:pencil-d-x0-attains-distinct` — `Graph.X0AttainsGrade.hasGradedDistinctPencilRealization`
-- [ ] `thm:pencil-d-deficiency-two-le-one` — `Graph.x0AttainsGrade_of_deficiency_two_le_one`,
-  `Graph.hasGradedDistinctPencilRealization_of_deficiency_two_le_one` (`G.IsX0Graph`, `1 ≤ m`)
+- [ ] `thm:pencil-d-deficiency-two-le-three` — `Graph.x0AttainsGrade_of_deficiency_two_le_three`,
+  `Graph.hasGradedDistinctPencilRealization_of_deficiency_two_le_three` (`G.IsX0Graph`, `1 ≤ m`)
 
 ## Blockers / open questions
 
-- **For the PI (not blocking): the sharp deficiency range.** Item 2's own proof needs only
-  `def[3] + 3 ≤ D′`, not `D′ ≥ C(def[3] + 3, 2)`: a cyclic quotient's value at `D′` is at most
-  `def[3] − (D′ − 3)` (by hand; the Lean form compiles in scratch). It is tight on cycles: `C₇`
-  has `def[3] = 4`, `def[6] = 1`, `def[10] = 0`. Two consequences, both left as they stand here:
-  (a) item 3's proof, Phase 40 at `d′ = 3` (`D′ = 6`), gives every `d` at `def[3] ≤ 3`; widen
-  `thm:pencil-d-deficiency-two-le-one` from `≤ 1`? (b) design doc §2.5's content range and §1's
-  tiers rest on Result 16's form: `G` attains at `d` from `P^{d−1}` once
-  `def[3] + 3 ≤ D_{d−1}`, so the content at `d = 4` starts at `def[3] ≥ 4` (not `≥ 2`), and a
-  `P⁴` theorem gives every `d` at `def[3] ≤ 7` (not `≤ 2`). These are 42a's notes, untouched here.
+- **(b), for the PI, relayed to the SHORT-CORE attack track (not blocking):** the sharp deficiency
+  range `def[3] + 3 ≤ D′` (tight on cycles: `C₇` has `def[3] = 4`, `def[6] = 1`, `def[10] = 0`)
+  also moves design doc §2.5's content range and §1's tiers, which rest on Result 16's form: `G`
+  attains at `d` from `P^{d−1}` once `def[3] + 3 ≤ D_{d−1}`, so the content at `d = 4` starts at
+  `def[3] ≥ 4` (not `≥ 2`), and a `P⁴` theorem gives every `d` at `def[3] ≤ 7` (not `≤ 2`). These
+  are 42a's notes, which that attack track's worktree keeps its own copies of; untouched here.
 
 ## Hand-off / next phase
 
 The next commit is `def:pencil-d-embedding` (*Current state*). The other leaves are
 `lem:screw-embedding-rank` and `lem:pencil-d-x0-attains-distinct`; then `lem:pencil-d-embedding-join` (with FRICTION's
 `normalsJoin` map lemma), the statement and configuration forms, `lem:pencil-d-x0-attains-of-le`,
-and the theorem last. Whether the theorem's hypothesis widens to `def_2 ≤ 3` is the PI's
-(*Blockers*); no leaf waits on it.
+and the theorem last, at `def_2 ≤ 3` (the PI's widening from `≤ 1`, *Architectural choices*).
 
 ## Decisions made during this phase
 

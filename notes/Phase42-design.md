@@ -9,8 +9,9 @@ Tier 2. SHORT-CORE's attack brief awaits the PI's reading. **42b** (PD-STATE,
 `notes/Phase42b.md`) ran beside it and **closed 2026-10-30**: the statement layer in `Pᵈ`, its
 chapter `blueprint/src/chapter/pencil-d.tex` formalized (17 nodes), on the carrier the PI took
 (§1, option (a); §2.3 CARRIER). **42c** (PD-STABLE, `notes/Phase42c.md`) opened the same day at
-the PI's word (§1): the embedding, the deficiency lemma and `Pᵈ` at `def[3] ≤ 1`, a new section of
-`pencil-d.tex`, red. Its open put a sharper deficiency range to the PI (§4). SHORT-CORE's attack
+the PI's word (§1): the embedding, the deficiency lemma and `Pᵈ` at `def[3] ≤ 3`, a new section of
+`pencil-d.tex`, red. Its open found a sharper deficiency range, and the PI widened Tier 0 to
+`def[3] ≤ 3` (§1). SHORT-CORE's attack
 track is the PI's to start. Evidence: `notes/Strata.md`, Results 12–27.
 
 This file is the phase's entry point: the target (§0), the PI's decisions (§1), the recon (§2),
@@ -27,7 +28,8 @@ heights `z¹, …, z^{d−2} ∈ L(q)`. Then the hinges `b_u ∧ b_v`, with
 through Phase 39's reduction.
 
 Status: `d = 2, 3` are proved and formalized (Phases 40a, 40). Every `d` with `def_3 ≤ 1` is
-`Strata.md` Result 17. `d = 4, 5, 6` are measured (Results 11, 19), not found below target under
+`Strata.md` Result 17, and every `d` at `def_3 ≤ 3` follows from Result 17's proof with 42c's sharp
+deficiency lemma. `d = 4, 5, 6` are measured (Results 11, 19), not found below target under
 the `--d4` population's cap (`n ≤ 12`, 36 simple graphs) and 8 graphs past it. Where the
 conjecture has content, that is 47 cells on 18 graphs, six of them cycles (§2.5).
 
@@ -97,6 +99,17 @@ fibre-intersection lemma and Jackson–Jordán's equality.
   bare multigraph conjunct, against §0. (d) Normals-only: fails W1, not viable.
 - **PI, 2026-10-30 (PD-STABLE's open):** "Open as 42c, §3 scope (Recommended)". The scope: §3's
   items 1–3 as written, with FRICTION's `normalsJoin` map lemma landing with item 1.
+- **PI, 2026-10-30 (PD-STABLE, the sharp range):** "Widen to def_2 ≤ 3 (Recommended)". The
+  question as put: "The open found that the deficiency lemma's own proof gives a sharper range. On
+  a connected G, def at dimension d′ equals def at every d ≥ d′ once def_2(G) + 3 ≤ C(d′+1, 2),
+  rather than at d′ ≥ def_2 + 2. The range is tight on cycles: C₇ has def_2 = 4, def_3 = 1 and
+  def_4 = 0. With d′ = 3 (C(4,2) = 6), Phase 40 plus the embedding then proves the pencil in every
+  dimension at def_2(G) ≤ 3, not just ≤ 1. I checked this by hand. Should Tier 0's theorem,
+  thm:pencil-d-deficiency-two-le-one, widen?" The option read: "Same proof; only the hypothesis
+  and the node's name and wording change. No extra commits. The Tier 0 sentence on ROADMAP and
+  the status surfaces says ≤ 3." (Notation: `def_2` = `def[3]`, `def_3` = `def[6]`.) The
+  range's second consequence (§3 item 1's Tier 1 reach, §2.5's content range) the PI relays to
+  the SHORT-CORE attack track.
 
 ## 2. PD-RECON (42a)
 
@@ -509,12 +522,12 @@ leaves out each graph's top cell, `d = 2 + def[3]`, which also carries content.
      `def[D] = D`, so `def[3] = 3` and `d′ = 5`, yet `def[15] ≠ def[21]`. The proof's own chain
      stops at `D′ − 3 < def[3]`, so `def[3] + 3 ≤ D′` suffices, and the node states that range,
      this one its "in particular" (`notes/Phase42c.md` *Decisions*, §4).
-  3. *`Pᵈ` at `def[3] ≤ 1`* (Result 17; Tier 0): if `def[3](G) ≤ 1` and `d ≥ 3`, the general
+  3. *`Pᵈ` at `def[3] ≤ 3`* (Result 17 widened; Tier 0): if `def[3](G) ≤ 3` and `d ≥ 3`, the general
      configuration of `G` attains in dimension `d`, so `G` has an adjacent-distinct pencil
      realization at the deficiency rank in dimension `d` (`lem:pencil-d-config-realization`).
-     Proof: Phase 40 (`thm:pencil-x0-generic-attains`) at `d′ = 3`, item 2 (`def[3] ≤ 1 = d′ − 2`)
-     and item 1. Result 17 embeds the planar witness at `def[3] = 0`; `d′ = 3` covers that case
-     too, as there `def[6] = def[D] = 0`. Planned `Graph.x0AttainsGrade_of_deficiency_two_le_one`.
+     Proof: Phase 40 (`thm:pencil-x0-generic-attains`) at `d′ = 3`, item 2 (`def[3] + 3 ≤ 6 =
+     C(4, 2)`, main form) and item 1. Result 17 embeds the planar witness at `def[3] = 0`; `d′ = 3` covers that case
+     too, as there `def[6] = def[D] = 0`. Planned `Graph.x0AttainsGrade_of_deficiency_two_le_three`.
 
   As opened (42c): the chapter section is authoritative for the statements, and
   `notes/Phase42c.md` holds the planned names and the open's corrections (item 2 connected and in
@@ -560,8 +573,9 @@ Settled by the PI (§1): the route. R2's steps with Result 15's embedding as the
 induction on `d` is Tier 2's question, entering if at all through CERT's open ears at `d ≥ 7`.
 The carrier: each body's 3-space as data (§2.3 CARRIER, option (a)). Open for the PI: the reading
 of SHORT-CORE's DRAFT brief; and, from 42c's open, the sharp deficiency range `def[3] + 3 ≤ D′`
-(tight on cycles), which would widen Tier 0 to `def[3] ≤ 3` and shrink §2.5's content range and
-§1's tiers (`notes/Phase42c.md` *Blockers*).
+(tight on cycles): (a) settled by the PI (§1), Tier 0 widened to `def[3] ≤ 3`; (b) its shrinking of
+§2.5's content range and Tier 1's reach is the PI's, relayed to SHORT-CORE's attack track
+(`notes/Phase42c.md` *Blockers*).
 
 Settled by the table: Phase 39's reduction is `d`-general for the bare and distinct conjuncts,
 given CARRIER (row 19). Settled by the PI's call (§1) and Result 27: ONE-CLASS, not ONE-EAR. Its
