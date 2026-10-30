@@ -602,6 +602,10 @@ leaves out each graph's top cell, `d = 2 + def[3]`, which also carries content.
     `sec:pencil-d-deficiency`, `Pencil/Grade/TheoremS.lean`); S53's chain count (COUNT-C) is not.
     Its Theorem S duplicates Phase 40's `n = 3` proof (`Graph.IsX0Graph.exists_additiveCore`), which
     can become its `n = 3` case once the coverage reads `Graph.ChainUsable` as `ChainUsableAt 3`.
+    The coverage's informal proof is 42d's `thm:pencil-d-coverage` (W9; a fresh read found it holds).
+    Its Lean needs forms of `lem:pencil-x0-cut-reduces`, `-cycle-reduces` and
+    `-planar-rigid-reduces` that return the bridge, cut-vertex or cycle data, not only
+    `G.X0Reduces G.X0Below` (for example a public `x0Reduces_of_bridgeEar`, `CoverageCut.lean`).
   **Deferred to them from PD-STATE**, each optional until a consumer needs it: Phase 40's `k = 2`
   collineation (`PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv`) re-proved
   as the grade lemma at `k := 2`, and its scale-shift
