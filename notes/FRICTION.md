@@ -130,6 +130,21 @@ to be re-derived by re-reading entries later.
   closes `det g • ⋀^(k+2-2) h (complementIso _ X) = det g • screwEquivOfLinearEquiv h (…)`.
 - **Status:** open.
 
+### [resolved] A `∘ₗ` composite into `ScrewSpace K k` through `complementIso` elaborates, but `rw [LinearMap.comp_apply]` cannot match it
+- **Where it bit:** Phase 42c, `def:pencil-d-embedding` (`Pencil/Grade/Embedding.lean`,
+  `screwEmbed = complementIso ∘ₗ exteriorPower.map 2 ι ∘ₗ complementIso.symm`, typed
+  `ScrewSpace K k' →ₗ[K] ScrewSpace K k`). The definition elaborates by unfolding `ScrewSpace` and
+  `k + 2 - 2`, but a scratch proof of the next node, `rw [screwEmbed, LinearMap.comp_apply]`, failed:
+  "not type-correct under the `implicit` transparency level", `⋀^(k+2-2) … →ₗ` against
+  `→ₗ ScrewSpace K k` in the `comp`'s instance arguments.
+- **Fix:** `screwEmbed_apply`, by `rfl`, states `φ C = complementIso (map 2 ι (complementIso.symm C))`,
+  the form of `panelSupportExtensor`'s body; then `rw [screwEmbed_apply, panelSupportExtensor,
+  panelSupportExtensor, LinearEquiv.symm_apply_apply, normalsJoin, normalsJoin,
+  exteriorPower.map_apply_ιMulti]; congr 2` closes `lem:pencil-d-embedding-join`'s map lemma in
+  scratch. Also: `omega` does not read `hi : gradeEmbedIndex h (Fin.last _) = j` as a bound on `↑j`;
+  `subst hi` first (`gradeEmbed_apply_eq_zero`).
+- **Status:** resolved (project helper `screwEmbed_apply`).
+
 ### [mirror-candidate] Grade-general extensor and panel lemmas live in `Pencil/Grade/Realization.lean`
 - **Where it bit:** Phase 42b, `lem:pencil-d-point-configuration`. The project had only grade-2 or
   `K⁴` forms: `span_range_eq_of_extensor_eq` (`Meet.lean`, two vectors),

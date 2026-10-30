@@ -547,6 +547,11 @@ $\operatorname{def}_2(G) \le 3$.
 
 \begin{definition}[Embedding a lower dimension]
   \label{def:pencil-d-embedding}
+  \lean{CombinatorialRigidity.Molecular.gradeEmbed,
+        CombinatorialRigidity.Molecular.screwEmbed,
+        CombinatorialRigidity.Molecular.gradeEmbed_injective,
+        CombinatorialRigidity.Molecular.screwEmbed_injective}
+  \leanok
   \uses{def:screw-space, def:meet-complement-iso, def:join}
   Let $2 \le d' \le d$. The \emph{embedding}
   $\iota \colon K^{d'+1} \to K^{d+1}$ inserts $d - d'$ zero coordinates
@@ -565,6 +570,7 @@ $\operatorname{def}_2(G) \le 3$.
   are linear and injective.
 \end{definition}
 \begin{proof}
+  \leanok
   The map $\iota$ keeps every coordinate of its argument, and the map
   $\pi$ that deletes the inserted coordinates is a linear left inverse
   of it. Then $\bigwedge^2 \pi$ is a left inverse of $\bigwedge^2 \iota$,

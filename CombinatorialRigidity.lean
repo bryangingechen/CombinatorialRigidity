@@ -43,6 +43,7 @@ public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Carrier
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Collineation
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Configuration
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Contract
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Embedding
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.JoinIndependence
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Realization
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Witness

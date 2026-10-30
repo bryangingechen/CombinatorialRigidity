@@ -2,14 +2,18 @@
 
 **Status:** in progress, opened 2026-10-30 by the PI (design doc §3's scope as written), a
 sub-phase of Phase 42 beside 42a. Forward mode, the Lean under `/coordinate-phase`: the dep-graph
-is `blueprint/src/chapter/pencil-d.tex` §`sec:pencil-d-stable`, 9 nodes, 1 green (`lem:deficiency-stable`), 8 red.
+is `blueprint/src/chapter/pencil-d.tex` §`sec:pencil-d-stable`, 9 nodes, 2 green (`lem:deficiency-stable`, `def:pencil-d-embedding`), 7 red.
 The open corrected the deficiency lemma (it needs `G` connected) and found its proof gives a
-sharper range; the PI widened the theorem to `def_2 ≤ 3` (*Architectural choices*). `lem:deficiency-stable` landed (the sharp form and §3's form, `Deficiency.lean`). Next concrete task: `def:pencil-d-embedding`.
+sharper range; the PI widened the theorem to `def_2 ≤ 3` (*Architectural choices*). `lem:deficiency-stable` and `def:pencil-d-embedding` landed. Next concrete task: `lem:pencil-d-embedding-join`.
 
 ## Current state
 
-**Next:** `def:pencil-d-embedding` (`gradeEmbed`, `screwEmbed` and their injectivity), a leaf; then
-`lem:screw-embedding-rank` and `lem:pencil-d-x0-attains-distinct` (*Lemma checklist*).
+**Next:** `lem:pencil-d-embedding-join`, now a leaf, its route checked in scratch (FRICTION *A `∘ₗ`
+composite into `ScrewSpace K k`*: `screwEmbed_apply`, then five rewrites and `congr 2`); then the
+leaves `lem:screw-embedding-rank` and `lem:pencil-d-x0-attains-distinct` (*Lemma checklist*).
+
+**Landed:** `def:pencil-d-embedding` (green), new file `Pencil/Grade/Embedding.lean`: `gradeEmbed`
+(`ι`), `screwEmbed` (`φ`), their injectivity, `ι`'s coordinates, and `screwEmbed_apply` (*Decisions*).
 
 **Landed:** `lem:deficiency-stable` (green): `Graph.Connected.deficiency_eq_of_deficiency_two_add_three_le`
 (the sharp range, the scratch proof transcribed unchanged but for restoring `deficiency_nonneg n`,
@@ -56,9 +60,9 @@ may refine a name, and the pin lands with the Lean.
 
 - [x] `lem:deficiency-stable` — `Graph.Connected.deficiency_eq_of_deficiency_two_add_three_le`,
   `Graph.Connected.deficiency_eq_of_two_add_deficiency_two_le`
-- [ ] `def:pencil-d-embedding` (**next**) — `gradeEmbed` (`ι`, for `k' ≤ k`), `screwEmbed` (`φ`),
+- [x] `def:pencil-d-embedding` — `gradeEmbed` (`ι`, for `k' ≤ k`), `screwEmbed` (`φ`),
   `gradeEmbed_injective`, `screwEmbed_injective` (`exteriorPower.map_injective_field`)
-- [ ] `lem:pencil-d-embedding-join` — `exteriorPower_map_normalsJoin` (FRICTION),
+- [ ] `lem:pencil-d-embedding-join` (**next**) — `exteriorPower_map_normalsJoin` (FRICTION),
   `screwEmbed_panelSupportExtensor`
 - [ ] `lem:screw-embedding-rank` — `BodyHingeFramework.map` (hinges `φ C_e`, grade-changing),
   `BodyHingeFramework.finrank_span_rigidityRows_map_injective` (`G` connected, `[Finite α]`)
@@ -84,9 +88,10 @@ may refine a name, and the pin lands with the Lean.
 
 ## Hand-off / next phase
 
-The next commit is `def:pencil-d-embedding` (*Current state*). The other leaves are
-`lem:screw-embedding-rank` and `lem:pencil-d-x0-attains-distinct`; then `lem:pencil-d-embedding-join` (with FRICTION's
-`normalsJoin` map lemma), the statement and configuration forms, `lem:pencil-d-x0-attains-of-le`,
+The next commit is `lem:pencil-d-embedding-join` (*Current state*), with FRICTION's `normalsJoin`
+map lemma (`PanelLayer.lean` rebuilds most of `Molecular/`; `Embedding.lean` is the cheap home). The
+other leaves are `lem:screw-embedding-rank` and `lem:pencil-d-x0-attains-distinct`; then the
+statement and configuration forms, `lem:pencil-d-x0-attains-of-le`,
 and the theorem last, at `def_2 ≤ 3` (the PI's widening from `≤ 1`, *Architectural choices*).
 
 ## Decisions made during this phase
@@ -106,3 +111,10 @@ and the theorem last, at `def_2 ≤ 3` (the PI's widening from `≤ 1`, *Archite
   every-`d` form of `lem:pencil-x0-attains-distinct`) its own node, on `thm:pencil-x0-coverage`.
 - **All nine nodes in `pencil-d.tex`**, item 2 included: the red frontier stays in one section,
   and `deficiency.tex`, all green, stays so for `intro.tex`'s status sentence.
+- **`def:pencil-d-embedding`:** `ι` extends by zero (`Function.ExtendByZero.linearMap`) along
+  `gradeEmbedIndex` (last to last, `Fin.castLE` elsewhere), the coordinator's hypothesis, checked.
+  Its coordinates `gradeEmbed_apply_castLE`, `_eq_zero` (value bounds, for `omega`) and `_last` are
+  what `pencilConfigPointGrade_padHeights` will case on. `φ` is the `∘ₗ` composite through
+  `complementIso (j := 2)` at both grades, cast as `panelSupportExtensor` is; rewrite it by
+  `screwEmbed_apply` (`rfl`), never `comp_apply` (FRICTION). The Lean holds at every `k' ≤ k`: the
+  node's `2 ≤ d'` is the section's range, not a hypothesis.
