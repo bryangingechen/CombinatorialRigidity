@@ -1462,3 +1462,43 @@ needs SHORT-CORE's `k = 3` row, under the caps above; the proof is S53, this is 
   `D` matters only at `C(d + 1, 2)`; S52 notes that `-core-bound`'s Lean pins are at `D = 6` only.
 - **Scope, as S53 states it:** "free" carries S35 for `short` rows at `k ≥ 4`, CERT at `d ≥ 7` for `ear` and `long`,
   and row 9's formal work at `D`.
+
+## S56 — review 3: the track closes; G1 parked with a revival trigger (2026-10-30)
+
+**Review.** `/review-attack short-core` after session 6, by a fresh reader, on the branch at `98b17e5f`.
+- *Consumer.* Brief §1 matches `Graph.X0Attains.of_openEar_three` hypothesis by hypothesis, the body of
+  `Graph.IsX0Graph`, and master's `Graph.X0AttainsGrade` (rank `screwDim (m + 1)·(|V| − 1) − deficiency (m + 2)`).
+  N's consumer is the coverage: S53 (b)'s split of a chain with `k ≥ 4` into `long`, `ear`, `short` matches
+  `cov_cell`'s predicates, and "past rows 1–5" gives exactly 2-edge-connected, `G − v` connected, not a cycle and
+  sparse (the chapter's coverage table; clause (7) of `def:pencil-x0-reduces`). No paraphrase survived.
+- *Signals.* They agree with `check.py --history`: the count went 6 → 3 → 3 → 1 → 1 → 2 → 2 → 0, its last drop a
+  removed consumer (brief §6 *Outcome*, on the PI's review-2 ruling), labelled as such.
+- *Evidence.* S52 (i)–(iv) and S53 (a)–(b) read by hand against `sec:main-component-sparse`: `-add-body` and
+  `-sparse` hold at every `D`; in `-core-bound` (2) the only steps at the rigidity dimension are `-merge-rigid` (1)
+  and "planar value at most 0 gives value at most 0 at `D`"; `-additive-core` (2) is planar; the count closes at
+  `D ≥ 12`. S52–S53 now have two readers (S55 and this one). Re-run: `PYTHONHASHSEED=0 python3
+  notes/attacks/short-core/drivers/need_n.py --dims 3,4,5,6,7,8 --lmax 4,5`, exit 0, 0 mismatches, S54's table
+  reproduced figure for figure (about 2 min).
+- *Kills, shape.* No `log.md` entry is contradicted by the current state; session 6 was hand results with a control.
+- *Reach.* The brief's deliverable, `d = 4` at `k = 3, 4, 5`, is claimed proved by hand (S1–S21, S35; review 1).
+  The secondary target holds at `k ≥ 4` in every `d` (S35) and at `k = 3`, `d ≤ 6` (S31–S33); at `k = 3`, `d ≥ 7`
+  it has no consumer (S53), given CERT's open ears.
+
+**Verdict:** stop; close the track as delivered and park G1.
+
+**The PI's ruling.** **PI, 2026-10-30:** "OK, let's close the track and proceed. I will merge this branch into the
+main worktree so let's make sure that a fresh session starting there will be able to pick up and proceed."
+
+**What the close hands on** (to Phase 42's design doc, §2.3 SHORT and §3 PD-STEPS):
+- *To PD-STEPS, the `Pᵈ` short-ear step:* at `d = 4`, `k = 3, 4, 5`, S20's factoring with S19's inputs, base data
+  chosen with (P) and (B) (S21), and SHORT-CORE at those base data (S1–S18, S35); at `k ≥ 4` in every `Pᵈ`, the
+  every-`ρ` insertion hypothesis of `of_openEar_splitOff` holds (S35), so its factoring transcribes with `D` for 6,
+  written out only at `d = 4` (S20); at `k = 3`, `d = 5, 6`, S31–S33, with S21's base-data conditions and S31's and S33's factors.
+- *To PD-STEPS, the sparse estimates at `D`* (row 17): `lem:deficiency-core-bound` at every `D ≥ 3`, which S52 (iv)
+  uses; its Lean is pinned at `deficiency 3` only.
+- *To PD-COVERAGE:* S53. From `d = 5` on, a graph past rows 1–5 with a chain of two or three interior bodies has a
+  chain with `k ≥ 4` (a free row given CERT, or S35) or a core at `D` (row 9). So the coverage never needs the
+  `k = 3` short row, nor row 15 (the `k = 2` orbit row).
+- *Parked, G1* (`k = 3`, `d ≥ 7`; its last state is `state.md`'s). **Revival trigger:** CERT's open ears fail at
+  some `d ≥ 7`. Only then can a graph need the `k = 3` row: one with a three-body chain, no core at `D`, and only
+  `ear` or `long` rows at its chains with `k ≥ 4` (S53 (a) needs no CERT; `short` at `k ≥ 4` is S35).

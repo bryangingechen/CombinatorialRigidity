@@ -4,7 +4,9 @@
 > in S21's sense, §6 makes the secondary target the next deliverable, and §1's carrier and the
 > Lean paths are brought up to date. Re-aimed at review 2, 2026-10-30, on the PI's word (workbook
 > S50): §6 makes the need question N the next deliverable and holds G1 until N is answered; §6's
-> counterexample sentence follows S41; §4 records 42c's deficiency lemma.**
+> counterexample sentence follows S41; §4 records 42c's deficiency lemma. Closed at review 3,
+> 2026-10-30, on the PI's word (workbook S56): `state.md` holds what the track delivers and G1's
+> revival trigger.**
 > Written 2026-10-29 by an agent (Claude
 > Opus 5.5) against the tree at `fa295157`, from the owning sections: `notes/Phase42-design.md`
 > §2.1 rows 12–13, §2.3 SHORT and §2.4 T3; `notes/Strata.md` Result 24; the short-ear subsection
