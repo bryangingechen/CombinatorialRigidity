@@ -41,6 +41,7 @@ public import CombinatorialRigidity.Molecular.Molecule.GeneralPosition4
 public import CombinatorialRigidity.Molecular.Molecule.Modelling
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Carrier
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Collineation
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Configuration
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Contract
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Realization
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Bridge

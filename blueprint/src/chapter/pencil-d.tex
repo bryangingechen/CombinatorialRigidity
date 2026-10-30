@@ -306,6 +306,12 @@ each closed neighbourhood lie in a plane.
 
 \begin{lemma}[A configuration over an admissible picture is a pencil realization]
   \label{lem:pencil-d-config-realization}
+  \lean{Graph.IsAdmissiblePicture.hasPencilPlaneRealization_ofNormals_pencilConfigPointGrade,
+        Graph.IsAdmissiblePicture.hasGradedDistinctPencilRealization,
+        CombinatorialRigidity.Molecular.linearIndependent_pencilConfigPointGrade_pair,
+        CombinatorialRigidity.Molecular.linearIndependent_pencilConfigPointGrade_of_linearIndependent_pencilPicturePoint,
+        CombinatorialRigidity.Molecular.finrank_span_pencilConfigPointGrade_closedNbhd_le}
+  \leanok
   \uses{def:pencil-d-configuration, def:pencil-admissible-picture,
         def:pencil-d-distinct-motive, lem:pencil-d-point-configuration}
   Let $q$ be an admissible picture of $G$, let $z^1, \dots, z^{d-2}$ lie
@@ -319,6 +325,7 @@ each closed neighbourhood lie in a plane.
   realization in dimension $d$.
 \end{lemma}
 \begin{proof}
+  \leanok
   On the closed neighbourhood of $v$ each $z^i$ agrees with an affine
   function $a^i x + c^i y + e^i$ of the picture. So the points $b_w$ there
   are the images of the homogeneous picture points $(x_w, y_w, 1)$ under

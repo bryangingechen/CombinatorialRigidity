@@ -2,19 +2,28 @@
 
 **Status:** in progress, opened 2026-10-30 beside 42a (the PI's planning default, design doc §1,
 item 4), the Lean under `/coordinate-phase`. Forward mode: the dep-graph is
-`blueprint/src/chapter/pencil-d.tex`, 17 nodes, 14 green (the collineation lemma, the
-configuration, the scale-shift, the contraction's rank, the attaining definition and its `d = 3` agreement, `def:extensor-through-flat` and its point form, `def:pencil-d-realization` and its `d = 3` agreement, `def:pencil-d-rank-hypothesis`, `def:pencil-d-distinct-motive`, `lem:pencil-d-rank-agrees-three`, `lem:pencil-d-point-configuration`), Lean in `Pencil/Grade/`. The carrier is the PI's (2026-10-30, design doc §1): the
+`blueprint/src/chapter/pencil-d.tex`, 17 nodes, 15 green (the collineation lemma, the
+configuration, the scale-shift, the contraction's rank, the attaining definition and its `d = 3` agreement, `def:extensor-through-flat` and its point form, `def:pencil-d-realization` and its `d = 3` agreement, `def:pencil-d-rank-hypothesis`, `def:pencil-d-distinct-motive`, `lem:pencil-d-rank-agrees-three`, `lem:pencil-d-point-configuration`, `lem:pencil-d-config-realization`), Lean in `Pencil/Grade/`. The carrier is the PI's (2026-10-30, design doc §1): the
 dual form with each body's 3-space as data, as the chapter states. Next concrete task:
-`lem:pencil-d-config-realization` or `lem:pencil-d-x0-one-witness`; they interleave.
+`lem:pencil-d-x0-one-witness`.
 
 ## Current state
 
-**Next:** `lem:pencil-d-config-realization` (`Graph.IsAdmissiblePicture.hasGradedDistinctPencilRealization`)
-and `lem:pencil-d-x0-one-witness` (`Graph.x0AttainsGrade_of_exists`, using `Graph.liftingSpaceGrade`)
-can interleave; either is the next commit. The first takes `P := ofNormals (k := m + 1) G ends` at
-the points `pencilConfigPointGrade q z`, the framework `P.toPatchedBodyHinge`, `plane v` the span of
-the closed neighbourhood's points, and part (1) below; its own work is `finrank (plane v) = 3` and
-the independence at links (the chapter's proof), and the rank by `span_rigidityRows_toPatchedBodyHinge`.
+**Next:** `lem:pencil-d-x0-one-witness` (`Graph.x0AttainsGrade_of_exists`, using `Graph.liftingSpaceGrade`):
+one attaining configuration gives `Graph.X0AttainsGrade`'s polynomial form. Its work is the generic
+height polynomial, as at `d = 3` (`Graph.X0Attains`), at `m` heights; assess whether the
+`MvPolynomial` argument is one session once its chapter node is read.
+
+**Landed:** `lem:pencil-d-config-realization` (`Pencil/Grade/Configuration.lean`, new, imports
+`Grade/Carrier.lean` and `Grade/Realization.lean`):
+`Graph.IsAdmissiblePicture.hasPencilPlaneRealization_ofNormals_pencilConfigPointGrade` (the first
+sentence, on `P.toPatchedBodyHinge`, `plane v` the span of the closed neighbourhood's points, with
+independent normals at links) and `Graph.IsAdmissiblePicture.hasGradedDistinctPencilRealization`
+(`hz : z ∈ G.liftingSpaceGrade q m`, `hrank` at `ofNormals (k := m + 1)`, conclusion at grade
+`m + 1`, deficiency at `m + 2`), with the helpers `…_pencilConfigPointGrade_pair`,
+`linearIndependent_pencilConfigPointGrade_of_linearIndependent_pencilPicturePoint` (the projection to
+coordinates `0, 1, last`) and `finrank_span_pencilConfigPointGrade_closedNbhd_le` (the range of one
+linear map from `K³`).
 
 **Landed:** `lem:pencil-d-point-configuration` (`Grade/Realization.lean`, which now imports
 `Pencil/Motive.lean` for `Graph.closedNbhd`). Part (1),
@@ -123,8 +132,8 @@ may refine a name, and the pin lands with the Lean.
 - [x] `def:pencil-d-configuration` — `pencilConfigPointGrade`,
   `pencilConfigPointGrade_eq_pencilPicturePoint`, `pencilConfigPointGrade_eq_pencilConfigPoint`,
   `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_pencilConfigPointGrade_one`
-- [ ] `lem:pencil-d-config-realization` — `Graph.IsAdmissiblePicture.hasGradedDistinctPencilRealization`
-  (at grade `m + 1` for `m` heights)
+- [x] `lem:pencil-d-config-realization` — `Graph.IsAdmissiblePicture.hasGradedDistinctPencilRealization`
+  (at grade `m + 1` for `m` heights), `Graph.IsAdmissiblePicture.hasPencilPlaneRealization_ofNormals_pencilConfigPointGrade`
 - [x] `def:pencil-d-x0-attains` — `Graph.X0AttainsGrade` (`K m G`, `m` heights), `Graph.liftingSpaceGrade`
 - [x] `lem:pencil-d-x0-attains-three` — `Graph.x0AttainsGrade_one_iff` (one height; through
   `…_ofNormals_pencilConfigPointGrade_one`)
@@ -148,8 +157,7 @@ may refine a name, and the pin lands with the Lean.
 
 ## Hand-off / next phase
 
-The next commit is `lem:pencil-d-config-realization` or `lem:pencil-d-x0-one-witness`
-(*Current state*; either, one session each). Optional, any time: the `k = 2` form
+The next commit is `lem:pencil-d-x0-one-witness` (*Current state*), then the join-independence node. Optional, any time: the `k = 2` form
 `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv` is the new lemma at
 `k := 2` verbatim, so it could be re-proved from it once `Configuration.lean` imports
 `Grade/Collineation.lean` (not done: the commits stay additive).
