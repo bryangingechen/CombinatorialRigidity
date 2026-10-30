@@ -143,6 +143,11 @@ fibre-intersection lemma and Jackson–Jordán's equality.
   own green nodes in pencil-d.tex. C waits for formalization." CERT's brief: "Clear it; session 1
   checks R1 (Recommended)". NONDEG's brief: "Clear with these defaults" (the defaults verbatim in
   its header).
+- **PI, 2026-10-30 (42d, after NONDEG session 1), the `Pᵈ` nondegeneracy:** asked "Which
+  nondegeneracy should the Pᵈ generic conjunct use?", the PI answered "(A) C2-same": N1 and N3
+  on the points, and the hub planes around each body meet as in `P³`
+  (`dim ⋂_{w∈S} Π_w ≤ 4 − |S|`), with Phase 39's feasibility word for word in every `d`
+  (`notes/attacks/nondeg/` S9). The other options were C2-vac and dropping the conjunct.
 
 ## 2. PD-RECON (42a)
 
@@ -343,7 +348,7 @@ Result 17's `def[3] ≤ 1` one step further.
 - **GENERIC** (row 22): route B in `Pᵈ`, an irreducible parametrization of the nondegenerate
   realizations, and the one-ear step at `d ≥ 5`. D's candidate witness against the good-ear lemma
   supplying a common neighbour: `C₆` with the chord `14` and `y` joined to `2, 5` (by hand,
-  feasibility unchecked). It has `def[3] = 0` (Result 22), so its rank is Result 17's; the
+  feasibility settled by 42d's NONDEG S11: it is feasible). It has `def[3] = 0` (Result 22), so its rank is Result 17's; the
   question it raises is GENERIC's alone.
 
 ### 2.4 Proposed tests (T1–T5 run)

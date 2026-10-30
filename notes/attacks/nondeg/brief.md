@@ -7,6 +7,12 @@
 > configuration-space family may be a candidate, with its misses (e.g. K_{2,3} at d = 3)
 > recorded; d = 3, 4, 5; workbook at notes/attacks/nondeg/workbook.md; reviews every three
 > sessions; keep 229 lines."). Session 1 starts by settling §4's four `[READING]` items.
+> After session 1, 2026-10-30, on the PI's word (the question put: "Which nondegeneracy should the
+> Pᵈ generic conjunct use?"; the answer: "(A) C2-same", whose option read "N1 and N3 on the
+> points, and the hub planes around each body meet as in P³ (dim ⋂_{w∈S} Π_w ≤ 4 − |S|).
+> Feasibility is Phase 39's word for word in every d (S9). Cost: an irreducible carrier in Pᵈ for
+> the planar-rigid case and the pendant-body and cut-edge arms (R-L, S13), the next sessions'
+> work."). Session 2 takes C2-same as the definition and works on its carrier.
 > Written 2026-10-30 by an agent (Claude
 > Opus 5.5) against the tree at `947fa75d`, from the owning sections: `notes/Phase42-design.md`
 > §2.1 rows 19–22, §2.2, §2.3 ONE-EAR, CARRIER and GENERIC, §2.4 T4 and §2.5; `pencil.tex`'s

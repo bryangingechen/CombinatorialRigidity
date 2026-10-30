@@ -5,8 +5,8 @@ target is an informal proof, at every `d`, of the conditioned pair's three conju
 adjacent-distinct and a generic one), written as red nodes of `pencil-d.tex` before any more
 formalization. Three tracks, CERT, NONDEG and WRITE-UP, run in parallel from one central session,
 `/coordinate-tracks 42d`, with a Lean track, COUNT, for the coverage's counting at every `D`
-(COUNT-A landed: 5 green nodes). CERT is closed. **Next:** the hub merges W1 and NONDEG, then
-dispatches COUNT-B as the next `pencil-d.tex` writer. Plan and the PI's decisions: `notes/Phase42-design.md` (§1, §3 PD-ALL).
+(COUNT-A landed: 5 green nodes). CERT is closed; NONDEG's definition is C2-same (the PI).
+**Next:** the hub merges W1, then dispatches COUNT-B as the next `pencil-d.tex` writer. Plan and the PI's decisions: `notes/Phase42-design.md` (§1, §3 PD-ALL).
 
 ## Current state
 
@@ -14,8 +14,9 @@ Opened 2026-10-30. The first `/coordinate-tracks 42d` round dispatched CERT sess
 session 1, each in its own isolated worktree, and COUNT-A as the `pencil-d.tex` writer (one writer
 of that chapter in flight at a time). **COUNT-A has landed**: `pencil-d.tex`'s new section
 `sec:pencil-d-deficiency`, five green nodes (*Lean now*). **CERT is closed** after one session and
-a review. Slice W1 and NONDEG session 1 are in flight; the next concrete step is the hub's: merge
-them as they land, then dispatch COUNT-B as the next `pencil-d.tex` writer.
+a review. NONDEG session 1 has landed and the PI chose C2-same; session 2 works on its carrier.
+Slice W1 is in flight; the next concrete step is the hub's: merge it as it lands, then dispatch
+COUNT-B as the next `pencil-d.tex` writer.
 
 In place at the open: the hub command (`.claude/commands/coordinate-tracks.md`), the write-up
 agent (`.claude/agents/writeup-opus.md`), `worktree.baseRef: head` in `.claude/settings.json`
@@ -30,7 +31,7 @@ The hub's registry. Count-free: each attack's status is its `state.md` (`HARNESS
 | Track | Kind | Home | Agent | Status |
 |---|---|---|---|---|
 | CERT | attack | `notes/attacks/cert/` | `attack-opus` | closed at review 1: R1 proved by hand at every `d` (workbook S1–S9) |
-| NONDEG | attack (a question) | `notes/attacks/nondeg/` | `attack-opus` | ready: session 1 settles §4's `[READING]` items |
+| NONDEG | attack (a question) | `notes/attacks/nondeg/` | `attack-opus` | ready: the PI chose C2-same; session 2 works on its `Pᵈ` carrier (R-L, S13) |
 | WRITE-UP | write-up | `blueprint/src/chapter/pencil-d.tex`, new sections | `writeup-opus` | ready: slice W1 |
 | COUNT | lean | *Lean now* below; nodes in `pencil-d.tex` | `phase-builder-opus` | ready: COUNT-B (A landed) |
 
@@ -42,7 +43,10 @@ alternate.
   every field with `|K| ≥ 4` (workbook S1–S8, driver at `d = 3..9`); SHORT-CORE's S53 rests on
   it, and G1 is retired on the PI's word (S9). Slices W7 and W8 take S6 and S7 as red nodes.
 - **NONDEG**: a `Pᵈ` nondegeneracy for the generic conjunct (Q0–Q4 of its brief), and the route
-  to proving that conjunct. The definition is the PI's choice; the track recommends.
+  to proving that conjunct. **The PI chose C2-same** after session 1 (every feasible graph of its
+  population at the deficiency rank in `d = 3, 4, 5`, S11, S16; feasibility Phase 39's in every
+  `d`, S9). Open: an irreducible `Pᵈ` carrier for the planar-rigid case and the pendant-body and
+  cut-edge arms (O6a, O6b; S13's lift over a `P³` picture).
 
 ## Write-up
 
@@ -126,11 +130,12 @@ landing them.
 
 ## Blockers / open questions
 
-- None. The generic conjunct's form waits for NONDEG's table and the PI.
+- None. The generic conjunct uses C2-same (the PI, after NONDEG session 1); its `Pᵈ` carrier is
+  NONDEG's open work.
 
 ## Hand-off / next phase
 
-Next concrete step: the `/coordinate-tracks 42d` hub merges NONDEG session 1 and slice W1 as
+Next concrete step: the `/coordinate-tracks 42d` hub merges slice W1 and NONDEG session 2 as
 they land (CERT is closed), then dispatches the next `pencil-d.tex` writer, COUNT-B (one
 `phase-builder-opus` commit, from `scratch/42d/theorem_s_spike.lean` with *Lean now*'s renames).
 42d closes when
