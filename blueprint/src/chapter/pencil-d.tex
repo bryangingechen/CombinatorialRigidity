@@ -420,6 +420,8 @@ each closed neighbourhood lie in a plane.
 
 \begin{lemma}[One attaining configuration forces the general one, in every dimension]
   \label{lem:pencil-d-x0-one-witness}
+  \lean{Graph.x0AttainsGrade_of_exists}
+  \leanok
   \uses{def:pencil-main-picture, def:pencil-d-x0-attains,
         lem:rank-polynomial-of-le-finrank,
         lem:relative-deficiency-rank-bound}
@@ -432,6 +434,7 @@ each closed neighbourhood lie in a plane.
 \end{lemma}
 \begin{proof}
   \uses{def:pencil-lifting-system, lem:pencil-polynomial-section}
+  \leanok
   The proof of \cref{lem:pencil-x0-one-witness} applies, with the
   polynomial section of the lifting system
   (\cref{lem:pencil-polynomial-section}) taken once for each height: it

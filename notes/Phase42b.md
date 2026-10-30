@@ -2,17 +2,27 @@
 
 **Status:** in progress, opened 2026-10-30 beside 42a (the PI's planning default, design doc §1,
 item 4), the Lean under `/coordinate-phase`. Forward mode: the dep-graph is
-`blueprint/src/chapter/pencil-d.tex`, 17 nodes, 15 green (the collineation lemma, the
-configuration, the scale-shift, the contraction's rank, the attaining definition and its `d = 3` agreement, `def:extensor-through-flat` and its point form, `def:pencil-d-realization` and its `d = 3` agreement, `def:pencil-d-rank-hypothesis`, `def:pencil-d-distinct-motive`, `lem:pencil-d-rank-agrees-three`, `lem:pencil-d-point-configuration`, `lem:pencil-d-config-realization`), Lean in `Pencil/Grade/`. The carrier is the PI's (2026-10-30, design doc §1): the
+`blueprint/src/chapter/pencil-d.tex`, 17 nodes, 16 green (the collineation lemma, the
+configuration, the scale-shift, the contraction's rank, the attaining definition and its `d = 3` agreement, `def:extensor-through-flat` and its point form, `def:pencil-d-realization` and its `d = 3` agreement, `def:pencil-d-rank-hypothesis`, `def:pencil-d-distinct-motive`, `lem:pencil-d-rank-agrees-three`, `lem:pencil-d-point-configuration`, `lem:pencil-d-config-realization`, `lem:pencil-d-x0-one-witness`), Lean in `Pencil/Grade/`. The carrier is the PI's (2026-10-30, design doc §1): the
 dual form with each body's 3-space as data, as the chapter states. Next concrete task:
-`lem:pencil-d-x0-one-witness`.
+`lem:pencil-d-join-independence-open`.
 
 ## Current state
 
-**Next:** `lem:pencil-d-x0-one-witness` (`Graph.x0AttainsGrade_of_exists`, using `Graph.liftingSpaceGrade`):
-one attaining configuration gives `Graph.X0AttainsGrade`'s polynomial form. Its work is the generic
-height polynomial, as at `d = 3` (`Graph.X0Attains`), at `m` heights; assess whether the
-`MvPolynomial` argument is one session once its chapter node is read.
+**Next:** `lem:pencil-d-join-independence-open` (`exists_mvPolynomial_linearIndependent_join_picture_grade`,
+`exists_mvPolynomial_linearIndependent_join_heights_grade`), the last red node; read its chapter
+statement first and assess whether the picture and heights halves are one session or two.
+
+**Landed:** `lem:pencil-d-x0-one-witness` (`Pencil/Grade/Witness.lean`, new, imports
+`Grade/Configuration.lean`): `Graph.x0AttainsGrade_of_exists` (`hz₀ : z₀ ∈ G.liftingSpaceGrade q₀ m`,
+`hrank` at `ofNormals (k := m + 1)` at `pencilConfigPointGrade q₀ z₀`, conclusion
+`G.X0AttainsGrade K m`), the `d = 3` proof `Graph.x0Attains_of_exists` with one polynomial section
+`(D i, Z i)` per height (`choose`), `P = Padm * ∏ D i * Qsec`; and
+`Graph.IsAdmissiblePicture.supportExtensor_ne_zero_grade`. The private
+`map_vecCons_vecCons_snoc` (a ring map through the block layout of `pencilConfigPointGrade`) does the
+coordinate checks by `Fin.cases`/`Fin.lastCases`. The CARRIER item is done with it:
+`Graph.bodyBarDim_add_one_eq_screwDim` (`PanelLayer.lean`, beside `bodyBarDim_eq_screwDim_sub_one`),
+and the inline use in `screwDim_add_deficiency_le_finrank_infinitesimalMotions` repointed to it.
 
 **Landed:** `lem:pencil-d-config-realization` (`Pencil/Grade/Configuration.lean`, new, imports
 `Grade/Carrier.lean` and `Grade/Realization.lean`):
@@ -140,11 +150,11 @@ may refine a name, and the pin lands with the Lean.
 - [x] `lem:pencil-d-rank-collineation` — `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv_grade`,
   `panelSupportExtensor_linearEquiv_eq_det_smul`
 - [x] `lem:pencil-d-rank-scale-shift` — `Graph.finrank_span_rigidityRows_ofNormals_heights_linearEquiv_add_affineLifts`
-- [ ] `lem:pencil-d-x0-one-witness` — `Graph.x0AttainsGrade_of_exists`
+- [x] `lem:pencil-d-x0-one-witness` — `Graph.x0AttainsGrade_of_exists`
 - [x] `lem:pencil-d-contract-magnified-rank` — `Graph.finrank_span_rigidityRows_induce_contractHeightGrade_eq`
 - [ ] `lem:pencil-d-join-independence-open` — `exists_mvPolynomial_linearIndependent_join_picture_grade`,
   `exists_mvPolynomial_linearIndependent_join_heights_grade`
-- [ ] Lean only (CARRIER): name `bodyBarDim (k + 1) = screwDim k`, inline in
+- [x] Lean only (CARRIER): name `bodyBarDim (k + 1) = screwDim k`, inline in
   `screwDim_add_deficiency_le_finrank_infinitesimalMotions` (`PanelLayer.lean`); planned
   `Graph.bodyBarDim_add_one_eq_screwDim`.
 - Not here: nondegeneracy's lift (`IsNondegPencilRealization`, the generic conjunct) is GENERIC's
@@ -157,7 +167,7 @@ may refine a name, and the pin lands with the Lean.
 
 ## Hand-off / next phase
 
-The next commit is `lem:pencil-d-x0-one-witness` (*Current state*), then the join-independence node. Optional, any time: the `k = 2` form
+The next commit is `lem:pencil-d-join-independence-open` (*Current state*), the last red node. Optional, any time: the `k = 2` form
 `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv` is the new lemma at
 `k := 2` verbatim, so it could be re-proved from it once `Configuration.lean` imports
 `Grade/Collineation.lean` (not done: the commits stay additive).
