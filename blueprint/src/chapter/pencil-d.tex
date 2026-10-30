@@ -773,6 +773,9 @@ $\operatorname{def}_2(G) \le 3$.
 
 \begin{theorem}[The pencil in every dimension when $\operatorname{def}_2(G) \le 3$]
   \label{thm:pencil-d-deficiency-two-le-three}
+  \lean{Graph.x0AttainsGrade_of_deficiency_two_le_three,
+        Graph.hasGradedDistinctPencilRealization_of_deficiency_two_le_three}
+  \leanok
   \uses{def:pencil-x0-standing, def:pencil-d-x0-attains,
         def:pencil-d-distinct-motive, def:D-deficiency}
   Let $K$ be an infinite field and $d \ge 3$, and let $G$ satisfy the
@@ -783,6 +786,7 @@ $\operatorname{def}_2(G) \le 3$.
   (\cref{def:pencil-d-distinct-motive}).
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{thm:pencil-x0-coverage, lem:pencil-d-x0-attains-three,
         lem:deficiency-stable, lem:pencil-d-x0-attains-of-le,
         lem:pencil-d-x0-attains-distinct}

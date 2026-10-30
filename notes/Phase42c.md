@@ -2,20 +2,20 @@
 
 **Status:** in progress, opened 2026-10-30 by the PI (design doc §3's scope as written), a
 sub-phase of Phase 42 beside 42a. Forward mode, the Lean under `/coordinate-phase`: the dep-graph
-is `blueprint/src/chapter/pencil-d.tex` §`sec:pencil-d-stable`, 9 nodes, 7 green (`lem:deficiency-stable`, `def:pencil-d-embedding`,
+is `blueprint/src/chapter/pencil-d.tex` §`sec:pencil-d-stable`, 9 nodes, 8 green (`thm:pencil-d-deficiency-two-le-three`, `lem:deficiency-stable`, `def:pencil-d-embedding`,
 `lem:pencil-d-embedding-join`, `lem:pencil-d-x0-attains-distinct`, `lem:screw-embedding-rank`,
-`lem:pencil-d-embed-config-rank`, `lem:pencil-d-x0-attains-of-le`), 2 red.
+`lem:pencil-d-embed-config-rank`, `lem:pencil-d-x0-attains-of-le`), 1 red (`lem:pencil-d-embed-realization`).
 The open corrected the deficiency lemma (it needs `G` connected) and found its proof gives a
-sharper range; the PI widened the theorem to `def_2 ≤ 3` (*Architectural choices*). Next concrete task: `thm:pencil-d-deficiency-two-le-three` (or `lem:pencil-d-embed-realization`).
+sharper range; the PI widened the theorem to `def_2 ≤ 3` (*Architectural choices*). Next concrete task: `lem:pencil-d-embed-realization`, the last red node.
 
 ## Current state
 
-**Next:** `thm:pencil-d-deficiency-two-le-three` (`Graph.x0AttainsGrade_of_deficiency_two_le_three`,
-`Graph.hasGradedDistinctPencilRealization_of_deficiency_two_le_three`), last, at `def_2 ≤ 3`; the
-other leaf, `lem:pencil-d-embed-realization`, lands in any slot. Assess whether the theorem is one
-commit once its route is read.
+**Next:** `lem:pencil-d-embed-realization`, the last red node; its close fires the phase-close checklist.
 
-**Landed (latest):** `lem:pencil-d-x0-attains-of-le` (green, one commit): `Graph.X0AttainsGrade.of_le`
+**Landed (latest):** `thm:pencil-d-deficiency-two-le-three` (green, one commit): new file
+`Pencil/Grade/Stable.lean` with `Graph.x0AttainsGrade_of_deficiency_two_le_three` (dimension three by
+`Graph.IsX0Graph.x0Attains`, `Graph.Connected.deficiency_eq_of_deficiency_two_add_three_le` at
+`n' = 3`, then `Graph.X0AttainsGrade.of_le`) and the realization form. Before it: `lem:pencil-d-x0-attains-of-le` (green, one commit): `Graph.X0AttainsGrade.of_le`
 in `Pencil/Grade/ZeroHeights.lean`, which now imports `Grade/Witness.lean`; `hloop` is `⟨fun e v hl =>
 hadm.1 e v v hl rfl⟩`, the arithmetic closes by `rw` then `ring`. Before it: `lem:pencil-d-embed-config-rank` (green, one commit), new file
 `Pencil/Grade/ZeroHeights.lean` (over `Grade/Carrier.lean` and `Grade/Embedding.lean`): `padHeights`
@@ -98,7 +98,7 @@ may refine a name, and the pin lands with the Lean.
 - [x] `lem:pencil-d-x0-attains-of-le` — `Graph.X0AttainsGrade.of_le` (`[Infinite K]`, `G` connected,
   `G.deficiency (m' + 2) = G.deficiency (m + 2)`)
 - [x] `lem:pencil-d-x0-attains-distinct` — `Graph.X0AttainsGrade.hasGradedDistinctPencilRealization`
-- [ ] `thm:pencil-d-deficiency-two-le-three` — `Graph.x0AttainsGrade_of_deficiency_two_le_three`,
+- [x] `thm:pencil-d-deficiency-two-le-three` — `Graph.x0AttainsGrade_of_deficiency_two_le_three`,
   `Graph.hasGradedDistinctPencilRealization_of_deficiency_two_le_three` (`G.IsX0Graph`, `1 ≤ m`)
 
 ## Blockers / open questions
@@ -107,9 +107,8 @@ may refine a name, and the pin lands with the Lean.
 
 ## Hand-off / next phase
 
-The next commit is the theorem `thm:pencil-d-deficiency-two-le-three` (*Current state*), at
-`def_2 ≤ 3` (the PI's widening from `≤ 1`, *Architectural choices*); the statement form
-`lem:pencil-d-embed-realization` lands in any slot.
+The next commit is `lem:pencil-d-embed-realization` (*Current state*), the last red node; it closes
+the phase, so the phase-close checklist fires on it.
 
 ## Decisions made during this phase
 
