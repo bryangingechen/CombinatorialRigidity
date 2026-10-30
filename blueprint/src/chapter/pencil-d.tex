@@ -2421,3 +2421,1046 @@ in dimension $d$ (\cref{lem:pencil-d-x0-attains-of-le}).
   to the ear steps. The two lemmas that give the core hold in every
   dimension, with rigidity read at $D$ and additivity in the plane.
 \end{proof}
+
+\subsection{Open ears with three or more interior bodies in every dimension}
+\label{sec:pencil-d-short}
+
+This section proves the ear steps of the induction in dimension $d$ at
+an open ear $a - x_1 - \cdots - x_k - b$ on $V_1$ (\cref{def:open-ear})
+with $k \ge 3$ interior bodies, whose ends may be adjacent. Let $G''$ be
+$G$ with $x_2$ suppressed: the splitting-off $G_{x_2}^{x_1 x_3}$
+(\cref{def:graph-operations}) whose new edge $x_1 x_3$ carries the label
+of the deleted edge $x_1 x_2$. It has the same $G[V_1]$, and the open ear
+$a - x_1 - x_3 - \cdots - x_k - b$ on $V_1$ with $k - 1$ interior
+bodies. The steps assume that the general configurations of $G[V_1]$ and
+of $G''$ attain in dimension $d$. With four or more interior bodies the
+step holds in every dimension (\cref{thm:pencil-d-open-ear-four}), and
+with three in dimensions four, five and six
+(\cref{thm:pencil-d-open-ear-three}). At $d = 3$ they are
+\cref{thm:pencil-x0-open-ear-four} and
+\cref{thm:pencil-x0-open-ear-three}, and we keep the scheme of their
+proofs (\cref{sec:main-component-short}). By
+\cref{thm:pencil-d-chain-or-core}, the coverage in dimension $d \ge 5$
+needs an ear step only at chains with four or more interior bodies, and
+at $d = 4$ it also needs the step at three.
+
+We compute ranks with joins, as in the proof of
+\cref{thm:pencil-d-flat-rank}. Let $(q, z)$ be a configuration in
+dimension $d$, with points $b$. The hinge at an edge $uv$ is
+$C(b_u, b_v) = *(b_u \vee b_v)$, where $*$ is the complement isomorphism
+of $\bigwedge^2 K^{d+1}$ onto the screw space
+(\cref{def:panel-support-extensor}). Applying $*^{-1}$ to the
+infinitesimal motions of a subgraph $H$ gives the assignments $S$ of
+elements of $\bigwedge^2 K^{d+1}$ to the bodies of $H$ with
+$S(u) - S(v) \in K\,(b_u \vee b_v)$ at every edge $uv$ of $H$. We call
+these assignments the \emph{motions} of $H$ at $(q, z)$. For bodies $a$
+and $b$ of $H$ we write $\rho \subseteq \bigwedge^2 K^{d+1}$ for the
+space of differences $S(b) - S(a)$ over the motions of $H$, the preimage
+under $*$ of the relative screws of $a, b$ in $H$
+(\cref{def:relative-screws}). As $*$ is linear and invertible, the ear
+rank formula (\cref{lem:block-rank-ear}) holds with this $\rho$ and with
+the span $\Lambda \subseteq \bigwedge^2 K^{d+1}$ of the joins of the
+ear. When these joins are nonzero, the ranks at $(q, z)$ satisfy
+\[
+  \operatorname{rank} G \;=\; \operatorname{rank} G[V_1]
+  + (D - 1)(k + 1) + \dim(\rho + \Lambda) - D.
+\]
+The target of $G$ exceeds that of $G[V_1]$ by
+$Dk - \operatorname{def}_d(G) + \operatorname{def}_d(G[V_1])$. So a
+configuration of $G$ over a main picture of $G$, with heights in
+$L_G(q)^{d-2}$, at which $G[V_1]$ has its target, has rank at least
+$\operatorname{tgt}_d(G)$ as soon as
+\[
+  \dim(\rho + \Lambda) \;\ge\; k + 1 + \operatorname{def}_d(G[V_1])
+  - \operatorname{def}_d(G). \qquad (\star)
+\]
+At $d = 3$ this is the condition $(\star)$ of
+\cref{sec:main-component-short}.
+
+We count against $G''$. Let $W$ be the span of $\rho$ and the joins of
+the ear of $G''$. Where $G[V_1]$ and $G''$ have their targets, the ear
+rank formula at $G''$ bounds $\dim W$ below, and $(\star)$ asks for at
+most one dimension more. To gain it we put $x_2$ back on a line through
+the point $y_1$ of $x_1$ or the point $y_3$ of $x_3$
+(\cref{lem:pencil-d-insertion}). This raises the span by one unless $W$
+contains every line through that point. It therefore suffices that $W$
+be all of $\bigwedge^2 K^{d+1}$ whenever it contains every line through
+$y_1$ and every line through $y_3$, at a general choice of the points of
+the ear.
+
+At $d = 3$ the lines through two points span a hyperplane of
+$\bigwedge^2 K^4$, and the steps decide whether $W$ is everything with
+the pairing of lines (\cref{lem:pencil-two-stars},
+\cref{lem:pencil-tetrahedron}, \cref{lem:pencil-bilinear}). In dimension
+$d$ the lines through two points span a subspace of codimension
+$\binom{d-1}{2}$, which is three at $d = 4$
+(\cref{lem:pencil-d-two-stars}). We work instead with the annihilator of
+$W$, and move the points of the ear along lines to first order
+(\cref{lem:pencil-d-kernel-curve}). With four or more interior bodies the
+point $y_3$ is free, and $W$ is everything at general points of the ear,
+for every subspace $\rho$ (\cref{lem:pencil-d-stars-four}). With three,
+$y_1$ and $y_3$ lie in the planes $\Pi_a$ and $\Pi_b$ of the ends. The
+conclusion then holds for every $\rho$ when $\Pi_a$ and $\Pi_b$ meet in a
+subspace of small dimension (\cref{lem:pencil-d-stars-three}). We show
+with the lifting planes of $G[V_1]$ that they do whenever $W$ contains
+the lines through $y_1$ and $y_3$ without being everything
+(\cref{lem:pencil-d-glued-ends}, \cref{lem:pencil-d-planes-meet}). We
+first collect the linear algebra, then the ear data, and then prove the
+two steps.
+
+Throughout this section $D = \binom{d+1}{2}$ is the dimension of
+$\bigwedge^2 K^{d+1}$. We write $\wedge$ for the product of
+$\bigwedge K^{d+1}$, so that the join of $u, w \in K^{d+1}$ is
+$u \vee w = u \wedge w$ (\cref{def:join}). The \emph{star} of
+$y \in K^{d+1}$ is the span $\operatorname{star}(y)$ of the joins
+$y \vee u$, $u \in K^{d+1}$: the lines through $y$. We identify
+$\bigwedge^{d+1} K^{d+1}$ with $K$ by the determinant. Then the product
+$(c, \omega) \mapsto c \wedge \omega$ of $\bigwedge^2 K^{d+1}$ and
+$\bigwedge^{d-1} K^{d+1}$ is a perfect pairing. Indeed, for a basis
+$e_1, \dots, e_{d+1}$ of $K^{d+1}$ the products $e_I$ of basis vectors
+over increasing index sets $I$ form bases of the exterior powers (the
+remark after \cref{def:extensor}), and $e_I \wedge e_J$ is $\pm 1$ when
+$J$ is the complement of $I$, and $0$ otherwise. For a subspace $U$ of
+$\bigwedge^2 K^{d+1}$ we write $U^{\circ}$ for its \emph{annihilator},
+the forms $\omega \in \bigwedge^{d-1} K^{d+1}$ with $c \wedge \omega = 0$
+for every $c \in U$. Then $\dim U^{\circ} = D - \dim U$,
+$(U + U')^{\circ} = U^{\circ} \cap U'^{\circ}$, and $U \subseteq U'$ if
+and only if $U'^{\circ} \subseteq U^{\circ}$.
+
+% Source: SHORT-CORE workbook (notes/attacks/short-core/workbook.md), S1 (at d = 4)
+% and S22 (every d); part (3) is the divisibility step of S32 and S35.
+\begin{lemma}[The lines through two points, in every dimension]
+  \label{lem:pencil-d-two-stars}
+  \uses{def:join, def:extensor}
+  Let $d \ge 3$, let $y, y' \in K^{d+1}$ be linearly independent, and let
+  $Q = K^{d+1} / \langle y, y' \rangle$, with $\bar x$ the image of $x$.
+  \begin{enumerate}
+    \item $\operatorname{star}(y) + \operatorname{star}(y')$ is the
+      kernel of the map $\bigwedge^2 K^{d+1} \to \bigwedge^2 Q$ induced by
+      the quotient. It has dimension $2d - 1$ and codimension
+      $\binom{d-1}{2}$.
+    \item Its annihilator is $y \wedge y' \wedge \bigwedge^{d-3} K^{d+1}$,
+      the set of forms $y \wedge y' \wedge \zeta$ with
+      $\zeta \in \bigwedge^{d-3} K^{d+1}$.
+    \item For each $p \ge 0$ the map
+      $\bigwedge^p Q \to \bigwedge^{p+2} K^{d+1}$,
+      $\bar\zeta \mapsto y \wedge y' \wedge \zeta$, is well defined and
+      injective. If $\bar\zeta \in \bigwedge^p Q$ is nonzero and
+      $\bar x \wedge \bar\zeta = 0$ for every $\bar x$ in a subspace $A$
+      of $Q$, then $\dim A \le p$.
+  \end{enumerate}
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-two-stars}
+  Extend $e_1 = y$ and $e_2 = y'$ to a basis $e_1, \dots, e_{d+1}$ of
+  $K^{d+1}$. Then $\bar e_3, \dots, \bar e_{d+1}$ is a basis of $Q$.
+
+  (1) The star of $y$ is spanned by the $e_1 \wedge e_j$, and that of
+  $y'$ by the $e_2 \wedge e_j$. So their sum is spanned by the basis
+  vectors $e_i \wedge e_j$, $i < j$, with $i \le 2$, which are
+  $2(d + 1) - 3 = 2d - 1$ in number. The induced map sends
+  $e_i \wedge e_j$ to $\bar e_i \wedge \bar e_j$. This is zero when
+  $i \le 2$, and the products with $3 \le i < j$ go to a basis of
+  $\bigwedge^2 Q$. So the kernel is the sum of the stars, and its
+  codimension is $\dim \bigwedge^2 Q = \binom{d-1}{2}$.
+
+  (2) Under the perfect pairing, the annihilator of a span of basis
+  vectors $e_i \wedge e_j$ is spanned by the $e_K$, $|K| = d - 1$, whose
+  complement $\{i, j\}$ is not one of them. Here these are the $K$ that
+  contain $1$ and $2$, and $e_K = \pm\, e_1 \wedge e_2 \wedge
+  e_{K \setminus \{1, 2\}}$.
+
+  (3) The product with $y \wedge y'$ vanishes on
+  $\langle y, y' \rangle \wedge \bigwedge^{p-1} K^{d+1}$, so the map is
+  well defined. It sends the basis vector $\bar e_I$,
+  $I \subseteq \{3, \dots, d+1\}$, to $\pm\, e_{I \cup \{1, 2\}}$, and
+  these are distinct basis vectors, so it is injective. For the last
+  claim choose the basis of $Q$ so that its first $m = \dim A$ vectors
+  span $A$, and write $\bar\zeta = \sum_I c_I\, \bar e_I$. For
+  $j \notin I$, $\bar e_j \wedge \bar e_I = \pm\, \bar e_{I \cup \{j\}}$,
+  and distinct such $I$ give distinct $I \cup \{j\}$. So
+  $\bar e_j \wedge \bar\zeta = 0$ forces $c_I = 0$ for every $I$ not
+  containing $j$. Hence every $I$ with $c_I \neq 0$ contains the $m$
+  indices of the basis of $A$, and $p = |I| \ge m$.
+
+  At $d = 3$ the codimension is one: the sum of the stars is the
+  hyperplane of the screws pairing to zero with $y \vee y'$
+  (\cref{lem:pencil-two-stars}), and its annihilator is spanned by
+  $y \wedge y'$, as $\bigwedge^{d-1} K^4 = \bigwedge^2 K^4$. In dimension
+  $d$ the codimension is $\binom{d-1}{2}$, which is $3$ at $d = 4$ and
+  $6$ at $d = 5$, so no single pairing detects the two stars.
+\end{proof}
+
+% Source: SHORT-CORE workbook, S19 (c), parts I1 and I2.
+\begin{lemma}[Putting a body back next to a neighbour, in every dimension]
+  \label{lem:pencil-d-insertion}
+  \uses{def:join}
+  Let $K$ be infinite and $d \ge 3$. Let $R \subseteq \bigwedge^2 K^{d+1}$
+  be a subspace, let $y, y' \in K^{d+1}$ have last coordinate $1$, and
+  let $W = R + K\,(y \vee y')$. If $W$ does not contain
+  $\operatorname{star}(y) + \operatorname{star}(y')$, or
+  $W = \bigwedge^2 K^{d+1}$, then some $x \in K^{d+1}$ with last
+  coordinate $1$ has
+  \[
+    \dim\bigl(R + \operatorname{span}(y \vee x,\ x \vee y')\bigr)
+    \;\ge\; \min(\dim W + 1,\ D).
+  \]
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-insertion}
+  If $W = \bigwedge^2 K^{d+1}$, take $x = y$. Then $y \vee x = 0$, and
+  the span is $W$, of dimension $D$.
+
+  Suppose that $\operatorname{star}(y) \not\subseteq W$. Every line
+  through $y$ is $y \vee u$ with $u$ of last coordinate $0$, since
+  $y \vee v = y \vee (v - \omega\, y)$ when $\omega$ is the last
+  coordinate of $v$. So some such $u$ has $y \vee u \notin W$. The proof
+  of \cref{lem:pencil-insertion} uses only that $K$ is infinite, and it
+  holds in $\bigwedge^2 K^{d+1}$ as it stands. With $R$ in place of
+  $\rho + \operatorname{span} F$, it gives $t \neq 0$ with
+  \[
+    \dim\bigl(R + \operatorname{span}(y \vee (y + tu),\
+    (y + tu) \vee y')\bigr) \;\ge\; \dim W + 1.
+  \]
+  Take $x = y + tu$, which has last coordinate $1$. If
+  $\operatorname{star}(y') \not\subseteq W$, the same argument with $y$
+  and $y'$ exchanged gives $x = y' + tu$, as the exchange changes $W$
+  and the span only by signs of their generators.
+
+  At $d = 3$ this is \cref{lem:pencil-insertion} together with the choice
+  of $x$ in the proof of \cref{thm:pencil-x0-open-ear-four}. Neither uses
+  the dimension.
+\end{proof}
+
+% Source: SHORT-CORE workbook, S6 (the tangent lemma, proved there by the Smith form
+% over K[[t]]) and S35 (its form for any target space). The proof here is by Cramer's rule.
+\begin{lemma}[A kernel vector to first order along a line]
+  \label{lem:pencil-d-kernel-curve}
+  Let $K$ be infinite, let $Y$ be a finite-dimensional vector space over
+  $K$, and let $M(y)$ be an $N \times n$ matrix whose entries are
+  polynomials in $y \in Y$. Let $m$ be the least dimension of
+  $\ker M(y)$ over $y \in Y$. There is a nonzero polynomial $\mu$ on $Y$
+  such that $\dim \ker M(y) = m$ wherever $\mu(y) \neq 0$. Let
+  $\mu(y_0) \neq 0$ and $w \in Y$, and write
+  $M(y_0 + tw) = M(y_0) + t\, M_w + t^2 M_2(t)$, with $M_w$ a matrix over
+  $K$ and $M_2(t)$ polynomial in $t$. Then for every
+  $\xi_0 \in \ker M(y_0)$ some $\xi_1 \in K^n$ has
+  \[
+    M(y_0)\, \xi_1 + M_w\, \xi_0 \;=\; 0.
+  \]
+\end{lemma}
+\begin{proof}
+  The largest rank of $M(y)$ is $n - m$. Every minor of $M$ of size
+  $n - m + 1$ vanishes at every $y \in Y$, so it is the zero polynomial,
+  as $K$ is infinite. Some minor of size $n - m$ is nonzero at a point of
+  rank $n - m$. Let $\mu$ be this minor, on the rows $I$ and the columns
+  $C$. Wherever $\mu(y) \neq 0$ the rank is $n - m$.
+
+  Let $\mu(y_0) \neq 0$ and $\xi_0 \in \ker M(y_0)$, and let $C'$ be the
+  columns outside $C$. Write $A(t)$ and $B(t)$ for the submatrices of
+  $M(y_0 + tw)$ on the rows $I$, and on the columns $C$ and $C'$. Their
+  entries are polynomials in $t$, and $\det A(0) = \mu(y_0) \neq 0$. Over
+  the field $K(t)$ of rational functions, $M(y_0 + tw)$ has rank
+  $n - m$, as its larger minors are zero and $\det A(t) \neq 0$. So each
+  of its rows is a combination over $K(t)$ of the rows in $I$. Let
+  $\xi(t)$ agree with $\xi_0$ at the columns $C'$, and be
+  $-A(t)^{-1} B(t)\, \xi_0|_{C'}$ at the columns $C$. Then the rows in
+  $I$ of $M(y_0 + tw)\,\xi(t)$ vanish, and hence so do all its rows.
+
+  Each entry of $\xi(t)$ is a polynomial in $t$ divided by $\det A(t)$,
+  whose value at $t = 0$ is nonzero, so it is a power series in $t$.
+  Write $\xi(t) = \xi(0) + t\,\xi_1 + t^2(\cdots)$. As the rows in $I$ of
+  $M(y_0)\,\xi_0$ vanish,
+  $\xi_0|_C = -A(0)^{-1} B(0)\, \xi_0|_{C'}$, so $\xi(0) = \xi_0$. The
+  coefficient of $t$ in $M(y_0 + tw)\,\xi(t) = 0$ is
+  $M(y_0)\,\xi_1 + M_w\,\xi_0$.
+\end{proof}
+
+% Source: SHORT-CORE workbook, S35 (every d >= 3, every subspace rho); at d = 4 also S7, S8.
+\begin{lemma}[A span containing two stars, at four or more interior bodies]
+  \label{lem:pencil-d-stars-four}
+  \uses{def:join}
+  Let $K$ be infinite, $d \ge 3$ and $k \ge 4$. Let
+  $\rho \subseteq \bigwedge^2 K^{d+1}$ and $\Pi_a, \Pi_b \subseteq K^{d+1}$
+  be subspaces with $\Pi_a \neq 0$, and let $p_a, p_b \in K^{d+1}$. For
+  $y = (y_1, y_3, y_4, \dots, y_k)$ with $y_1 \in \Pi_a$,
+  $y_3, \dots, y_{k-1} \in K^{d+1}$ and $y_k \in \Pi_b$, let $J(y)$ be the
+  span of the $k$ joins
+  \[
+    p_a \vee y_1,\quad y_1 \vee y_3,\quad y_i \vee y_{i+1}\
+    (3 \le i \le k - 1),\quad y_k \vee p_b,
+  \]
+  and let $W(y) = \rho + J(y)$. There is a nonzero polynomial in $y$ such
+  that wherever it does not vanish, $y_1$ and $y_3$ are linearly
+  independent, and $W(y) = \bigwedge^2 K^{d+1}$ whenever $W(y)$ contains
+  $\operatorname{star}(y_1) + \operatorname{star}(y_3)$.
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-d-two-stars, lem:pencil-d-kernel-curve}
+  Write $\Sigma(y) = \operatorname{star}(y_1) + \operatorname{star}(y_3)$
+  and $T(y) = y_1 \wedge y_3 \wedge \bigwedge^{d-3} K^{d+1}$, and let
+  $J_2(y)$ be the set of the $k - 3$ joins $y_i \vee y_{i+1}$,
+  $4 \le i \le k - 1$, and $y_k \vee p_b$. None of them involves $y_1$ or
+  $y_3$. Let $M(y)$ be the linear map on $\bigwedge^{d-3} K^{d+1}$ that
+  sends $\zeta$ to the class of $y_1 \wedge y_3 \wedge \zeta$ in
+  $\bigwedge^{d-1} K^{d+1} / \rho^{\circ}$, together with the numbers
+  $y_1 \wedge y_3 \wedge \zeta \wedge j$, $j \in J_2(y)$. In fixed bases
+  its entries are polynomials in $y$. The product of a form in $T(y)$
+  with $p_a \vee y_1$, with $y_1 \vee y_3$ or with $y_3 \vee y_4$ repeats
+  $y_1$ or $y_3$, and so vanishes. Hence $\zeta \in \ker M(y)$ exactly
+  when $y_1 \wedge y_3 \wedge \zeta \in \rho^{\circ} \cap J(y)^{\circ}$.
+
+  Let $\mu$ be the polynomial of \cref{lem:pencil-d-kernel-curve} for
+  $M$, on the space $\Pi_a \times (K^{d+1})^{k-3} \times \Pi_b$ of the
+  tuples $y$. As $\Pi_a \neq 0$, some $2 \times 2$ minor of the
+  coordinates of $(y_1, y_3)$ is a nonzero polynomial, and we take the
+  product of $\mu$ with it. Let $y$ be a tuple where this product does
+  not vanish, so that $y_1$ and $y_3$ are linearly independent. Suppose
+  that $W(y) \supseteq \Sigma(y)$ and $W(y) \neq \bigwedge^2 K^{d+1}$.
+  As $\Sigma(y)^{\circ} = T(y)$ (\cref{lem:pencil-d-two-stars} (2)),
+  passing to annihilators gives
+  $0 \neq \rho^{\circ} \cap J(y)^{\circ} \subseteq T(y)$. So some
+  $\zeta_0 \in \ker M(y)$ has $y_1 \wedge y_3 \wedge \zeta_0 \neq 0$. Its
+  image $\bar\zeta_0$ in $\bigwedge^{d-3} Q$, with
+  $Q = K^{d+1} / \langle y_1, y_3 \rangle$, is nonzero.
+
+  For $w \in K^{d+1}$, move $y_3$ along the line $y_3 + tw$ and keep the
+  other points. The joins of $J_2(y)$ do not move. So
+  \cref{lem:pencil-d-kernel-curve} gives $\zeta_1$ such that
+  \[
+    \delta_w \;=\; y_1 \wedge w \wedge \zeta_0
+    + y_1 \wedge y_3 \wedge \zeta_1 \;\in\; \rho^{\circ},
+  \]
+  and $\delta_w \wedge j = 0$ for every $j \in J_2(y)$. Both terms of
+  $\delta_w$ contain $y_1$, so $\delta_w$ has product zero with
+  $p_a \vee y_1$ and $y_1 \vee y_3$. Against $y_3 \vee y_4$ the second
+  term repeats $y_3$, and the first gives
+  $\pm\, y_1 \wedge y_3 \wedge y_4 \wedge \zeta_0 \wedge w$.
+
+  First let $w = y_4$. Then the first term repeats $y_4$ against
+  $y_3 \vee y_4$, so
+  $\delta_{y_4} \in \rho^{\circ} \cap J(y)^{\circ} \subseteq T(y)$. Every
+  form in $T(y)$ has product zero with $y_3$, and
+  $\delta_{y_4} \wedge y_3 = \pm\, y_1 \wedge y_3 \wedge y_4 \wedge
+  \zeta_0$. So $y_1 \wedge y_3 \wedge y_4 \wedge \zeta_0 = 0$.
+
+  Now let $w$ be arbitrary. By the case $w = y_4$, $\delta_w$ has product
+  zero with $y_3 \vee y_4$ as well, so $\delta_w \in T(y)$. Then
+  $\delta_w \wedge y_3 = \pm\, y_1 \wedge y_3 \wedge w \wedge \zeta_0 =
+  0$, and $\bar w \wedge \bar\zeta_0 = 0$
+  (\cref{lem:pencil-d-two-stars} (3)). So every vector of $Q$ has product
+  zero with $\bar\zeta_0$, and the same part gives
+  $d - 1 = \dim Q \le d - 3$. This contradiction proves the lemma.
+
+  At $d = 3$ and $k = 4$ the step instead asks that $y_1$, $y_3$, $y_4$
+  and $p_b$ be linearly independent (\cref{thm:pencil-x0-open-ear-four}).
+  A span containing both stars then contains the six joins of these four
+  points, which span $\bigwedge^2 K^4$ (\cref{lem:pencil-tetrahedron}).
+  In dimension $d$ the joins of four points span at most six of the $D$
+  dimensions, and the argument above takes the place of the tetrahedron.
+  It uses only that $y_3$ is free and that the joins of $J_2(y)$ do not
+  involve it.
+\end{proof}
+
+% Source: SHORT-CORE workbook, S32 (with S22 and the curves of S6; the existence step
+% as corrected in S12, read at kappa <= 1 as in S32).
+\begin{lemma}[A span containing two stars, at three interior bodies]
+  \label{lem:pencil-d-stars-three}
+  \uses{def:join}
+  Let $K$ be infinite and $d \ge 4$. Let
+  $\rho \subseteq \bigwedge^2 K^{d+1}$ be a subspace, and let
+  $\Pi_a, \Pi_b \subseteq K^{d+1}$ be three-dimensional subspaces whose
+  intersection has dimension $\kappa \le 1$, with $d + \kappa \le 6$. Let
+  $p_a \in \Pi_a$ and $p_b \in \Pi_b$ be linearly independent. For
+  $y_1 \in \Pi_a$ and $y_3 \in \Pi_b$ let
+  \[
+    W(y_1, y_3) \;=\; \rho + \operatorname{span}(p_a \vee y_1,\
+    y_1 \vee y_3,\ y_3 \vee p_b).
+  \]
+  There is a nonzero polynomial in $(y_1, y_3)$ such that wherever it
+  does not vanish, $y_1$ and $y_3$ are linearly independent, and
+  $W(y_1, y_3) = \bigwedge^2 K^{d+1}$ whenever $W(y_1, y_3)$ contains
+  $\operatorname{star}(y_1) + \operatorname{star}(y_3)$.
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-d-two-stars, lem:pencil-d-kernel-curve}
+  \emph{Four independent points.} We first find $y_1 \in \Pi_a$ and
+  $y_3 \in \Pi_b$ with $p_a, y_1, y_3, p_b$ linearly independent. Let
+  $L = \Pi_a \cap \Pi_b$. As $\dim(K p_a + L) \le 2$, some
+  $y_1 \in \Pi_a$ lies outside $K p_a + L$. If
+  $c\, p_a + e\, y_1 \in \Pi_b$, it lies in $L$, so $e = 0$ by the choice
+  of $y_1$. Hence $\langle p_a, y_1 \rangle \cap \Pi_b \subseteq
+  K p_a \cap \Pi_b$. Pick $y_3 \in \Pi_b$ outside
+  $K p_b + (K p_a \cap \Pi_b)$, a subspace of dimension at most two. Then
+  $\langle y_3, p_b \rangle \cap \langle p_a, y_1 \rangle \subseteq
+  K p_a \cap \Pi_b$. A nonzero multiple of $p_a$ in
+  $\langle y_3, p_b \rangle$ would be $\alpha\, y_3 + \beta\, p_b$ with
+  $\alpha \neq 0$, as $p_a$ and $p_b$ are independent. It would lie in
+  $\Pi_b$ and put $y_3$ in $K p_b + (K p_a \cap \Pi_b)$. So the planes
+  $\langle p_a, y_1 \rangle$ and $\langle y_3, p_b \rangle$, each of
+  dimension two, meet only in $0$, and the four points are independent.
+  This is the non-vanishing of a $4 \times 4$ minor of their coordinates,
+  a polynomial in $(y_1, y_3)$ that is nonzero at this pair.
+
+  \emph{The argument.} Let $M(y_1, y_3)$ be the linear map on
+  $\bigwedge^{d-3} K^{d+1}$ that sends $\zeta$ to the class of
+  $y_1 \wedge y_3 \wedge \zeta$ in
+  $\bigwedge^{d-1} K^{d+1} / \rho^{\circ}$. Let $\mu$ be its polynomial
+  from \cref{lem:pencil-d-kernel-curve}, on $\Pi_a \times \Pi_b$, and
+  take the product of $\mu$ with the minor above. Let $(y_1, y_3)$ be a
+  pair where this product does not vanish. Write
+  $J = \operatorname{span}(p_a \vee y_1, y_1 \vee y_3, y_3 \vee p_b)$,
+  $\Sigma = \operatorname{star}(y_1) + \operatorname{star}(y_3)$,
+  $T = y_1 \wedge y_3 \wedge \bigwedge^{d-3} K^{d+1}$ and
+  $Q = K^{d+1} / \langle y_1, y_3 \rangle$. Suppose that $W \supseteq
+  \Sigma$ and $W \neq \bigwedge^2 K^{d+1}$. Each of the three joins
+  contains $y_1$ or $y_3$, so $J \subseteq \Sigma$ and
+  $T = \Sigma^{\circ} \subseteq J^{\circ}$
+  (\cref{lem:pencil-d-two-stars} (2)). As in the proof of
+  \cref{lem:pencil-d-stars-four},
+  $0 \neq \rho^{\circ} \cap J^{\circ} \subseteq T$, so
+  $\rho^{\circ} \cap T \neq 0$. Pick $\zeta \in \ker M(y_1, y_3)$ with
+  $y_1 \wedge y_3 \wedge \zeta \neq 0$, so that $\bar\zeta \neq 0$ in
+  $\bigwedge^{d-3} Q$.
+
+  We move $y_1$ along the lines $y_1 + tu$ with $u \in \Pi_a$, and $y_3$
+  along the lines $y_3 + tw$ with $w \in \Pi_b$, which stay in
+  $\Pi_a \times \Pi_b$. By \cref{lem:pencil-d-kernel-curve} the first
+  gives $\zeta'$ with
+  $\delta_u = u \wedge y_3 \wedge \zeta + y_1 \wedge y_3 \wedge \zeta'
+  \in \rho^{\circ}$, and the second gives $\zeta''$ with
+  $\delta'_w = y_1 \wedge w \wedge \zeta + y_1 \wedge y_3 \wedge \zeta''
+  \in \rho^{\circ}$. The second term of each lies in $T \subseteq
+  J^{\circ}$.
+  \begin{itemize}
+    \item $u = p_a$. The first term of $\delta_{p_a}$ repeats $p_a$
+      against $p_a \vee y_1$, and $y_3$ against the other two joins. So
+      $\delta_{p_a} \in \rho^{\circ} \cap J^{\circ} \subseteq T$, and
+      $\delta_{p_a} \wedge y_1 = 0$. That is,
+      $y_1 \wedge y_3 \wedge p_a \wedge \zeta = 0$.
+    \item $w = p_b$. The first term of $\delta'_{p_b}$ repeats $y_1$
+      against $p_a \vee y_1$ and $y_1 \vee y_3$, and $p_b$ against
+      $y_3 \vee p_b$. So $\delta'_{p_b} \in T$, and
+      $\delta'_{p_b} \wedge y_3 = 0$: $y_1 \wedge y_3 \wedge p_b \wedge
+      \zeta = 0$.
+    \item Any $u \in \Pi_a$. The first term of $\delta_u$ repeats $y_3$
+      against $y_1 \vee y_3$ and $y_3 \vee p_b$, and its product with
+      $p_a \vee y_1$ is $\pm\, u \wedge (y_1 \wedge y_3 \wedge p_a \wedge
+      \zeta) = 0$. So $\delta_u \in T$, and
+      $\delta_u \wedge y_1 = \pm\, y_1 \wedge y_3 \wedge u \wedge \zeta =
+      0$.
+    \item Any $w \in \Pi_b$. Symmetrically, with
+      $y_1 \wedge y_3 \wedge p_b \wedge \zeta = 0$, $\delta'_w \in T$ and
+      $y_1 \wedge y_3 \wedge w \wedge \zeta = 0$.
+  \end{itemize}
+  By \cref{lem:pencil-d-two-stars} (3), $\bar x \wedge \bar\zeta = 0$ for
+  every $x \in \Pi_a + \Pi_b$. The subspace $\Pi_a + \Pi_b$ has
+  dimension $6 - \kappa$ and contains the independent $y_1$ and $y_3$, so
+  its image in $Q$ has dimension $4 - \kappa$. By the same part,
+  $4 - \kappa \le d - 3$, that is, $d + \kappa \ge 7$, against the
+  hypothesis.
+\end{proof}
+
+The bound $d + \kappa \le 6$ cannot be dropped. Let
+$U = \Pi_a + \Pi_b$, of dimension $6 - \kappa$, and let $\rho$ be the
+span of the joins $u \vee v$ with $u \in U$ and $v \in K^{d+1}$. The
+points $p_a$, $y_1$, $y_3$ and $p_b$ lie in $U$, so the three joins and
+both stars lie in $\rho$, and $W(y_1, y_3) = \rho$ for every pair. By
+the argument of part~(1) of \cref{lem:pencil-d-two-stars}, $\rho$ is the
+kernel of the map $\bigwedge^2 K^{d+1} \to \bigwedge^2(K^{d+1}/U)$. It
+is a proper subspace when $\dim K^{d+1}/U = d - 5 + \kappa \ge 2$, that
+is, when $d + \kappa \ge 7$.
+
+The ear data parametrize the points of the bodies of the ear over fixed
+base data, as at $d = 3$ (\cref{def:pencil-ear-data}). In dimension $d$
+the plane of an end is a three-dimensional subspace of $K^{d+1}$, the
+image of a map of the kind in \cref{lem:pencil-d-condition-linear}.
+
+% Source: SHORT-CORE workbook, S20 (step 3: the ear points are affine-linear in the ear
+% data) and S38 (rescaling a point changes neither W nor the stars).
+\begin{definition}[The ear data over fixed base data, in every dimension]
+  \label{def:pencil-d-ear-data}
+  \uses{def:open-ear, def:pencil-d-configuration, def:pencil-lifting-space}
+  Let $d \ge 3$, and let $a - x_1 - \cdots - x_k - b$ be an open ear of
+  $G$ on $V_1$ with $k \ge 2$ (\cref{def:open-ear}). Fix \emph{base
+  data}: a picture $q_1$, heights $z_1 \in L_{G[V_1]}(q_1)^{d-2}$, and
+  injective linear maps $\sigma_a, \sigma_b \colon K^3 \to K^{d+1}$ that
+  keep the first, the second and the last coordinate, such that the point
+  of the configuration $(q_1, z_1)$ (\cref{def:pencil-d-configuration})
+  at each member $w$ of the closed neighbourhood of $a$ in $G[V_1]$ is
+  $\sigma_a(q_1(w), 1)$, and likewise with $\sigma_b$ at $b$. The
+  \emph{ear data} are a point $s$ giving every body a point of $K^2$ and
+  $d - 2$ values in $K$. They give the picture $q(s)$, equal to $q_1$ on
+  $V_1$ and to the points of $s$ elsewhere, and the configuration
+  $(q(s), z(s))$ whose point is that of $(q_1, z_1)$ at each body of
+  $V_1$, $\sigma_a(q(s)_{x_1}, 1)$ at $x_1$, $\sigma_b(q(s)_{x_k}, 1)$ at
+  $x_k$, and $(q(s)_x, s_x, 1)$ at every other interior body $x$, where
+  $s_x \in K^{d-2}$ are the values of $s$ at $x$. The heights $z(s)$
+  vanish at every other body.
+\end{definition}
+
+We write $\Pi_a$ and $\Pi_b$ for the images of $\sigma_a$ and
+$\sigma_b$, and $p_a \in \Pi_a$ and $p_b \in \Pi_b$ for the points of
+$a$ and $b$. At $d = 3$ the map $\sigma_a$ is
+$(\xi, \eta, \omega) \mapsto (\xi, \eta, h_a \cdot (\xi, \eta, \omega),
+\omega)$, and these are the ear data of \cref{def:pencil-ear-data}.
+
+\begin{lemma}[An open ear over fixed base data, in every dimension]
+  \label{lem:pencil-d-ear-data}
+  \uses{def:pencil-d-ear-data, def:pencil-lifting-space,
+        def:pencil-admissible-picture}
+  Let $K$ be infinite, and let base data and ear data be as in
+  \cref{def:pencil-d-ear-data}.
+  \begin{enumerate}
+    \item If $q(s)$ is admissible for $G$, then
+      $z(s) \in L_G(q(s))^{d-2}$. The points of $(q(s), z(s))$ are
+      polynomial in $s$, and on $V_1$ they are those of $(q_1, z_1)$. A
+      polynomial in the picture, read at $q(s)$, is a polynomial in $s$.
+    \item As $s$ ranges over the ear data, the points of $x_1$, of $x_k$
+      and of each other interior body range independently over the
+      vectors with last coordinate $1$ of $\Pi_a$, of $\Pi_b$ and of
+      $K^{d+1}$.
+    \item Let $X$ be a set of interior bodies, and let $C$ be a condition
+      on the families $(y_x)_{x \in X}$ of vectors with
+      $y_{x_1} \in \Pi_a$, $y_{x_k} \in \Pi_b$ and $y_x \in K^{d+1}$
+      otherwise, unchanged when one vector is multiplied by a nonzero
+      scalar. If $C$ holds off the zero set of a nonzero polynomial in the
+      family, then it holds at the points of the ear data off the zero set
+      of a nonzero polynomial in $s$.
+  \end{enumerate}
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-ear-data, lem:pencil-ear-data-picture,
+        lem:pencil-ear-fibre, lem:pencil-picture-local}
+  (1) At $d = 3$ this is \cref{lem:pencil-ear-data} with
+  \cref{lem:pencil-ear-data-picture}, and their proofs hold height by
+  height. As $\sigma_a$ keeps the first, the second and the last
+  coordinate, its $i$-th height coordinate is a linear form
+  $\lambda^i_a$ on $K^3$, and the $i$-th height of $\sigma_a(u, 1)$ is
+  $\lambda^i_a \cdot (u, 1)$. So each height $z^i(s)$ agrees with the
+  affine function $\lambda^i_a$ on the closed neighbourhood of $a$ in $G$,
+  which is that in $G[V_1]$ together with $x_1$. Likewise at $b$, whose
+  closed neighbourhood gains $x_k \neq x_1$. At every other body of $V_1$
+  the closed neighbourhood lies in $V_1$, where $z^i(s)$ is the $i$-th
+  height of $z_1$ (\cref{lem:pencil-picture-local}). So
+  \cref{lem:pencil-ear-fibre} (1) applies to each height. Every
+  coordinate of a point is a constant, a coordinate of $s$, or, at $x_1$
+  and $x_k$, affine in the picture coordinates of $s$. Every coordinate
+  of $q(s)$ is a constant or a coordinate of $s$.
+
+  (2) The vector $\sigma_a(\xi, \eta, \omega)$ has last coordinate
+  $\omega$, and $\sigma_a$ maps $K^3$ onto $\Pi_a$. So the vectors of
+  $\Pi_a$ with last coordinate $1$ are the $\sigma_a(u, 1)$, $u \in K^2$,
+  and $\sigma_a(u, 1)$ is the point of $x_1$ when its picture is $u$.
+  Likewise at $x_k$. At every other interior body $x$ the point
+  $(q(s)_x, s_x, 1)$ is any vector with last coordinate $1$. These points
+  read disjoint coordinates of $s$, as $k \ge 2$.
+
+  (3) Let $f$ be the polynomial, and write $f = \sum_\alpha f_\alpha$,
+  where $f_\alpha$ is homogeneous of degree $\alpha_x$ in $y_x$ for each
+  $x \in X$. Some $f_\alpha$ is nonzero. The last coordinate is a nonzero
+  linear form on each of $\Pi_a$, $\Pi_b$ and $K^{d+1}$, as
+  $\sigma_a(0, 0, 1)$ and $\sigma_b(0, 0, 1)$ have last coordinate $1$.
+  So $f_\alpha$ times the product of the last coordinates of the $y_x$ is
+  a nonzero polynomial, and it has a non-root, as $K$ is infinite.
+  Dividing each $y_x$ there by its last coordinate multiplies $f_\alpha$
+  by a nonzero scalar. So $f_\alpha$ is nonzero at a family of vectors
+  with last coordinate $1$, which by (2) are the points of some ear
+  datum. Hence $g(s) = f_\alpha(y(s))$, where $y(s)$ is the family of
+  points of $s$ at $X$, is a nonzero polynomial in $s$.
+
+  Let $g(s) \neq 0$, and write $y = y(s)$. For $\lambda \in K^X$,
+  $f((\lambda_x y_x)_x) = \sum_\beta \lambda^\beta f_\beta(y)$ is a
+  polynomial in $\lambda$ whose coefficient at $\lambda^\alpha$ is
+  $f_\alpha(y) \neq 0$. So its product with $\prod_x \lambda_x$ is a
+  nonzero polynomial, and at a non-root every $\lambda_x$ is nonzero and
+  $f$ does not vanish at $(\lambda_x y_x)_x$. There $C$ holds, and hence
+  it holds at $y$.
+\end{proof}
+
+\begin{lemma}[Openness along a polynomial parametrization, in every dimension]
+  \label{lem:pencil-d-ear-data-open}
+  \uses{def:pencil-d-configuration, def:join}
+  Let the points of a configuration in dimension $d$ be polynomial in a
+  parameter $s$.
+  \begin{enumerate}
+    \item If, at one parameter, every hinge of a graph $H$ is nonzero and
+      the rank of $H$ is at least $n$, there is a polynomial in $s$,
+      nonzero there, such that the rank of $H$ is at least $n$ wherever
+      it does not vanish.
+    \item If, at one parameter, $\dim(\rho + \operatorname{span} F) \ge n$
+      for a fixed subspace $\rho \subseteq \bigwedge^2 K^{d+1}$ and a
+      family $F$ of joins of points of the configuration, there is a
+      polynomial in $s$, nonzero there, such that this bound holds
+      wherever it does not vanish.
+  \end{enumerate}
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-ear-data-open, lem:rank-polynomial-of-le-finrank,
+        lem:pencil-d-join-independence-open}
+  At $d = 3$ this is \cref{lem:pencil-ear-data-open}, and its proof holds
+  in dimension $d$. For (1), substitute the points into the polynomial of
+  \cref{lem:rank-polynomial-of-le-finrank}, taken in the coordinates of
+  normals in $K^{d+1}$, which asks for the nonzero hinges. For (2), take
+  a basis of $\rho$ together with $F$. The coordinates of a join
+  $u \vee w$ are the $2 \times 2$ minors of $u$ and $w$, as in the proof
+  of \cref{lem:pencil-d-join-independence-open}, so the coordinates of
+  the members of $F$ are polynomial in $s$. Some $n$ of these vectors are
+  linearly independent at the given parameter, and they stay independent
+  wherever a maximal minor of their coordinate matrix, nonzero there,
+  does not vanish.
+\end{proof}
+
+% Source: SHORT-CORE workbook, S20 (the factoring at d = 4, with S19's inputs), with
+% S35 for the third condition at every d >= 3 and k >= 4.
+\begin{theorem}[An open ear with four or more interior bodies, in every dimension]
+  \label{thm:pencil-d-open-ear-four}
+  \uses{def:pencil-d-x0-attains, def:pencil-x0-standing, def:open-ear,
+        def:graph-operations}
+  Let $K$ be infinite and $d \ge 3$, and let $G$ satisfy the standing
+  hypotheses (\cref{def:pencil-x0-standing}), with an open ear
+  $a - x_1 - \cdots - x_k - b$ on $V_1$ (\cref{def:open-ear}), $k \ge 4$,
+  whose ends $a$ and $b$ may be adjacent. Let $G''$ be $G$ with $x_2$
+  suppressed: the splitting-off $G_{x_2}^{x_1 x_3}$
+  (\cref{def:graph-operations}) whose new edge $x_1 x_3$ carries the
+  label of the deleted edge $x_1 x_2$. If the general configurations of
+  $G[V_1]$ and of $G''$ attain in dimension $d$
+  (\cref{def:pencil-d-x0-attains}), then the general configuration of $G$
+  attains in dimension $d$.
+\end{theorem}
+\begin{proof}
+  \uses{lem:pencil-x0-main-picture-open, lem:pencil-ear-fibre,
+        lem:pencil-d-lifting-restrict, lem:pencil-x0-fibre-intersection,
+        lem:pencil-d-condition-linear, def:pencil-d-ear-data,
+        lem:pencil-d-ear-data, lem:pencil-d-ear-data-open,
+        lem:pencil-rank-congr, lem:pencil-d-config-realization,
+        lem:pencil-d-stars-four, lem:block-rank-ear,
+        def:relative-screws, def:panel-support-extensor,
+        lem:pencil-d-insertion, lem:splitoff-deficiency-reuse,
+        lem:deficiency-ear, lem:pencil-d-x0-one-witness}
+  Write $f = \operatorname{def}_d(G[V_1])$. We choose the configuration
+  in two stages, as in the proof of \cref{thm:pencil-x0-open-ear-four}:
+  first base data at which $G[V_1]$ and $G''$ have their targets, and
+  then a general ear datum, taken twice, once for $G''$ and once for $G$
+  after $x_2$ is put back.
+
+  \emph{The first stage: base data.} Take a picture $q^*$ off the zero
+  sets of the main-picture polynomial of $G$
+  (\cref{lem:pencil-x0-main-picture-open}) and of the polynomials of the
+  attainment at $G[V_1]$ and at $G''$ in dimension $d$. Then $q^*$ is a
+  main picture of $G$, and it is admissible for $G[V_1]$ and for $G''$.
+  In $L_{G''}(q^*)^{d-2}$ the heights at which $G''$ has its target
+  contain a nonempty Zariski-open subset. So do the heights whose
+  restriction to $V_1$ gives $G[V_1]$ its target. Indeed, the ear of
+  $G''$ has $k - 1 \ge 2$ interior bodies, so each height of $G[V_1]$ at
+  $q^*$ is the restriction of a height of $G''$
+  (\cref{lem:pencil-ear-fibre} (2)), applied to each of the $d - 2$
+  heights. And a polynomial in the heights of $G[V_1]$, read at the
+  restriction, is a polynomial in the heights of $G''$
+  (\cref{lem:pencil-d-lifting-restrict}). The two subsets meet
+  (\cref{lem:pencil-x0-fibre-intersection}); let $z^*$ lie in both.
+
+  The base data (\cref{def:pencil-d-ear-data}) are the restriction
+  $(q_1, z_1)$ of $(q^*, z^*)$ to $V_1$, and the maps $\sigma_a$ and
+  $\sigma_b$ whose images $\Pi_a$ and $\Pi_b$ are spanned by the points
+  of $(q^*, z^*)$ at the closed neighbourhoods of $a$ and $b$ in $G''$
+  (\cref{lem:pencil-d-condition-linear}). These neighbourhoods contain
+  those in $G[V_1]$, and also $x_1$ and $x_k$. So $(q^*, z^*)$ is the
+  configuration of one ear datum $s^*$. Let $\rho$ be the relative screws
+  of $a, b$ in $G[V_1]$ at $(q^*, z^*)$. The rank of $G[V_1]$ and its
+  relative screws read only the points on $V_1$
+  (\cref{lem:pencil-rank-congr}), which the ear data do not move
+  (\cref{lem:pencil-d-ear-data} (1)). So at every ear datum, in the
+  configurations of $G$ and of $G''$ alike, $G[V_1]$ has its target and
+  the relative screws $\rho$.
+
+  \emph{The second stage, for $G''$.} We ask three conditions of the ear
+  data, each off the zero set of a polynomial in the ear data that is
+  nonzero at some ear datum. The first two are that $G''$ has rank at
+  least its target, and that the picture is admissible for $G''$. Both
+  hold at $s^*$, where the hinges of $G''$ are nonzero
+  (\cref{lem:pencil-d-config-realization}). So
+  \cref{lem:pencil-d-ear-data-open} (1) and \cref{lem:pencil-d-ear-data}
+  (1) give the polynomials. The third condition is on the points
+  $y_1, y_3, \dots, y_k$ of $x_1, x_3, \dots, x_k$: $y_1$ and $y_3$ are
+  linearly independent, and the span
+  \[
+    W \;=\; \rho + \operatorname{span}(p_a \vee y_1,\ y_1 \vee y_3,\
+    y_3 \vee y_4,\ \dots,\ y_{k-1} \vee y_k,\ y_k \vee p_b)
+  \]
+  of $\rho$ and the joins of the ear of $G''$ is all of
+  $\bigwedge^2 K^{d+1}$ whenever it contains
+  $\operatorname{star}(y_1) + \operatorname{star}(y_3)$. By
+  \cref{lem:pencil-d-stars-four} it holds off the zero set of a nonzero
+  polynomial in the points, and it is unchanged when a point is
+  multiplied by a nonzero scalar. So it holds off the zero set of a
+  nonzero polynomial in the ear data (\cref{lem:pencil-d-ear-data} (3)).
+
+  Take an ear datum $y$ off all three zero sets. The joins of the ear of
+  $G''$ are nonzero, as the points of adjacent bodies have distinct
+  pictures and last coordinate $1$. The graph $G''$ has $|V_1| + k - 1$
+  bodies and rank at least its target, and $G[V_1]$ has its target. So
+  the ear rank formula at $G''$ (\cref{lem:block-rank-ear}), whose ear
+  has $k - 1$ interior bodies, gives
+  \[
+    D(|V_1| - 1) - f + (D - 1)k + \dim W - D \;\ge\;
+    D(|V_1| + k - 2) - \operatorname{def}_d(G''),
+  \]
+  that is, $\dim W \ge k + f - \operatorname{def}_d(G'')$.
+
+  \emph{Putting $x_2$ back.} Keep the other points of $y$ and give $x_2$
+  a point $x$ with last coordinate $1$. As $x_2$ is a middle body of the
+  ear of $G$, this is an ear datum of $G$ (\cref{lem:pencil-d-ear-data}
+  (2)). Let $\Lambda$ be the span of the $k + 1$ joins of its ear, and
+  let $R$ be the span of $\rho$ and of the joins of the ear of $G''$
+  other than $y_1 \vee y_3$. Then $W = R + K\,(y_1 \vee y_3)$ and
+  $\rho + \Lambda = R + \operatorname{span}(y_1 \vee x,\ x \vee y_3)$. By
+  the third condition, $W$ contains both stars only if it is
+  everything. So some $x$ has
+  $\dim(\rho + \Lambda) \ge \min(\dim W + 1, D)$
+  (\cref{lem:pencil-d-insertion}).
+
+  \emph{The configuration of $G$.} The ear datum just built may have a
+  vanishing join, but the span bound of \cref{lem:pencil-d-ear-data-open}
+  (2) asks for none. So $\dim(\rho + \Lambda) \ge \min(\dim W + 1, D)$
+  holds off the zero set of a polynomial in the ear data of $G$ that is
+  nonzero there. The condition that the picture be a main picture of $G$
+  is polynomial too, and it holds at $s^*$. Take an ear datum off both
+  zero sets. Its picture $q$ is a main picture of $G$, so its joins are
+  nonzero, and its heights lie in $L_G(q)^{d-2}$
+  (\cref{lem:pencil-d-ear-data} (1)). As at every ear datum, $G[V_1]$ has
+  its target and the relative screws $\rho$.
+
+  \emph{The count.} We have
+  $\operatorname{def}_d(G'') \le \operatorname{def}_d(G)$
+  (\cref{lem:splitoff-deficiency-reuse}, at $D$) and
+  $\operatorname{def}_d(G) \ge f + k + 1 - D$ (\cref{lem:deficiency-ear}).
+  So
+  \[
+    \min(\dim W + 1, D) \;\ge\;
+    \min\bigl(k + 1 + f - \operatorname{def}_d(G),\ D\bigr)
+    \;=\; k + 1 + f - \operatorname{def}_d(G),
+  \]
+  which is $(\star)$. By the ear rank formula at $G$ the configuration
+  has rank at least $\operatorname{tgt}_d(G)$. As $G$ has a body,
+  \cref{lem:pencil-d-x0-one-witness} applies, and the general
+  configuration of $G$ attains in dimension $d$.
+
+  At $d = 3$ and $k = 4$ this is \cref{thm:pencil-x0-open-ear-four}.
+  There the dimension enters in three places. First, the counts read
+  $D = 6$. The ear rank formula, \cref{lem:splitoff-deficiency-reuse} and
+  \cref{lem:deficiency-ear} hold at every $D$, so the count closes with
+  $D$ in place of $6$. Second, the height is one vector. In dimension $d$
+  each of the $d - 2$ heights is extended from $G[V_1]$ to $G''$ on its
+  own, and the ear data carry $d - 2$ values at each free body. Third,
+  the third condition asks at $d = 3$ that $y_1$, $y_3$, $y_4$ and $p_b$
+  be linearly independent, so that their six joins span
+  $\bigwedge^2 K^4$ (\cref{lem:pencil-tetrahedron}). In dimension $d$ six
+  joins span at most six of the $D$ dimensions, and
+  \cref{lem:pencil-d-stars-four} takes the place of this condition. Like
+  the condition at $d = 3$, it holds for every subspace $\rho$. At $d = 3$
+  and $k \ge 5$, \cref{thm:pencil-x0-open-ear} gives the same conclusion
+  from the attainment at $G[V_1]$ alone.
+\end{proof}
+
+% Source: SHORT-CORE workbook, S28 (the gluing), S29 (the dichotomy) and S30 (Case 1);
+% S14 and S15 are the model at r = 0, and S25 gives the use of Jackson and Jordan's
+% equality made here.
+\begin{lemma}[Glued ends in the plane bound the relative screws]
+  \label{lem:pencil-d-glued-ends}
+  \uses{def:pencil-lifting-planes, def:pencil-d-configuration,
+        def:relative-screws, def:join}
+  Let $K$ be infinite, and let $G$ be a simple graph in which every body
+  has degree at least two, with bodies $a \neq b$ that are not adjacent
+  and have no common neighbour. There is a nonzero polynomial $g$ in the
+  picture coordinates with the following property. Let $q$ be a picture
+  with $g(q) \neq 0$, and let $r$ be the dimension of the space of
+  differences $h_b - h_a$ over the lifting planes $h \in F(q)$ of $G$
+  (\cref{def:pencil-lifting-planes}). Suppose that $r \le 2$. Let
+  $d \ge 3$, let $z$ be any $d - 2$ heights, and let $b$ be the points of
+  the configuration $(q, z)$ (\cref{def:pencil-d-configuration}). Then the
+  space $\rho \subseteq \bigwedge^2 K^{d+1}$ of differences $S(b) - S(a)$,
+  over the assignments $S$ of elements of $\bigwedge^2 K^{d+1}$ to the
+  bodies with $S(u) - S(v) \in K\,(b_u \vee b_v)$ at every edge $uv$, has
+  $\dim \rho \le r$.
+\end{lemma}
+\begin{proof}
+  \uses{def:rigid-contraction, def:deficiency-merged, def:D-deficiency,
+        thm:pencil-jj-equality, lem:pencil-lifting-planes-dim,
+        lem:pencil-lifting-space-deficiency, lem:pencil-flat-split}
+  Write $m = \operatorname{def}_2(G; a, b)$ for the merged deficiency at
+  $D = 3$ (\cref{def:deficiency-merged}). For a picture $q$ let
+  $Z^0(q) \subseteq F(q)$ be the lifting planes with $h_a = h_b$. It is
+  the kernel of $h \mapsto h_b - h_a$ on $F(q)$, so
+  $\dim F(q) - \dim Z^0(q) = r$.
+
+  \emph{Constant on the parts.} Let $q$ put the ends of every edge at
+  distinct points, and let $P$ be a partition of $V(G)$. The families of
+  affine functions that are constant on each part of $P$ form a space of
+  dimension $3|P|$. On it an edge inside a part imposes no condition, and
+  an edge between two parts imposes at most two. So the lifting planes
+  constant on the parts of $P$ form a space of dimension at least
+  $3|P| - 2d_G(P) = 3 + v_2(P)$, as in the proof of
+  \cref{lem:pencil-lifting-space-deficiency}. If $a$ and $b$ lie in one
+  part, these lifting planes lie in $Z^0(q)$. Hence
+  $\dim Z^0(q) \ge 3 + m$.
+
+  \emph{The polynomial.} Let $G'$ be the contraction to $a$ of the
+  subgraph with the bodies $a$ and $b$ and no edge
+  (\cref{def:rigid-contraction}): the graph $G$ with $a$ and $b$
+  identified. As $a$ and $b$ are not adjacent and have no common
+  neighbour, $G'$ is simple. Its body $a$ has degree
+  $\deg a + \deg b \ge 4$, and every other body keeps its degree, so every
+  closed neighbourhood of $G'$ has at least three members. The partitions
+  of $V(G')$ are those of $V(G)$ with $a$ and $b$ in one part, with the
+  same edges between parts, so $\operatorname{def}_2(G') = m$. By
+  Jackson and Jord\'an's equality (\cref{thm:pencil-jj-equality}), some
+  admissible picture $q'$ of $G'$ has $\dim L_{G'}(q') = 3 + m$, so the
+  lifting planes of $G'$ at $q'$ form a space of dimension $3 + m$
+  (\cref{lem:pencil-lifting-planes-dim}).
+
+  The space $Z^0(q)$ is the kernel of a matrix whose entries are
+  polynomials in $q$. Its unknowns are the $h_v \in K^3$ for $v \neq b$,
+  with $h_b = h_a$, and each edge $uv$ gives the two rows
+  $(h_u - h_v) \cdot (q_u, 1) = 0$ and $(h_u - h_v) \cdot (q_v, 1) = 0$.
+  At the picture of $G$ that puts $a$ and $b$ at $q'_a$ and every other
+  body at its point in $q'$, this is the matrix of the lifting planes of
+  $G'$ at $q'$. So it has rank $3(|V(G)| - 1) - 3 - m$ there, and a minor
+  of that size is a polynomial in $q$ that does not vanish there. Let $g$
+  be its product with the first coordinates of $q_u - q_v$ over the edges
+  $uv$ of $G$. Wherever $g(q) \neq 0$, the ends of every edge are at
+  distinct points, $\dim Z^0(q) \le 3 + m$, and so
+  $\dim Z^0(q) = 3 + m$.
+
+  \emph{A connected part.} Let $g(q) \neq 0$ and $r \le 2$. Let $P$ be a
+  partition of $V(G)$ of value $m$ with $a$ and $b$ in one part $X$. The
+  lifting planes constant on its parts lie in $Z^0(q)$ and have dimension
+  at least $3 + m = \dim Z^0(q)$. So every $h \in Z^0(q)$ is constant on
+  each part of $P$. Suppose that $a$ and $b$ lie in different components
+  of $G[X]$, and let $G[X]$ have $c \ge 2$ components. Replacing $X$ by
+  them gives a partition $P^*$ with $|P^*| = |P| + c - 1$ and the same
+  edges between parts, as no edge joins two components. The lifting
+  planes constant on the parts of $P^*$ then form a space of dimension at
+  least $3 + m + 3(c - 1)$, so $r \ge 3(c - 1) \ge 3$, against
+  $r \le 2$. So $a$ and $b$ lie in one component $C$ of $G[X]$, and every
+  $h \in Z^0(q)$ is constant on $C$.
+
+  \emph{The relative screws.} Let $\pi \colon K^{d+1} \to K^3$ keep the
+  first, the second and the last coordinate, so that
+  $\pi(b_v) = (q_v, 1)$. Identify $\bigwedge^2 K^3$ with the affine
+  functions on $K^2$ by sending $u \vee w$ to the function
+  $(x, y) \mapsto \det(u, w, (x, y, 1))$, as in the proof of
+  \cref{lem:pencil-flat-split}. This is a linear isomorphism, and it
+  sends $(q_u, 1) \vee (q_v, 1)$ to a nonzero affine function vanishing
+  at $q_u$ and $q_v$, as $q_u \neq q_v$. For an assignment $S$ as in the
+  statement, let $h_v$ be the affine function of
+  $\bigwedge^2 \pi\, (S(v))$. At an edge $uv$,
+  $S(u) - S(v) = t\,(b_u \vee b_v)$ for some $t \in K$, so $h_u - h_v$
+  is $t$ times the affine function of $(q_u, 1) \vee (q_v, 1)$, and it
+  vanishes at $q_u$ and $q_v$. So $h \in F(q)$, and $\bigwedge^2 \pi$
+  maps $\rho$ into the space of differences $h_b - h_a$, of dimension
+  $r$.
+
+  It is injective on $\rho$. Let $\bigwedge^2 \pi\,(S(b) - S(a)) = 0$.
+  Then $h_a = h_b$, so $h \in Z^0(q)$, and $h$ is constant on $C$. At an
+  edge $uv$ of $G[C]$, $S(u) - S(v) = t\,(b_u \vee b_v)$, and
+  $0 = h_u - h_v$ is $t$ times a nonzero affine function, so $t = 0$. As
+  $G[C]$ is connected and contains $a$ and $b$, $S(a) = S(b)$. Hence
+  $\dim \rho \le r$.
+
+  The lemma has no counterpart at $d = 3$, where the step with three
+  interior bodies needs no bound on $\rho$: its condition on $W$ holds for
+  every subspace $\rho$ (\cref{thm:pencil-x0-open-ear-three}).
+\end{proof}
+
+% Source: SHORT-CORE workbook, S33 (its lemma), with S9 (ii)-(iii) and S26 (iii).
+\begin{lemma}[Where the planes of the ends meet, in every dimension]
+  \label{lem:pencil-d-planes-meet}
+  \uses{def:open-ear, def:pencil-d-configuration, def:pencil-lifting-space,
+        def:pencil-lifting-planes, def:pencil-admissible-picture}
+  Let $K$ be infinite and $d \ge 3$. Let $G$ have an open ear
+  $a - u_1 - u_2 - b$ on $V_1$ with two interior bodies
+  (\cref{def:open-ear}), let $q$ be an admissible picture of $G$, and let
+  $r$ be the dimension of the space of differences $h_b - h_a$ over the
+  lifting planes $h$ of $G[V_1]$ at $q$
+  (\cref{def:pencil-lifting-planes}). There is a polynomial $R$ in the
+  heights, nonzero somewhere on $L_G(q)^{d-2}$, with the following
+  property. At every $z \in L_G(q)^{d-2}$ with $R(z) \neq 0$, the
+  subspaces $\Pi_a$ and $\Pi_b$ of $K^{d+1}$ spanned by the points of the
+  configuration $(q, z)$ at the closed neighbourhoods of $a$ and of $b$
+  meet in a subspace of dimension $3 - \min(d - 2, r)$.
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-d-condition-linear, lem:pencil-lifting-planes-dim}
+  Let $z \in L_G(q)^{d-2}$. For each height $z^i$ and body $v$ let
+  $\lambda^i_v \in K^3$ give the affine function
+  $u \mapsto \lambda^i_v \cdot (u, 1)$ with which $z^i$ agrees on the
+  closed neighbourhood of $v$. It is unique, as three members of that
+  neighbourhood have independent homogeneous picture points. The family
+  $(\lambda^i_v)_v$ is a family of lifting planes of $G$, and
+  $z^i \mapsto (\lambda^i_v)_v$ is the inverse of the isomorphism of the
+  lifting planes onto $L_G(q)$ in the proof of
+  \cref{lem:pencil-lifting-planes-dim}. In particular it is linear.
+
+  By \cref{lem:pencil-d-condition-linear}, $\Pi_a$ is the image of the
+  injective map $\sigma_a(\xi) = (\xi_1, \xi_2, \lambda^1_a \cdot \xi,
+  \dots, \lambda^{d-2}_a \cdot \xi, \xi_3)$ on $K^3$, and $\Pi_b$ likewise.
+  If $\sigma_a(\xi) = \sigma_b(\xi')$, the first, the second and the last
+  coordinate give $\xi = \xi'$, and then
+  $\lambda^i_a \cdot \xi = \lambda^i_b \cdot \xi$ for every $i$. So
+  $\Pi_a \cap \Pi_b$ is the image under $\sigma_a$ of the common kernel of
+  the linear forms $\xi \mapsto (\lambda^i_b - \lambda^i_a) \cdot \xi$.
+  It has dimension $3 - \operatorname{rank} L(z)$, where $L(z)$ is the
+  $(d - 2) \times 3$ matrix with the rows $\lambda^i_b - \lambda^i_a$.
+
+  Let $E$ be the space of differences $h_b - h_a$ over the lifting planes
+  $h$ of $G$. The rows of $L(z)$ lie in $E$, and each row ranges over all
+  of $E$ as its height ranges over $L_G(q)$. We show that $\dim E = r$. A
+  family of lifting planes of $G$ restricts to one of $G[V_1]$, so $E$
+  lies in the space of differences of $G[V_1]$, of dimension $r$.
+  Conversely, let $h$ be a family of lifting planes of $G[V_1]$. Let
+  $\ell_1$, $\ell_2$ and $\ell_3$ be nonzero affine functions vanishing
+  at $q_a$ and $q_{u_1}$, at $q_{u_1}$ and $q_{u_2}$, and at $q_{u_2}$ and
+  $q_b$. They exist as adjacent points of an admissible picture differ.
+  The closed neighbourhoods of $u_1$ and $u_2$ are $\{a, u_1, u_2\}$ and
+  $\{u_1, u_2, b\}$, whose pictures are not collinear. So $\ell_1$ and
+  $\ell_2$ are independent and both vanish at $q_{u_1}$, while $\ell_3$
+  does not. Hence $\ell_1, \ell_2, \ell_3$ are linearly independent, and
+  they span the affine functions. Write
+  $h_b - h_a = c_1 \ell_1 + c_2 \ell_2 + c_3 \ell_3$, and put
+  $h_{u_1} = h_a + c_1 \ell_1$ and $h_{u_2} = h_{u_1} + c_2 \ell_2$. Then
+  $h_b - h_{u_2} = c_3 \ell_3$, and the extended family is a family of
+  lifting planes of $G$, as every edge of $G$ off the ear lies in $V_1$.
+  So $E$ is the space of differences of $G[V_1]$, and $\dim E = r$.
+
+  So $L(z)$ has rank at most $\min(d - 2, r)$ at every $z$. Choose $z$
+  whose first $\min(d - 2, r)$ heights give linearly independent rows,
+  and whose other heights are zero. There $L(z)$ has rank
+  $\min(d - 2, r)$, and some minor of that size is nonzero. The entries
+  of $L(z)$ are linear in $z$, so this minor is a polynomial $R$ in the
+  heights. Wherever $R(z) \neq 0$, $L(z)$ has rank $\min(d - 2, r)$, and
+  $\Pi_a \cap \Pi_b$ has dimension $3 - \min(d - 2, r)$.
+
+  At $d = 3$ two three-dimensional subspaces of $K^4$ meet in dimension
+  at least two, and the lemma reads $3 - \min(1, r)$. In dimension $d$
+  each of the $d - 2$ heights gives one linear form
+  $\lambda^i_b - \lambda^i_a$ on $K^3$, and general heights cut
+  $\Pi_a \cap \Pi_b$ down to dimension $3 - \min(d - 2, r)$.
+\end{proof}
+
+% Source: SHORT-CORE workbook, S31, S33 and S32 (the proof at d = 4, 5, 6); S20 and S21
+% (the base data, with (P)); S26 (i) for the bound d + kappa <= 6. The workbook's first
+% proof at d = 4 is S1-S21 (S6 with S12, S16, S21).
+\begin{theorem}[An open ear with three interior bodies, in dimensions four to six]
+  \label{thm:pencil-d-open-ear-three}
+  \uses{def:pencil-d-x0-attains, def:pencil-x0-standing, def:open-ear,
+        def:graph-operations}
+  Let $K$ be infinite and $4 \le d \le 6$, and let $G$ satisfy the
+  standing hypotheses (\cref{def:pencil-x0-standing}), with an open ear
+  $a - x_1 - x_2 - x_3 - b$ on $V_1$ (\cref{def:open-ear}) whose ends $a$
+  and $b$ may be adjacent. Let $G''$ be $G$ with $x_2$ suppressed: the
+  splitting-off $G_{x_2}^{x_1 x_3}$ (\cref{def:graph-operations}) whose
+  new edge $x_1 x_3$ carries the label of the deleted edge $x_1 x_2$. If
+  the general configurations of $G[V_1]$ and of $G''$ attain in dimension
+  $d$ (\cref{def:pencil-d-x0-attains}), then the general configuration of
+  $G$ attains in dimension $d$.
+\end{theorem}
+\begin{proof}
+  \uses{thm:pencil-d-open-ear-four, def:pencil-admissible-picture,
+        def:pencil-lifting-planes, lem:pencil-d-glued-ends,
+        lem:pencil-d-planes-meet, lem:pencil-x0-fibre-intersection,
+        lem:pencil-d-two-stars, lem:relative-screws-path,
+        lem:pencil-d-stars-three, lem:pencil-d-ear-data,
+        lem:pencil-d-ear-data-open, lem:pencil-d-insertion,
+        lem:block-rank-ear, lem:splitoff-deficiency-reuse,
+        lem:deficiency-ear, lem:pencil-d-x0-one-witness}
+  We follow the proof of \cref{thm:pencil-d-open-ear-four}, with the open
+  ear $a - x_1 - x_3 - b$ of $G''$. Only the first stage and the third
+  condition on the ear data change.
+
+  As $G[V_1]$ attains, it has an admissible picture
+  (\cref{def:pencil-d-x0-attains}). So every closed neighbourhood in
+  $G[V_1]$ has three members with independent homogeneous picture points
+  (\cref{def:pencil-admissible-picture}), and every body of $G[V_1]$ has
+  degree at least two there.
+
+  \emph{The first stage.} Take $q^*$ as there, and also off the zero set
+  of the first coordinate of $q_a - q_b$. If $a$ and $b$ are not adjacent
+  and have no common neighbour, take $q^*$ also off the zero set of the
+  polynomial of \cref{lem:pencil-d-glued-ends} for $G[V_1]$. Let $r$ be
+  the dimension of the space of differences $h_b - h_a$ over the lifting
+  planes $h$ of $G[V_1]$ at $q^*$ (\cref{def:pencil-lifting-planes}). In
+  $L_{G''}(q^*)^{d-2}$, take $z^*$ as there and also off the zero set of
+  the polynomial of \cref{lem:pencil-d-planes-meet} for $G''$ and its ear
+  $a - x_1 - x_3 - b$. Each of the three polynomials is nonzero somewhere
+  on this linear space, so they have a common non-root
+  (\cref{lem:pencil-x0-fibre-intersection}, applied twice). The base data
+  are as there, with two more properties. The points $p_a$ and $p_b$ are
+  linearly independent, as their pictures differ and their last
+  coordinates are $1$. And the planes $\Pi_a$ and $\Pi_b$, spanned by the
+  points of the closed neighbourhoods of $a$ and $b$ in $G''$, meet in a
+  subspace of dimension $\kappa = 3 - \min(d - 2, r)$.
+
+  \emph{The third condition.} We show that, off the zero set of a nonzero
+  polynomial in the ear data, the points $y_1 \in \Pi_a$ and
+  $y_3 \in \Pi_b$ of $x_1$ and $x_3$ are linearly independent, and
+  \[
+    W \;=\; \rho + \operatorname{span}(p_a \vee y_1,\ y_1 \vee y_3,\
+    y_3 \vee p_b)
+  \]
+  is all of $\bigwedge^2 K^{d+1}$ whenever it contains
+  $\operatorname{star}(y_1) + \operatorname{star}(y_3)$.
+
+  First let $y_1$ and $y_3$ be independent, and suppose that $W$ contains
+  both stars and $W \neq \bigwedge^2 K^{d+1}$. We show that $r = 3$. The
+  sum of the stars has dimension $2d - 1$
+  (\cref{lem:pencil-d-two-stars}), and $W$ is $\rho$ plus three joins, so
+  $\dim \rho \ge 2d - 4 \ge 4$. If $a$ and $b$ lay in different
+  components of $G[V_1]$, the motions equal to one element of
+  $\bigwedge^2 K^{d+1}$ on the component of $a$ and to another elsewhere
+  would give $\rho = \bigwedge^2 K^{d+1}$, and $W$ would be everything.
+  So some path joins $a$ to $b$ in $G[V_1]$. Every motion of $G[V_1]$
+  restricts to a motion of such a path, so $\rho$ lies in the span of the
+  joins along it (\cref{lem:relative-screws-path}), and the path has at
+  least four edges. Hence $a$ and $b$ are not adjacent and have no common
+  neighbour, and $q^*$ lies off the zero set of the polynomial of
+  \cref{lem:pencil-d-glued-ends}. As $\dim \rho > 2$, that lemma gives
+  $r > 2$. And $r \le 3$, as the differences $h_b - h_a$ are affine
+  functions on $K^2$. So $r = 3$.
+
+  So if $r \le 2$, the condition holds wherever $y_1$ and $y_3$ are
+  independent. As they have last coordinate $1$, this is so wherever the
+  first coordinates of the pictures of $x_1$ and $x_3$ differ, which is
+  the non-vanishing of a nonzero polynomial in the ear data. If $r = 3$,
+  then $\kappa = 3 - \min(d - 2, 3)$ is $1$ at $d = 4$ and $0$ at
+  $d = 5, 6$. So $\kappa \le 1$ and $d + \kappa \le 6$, and
+  \cref{lem:pencil-d-stars-three} gives the condition off the zero set of
+  a nonzero polynomial in $(y_1, y_3) \in \Pi_a \times \Pi_b$. The
+  condition is unchanged when $y_1$ or $y_3$ is multiplied by a nonzero
+  scalar, so it holds off the zero set of a nonzero polynomial in the ear
+  data (\cref{lem:pencil-d-ear-data} (3)).
+
+  The rest is the proof of \cref{thm:pencil-d-open-ear-four} at $k = 3$:
+  the second stage for $G''$ with this third condition, putting $x_2$
+  back, the configuration of $G$, and the count, where
+  $\operatorname{def}_d(G) \ge \operatorname{def}_d(G[V_1]) + 4 - D$.
+
+  At $d = 3$ this is \cref{thm:pencil-x0-open-ear-three}. There the
+  dimension enters in the third condition. The lines through $y_1$ and
+  $y_3$ span the hyperplane of the screws pairing to zero with
+  $y_1 \vee y_3$. The proof splits on whether some relative screw pairs to
+  a nonzero value with a line joining the planes of $a$ and $b$
+  (\cref{lem:pencil-bilinear}), and the condition holds either way, for
+  every subspace $\rho$. In dimension $d$ the sum of the two stars has
+  codimension $\binom{d-1}{2}$, and the condition holds for every $\rho$
+  only under the bound $d + \kappa \le 6$ of
+  \cref{lem:pencil-d-stars-three}, which the planes of the base data can
+  fail. The proof therefore reads the relative screws of $G[V_1]$,
+  through its lifting planes (\cref{lem:pencil-d-glued-ends},
+  \cref{lem:pencil-d-planes-meet}). The counts and the heights change as
+  in \cref{thm:pencil-d-open-ear-four}. From $d = 7$ on, a span
+  containing both stars without being everything still forces $r = 3$,
+  but then $\kappa = 0$ and $d + \kappa \ge 7$, and the argument stops.
+  The coverage needs the step only at $d = 4$
+  (\cref{thm:pencil-d-chain-or-core}).
+\end{proof}
