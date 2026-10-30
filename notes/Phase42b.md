@@ -2,20 +2,19 @@
 
 **Status:** in progress, opened 2026-10-30 beside 42a (the PI's planning default, design doc §1,
 item 4), the Lean under `/coordinate-phase`. Forward mode: the dep-graph is
-`blueprint/src/chapter/pencil-d.tex`, 17 nodes, 2 green (the collineation lemma, the
-configuration), Lean in `Pencil/Grade/`. The carrier is the PI's (2026-10-30, design doc §1): the
+`blueprint/src/chapter/pencil-d.tex`, 17 nodes, 3 green (the collineation lemma, the
+configuration, the scale-shift), Lean in `Pencil/Grade/`. The carrier is the PI's (2026-10-30, design doc §1): the
 dual form with each body's 3-space as data, as the chapter states. Next concrete task:
-`lem:pencil-d-rank-scale-shift`, the heights' linear change and affine shift.
+`lem:pencil-d-contract-magnified-rank`, the contraction map at grade `m + 1`.
 
 ## Current state
 
-**Next:** `lem:pencil-d-rank-scale-shift` (planned
-`Graph.finrank_span_rigidityRows_ofNormals_heights_linearEquiv_add_affineLifts`), a leaf: the
-collineation lemma at grade `m + 1` for the block map `(ξ, η, ζ, ω) ↦ (ξ, η, Tζ + ξα + ηβ + ωγ, ω)`
-of `K^(m+3)`, `T` invertible on `Fin m → K`, built from the blocks as the point is
-(*Architectural choices*, the configuration), as
-`Graph.finrank_span_rigidityRows_ofNormals_smul_add_affineLifts` does at one height. Into
-`Grade/Carrier.lean`, which then imports `Grade/Collineation.lean`.
+**Next:** `lem:pencil-d-contract-magnified-rank` (planned
+`Graph.finrank_span_rigidityRows_induce_contractHeightGrade_eq`): the collineation lemma at grade
+`m + 1` for `(ξ, η, ζ, ω) ↦ (tξ + (1 − t)x_r ω, tη + (1 − t)y_r ω, tζ, ω)`, one contracted height per
+coordinate of `Fin m`, as `Graph.finrank_span_rigidityRows_induce_contractHeight_eq` does at one
+height; build the map from blocks as `…_heights_linearEquiv_add_affineLifts` does (`mk`, with `mk_ext`
+and the coordinate lemmas, in `Grade/Carrier.lean`).
 
 **Landed:** the open (the chapter, its nodes red with planned names; the carrier check, design doc
 §2.3; PD-STABLE's statements, design doc §3). `lem:pencil-d-rank-collineation`
@@ -23,6 +22,9 @@ of `K^(m+3)`, `T` invertible on `Fin m → K`, built from the blocks as the poin
 contragredient, maps every hinge (`panelSupportExtensor_linearEquiv_eq_det_smul`).
 `def:pencil-d-configuration` (`Pencil/Grade/Carrier.lean`): `pencilConfigPointGrade`, its
 coordinates, and its agreement with the picture point (no height) and `pencilConfigPoint` (one).
+`lem:pencil-d-rank-scale-shift` (`Grade/Carrier.lean`, now importing `Grade/Collineation.lean`): `T`
+an automorphism of `K^m`, `a_i ∈ Aff(q)`, the block map with inverse `T⁻¹`; the `t • id` case of
+`…_smul_add_affineLifts` is not restated (`T := t • id` is a one-line corollary if a consumer needs it).
 
 ## Architectural choices made up front
 
@@ -74,9 +76,9 @@ may refine a name, and the pin lands with the Lean.
   `…_ofNormals_pencilConfigPointGrade_one`)
 - [x] `lem:pencil-d-rank-collineation` — `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv_grade`,
   `panelSupportExtensor_linearEquiv_eq_det_smul`
-- [ ] `lem:pencil-d-rank-scale-shift` — `Graph.finrank_span_rigidityRows_ofNormals_heights_linearEquiv_add_affineLifts` (**next**)
+- [x] `lem:pencil-d-rank-scale-shift` — `Graph.finrank_span_rigidityRows_ofNormals_heights_linearEquiv_add_affineLifts`
 - [ ] `lem:pencil-d-x0-one-witness` — `Graph.x0AttainsGrade_of_exists`
-- [ ] `lem:pencil-d-contract-magnified-rank` — `Graph.finrank_span_rigidityRows_induce_contractHeightGrade_eq`
+- [ ] `lem:pencil-d-contract-magnified-rank` — `Graph.finrank_span_rigidityRows_induce_contractHeightGrade_eq` (**next**)
 - [ ] `lem:pencil-d-join-independence-open` — `exists_mvPolynomial_linearIndependent_join_picture_grade`,
   `exists_mvPolynomial_linearIndependent_join_heights_grade`
 - [ ] Lean only (CARRIER): name `bodyBarDim (k + 1) = screwDim k`, inline in
@@ -92,11 +94,11 @@ may refine a name, and the pin lands with the Lean.
 
 ## Hand-off / next phase
 
-The next commit is `lem:pencil-d-rank-scale-shift` (*Current state*), with its `\lean` and
-`\leanok` in the chapter. Then `lem:pencil-d-contract-magnified-rank` (the map
+The next commit is `lem:pencil-d-contract-magnified-rank` (*Current state*), with its `\lean` and
+`\leanok` in the chapter: the map
 `(ξ, η, ζ, ω) ↦ (tξ + (1 − t)x_r ω, tη + (1 − t)y_r ω, tζ, ω)` at grade `m + 1`, one contracted
 height per coordinate of `Fin m`, as `Graph.finrank_span_rigidityRows_induce_contractHeight_eq`
-does at one height) and `def:pencil-d-x0-attains`. The realization chain
+does at one height. Then `def:pencil-d-x0-attains`. The realization chain
 (`def:extensor-through-flat` first) can interleave. Optional, any time: the `k = 2` form
 `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv` is the new lemma at
 `k := 2` verbatim, so it could be re-proved from it once `Configuration.lean` imports

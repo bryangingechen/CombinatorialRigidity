@@ -325,6 +325,8 @@ each closed neighbourhood lie in a plane.
 
 \begin{lemma}[Linear changes and affine shifts of the heights preserve the rank]
   \label{lem:pencil-d-rank-scale-shift}
+  \lean{Graph.finrank_span_rigidityRows_ofNormals_heights_linearEquiv_add_affineLifts}
+  \leanok
   \uses{def:pencil-d-configuration, def:pencil-lifting-space}
   Let $q$ be a picture of $G$ and $z = (z^1, \dots, z^{d-2})$ heights.
   Let $T$ be an invertible $(d-2) \times (d-2)$ matrix over $K$ and
@@ -333,6 +335,7 @@ each closed neighbourhood lie in a plane.
   $(Tz + a)^i = \sum_j T_{ij} z^j + a^i$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-d-rank-collineation}
   Write $a^i_w = \alpha_i x_w + \beta_i y_w + \gamma_i$, and split
   $K^{d+1} = K^2 \times K^{d-2} \times K$. The linear map
