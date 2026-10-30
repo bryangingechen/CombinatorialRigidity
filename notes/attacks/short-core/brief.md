@@ -1,4 +1,6 @@
-> **DRAFT: awaits the PI's reading before session 1.** Written 2026-10-29 by an agent (Claude
+> **Session 1 started on the PI's word, 2026-10-29; §3's reduction sentence and §5's O1 and O2
+> corrected that day on the PI's direction, after session 1's consumer diff (workbook S2).**
+> Written 2026-10-29 by an agent (Claude
 > Opus 5.5) against the tree at `fa295157`, from the owning sections: `notes/Phase42-design.md`
 > §2.1 rows 12–13, §2.3 SHORT and §2.4 T3; `notes/Strata.md` Result 24; the short-ear subsection
 > of `blueprint/src/chapter/main-component.tex`; and the Lean of §1, read from definition bodies.
@@ -89,7 +91,8 @@ Over base data at which `G[V₁]` and `G''` attain in `P⁴`, at a general ear d
 
 > if `W ⊇ star(y₁) + star(y₃)`, then `W = Λ²K⁵`.
 
-With it, the `P⁴` step at these `k` follows as the `P³` one does (O1 below). It is needed only at
+With it, the `P⁴` step at these `k` follows by the `P³` scheme, though not through the `P³`
+factoring verbatim, whose insertion hypothesis ranges over every subspace `ρ` (O1 below). It is needed only at
 **danger cells**, where `f > def[D](G) = def[D](G'')` and `7 ≤ dim W ≤ 9`. Elsewhere (⋆) closes
 without it:
 - when `def[D](G'') < def[D](G)`, by the count;
@@ -152,7 +155,12 @@ to fill, not one, so the dichotomy becomes a stratification by that rank.
   - `def[D](G) ≥ f + k + 1 − D`, since an ear adds `k` parts and `k + 1` crossing edges, so (⋆)
     never asks for more than `D`;
   - the insertion in `Λ²K⁵`;
-  - the polynomial-family argument.
+  - the polynomial-family argument;
+  - an insertion hypothesis that names the actual `ρ`. `of_openEar_splitOff` takes the insertion
+    (`hins`) for every base datum `(q, z, la, lb)` and every subspace `ρ`. At `d = 4` that form is
+    false (workbook S2: `k = 3`, `Π_a = Π_b = Π`, `ρ = Π ∧ K⁵`, where `W = ρ` holds both stars
+    and every join of `G`'s ear lies in `ρ`). The `P⁴` factoring passes `ρ` as the relative
+    screws of `G[V₁]` at base data where `G[V₁]` and `G''` attain, with the danger numbers.
 
   Consumed because the step's conclusion is what PD-STEPS takes. The design doc claims this
   reduction; nobody has written it out.
@@ -161,8 +169,12 @@ to fill, not one, so the dichotomy becomes a stratification by that rank.
     neighbours may force more. The `d = 3` proof's `Π_a = Π_b` case is the precedent.
   - `k ∈ {3, 4, 5}`.
   - `a` and `b` adjacent or not.
+  - `Π_a` spanned by points of `G[V₁]`, or chosen by the base data when `a` has one neighbour
+    in `V₁` (likewise `Π_b`).
+  - `a` and `b` in different components of `G[V₁]`, where `ρ = Λ²K⁵` and `W` is everything.
 
-  Every case is in the sketch or is an obligation (`HARNESS.md` *Evidence*).
+  Every case is in the sketch or is an obligation (`HARNESS.md` *Evidence*). By S2 the case
+  `Π_a = Π_b` at `k = 3` is one where the proof must use that `ρ` is the actual one.
 - **O3, the crux, per case.** Either `π(ρ) + π(joins)` is everything at one ear datum, and then at
   a general one by openness, or `W` misses a star for a structural reason, as in the `d = 3` first
   case. A natural first question: how does `ρ` sit relative to `Λ²Π_a` and `Λ²Π_b`, which hold
