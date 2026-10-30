@@ -13,8 +13,12 @@ the incidence locus and the one- and two-body ear steps reach `(⋆)`. Where it 
 route falls one short at every `d`, as at `d = 3`. So ONE-EAR's first option stands. T3 has landed
 (§2.3–2.4): on 198 danger cells at `d = 4, 5` the short ears' obstruction never occurs, and X3
 holds for `k ≥ C(d−1, 2) + 3` at every graph, so SHORT is left at `k ≤ 5` at `d = 4` (`k ≤ 8` at
-`d = 5`). Next concrete task: PD-STATE's open as the next sub-phase, or T5 (coverage), in either
-order (§1's defaults). The route stays open (§4). Evidence: `notes/Strata.md`, Results 12–25.
+`d = 5`). T5 has landed (§2.4): the coverage's Theorem S holds at every `D ≥ 6`, so ONE-EAR's
+third part is never needed. At `D ≥ 10` ONE-EAR can be the only route only on ONE-CLASS
+(`def[D](G) = 0`, every chain one-body, no core), and through row 14 alone. On the subdivisions
+measured no cell needs SHORT-CORE or ONE-EAR, while two Petersen subdivisions need SHORT-CORE.
+Next concrete task: PD-STATE's open as the next sub-phase (§1's defaults), with the PI's call on
+ONE-CLASS (§4). The route stays open (§4). Evidence: `notes/Strata.md`, Results 12–26.
 
 This file is the phase's entry point: the target (§0), the PI's decisions (§1), the recon (§2),
 the layers by stable code (§3) and the open questions (§4). Letters are minted when a sub-phase
@@ -173,8 +177,9 @@ Result 17's `def[3] ≤ 1` one step further.
   a `Pᵈ` insertion lemma (at `d ≥ 5` every reachable hinge lies in `Λ²(A+B)`, of dimension ≤ 10).
   **T4 sized it** (§2.4; `Strata.md` Results 23, 25): the first option stands wherever the `d = 3`
   steps' merged hypothesis **M**, `def[3](G[V₁]; a, b) + 2 ≤ def[3](G[V₁])`, holds, at every cell
-  measured, `d = 3..6`, and fails only where M fails, as at `d = 3`. Its open parts, for an
-  attack at `d = 5`:
+  measured, `d = 3..6`, and fails only where M fails, as at `d = 3`. T5 (§2.4) bounds its role
+  in the coverage: at `D ≥ 10` it is the only route only on ONE-CLASS, through row 14, and on the
+  subdivisions measured nowhere. Its open parts, for an attack at `d = 5`:
   - **The motive:** `G[V₁]` attains at a general configuration of `G[V₁]` plus the ear
     `a − x − b`, restricted to `V₁`. At `d = 3` this is `lem:pencil-one-ear-base`; at `d = 4`
     without a shared neighbour the incidence is free, as two planes of `P⁴` meet in one point.
@@ -185,8 +190,16 @@ Result 17's `def[3] ≤ 1` one step further.
     `lem:pencil-insertion-two`, and **X2**: where M holds, `W ⊉ Λ²(A+B)` unless `W = Λ²`. X2 is
     free where `Π_a + Π_b = K^{d+1}`, so `Λ²(A+B)` is everything: at `d = 3`, where M gives
     `Π_a ≠ Π_b`, and at `d = 4` when `Π_a ∩ Π_b = ⟨y⟩`. Both are measured only beyond that.
-  - **`(⋆)` at `k = 1` with `def[D](G[V₁]) > def[D](G)`,** only if the coverage needs it (T5):
-    measured at 46 cells, with `dim(ρ + Λ) = min(dim ρ + 2, D)`.
+  - **`(⋆)` at `k = 1` with `def[D](G[V₁]) > def[D](G)`: not needed.** Theorem S holds at every
+    `D ≥ 6` (T5, §2.4), so the coverage uses a one-body chain only where row 14's
+    `def[D](G[V₁]) ≤ def[D](G)` holds, or splits it off. Measured anyway at 46 cells (T4), with
+    `dim(ρ + Λ) = min(dim ρ + 2, D)`.
+- **ONE-CLASS** (T5, §2.4): the graphs past rows 1–5 with `def[D](G) = 0`, only one-body chains
+  and no core at `D`, the only ones where the coverage at `D ≥ 10` can need ONE-EAR. The lemma
+  to prove: ONE-CLASS is empty at `D ≥ 15`, and at `D = 10` each of its graphs has a one-body
+  chain whose ends share no neighbour in `V₁`. With SHORT, it would make the coverage at `d ≥ 4`
+  free of ONE-EAR. Pure combinatorics, unattempted. Measured on the one-body box (542 cells):
+  none at `d = 5, 6`, three of 231 at `d = 4`, each with such a chain.
 - **CARRIER** (rows 3, 9, 19–21): PD-STATE's. The point-based `HasPencilPanelRealization` is the
   wrong object at `d ≥ 4`. Primal (a `(d−3)`-flat `A_v` in a hyperplane) or dual (a point in a
   3-space); an all-`d` polarity `Λ²K^{d+1} ≅ Λ^{d−1}K^{d+1}` (`screwComplementIso` is grade 2
@@ -197,7 +210,7 @@ Result 17's `def[3] ≤ 1` one step further.
   feasibility unchecked). It has `def[3] = 0` (Result 22), so its rank is Result 17's; the
   question it raises is GENERIC's alone.
 
-### 2.4 Proposed tests (T1, T2, T3 and T4 run; T5 not run)
+### 2.4 Proposed tests (T1–T5 run)
 
 - **T1** (row 5): at `d = 4` on the `--d4` population, the flat rank `10(n−1) + 3 − dim L(q)` and
   R1's base `10(n−1) − def[6]`. **Run** at `d = 4, 5, 6` (`Strata.md` Result 20): both formulas
@@ -256,8 +269,55 @@ Result 17's `def[3] ≤ 1` one step further.
     joined by one edge. Each diamond's points lie in one 3-space, the edge's ends lie in both, and
     `y` makes three, so the locus forces `Π_a = Π_b` (`dim Λ²(A+B) = 3`). There `c = 3 < 4 =
     need` and the route fails, at `d = 3` as at `d = 6`; `G` attains at its own configuration.
-- **T5** (coverage): the graphs whose only row at `D = 10, 15` is a `k = 1, 2` orbit cell. C's hand
-  count: `K₄` with every edge subdivided twice takes the orbit cell at `D = 6` and row 12 at `D = 10`.
+- **T5** (coverage): which rows of the coverage carry the graphs at `D = 10, 15`. C's hand count:
+  `K₄` with every edge subdivided twice takes the orbit cell at `D = 6` and row 12 at `D = 10`.
+  **Run** (`Strata.md` Result 26; `--coverage`, exact combinatorics, seed-independent), with two
+  arguments by hand (this session, Claude Opus 5.5; `HARNESS.md`: claimed proved, read the proof
+  before building on it).
+  - **Theorem S at `D` `[PROVED]`.** The proof of `thm:pencil-x0-theorem-s` holds at every
+    `D ≥ 6` with "rigid" read as `def[D] = 0` and "usable" read at `D`: `k ≥ 3`; `k = 2` with
+    `m = f`, or ends apart and M; `k = 1` with `m = f` or `m + D − 1 ≤ f`. Here
+    `f = def[D](G[V₁])` and `m = def[D](G[V₁]; a, b)`. The constants move as follows.
+    `lem:deficiency-one-body-chain` (2) gives `m + D − 1 ≤ f` unless `x` lies in a `D`-rigid set:
+    its `10 − 6 = 4` becomes `2(D − 1) − D = D − 2`, and an edge from `x` to another part costs
+    `D − 1 > D − 2`. `lem:deficiency-two-body-chain` holds at `D ≥ 6`, since a tight set is rigid
+    at 6 and hence at `D` (`lem:deficiency-antitone`). The 4-cycle is `D`-rigid at `D ≥ 4`.
+    `lem:pencil-x0-sparse-count` (2) gives `s_D(V − x) = Dn − (D − 1)|E| − 2 < 0` from
+    `5|E| ≥ 6n`. `lem:deficiency-core-bound` needs only that a value of at most zero at `d = 2`
+    is at most zero at `D ≥ 3`. `-merge-rigid`, `-add-body` and `-ear-merge` hold at every `D`,
+    and the additivity is planar. So a graph past rows 1–5 has a chain usable at `D` or a core at
+    `D`. It uses a one-body chain only through `m = f`, which gives `f ≤ def[D](G)`, or through
+    the split-off. **ONE-EAR's third part is never needed.**
+  - **Where ONE-EAR can be load-bearing, `D ≥ 10` `[PROVED]`.** Call a row GEN when its `Pᵈ` step
+    needs only formal work (§2.1's GEN rows, CERT, CARRIER, SHORT's X3 range, row 14 at `d = 4`
+    without a shared neighbour). For a set `W` of core bodies and whole paths,
+    `s_D(W) = ΣL − D·c`, with `ΣL` the paths' lengths and `c` the cycle rank. Let a graph past
+    rows 1–5 have no GEN row. If `def[D](G) > 0`, it has no `D`-rigid set, since Theorem S's
+    maximal one would be a core. Then every one-body chain splits off by (2). And `s_D(V) ≥ 1`
+    with `c ≥ e/3 + 1` (core bodies of degree 3 or more, `e` core edges) forces a path longer
+    than `D/3`, so a chain with `k ≥ 3`. If `def[D](G) = 0` and every chain has `k ≤ 2`, then a
+    two-body chain has `s_D(V₁) ≤ e(3 − D/3) − 3 < 0`. So a `D`-rigid set avoids `x₁`, and
+    Theorem S's argument with `X₀ = {x₁}` gives a core. **So a graph with no GEN row has a chain
+    with `k ≥ 3`, or `def[D](G) = 0` and only one-body chains.** Given SHORT, row 15 is never
+    needed at `D ≥ 10`, and row 14 only on that class, call it **ONE-CLASS**: `def[D](G) = 0`,
+    every chain one-body, and no core.
+  - **Measured.** The population is subdivisions of ten cores of minimum degree 3 (`θ₃`, `θ₄`,
+    two small multigraphs, `K₄`, `W₄`, the prism, `K₃,₃`, the cube, Petersen), each core edge a
+    path of 1–4 edges, simple, sparse and in the content range. That is every length vector up to
+    isomorphism on the five smallest cores and 60 drawn on the others: 1077, 1059, 1021 and 957
+    cells at `d = 3..6`. At `d = 4, 5, 6` every cell has a GEN row, so no cell needs SHORT-CORE or
+    ONE-EAR. A core is present at every one, and is the only GEN row at 20, 9 and 6. So the cover
+    rests on row 9, and the second read of rows 9 and 12 (§1) weighs more. A one-body box (paths
+    of 1–2 edges) gives 231, 180 and 131 cells at `d = 4, 5, 6`, all with `def[D](G) = 0` and
+    every chain one-body, and each has a GEN row. At `d = 5, 6` each has a core, its only GEN row
+    (row 14 the alternative), so ONE-CLASS is not met there. At `d = 4`, 228 have a core. The other
+    three are in ONE-CLASS: `K₃,₃` and two Petersen subdivisions, `def[3] = 2`. Row 14 carries
+    each at ends that share no neighbour, and so does R1's base row. At `d = 3`, 8 cells have only
+    `k = 1, 2` ear rows (7 only row 15's), C's `K₄` among them; it takes row 12 and a core from
+    `d = 4`. Past the box, Petersen with every edge a 4-path at `d = 4`, or a 6-path at `d = 5`,
+    has only SHORT-CORE's rows (`k = 3`, `k = 5`): `def[D](G) = 0` and no core (by hand, every
+    proper subgraph has `ΣL > D·c`, so no proper set is `D`-rigid). So the coverage needs
+    SHORT-CORE, and on this population ONE-EAR nowhere.
 
 ### 2.5 Where the dimension bites: two frames (2026-10-29)
 
@@ -351,6 +411,12 @@ unless a finding argues otherwise:
 Still open, for the PI:
 - The route: §2.2's proposal, R2's induction with R1's base row inside an induction on `d`. The
   defaults work inside it; it is not decided on its own.
+- **ONE-EAR's attack, or ONE-CLASS** (T5, §2.3–2.4). The defaults attack ONE-EAR at `d = 5` (the
+  motive, the insertion, X2). T5 confines what the coverage asks of ONE-EAR at `D ≥ 10` to row 14
+  on ONE-CLASS's graphs: none measured at `d = 5, 6`, three at `d = 4`, each carried without it.
+  Proving ONE-CLASS's lemma (§2.3), on deficiencies alone, would take ONE-EAR out of the coverage,
+  leaving the motive only to GENERIC's one-ear step (row 22). SHORT-CORE stays: Petersen's
+  subdivisions need it.
 
 Settled by the table: Phase 39's reduction is `d`-general for the bare and distinct conjuncts,
 given CARRIER (row 19).

@@ -145,6 +145,23 @@ unchanged, their output byte-identical; `notes/Phase42-design.md` sections
       deficiency certified, the merged hypothesis putting each end off the
       other's plane, and at d = 3 lem:pencil-insertion-two.
 
+Added for Phase 42a's T5 (2026-10-29; the fourteen modes above unchanged,
+their output byte-identical; `notes/Phase42-design.md` sections 2.3-2.4):
+
+  python3 notes/scripts/strata/strata.py --coverage [--seed N]
+      T5, the coverage.  The case analysis of sec:main-component-coverage
+      read at D = C(d+1, 2), d = 3..6, on subdivisions of small cores
+      (`COV_CORES`, paths of 1..COV_LMAX edges), sparse and in the content
+      range: which rows of def:pencil-x0-reduces apply at D, and the
+      obligation each row's P^d step carries (`cov_tag`: GEN, SHORT-CORE,
+      ONE-EAR).  Exact combinatorics only (`core_def`, checked against the
+      3^n DP under the cap), so seed-independent.  Asserted: the coverage at
+      D at every graph (Theorem S read at D), the chain facts its proof uses,
+      and at D >= 10 the reduction to a chain with k >= 3 or ONE-CLASS's
+      shape (def_D = 0, every chain one-body); reported: the cells with no
+      GEN row, the k = 1 orbit chains, a one-body box (paths of 1-2 edges),
+      and Petersen subdivisions past the box (`COV_BEYOND`).
+
 Verdict: the last line is `OK: every target met`, or `FAILED: ...` with exit
 status 1; a mismatch in any mode counts.
 
@@ -159,14 +176,15 @@ Coordinates are integers in [-COORD, COORD]; combination coefficients are
 nonzero integers in that range.  Exact Q throughout (`fractions.Fraction`,
 no GF(p)).  The deficiency DP is exponential (3^n), hence n <= 12; `--short`
 and `--orbit` work past it, with each deficiency certified by a partition and
-a rank.
+a rank; `--coverage` by `core_def`, exact on subdivisions of a core (its
+docstring), a DP over the core's bodies.
 """
 import argparse
 import os
 import random
 import sys
 from fractions import Fraction as F
-from itertools import combinations
+from itertools import combinations, permutations, product
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import scriptpath  # noqa: F401,E402  -- canonical harness path bootstrap
@@ -2450,9 +2468,468 @@ def mode_orbit(s):
     return bad
 
 
+# ---------------- Phase 42a's T5: the coverage at D ----------------
+
+COV_DIMS = (3, 4, 5, 6)
+COV_LMAX = 4         # core paths of 1..COV_LMAX edges: chains of k <= 3 bodies
+COV_EXHAUST = 4096   # a core with at most this many length vectors: all of them
+COV_TRIES = 3000     # box draws per (core, d) otherwise
+COV_PER = 60         # graphs kept per (core, d) from the draws
+PETERSEN = (10, [(i, (i + 1) % 5) for i in range(5)] + [(i, i + 5) for i in range(5)]
+             + [(5 + i, 5 + (i + 2) % 5) for i in range(5)])
+COV_CORES = {
+    # name: (core bodies, core edges); each 2-connected, of minimum degree 3
+    "th3": (2, [(0, 1)] * 3),
+    "th4": (2, [(0, 1)] * 4),
+    "hub": (3, [(0, 1), (0, 1), (0, 2), (2, 1), (0, 2)]),
+    "same": (4, [(0, 1), (0, 1), (0, 2), (2, 3), (3, 1), (2, 3)]),
+    "k4": (4, [(0, 1), (0, 2), (1, 2), (0, 3), (1, 3), (2, 3)]),
+    "w4": (5, [(0, 1), (0, 2), (0, 3), (0, 4), (1, 2), (2, 3), (3, 4), (4, 1)]),
+    "prism": (6, [(0, 1), (1, 2), (2, 0), (3, 4), (4, 5), (5, 3), (0, 3), (1, 4), (2, 5)]),
+    "k33": (6, [(i, j) for i in range(3) for j in range(3, 6)]),
+    "cube": (8, [(i, i ^ (1 << t)) for i in range(8) for t in range(3) if i < i ^ (1 << t)]),
+    "petersen": PETERSEN,
+}
+
+
+def core_def(nc, paths, D):
+    """def_D of the subdivision of a core multigraph: nc core bodies, and each
+    path (u, v, L) a path of L edges from u to v whose L - 1 interior bodies
+    have degree two (u = v: a cycle through u; L = 1: an edge, a loop if
+    u = v).  Exact.  Among the partitions attaining def_D take one with the
+    most parts.  An interior body with at most one neighbour in its part, not
+    alone, gains 1 or D by leaving it, so each interior body is alone or its
+    part holds its whole path, ends included.  The parts are then the blocks
+    of a partition of the core with paths absorbed, and a path inside a block
+    is absorbed iff L <= D (left out, it adds D(L-1) - (D-1)L = L - D).  So
+    def_D = c0 + max over the partitions of the core of sum_B w(B), with w(B)
+    = D + the sum over the non-loop paths inside B of D-1 (L = 1) or
+    max(0, D-L) (L >= 2), and c0 = -D - (D-1)(the non-loop edges) + sum of
+    L - D over the non-loop paths with L >= 2 + sum of max(0, L - D) over the
+    loops with L >= 2: a subset DP over the core, as `deficiency` is over the
+    bodies; --coverage checks the two against each other under the DP cap."""
+    c0, inner = -D, []
+    for u, v, L in paths:
+        if u == v:
+            c0 += max(0, L - D) if L >= 2 else 0
+        elif L == 1:
+            c0 -= D - 1
+            inner.append((u, v, D - 1))
+        else:
+            c0 += L - D
+            inner.append((u, v, max(0, D - L)))
+    full = (1 << nc) - 1
+    w = [D + sum(om for u, v, om in inner if (S >> u) & 1 and (S >> v) & 1)
+         for S in range(full + 1)]
+    best = [0] * (full + 1)
+    for S in range(1, full + 1):
+        low = S & -S
+        rest = S ^ low
+        b, T = None, rest
+        while True:
+            part = T | low
+            val = w[part] + best[S ^ part]
+            if b is None or val > b:
+                b = val
+            if T == 0:
+                break
+            T = (T - 1) & rest
+        best[S] = b
+    return c0 + best[full]
+
+
+def core_expand(nc, paths):
+    """The subdivision itself: its body count and edges, core bodies first."""
+    n, E = nc, []
+    for u, v, L in paths:
+        p = [u] + list(range(n, n + L - 1)) + [v]
+        n += L - 1
+        E += list(zip(p, p[1:]))
+    return n, E
+
+
+def core_identify(nc, paths, a, b):
+    """The core with b identified into a (`identify`, on cores): its def_D is
+    the merged deficiency def_D(G; a, b)."""
+    ix = {v: i for i, v in enumerate(w for w in range(nc) if w != b)}
+    ix[b] = ix[a]
+    return nc - 1, [(ix[u], ix[v], L) for u, v, L in paths]
+
+
+def core_induce(nc, paths, U, S):
+    """G[W], W = the core bodies of the mask U plus the interiors of the
+    paths S: U relabelled in order, the paths S and the edges inside U."""
+    ix = {v: i for i, v in enumerate(u for u in range(nc) if (U >> u) & 1)}
+    return len(ix), [(ix[u], ix[v], L) for j, (u, v, L) in enumerate(paths)
+                     if j in S or (L == 1 and (U >> u) & 1 and (U >> v) & 1)]
+
+
+def core_contract(nc, paths, U, S):
+    """G/G[W] (def:rigid-contraction), W as in `core_induce`, collapsed to
+    its least core body r: G[W]'s edges deleted, every other path kept with
+    its ends in U moved to r (a path of U outside S becomes a cycle at r)."""
+    r = min(u for u in range(nc) if (U >> u) & 1)
+    keep = [v for v in range(nc) if not (U >> v) & 1 or v == r]
+    ix = {v: i for i, v in enumerate(keep)}
+    for v in range(nc):
+        if (U >> v) & 1:
+            ix[v] = ix[r]
+    return len(keep), [(ix[u], ix[v], L) for j, (u, v, L) in enumerate(paths)
+                       if not (j in S or (L == 1 and (U >> u) & 1 and (U >> v) & 1))]
+
+
+def core_sparse(nc, paths):
+    """G sparse: s_3(X) >= 1 for every X of two or more bodies.  A violating X
+    contains a set of planar deficiency zero (lem:deficiency-sparse), whose
+    bodies each have two neighbours in it, so a set U of core bodies (two or
+    more, as the core has no loops) plus whole paths between them.  Over
+    those 2e - 3|X| is largest with every 2-path of U taken (a path adds
+    3 - L).  So G is sparse iff 2 (edges of U) + (2-paths of U) <= 3|U| - 4
+    for every U of two or more core bodies."""
+    for U in range(1, 1 << nc):
+        size = bin(U).count("1")
+        val = sum(3 - L for u, v, L in paths
+                  if L <= 2 and u != v and (U >> u) & 1 and (U >> v) & 1)
+        if size >= 2 and val > 3 * size - 4:
+            return False
+    return True
+
+
+def core_sets(nc, paths, D, need_u=0, need_p=None, twos=False):
+    """Every W = U + the interiors of the paths S (each of 2+ edges, both ends
+    in U) with |W| >= 2, every body of W with two neighbours in W, and
+    s_D(W) <= 0: the shape of every set of deficiency zero at D (alone, a body
+    with one neighbour in its set has value D - (D-1) > 0, and an interior
+    body's two neighbours bring its whole path), and a necessary condition
+    for it.  Only U containing need_u and S containing need_p; with twos,
+    every 2-path of U in S.  Yields (U, S, |W|)."""
+    longp = [j for j, (u, v, L) in enumerate(paths) if L >= 2]
+    for U in range(1, 1 << nc):
+        if U & need_u != need_u:
+            continue
+        inside = [j for j in longp if (U >> paths[j][0]) & 1 and (U >> paths[j][1]) & 1]
+        if need_p is not None and need_p not in inside:
+            continue
+        fixed = [j for j in inside if j == need_p or (twos and paths[j][2] == 2)]
+        free = [j for j in inside if j not in fixed]
+        dirU = [(u, v) for u, v, L in paths if L == 1 and (U >> u) & 1 and (U >> v) & 1]
+        for mask in range(1 << len(free)):
+            S = fixed + [free[i] for i in range(len(free)) if (mask >> i) & 1]
+            size = bin(U).count("1") + sum(paths[j][2] - 1 for j in S)
+            if size < 2:
+                continue
+            deg = dict.fromkeys((u for u in range(nc) if (U >> u) & 1), 0)
+            for u, v in dirU + [paths[j][:2] for j in S]:
+                deg[u] += 1
+                deg[v] += 1
+            e = len(dirU) + sum(paths[j][2] for j in S)
+            if min(deg.values()) >= 2 and D * (size - 1) - (D - 1) * e <= 0:
+                yield U, S, size
+
+
+def cov_core(nc, paths, D, d3):
+    """A core at D, clause (7) of def:pencil-x0-reduces read at D (row 9: the
+    contracted set has def_D = 0, the additivity stays planar): W proper,
+    def_D(G[W]) = 0, no body outside W adjacent to two bodies of W, and
+    def_3(G[W]) + def_3(G/G[W]) <= def_3(G).  The first (U, S) found, or None,
+    over every W of `core_sets`'s shape with every 2-path of U in S (else
+    that path's interior body is adjacent to two bodies of W)."""
+    nW = nc + sum(L - 1 for _, _, L in paths)
+    for U, S, size in core_sets(nc, paths, D, twos=True):
+        if size == nW:
+            continue
+        if any(sum(1 for u, v, L in paths if L == 1 and z in (u, v) and (U >> (u + v - z)) & 1) >= 2
+               for z in range(nc) if not (U >> z) & 1):
+            continue
+        sub = core_induce(nc, paths, U, S)
+        if (core_def(*sub, D) == 0
+                and core_def(*sub, 3) + core_def(*core_contract(nc, paths, U, S), 3) <= d3):
+            return U, S
+    return None
+
+
+def core_auts(nc, ce):
+    """The core's automorphisms, as permutations of its bodies."""
+    base = sorted(tuple(sorted(e)) for e in ce)
+    return [p for p in permutations(range(nc))
+            if sorted(tuple(sorted((p[u], p[v]))) for u, v in ce) == base]
+
+
+def cov_population(name, d, auts, lmax=COV_LMAX):
+    """The graphs of core `name` at d: every length vector in [1, lmax]^E if
+    there are at most COV_EXHAUST, else COV_TRIES box draws seeded by (name,
+    d, lmax) alone, keeping the first COV_PER; one per isomorphism class (the
+    core's automorphisms), simple (no two 1-paths on one pair), sparse, and in
+    the content range def_3 >= d - 2.  Each core body has degree >= 3, so G is
+    2-connected and not a cycle, and its chains are its paths of 2+ edges."""
+    nc, ce = COV_CORES[name]
+    if lmax ** len(ce) <= COV_EXHAUST:
+        vecs, cap = product(range(1, lmax + 1), repeat=len(ce)), None
+    else:
+        R = random.Random(3000000 + 10000 * lmax + 100 * list(COV_CORES).index(name) + d)
+        vecs = (tuple(R.randint(1, lmax) for _ in ce) for _ in range(COV_TRIES))
+        cap = COV_PER
+    out, seen = [], set()
+    for ls in vecs:
+        key = min(tuple(sorted((min(p[u], p[v]), max(p[u], p[v]), L)
+                               for (u, v), L in zip(ce, ls))) for p in auts)
+        if key in seen:
+            continue
+        seen.add(key)
+        paths = [(u, v, L) for (u, v), L in zip(ce, ls)]
+        ones = [frozenset((u, v)) for u, v, L in paths if L == 1]
+        if (len(ones) == len(set(ones)) and core_sparse(nc, paths)
+                and core_def(nc, paths, 3) >= d - 2):
+            out.append((ls, paths))
+            if cap and len(out) == cap:
+                break
+    return out
+
+
+def cov_cell(nc, paths, d):
+    """The rows of def:pencil-x0-reduces read at D = C(d+1, 2) that apply to
+    G, and the facts the coverage's proof needs at D.  Per chain a - x_1 ..
+    x_k - b on V1 (f = def_D(G[V1]), m = def_D(G[V1]; a, b)): 'long' k >= D-1;
+    'ear' 2 <= k <= D-1 and f <= def_D(G) (row 12); 'short' 3 <= k <= D-2 and
+    f > def_D(G) (SHORT); 'orbit2' k = 2, ends apart, f > def_D(G) and M
+    (row 15); 'one' k = 1, ends apart, f <= def_D(G) and M (row 14); 'split'
+    k = 1, ends apart, m + D-1 <= f (row 16).  M is the d = 3 steps' merged
+    hypothesis def_3(G[V1]; a, b) + 2 <= def_3(G[V1]).  Global: 'flat'
+    def_3 = def_D (row 5), 'base' def_(D_(d-1)) = def_D (R1's base row), and
+    'core' (`cov_core`).  'orbit1' marks a k = 1 chain with f > def_D(G) and
+    no split-off: (*) there is ONE-EAR's third part, which no row uses."""
+    D, Dm = (d + 1) * d // 2, d * (d - 1) // 2
+    dG, d3 = core_def(nc, paths, D), core_def(nc, paths, 3)
+    c = dict(D=D, dG=dG, d3=d3, rows=[], chains=[], orbit1=0)
+    if d3 == dG:
+        c["rows"].append(("flat", 0, False))
+    c["base"] = d >= 4 and core_def(nc, paths, Dm) == dG
+    for i, (a, b, L) in enumerate(paths):
+        if L < 2:
+            continue
+        k, G1 = L - 1, paths[:i] + paths[i + 1:]
+        f, f3 = core_def(nc, G1, D), core_def(nc, G1, 3)
+        mg = core_identify(nc, G1, a, b)
+        m, m3 = core_def(*mg, D), core_def(*mg, 3)
+        adj = any(LL == 1 and {u, v} == {a, b} for u, v, LL in G1)
+        nb = [{u + v - x for u, v, LL in G1 if LL == 1 and x in (u, v)} for x in (a, b)]
+        sh = (any(LL == 2 and {u, v} == {a, b} for u, v, LL in G1)
+              or bool(nb[0] & nb[1]))
+        M, split = m3 + 2 <= f3, k == 1 and not adj and m + D - 1 <= f
+        rows = [("long", k >= D - 1), ("ear", 2 <= k <= D - 1 and f <= dG),
+                ("short", 3 <= k <= D - 2 and f > dG),
+                ("orbit2", k == 2 and not adj and f > dG and M),
+                ("one", k == 1 and not adj and f <= dG and M), ("split", split)]
+        c["rows"] += [(r, k, sh) for r, ok in rows if ok]
+        c["orbit1"] += k == 1 and f > dG and not split
+        usable = (k >= 3 or (k == 2 and (m == f or (not adj and M)))
+                  or (k == 1 and (m == f or split)))
+        c["chains"].append(dict(i=i, k=k, f=f, m=m, f3=f3, m3=m3, adj=adj, M=M,
+                                split=split, usable=usable, G1=G1, mg=mg))
+    c["core"] = cov_core(nc, paths, D, d3)
+    if c["core"] is not None:
+        c["rows"].append(("core", 0, False))
+    return c
+
+
+def cov_tag(row, k, sh, d):
+    """The obligation a row's P^d step carries (Phase42-design.md section
+    2.1's verdicts): 'GEN', GEN given only formal work (CERT, CARRIER) or a
+    proved part (SHORT's X3 range, k >= C(d-1, 2) + 3); 'SHORT-CORE';
+    'ONE-EAR' (row 15 at d >= 4; row 14 at d >= 5, and at d = 4 when the
+    ends share a neighbour in V1).  At d = 3 every row is Phase 40's."""
+    if d == 3 or row in ("flat", "core", "long", "ear", "split"):
+        return "GEN"
+    if row == "short":
+        return "GEN" if k >= (d - 1) * (d - 2) // 2 + 3 else "SHORT-CORE"
+    if row == "one" and d == 4 and not sh:
+        return "GEN"
+    return "ONE-EAR"
+
+
+def cov_label(name, ls):
+    return f"{name} " + "".join(map(str, ls))
+
+
+# Past the box: Petersen with every edge a path of L edges, at d.  By hand each
+# is D-sparse but for V(G) (every proper subgraph has sum L > D c), so it has
+# no core, and every chain has k = L - 1 >= 3 with f > def_D(G): its only rows
+# are SHORT-CORE's (k <= C(d-1, 2) + 2).
+COV_BEYOND = (("petersen", PETERSEN, 4, 4), ("petersen", PETERSEN, 6, 5))
+COV_ROWS = ("flat", "core", "long", "ear", "short", "orbit2", "one", "split")
+
+
+def cov_check(nc, paths, d, checked):
+    """One cell: `cov_cell`, its class and its mismatches.  Asserted: the
+    chain facts and the coverage at D (`mode_coverage`'s header), core_def
+    against the DP where n <= 12, and at D >= 10 the reduction proved in
+    Phase42-design.md section 2.4 (T5): a cell with no GEN row has a chain
+    with k >= 3, or def_D(G) = 0 and every chain k = 1."""
+    D, bad = (d + 1) * d // 2, 0
+    c = cov_cell(nc, paths, d)
+    if core_expand(nc, paths)[0] <= 12:
+        for o in [(nc, paths)] + [o for ch in c["chains"] for o in ((nc, ch["G1"]), ch["mg"])]:
+            for DD in (3, D):
+                bad += core_def(*o, DD) != deficiency(*core_expand(*o), DD)
+                checked[0] += 1
+    for ch in c["chains"]:
+        a, b, _ = paths[ch["i"]]
+        bad += ch["m"] == ch["f"] and ch["f"] > c["dG"]
+        bad += ch["k"] == 2 and not ch["adj"] and ch["m"] != ch["f"] and not ch["M"]
+        if ch["k"] == 1:
+            bad += ch["adj"] or not ch["M"]
+            if ch["m"] != ch["f"] and not ch["split"]:
+                bad += not any(core_def(*core_induce(nc, paths, U, S), D) == 0
+                               for U, S, _ in core_sets(nc, paths, D, (1 << a) | (1 << b), ch["i"]))
+                checked[1] += 1
+    n, E = core_expand(nc, paths)
+    if c["core"] is not None and n <= 12:
+        # the core again on the bodies, by the 3^n DP: W proper, def_D(G[W]) =
+        # 0, no body outside W with two neighbours in W, and the additivity
+        U, S = c["core"]
+        W, pos = {u for u in range(nc) if (U >> u) & 1}, nc
+        for j, (u, v, L) in enumerate(paths):
+            W |= set(range(pos, pos + L - 1)) if j in S else set()
+            pos += L - 1
+        iw = {v: i for i, v in enumerate(sorted(W))}
+        EW = [(iw[u], iw[v]) for u, v in E if u in W and v in W]
+        r = min(W)
+        ic = {v: i for i, v in enumerate(v for v in range(n) if v not in W or v == r)}
+        ic.update(dict.fromkeys(W, ic[r]))
+        EC = [(ic[u], ic[v]) for u, v in E if not (u in W and v in W)]
+        out = [len({w for e in E if x in e for w in e} & W) for x in range(n) if x not in W]
+        dW3, dC3 = deficiency(len(W), EW, 3), deficiency(n - len(W) + 1, EC, 3)
+        bad += not (2 <= len(W) < n and deficiency(len(W), EW, D) == 0 and max(out) <= 1
+                    and dW3 + dC3 <= c["d3"]
+                    and dW3 == core_def(*core_induce(nc, paths, U, S), 3)
+                    and dC3 == core_def(*core_contract(nc, paths, U, S), 3))
+        checked[0] += 1
+    c["covered"] = any(ch["usable"] for ch in c["chains"]) or c["core"] is not None
+    bad += not c["covered"]
+    tags = {cov_tag(r, k, sh, d) for r, k, sh in c["rows"]}
+    c["cls"] = ("GEN" if "GEN" in tags else "either" if len(tags) == 2
+                else tags.pop() if tags else "none")
+    bad += c["cls"] == "none"
+    ks = [ch["k"] for ch in c["chains"]]
+    if D >= 10 and c["cls"] != "GEN":
+        bad += not (max(ks) >= 3 or (c["dG"] == 0 and set(ks) == {1}))
+    return c, bad
+
+
+def cov_rowtext(c):
+    return " ".join(f"{r}@{k}" + ("+" if sh and r == "one" else "") for r, k, sh in c["rows"])
+
+
+def mode_coverage(s):
+    print("T5 (Phase 42a; Phase42-design.md section 2.4, coverage): the structural "
+          "coverage (sec:main-component-coverage) read at D = C(d+1, 2), d = 3..6, "
+          "on subdivisions of small cores (`COV_CORES`: every core body of degree "
+          ">= 3, every core edge a path of 1..COV_LMAX edges), sparse, so past rows "
+          "1-5 of the coverage's table (def_3 = def_D, a planar-rigid set, cut "
+          "vertices, bridges, cycles), in the content range def_3 >= d - 2.  "
+          "Deficiencies by `core_def`, exact, checked against the 3^n DP wherever "
+          "n <= 12.  No point is drawn: the figures do not vary with the seed.  "
+          "Rows, as `cov_cell` reads def:pencil-x0-reduces at D: flat, core, and "
+          "per chain long, ear (row 12), short (SHORT), orbit2 (row 15), one "
+          "(row 14), split (row 16); base, R1's base row, apart.  Each row's "
+          "obligation as `cov_tag`: GEN, SHORT-CORE or ONE-EAR.  A cell is GEN if "
+          "a GEN row applies; otherwise it needs SHORT-CORE, ONE-EAR, or either "
+          "('either'), and 'R1' marks the open cells R1's base row settles.  "
+          "Asserted at every cell, the coverage at D (some chain usable at D, or a "
+          "core at D: Theorem S read at D), and per chain: m = f gives f <= "
+          "def_D(G) (lem:deficiency-ear-merge); at k = 2, ends apart and m != f "
+          "give M (lem:deficiency-two-body-chain, D >= 6); at k = 1 the ends are "
+          "apart and M holds (lem:deficiency-one-body-chain (1)), and if neither "
+          "m = f nor a split-off, x_1 lies in a set of def_D zero (its (2) read "
+          "at D).  So no cell needs a k = 1 orbit cell (orbit1: f > def_D(G), no "
+          "split-off), ONE-EAR's third part.  Also asserted at D >= 10: a cell "
+          "with no GEN row has a chain with k >= 3, or def_D(G) = 0 and every "
+          "chain k = 1 (so ONE-EAR alone can be needed only there, through row "
+          "14).  Then `COV_BEYOND`, past the box, whose predicted class is "
+          "asserted.")
+    print("cores: " + "; ".join(f"{g}: {nc} bodies, {len(ce)} edges"
+                                + (" (all)" if COV_LMAX ** len(ce) <= COV_EXHAUST else
+                                   f" ({COV_PER} of {COV_TRIES} draws)")
+                                for g, (nc, ce) in COV_CORES.items()))
+    bad, auts, checked = 0, {}, [0, 0]
+    classes = ("GEN", "SHORT-CORE", "ONE-EAR", "either")
+    for d in COV_DIMS:
+        D = (d + 1) * d // 2
+        print(f"d = {d} (D = {D}); listed: the open cells (no GEN row), and the cells "
+              f"whose every row is a k = 1, 2 ear: core lengths, n, def_3, def_D, R1, "
+              f"class, rows (row@k, '+' ends sharing a neighbour in V1)")
+        table, present, only_core = {}, dict.fromkeys(COV_ROWS, 0), 0
+        for name, (nc, ce) in COV_CORES.items():
+            if name not in auts:
+                auts[name] = core_auts(nc, ce)
+            t = table.setdefault(name, [0] * 7)
+            for ls, paths in cov_population(name, d, auts[name]):
+                c, b = cov_check(nc, paths, d, checked)
+                bad += b
+                if not c["covered"]:
+                    print(f"  {cov_label(name, ls)}: NOT COVERED at D = {D}")
+                kinds = {r for r, _, _ in c["rows"]}
+                for r in kinds:
+                    present[r] += 1
+                only_core += {r for r, k, sh in c["rows"] if cov_tag(r, k, sh, d) == "GEN"} == {"core"}
+                t[0] += 1
+                if c["cls"] in classes:
+                    t[1 + classes.index(c["cls"])] += 1
+                t[5] += c["cls"] != "GEN" and c["base"]
+                t[6] += c["orbit1"]
+                if c["cls"] != "GEN" or (kinds and kinds <= {"one", "orbit2"}):
+                    print(f"  {cov_label(name, ls):18}{core_expand(nc, paths)[0]:>4}{c['d3']:>4}"
+                          f"{c['dG']:>4}{'R1' if c['base'] else '.':>4}  {c['cls']:11}{cov_rowtext(c)}")
+                if name == "k4" and ls == (3,) * 6:
+                    print(f"  C's hand count, {cov_label(name, ls)} (K_4, every edge "
+                          f"subdivided twice): rows {cov_rowtext(c)}")
+                    bad += d == 3 and kinds != {"orbit2"}
+                    bad += d == 4 and "ear" not in kinds
+        print(f"per core at d = {d}: graphs; GEN, SHORT-CORE, ONE-EAR, either; the "
+              f"open ones R1 settles; the chains orbit1 (f > def_D(G), no split-off)")
+        tot = [0] * 7
+        for name, t in table.items():
+            print(f"  {name:6}" + "".join(f"{v:>6}" for v in t))
+            tot = [x + v for x, v in zip(tot, t)]
+        print(f"  {'all':6}" + "".join(f"{v:>6}" for v in tot))
+        print("  cells with each row: " + ", ".join(f"{r} {v}" for r, v in present.items())
+              + f"; with core as their only GEN row: {only_core}")
+        # the one-body box: paths of 1-2 edges, so every chain has k = 1; at
+        # D >= 10 the cells with def_D(G) = 0 are the only ones where ONE-EAR
+        # alone can be needed (cov_check's last assertion); listed: those with
+        # no core, and any cell with no GEN row
+        one = [0, 0, 0, 0, 0]
+        for name, (nc, ce) in COV_CORES.items():
+            for ls, paths in cov_population(name, d, auts[name], 2):
+                c, b = cov_check(nc, paths, d, checked)
+                bad += b
+                cls_ = c["dG"] == 0
+                gen = {r for r, k, sh in c["rows"] if cov_tag(r, k, sh, d) == "GEN"}
+                one = [one[0] + 1, one[1] + cls_, one[2] + (cls_ and bool(gen)),
+                       one[3] + (cls_ and "core" in gen), one[4] + (cls_ and gen == {"core"})]
+                if not c["covered"] or c["cls"] != "GEN" or (cls_ and c["core"] is None):
+                    print(f"  {cov_label(name, ls):18}{core_expand(nc, paths)[0]:>4}{c['d3']:>4}"
+                          f"{c['dG']:>4}{'R1' if c['base'] else '.':>4}  {c['cls']:11}{cov_rowtext(c)}")
+        print(f"  the one-body box (paths of 1-2 edges, every chain k = 1; {COV_PER} of "
+              f"{COV_TRIES} draws past {COV_EXHAUST} vectors): {one[0]} graphs, {one[1]} "
+              f"with def_D(G) = 0, {one[2]} of these with a GEN row, {one[3]} with a core, "
+              f"{one[4]} with the core as their only GEN row")
+    print("past the box (`COV_BEYOND`): core lengths, d, n, def_3, def_D, R1, class, rows")
+    for name, (nc, ce), L, d in COV_BEYOND:
+        paths = [(u, v, L) for u, v in ce]
+        c, b = cov_check(nc, paths, d, checked)
+        bad += b + (c["cls"] != "SHORT-CORE")
+        print(f"  {name} {L}^{len(ce):<8}{d:>2}{core_expand(nc, paths)[0]:>4}{c['d3']:>4}"
+              f"{c['dG']:>4}{'R1' if c['base'] else '.':>4}  {c['cls']:11}{cov_rowtext(c)}")
+    print(f"core_def against the DP: {checked[0]} checks; x_1 in a set of def_D zero: "
+          f"{checked[1]} chains")
+    print(f"mismatches (asserted): {bad}")
+    return bad
+
+
 MODES = ("linear", "mixed", "perbody", "examples", "selftest",
          "complexes", "residual4", "d4", "lifting", "pd", "content", "oneear", "short",
-         "orbit")
+         "orbit", "coverage")
 
 
 def main():

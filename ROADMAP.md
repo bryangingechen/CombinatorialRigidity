@@ -1295,10 +1295,16 @@ interior bodies at `d = 4`. A fourth mode tested the one- and two-body ears wher
 lowers the deficiency, at `d = 3..6`. Wherever Phase 40's merged hypothesis holds, both steps'
 counts hold and Phase 40's two-body route reaches them; where it fails, the route falls one short
 at every `d`, `d = 3` included. So the one-body ear's new mathematics is a motive at `d ≥ 5`, an
-insertion lemma and one containment, measured only. Next, by the PI's defaults (2026-10-29), in
-either order: the statement layer and the `def_3 ≤ 1` corollary open beside the research, and a
-test of the coverage at `d = 4, 5`. The targets are three tiers: every `d` at `def_3 ≤ 1`, at
-`def_3 ≤ 2` (a `P⁴` theorem), and every `d`.
+insertion lemma and one containment, measured only. A fifth mode tested the coverage, the case
+analysis that picks a step for each graph, at `d = 3..6`. By hand, its last case holds in every
+dimension, so the one-body ear's step with the larger deficiency is never needed, and from `d = 4`
+the one-body ear is needed at all only on one class of graphs (ONE-CLASS: `def_D = 0`, only
+one-body chains, no contractible core). On subdivisions of ten small graphs every graph at
+`d = 4, 5, 6` has a step that needs no new mathematics. Two subdivisions of Petersen's graph need
+the short ears. Next, by the PI's defaults (2026-10-29): the statement layer and the `def_3 ≤ 1`
+corollary open beside the research; whether ONE-EAR or ONE-CLASS is attacked first is the PI's
+call. The targets are three tiers: every `d` at `def_3 ≤ 1`, at `def_3 ≤ 2` (a `P⁴` theorem), and
+every `d`.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 

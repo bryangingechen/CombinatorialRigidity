@@ -4,19 +4,19 @@
 blueprint. Landed: the step table and thresholds (design doc §2.1–§2.5); T1, T2 and the
 content-range graphs (`Strata.md` Results 20–22), with no shortfall; T3 (Result 24), where SHORT's
 obstruction never occurs and SHORT shrinks to SHORT-CORE; T4 (Results 23, 25), where ONE-EAR's
-first option holds wherever the merged hypothesis M does, `d = 3..6`.
-Next concrete task: T5 (coverage), or PD-STATE's open, in either order.
+first option holds wherever the merged hypothesis M does, `d = 3..6`; T5 (Result 26), where the
+coverage never needs ONE-EAR's third part and, at `D ≥ 10`, needs ONE-EAR only on ONE-CLASS.
+Next concrete task: PD-STATE's open; the PI's call on ONE-CLASS (design doc §4).
 Plan and decisions: `notes/Phase42-design.md`; evidence: `notes/Strata.md`.
 
 ## Current state
 
-**Next, in either order** (the PI's defaults, design doc §1):
-- **T5** (coverage; design doc §2.4), one `strata.py` mode committed with its figures: the
-  graphs whose only row at `D = 10, 15` is a `k = 1, 2` orbit cell, and whether any needs a
-  `k = 1` cell with `def[D](G[V₁]) > def[D](G)` (ONE-EAR's third open part, §2.3).
+**Next** (the PI's defaults, design doc §1):
 - **PD-STATE's open** beside the research, its letter minted then (`PHASE-BOUNDARIES.md` *When
   this commit opens a phase*): check the dual-form carrier (§2.3 CARRIER) against the definition
   bodies, and lay out PD-STABLE.
+- **For the PI** (design doc §4): ONE-EAR's attack at `d = 5`, or ONE-CLASS first (§2.3), a
+  lemma on deficiencies that would take ONE-EAR out of the coverage. Ask before either track.
 
 **Landed:** the step table, its route verdict (§2.2: R2's step structure, R1's base row) and
 §2.5; then T1, T2 and the content-range graphs as one mode, `strata.py --content`. Row 5's
@@ -34,6 +34,10 @@ Then T4's second half, `strata.py --orbit` (Result 25, §2.3–2.4): the orbit e
 At 46 one-body cells `G[V₁]` attains on the locus and `(⋆)` holds; at 69 two-body cells Phase
 40's route (`G₁` on the locus, then `x₂` put back) reaches `min(s + 1, dim(ρ + Λ²(A+B)))`, which
 is `(⋆)` at all 62 with M. The 7 without M fail as at `d = 3`: the locus forces `Π_a = Π_b`.
+Then T5, `strata.py --coverage` (Result 26, §2.4): Theorem S holds at every `D ≥ 6`, so ONE-EAR's
+third part is never needed, and at `D ≥ 10` a graph with no GEN row has a chain with `k ≥ 3` or
+lies in ONE-CLASS's shape (both by hand). On subdivisions of ten cores every cell at `d = 4, 5, 6`
+has a GEN row, a core at every one; Petersen's 4- and 6-path subdivisions need SHORT-CORE.
 
 ## Architectural choices made up front
 
@@ -59,27 +63,30 @@ is `(⋆)` at all 62 with M. The 7 without M fail as at `d = 3`: the locus force
   `k ≥ C(d−1, 2) + 3` proved (§2.3).
 - [x] **T4's second half** (§2.4): the orbit cells at `d = 3..6` (Result 25); ONE-EAR sized as
   the motive, the insertion and X2 (§2.3).
-- [ ] **T5** (§2.4), on graphs with `def[3] ≥ d − 2` only: the coverage rows at `D = 10, 15`. It
-  sizes the coverage before any attack builds on it. Next (*Current state*).
+- [x] **T5** (§2.4): the coverage at `D = 6..21` on subdivisions of ten cores (Result 26);
+  Theorem S at `D` and the `D ≥ 10` reduction proved by hand.
 - [ ] **A second read of rows 9 and 12** (contraction; (⋆) and the two-body ear), before an attack
-  track or PD-CARRIER builds on them.
-- [ ] **SHORT-CORE, ONE-EAR** (§2.3): attack tracks, SHORT-CORE at `d = 4` (`k = 3, 4, 5`;
-  sized by T3) and ONE-EAR at `d = 5` (the motive, the insertion, X2; sized by T4).
+  track or PD-CARRIER builds on them. T5's cover rests on row 9 at every cell at `d ≥ 4`.
+- [ ] **SHORT-CORE** (§2.3): an attack track at `d = 4` (`k = 3, 4, 5`; sized by T3, needed by
+  T5's Petersen cells).
+- [ ] **ONE-EAR or ONE-CLASS** (§2.3): ONE-EAR's attack at `d = 5` (the motive, the insertion,
+  X2; sized by T4), or ONE-CLASS's lemma, which T5 found holding at all 542 cells of its box.
+  The PI's call (design doc §4).
 
 ## Blockers / open questions
 
-- None blocking. Still open for the PI: the route (design doc §4); the defaults (§1) work inside
-  §2.2's proposal.
+- None blocking. Still open for the PI (design doc §4): the route, where the defaults (§1) work
+  inside §2.2's proposal; and ONE-EAR's attack or ONE-CLASS, raised by T5.
 
 ## Hand-off / next phase
 
-Two commits are open, in either order (*Current state*). One is T5, a new `strata.py` mode
-committed with its figures (`HARNESS.md` *Reproducibility*); the other is PD-STATE's open as the
-next sub-phase. T3 and T4 have sized both attack tracks. SHORT-CORE is at `d = 4` (`k = 3, 4, 5`),
-and its `d = 3` model is the chapter's `k = 3` case split on `ρ`. ONE-EAR is at `d = 5`, three
-lemmas (design doc §2.3): the motive, which is new mathematics; a `Pᵈ` insertion lemma in
-`lem:pencil-insertion-two`'s form; and X2, measured only. The insertion lemma is likely one
-session. Whether the motive is one session or several is unknown.
+The next commit is PD-STATE's open as the next sub-phase (*Current state*). T3–T5 have sized the
+attack tracks. SHORT-CORE is at `d = 4` (`k = 3, 4, 5`), its `d = 3` model the chapter's `k = 3`
+case split on `ρ`, and T5 shows the coverage needs it. ONE-EAR is at `d = 5`, three lemmas (design
+doc §2.3): the motive, which is new mathematics; a `Pᵈ` insertion lemma; and X2, measured only.
+T5 confines what the coverage asks of it to row 14 on ONE-CLASS, a combinatorial statement
+measured true wherever tested. Whether to attack ONE-EAR or ONE-CLASS first is the PI's call;
+ONE-CLASS's size (one session or several) is unknown, and it is unattempted.
 
 ## Decisions made during this phase
 
@@ -104,6 +111,11 @@ session. Whether the motive is one session or several is unknown.
   at `k = 2` only those with no slack (`def[D](G₁) = def[D](G)`). The danger class reads the meet
   at a configuration seeded with the cell: a prediction from shared neighbours missed the
   diamond-edge cells. M is certified past the DP cap as `def_3(G[V₁]) − def_3(G[V₁] + ab) = 2`.
+- **T5 is exact combinatorics**, `strata.py --coverage`: deficiencies of subdivisions by a DP
+  over the core (`core_def`, proved exact, checked against the `3^n` DP under the cap), each
+  row's obligation read off §2.1's verdicts (`cov_tag`), and the population every length vector
+  on five small cores and 60 drawn on five more, so nothing varies with the seed. Two hand
+  arguments carry it past the population (§2.4); its Petersen cells test the second's sharpness.
 - **T3 tests only the danger cells**, `strata.py --short`: off them the `d`-general insertion
   lemma already settles the step. Its graphs are mostly past the DP cap, so each deficiency is
   a partition's value matched by a generic-hinge rank. Cells come from a box search seeded by

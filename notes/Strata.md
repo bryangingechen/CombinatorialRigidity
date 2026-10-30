@@ -3,7 +3,7 @@
 **Status:** its `Pᵈ` pencil part opened as **Phase 42** (PENCIL-D, the PI, 2026-10-29; plan
 `notes/Phase42-design.md`). Three sessions with the PI after Phase 40: the first found
 Results 1–10; the second checked the literature (*Literature*) and ran Results 9–11's tests; the
-third set the `Pᵈ` picture, Results 12–19. Phase 42a's tests added Results 20–25. Next concrete
+third set the `Pᵈ` picture, Results 12–19. Phase 42a's tests added Results 20–26. Next concrete
 task: Phase 42a's (`notes/Phase42a.md`). No Lean, no blueprint here. Evidence driver:
 `notes/scripts/strata/strata.py` (exact ℚ, seeded). Editing discipline as for phase notes (≤ 8-line
 entries). `HARNESS.md` *Evidence* and *Reproducibility* bind this work; it is not an attack track.
@@ -246,6 +246,14 @@ in every `Pᵈ` (Results 12–19), which PENCIL-D sets out to prove.
     `min(s + 1, dim(ρ + Λ²(A+B)))`; that is `(⋆)` at all 62 where the merged hypothesis holds.
     Where it fails (7 cells, `d = 3` included) the locus forces `Π_a = Π_b`, the route falls one
     short, and `G` still attains. The cells: `notes/Phase42-design.md` §2.4.
+26. `[PROVED]`, two reductions, the rest `[MEASURED]`: **The coverage at `D`** (Phase 42a's T5;
+    `--coverage`, seed-independent). Theorem S, the coverage's last case, holds at every `D ≥ 6`,
+    so no step uses a one-body ear with `def_D(G[V₁]) > def_D(G)`. At `D ≥ 10`, a graph past the
+    first five rows with no step free of new mathematics has a chain of 3+ interior bodies, or
+    `def_D(G) = 0` and only one-body chains. On subdivisions of ten cores (paths of 1–4 edges:
+    1059, 1021, 957 cells at `d = 4, 5, 6`; 542 more with paths of 1–2) every cell has such a step,
+    a core at all but three. Petersen with every edge a 4-path (`d = 4`) or a 6-path (`d = 5`) has
+    only SHORT-CORE's rows. The arguments and cells: `notes/Phase42-design.md` §2.4.
 
 ## The PENCIL-D program
 
@@ -291,11 +299,12 @@ Hunt, *J. Mechanisms* 2 (1967) 307–327, doi:10.1016/0022-2569(67)90005-5.
 
 ## Evidence
 
-Seven commands, `N ∈ {1, 2, 3}`, verdict `OK: every target met` at all three:
+Eight commands, `N ∈ {1, 2, 3}`, verdict `OK: every target met` at all three:
 `python3 notes/scripts/strata/strata.py --linear --mixed --perbody --examples --selftest
 --seed N` and `... --complexes --residual4 --d4 --lifting --seed N` (~20 s each), `... --pd
 --seed N` and `... --content --seed N` (~4 s each), `... --oneear --seed N` (~1 s) and
-`... --short --seed N` (~70 s) and `... --orbit --seed N` (~60 s). Output is byte-identical
+`... --short --seed N` (~70 s), `... --orbit --seed N` (~60 s) and `... --coverage --seed N`
+(~110 s). Output is byte-identical
 under `PYTHONHASHSEED` 0 and 7.
 - **First command** (session 1; byte-identical after sessions 2 and 3): 184 linear cells
   (23 graphs × 8 rungs) where the rank at a point, the count and the rank at the per-edge
@@ -351,6 +360,17 @@ under `PYTHONHASHSEED` 0 and 7.
   `Λ²(A+B)`, its meet measured at a configuration seeded with the cell), by a box search seeded
   by them alone (`ORBIT_TRIES = 400`, `n ≤ 40`), plus Result 23's two `d = 4` cells; the rows do
   not vary with the seed, and no point was redrawn. The four-path theta has none at `d = 6`.
+- **`--coverage`** (Phase 42a's T5; the fourteen earlier modes' output byte-identical at seeds 1–3
+  against the previous driver): Result 26. No point is drawn: every figure is exact combinatorics
+  on a subdivision of a core, by `core_def` (exact by its docstring's argument; checked against
+  the `3^n` DP in 23 717 checks at `n ≤ 12`, where each core found is re-verified on the
+  bodies). Asserted at every cell: the coverage at `D`, the chain facts of Theorem S's proof read
+  at `D` (1 578 one-body chains with `x₁` in a set of `def_D` zero), the `D ≥ 10` reduction,
+  C's hand count, and the Petersen cells' predicted class. Population: `COV_CORES`, ten cores of
+  minimum degree 3, paths of `1..COV_LMAX = 4` edges; every vector up to isomorphism where
+  `4^E ≤ COV_EXHAUST = 4096` (five cores), else `COV_PER = 60` of `COV_TRIES = 3000` draws seeded
+  by core, `d` and box; simple, sparse, in the content range; then a box of paths of 1–2 edges.
+  Fences: `d ≤ 6`, paths of at most 4 edges, cores of at most 10 bodies (`core_def` is `3^nc`).
 - **Bounds:** a point's rank is a lower bound for the stratum's generic rank, and each count
   an upper bound (Results 3, 5, and `D(n−1) − def_D` in `Pᵈ`), so a match certifies the
   generic rank on that graph. A shortfall at a point would prove nothing.
