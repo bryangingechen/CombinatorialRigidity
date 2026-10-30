@@ -1,10 +1,10 @@
 # Attack short-core — state
 
-Sessions so far: 5 · last session: 2026-10-30 · baseline HEAD: ab64d1e0 · review 1: 2026-10-30 (S25) · review 2: 2026-10-30 (S50)
+Sessions so far: 6 · last session: 2026-10-30 · baseline HEAD: 38f41bf9 · review 1: 2026-10-30 (S25) · review 2: 2026-10-30 (S50)
 
 ## Statement <!-- budget 10 -->
 SHORT-CORE (brief §3, restated at review 1 on the PI's word) for the `Pᵈ` analogue of
-`Graph.X0Attains.of_openEar_three` / `-four`, concluding `Graph.X0AttainsGrade K (d − 2) G` (on master, S39, S44).
+`Graph.X0Attains.of_openEar_three` / `-four`, concluding `Graph.X0AttainsGrade K (d − 2) G` (on master; S39, S44, S51).
 Hypotheses: `hG`; the open ear on `V₁` (`hcover hinj hxV₁ ha hb hab hpath hsep`); `h₁`, `h₂` read in `Pᵈ`;
 `ρ = relScrews a b` of `G[V₁]`. Conclusion: at general ear data, `W ⊇ star(y₁) + star(y₃)` implies `W = Λ²V`.
 At a danger cell this is the step's conclusion itself: it fails exactly when `G` does not attain (S41).
@@ -18,59 +18,52 @@ S31–S33 (`k = 3`).
 
 **Secondary target, every `d`** (brief §6):
 - `k ≥ 4`: S35. `k = 3`, `d ≤ 6`: S28–S33. Read by S38.
-- `k = 3`, `d ≥ 7`: `κ = 0`, Case 2 (S31, S33); S40 reads `ρ` mod `H∧V`, S41 makes failure "`G` does not attain",
-  S43 certifies 41 measured graphs. Session 5, at `d = 7` (failure there is `ω_H ∈ ρ°`, S34):
-  - S45: a `Pᵈ`-optimal partition `P` of `F = G[V₁]` has motions constant on parts, `F/P` independent, every cycle of
-    `F/P` at least `D` long, `a`, `b` in different parts; `ρ` is additive over cut vertices; bridge hinges lie in `ρ`.
-  - S46: an `a`–`b` bridge with full `P²` freedom on both sides closes the cell; seven bridges in series suffice;
-    so every cell whose `F/P` route is a tree path is closed (`G[V₁]` a path included).
-  - S47 (run lemma): moving a free base point (degree-2 body, neighbours of degree 2, off `N[a] ∪ N[b]`) with the
-    tangent lemma, the stress resolving `ω_H` has `t_i b_{v_{i−1}} − t_{i+1} b_{v_{i+1}}` in its radical for every
-    motion; on a run whose points span `V` and with no coloop (`t_e ≡ 0`), the stress is 0 there. A cut of such runs
-    closes the cell.
-  - S48: `G[V₁]` a cycle (T3's first family) is closed at every length, the no-coloop step by `path_span.py`.
+- `k = 3`, `d ≥ 7` (G1): partial, S40–S48 (`d = 7`: bridges, runs of free bodies, `G[V₁]` a cycle). **Parked**: see N.
 
-**Review 2 (S50, the PI's word): G1 waits on N (brief §6): does the coverage at `d ≥ 7` need a `k = 3`
-danger row at all? G1a's `d = 7` families are paused until N is answered (their next steps: this file at `d6137072`).**
+**N, the need question (brief §6): answered no by hand, S52–S53, controlled by S54.**
+- S52: for any `D ≥ 3`, a sparse `G` with an open ear of `k ≥ 2` bodies and `s_D(V₁) ≤ 0` has a core at `D` (row 9):
+  Theorem S's branch `X₀ = {x₁}` read at `D`, the maximal `D`-rigid set avoiding `x₁`; `x₂ ∉ W` keeps `x₁` to one
+  neighbour in `W`; `lem:deficiency-core-bound` (2) and `-additive-core` (2) carry over (planar counts, plus
+  `v_D = (D/3)v₃ − (D/3 − 1)d_G`).
+- S53: with every chain at most four edges, `s_D(V₁) ≤ e(4 − D/3) − 4 < 0` at `D ≥ 12`. So from `d = 5` on, a graph
+  past rows 1–5 with a three-body chain has a chain with `k ≥ 4` (free: CERT, S35) or a core at `D` (free: row 9,
+  formal). No graph needs the `k = 3` row; 42c's range and the tier below are not used.
+- S54: on T5's ten cores, paths of 1–4 and 1–5 edges, `d = 3..8`, every assertion holds (caps in S54).
+- Read by S55: every step confirmed, two repairs made in place (2-edge-connectivity, the `D = 6` Lean pins).
 
-Open obligations (2 by piece), consumed by the `Pᵈ` step's `hins` at `k = 3` (PD-STEPS) only if N finds a graph
-that needs that row (T5 stops at `d ≤ 6`; brief §6):
-- **G1a** `d = 7`: the cells with no `a`–`b` cut of S46 bridges or S47 runs. Known members: the thetas (`th4`, `k4`,
-  `same`, `hub`: runs exist, no-coloop unchecked); necklaces and Case-2 parts without free bodies.
-- **G1b** `d ≥ 8`: `ρ` onto `Λ²Ē` (S34, S40). S46 needs `C(d − 5, 2)` independent bridge wedges; S47's identity
-  gains a term `⟨ω_H∧η̇, S_b − S_a⟩` (the load `ω_H∧η` moves with the curve) unless `S_b − S_a ∈ H∧V`.
+**By brief §6's *Outcome*, G1 has no consumer in the coverage and is parked as an obligation of the every-`d` tier.**
+Its last state (for whoever resumes it): G1a `d = 7` cells with no `a`–`b` cut of S46 bridges or S47 runs (thetas,
+necklaces); G1b `d ≥ 8`, S47's identity restricted to motions with `S_b − S_a ∈ H∧V` first.
+
+Open obligations consumed by the `Pᵈ` step (PD-STEPS): 0 by piece. G1a, G1b are parked (no consumer, S53), not proved.
 
 ## Where it breaks <!-- budget 10 -->
-`d = 7`, the no-coloop hypothesis of S47 (ii) on a run that lies on a cycle of `F/P`. For a run edge `e = uv`, S45's
-rank count gives `r_e = dim ρ(F/P − e; u, v) ∈ {D − 1, D}`, and `e` is a coloop exactly when `r_e = D − 1`, i.e. when
-`F − e` leaves `u`, `v` a hyperplane of relative screws missing `b_u∧b_v`. S48 settled it when the cycle minus `e` is
-a path of at least 28 edges on general points; on a theta it is `span(P₁ − e) + (U₂ ∩ U₃) = Λ²V`, with `U_j` the
-span of path `j`'s hinges and points near the hubs constrained to `Π_a`, `Π_b`. Separately, a 2-edge-connected route
-whose parts have no free body (necklaces with short paths, larger rigid parts) has no run at all: there the moving
-data must be heights inside a part (`δΛ ∈ Z_{ab}⊗E`), for which S47's identity is not yet derived.
+Nowhere on a consumed obligation: `d = 4` is claimed proved, and N's answer removes `k = 3`, `d ≥ 7` from the coverage.
+The parked G1 breaks where it did at session 5: at `d = 7`, S47 (ii)'s no-coloop hypothesis on a run lying on a cycle
+of `F/P` (`r_e = dim ρ(F/P − e; u, v) ∈ {D − 1, D}`; on a theta, `span(P₁ − e) + (U₂ ∩ U₃) = Λ²V`); a
+2-edge-connected route without free bodies (necklaces), where heights inside a part must move (`δΛ ∈ Z_{ab}⊗E`); and
+at `d ≥ 8`, S47's extra term `⟨ω_H∧η̇, S_b − S_a⟩`. N itself would break if S52 (iv)'s transfer of
+`lem:deficiency-core-bound` to `D`-rigidity failed, or if row 9 at `D` needed more than S52's core (its second read
+found no gap, design doc §2.1).
 
 ## Tried on this route, and what each rules out <!-- budget 10 -->
-- The every-`ρ` form at `k = 3`, `κ ≥ 7 − d` (S2, S5, S26): `ρ = H∧V` refutes it. S32 shows that this is the
-  only obstruction to the ear-data curves; S47 therefore moves base data instead.
-- S36 (i) as the closing route (S43): its necessary condition for failure holds at most certified cells.
-- Special height subspaces (cone `x₂` off a hyperplane, `Λ̄` supported on the ear): `F` drops below target
-  (`f_{d−1} > f_d`). So a certificate for S41 (b) cannot come from those.
-- Requiring `Y_v` two-dimensional in S47 (i) (both stars at `v`'s neighbours inside `ρ(F − v)`): unnecessary;
-  one motion with every `t_i ≠ 0` suffices (S47 (ii)).
+- The every-`ρ` form at `k = 3`, `κ ≥ 7 − d` (S2, S5, S26): `ρ = H∧V` refutes it; the proof must use `F`'s `ρ`.
+- T5's first branch for N (`def_D(G) > 0` ⇒ no `D`-rigid set): not needed; S52's set avoids `x₁` in either case.
+- S52 at `k = 1`: fails at step (iii) (`b` may lie in `W`); the `k = 1` rows at `d ≥ 5` are ONE-EAR's, outside N.
 
 ## Next steps <!-- budget 5 -->
-1. N by hand (brief §6): T5's second argument (design doc §2.4) with three-body chains, `D/3 > 4`, and S45's
-   structure (cycles of `F/P` at least `D` long, `f ≥ 2d − 4`); read T5's argument first.
-2. N measured, if 1 stalls: extend the coverage driver to `d = 7, 8` in 42c's range `def₃ ≥ C(d, 2) − 2`, with
-   S35's `short` rows and R1's base row free and `short_danger`'s test at `k = 3`; name population and caps.
-3. Only if N finds a graph: G1b's run lemma restricted to motions with `S_b − S_a ∈ H∧V`, before G1a's families.
+1. Stop for the PI (brief §6 *Outcome*): N answered no at `d ≥ 5`, G1 parked. A review is due (S53 ends the track's
+   consumed scope).
+2. If the PI keeps the track: the PI's call between closing it (deliverable met at `d = 4`) and resuming G1 for the
+   every-`d` tier, which would start at G1b's restricted identity.
 
 ## Worries <!-- budget 5 -->
-- S45–S48 have one reader (S49), S35, S40, S41 one each; review 2 re-read S35, S41 and S45–S48 (no break, S50).
-- N's free rows at `d ≥ 7` assume CERT's open ears (unsettled there) and the tier below; its answer is
-  conditional on both, and says so.
+- S52–S53 are one session's hand proof with one reader (S55); S35, S41, S45–S48 one reader each. S52 (iv) reads
+  `-core-bound` at `D`; its Lean is at `D = 6` only (S55).
+- N's "no" is conditional on CERT's open ears at `d` (rows 11–12 for chains with `k ≥ 4`; unsettled at `d ≥ 7`),
+  S35 with S20's factoring for `short` rows at `k ≥ 4`, and row 9's formal work at `D` (CARRIER).
 - S47's "free" excludes `N[a] ∪ N[b]`; at a single-neighbour `a` the plane `Π_a` is base data (S9), not a point span.
 
 ## Signals <!-- budget 2 -->
-- Sessions since "Where it breaks" last changed: 0 (from "`Ψ ≠ 0` on `M` at Case 2" to S47's no-coloop step)
-- Open obligations: 2 by piece (G1a, G1b; one at sessions 3–4): flat over sessions 3–5, flagged at review 2 (S50)
+- Sessions since "Where it breaks" last changed: 1 (G1's break unchanged since session 5, now parked)
+- Open obligations: 0 consumed (G1a, G1b parked by S53, not proved; 2 → 0, a removed consumer, not a moved break)

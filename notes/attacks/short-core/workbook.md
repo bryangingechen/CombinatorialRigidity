@@ -1331,3 +1331,134 @@ needed so that the next attack session will carry out your suggestions." The ver
 family-by-family route at `d = 7`. The next deliverable is the need question N (brief §6). G1 resumes
 only if N finds a graph that needs it, and then first on S47's identity at `d ≥ 8`. Brief §6's
 counterexample sentence now follows S41, and §4 records 42c's lemma and this proposition.
+
+## S51 — session 6's consumer diff: no mismatch (session 6, 2026-10-30)
+
+Read against this worktree at `38f41bf9` and master at `451da811`. Between S44's master (`5633c39f`) and `451da811`
+(Phase 42c: `lem:deficiency-stable`, the embedding, `lem:pencil-d-x0-attains-distinct`), no file under
+`Pencil/MainComponent/` changed (`git diff --stat` empty), so S13's diff of `of_openEar_three`, `-four` stands and brief
+§1–§3 need no change. `Pencil/Grade/Configuration.lean` gains `Graph.X0AttainsGrade.hasGradedDistinctPencilRealization`,
+a consumer of `X0AttainsGrade`, not a change to it. 42c's lemma reads as brief §4 says: on a connected `G`,
+`G.deficiency 2 + 3 ≤ bodyBarDim n'` and `n' ≤ n` give `G.deficiency n' = G.deficiency n` (`Deficiency.lean`), with
+`bodyBarDim n' = C(n' + 1, 2)`; so the threshold `def₃(G) ≥ C(d, 2) − 2` of S50 stands.
+
+## S52 — a chain with two or more interior bodies and `s_D(V₁) ≤ 0` gives a core at `D` (session 6)
+
+**Setting.** Any `D ≥ 3`. As in S50, `def₃` is the planar deficiency `def[3]` (Lean's `deficiency 2`), `s = s₃` and
+`s_D(X) = D(|X| − 1) − (D − 1)e(X)` (`sec:main-component-sparse`). `G` satisfies the standing hypotheses and is sparse
+(`s(X) ≥ 1` whenever `|X| ≥ 2`: no planar-rigid set). A set `W` is *`D`-rigid* if `|W| ≥ 2` and `def_D(G[W]) = 0`. A
+*core at `D`* is what row 9 consumes read at `D` (design doc §2.1 row 9: "rigid" is `def[D] = 0`, the additivity stays
+planar) and what `strata.py`'s `cov_core` tests: a `D`-rigid `W ⊊ V(G)` with no body outside `W` adjacent to two
+bodies of `W`, and `def₃(G[W]) + def₃(G/G[W]) ≤ def₃(G)` (clause (7) of `def:pencil-x0-reduces`, its second
+alternative, with `def_D` for the blueprint's `def_3`). Clause (7) also asks `G` 2-edge-connected, which S52 does not
+use and S53 supplies (past row 1); `D` matters only at `D = C(d + 1, 2)`.
+**Statement.** Let `a − x₁ − ⋯ − x_k − b` be an open ear of `G` on `V₁` (`x_i` of degree 2) with `k ≥ 2` and
+`s_D(V₁) ≤ 0`. Then `G` has a core at `D` that avoids `x₁`.
+**Proof.** This is the branch `def_3(G) = 0` of `thm:pencil-x0-theorem-s` (`X₀ = {x}`) read at `D`, with `x = x₁`.
+(i) *Two facts at `D`* (`lem:deficiency-add-body`, every `D`). A body `u` of a `D`-rigid `W` has two neighbours in `W`:
+with `t ≤ 1` edges into `W − u`, the partition `{W − u, {u}}` has value `D − (D − 1)t ≥ 1`. A body outside a `D`-rigid
+`W` with two neighbours in it gives a `D`-rigid `W ∪ {u}` (the lemma's consequence; `G` is simple, so two edges go to
+two bodies).
+(ii) *A `D`-rigid set avoiding `x₁`.* `|V₁| ≥ 2` (`a ≠ b`) and `s_D(V₁) ≤ 0`, so `lem:deficiency-sparse` at `D` gives a
+`D`-rigid `Y ⊆ V₁`. Let `W ⊇ Y` be maximal among the `D`-rigid sets that avoid `x₁`. Then `W ≠ V(G)`.
+(iii) *No body outside `W` has two neighbours in `W`.* `x₂ ∉ W` by (i), since its neighbours are `x₁ ∉ W` and one
+other. So `x₁`, whose neighbours are `a` and `x₂`, has at most one neighbour in `W`. Any other `u ∉ W` with two would
+make `W ∪ {u}` a `D`-rigid set avoiding `x₁`, by (i), against maximality.
+(iv) *Additivity.* `lem:deficiency-core-bound` (2) holds with "`def_3(G[·]) = 0`" read as `D`-rigid: its proof is planar
+counting (`lem:deficiency-singleton-bound`, `lem:deficiency-add-body` at `d = 2`) plus two steps at the rigidity
+dimension, `lem:deficiency-merge-rigid` (1) (stated at every `D ≥ 1`) and "planar value at most 0 gives value at most
+0 at `D`", which holds since `v_D(P) = (D/3)·v₃(P) − (D/3 − 1)·d_G(P)` and `D ≥ 3` (the chapter's `v₃ = 2v₂ − d_G` is
+`D = 6`). Its hypotheses: `W` is maximal among the `D`-rigid sets containing it in `V(G) − {x₁}`; `x₁ ∉ W` has degree 2,
+so it sends at most two edges into any set, and at most one into `W` by (iii). So `s(W) ≤ s(X)` for every `X ⊇ W`, and
+`lem:deficiency-additive-core` (2), which is planar, gives the inequality with `r` any body of `W`. ∎
+The Lean pins of `-core-bound` (`Graph.deficiency_three_induce_eq_zero_of_le`,
+`Graph.partitionDef_induce_id_le_of_maximal`) are fixed at `deficiency 3` (`D = 6`); (iv) at `D` is by hand and needs a
+formal restatement, as design doc §2.1 row 17 records for the sparse estimates.
+
+T5's argument (design doc §2.4) splits on `def_D(G) > 0` and claims, in that branch, that a maximal `D`-rigid set is a
+core; S52 avoids the split, since the `D`-rigid set it maximizes avoids `x₁` in either case. At `k = 1` step (iii) fails
+(`x₁`'s other neighbour is `b`, which may lie in `W`); Theorem S handles it through usability, which at `d ≥ 5` is
+ONE-EAR's row 14, not a free row, so S52 needs `k ≥ 2`.
+
+## S53 — N answered by hand: from `d = 5` on, no graph needs SHORT-CORE's `k = 3` row (session 6)
+
+**Setting.** `D = C(d + 1, 2)`. `G` satisfies the standing hypotheses and is past rows 1–5 of the coverage
+(`sec:main-component-coverage`): 2-edge-connected, `G − v` connected for every `v`, not a cycle, and with no planar-rigid
+set, hence sparse (`lem:deficiency-sparse`). "Free" is brief §6's: T5's `cov_tag` with the `short` rows at `k ≥ 4`
+free (S35 with S20's factoring), given CERT's open ears at `d` and the formal work (CARRIER).
+**Statement.** (a) If `D ≥ 12` and every chain of `G` has at most three interior bodies, at least one of them two or
+three, then `G` has a core at `D` (S52), row 9's case.
+(b) So at every `d ≥ 5`, every such `G` with a chain of three interior bodies has a free row other than that chain's:
+a chain with `k ≥ 4`, or a core at `D`. No graph past rows 1–5 needs SHORT-CORE's `k = 3` row, at a danger cell or
+not, and N's answer is **no**, at every `d ≥ 5`. It uses neither 42c's range `def₃(G) ≥ C(d, 2) − 2` nor the tier below.
+**Proof.** (a) *Shape.* The bodies of degree at least 3 are the core bodies, `nc` of them; every body of degree 2 lies
+on a chain between two of them (`lem:pencil-x0-chain-exists`), and no chain closes at one core body, which would then
+be a cut vertex. So `G` subdivides a loopless core multigraph with `e` edges, the chains of `L_j` edges
+(`k_j = L_j − 1` interior bodies) and the direct edges (`L_j = 1`), and every core degree is at least 3:
+`2e ≥ 3nc`, so `e − nc ≥ e/3`. *Count.* For the chain `i` with `k_i ∈ {2, 3}` on `V₁`, `G[V₁]` keeps every body but
+the `k_i` interior ones and every edge but the chain's `L_i` (each has an interior end), so
+`s_D(V₁) = D(|V(G)| − L_i) − (D − 1)(ΣL − L_i) = Σ_{j≠i} L_j − D(e − nc)`.
+With every `L_j ≤ 4`, `s_D(V₁) ≤ 4(e − 1) − De/3 = e(4 − D/3) − 4 ≤ −4` at `D ≥ 12`. S52 applies.
+(b) `d ≥ 5` gives `D ≥ 15`. A chain with `k ≥ 4` and `f = def_D(G[V₁])` is `long` (`k ≥ D − 1`), or `ear`
+(`f ≤ def_D(G)`, `k ≤ D − 1`), or `short` (`f > def_D(G)`, `k ≤ D − 2`), `cov_cell`'s rows: if `f ≤ def_D(G)`
+it is `ear` or `long`, else `short` or `long`. `long` and `ear` are rows 11 and 12, free given CERT; `short` at
+`k ≥ 4` is free by S35. Otherwise every chain has `k ≤ 3`, and a chain with three is one with two or three, so (a)
+gives the core. A graph whose only non-free row is the `k = 3` row would have neither. ∎
+
+**What it leaves.** At `d = 4` (`D = 10`) the bound reads `s_10(V₁) ≤ 2e/3 − 4`, positive past `e = 6`, and T5's witness
+stands: Petersen with every edge a 4-path has `s_10(V₁) = 56 − 10·5 = 6 > 0` at each chain, no core, and only SHORT-CORE's
+`k = 3` rows (`d = 4` is proved by hand, S1–S21). (a) also gives a core wherever a two-body chain exists and every chain
+has at most three bodies, so at `d ≥ 5` the `k = 2` orbit row (row 15, ONE-EAR) is not needed either, as T5 said given
+SHORT. The answer is conditional on what "free" assumes: CERT's open ears at `d` for the `long` and `ear` rows of chains
+with `k ≥ 4` (unsettled at `d ≥ 7`, design doc §2.3), S35 with S20's factoring for the `short` rows at `k ≥ 4`, and the
+formal work of row 9 at `D` (its second read, design doc §2.1, found no gap at `d ≥ 4`).
+**Consequence for G1.** By brief §6's *Outcome*, G1 (`k = 3`, `d ≥ 7`) has no consumer in the coverage: the `Pᵈ` step's
+`hins` at `k = 3` is needed only at `d = 4`, where it is proved, and at `d = 5, 6` it is closed anyway (S31–S33).
+
+## S54 — exact control for S52 and S53 on T5's cores at `d = 3..8` (session 6)
+
+`PYTHONHASHSEED=0 python3 notes/attacks/short-core/drivers/need_n.py --dims 3,4,5,6,7,8 --lmax 4,5`, exit 0,
+0 mismatches. Exact integer combinatorics through `strata.py`'s T5 functions (read-only); no point is drawn, so no figure
+varies with a seed. **Population**: T5's ten cores (`COV_CORES`), every core edge a path of 1..`LMAX` edges, by
+`cov_population` unchanged: every length vector up to automorphism where `LMAX^E ≤ 4096` (`COV_EXHAUST`), else the
+first 60 (`COV_PER`) of 3000 (`COV_TRIES`) box draws seeded by (core, `d`, `LMAX`); simple, sparse, `def₃ ≥ d − 2`.
+Then Petersen with every edge an `L`-path, `L = 2..6`. **Asserted**: S53's formula for `s_D(V₁)` against a direct
+count; S52 (a core at `D` avoiding the chain's interior, by `cov_core`'s tests) at every chain with `k ≥ 2` and
+`s_D(V₁) ≤ 0`; S53 (a)'s `s_D(V₁) ≤ −4` at `D ≥ 12` wherever every chain has `k ≤ 3`; S53 (b) at `d ≥ 5`.
+
+| `LMAX` | `d` | graphs | in 42c's range | with a `k = 3` `short` row | of those, no other free row | with a core at `D` | S52 chains |
+|---|---|---|---|---|---|---|---|
+| 4 | 4 | 1059 | 953 | 144 | 0 | 1059 | 4116 |
+| 4 | 5 | 1021 | 522 | 144 | 0 | 1021 | 4050 |
+| 4 | 6 | 957 | 160 | 144 | 0 | 957 | 3960 |
+| 4 | 7 | 875 | 46 | 141 | 0 | 875 | 3739 |
+| 4 | 8 | 775 | 10 | 134 | 0 | 775 | 3522 |
+| 5 | 7 | 818 | 126 | 22 | 0 | 818 | 3863 |
+| 5 | 8 | 758 | 50 | 20 | 0 | 758 | 3711 |
+
+(`d = 3` and the other `LMAX = 5` rows are in the run's output; S52 held at 1661 and 1068 chains at `D = 6`, where S53's
+bound does not apply.) Past the box, Petersen with 4-paths needs the `k = 3` row at `d = 4` only (`def_10 = 0`, no
+core), as T5 found; from `d = 5` on it has a core and its chains are `ear` rows. With 6-paths it has no core at
+`d = 4, 5` and is carried by the free `short` rows at `k = 5` (S35). So on this population, at `d = 5..8`, no graph
+needs SHORT-CORE's `k = 3` row, under the caps above; the proof is S53, this is its control.
+
+## S55 — the independent reading of S52–S54 (session 6)
+
+**Review.** A fresh `general-purpose` reader checked S52 (i)–(iv) and S53 (a)–(b) by hand against
+`sec:main-component-sparse` (`-singleton-bound`, `-add-body`, `-sparse`, `-merge-rigid`, `-core-bound`,
+`-additive-core`), clause (7) of `def:pencil-x0-reduces`, `thm:pencil-x0-theorem-s`, `lem:pencil-contract-standing`,
+`-standing-rigid` and `strata.py`'s `cov_core`, `cov_cell`, `cov_tag`, briefed to refute. It wrote nothing to the tree.
+- **CONFIRMED:** all items. Of note: `v_D = (D/3)v₃ − (D/3 − 1)d_G` checked, `D = 6` recovering the chapter's; in
+  `-core-bound` the only rigidity-dimension steps are `-merge-rigid` (1) inside `G[Y]` and that implication;
+  `-additive-core` (2) has no rigidity hypothesis; `lem:pencil-contract-standing-rigid` holds at every `D` through
+  `lem:deficiency-zero-connected` (its Lean takes `n` as a parameter), and `-standing` uses no rigidity; S53 (b)'s
+  split matches `cov_cell`'s predicates exactly; S53 never uses row 4. By hand, `θ₃` with three 4-paths at `D = 15`
+  gives `s_D(V₁) = −7`, the bound with equality.
+- **Measured, script not retained** (the reader's scratch): on 29 209 cells with a chain of 2 or 3 interior bodies,
+  subdivisions of T5's ten cores (five exhaustively, the rest drawn), at each `D ∈ {10, 12, 15, 21}`, S53's formula
+  matched the expanded graph (about 116 800 checks), and every maximal `D`-rigid set avoiding `x₁` was a core at `D`,
+  0 failures; Petersen with 4-paths gives `s_10 = 6`, `s_15 = −19`.
+- **Repairs, made in place:** S52's setting says clause (7) also asks `G` 2-edge-connected (S53 supplies it) and that
+  `D` matters only at `C(d + 1, 2)`; S52 notes that `-core-bound`'s Lean pins are at `D = 6` only.
+- **Scope, as S53 states it:** "free" carries S35 for `short` rows at `k ≥ 4`, CERT at `d ≥ 7` for `ear` and `long`,
+  and row 9's formal work at `D`.
