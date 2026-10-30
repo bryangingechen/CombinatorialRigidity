@@ -520,12 +520,14 @@ side attains. The sides are feasible: a C2-same realization of `G` restricts to 
 **Proof.** *Restriction to a side is nondegenerate.* Of the bodies of `G₁`, only `v` changes degree,
 to one; it is not a hub of `G₁`, its N3 is N1, and `H_{G₁}[u] ⊆ H_G[u]`; every other body keeps its
 closed neighbourhood and closed hub-neighbourhood. So `ρ₁` maps `𝒩(G)` into `𝒩(G₁)`.
-*(T1).* Given any `r₁ ∈ 𝒩(G₁)`, `r₂ ∈ 𝒩(G₂)`, the `P³` cut arm (`lem:pencil-pair-loop-base-cut`'s
+~~*(T1).* Given any `r₁ ∈ 𝒩(G₁)`, `r₂ ∈ 𝒩(G₂)`, the `P³` cut arm (`lem:pencil-pair-loop-base-cut`'s
 proof, as `lem:pencil-cut-case`) moves `r₂` by an automorphism `g` fixing the lines of `b⁰_u, b⁰_v`
 and avoiding finitely many subspaces, and joins: `u`'s plane from `r₁`, `v`'s from `g r₂`. That
 proof takes the two sides' realizations as given, so it applies to every pair; the result is in
 `𝒩(G)` and agrees with `r₁` on `G₁` except at the plane of `v`, of degree one in `G₁`. So (T1) holds
-with `E = 1`, for each side.
+with `E = 1`, for each side.~~ **False as written (review 1's F2): the Lean glue takes `v`'s point
+from side 2, and with a line-matching automorphism `E = 1` fails at two adjacent hubs. Corrected by
+S32;** the rest of this proof stands.
 *(T2).* Given `λ₁ ∈ L¹_{G₁}(ρ₁ r⁰)`, take the trivial lift of a `ψ ∈ (K⁴)*` extending `λ₁`'s `φ_v`
 (a functional on `Π⁰_v` of `r⁰`, which `G₁` constrains only at `b⁰_u, b⁰_v`) on `V₂ ∪ {u}`, and
 replace its `φ_u` by `λ₁`'s (`G₂` constrains `φ_u` only at `b⁰_u, b⁰_v`, where both agree). Glued,
@@ -622,7 +624,9 @@ over a dense subset of `Π⁰_a ∩ Π⁰_b`; the open set where they are indepe
 **What is left at a good ear.** When `μ ≠ 0` (E0, E1), `R(r⁰, λ)|_H` ranges over `(ker μ)^m`, a
 proper subspace of `L¹_H^m` of codimension `m`: the lifts of `H` in which `Π_a ∩ Π_b` contains a
 point over `b⁰_x`. `RL_d(H)` speaks of the general point of `L¹_H^m`, not of `(ker μ)^m`. This is
-ONE-EAR's motive (design doc §2.3), inside the C2-same family. S27 states it.
+ONE-EAR's motive (design doc §2.3), inside the C2-same family. ~~S27 states it.~~ (Wrong pointer,
+review 1: S27 is the outer step. S26's (B) is this motive's form here, and S29 with S36 shows the
+lemma's own ear never needs it.)
 
 ## S25 — `RL_d` without a planar-rigid set, from the coverage
 
@@ -702,7 +706,9 @@ least two, `s(X) = 1` and `def_2(G[X]) = 1`. (2) At a general `r⁰ ∈ 𝒩(G)`
 trivial lifts, which have dimension 4 in `L¹_X`. Hence **if `dim L¹_X = 4` at a general `r⁰`, the
 ear is free** (`μ = 0`) and S24 (4) gives `RL_d(G − x) ⟹ RL_d(G)`. The condition is open on
 `𝒩(G)`, so one `r ∈ 𝒩(G)` with it suffices. Call it **(W)**: *at a general point of `𝒩(G)`, the
-restriction to `X` lifts to `P⁴` only trivially.* In picture form, `dim L_{G[X]}(q₀|_X) = 4 =
+restriction to `X` lifts to `P⁴` only trivially.* (Review 1: `μ_X` reads only the `ζ`-part, by (2), so
+it suffices that the `ζ`-parts of `L¹_X` are the trivial lifts'; S36 proves (W) as stated, and on
+`Ω_X` of S34 the two forms agree.) In picture form, `dim L_{G[X]}(q₀|_X) = 4 =
 3 + def_2(G[X])`: the picture of `X` is not special for `G[X]`.
 
 **Proof.** (1) Every body of `W₀` has at least two neighbours in `W₀` (the lemma's proof). If `a` had
@@ -778,3 +784,270 @@ those incidences (`b⁰_u ∈ Π⁰_w ∩ Π⁰_{w′}`) are satisfiable at any 
 (with `x` on the line `Π⁰_a ∩ Π⁰_b`) to a nondegenerate realization of `G`; S31 removes the
 obvious closed obstruction, but the outside may hold planar-rigid sets of its own that share hubs
 with `W₀`, whose special pictures (S10) could pull `X`'s along. That extension is the open step.
+
+---
+
+Session 3 (2026-10-30): review 1's F1 and F2 first (the PI's word, brief header), then (W). Consumer
+diff re-run at `92315252`: since `5c9948e2` the Lean moved only in `Induction/SparseDeficiency.lean`
+(`lem:deficiency-tight-part`) and the new `Pencil/Grade/TheoremS.lean`, neither naming the brief's
+declarations or the generic API; no mismatch. F1 confirmed in the Lean:
+`Graph.IsX0Graph.exists_oneEar_or_pendantTriangle` returns `V₁, x, a, b, e`, the hubs and
+`def₃(G[V₁]) ≤ def₃(G)`, and its proof's `W₀` stays inside the proof. (S28 was never assigned:
+session 2 skipped the number.)
+
+## S32 — the cut-edge glue, repaired: (T1) for S21 with an explicit `E`
+
+**Statement.** In S21's setting (`d ≥ 4`, `G` simple and feasible, `uv` the only edge between
+`V₁ ∋ u` and `V₂ ∋ v`, `|V₁|, |V₂| ≥ 2`, `G₁ = G[V₁ ∪ {v}]`, `G₂ = G[V₂ ∪ {u}]`), let `E₁ := b⁰_v · n_{w₁}`
+when `u` and `v` are hubs of `G` and `H_G[u] = {u, v, w₁}`, and `E₁ := 1` otherwise; `E₂ := b⁰_u · n_{w₂}`
+symmetrically (`H_G[v] = {v, u, w₂}`). Then (T1) of S19 holds for `ρ_i : 𝒩(G) → 𝒩(G_i)` with `E_i`:
+`E_i` is nonzero somewhere on `𝒩(G_i)`, and every `r_i ∈ 𝒩(G_i)` with `E_i(r_i) ≠ 0` is `ρ_i(r)` for
+some `r ∈ 𝒩(G)` except at the plane of the far end of `uv`, of degree one in `G_i`.
+
+**Proof.** *The glue.* Let `r₁ ∈ 𝒩(G₁)`, `r₂ ∈ 𝒩(G₂)` have points `b`, `b′` and normals `n`, `n′`.
+`b_u, b_v` are independent (N1 in `G₁`), and so are `b′_u, b′_v`. Let `𝒢` be the set of `g ∈ GL₄`
+with `g b′_u = b_u` and `g b′_v = b_v`, a nonempty open subset of an affine space, so irreducible;
+`h := g^{−T}` keeps incidence (`g p · h m = p · m`). Glue `r := r₁` on `V₁` and `g r₂` (points `gb′`,
+normals `hn′`) on `V₂`. Incidences: for `y ∈ V₁`, `N_G[y] ⊆ V₁ ∪ {v}` and `r` has `r₁`'s points there
+(`g b′_v = b_v`); for `y ∈ V₂` symmetrically. N1 holds inside each side and at `uv` (`r₁`'s pair).
+Every body of `V_i` keeps its degree in `G_i` (`u` in `G₁`, `v` in `G₂`), so N3 at a non-hub of `G`
+is its side's. For `y ∈ V₁ ∖ {u}`, `H_G[y] ⊆ V₁` is `H_{G₁}[y]`, and symmetrically, so the only C2
+conditions reading both sides are at `u` and `v`, at sets `S` containing the far end, which must then
+be a hub of `G`. At `u` with `v ∈ S ⊆ H_G[u]`: as `g` ranges over `𝒢`, `n_v = hn′_v` ranges over
+`P ∖ 0`, `P := ⟨b_u, b_v⟩^⊥` (2-dimensional): `n′_v` vanishes on `⟨b′_u, b′_v⟩ ⊆ Π′_v`, and `g` induces
+every isomorphism `K⁴/⟨b′_u, b′_v⟩ → K⁴/⟨b_u, b_v⟩`. So the condition holds for some `g` iff
+`P ⊄ N := span(n_w : w ∈ S ∖ {v})`. If `|S| = 2`, `dim N = 1 < 2`. If `|S| = 3`, `u` is a hub (a
+non-hub has `|H_G[u]| ≤ 2`) and `S = H_G[u] = {u, v, w₁}` (`|H_G[u]| ≤ 3`). Then `n_u ∈ P`
+(`Π_u ∋ b_u, b_v`), `n_u, n_{w₁}` are independent (C2 of `r₁` at `u`), so `P ⊆ N`
+iff `P = N` iff `n_{w₁} ∈ P` iff `n_{w₁} ⊥ b_v` (`n_{w₁} ⊥ b_u` already, `u ∈ N[w₁]`) iff `E₁(r₁) = 0`.
+At `v` symmetrically, with `E₂(r₂) ≠ 0` (a `g`-invariant condition). So when `E₁(r₁)E₂(r₂) ≠ 0`, each
+cross condition holds on a nonempty open subset of `𝒢`, and a common `g` puts `r` in `𝒩(G)`.
+*(T1).* `ρ₁(r)` is `r₁` on `V₁`, has `r₁`'s point at `v`, and differs only in `v`'s plane (`gΠ′_v`).
+So (T1) holds for side 1 once some `r₂ ∈ 𝒩(G₂)` has `E₂(r₂) ≠ 0`; side 2 likewise, gluing by
+`g ∈ GL₄` with `g b_u = b′_u`, `g b_v = b′_v` on side 1.
+*`E_i ≠ 0` somewhere.* `𝒩(G₁) ∋ ρ₁(r⁰)` for any `r⁰ ∈ 𝒩(G)` (S21's first paragraph). If `E₁ ≠ 1`,
+`u` is a hub of `G₁`, and `v` (degree one in `G₁`, not a hub) enters only N1 at `uv` and its own N3
+(the same). So replacing `b_v` by any point of `Π_u ∖ ⟨b_u⟩`, and `Π_v` by any 3-space through `b_u`
+and it, stays in `𝒩(G₁)`. C2 of `G₁` at `u` (`{u, w₁} ⊆ H_{G₁}[u]`, `w₁` a hub of `G` in `V₁`) gives
+`Π_u ≠ Π_{w₁}`, so a general point of `Π_u` is off `Π_{w₁}`: `E₁ ≠ 0` there. ∎
+
+**Remark.** `E₁` is necessary: at `E₁(r₁) = 0` every `g ∈ 𝒢` breaks C2 at `{u, v, w₁}`, which is
+review 1's example with the sides exchanged. S21's (T2) and rank count are unchanged (review 1
+checked both), so S21's conclusion `RL_d(G₁) ∧ RL_d(G₂) ⟹ RL_d(G)` stands with S32 for (T1). The glue
+here matches each side's point at the far end; it is not the Lean's cross-incidence glue, and need
+not be, as no Lean is in scope.
+
+## S33 — O8: the good-ear lemma, returning its minimal planar-rigid set (review 1's F1)
+
+**Statement (O8).** Let `G` be simple and two-edge-connected on at least four bodies, with
+`|H[v]| ≤ 3` everywhere, no triangle containing two hubs, and `def_2(G[Y]) = 0` for some `Y` of at
+least two bodies. Then `G` has a pendant triangle (adjacent `x₁, x₂` of degree two with a common
+neighbour of degree at least four), or a **`W₀`-ear** `(W₀, x)`:
+- (i) `W₀ ⊆ V(G)` with `s(W₀) ≤ 0` and `s(Z) ≥ 1` for every `Z ⊊ W₀` with `|Z| ≥ 2` (`s = s_2`), and
+  every body of `W₀` has at least two neighbours in `W₀`;
+- (ii) `x ∈ W₀` has degree two in `G`, and its neighbours `a, b` are non-adjacent hubs of `G` in `W₀`;
+- (iii) `X := W₀ ∖ {x}` has `|X| ≥ 3`, `G[X]` is connected with minimum degree at least two,
+  `s(X) = 1`, `def_2(G[X]) = 1`, and `def_2(G[Z]) ≠ 0` for every `Z ⊆ X` with `|Z| ≥ 2`;
+- (iv) `def_d(G − x) = def_d(G)` for every `d ≥ 3` (at `D = C(d+1, 2)`).
+
+**Proof.** `lem:pencil-rigid-good-ear`'s proof takes `W₀` planar-rigid with as few bodies as
+possible, which gives (i) (its first paragraph, by `lem:deficiency-sparse` and
+`lem:deficiency-add-body`), and in its last case a body `y =: x ∈ W₀` of degree two whose neighbours
+`a, b ∈ W₀` are hubs; otherwise it returns a pendant triangle. `a ≁ b`, or `xab` is a triangle with
+two hubs. (iii): S29 (1) gives the minimum degree, `s(X) = 1` and `def_2(G[X]) = 1`; a planar-rigid
+`Z ⊆ X` with `|Z| ≥ 2` would be smaller than `W₀`; if `G[X] = G[X₁] ⊔ G[X₂]` with no edge between,
+`s(X) = s(X₁) + s(X₂) + 3 ≥ 3` (each `s(X_i) ≥ 0`: `1` for `|X_i| ≥ 2`, `0` for a singleton).
+(iv) is S24 (1) at `X`. ∎
+
+**What it is for.** S24 (1) and S29 read `X` and `W₀` from this statement; the Lean statement of
+the good-ear lemma does not return them (session preamble). So O8 is a deliverable of the write-up
+(a red node in slice W10, the hub's ruling); its proof is an assembly of S24 (1), S29 (1) and the
+lemma's own proof, with no new mathematics. S34–S36 use (i)–(iii) and S31.
+
+## S34 — labelled steer families, and when their points determine their planes
+
+**Setting.** `K` infinite. `Y` a finite simple graph and `L ⊆ V(Y)` a set of *labelled hubs*
+containing every body of degree at least 3 in `Y`, with `H_L[v] := N_Y[v] ∩ L` of at most three
+members for every `v` and no triangle of `Y` with two members of `L`. The **labelled steer family**
+`S_L(Y)` is the set of `((Π_h)_{h ∈ L}, (b_v)_{v ∈ V(Y)})`, `Π_h` a 3-space of `K⁴`, the normals
+independent on every `H_L[v]`, and `b_v ∈ F_v := ⋂_{w ∈ H_L[v]} Π_w` nonzero, taken projectively. Over
+the open set `U_L` of plane tuples it is a bundle of products of projective spaces `P(F_v)`,
+`dim F_v = 4 − |H_L[v]|`, so it is irreducible of dimension `3|L| + Σ_v (3 − |H_L[v]|)`. As
+`Σ_v |H_L[v]| = Σ_{w ∈ L} |N_Y[w]|`, that is **`3|V(Y)| − Σ_{w ∈ L} (deg_Y w − 2)`**. `P_L(Y)` is its
+image in `(P³)^{V(Y)}` (the points). With `L` the hubs of `Y`, `P_L(Y)` is the point set of the steer
+parametrization `σ_Y` at parameters with every point nonzero (S18 (i); the auxiliaries reach every
+point of `F_v`), so it contains the points of `𝒩(Y)`.
+
+**Statement.** If `w ∈ L` has two distinct neighbours `y, y′`, then at a general point of `S_L(Y)`
+the points `b_w, b_y, b_{y′}` are independent. Hence if `Y` has minimum degree at least two, at a
+general point every `b(N_Y[w])`, `w ∈ L`, spans `Π_w`, the projection `S_L(Y) → P_L(Y)` is injective
+near it, and `dim P_L(Y) = dim S_L(Y)`.
+
+**Proof.** At a general point of `U_L` any at most four of the planes have independent normals, so
+`⋂_S Π_w` has dimension `max(0, 4 − |S|)`, and a nonzero `F_v` lies in no plane `Π_h` with
+`h ∉ H_L[v]`. Given the planes, the points are independent general points of their `F_v`. Write
+`H_v := H_L[v]`; `w ∈ H_w ∩ H_y ∩ H_{y′}` and `F_w, F_y, F_{y′} ⊆ Π_w`.
+*`|H_w ∩ H_y| ≤ 2`, and `= 2` only when `y ∈ L`, with `H_w ∩ H_y = {w, y}`.* A member `h ≠ w, y` of
+`H_w ∩ H_y` is in `L` and adjacent to `w` and `y`, and `wyh` is a triangle with two members of `L`.
+So `H_w ∩ H_y ⊆ {w, y}`, with `y` in it iff `y ∈ L`. If `y ∉ L`, then `deg y ≤ 2` and
+`|H_y| ≤ 2`, so `|H_w ∪ H_y| ≤ 4`; if `y ∈ L`, `|H_w ∪ H_y| ≤ 3 + 3 − 2`. So
+`dim(F_w ∩ F_y) = 4 − |H_w ∪ H_y|` and `dim(F_w + F_y) = 4 − |H_w ∩ H_y| ∈ {2, 3}`. Also `dim(F_y + F_{y′}) ≥ 2`: otherwise `F_y = F_{y′}`
+is a line, so `H_y = H_{y′}` has three members, so `y ∈ L` (a body outside `L` has degree at most
+two), so `y ∈ H_{y′}`, `y ~ y′`, and `wyy′` is a triangle with two members of `L`.
+*The three points.* By Rado's theorem (classical; applied to the three subspaces), independent general points of `F_w, F_y, F_{y′}` are
+independent iff every one, two and three of the spaces sum to dimension at least 1, 2 and 3. The
+first two hold. If `y ∉ L`, `F_w + F_y` is 3-dimensional inside `Π_w`, so all of it. If `y ∈ L`,
+`F_w + F_y = Π_w ∩ Π_y` (both lie in it, and it is 2-dimensional), and `F_{y′} ⊄ Π_y`: `y ∉ H_{y′}`,
+as `y ~ y′` would close the triangle `wyy′` with `w, y ∈ L`, so `Π_y` is general for `F_{y′}`. So the
+sum of the three is `Π_w`. Each such condition is open, so all hold at a general point. Over a point
+`b` of `P_L(Y)` the fibre is the tuples with `Π_h ⊇ b(N_Y[h])`, one point where these span. ∎
+
+## S35 — the points of `X` at a general nondegenerate realization of `G` are general for `G[X]`
+
+**Setting.** `K` infinite; `G` simple and feasible; `(W₀, x)` a `W₀`-ear of `G` (S33 (i)–(iii));
+`Y := G[X]`, `L := X ∩ {hubs of G}`, `L_o :=` the hubs of `Y`. `f_X` reads the points of `X`, in
+`(P³)^X`. `T :=` the closure of `f_X(𝒩(G))`; `P :=` the closure of `P_{L_o}(Y)` (S34).
+
+**Statement.** `T = P`. Moreover `Y` is feasible: at a general `r ∈ 𝒩(G)`, `r|_X ∈ 𝒩(Y)`.
+
+**Proof.** *Both labellings meet S34's setting.* A hub of `Y` is a hub of `G`, so `L_o ⊆ L`, and
+`L ∖ L_o` has degree two in `Y` (minimum degree two, S33 (iii)). `H_L[v] ⊆ H_G[v]` has at most three
+members, and a triangle of `Y` is one of `G`.
+*(a) `T ⊆ P`.* At `r ∈ 𝒩(G)` with normals `n`, for `v ∈ X` the set `H_{L_o}[v]` lies in `H_G[v]`, so
+its normals are independent (C2 at `v`) and orthogonal to `b_v` (`b_v ∈ Π_w` for `w ∈ N_G[v]`). So
+`((Π_w)_{w ∈ L_o}, b|_X) ∈ S_{L_o}(Y)` and `f_X(r) ∈ P_{L_o}(Y)`.
+*(b) A general point of `P_L(Y)` lies in `T`.* Take a general point `((Π_h), b)` of `S_L(Y)`. By S31,
+an outside body `u` (not in `W₀`) has at most two neighbours in `W₀`, all hubs, none `x` (whose
+neighbours are `a, b ∈ X`), and a body of `W₀` with an outside neighbour is a hub. For each outside
+hub `u` adjacent to `X`, let `A_u := b(N(u) ∩ X)^⊥`, of dimension at least 2, and pick `n_u ∈ A_u`
+general. For `v ∈ X`, `H_G[v] = H_L[v] ⊔ O_v`, `O_v` the outside hubs adjacent to `v`; if `O_v ≠ ∅`
+then `v ∈ L`. The normals of `H_G[v]` are independent for general `n_u`:
+- `O_v = ∅`: S34's setting.
+- `O_v = {u}`: by Rado's theorem, unless `A_u ⊆ N_v := span(n_w : w ∈ H_L[v])`, which needs
+  `dim N_v ≥ 2`, so `H_L[v] = {v, w}` and `A_u = N_v`: `u` has a second neighbour `v′ ∈ X` with
+  `⟨b_v, b_{v′}⟩ = Π_v ∩ Π_w`, so `b_{v′} ∈ Π_v`. But `b_{v′}` is general in `F_{v′}`, which lies in
+  `Π_v` only if `v ∈ H_L[v′]`, i.e. `v ~ v′`, and then `uvv′` is a triangle with two hubs of `G`.
+- `O_v = {u, u′}`: then `H_L[v] = {v}`, and `n_v, A_u, A_{u′} ⊆ b_v^⊥` (3-dimensional). Rado's
+  condition fails only if `⟨n_v⟩ + A_u + A_{u′}` is 2-dimensional, so `A_u = A_{u′} ∋ n_v`, with
+  `A_u` 2-dimensional: `u` has a second neighbour `v₂ ∈ X`, and `n_v ⊥ b_{v₂}` puts `b_{v₂} ∈ Π_v`,
+  excluded as in the previous case.
+So `b_v` is orthogonal to the independent normals of `H_G[v]`, and completing them by auxiliaries to
+a basis of `b_v^⊥` makes the steer point of `v` a nonzero multiple of `b_v` (S18 (i)'s converse).
+Complete the parameters anyhow (other outside hub normals, `x`'s and the outside auxiliaries). This
+`s ∈ Γ(G)` has every point of `X` nonzero and `f_X(σ_G s) = b`. The parameters with every point of
+`X` nonzero form an open `Γ_X ⊆ Γ(G)` containing `U(G)`, which is dense in it (`Γ(G)` irreducible), and
+`f_X ∘ σ_G` is continuous on `Γ_X`; so `f_X σ_G(Γ_X) ⊆ T`.
+*(c) `T = P`.* By (b) and S34, `T ⊇` the closure of `P_L(Y)`, of dimension `dim S_L(Y) =
+3|X| − Σ_{w ∈ L}(deg_Y w − 2) = 3|X| − Σ_{w ∈ L_o}(deg_Y w − 2)` (the terms of `L ∖ L_o` vanish)
+`= dim S_{L_o}(Y) ≥ dim P`. With (a), the closure of `P_L(Y)` is an irreducible closed subset of the
+irreducible `P` of dimension at least `dim P`, so equal to it, and `T = P`.
+*Feasibility.* At a general `r ∈ 𝒩(G)`, `r|_X` has N1; C2 for `Y` (`H_{L_o}[v] ⊆ H_G[v]`); N3 at a
+non-hub `v` of `Y`: if `v` is not a hub of `G`, `N_Y[v] = N_G[v]` (its neighbours are in `W₀` by
+S31, and are not `x` as `a, b` are hubs), so N3 of `r`; if `v ∈ L ∖ L_o`, `b(N_Y[v])` spans
+`Π_v`, an open condition holding at a general point of `P_L(Y)` (S34), so on a dense open subset of
+`T` and, pulled back, at a general `r`. The incidences `b(N_Y[v]) ⊆ Π_v` are `r`'s. ∎
+
+**Remark.** This is where S31 enters: an outside hub's plane passes through at most two points of
+`X`, so it never constrains them. With three (a `K_{2,3}` whose common neighbours lie in the set),
+`A_u` would be the normal of a plane spanned by points of `X`, and the step fails, as it should
+(S5, S10). The extra labels `L ∖ L_o` are what the outside does to `X`: they change the family
+(`S_L ≠ S_{L_o}`) but not its points' closure, because a labelled body of degree two costs nothing.
+
+## S36 — (W) holds at every `W₀`-ear: O7 closed (claimed, one reader)
+
+**Statement.** Let `K` be infinite, `G` simple and feasible, and `(W₀, x)` a `W₀`-ear of `G` (S33),
+`X = W₀ ∖ {x}`. At a general `r⁰ ∈ 𝒩(G)`, `dim L¹_{G[X]}(r⁰|_X) = 4`: the restriction to `X` lifts
+only trivially. Hence (S29) the ear is free, and for every `d ≥ 4`, `RL_d(G − x) ⟹ RL_d(G)` (S24 (4)).
+
+**Proof.** Let `Y = G[X]` and `Ω_X ⊆ (K⁴ ∖ 0)^X` the points with `b(N_Y[v])` of rank 3 at every
+`v ∈ X` and `b(X)` spanning `K⁴`, an open set. At a realization whose points lie in `Ω_X`, every
+`Π_v` is `span b(N_Y[v])`, the functionals on `K⁴` vanishing on `b(N_Y[v])` are the line `K·n_v`, so
+`dim L¹_X = dim L̃_X(b) − |X|` with `L̃_X` the kernel of `A(b)`, polynomial in `b` (S18 (v)): upper
+semicontinuous on `Ω_X`, and at least 4 (the trivial lifts, injective as `b(X)` spans). So
+`C_W := {b ∈ Ω_X : dim L̃_X(b) − |X| ≤ 4}` is open in `(P³)^X`, and on it `dim L¹_X = 4`.
+*`C_W` meets `P`.* `Y` satisfies the standing hypotheses (simple; connected and of minimum degree
+at least two, S33 (iii)), is feasible (S35), and `def_2(Y[Z]) ≠ 0` for every `Z` of at least two
+bodies (S33 (iii)). `thm:pencil-x0-base-generic`'s proof takes a picture `q` of `Y` off finitely many
+zero sets of nonzero polynomials and finds a nonempty open set of heights `z ∈ L_Y(q)` with `(q, z)`
+nondegenerate; add `thm:pencil-jj-equality`'s polynomial for `Y` (simple, closed neighbourhoods of at
+least three members), so that `dim L_Y(q) = 3 + def_2(Y) = 4`. A general such `z` is not affine
+(`L_Y(q)` is 4-dimensional and the affine heights 3-dimensional), so the configuration's points span
+`K⁴`; `q` is admissible, so each closed neighbourhood's points have rank 3; and each plane is a graph
+over the picture, so `L¹_X = L_Y(q)` (S18's remark). This configuration lies in `𝒩(Y)`, its points
+in `P_{L_o}(Y) ⊆ P` (S34), and in `C_W`.
+*Pull back.* `C_W ∩ P` is a nonempty open subset of the irreducible `P = T` (S35), so `C_W` meets
+`f_X(𝒩(G))`, whose closure is `T`; its preimage in `U(G)` is a nonempty open subset of the
+irreducible `U(G)`, so it holds at a general `r⁰`. There `L¹_X` is the trivial lifts, `μ_X = 0`
+(S29 (3)), and `μ = μ_X` (S29 (2), which is the rank-3 condition of `Ω_X` at `a, b`). ∎
+
+**Consequence (S26 without (B)).** In S26's induction, case (ii) of the producer meets a
+two-edge-connected simple feasible `G` on at least four bodies with a planar-rigid set; O8 (S33)
+gives a pendant triangle (S23) or a `W₀`-ear, which is free (S36, then S24 (4)). So **`RL_d(G)`,
+hence `Generic_d(G)` under C2-same, holds at every simple feasible `G` with a body, at every
+`d ≥ 4`, given (A) alone** (the coverage at graphs with no planar-rigid set, 42d's main component,
+not this track's), with O8 a write-up deliverable. S26's (B) and S27's outer step become
+unnecessary for the conjunct; S27 stays as a remark. S30's certificates (478 ears on at most nine
+bodies) are instances of S36.
+
+**What a reader should check.** S35 (b), the only place the outside of `W₀` enters: that an
+outside hub's normal can be chosen orthogonal to its at most two points of `X` while keeping every
+`H_G[v]`, `v ∈ X`, independent. S34's dimension count, on which S35 (c) rests. And the reading of
+`thm:pencil-x0-base-generic`'s proof (as in S14's corollary, which review 1 confirmed).
+
+## S37 — S36's control beyond nine bodies: no counterexample, every cell a certificate
+
+**Statement (measured; each `W4` cell an exact certificate of (W) at its ear).**
+`notes/attacks/nondeg/drivers/wsweep.py`, each run with `PYTHONHASHSEED=0`:
+- `--pop struct --count 600 --seed 1`: 600 graphs on 6–16 bodies, each a base `W₀` (a minimal
+  planar-rigid graph with a `W₀`-ear: 1, 2, 15 and 133 bases on 5, 7, 9 and 11 bodies) with one to
+  three seeded attachments at bodies of `W₀ ∖ {x}`, of the kinds `K_{2,k}` on two bodies (`k ≤ 3`;
+  `k = 3` is a second planar-rigid set on two hubs of `W₀`), an outside hub with two points of `W₀`,
+  a copy of a base sharing two bodies with `W₀`, and an outside path; kept when simple,
+  two-edge-connected and meeting the hub conditions. 1981 `W₀`-ears.
+- `--pop struct --count 300 --base-n 5 7 9 --kinds copy hub K2k --seed 1`: 300 graphs on 6–16
+  bodies, weighted to the shared-hub kinds (33 with a copy, 85 with a `K_{2,3}` attachment, 52 with
+  an outside hub). 932 `W₀`-ears.
+- `--pop geng --n 10 --res 0 1 2 3 4 5 6 7 8 9 --mod 1000 --seed 1`: the 120966 graphs of those
+  ten classes of `geng -c -d2 10`; 281 are route B's case (ii) with a `W₀`-ear, with every
+  s-minimal `W₀` (as `oneear.py`). 3304 `W₀`-ears.
+
+At every graph one steer draw of `G` is C2-same, checked exactly (one draw in all needed a redraw;
+none stayed degenerate), so every graph is feasible. At **every one of the 6217 ears**:
+`dim L_{G[X]}(q₀|_X) = 4`, the least value, an exact certificate of (W) there (S29); **no three
+points of `X` have collinear pictures**, as S35's "the picture of `X` is general" predicts (a
+consequence of S35 the ear criterion does not test); and the ear is free at the draw. S35 (b)'s
+cases occur: a hub of `G` of degree two in `G[X]` at 1859, 890 and 3221 ears; a body `v ∈ X` with
+`H_G[v] = {v, w, u}`, `u` an outside hub with two points of `X` (the second case), at 109, 146, 371;
+a body with two outside hubs (the third case), at 28, 51, 172.
+Population and caps: as listed, one draw per graph (redrawn at most `DEG_REDRAWS = 2` times if
+degenerate), seed 1; fenced constants (`blindaxes.py --imports --population`): `COORD = 1000`
+(strata), `MAX_N = 16`, `MAX_ATT = 3`, `DEG_REDRAWS = 2`, `BASE_N = (5, 7, 9, 11)`, the four kinds, and
+the attachment literals (`k ≤ 3`, one or two tails at an outside hub, paths of 2 or 3 bodies). The
+claim's variables varied: the graph and `W₀` (the populations) and `r⁰` (one steer point: hub normals
+in `[−COORD, COORD]⁴`, points nonzero-coefficient combinations of a basis of their meet). Not found
+under these caps: an ear with `dim L_{G[X]} > 4`, or a collinear triple, at both draws.
+
+## S38 — the brief's §6 deliverable after session 3 (claimed; review 2 to check S32–S36)
+
+**Verdict.** Q0 settled (S2). Q1: C2-same meets (a)–(c) and survives the embedding (S7); the PI
+chose it. Q2: under C2-same, `Feasible_d` is `PencilNondegFeasible` in every `d` (S9). Q3: no miss on
+the populations (S11, S16), and every certified `W₀`-ear (S30, S37) is an instance of S36. **Q4: the
+`Pᵈ` generic conjunct under C2-same, `G.Simple → PencilNondegFeasible K G → Generic_d(G)`, holds at
+every `d ≥ 4` given (A)**, the coverage in dimension `d` at graphs with no planar-rigid set on at
+least four bodies (S26's (A), 42d's bare and distinct main component, not this track's).
+
+**The proof, as write-up pieces** (each a numbered result here):
+1. the carrier and the motive `RL_d` (S18; `RL_3` everywhere, S18 (iv));
+2. the transfer to a subgraph (S19);
+3. the arms: few bodies, triangle, disconnection (S20); cut edge (S21 with S32's `(T1)`); pendant
+   body (S22); pendant triangle (S23);
+4. the one-ear step: the good-ear lemma returning `W₀` (S33, O8), the ear's lifts as `ker μ` (S24),
+   `μ` read on `X` (S29), and `X`'s points general (S34, S35), so the ear is free (S36);
+5. case (i) from (A) (S25), and the assembly (S26, its (B) never used).
+S27 (the outer step) and S26's (B) are no longer on the route. S8 (Tier 0) and S14's corollary are
+special cases.
+
+**Sizing.** No new mathematics is left inside the track's scope once review 2 confirms S32–S36:
+O8 is an assembly (S33), the rest is write-up. The open dependency is (A), which the conjunct
+shares with the bare and distinct conjuncts. Recommendation: after review 2, hand the five pieces
+to the write-up as red nodes beside 42d's main-component chapter, and stop the track for the PI.
