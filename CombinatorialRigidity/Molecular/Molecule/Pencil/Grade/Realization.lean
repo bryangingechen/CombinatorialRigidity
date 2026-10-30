@@ -39,6 +39,9 @@ definition is hinge-coplanarity.
   panel realization (`def:pencil-d-realization`).
 * `hasPencilPlaneRealization_two_iff` and `exists_hasPencilPlaneRealization_two_iff`:
   `lem:pencil-d-agrees-three`.
+* `HasGradedPencilRealization`: `def:pencil-d-rank-hypothesis`, the realization at the deficiency
+  rank.
+* `hasGradedPencilRealization_two_iff`: the first equivalence of `lem:pencil-d-rank-agrees-three`.
 -/
 
 @[expose] public section
@@ -206,5 +209,39 @@ theorem exists_hasPencilPlaneRealization_two_iff {G : Graph α β}
     · exact ⟨0, fun h => absurd h hv⟩
   choose point hpoint using hex
   exact ⟨point, (hasPencilPlaneRealization_two_iff hpoint).1 hreal⟩
+
+/-! ## The deficiency rank in every dimension -/
+
+/-- **A pencil realization at the deficiency rank, in every dimension**
+(`def:pencil-d-rank-hypothesis`): a pencil realization in dimension `d = k + 1`
+(`HasPencilPlaneRealization`) of `G` at grade `k`, for some framework, normals and subspaces,
+whose rigidity rows span a space of dimension `screwDim k * (|V(G)| - 1) - G.deficiency n`, in `ℤ`.
+The arguments are in the order of `HasPencilRealization`: the field `K`, the grade `k`, the
+parameter `n` of the deficiency, then the graph `G`. The chapter takes the deficiency at
+`D = screwDim k`; here `n` stays a parameter, as in `HasPencilRealization`, and the targets read
+it at `n = k + 1` (grade, not dimension, is the index). At `k = 2` it is `HasPencilRealization`
+(`hasGradedPencilRealization_two_iff`). -/
+def HasGradedPencilRealization (K : Type*) [Field K] (k n : ℕ) (G : Graph α β) : Prop :=
+  ∃ (F : BodyHingeFramework K k α β) (normal : α → Fin (k + 2) → K)
+    (plane : α → Submodule K (Fin (k + 2) → K)),
+    HasPencilPlaneRealization G F normal plane ∧
+    (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
+      = screwDim k * ((V(G).ncard : ℤ) - 1) - G.deficiency n
+
+/-- **At the deficiency rank in dimension three** (`lem:pencil-d-rank-agrees-three`, first
+equivalence): a graph has a pencil realization at the deficiency rank in dimension three
+(`HasGradedPencilRealization` at grade `2`) exactly when it has one in the sense of
+`HasPencilRealization`. It is `exists_hasPencilPlaneRealization_two_iff` at one framework and its
+normals, and the rank condition mentions neither the subspaces nor the points, so it is at one
+rank. -/
+theorem hasGradedPencilRealization_two_iff (n : ℕ) (G : Graph α β) :
+    HasGradedPencilRealization K 2 n G ↔ HasPencilRealization K n G := by
+  constructor
+  · rintro ⟨F, normal, plane, h, hrank⟩
+    obtain ⟨point, hpoint⟩ := exists_hasPencilPlaneRealization_two_iff.1 ⟨plane, h⟩
+    exact ⟨F, normal, point, hpoint, hrank⟩
+  · rintro ⟨F, normal, point, h, hrank⟩
+    obtain ⟨plane, hplane⟩ := exists_hasPencilPlaneRealization_two_iff.2 ⟨point, h⟩
+    exact ⟨F, normal, plane, hplane, hrank⟩
 
 end CombinatorialRigidity.Molecular

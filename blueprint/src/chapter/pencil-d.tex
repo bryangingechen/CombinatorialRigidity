@@ -179,6 +179,8 @@ realization, though their hinges do not form a pencil.
 
 \begin{definition}[Pencil realization at the deficiency rank, in every dimension]
   \label{def:pencil-d-rank-hypothesis}
+  \lean{CombinatorialRigidity.Molecular.HasGradedPencilRealization}
+  \leanok
   \uses{def:pencil-d-realization, def:D-deficiency, def:rigidity-matrix}
   Let $D = \binom{d+1}{2}$. A multigraph $G$ has a \emph{pencil
   realization at the deficiency rank} in dimension $d$ when it has a
@@ -205,6 +207,7 @@ scale of each hinge, which does not change the rank.
 
 \begin{lemma}[At the deficiency rank in dimension three]
   \label{lem:pencil-d-rank-agrees-three}
+  \lean{CombinatorialRigidity.Molecular.hasGradedPencilRealization_two_iff}
   \uses{def:pencil-d-rank-hypothesis, def:pencil-d-distinct-motive,
         def:pencil-rank-hypothesis, def:pencil-distinct-motive}
   A multigraph has a pencil realization at the deficiency rank in
