@@ -2,34 +2,48 @@
 
 **Status:** in progress, opened 2026-10-30 beside 42a (the PI's planning default, design doc §1,
 item 4), the Lean under `/coordinate-phase`. Forward mode: the dep-graph is
-`blueprint/src/chapter/pencil-d.tex`, 17 nodes, 1 green (the collineation lemma), Lean in
-`Pencil/Grade/`. The carrier check at the open (design doc §2.3 CARRIER) found the PI's dual form
-right once each body's 3-space is data, and wrong as a one-line encoding; that reading is put to
-the PI for confirmation and does not block the configuration nodes. Next concrete task:
-`def:pencil-d-configuration`, the configuration's points at every grade.
+`blueprint/src/chapter/pencil-d.tex`, 17 nodes, 2 green (the collineation lemma, the
+configuration), Lean in `Pencil/Grade/`. The carrier is the PI's (2026-10-30, design doc §1): the
+dual form with each body's 3-space as data, as the chapter states. Next concrete task:
+`lem:pencil-d-rank-scale-shift`, the heights' linear change and affine shift.
 
 ## Current state
 
-**Next:** `def:pencil-d-configuration` (`pencilConfigPointGrade`), a leaf (its `\uses` all
-green): the points `b_v = (x_v, y_v, z^1_v, …, z^{k-1}_v, 1) ∈ K^{k+2}` of a picture `q` and `k − 1`
-heights (`d − 2 = k − 1`), whose `k = 2` form is `pencilConfigPoint` (`MainComponent/Carrier.lean`).
-Its rank is `ofNormals` at those points, as at `k = 2`. A new file beside `Grade/Collineation.lean`.
+**Next:** `lem:pencil-d-rank-scale-shift` (planned
+`Graph.finrank_span_rigidityRows_ofNormals_heights_linearEquiv_add_affineLifts`), a leaf: the
+collineation lemma at grade `m + 1` for the block map `(ξ, η, ζ, ω) ↦ (ξ, η, Tζ + ξα + ηβ + ωγ, ω)`
+of `K^(m+3)`, `T` invertible on `Fin m → K`, built from the blocks as the point is
+(*Architectural choices*, the configuration), as
+`Graph.finrank_span_rigidityRows_ofNormals_smul_add_affineLifts` does at one height. Into
+`Grade/Carrier.lean`, which then imports `Grade/Collineation.lean`.
 
 **Landed:** the open (the chapter, its nodes red with planned names; the carrier check, design doc
 §2.3; PD-STABLE's statements, design doc §3). `lem:pencil-d-rank-collineation`
 (`Pencil/Grade/Collineation.lean`): one automorphism `det g • Λ_h` of `ScrewSpace K k`, `h` the
 contragredient, maps every hinge (`panelSupportExtensor_linearEquiv_eq_det_smul`).
+`def:pencil-d-configuration` (`Pencil/Grade/Carrier.lean`): `pencilConfigPointGrade`, its
+coordinates, and its agreement with the picture point (no height) and `pencilConfigPoint` (one).
 
 ## Architectural choices made up front
 
-- **The carrier (pending the PI's confirmation):** `def:pencil-d-realization` is the containment
+- **The carrier (the PI's):** `def:pencil-d-realization` is the containment
   model (`HasCoplanarPanelRealization` at grade `k = d − 1`) plus, at each body, a 3-space
   `Π_v ∋ b_v` as data, every hinge at `v` through `Π_v^⊥` (`def:extensor-through-flat`). At
   `k = 2`, `Π_v = q_v^⊥` gives Phase 39's definition; the meet form (Result 13) is its
-  adjacent-distinct case (`lem:pencil-d-point-configuration`). Why not the one-line encoding, and
-  the options with estimates: design doc §2.3 CARRIER.
+  adjacent-distinct case (`lem:pencil-d-point-configuration`). Why not the one-line encoding:
+  design doc §2.3 CARRIER. **PI, 2026-10-30:** "(a) 3-space as data (Rec.)" (the question and
+  the options as put: design doc §1).
+- **The configuration, by its number of heights (2026-10-30):** `pencilConfigPointGrade q z w :
+  Fin (m + 1 + 2) → K`, `z : α × Fin m → K` uncurried (as pictures and rank-polynomial variables
+  are), `m = d − 2`, at grade `k = m + 1`: `vecCons x (vecCons y (Fin.snoc z 1))`. It fits the
+  consumers: `GL_m` and `Aff(q)^m` (scale-shift), `m` contracted heights, `MvPolynomial (α × Fin m)`
+  (`X0AttainsGrade K m G`), zero heights appended as PD-STABLE's `ι`; no `k − 1`, and `m = 0` is
+  the picture point. Simp coordinates: index `i.castSucc.succ.succ`, last `Fin.last (m + 2)`. At
+  one height the rank lemma `…_ofNormals_pencilConfigPointGrade_one` bridges `k := 1 + 1` to
+  `k := 2`: `rfl` there times out, rewrite the normals first.
 - **Grade, not dimension, in Lean:** statements take the grade `k` (`ScrewSpace K k`,
-  `Fin (k + 2)`), as KT's chain does; the blueprint says `d = k + 1`. The deficiency's `n` stays a
+  `Fin (k + 2)`), as KT's chain does, and configurations their `m = k − 1` heights (above); the
+  blueprint says `d = k + 1`. The deficiency's `n` stays a
   parameter, as in Phase 39's `HasPencilRealization K n G`, so the `d = 3` agreement holds at
   every `n`; the targets read it at `n = k + 1`.
 - **Phase 39's and 40's `P³` declarations stay:** the new layer is additive. Each `P³` node keeps
@@ -42,7 +56,7 @@ may refine a name, and the pin lands with the Lean.
 
 - [ ] `def:extensor-through-flat` — `ExtensorThroughSubspace`
 - [ ] `lem:extensor-through-flat-point` — `extensorThroughSubspace_span_singleton_iff`
-- [ ] `def:pencil-d-realization` — `HasPencilPlaneRealization` (awaits the PI's confirmation)
+- [ ] `def:pencil-d-realization` — `HasPencilPlaneRealization`
 - [ ] `lem:pencil-d-agrees-three` — `hasPencilPlaneRealization_two_iff`
 - [ ] `lem:pencil-d-point-configuration` — `PanelHingeFramework.hasPencilPlaneRealization_ofNormals`,
   `HasPencilPlaneRealization.supportExtensor_eq_smul_panelSupportExtensor`
@@ -50,13 +64,17 @@ may refine a name, and the pin lands with the Lean.
 - [ ] `def:pencil-d-distinct-motive` — `HasGradedDistinctPencilRealization`
 - [ ] `lem:pencil-d-rank-agrees-three` — `hasGradedPencilRealization_two_iff`,
   `hasGradedDistinctPencilRealization_two_iff`
-- [ ] `def:pencil-d-configuration` — `pencilConfigPointGrade` (**next**)
+- [x] `def:pencil-d-configuration` — `pencilConfigPointGrade`,
+  `pencilConfigPointGrade_eq_pencilPicturePoint`, `pencilConfigPointGrade_eq_pencilConfigPoint`,
+  `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_pencilConfigPointGrade_one`
 - [ ] `lem:pencil-d-config-realization` — `Graph.IsAdmissiblePicture.hasGradedDistinctPencilRealization`
-- [ ] `def:pencil-d-x0-attains` — `Graph.X0AttainsGrade`
-- [ ] `lem:pencil-d-x0-attains-three` — `Graph.x0AttainsGrade_two_iff`
+  (at grade `m + 1` for `m` heights)
+- [ ] `def:pencil-d-x0-attains` — `Graph.X0AttainsGrade` (`K m G`, `m` heights)
+- [ ] `lem:pencil-d-x0-attains-three` — `Graph.x0AttainsGrade_one_iff` (one height; through
+  `…_ofNormals_pencilConfigPointGrade_one`)
 - [x] `lem:pencil-d-rank-collineation` — `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv_grade`,
   `panelSupportExtensor_linearEquiv_eq_det_smul`
-- [ ] `lem:pencil-d-rank-scale-shift` — `Graph.finrank_span_rigidityRows_ofNormals_heights_linearEquiv_add_affineLifts`
+- [ ] `lem:pencil-d-rank-scale-shift` — `Graph.finrank_span_rigidityRows_ofNormals_heights_linearEquiv_add_affineLifts` (**next**)
 - [ ] `lem:pencil-d-x0-one-witness` — `Graph.x0AttainsGrade_of_exists`
 - [ ] `lem:pencil-d-contract-magnified-rank` — `Graph.finrank_span_rigidityRows_induce_contractHeightGrade_eq`
 - [ ] `lem:pencil-d-join-independence-open` — `exists_mvPolynomial_linearIndependent_join_picture_grade`,
@@ -69,24 +87,27 @@ may refine a name, and the pin lands with the Lean.
 
 ## Blockers / open questions
 
-- **For the PI (not blocking):** confirm the carrier's reading, design doc §2.3 CARRIER options
-  (a)–(d); (a) is recommended and is what `def:pencil-d-realization` states. The configuration
-  nodes, the collineation leaf first, are the same under each.
+- None for 42b. The carrier is settled (the PI, 2026-10-30, *Architectural choices*), so the
+  realization nodes are open to build: `def:extensor-through-flat` is a leaf.
 
 ## Hand-off / next phase
 
-The next commit is `def:pencil-d-configuration` (*Current state*), with its `\lean` and `\leanok`
-in the chapter. Then `lem:pencil-d-rank-scale-shift` (the collineation lemma at the map
-`(ξ, η, ζ, ω) ↦ (ξ, η, Tζ + ξα + ηβ + ωγ, ω)`, as
-`Graph.finrank_span_rigidityRows_ofNormals_smul_add_affineLifts` does at `k = 2`) and
-`lem:pencil-d-contract-magnified-rank`; the realization nodes wait for the PI's confirmation of the
-carrier. Optional, any time: the `k = 2` form
+The next commit is `lem:pencil-d-rank-scale-shift` (*Current state*), with its `\lean` and
+`\leanok` in the chapter. Then `lem:pencil-d-contract-magnified-rank` (the map
+`(ξ, η, ζ, ω) ↦ (tξ + (1 − t)x_r ω, tη + (1 − t)y_r ω, tζ, ω)` at grade `m + 1`, one contracted
+height per coordinate of `Fin m`, as `Graph.finrank_span_rigidityRows_induce_contractHeight_eq`
+does at one height) and `def:pencil-d-x0-attains`. The realization chain
+(`def:extensor-through-flat` first) can interleave. Optional, any time: the `k = 2` form
 `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv` is the new lemma at
 `k := 2` verbatim, so it could be re-proved from it once `Configuration.lean` imports
-`Grade/Collineation.lean` (not done: the commit stays additive).
+`Grade/Collineation.lean` (not done: the commits stay additive).
 
 ## Decisions made during this phase
 
+- **The configuration (2026-10-30):** `Pencil/Grade/Carrier.lean`, importing only
+  `MainComponent/Carrier.lean`; the encoding is *Architectural choices*. A `lake lean` witness at
+  grade 3 (scratch, not retained) checked the point `(x, y, z₀, z₁, 1)`, a concrete `ℚ` point, and
+  the collineation lemma at grade `m + 1` on these points with no cast.
 - **The collineation leaf (2026-10-30):** a new directory `Pencil/Grade/` for the chapter's Lean,
   importing only `HingeGeneric.lean`. The contragredient is an inline `LinearEquiv`
   (`toDualEquiv ≪≫ₗ g.symm.dualMap ≪≫ₗ toDualEquiv.symm`, `contragredient g` by definition), not

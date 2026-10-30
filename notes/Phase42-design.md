@@ -7,10 +7,10 @@
 is the PI's (§1): R2's steps, Result 15's embedding as the base row, any induction on `d` left to
 Tier 2. SHORT-CORE's attack brief awaits the PI's reading. **42b** (PD-STATE,
 `notes/Phase42b.md`) opened beside it, the statement layer in `Pᵈ`: its chapter
-`blueprint/src/chapter/pencil-d.tex`, its collineation lemma green. The carrier check (§2.3
-CARRIER) found the dual form right once each body's plane is data; that reading is for the PI's
-confirmation, and the configuration nodes do not depend on it. PD-STABLE is laid out in §3. Next
-concrete task: 42b's configuration in every `d` (`def:pencil-d-configuration`). Evidence: `notes/Strata.md`, Results 12–27.
+`blueprint/src/chapter/pencil-d.tex`, its collineation lemma and configuration green. The carrier
+check (§2.3 CARRIER) found the dual form right once each body's plane is data, and the PI took
+that reading (§1, option (a)). PD-STABLE is laid out in §3. Next concrete task: 42b's
+scale-shift (`lem:pencil-d-rank-scale-shift`). Evidence: `notes/Strata.md`, Results 12–27.
 
 This file is the phase's entry point: the target (§0), the PI's decisions (§1), the recon (§2),
 the layers by stable code (§3) and the open questions (§4). Letters are minted when a sub-phase
@@ -81,6 +81,19 @@ fibre-intersection lemma and Jackson–Jordán's equality.
   structure with Result 15's embedding as the base row, and leave an outer induction on `d` to
   Tier 2, where it may enter only through CERT's open ears at `d ≥ 7`. PD-STABLE states the
   embedding at every `d′ ≤ d`, not only at `d′ = 3`, so that Tier 1 reaches every `d` by it.
+- **PI, 2026-10-30 (42b's open), the carrier:** "(a) 3-space as data (Rec.)". The question put:
+  "PD-STATE's carrier: your default was the dual form, "a point per body, each closed
+  neighbourhood in a plane". Taken literally as a condition on the normals, it fails against Phase
+  39's definitions in two ways. (W1) Where adjacent panels coincide, the hinges are no longer fixed
+  by the normals. Two bodies with one panel and three hinges forming a triangle pass the
+  normal-span test but are not a pencil (checked in Lean). (W2) If hinges are always the meet of
+  the two panels, parallel edges share one hinge, so the double edge can't reach rank D, which
+  Phase 39's bare conjunct reaches. Which reading should the chapter state?" The options put:
+  (a) 3-space as data (Rec.): your dual form, with each body's plane Π_v ∋ b_v carried as data and
+  every hinge at v containing Π_v^⊥; at d = 3 it is exactly Phase 39's definition; about 3
+  commits; what the chapter already states. (b) Primal (b_v, A_v): the same mathematics and cost,
+  the data named the other way round. (c) Meet form only: cheapest, but the Pᵈ headline loses the
+  bare multigraph conjunct, against §0. (d) Normals-only: fails W1, not viable.
 
 ## 2. PD-RECON (42a)
 
@@ -284,11 +297,10 @@ Result 17's `def[3] ≤ 1` one step further.
     `v` through `Π_v^⊥` (dually, a line through `b_v` in `Π_v`), i.e. §2.3's own "dual (a point
     in a 3-space)". At `k = 2`, `Π_v = q_v^⊥` makes it Phase 39's definition on the nose; the
     distinct conjunct agrees through `lem:pencil-self-dual`. Stated as `def:pencil-d-realization`
-    (red), pending the PI.
-  - *Options, for the PI's confirmation* (not blocking: 42b's first leaf is the same under each).
-    (a) The reading above, **recommended**, and what the chapter's red nodes state (restated if
-    the PI picks otherwise): the predicate, its `d = 3` agreement and the distinct bridge, about
-    three commits. (b) Primal data `(b_v, A_v = Π_v^⊥)`: the same mathematics and
+    (red), the PI's reading (§1, 2026-10-30).
+  - *Options put to the PI* (§1; the PI took (a)). (a) The reading above, **recommended**, and
+    what the chapter's red nodes state: the predicate, its `d = 3` agreement and the distinct
+    bridge, about three commits. (b) Primal data `(b_v, A_v = Π_v^⊥)`: the same mathematics and
     cost, the data named the other way; the PI's default is dual. (c) The meet form alone: the
     cheapest (no predicate beyond a span condition), but the `Pᵈ` headline loses the bare
     multigraph conjunct, against §0. (d) The normals-only encoding: fails W1, not viable.
@@ -539,13 +551,13 @@ unless a finding argues otherwise:
   enters `PencilPair` only in the generic conjunct (`Pencil/Motive.lean`), so with row 22's reading
   its `Pᵈ` lift is deferred with it.
 - The carrier in dual form (CARRIER). Checked at 42b's open: it agrees with Phase 39's
-  definitions once each body's 3-space is data (§2.3), the reading put to the PI for confirmation.
+  definitions once each body's 3-space is data (§2.3), the reading the PI took (§1).
 - PD-STATE and PD-STABLE open beside the research once T1 and T2 land: PD-STATE has, as 42b.
 
 Settled by the PI (§1): the route. R2's steps with Result 15's embedding as the base row; an outer
 induction on `d` is Tier 2's question, entering if at all through CERT's open ears at `d ≥ 7`.
-Open for the PI: the reading of SHORT-CORE's DRAFT brief, and confirming the carrier's reading
-(§2.3 CARRIER, options (a)–(d)); neither blocks 42b's first leaf.
+The carrier: each body's 3-space as data (§2.3 CARRIER, option (a)). Open for the PI: the reading
+of SHORT-CORE's DRAFT brief.
 
 Settled by the table: Phase 39's reduction is `d`-general for the bare and distinct conjuncts,
 given CARRIER (row 19). Settled by the PI's call (§1) and Result 27: ONE-CLASS, not ONE-EAR. Its

@@ -219,8 +219,14 @@ the panel-hinge framework whose normals are its points, as at $d = 3$
 
 \begin{definition}[Configurations in every dimension]
   \label{def:pencil-d-configuration}
+  \lean{CombinatorialRigidity.Molecular.pencilConfigPointGrade,
+        CombinatorialRigidity.Molecular.pencilConfigPointGrade_eq_pencilPicturePoint,
+        CombinatorialRigidity.Molecular.pencilConfigPointGrade_eq_pencilConfigPoint,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.finrank_span_rigidityRows_ofNormals_pencilConfigPointGrade_one}
+  \leanok
   \uses{def:pencil-lifting-space, def:panel-hinge-framework,
-        def:rigidity-matrix}
+        def:rigidity-matrix, def:pencil-admissible-picture,
+        def:pencil-configuration}
   A planar picture $q$ of $G$ and heights
   $z^1, \dots, z^{d-2} \colon V(G) \to K$ give the
   \emph{configuration} $b = (q, z)$ of the points
@@ -232,9 +238,11 @@ the panel-hinge framework whose normals are its points, as at $d = 3$
 \end{definition}
 
 At $d = 3$ these are the configurations of \cref{def:pencil-configuration}
-and their rank. If every $z^i$ lies in $L(q)$, each height is affine on
-each closed neighbourhood, so the points of each closed neighbourhood
-lie in a plane.
+and their rank. At $d = 2$ there is no height, and $b_v$ is the
+homogeneous picture point $(x_v, y_v, 1)$ of
+\cref{def:pencil-admissible-picture}. If every $z^i$ lies in $L(q)$,
+each height is affine on each closed neighbourhood, so the points of
+each closed neighbourhood lie in a plane.
 
 \begin{lemma}[A configuration over an admissible picture is a pencil realization]
   \label{lem:pencil-d-config-realization}

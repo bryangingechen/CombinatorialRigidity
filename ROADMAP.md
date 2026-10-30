@@ -1293,7 +1293,7 @@ statement layer then opened beside the research as **PD-STATE** (42b, `notes/Pha
 dep-graph the chapter `pencil-d.tex`: pencil realizations in dimension `d`, their agreement with
 Phases 39–40 at `d = 3`, and Phase 40's carrier in dimension `d`. Its open checked the carrier
 against the definitions: the polar form (a point per body, each closed neighbourhood in a plane)
-agrees with Phase 39's once each body's plane is part of the data, a reading put to the PI. The
+agrees with Phase 39's once each body's plane is part of the data, the reading the PI took. The
 `def_3 ≤ 1` corollary (PD-STABLE) follows once the statement layer's definitions land, and
 SHORT-CORE's attack track once the PI has read its brief.
 The targets are three tiers: every `d` at `def_3 ≤ 1`, at `def_3 ≤ 2` (a `P⁴` theorem), and every

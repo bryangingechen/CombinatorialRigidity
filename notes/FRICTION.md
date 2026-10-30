@@ -5873,6 +5873,23 @@ limitations. Worth a once-over so future agents don't re-litigate.
   `← Set.ncard_eq_toFinset_card'`); one use, so no mirror.
 - **Status:** resolved in-proof (one `lake lean` cycle).
 
+### [idiom] Configuration points at every grade: `rfl` between the ranks at `k := 1 + 1` and `k := 2` times out; the simp-normal height index is `i.castSucc.succ.succ`
+- **Where it bit:** Phase 42b, `Pencil/Grade/Carrier.lean` (`def:pencil-d-configuration`).
+- **Friction 1:** the row ranks of `ofNormals (k := 1 + 1)` at `pencilConfigPointGrade q z` and of
+  `ofNormals (k := 2)` at `pencilConfigPoint q (fun v => z (v, 0))` are definitionally equal, but
+  `rfl` hit *"(deterministic) timeout at `isDefEq`"* (200k heartbeats), and `simp only` with the
+  point lemma made no progress under `Module.finrank K ↥(span …)` (TACTICS-QUIRKS § 112). **Fix:**
+  `rw` an equation between the two normal lambdas (`funext` of the point lemma); the closing `rfl`
+  of `rw` is then instant. Packaged as
+  `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_pencilConfigPointGrade_one`: at one
+  height, rewrite with it rather than `rfl` or `change`.
+- **Friction 2:** a `@[simp]` coordinate lemma stated at the index `i.succ.succ.castSucc` failed
+  `simpNF` (`Fin.castSucc_succ` turns it into `i.castSucc.succ.succ`, the form now stated). The
+  last coordinate needed `simp [pencilConfigPointGrade, ← Fin.succ_last]`: `simp` folds
+  `(Fin.last m).succ.succ` into `Fin.last (m + 1 + 1)`, at which `vecCons` and `Fin.snoc` no longer
+  evaluate.
+- **Status:** idiom (resolved in-proof; one lint cycle).
+
 ## Archived: Resolved (project-internal)
 
 The body of this section was moved to
