@@ -686,3 +686,301 @@ argument above; the script only checks it.
 may still work (S22): at `d = 5` that is `r ≥ 2`, and at `d = 6` it is `r = 3`. Where `r ≤ d − 4`,
 the proof must use the actual `ρ`, starting from (ii). At `d ≥ 7`, `r = 3`, (ii) says nothing, and the
 input it needs there is not yet named.
+
+## S27 — session 3's consumer diff: no mismatch (session 3, 2026-10-30)
+
+Read against this worktree at `e27569d0` and master at `7e5f260b`. Between them no Lean file the model
+names has changed (`Short.lean`, `Carrier.lean`, `Cut.lean`), so S13's line-by-line diff of
+`of_openEar_three` and `-four` against brief §1 stands. Master adds the `Pᵈ` carrier's first Lean,
+`Pencil/Grade/Carrier.lean`: `pencilConfigPointGrade q z w = (q_w, z_w, 1) ∈ K^{m+3}` with `m = d − 2`
+heights, the panel normal of `ofNormals (k := m + 1)`. `def:pencil-d-x0-attains` (`pencil-d.tex`, no
+`\lean` yet) reads: a nonzero polynomial in the picture, off which every picture is admissible and the
+heights `z ∈ L(q)^{d−2}` at rank `D(|V| − 1) − def(G̃)`, `D = C(d + 1, 2)`, contain a nonempty
+Zariski-open subset of `L(q)^{d−2}`. `def(G̃)` is `def:D-deficiency` at `D`. This is brief §1's reading
+at `d = 4`: points `(q_v, z¹_v, z²_v, 1)`, target `10(|V| − 1) − def[10](G)`; the hinge is
+`complementIso(b_u ∧ b_v)`, which carries the brief's `b_u ∧ b_v ∈ Λ²K⁵` by a fixed isomorphism.
+
+## S28 — the `P²` framework with `a` and `b` glued (session 3)
+
+**Setting.** S14's `P²` framework at a picture `q`, hinges `h_uv = q̂_u∧q̂_v`, motion space `Z(F)`. `F` is
+a finite simple graph on `V₁`, and `a ≠ b` in `V₁` are not adjacent and have no common neighbour. `F/ab`
+identifies `a` and `b` to one body; it is simple. Its partitions are the partitions of `V₁` that do not
+separate `a` and `b`, with the same `val_F` (S14), so `def(F/ab) = max{val_F(P) : P does not separate
+a, b}`. Put `Z⁰ = {S ∈ Z(F) : S(a) = S(b)}` and `r = dim Z(F) − dim Z⁰ = dim ρ⁽²⁾` (S9, S26).
+
+**Statement.** Off a nonzero polynomial in `q`: `dim Z⁰ = 3 + def(F/ab)`, and with S15,
+`r = def(F) − def(F/ab)`.
+
+**Proof.** Off `∏_{uv ∈ E(F)}(q_{u,0} − q_{v,0})` the hinges are nonzero, and for `c ∈ Λ²K³`,
+`c ∈ K·q̂_u∧q̂_v` iff `c∧q̂_u = c∧q̂_v = 0` in `Λ³K³ ≅ K`. So `Z⁰` is the kernel of the matrix `M(q)`
+with one block of three unknowns per body of `F/ab` (`S(b) := S(a)`) and the two rows
+`(S_u − S_v)∧q̂_u`, `(S_u − S_v)∧q̂_v` per edge, entries linear in `q`.
+- *Lower bound.* S14 step 0 over the non-separating partitions: `dim Z⁰ ≥ 3 + def(F/ab)`.
+- *Upper bound.* Let `ι` send a picture `q'` of `F/ab` to the picture of `F` with `q_a = q_b = q'_{ab}`.
+  Then `M(ι(q'))` is, row for row, the matrix of the point-join framework of `F/ab` at `q'`. By S15
+  for `F/ab`, at some `q'` that framework has nonzero hinges and kernel `3 + def(F/ab)`, so `M(ι(q'))`
+  has rank `3(|V₁| − 2) − def(F/ab)`. A minor of that size is then a polynomial in `q` that is nonzero at
+  `ι(q')`. Off it and the hinge product, `dim Z⁰ ≤ 3 + def(F/ab)`. ∎
+
+The specialization `q_a = q_b` is never a picture the step uses; it only shows that the minor is a
+nonzero polynomial. Without "no common neighbour", `F/ab` has a double edge whose two hinges coincide
+at `q_a = q_b`, and the upper bound is lost.
+
+## S29 — the gluing dichotomy: `a, b` joined inside a glued part, or `r = 3` (session 3)
+
+**Statement.** At `q` as in S28, let `P` be a partition of `V₁` not separating `a, b` with
+`val_F(P) = def(F/ab)`, and let `X` be its part holding `a` and `b`. Then every `S ∈ Z⁰` is constant on
+every part of `P`, and exactly one of the following holds.
+- **Case 1.** `a` and `b` lie in one component `C` of `F[X]`. Every `S ∈ Z⁰` is constant on `C`.
+- **Case 2.** `F[X]` has exactly two components, `C_a ∋ a` and `C_b ∋ b`. Then `r = 3`, the partition
+  `P*` that replaces `X` by `C_a, C_b` has `val_F(P*) = def(F)`, and every `S ∈ Z(F)` is constant on
+  every part of `P*`.
+In particular `r ≤ 2` forces Case 1 at every such `P`. The case belongs to `P`, not to `(F, a, b)`: at
+`r = 3` two maximisers can fall in different cases (S37: the 6-cycle with `a, b` opposite, the
+`(3, 3, 3)` theta's poles). Later results say "some maximiser" or "every maximiser".
+
+**Proof.** The motions constant on the parts of `P` lie in `Z⁰` and have dimension at least
+`3 + val_F(P) = dim Z⁰` (S14 step 0, S28), so they are all of `Z⁰`. Suppose `a` and `b` lie in different
+components of `F[X]`, and let it have `m ≥ 2` components. Splitting `X` into them gives `P*`. No edge
+joins two components, so `d_F(P*) = d_F(P)` and `val_F(P*) = val_F(P) + 3(m − 1)`. By S14 step 0,
+`dim Z(F) ≥ 3 + val_F(P*) = dim Z⁰ + 3(m − 1)`. But `dim Z(F) − dim Z⁰ = r ≤ dim Λ²K³ = 3`. So `m = 2`,
+`r = 3`, and `dim Z(F) = 3 + val_F(P*)`. The motions constant on the parts of `P*` therefore fill
+`Z(F)`, and `val_F(P*) ≤ def(F) ≤ dim Z(F) − 3 = val_F(P*)`. ∎
+
+At `r = 0`, `Z⁰ = Z(F)` and Case 1 is S14's conclusion, which S14 reached through `F + ab` rather than
+`F/ab`, without the hypothesis on common neighbours.
+
+## S30 — in Case 1, `Λ²P` is injective on `ρ`, so `dim ρ ≤ r` (session 3)
+
+**Setting.** Any `d ≥ 2`, `V = K^{d+1}`, `P : V → K³` keeping the two picture coordinates and the last,
+so forgetting the `d − 2` heights. Any configuration of `F` with `P(b_v) = q̂_v`; the heights need not lie
+in `L(q)`. `Z_d(F)` is its motion space (`S(u) − S(v) ∈ K·b_u∧b_v` on each edge) and
+`ρ = {S(b) − S(a) : S ∈ Z_d(F)}`.
+
+**Statement.** If some maximiser `P` of S29 is in Case 1, in particular if `r ≤ 2`, then `Λ²P` is injective
+on `ρ`. So `dim ρ ≤ r ≤ 3`, and `Λ²P` maps `ρ` isomorphically onto a subspace of `ρ⁽²⁾`.
+
+**Proof.** Let `S ∈ Z_d(F)` with `Λ²P(S(b) − S(a)) = 0`. Then `μ := Λ²P ∘ S` lies in `Z(F)` (S26 (ii):
+`Λ²P(b_u∧b_v) = q̂_u∧q̂_v`) and has `μ_a = μ_b`, so `μ ∈ Z⁰`, and `μ` is constant on `C` (S29). On an
+edge `uv` of `F[C]`, `S(u) − S(v) = t·b_u∧b_v`, and `Λ²P` gives `0 = μ_u − μ_v = t·q̂_u∧q̂_v`. Since
+`q̂_u∧q̂_v ≠ 0`, `t = 0`. `C` is connected and holds `a` and `b`, so `S(a) = S(b)`. ∎
+
+At `r = 0` this gives `ρ = 0`, which S17 observed at every checked `κ = 3` pair and S16 bounded only by
+`ρ ⊆ Λ²Π`.
+
+## S31 — at `k ≤ 2d − 4`, every danger cell has `r = 3`; at `k ≤ 2d − 5`, it is in Case 2 (session 3)
+
+**Setting.** Any `d ≥ 4`, `D = C(d + 1, 2)`. A danger cell has `2d − 1 ≤ dim W ≤ D − 1`: below `2d − 1`
+`W` cannot hold `S(y)`, of dimension `2d − 1`, and the insertion closes (S19 (c), dimension-free). The
+base picture `q'` is general also in S28's sense for `(G[V₁], a, b)` whenever `a ≁ b` and they have no
+common neighbour: one more nonzero factor on `q'` in S21's list, so the step's own choice meets it.
+
+**Statement.** At such base data, at a danger cell with `k` interior bodies:
+(a) if `k ≤ 2d − 4`, then `r = 3`;
+(b) if `k ≤ 2d − 5`, then every maximiser of S29 for `(G[V₁], a, b, q')` is in Case 2.
+At `k = 3` both hold for every `d ≥ 4`. With S26 (iii), at `d ≥ 5` and `a`, `b` each with two or more
+neighbours in `V₁`, `r = 3` is `κ = 0`.
+
+**Proof.** S3 reads no dimension: `a` and `b` lie in one component of `G[V₁]`, and every a–b path there
+has length at least `dim ρ ≥ dim W − k ≥ 2d − 1 − k`.
+(a) `2d − 1 − k ≥ 3`, so `a ≁ b` and they have no common neighbour, and S28 applies to the simple graph
+`F = G[V₁]` at `q'`. If `r ≤ 2`, S29 puts it in Case 1, and S30 gives `dim ρ ≤ 2 < 2d − 1 − k`.
+(b) `2d − 1 − k ≥ 4`. A maximiser in Case 1 would give `dim ρ ≤ 3` by S30. ∎
+
+**What it does to the open obligations.** At `k = 3` the cells `r ≤ 2` are not danger cells, at every
+`d`. That closes G1 at `d = 5`, `r = 1` (the first open step), `d = 5`, `r = 2`, and `d = 6`, `r ≤ 2`, and
+G3 (`r = 0`). It needs neither S22's curves nor S26 (ii). What is left at `k = 3` is `r = 3`, Case 2,
+`κ = 0`, at `d ≥ 5`: S22's third curve at `d = 5`; open at `d = 6`; at `d ≥ 7` S26 (i)'s `ρ = H∧V` is a
+counterexample to the every-`ρ` form, so the actual `ρ` must enter, now with Case 2's structure. At
+`d = 4` it agrees with T3: all 36 cells at `k = 3, 4, 5` have `κ = 1` (S18), and `r = 3` reads `κ = 1`
+there (S9 (iii)). At `d = 5` it agrees with S23: every cell at `k ≤ 8` has `κ = 0`.
+
+## S32 — at `k = 3`, the every-`ρ` form holds exactly when `κ < 7 − d` (session 3)
+
+**Statement.** Let `d ≥ 4`, `k = 3`, `V = K^{d+1}`, `ρ ⊆ Λ²V` any subspace, `Π_a`, `Π_b` 3-dimensional
+with `κ = dim(Π_a ∩ Π_b) ≤ 2`, and `p_a ∈ Π_a`, `p_b ∈ Π_b` independent. If `κ < 7 − d`, SHORT-CORE
+holds off a nonzero polynomial in the ear data `(y₁, y₃) ∈ Π_a × Π_b`. With S26 (i), the every-`ρ` form
+at `k = 3` holds iff `κ < 7 − d`: `κ ≤ 2` at `d = 4` (S6), `κ ≤ 1` at `d = 5`, `κ = 0` at `d = 6`, never at
+`d ≥ 7`.
+
+**Proof.** S22's setting: `Q = V/⟨y₁, y₃⟩`, `M(y)ζ = y₁∧y₃∧ζ mod R` on `Λ^{d−3}V`, `U₁` as in S6. Take
+`y₀ ∈ U₁` with `p_a, y₁, y₃, p_b` independent (existence below), and suppose `W(y₀) ⊇ S(y₀)` and
+`W(y₀) ≠ Λ²V`. By S22, some `ζ ∈ ker M(y₀)` has `ζ̄ ≠ 0` in `Λ^{d−3}Q`, with `p̄_a∧ζ̄ = p̄_b∧ζ̄ = 0`
+(curves A and B). Equivalently `y₁∧y₃∧p_a∧ζ = 0` and `y₁∧y₃∧p_b∧ζ = 0`.
+- *Curve `C_u` = `(y₁ + tu, y₃)`, for any `u ∈ Π_a`; it stays in `Π_a × Π_b`.* The tangent lemma gives
+  `δ = u∧y₃∧ζ + y₁∧y₃∧ζ' ∈ R`. The second term lies in `T ⊆ J°`. The first meets `y₁∧y₃` and `y₃∧p_b`
+  in a repeated `y₃`, and `u∧y₃∧ζ∧p_a∧y₁ = ±u∧(y₁∧y₃∧p_a∧ζ) = 0`. So `δ ∈ R ∩ J° ⊆ T`, and
+  `δ∧y₁ = 0` gives `ū∧ζ̄ = 0`.
+- *Curve `D_w` = `(y₁, y₃ + tw)`, for any `w ∈ Π_b`.* Symmetrically, using `y₁∧y₃∧p_b∧ζ = 0`:
+  `w̄∧ζ̄ = 0`.
+So `A = {x̄ ∈ Q : x̄∧ζ̄ = 0}`, a subspace, contains `Π̄_a + Π̄_b = H/⟨y₁, y₃⟩`, with `H = Π_a + Π_b ∋ y₁, y₃`,
+of dimension `4 − κ`. A nonzero `ζ̄ ∈ Λ^{d−3}Q` with `x̄∧ζ̄ = 0` on an `m`-dimensional `A` is divisible by
+the top form of `A` (extend a basis of `A` to `Q` and read off coordinates), so `m ≤ d − 3`. Here
+`4 − κ ≤ d − 3`, that is `κ ≥ 7 − d`, a contradiction.
+
+*Existence.* The independence locus and `U₁` are nonempty Zariski-open in the irreducible
+`Π_a × Π_b`, so they meet once the first is nonempty. It is nonempty at `κ ≤ 2` by S6's construction
+with S12's correction, which reads the ambient space only through one fact:
+`Π_a ∩ (⟨p_a⟩ + Π_b) ⊆ ⟨p_a⟩ + L`, with `L = Π_a ∩ Π_b`. This holds in any `V`, since `cp_a + w ∈ Π_a`
+with `w ∈ Π_b` puts `w ∈ L`. At `κ ≤ 1` it has dimension at most 2, so `y₁` can avoid it, which replaces
+S6's "`Π_a + Π_b = V`". ∎
+
+This subsumes S6 (`d = 4`) and S22, and at `d = 5` it proves S22's third-curve sketch without its
+proviso `p_b ∉ Π_a`. The threshold is S26 (i)'s exactly: `A ⊇ H/⟨y₁, y₃⟩` is what `ρ = H∧V` realizes.
+
+## S33 — `k = 3` is closed at `d = 5, 6`; what is left is `d ≥ 7`, `κ = 0`, Case 2 (session 3)
+
+**Lemma (`κ` at general base heights, every `d`).** At base data general in S21's sense, with `d − 2`
+general heights in `L_{G''}(q')`, `κ = 3 − min(d − 2, r)`, where `r = dim ρ⁽²⁾` is taken in `G[V₁]`. No
+neighbour count in `V₁` is needed.
+*Proof.* Every body of `G''` has degree at least 2, and `Π_a`, `Π_b` are spanned by the points of
+`N_{G''}[a]`, `N_{G''}[b]` (`lem:pencil-d-config-realization`). S9 (ii)–(iii), read on `G''` with `d − 2`
+heights, give `la − lb = (λ^i_a − λ^i_b)_{i ≤ d−2}` for `d − 2` general `P²` motions `λ^i` of `G''`, so
+its rank is `min(d − 2, dim ρ⁽²⁾(G''))`: a `min(d − 2, r)`-minor of `la − lb`, a polynomial in the heights,
+is nonzero somewhere on `L_{G''}(q')^{d−2}`. Restriction `Z(G'') → Z(G[V₁])` is onto: given values on `V₁`,
+the ear of `G''` extends them because its `k ≥ 3` hinges span `Λ²K³` (they are not concurrent once the
+closed neighbourhoods on the ear are non-collinear). So `ρ⁽²⁾(G'') = ρ⁽²⁾(G[V₁])`. ∎ (The first
+writing cited `Graph.earExtend_mem_liftingSpace`, a lifting-space statement that misses the extra
+freedom at a single-neighbour `a`; corrected after S38.)
+This extends S26 (iii) to the single-neighbour case. At `d = 4` the single-neighbour case was S21's.
+
+**Statement.** At base data general in S21's and S31's senses, with the base heights also off the
+lemma's minor (one more factor beside S21's `ℓ`, which gives only `la ≠ lb`, so `κ ≤ 2`; added after
+S38), SHORT-CORE holds at every `k = 3` danger cell for `d = 4, 5, 6`. At `d ≥ 7` a `k = 3` danger cell has `r = 3`, `κ = 0` and is in Case 2 of S29,
+and no argument valid for every `ρ` closes it.
+
+**Proof.** By S31, `r = 3`, and the cell is in Case 2. By the lemma, `κ = 1` at `d = 4` and `κ = 0` at
+`d ≥ 5`. Then `κ < 7 − d` at `d ≤ 6`, and S32 closes the cell. At `d ≥ 7`, `κ = 0 ≥ 7 − d`, and S26 (i)
+refutes the every-`ρ` form. ∎
+
+**Where the actual `ρ` must enter at `d ≥ 7`.** In S32's proof, failure leaves `ζ̄ ≠ 0` divisible by the
+top form `ω̄_H` of `H/⟨y₁, y₃⟩`, so `ω_H∧η ∈ R` for some `η ∈ Λ^{d−7}V`, `ω_H` the volume of
+`H = Π_a ⊕ Π_b` (dimension 6). Case 2 says every `P²` motion is constant on `C_a ∋ a` and on `C_b ∋ b`,
+and an `F`-optimal partition puts them in different parts.
+
+## S34 — at `k = 3`, failure forces `ρ + H∧V ≠ Λ²V` (session 3)
+
+**Statement.** In S32's setting at any `d ≥ 4` and `κ ≤ 2`, with `H = Π_a + Π_b` (dimension `6 − κ`) and
+`ω_H` its volume form: if SHORT-CORE fails at general ear data, then `R` holds a nonzero
+`ω_H∧η`, `η ∈ Λ^{d−7+κ}V`, and so `ρ + H∧V ≠ Λ²V`. Equivalently, `ρ + H∧V = Λ²V` (`ρ` maps onto
+`Λ²(V/H)`) makes SHORT-CORE hold at general ear data. Conversely `ρ + H∧V ≠ Λ²V` gives `W(y) ≠ Λ²V` at
+every ear datum, since `J(y) ⊆ Λ²H ⊆ H∧V`.
+
+**Proof.** In S32's proof, failure at `y₀` gives `ζ̄ ≠ 0` with `x̄∧ζ̄ = 0` on `H̄ = H/⟨y₁, y₃⟩`, of
+dimension `4 − κ`. So `ζ̄ = ω̄_{H̄}∧η̄` with `η ∈ Λ^{d−7+κ}V`. Lift a basis `h₁, …, h_{4−κ}` of `H̄` to `H`;
+then `y₁, y₃, h₁, …` is a basis of `H`, and `y₁∧y₃∧ζ = y₁∧y₃∧h₁∧⋯∧h_{4−κ}∧η = c·ω_H∧η`, `c ≠ 0`, which
+is a nonzero element of `R ∩ T`. Every `c' ∈ H∧V` has `c'∧ω_H = 0`, and every `c' ∈ ρ` has
+`c'∧ω_H∧η = 0` because `ω_H∧η ∈ R = ρ°`. So the nonzero form `ω_H∧η` annihilates `ρ + H∧V`. ∎
+
+At `κ < 7 − d` the degree `d − 7 + κ` is negative, which is S32. At `d ≥ 7`, `κ = 0`, the open cell of
+S33 is now: show that `ρ` maps onto `Λ²(V/H)`, of dimension `C(d − 5, 2)`; or, where it does not, that
+`W ⊉ S(y)` at general ear data. At `d = 7` the first is `ρ ⊄ H∧V`. S26's `ρ = H∧V` is the extreme case.
+
+## S35 — at `k ≥ 4`, SHORT-CORE holds for every `ρ`, every `κ`, every `d ≥ 3` (session 3)
+
+**Setting.** `V = K^{d+1}`, `d ≥ 3`, `k ≥ 4`. `G''`'s ear is `a − x₁ − x₃ − ⋯ − x_k − b`, with `y₁ ∈ Π_a`,
+`y₃, …, y_{k−1}` free and `y_k ∈ Π_b`; its joins are `p_a∧y₁`, `y₁∧y₃`, `y₃∧y₄`, then the set `J₂` of the
+`k − 3` joins `y₄∧y₅, …, y_{k−1}∧y_k, y_k∧p_b`, none of which holds `y₁` or `y₃`. `ρ`, `Π_a`, `Π_b`, `p_a`,
+`p_b` are arbitrary. `Q = V/⟨y₁, y₃⟩`, of dimension `d − 1`.
+
+**The tangent lemma, with side conditions.** S6's lemma holds verbatim for any polynomial family of
+linear maps `M(y) : Kⁿ → X` into a finite-dimensional space, with `ξ(t)` in the kernel identically in `t`:
+the Smith-form argument reads nothing about `X`. Here
+`M(y)ζ = (y₁∧y₃∧ζ mod R, (y₁∧y₃∧ζ∧j)_{j ∈ J₂}) ∈ Λ^{d−1}V/R ⊕ (Λ^{d+1}V)^{J₂}`, on `ζ ∈ Λ^{d−3}V`. Every
+`ω ∈ T(y)` kills the three joins that hold `y₁` or `y₃`, so `y₁∧y₃∧ker M(y) = R ∩ J(y)° ∩ T(y)`.
+
+**Statement.** At every ear datum `y₀ ∈ U₁` (the open set where `dim ker M` is least) with `y₁, y₃`
+independent, `W ⊇ S(y₀)` implies `W = Λ²V`. So SHORT-CORE holds off a nonzero polynomial.
+
+**Proof.** Suppose `0 ≠ R ∩ J(y₀)° ⊆ T(y₀)`, and pick `ζ₀ ∈ ker M(y₀)` with `ω₀ = y₁∧y₃∧ζ₀ ≠ 0`, so
+`ζ̄₀ ≠ 0` in `Λ^{d−3}Q`. For `w ∈ V`, the curve `(y₁, y₃ + tw, y₄, …)` stays in the ear data (`y₃` is free)
+and moves no join of `J₂`. The lemma gives `δ_w = y₁∧w∧ζ₀ + y₁∧y₃∧ζ₁ ∈ R` with `δ_w∧j = 0` for `j ∈ J₂`.
+Both terms hold `y₁`, so `δ_w` kills `p_a∧y₁` and `y₁∧y₃`. Against `y₃∧y₄`, the second term repeats `y₃`,
+and the first is `±(y₁∧y₃∧y₄∧ζ₀)∧w`.
+1. *`w = y₄`.* The first term repeats `y₄`, so `δ_{y₄} ∈ R ∩ J° ⊆ T`. Then `δ_{y₄}∧y₃ = 0` gives
+   `y₁∧y₃∧y₄∧ζ₀ = 0`, that is, `ȳ₄∧ζ̄₀ = 0`.
+2. *Any `w`.* By step 1 the first term vanishes against `y₃∧y₄` too, so `δ_w ∈ R ∩ J° ⊆ T`, and
+   `δ_w∧y₃ = ±(y₁∧y₃∧ζ₀)∧w = 0` gives `w̄∧ζ̄₀ = 0`.
+So every `w̄ ∈ Q` has `w̄∧ζ̄₀ = 0`. A nonzero form annihilated by all of `Q` has degree `dim Q = d − 1`
+(S32's divisibility), but `ζ̄₀` has degree `d − 3`. So `ζ̄₀ = 0`, a contradiction. ∎
+
+**Consequence.** This proves S7 and S8 again (`d = 4`) without their independence conditions, and closes
+G2: `4 ≤ k ≤ C(d − 1, 2) + 2` at every `d ≥ 5`, for every `ρ`. No base-data condition is needed at
+`k ≥ 4`, so the every-`ρ` `hins` of `of_openEar_splitOff` transcribes at `k ≥ 4` in every `Pᵈ`. What
+the free point `y₃` buys is exactly what `k = 3` lacks: there `y₃ ∈ Π_b`, the curves reach only
+`H/⟨y₁, y₃⟩` (S32), and S26's `ρ = H∧V` survives.
+
+## S36 — at `k = 3`, failure also forces `ρ ∩ H∧V + Λ²H = H∧V`, and `dim ρ ≤ def₂(G[V₁])` (session 3)
+
+**Statement.** In S34's setting, put `U = V/H` and `ρ_H = ρ ∩ H∧V`.
+(i) If SHORT-CORE fails at general ear data, then `ρ_H + Λ²H = H∧V`, so
+`dim ρ ≥ dim(H∧V/Λ²H) = (6 − κ)(d − 5 + κ)`. At `κ = 0` that is `6(d − 5)`.
+(ii) For the actual `ρ`, with `a` and `b` in one component of `F = G[V₁]` (true at danger cells, S3), at
+a picture where `dim Z(F) = 3 + def(F)` (S15): `dim ρ ≤ def(F)`, the `P²` deficiency, at any heights.
+So at `d ≥ 7`, `κ = 0`, a failing cell has `def(F) ≥ 6(d − 5)`, `ρ` not onto `Λ²U` (S34), and `ρ_H` onto
+`H∧V/Λ²H ≅ H ⊗ U`.
+
+**Proof.** (i) `J(y) ⊆ Λ²H ⊆ H∧V`, so `W ∩ H∧V = ρ_H + J(y)`, and failure puts `S(y)` inside it. Map
+`H∧V → H∧V/Λ²H ≅ H ⊗ U`; `star(y₁) = y₁∧V` goes onto `y₁ ⊗ U`, and `J(y)` goes to 0. So the image of
+`ρ_H` holds `y₁ ⊗ U + y₃ ⊗ U` for a dense set of `(y₁, y₃) ∈ Π_a × Π_b`, hence `Π_a ⊗ U + Π_b ⊗ U = H ⊗ U`.
+(ii) `ρ` is the image of the linear map `S ↦ S(b) − S(a)` on `Z_d(F)`, which factors through
+`Z_d(F) → Λ²P ∘ Z_d(F) ⊆ Z(F)`: two motions with the same image differ by a motion with values in
+`ker Λ²P = E∧V`, which is constant on each component (S30's edge argument at every edge:
+`t·q̂_u∧q̂_v = 0`), so its relative screw is 0. Constant `P²` motions lift to constant motions. So `dim ρ ≤ dim Z(F) − 3 = def(F)`. ∎
+
+This is the existence handle for the last open cell: a `d = 7`, `k = 3` failure needs `ρ ⊆ H∧V` (S34 at
+`d = 7`, where `Λ²U` is a line), `dim ρ ≥ 12`, and `def(F) ≥ 12`.
+
+## S37 — exact control for S28–S31 (session 3)
+
+`python3 notes/attacks/short-core/drivers/rho_bound.py --seed N --trials 40 --dims 4,5`, `N = 1, 2, 3`, all
+exit 0, output byte-identical at `PYTHONHASHSEED = 0` and `1`. Written by a helper to this session's spec,
+read and re-run here. **Population.** Connected simple graphs `F` on 6–9 bodies, four families by trial:
+- p2_path's draw (random tree plus edges, or a triangle strip with a flexible pendant cycle);
+- cycles and thetas with every a–b path of length 3 or more;
+- two rigid triangle strips joined by one edge or two disjoint paths;
+- random sparse graphs.
+Integer pictures in `[−40, 40]²`. Heights at `d = 4, 5` in two regimes: in `L₁(q)`, and arbitrary integers
+in `[−40, 40]`. Pairs `a, b`: non-adjacent, with no common neighbour. Deficiencies are found by enumerating
+set partitions. `blindaxes.py` lists the partition generator; the fences are the ones listed here.
+**Results** (seeds 1–3, 1042 pairs, every one meeting S28's equality `dim Z⁰ = 3 + def(F/ab)` at its draw):
+- `r = 0, 1, 2, 3` at 95, 231, 177 and 539 pairs.
+- `r ≤ 2` was Case 1 at every maximiser (S29).
+- Every Case-2 maximiser had `r = 3`, two components, and `Z(F)` constant on each (S29).
+- Wherever some maximiser is Case 1, `Λ²P` is injective on `ρ` and `dim ρ ≤ r` (S30): 3648 frames, both
+  regimes and both `d`.
+- `Λ²P(ρ) ⊆ ρ⁽²⁾` at every frame (S26 (ii)).
+- Control: at pairs with only Case-2 maximisers, `dim ρ` reached 6, with up to 3 dimensions in `ker Λ²P`.
+  So S30's conclusion can fail outside its hypothesis.
+- 409 of the `r = 3` pairs have maximisers of both cases, which is why S29–S31 now name the maximiser.
+**Caveat (the helper's).** At `n ≤ 9`, every guarded frame has `dim ρ` equal to the number of bridges of
+`F` separating `a` from `b`. So in this population S30 is exercised only on `ρ` spanned by bridge hinges.
+Its mechanism, the gluing inside a non-bridge part, is not stressed. Doing that needs `n ≥ 11` and a
+deficiency computation that does not enumerate partitions. Each figure is one draw per graph; the proofs
+are S28–S31.
+
+## S38 — the independent reading of S28–S35 (session 3)
+
+**Review.** A fresh `general-purpose` reader checked S28–S35 by hand against the results they cite. It
+re-derived every earlier result read at a new `d`, and tried to refute each statement. S36 was written
+after it started and was not read.
+- **CONFIRMED:** S28, S29, S30, S31, S32, S34, S35, and S33's lemma.
+  - S28's polynomial is genuinely extra. Its five misses were pictures with three collinear points on
+    the cycle that gluing creates, which S21's neighbourhood determinants do not exclude.
+  - S32: curves A and B first, then `C_u` and `D_w`, is the order that makes each `δ` lie in `J°`.
+  - S35: the Smith-form step reads no target space, and the `J₂` rows do not move along the curves.
+    `y₁∧y₃∧ker M = R ∩ J° ∩ T` exactly, and step 1 is what step 2 needs at `y₃∧y₄`.
+- **GAP in S33's statement, repaired there.** S21's `ℓ` gives only `la ≠ lb`, so `κ ≤ 2`, which is inside
+  S26's failing range at `d = 5`. The step needs the lemma's `min(d − 2, r)`-minor as a factor on the
+  base heights.
+- **Corrections, made there.** S33's last paragraph wrote `y₁∧y₃∧ω_H∧η`, which is 0; it now reads
+  `ω_H∧η`, as in S34. Its lemma's citation is replaced by the direct ear-extension argument.
+- **Nit.** `y₃ + t·y₄` leaves the affine chart. `W`, `S` and `ker M` do not change when any `y_i` is
+  rescaled, the convention S6's `y₁ + t·p_a` already uses.
+**Its exact checks** (scratch, "measured, script not retained"):
+- S28–S30 and S33's lemma: about 800 graphs on 5–8 bodies, 2605 of 2610 pairs meeting S28, with no
+  bad case.
+- About 3500 structured-`ρ` tests of S32 and S35 (`X∧V`, `Λ²X`, `X∧Y`, annihilators, codimension-1
+  perturbations), with no failure. `ρ = H∧V` failed at `k = 3`, `κ ≥ 7 − d` (6 of 6) and not at `k = 4`.
+- The sharpest attack on S35 at `d = 5`, `k = 4`: `ρ = (T ∩ J°)(y⁰)°`. It fails only at `y⁰ ∉ U₁`, and at
+  none of 1200 fresh ear data.
