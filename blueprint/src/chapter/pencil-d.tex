@@ -1210,7 +1210,9 @@ section fixes the notation, and shows that over an admissible picture
 the pencil configurations are those with every height in $L(q)$
 (\cref{lem:pencil-d-condition-linear}). The next section computes the
 rank of a flat configuration, which settles the graphs whose two
-deficiencies agree (\cref{sec:pencil-d-flat}).
+deficiencies agree (\cref{sec:pencil-d-flat}). The steps of the
+induction follow, beginning with a cut vertex and a chain of bridges
+(\cref{sec:pencil-d-cut}).
 
 We fix the following notation and terms, for $d \ge 3$ and
 $D = \binom{d+1}{2}$. At $d = 3$ they are those of
@@ -1506,3 +1508,235 @@ dimension, so the corollary also follows from its case $d = 3$.
   \cref{lem:pencil-d-x0-attains-three}), and hence in dimension $d$
   (\cref{lem:pencil-d-x0-attains-of-le}).
 \end{remark}
+
+\subsection{Cut vertices and bridges in every dimension}
+\label{sec:pencil-d-cut}
+
+This section proves the first two steps of the induction in dimension
+$d$: at a cut vertex (\cref{thm:pencil-d-cut}) and along a chain of
+bridges (\cref{thm:pencil-d-bridge}). At $d = 3$ they are
+\cref{thm:pencil-x0-cut} and \cref{thm:pencil-x0-bridge}, and we keep
+the three parts of their proofs (\cref{sec:main-component-cut}). We take
+a main picture $q$ of $G$ off the zero sets of the polynomials of the
+attainment at the two sides. We find heights $z \in L_G(q)^{d-2}$ at
+which both sides have their targets. A rank-addition lemma and a
+deficiency count then give $(q, z)$ rank at least
+$\operatorname{tgt}_d(G)$, and the general configuration of $G$ attains
+in dimension $d$ (\cref{lem:pencil-d-x0-one-witness}). The first part is
+planar. In the second, the restriction of heights to a side, and their
+extension back to $G$, act on each of the $d - 2$ heights separately. In
+the third, the rank-addition lemmas and the deficiency identities hold
+at every screw dimension $D$, and a bridge adds $D - 1$ to the rank
+where it adds $5$ at $d = 3$.
+
+For a subgraph $G'$ of $G$ and a configuration $(q, z)$ of $G$ in
+dimension $d$, the \emph{rank of $G'$ at $(q, z)$} is the rank of the
+panel-hinge framework on $G'$ whose normal at each body of $G'$ is its
+point in $(q, z)$ (\cref{def:pencil-d-configuration}). We say that $G'$
+\emph{has its target} at $(q, z)$ when this rank is
+$\operatorname{tgt}_d(G')$. The next lemma reads the rank of $G'$ at the
+restriction of $z$ to $V(G')$.
+
+\begin{lemma}[Heights restrict to a subgraph, in every dimension]
+  \label{lem:pencil-d-lifting-restrict}
+  \uses{def:pencil-d-configuration, def:pencil-lifting-space,
+        def:panel-hinge-framework}
+  Let $d \ge 3$, let $G' \le G$, let $q$ be a picture of $G$, and let
+  $z = (z^1, \dots, z^{d-2})$ be heights of $G$. Write $z'$ for the tuple
+  whose $i$-th height agrees with $z^i$ on $V(G')$ and vanishes
+  elsewhere.
+  \begin{enumerate}
+    \item If $z \in L_G(q)^{d-2}$, then $z' \in L_{G'}(q)^{d-2}$.
+    \item The points of the configurations $(q, z')$ and $(q, z)$ in
+      dimension $d$ agree at the bodies of $G'$. So the rank of $G'$ at
+      $(q, z')$ is its rank at $(q, z)$.
+    \item A polynomial in the heights of $G'$, read at $z'$, agrees with
+      a polynomial in the heights of $G$, read at $z$.
+  \end{enumerate}
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-lifting-restrict, lem:pencil-rank-congr}
+  At $d = 3$ this is \cref{lem:pencil-lifting-restrict}, and in dimension
+  $d$ each claim holds height by height.
+
+  (1) A tuple of heights lies in $L_G(q)^{d-2}$ exactly when each of its
+  heights lies in $L_G(q)$. Each $z'^i$ is the restriction of
+  $z^i \in L_G(q)$, so it lies in $L_{G'}(q)$ by part~(1) of
+  \cref{lem:pencil-lifting-restrict}.
+
+  (2) The point of $(q, z')$ at a body $w$ is
+  $(x_w, y_w, z'^1_w, \dots, z'^{d-2}_w, 1)$
+  (\cref{def:pencil-d-configuration}). It reads only the picture point and
+  the heights at $w$, and at a body $w$ of $G'$ each $z'^i_w$ equals
+  $z^i_w$. The rank of a panel-hinge framework on $G'$ depends only on its
+  normals at the bodies of $G'$ (\cref{lem:pencil-rank-congr}). That lemma
+  concerns panel-hinge frameworks in every dimension, and its proof does
+  not use the dimension. So the two ranks agree.
+
+  (3) Substituting zero for the heights $z^i_w$ with $w \notin V(G')$ in a
+  polynomial and then evaluating at $z$ is the same as evaluating the
+  polynomial at $z'$, which already vanishes there. This is the
+  substitution of part~(3) of \cref{lem:pencil-lifting-restrict}, made in
+  each of the $d - 2$ heights.
+
+  The case $d = 3$ uses its dimension only in (2), where the point at a
+  body has one height. In dimension $d$ it has $d - 2$ heights, and each
+  is read at that body alone.
+\end{proof}
+
+\begin{theorem}[A cut vertex, in every dimension]
+  \label{thm:pencil-d-cut}
+  \uses{def:pencil-d-x0-attains, def:pencil-x0-standing}
+  Let $K$ be infinite and $d \ge 3$, and let $G$ satisfy the standing
+  hypotheses (\cref{def:pencil-x0-standing}), with
+  $V(G) = V_1 \cup V_2$, $V_1 \cap V_2 = \{v\}$ and every edge of $G$
+  inside $V_1$ or inside $V_2$. If the general configurations of $G[V_1]$
+  and $G[V_2]$ attain in dimension $d$
+  (\cref{def:pencil-d-x0-attains}), then the general configuration of $G$
+  attains in dimension $d$.
+\end{theorem}
+\begin{proof}
+  \uses{lem:pencil-d-lifting-restrict, lem:pencil-cut-fibre,
+        lem:block-rank-cut-vertex, lem:deficiency-cut-vertex,
+        lem:pencil-x0-fibre-intersection, lem:pencil-x0-main-picture-open,
+        lem:pencil-d-x0-one-witness}
+  \emph{The picture.} For $i = 1, 2$ the attainment at $G[V_i]$ gives a
+  nonzero polynomial $P_i$ in the picture coordinates
+  (\cref{def:pencil-d-x0-attains}). The graph $G$ has no loop, and each
+  of its closed neighbourhoods has at least three members. So some
+  nonzero polynomial $P_0$ has only main pictures of $G$ as non-roots
+  (\cref{lem:pencil-x0-main-picture-open}). As $K$ is infinite,
+  $P_0 P_1 P_2$ has a non-root $q$, and $q$ is a main picture of $G$. For
+  $i = 1, 2$ the heights $y \in L_{G[V_i]}(q)^{d-2}$ at which $G[V_i]$ has
+  its target contain a nonempty Zariski-open subset of this linear space.
+  So some polynomial $R_i$ in the heights is nonzero somewhere on
+  $L_{G[V_i]}(q)^{d-2}$, and $G[V_i]$ has its target at every $y$ there
+  with $R_i(y) \neq 0$.
+
+  \emph{The heights.} Read at the restriction to $V_i$, $R_i$ agrees with
+  a polynomial $R_i'$ in the heights of $G$ (part~(3) of
+  \cref{lem:pencil-d-lifting-restrict}). Let
+  $y \in L_{G[V_i]}(q)^{d-2}$ with $R_i(y) \neq 0$. At every picture the
+  restriction maps $L_G(q)$ onto $L_{G[V_i]}(q)$
+  (\cref{lem:pencil-cut-fibre}). So each height $y^j$ is the restriction
+  of some $\hat y^j \in L_G(q)$. The tuple
+  $\hat y = (\hat y^1, \dots, \hat y^{d-2})$ lies in $L_G(q)^{d-2}$ and
+  restricts to $y$, so $R_i'(\hat y) = R_i(y) \neq 0$. Thus $R_1'$ and
+  $R_2'$ are each nonzero somewhere on the linear space $L_G(q)^{d-2}$,
+  and some $z$ in it makes both nonzero
+  (\cref{lem:pencil-x0-fibre-intersection}). The restriction $z_i$ of $z$
+  to $V_i$ lies in $L_{G[V_i]}(q)^{d-2}$ (part~(1) of
+  \cref{lem:pencil-d-lifting-restrict}), and $R_i(z_i) = R_i'(z) \neq 0$.
+  So $G[V_i]$ has its target at $(q, z_i)$, and hence at $(q, z)$, by
+  part~(2) of the same lemma.
+
+  \emph{The count.} At $(q, z)$ the rank of $G$ is the sum of the ranks of
+  $G[V_1]$ and $G[V_2]$ (\cref{lem:block-rank-cut-vertex}), a lemma on
+  body-hinge frameworks in every dimension. As $G$ has no loop,
+  $\operatorname{def}_d(G) = \operatorname{def}_d(G[V_1]) +
+  \operatorname{def}_d(G[V_2])$ (\cref{lem:deficiency-cut-vertex}, at
+  $D$). As $|V_1| + |V_2| = |V(G)| + 1$,
+  \[
+    \operatorname{tgt}_d(G[V_1]) + \operatorname{tgt}_d(G[V_2])
+    \;=\; D(|V_1| + |V_2| - 2) - \operatorname{def}_d(G[V_1])
+    - \operatorname{def}_d(G[V_2])
+    \;=\; \operatorname{tgt}_d(G).
+  \]
+  So $(q, z)$ has rank $\operatorname{tgt}_d(G)$, with $q$ a main picture
+  of $G$ and $z \in L_G(q)^{d-2}$. As $G$ is connected, it has a body, and
+  \cref{lem:pencil-d-x0-one-witness} applies.
+
+  At $d = 3$ this is \cref{thm:pencil-x0-cut}. There the dimension enters
+  in two places: the height is one vector of $L_G(q)$, and the target is
+  $6(|V(G)| - 1) - \operatorname{def}_3(G)$. In dimension $d$ the heights
+  form a tuple, which restricts and extends height by height, since
+  $L_G(q)^{d-2}$ is the product of $d - 2$ copies of $L_G(q)$. The two
+  open conditions are polynomials on this one linear space, so they still
+  meet. The rank identity and the deficiency identity hold at every $D$,
+  so the count closes with $D$ in place of $6$.
+\end{proof}
+
+\begin{theorem}[A chain of bridges, in every dimension]
+  \label{thm:pencil-d-bridge}
+  \uses{def:pencil-d-x0-attains, def:pencil-x0-standing}
+  Let $K$ be infinite and $d \ge 3$, and let $G$ satisfy the standing
+  hypotheses. Let $V(G)$ be the disjoint union of $V_1$, $V_2$ and path
+  bodies $x_1, \dots, x_k$ ($k \ge 0$), with a path
+  $a - x_1 - \cdots - x_k - b$ from $a \in V_1$ to $b \in V_2$, every
+  other edge of $G$ lying inside $V_1$ or inside $V_2$. If the general
+  configurations of $G[V_1]$ and $G[V_2]$ attain in dimension $d$, then
+  the general configuration of $G$ attains in dimension $d$.
+\end{theorem}
+\begin{proof}
+  \uses{lem:pencil-d-lifting-restrict, lem:pencil-bridge-fibre,
+        lem:block-rank-cut, lem:cut-edge-decomposition,
+        lem:pencil-d-config-realization, def:panel-support-extensor,
+        lem:pencil-x0-fibre-intersection, lem:pencil-x0-main-picture-open,
+        lem:pencil-d-x0-one-witness}
+  We find $q$ and $z$ as in the proof of \cref{thm:pencil-d-cut}, with
+  \cref{lem:pencil-bridge-fibre} for the restrictions, applied to each
+  height. For $G[V_2]$ we apply it from $b$, along the reversed path. So
+  $q$ is a main picture of $G$, $z \in L_G(q)^{d-2}$, and $G[V_1]$ and
+  $G[V_2]$ have their targets at $(q, z)$. As at $d = 3$, we count the
+  ranks and the deficiencies along the whole path at once. Applying the
+  step one bridge at a time would ask a graph whose only body is a path
+  body to attain, and no picture of such a graph is admissible.
+
+  Every hinge of the configuration $(q, z)$ is nonzero. Indeed, $q$ is
+  admissible and $z \in L_G(q)^{d-2}$, so the points $b_u$ and $b_v$ at
+  the ends of each edge are linearly independent
+  (\cref{lem:pencil-d-config-realization}). Then
+  $C(b_u, b_v) \neq 0$ (\cref{def:panel-support-extensor}).
+
+  Let $x_0 = a$ and $x_{k+1} = b$, and write
+  $S_j = V_1 \cup \{x_1, \dots, x_j\}$ for $0 \le j \le k$. Each $S_j$
+  contains $a$ and not $b$. An edge of $G$ inside $V_1$ lies inside
+  $S_j$, and an edge inside $V_2$ avoids $S_j$. The path edge
+  $x_i x_{i+1}$ has exactly one end in $S_j$ when $i = j$, and otherwise
+  none or two. So $x_j x_{j+1}$ is the only edge of $G$ leaving $S_j$.
+
+  \emph{The ranks}, all at $(q, z)$. The edge $x_k x_{k+1}$ is the only
+  edge between $S_k$ and $V(G) \setminus S_k = V_2$. So the rank of $G$
+  is at least the sum of the ranks of $G[S_k]$ and $G[V_2]$ and $D - 1$
+  (\cref{lem:block-rank-cut}). For $j < k$ the edge $x_j x_{j+1}$ joins
+  $S_j$ to $x_{j+1}$, so the rank of $G[S_{j+1}]$ is at least the rank of
+  $G[S_j]$ plus $D - 1$, by the same lemma. Hence the rank of $G$ is at
+  least
+  \[
+    \operatorname{tgt}_d(G[V_1]) + \operatorname{tgt}_d(G[V_2])
+    + (D - 1)(k + 1).
+  \]
+
+  \emph{The deficiencies.} The graph $G$ has no loop. For $j < k$ the only
+  edge leaving $S_j$ joins it to $x_{j+1}$, so
+  $\operatorname{def}_d(G[S_{j+1}]) = \operatorname{def}_d(G[S_j]) + 1$
+  (part~(3) of \cref{lem:cut-edge-decomposition}). The single edge between
+  $S_k$ and $V_2$ gives
+  \[
+    \operatorname{def}_d(G) \;=\; \operatorname{def}_d(G[S_k])
+    + \operatorname{def}_d(G[V_2]) + D - (D - 1)
+  \]
+  (part~(1) of the same lemma). So
+  $\operatorname{def}_d(G) = \operatorname{def}_d(G[V_1]) +
+  \operatorname{def}_d(G[V_2]) + k + 1$. As
+  $|V(G)| - 1 = (|V_1| - 1) + (|V_2| - 1) + (k + 1)$, the term
+  $D(|V(G)| - 1)$ exceeds the sum of those of the two sides by $D(k + 1)$,
+  and
+  \[
+    \operatorname{tgt}_d(G) \;=\; \operatorname{tgt}_d(G[V_1]) +
+    \operatorname{tgt}_d(G[V_2]) + (D - 1)(k + 1).
+  \]
+  So $(q, z)$ has rank at least $\operatorname{tgt}_d(G)$. As $G$ has a
+  body, \cref{lem:pencil-d-x0-one-witness} applies.
+
+  At $d = 3$ this is \cref{thm:pencil-x0-bridge}. There the dimension
+  enters in the rank that a bridge adds, $D - 1 = 5$, and in the target,
+  through $6(|V(G)| - 1)$. The rank addition at a cut edge and the
+  deficiency at a cut of one edge hold at every $D$, so in dimension $d$
+  each bridge adds $D - 1$ to the rank bound and to the target alike. The
+  hinges are nonzero in every dimension. The first, second and last
+  coordinates of the points of two adjacent bodies are their homogeneous
+  picture points, which are distinct with last coordinate $1$, and so
+  independent. The heights restrict and extend height by height, as at a
+  cut vertex.
+\end{proof}
