@@ -601,3 +601,88 @@ bodies (`partitionDef`, `bodyBarDim`, `infinitesimalMotions` and the hinge row b
 - The new edge `ab` needs a label outside `E(G[V₁])`; an ear label can be reused.
 - `exists_mvPolynomial_le_finrank_ofNormals_bind` is stated at `k := 2` only, so it needs a `k := 1`
   sibling.
+
+## S25 — review 1: S19–S21 read, the carrier checked, the PI's ruling (2026-10-30)
+
+**Review.** `/review-attack short-core` after session 2, by a fresh reader. It read S19–S21 by hand,
+which no one had, and spot-checked S1, S6–S8, S14 and S16. **No break found.**
+- S19 (c): both cases of I1, and I2's three cases, with `x₂ = y₁` when `W = Λ²V`.
+- S20: (⋆) and `dim W ≥ k + f − def(G'')` come out of the ear rank formula at `D = 10` as at `D = 6`.
+  Step 4's `min` closes by `f + k + 1 − 10 ≤ def(G)`.
+- S21, one neighbour: every closed neighbourhood of `G''` holding `x₁` has three members, so `z_{x₁}`
+  is free and moves `la`, and `x₁ ∉ N_{G''}[b]` at `k ≥ 3`, so `lb` stays. Two or more: the
+  restriction onto `L_{G[V₁]}`, then `ρ⁽²⁾ = 0` and S16.
+- The Lean S19 reads is general: `finrank_span_rigidityRows_ear_eq` (`Ear.lean:296`) at every grade;
+  `splitOff_deficiency_le_of_eq_left` and `deficiency_induce_add_le_of_ear` at every `n` with
+  `1 ≤ bodyBarDim n`. S15's theorem takes `hd : 2 ≤ n`, so `n = 2` is in range.
+
+**The carrier.** PD-STATE (Phase 42b, opened on master 2026-10-30) has laid it.
+`def:pencil-d-x0-attains` takes heights in `L(q)^{d−2}`, with `b_v = (x_v, y_v, z¹_v, …, 1)`
+(`def:pencil-d-configuration`, Lean `pencilConfigPointGrade`; planned `X0AttainsGrade K m G`), and
+`lem:pencil-d-config-realization` takes `Π_v` to be the span of the points of `N[v]`. So S9 (i)'s
+`L = L₁(q)²` is the definition at `d = 4`, and S9, S16 and S21 read the carrier as it stands.
+
+**A shorter formal route for S15.** `Graph.exists_mvPolynomial_finrank_liftingSpace_eq`
+(`Bridge.lean:350`, `thm:pencil-jj-equality`, formalized) gives `dim L(q) = 3 + def₂` at pictures off
+a nonzero polynomial. It needs a simple graph whose closed neighbourhoods all have three or more
+members, and it has no `V(G) = Set.univ`. Apply it to `G[V₁] + ab` in S16's setting, where every
+body has two or more neighbours. Through S9 (ii)'s bijection between `L₁(q)` and the `P²` motions,
+it is S15's conclusion. It retires S24's subtype cost; the label for `ab` remains.
+
+**Figures.** Re-run in this worktree, all reproduce exactly: S17 at seeds 1–3, S18, S23, S12
+(`adversarial_rho.py 1 15`), and `tangent_check.py --seed 1 --trials 20`.
+
+**Wording.** S18 and S23 say a draw "certifies `κ ≤` its value at general base data". The direction
+meant, and the one their conclusions use, is that `κ` at general base data is at most the drawn
+value, since `κ` is upper semicontinuous. `t3_kappa.py`'s docstring has it right.
+
+**The PI's ruling.** **PI, 2026-10-30:** "1. Accepted." That is review 1's first move:
+- The statement is brief §3 at base data general in S21's sense: (P) and (B).
+- `d = 4` stands as claimed proved, read by three readers (S12, S24, this one).
+- For PD-STEPS: the `P⁴` step at `k = 3` takes `hins` restricted to (P) and (B). The `P⁴` reading of
+  `Graph.exists_earBase_splitOff` delivers them by S21's two additions. `k = 4, 5` keep the every-`ρ`
+  `hins` (S7, S8).
+
+## S26 — at `k = 3` the every-`ρ` form fails wherever `κ ≥ 7 − d` (review 1)
+
+**Statement.** Let `d ≥ 4`, `k = 3`, `V = K^{d+1}`, and let `Π_a`, `Π_b` be 3-dimensional, with
+`κ = dim(Π_a ∩ Π_b)`, `p_a ∈ Π_a` and `p_b ∈ Π_b`. Put `H = Π_a + Π_b`, of dimension `6 − κ`, and
+`ρ = H∧V = span{h∧v : h ∈ H}`.
+(i) At every ear datum, `W(y) = ρ ⊇ S(y)`, and `dim W = C(d + 1, 2) − C(d − 5 + κ, 2)`. So `W` is
+proper exactly when `κ ≥ 7 − d`: `κ = 3` at `d = 4` (S2's `ρ`), `κ ≥ 2` at `d = 5`, `κ ≥ 1` at
+`d = 6`, and every `κ` at `d ≥ 7`. There the every-`ρ` form of SHORT-CORE fails, and no argument
+valid for every `ρ` closes the cell. That includes every choice of curves in S6's tangent lemma
+(S6, S22).
+(ii) Let `ρ` be the actual relative-screw space of `G[V₁]` at a configuration of `def:pencil-d-configuration`,
+let `P : V → V/E ≅ K³` forget the heights, and let `ρ⁽²⁾ ⊆ Λ²K³` be the `P²` relative motions of
+`a, b` (S9, in S14's form). Then `Λ²P(ρ) ⊆ ρ⁽²⁾`, at every `d`. S10 is the case `ρ⁽²⁾ = 0`.
+(iii) `Λ²P(H∧V) = Λ²K³`. So when `r := dim ρ⁽²⁾ ≤ 2`, the actual `ρ` is not `H∧V`, and contains no
+`Λ²Π_a`. At general base data with `d ≥ 5`, and `a`, `b` each with two or more neighbours in `V₁`
+(S9's setting), `κ = 3 − r`, so `κ ≥ 7 − d` reads `r ≤ d − 4`. Then (ii)
+excludes S26's `ρ` throughout its range at `d = 5, 6`, and at `d ≥ 7` for `κ ≥ 1`. It does not at
+`d ≥ 7`, `κ = 0` (`r = 3`). It excludes one `ρ`, not the cell: the failing `ρ` are not classified
+here, as S5 classified them at `d = 4`, `κ = 3`.
+
+**Proof.** (i) `p_a, y₁ ∈ Π_a` and `y₃, p_b ∈ Π_b` lie in `H`, so the three joins lie in `ρ`. Also
+`star(y) = y∧V ⊆ ρ` for `y ∈ H`. So `W = ρ ⊇ S(y)`. `H∧V` is the kernel of the onto map
+`Λ²V → Λ²(V/H)`, and `dim V/H = d − 5 + κ`, which gives `dim W`. It is less than `C(d + 1, 2)` iff
+`d − 5 + κ ≥ 2`. An argument valid for every `ρ` would prove the every-`ρ` statement, which this `ρ`
+refutes.
+(ii) `P` sends `b_v` to `q̂_v`, so `Λ²P` sends each hinge `b_u∧b_v` to `q̂_u∧q̂_v`. So `Λ²P ∘ S` is a
+`P²` motion for each motion `S` of `G[V₁]`. Take `S(b) − S(a)`. This is S10's proof, which reads no
+dimension.
+(iii) `Π_a` is the graph of `la` over `K³`: the configuration keeps `x`, `y` and the last coordinate.
+So `P` maps `Π_a` isomorphically onto `K³`, and `Λ²P(Λ²Π_a) = Λ²K³`, with `Λ²Π_a ⊆ H∧V`. For `κ`:
+`la − lb = (λ¹_a − λ¹_b, …, λ^{d−2}_a − λ^{d−2}_b)` at `d − 2` general `P²` motions (S9 (iii), read
+at `d − 2` heights). Its rank is `min(d − 2, r) = r`, because `r ≤ 3 ≤ d − 2`. ∎
+
+**Control.** `python3 notes/attacks/short-core/drivers/every_rho.py --seed 1` and `--seed 2`
+(exit 0). It covers `d = 4, …, 7`, each feasible `κ`, three draws each, with each plane a graph over
+the picture. (i)–(iii) hold at every draw, with no degenerate draw. The `d = 4`, `κ = 3` rows have
+`dim W = 9`, S2's `ρ`. The draws vary the planes and the four points. The proof is the hand
+argument above; the script only checks it.
+
+**For the secondary target.** At `k = 3`, split by `r` rather than `κ`. Where `r ≥ d − 3`, curves
+may still work (S22): at `d = 5` that is `r ≥ 2`, and at `d = 6` it is `r = 3`. Where `r ≤ d − 4`,
+the proof must use the actual `ρ`, starting from (ii). At `d ≥ 7`, `r = 3`, (ii) says nothing, and the
+input it needs there is not yet named.

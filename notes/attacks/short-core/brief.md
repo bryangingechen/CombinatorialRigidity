@@ -1,5 +1,8 @@
 > **Session 1 started on the PI's word, 2026-10-29; §3's reduction sentence and §5's O1 and O2
-> corrected that day on the PI's direction, after session 1's consumer diff (workbook S2).**
+> corrected that day on the PI's direction, after session 1's consumer diff (workbook S2).
+> Re-aimed at review 1, 2026-10-30, on the PI's word (workbook S25): §3 takes base data general
+> in S21's sense, §6 makes the secondary target the next deliverable, and §1's carrier and the
+> Lean paths are brought up to date.**
 > Written 2026-10-29 by an agent (Claude
 > Opus 5.5) against the tree at `fa295157`, from the owning sections: `notes/Phase42-design.md`
 > §2.1 rows 12–13, §2.3 SHORT and §2.4 T3; `notes/Strata.md` Result 24; the short-ear subsection
@@ -25,9 +28,11 @@ the coverage fails, for instance at the Petersen graph with every edge a 4-path.
 
 ## 1. The consumer
 
-No `Pᵈ` declaration exists yet. PD-STATE, the next sub-phase, lays the `Pᵈ` carrier, and the step
-that consumes this lemma belongs to PD-STEPS. The model is Phase 40's `P³` step
-`Graph.X0Attains.of_openEar_three` (`Molecule/Pencil/MainComponent/Short.lean`; `k = 4` is
+PD-STATE (Phase 42b, on master) lays the `Pᵈ` carrier: `def:pencil-d-x0-attains` in
+`blueprint/src/chapter/pencil-d.tex` (planned `X0AttainsGrade K m G`), heights in `L(q)^{d−2}`.
+The step that consumes this lemma belongs to PD-STEPS. The model is Phase 40's `P³` step
+`Graph.X0Attains.of_openEar_three`
+(`CombinatorialRigidity/Molecular/Molecule/Pencil/MainComponent/Short.lean`; `k = 4` is
 `of_openEar_four`, and both run through `Graph.X0Attains.of_openEar_splitOff`). Its hypotheses, one
 per line (Lean names the interior bodies `x 0, x 1, x 2`; the prose writes `x₁, x₂, x₃`):
 
@@ -87,12 +92,15 @@ argument of `exists_insertion_gain` uses no dimension.
 
 **SHORT-CORE (X3 at `d = 4`, `k = 3, 4, 5`).** Let `G` satisfy the standing hypotheses, with an
 open ear `a − x₁ − ⋯ − x_k − b` on `V₁`, `3 ≤ k ≤ 5`, and let `G''` be `G` with `x₂` suppressed.
-Over base data at which `G[V₁]` and `G''` attain in `P⁴`, at a general ear datum:
+Over base data at which `G[V₁]` and `G''` attain in `P⁴`, general in the sense of workbook S21
+((P) `p_a` and `p_b` independent; (B) `la ≠ lb`, or `ρ ⊆ Λ²Π_a`), at a general ear datum:
 
 > if `W ⊇ star(y₁) + star(y₃)`, then `W = Λ²K⁵`.
 
 With it, the `P⁴` step at these `k` follows by the `P³` scheme, though not through the `P³`
-factoring verbatim, whose insertion hypothesis ranges over every subspace `ρ` (O1 below). It is needed only at
+factoring verbatim, whose insertion hypothesis ranges over every subspace `ρ` (O1 below). The step
+chooses its own base data and can meet (P) and (B) (S20, S21), so the form at every attaining base
+datum is not needed. It is needed only at
 **danger cells**, where `f > def[D](G) = def[D](G'')` and `7 ≤ dim W ≤ 9`. Elsewhere (⋆) closes
 without it:
 - when `def[D](G'') < def[D](G)`, by the count;
@@ -193,7 +201,9 @@ The deliverable is a proof of §3 at `d = 4` by hand, landed in the workbook as 
 seeded and exact, and reuse `notes/scripts/strata/` read-only.
 
 The secondary target is a `d`-general argument, `3 ≤ k ≤ C(d − 1, 2) + 2`, checked on T3's 126
-cells at `d = 5`. The every-`d` tier needs it; report `d = 4` first.
+cells at `d = 5`. The every-`d` tier needs it, and with `d = 4` reported it is the next
+deliverable. At `k = 3` its statement names the actual `ρ` wherever `κ ≥ 7 − d`, where the
+every-`ρ` form fails (workbook S26), as at `d = 4`, `κ = 3`.
 
 A counterexample is also a result: a danger cell where `W` holds both stars and is proper at
 general data, certified exactly. It would redirect the coverage, not the conjecture, since T3's
@@ -215,7 +225,9 @@ PENCIL-D does not use.
   interior bodies (`thm:pencil-x0-open-ear-three`, `-four`; `lem:pencil-two-stars`,
   `lem:pencil-bilinear`, `lem:pencil-insertion`, `def:pencil-ear-data`); the ear rank formula
   `lem:block-rank-ear` and `def:relative-screws` in `rigidity-matrix.tex`.
-- Lean (read as text): `Molecule/Pencil/MainComponent/Short.lean` (`of_openEar_three`, `-four`,
-  `-splitOff`, `exists_insertion_three`); `Carrier.lean` (`Graph.X0Attains`); `Cut.lean`
-  (`Graph.IsX0Graph`).
+- Lean (read as text), under `CombinatorialRigidity/Molecular/Molecule/Pencil/MainComponent/`:
+  `Short.lean` (`of_openEar_three`, `-four`, `-splitOff`, `exists_insertion_three`);
+  `Carrier.lean` (`Graph.X0Attains`); `Cut.lean` (`Graph.IsX0Graph`); `Bridge.lean`
+  (`Graph.exists_mvPolynomial_finrank_liftingSpace_eq`, `thm:pencil-jj-equality`).
+- The `Pᵈ` carrier: `blueprint/src/chapter/pencil-d.tex` and `notes/Phase42b.md`, on master.
 - Driver: `notes/scripts/strata/strata.py` (`short_danger`, `short_cell`, `mode_short`).

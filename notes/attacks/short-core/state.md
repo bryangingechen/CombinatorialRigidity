@@ -1,73 +1,71 @@
 # Attack short-core — state
 
-Sessions so far: 2 · last session: 2026-10-30 · baseline HEAD: 3b6dd7e9
+Sessions so far: 2 · last session: 2026-10-30 · baseline HEAD: 3b6dd7e9 · review 1: 2026-10-30 (S25)
 
 ## Statement <!-- budget 10 -->
-SHORT-CORE (brief §3), for the `P⁴` analogue of `Graph.X0Attains.of_openEar_three` / `-four` (`k = 5` has
-no `P³` model). `d = 4`, `V = K⁵`, `3 ≤ k ≤ 5`. Hypotheses: `hG`; the open ear on `V₁` (`hcover hinj hxV₁
-ha hb hab hpath hsep`, edge `ab` allowed); `h₁`, `h₂` read in `P⁴`; `ρ = relScrews a b` of `G[V₁]`.
-Conclusion: at general ear data, `W ⊇ star(y₁) + star(y₃)` implies `W = Λ²V`. It differs from the brief
-in two ways. (1) `ρ` is the actual relative-screw space, because the every-`ρ` form is false (S2).
-(2) The base data are general (S21: (P) `p_a ∦ p_b`, and (B) `la ≠ lb` or `ρ ⊆ Λ²Π_a`), not every attaining
-datum; the step's own choice of base data meets this. Unused hypotheses:
+SHORT-CORE (brief §3, as restated at review 1 on the PI's word), for the `P⁴` analogue of
+`Graph.X0Attains.of_openEar_three` / `-four` (`k = 5` has no `P³` model). It concludes PD-STATE's
+`def:pencil-d-x0-attains` at `d = 4` (planned `X0AttainsGrade K 2`). `V = K⁵`, `3 ≤ k ≤ 5`. Hypotheses:
+`hG`; the open ear on `V₁` (`hcover hinj hxV₁ ha hb hab hpath hsep`, edge `ab` allowed); `h₁`, `h₂` read
+in `P⁴`; `ρ = relScrews a b` of `G[V₁]`; base data general in S21's sense ((P) `p_a ∦ p_b`, (B) `la ≠ lb`
+or `ρ ⊆ Λ²Π_a`), which the step's own choice meets. Conclusion: at general ear data,
+`W ⊇ star(y₁) + star(y₃)` implies `W = Λ²V`. The every-`ρ` form is false (S2); the form at every
+attaining base datum is open and unused. Unused hypotheses:
 - `hG`: it enters only S20's main-picture polynomial.
 - the danger numbers: S20 proves the implication at every base datum with (P) and (B).
 
 ## Current route and proof sketch <!-- budget 30 -->
-**`d = 4`: claimed proved by hand (S1–S21).** S14–S16 were read independently and confirmed (S24); S19–S21
-were not. Annihilator form first (S1), then per cell:
-- `k = 4, 5`: tangent lemma, every `ρ`, every `κ` (S7, S8; read independently in S12).
+**`d = 4`: claimed proved by hand (S1–S21), read by three readers: S6–S8 (S12), S14–S16 (S24),
+S19–S21 (S25).** Annihilator form first (S1), then per cell:
+- `k = 4, 5`: tangent lemma, every `ρ`, every `κ` (S7, S8).
 - `k = 3`, `κ ≤ 2`: tangent lemma, every `ρ` (S6, existence corrected in S12).
-- `k = 3`, `κ = 3`: at general base data `ρ ⊆ Λ²Π_a`, so `dim W ≤ 3` (S16).
-  - `κ = 3` forces `a`, `b` to be relatively rigid in the `P²` framework (S9).
-  - The project's 2D rank theorem (`finrank_span_rigidityRows_of_isGenericNormals`, `n = 2`; S15) holds
-    at `G[V₁] + ab`. With it, a partition argument gives a connected rigid `X ∋ a, b` (S14).
-  - `X`'s points lie in `Π`.
-- The step (S20): `of_openEar_splitOff` at `D = 10`.
-  - The ear rank formula and the deficiency bounds are stated at every grade (S19 (a), (b)).
-  - The insertion is proved by hand in `Λ²K⁵` (S19 (c)).
-  - `hins` is restricted to base data with (P) and (B), which the base data supply (S21).
-- Controls: `p2_path.py` (S17); `t3_kappa.py` (S18: no T3 danger cell has `κ = 3`).
-- Formal ports are PD-STATE's and PD-STEPS': the `P⁴` carrier, `earConfig`, the grade-3 polynomial
-  lemmas, and S15 on a subtype.
+- `k = 3`, `κ = 3`: at general base data `ρ ⊆ Λ²Π_a`, so `dim W ≤ 3` (S16, by S9, S14, S15).
+- The step (S20): `of_openEar_splitOff` at `D = 10`, the insertion by hand in `Λ²K⁵` (S19), and `hins`
+  restricted to (P) and (B), which the base data supply (S21).
+- Controls: `p2_path.py` (S17); `t3_kappa.py` (S18: no `κ = 3` among T3's 72 capped cells).
+- Formal ports, PD-STATE's and PD-STEPS': `earConfig` and the polynomial lemmas at grade 3, the `P⁴`
+  base-data producer with S21's additions, and S15 by `thm:pencil-jj-equality` (S25).
 
-**Secondary target: every `d`, `3 ≤ k ≤ C(d − 1, 2) + 2`.** S22: at `k = 3`, S6's curves force
-`ker M ⊆ p̄_a∧p̄_b∧Λ^{d−5}Q`. S23: in SHORT's range at `d = 5`, T3's cells all have `κ = 0`.
+**Secondary target: every `d`, `3 ≤ k ≤ C(d − 1, 2) + 2`** (brief §6). Write `r = dim ρ⁽²⁾` for the
+`P²` relative motions of `a, b`. At general base data and `d ≥ 5`, `κ = 3 − r` (S26 (iii)). At `k = 3`
+the every-`ρ` form fails wherever `κ ≥ 7 − d`, that is `r ≤ d − 4` (S26 (i)). There the proof must use
+the actual `ρ`, starting from `Λ²P(ρ) ⊆ ρ⁽²⁾` (S26 (ii), S10 at every `d`).
 
-Open obligations (3, all of the secondary target):
-- **G1** `k = 3`, `κ ≤ 2`, `d ≥ 5`. At `d = 5` a third curve closes `κ = 0` (S22, a sketch); `κ = 1, 2`
-  remain.
+Open obligations (3), each consumed by the `Pᵈ` step's `hins` at `d ≥ 5` (PD-STEPS, brief §6):
+- **G1** `k = 3`, `d ≥ 5`, `1 ≤ r ≤ 3`. Curves (S22) where `r ≥ d − 3`: at `d = 5`, `r = 3` closes by
+  S22's third curve (a sketch), and `r = 2` does when `p_b ∉ Π_a`. Provenance where `r ≤ d − 4`:
+  `d = 5`, `r = 1`; `d = 6`, `r ≤ 2`; `d ≥ 7`, every `r`.
 - **G2** `4 ≤ k ≤ C(d − 1, 2) + 2`, `d ≥ 5`: S7 and S8's curves through S22's divisibility.
-- **G3** `κ = 3` at every `d`: S9 with `d − 2` heights (`κ = 3 − min(d − 2, dim ρ⁽²⁾)`), then S14–S16.
-
-Each is consumed by the `Pᵈ` step's `hins` at `d ≥ 5` (PD-STEPS, brief §6's every-`d` tier).
+- **G3** `r = 0` (`κ = 3`) at every `d`: S14–S16 with `d − 2` heights give `ρ ⊆ Λ²Π`.
 
 ## Where it breaks <!-- budget 10 -->
-At `d = 4`, nowhere known: the break is now the review of S14–S21. The first open step of the
-secondary target is `d = 5`, `k = 3`, `κ = 2`. S22 leaves `y₁∧y₃∧p_a∧p_b ∈ R` at a failing datum. The
-third curve `(y₁ + tu, y₃)`, `u ∈ Π_a`, then needs `Π_a ∩ ⟨y₃, p_b⟩ = 0`. That fails at `κ = 2`, where
-every 2-plane `⟨y₃, p_b⟩ ⊂ Π_b` meets the 2-plane `Π_a ∩ Π_b`. The candidates are a curve moving
-`y₃` off `p_b`'s plane, or `ρ`'s provenance as in S16, which `κ = 2` at `d = 5` may also force
-(`dim ρ⁽²⁾ = 1`). T3 holds no such cell in range (S23).
+At `d = 4`, nowhere known (three readings: S12, S24, S25). The first open step of the secondary
+target is `d = 5`, `k = 3`, `r = 1` (`κ = 2`). There S22's curves leave `y₁∧y₃∧p_a∧p_b ∈ R`, and no
+curve can finish: `ρ = (Π_a + Π_b)∧V` holds both stars with `W` proper (S26 (i)). The actual `ρ` has
+`Λ²P(ρ) ⊆ ρ⁽²⁾`, a line in `Λ²K³` (S26 (ii)). That rules out S26's `ρ` but not the cell. The open
+step: from `Λ²P(ρ) ⊆ ρ⁽²⁾` and failure `0 ≠ R ∩ J° ⊆ T` (S1 read at `d = 5`), reach a contradiction.
+Or find S16's analogue: a partition argument, as in S14, for a `P²` framework in which the relative
+motions of `a, b` form a line. T3 holds no such cell in range (S23).
 
 ## Tried on this route, and what each rules out <!-- budget 10 -->
-- The every-`ρ` form at `κ = 3`, `k = 3` (S2, S5). It rules out `ρ = Π∧V`, and any `ρ` with
+- The every-`ρ` form at `κ = 3`, `k = 3`, `d = 4` (S2, S5). It rules out `ρ = Π∧V`, and any `ρ` with
   `ρ + Λ²Π = Π∧V`. This is why `hins` at `k = 3` takes (B) (S20).
-- The tangent lemma alone at `κ = 3`, `k = 3`: retired to `log.md`. S16 closes the cell instead.
+- Arguments valid for every `ρ` at `k = 3`, `κ ≥ 7 − d` (S26, review 1). `ρ = (Π_a + Π_b)∧V` fails,
+  which rules out S22's third curve, and any curve moving `y₃`, at `d = 5`, `κ = 2` (`log.md`).
+- The tangent lemma alone at `κ = 3`, `k = 3`, `d = 4`: retired to `log.md`. S16 closes the cell.
 
 ## Next steps <!-- budget 5 -->
-1. `/review-attack` on S19–S21, with S14–S16 already read (S24). It is a milestone: `d = 4` is claimed
-   proved. Then the PI rules on the statement change (general base data).
-2. G1 at `d = 5`: write the third curve as a result, then attack `κ = 1, 2` at `k = 3`.
-3. G2 at `d = 5`, `k = 4`: S7's curves read through S22. Check them on T3's `d = 5` cells.
+1. Existence first. Build, exactly, a `d = 5`, `k = 3` danger cell with `r = 1`, or show that no such
+   cell is a danger cell (a partition argument, as in S14). T3's search holds none (S23, `SHORT_PER = 2`).
+2. G1 at `d = 5`, `r = 1` by provenance from S26 (ii). Write S22's third curve as a result (`r ≥ 2`).
+3. G2 at `d = 5`, `k = 4`: S7's curves read through S22, checked on T3's `d = 5` cells.
 
 ## Worries <!-- budget 5 -->
-- S9, S16 and S21 read the `P⁴` configuration (closed neighbourhoods span ≤ 3, `L = L₁²`) from the brief
-  and Strata Result 13, not from a Lean carrier. If PD-STATE's carrier differs, they must be re-derived.
-- S15's citation needs `V(G) = Set.univ`, but `G[V₁] + ab` lives on a subtype. The transport is believed
-  routine (S24 lists this and two smaller formal costs).
-- The brief's every-attaining-datum form is open and unused; a consumer fixing base data would need it.
+- `d ≥ 7`, `r = 3`: S26 (ii) says nothing there, so S26's `ρ` is not excluded; the input needed is unnamed.
+- S9 (iii) at `d − 2` heights (`κ = 3 − r` for `d ≥ 5`) is S9's proof read at more heights, not written
+  out as its own result. S26 (iii) uses it.
+- S15 by `thm:pencil-jj-equality` still needs a label for the edge `ab` (S24, S25).
 
 ## Signals <!-- budget 2 -->
-- Sessions since "Where it breaks" last changed: 0 (it moved from O3(3,3), closed by S16, to G1)
-- Open obligations: 3 (`d = 4`'s six fell to 0 this session; the three are the secondary target's, new)
+- Sessions since "Where it breaks" last changed: 0 (session 2 moved it to `d = 5`, `k = 3`, `κ = 2`; review 1 struck its curve candidate, S26)
+- Open obligations: 3 (trend: 6 → 3 over sessions 1–2, `d = 4`'s six closed; review 1 re-split G1 by `r`, count unchanged)
