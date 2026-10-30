@@ -984,3 +984,137 @@ after it started and was not read.
   perturbations), with no failure. `ρ = H∧V` failed at `k = 3`, `κ ≥ 7 − d` (6 of 6) and not at `k = 4`.
 - The sharpest attack on S35 at `d = 5`, `k = 4`: `ρ = (T ∩ J°)(y⁰)°`. It fails only at `y⁰ ∉ U₁`, and at
   none of 1200 fresh ear data.
+
+## S39 — session 4's consumer diff: no mismatch; the conclusion is now Lean (session 4, 2026-10-30)
+
+Read against this worktree at `3c55436e` and master at `bb43a5b6`. `Short.lean`, `Carrier.lean` and
+`Cut.lean` are unchanged since S27, so S13's diff of `of_openEar_three` and `-four` stands. Master has
+landed the `Pᵈ` conclusion: `Graph.X0AttainsGrade K m G` (`Pencil/Grade/Carrier.lean`,
+`def:pencil-d-x0-attains`, green), with `m = d − 2` heights. From its body: a selector `ends`
+recording every link, a nonzero `P` in the picture, and for each `q` off `P` admissibility and some
+`R` in the heights, nonzero somewhere on `L(q)^m` (`Graph.liftingSpaceGrade`, each column in
+`Graph.liftingSpace q`), such that every `z ∈ L(q)^m` off `R` gives the rows of
+`ofNormals (k := m + 1)` at `pencilConfigPointGrade q z = (q_v, z_v, 1)` rank
+`screwDim (m + 1)·(|V| − 1) − G.deficiency (m + 2)`. `screwDim (m + 1) = C(d + 1, 2) = D` and
+`deficiency (m + 2)` has `bodyBarDim d = D`, so the target is `D(|V| − 1) − def[D](G)`: brief §1's
+reading, at `d = 4` `10(|V| − 1) − def[10](G)`. `Graph.x0AttainsGrade_one_iff` ties `m = 1` to
+`Graph.X0Attains`. The case decomposition of brief §3 is unchanged (no hypothesis moved).
+
+## S40 — Case 2's quotient: `ρ` modulo `H∧V` is read off a pinned `Ē`-valued `P²` motion (session 4)
+
+**Setting.** `d ≥ 5`, a `k = 3` danger cell, base data general in S21's, S31's and S33's senses, so
+`κ = 0` and every maximiser of S29 is in Case 2 (S31 (b), S33). Fix one; `P*` is its refinement (S29),
+with parts `C_a ∋ a`, `C_b ∋ b` and others. `E = ker P`, the `d − 2` height directions, so
+`V = K³ ⊕ E` and `b_v = (q̂_v, Λ_v q̂_v)`, where `Λ_v = (λ¹_v, …, λ^{d−2}_v) : K³ → E` collects the `P²`
+motions `λⁱ` of `G''` of the `d − 2` base heights (S9 (ii), every body of `G''` of degree ≥ 2).
+**Statement.**
+(i) Each part `X` of `P*` induces a connected subgraph; `Q := F/P*` is simple; no edge joins `C_a` to
+`C_b`.
+(ii) Every `Pᵈ` motion of `F` (any heights over `q`) is constant on each part of `P*`.
+(iii) `Λ` is constant on each part, `Λ_X`; every point of `N_F[X]` lies in `Π_X := graph(Λ_X)`, so
+every hinge of an edge meeting `X` lies in `Λ²Π_X`. `Π_{C_a} = Π_a`, `Π_{C_b} = Π_b`.
+(iv) `H = Π_a ⊕ Π_b`, and `θ(x, e) = (e − Λ_a x) mod E_b`, `E_b := im(Λ_b − Λ_a)` (dimension 3), maps
+`V` onto `Ē := E/E_b` (dimension `d − 5`) with kernel `H`. `Λ̄_X := (Λ_X − Λ_a) mod E_b` is a `P²`
+motion of `Q` with values in `Hom(K³, Ē)`, zero on `C_a` and on `C_b`, and `θ(b_v) = Λ̄_X q̂_v` on
+`N_F[X]`.
+(v) Let `M = Λ²P(Z_d(F)) ⊆ Z(F)`, of dimension `3 + f` where `F` attains. For `μ ∈ Z(Q)` and a path
+`C_a = X₀, X₁, …, X_L = C_b` of `Q`, put `Ψ(μ) = Σ_j Λ²Λ̄_{X_j}(μ_{X_j} − μ_{X_{j−1}}) ∈ Λ²Ē`. Then the
+image of `ρ` in `Λ²(V/H) ≅ Λ²Ē` is `Ψ(M)`, on which `Ψ` does not depend on the path.
+So by S34 SHORT-CORE holds at the cell when `Ψ(M) = Λ²Ē`; at `d = 7`, when `Ψ ≠ 0` on `M`.
+
+**Proof.** (i) `val_F(P*) = def(F)` (S29). Splitting a part with `m ≥ 2` components raises `val` by
+`3(m − 1)`; merging two parts joined by `c ≥ 2` edges raises it by `2c − 3 > 0`. `C_a`, `C_b` are
+components of `F[X]` (S29). (ii) `Λ²P∘S ∈ Z(F)` is constant on the parts (S29, Case 2), and S30's edge
+argument (`t·q̂_u∧q̂_v = 0` forces `t = 0`) on the connected parts gives `S` constant there.
+(iii) `λⁱ|_{V₁} ∈ Z(F)` is constant on the parts by S29. For `v ∈ X` and a neighbour `w`,
+`λⁱ_v − λⁱ_w` vanishes at `q̂_w`, so `Λ_w q̂_w = Λ_X q̂_w` and `b_w ∈ Π_X`; `Π_a` is the plane of
+`N_{G''}[a]`, which is `graph(Λ_a)`. (iv) `(x + y, Λ_a x + Λ_b y)` spans `H`, and
+`θ` kills it; `θ` is onto, and `dim H = 6` at `κ = 0`, so `ker θ = H`. `θ(q̂_v, Λ_X q̂_v) = Λ̄_X q̂_v`;
+`Λ̄_{C_b} = (Λ_b − Λ_a) mod E_b = 0`. (v) For an edge `uv`, `u ∈ X_{j−1}`, `v ∈ X_j`, write
+`S_{X_j} − S_{X_{j−1}} = t·b_u∧b_v` by (ii). `Λ²P` gives `μ_{X_j} − μ_{X_{j−1}} = t·q̂_u∧q̂_v`, and
+`Λ²θ(b_u∧b_v) = Λ̄q̂_u∧Λ̄q̂_v = Λ²Λ̄_{X_j}(q̂_u∧q̂_v)` by (iii)–(iv). Sum over the path. `F` is
+connected (`G` is, every component of `F` meets `{a, b}` by `hsep`, and `a`, `b` share one by S3), so
+`ker Λ²P` on `Z_d(F)` is the constants in `E∧V` (S36 (ii)'s argument), and `dim M = D + f − (D − 3)`. ∎
+
+So at `d = 7` the open cell is: a `P²` motion of `Q` that lifts to `P⁷` and has `Ψ ≠ 0`. `M` is cut
+from `Z(Q)` by the cycle conditions `Σ_C ±t_e b_u∧b_v = 0` in `E∧V`; `Ψ` sees only `Λ̄`, which is a
+general element of `Z_{ab}(Q) ⊗ Ē` (`Z_{ab}`: the motions zero on `C_a`, `C_b`), since `Λ − Λ_a`
+splits as a part in `N ⊗ E_b` (`N` a complement of `Z_{ab}` in the motions zero on `C_a`) and an
+independent general part in `Z_{ab} ⊗ E`. But `M` depends on all of `Λ`, `Λ̄` included (the `Λ²Ē`
+part of the cycle conditions is exactly `Ψ`'s path-independence), so no argument may treat `Λ̄` as
+general given `M` (S42).
+
+## S41 — at a danger cell, SHORT-CORE fails exactly when `G` does not attain (session 4)
+
+**Statement.** At a danger cell (`f > def[D](G) = def[D](G'')`, `2d − 1 ≤ dim W ≤ D − 1`) with `G[V₁]`
+and `G''` attaining in `Pᵈ`, every `d ≥ 4`, every `k`: if SHORT-CORE fails at general base and ear
+data, then `G` does not attain (`Graph.X0AttainsGrade K (d − 2) G` is false). Conversely SHORT-CORE
+there gives `G` attaining (brief §3, S20). So SHORT-CORE at a danger cell is the step's conclusion,
+and:
+(a) a counterexample is a graph that fails `def:pencil-d-x0-attains` while `G[V₁]` and `G''` attain,
+not only a gap in the coverage (brief §6 reads it as the latter);
+(b) one configuration of `G` at a main picture (`def:pencil-main-picture`: admissible, `dim L_G(q)`
+least) with heights in `L_G(q)^{d−2}` and rank at least `D(|V| − 1) − def[D](G)` certifies SHORT-CORE at
+that cell. The equivalence is with the generic form of SHORT-CORE (it holds or fails on a dense set,
+the failure locus being constructible on an irreducible data space), not with "off S21's polynomials".
+
+**Proof.** The closed neighbourhoods with four or more members are the same in `G` and `G''`
+(every interior body of either ear has degree 2, so three), so `L_G(q) = L_{G''}(q|) ⊕ K·δ_{x₂}`: a
+configuration of `G` is one of `G''` and a free point for `x₂`. If on a nonempty open set of `G''`'s
+configurations `W ⊇ S(y)` and `W ≠ Λ²V`, then for every `x₂` all `k + 1` joins of `G`'s ear lie in
+`W` (the `k − 1` without `x₂` in `J`, the two at `x₂` in the stars), so `dim(ρ + Λ_G) ≤ dim W = k + f − def(G'') < k + 1 + f − def(G)`,
+and the ear rank formula puts `G` below its target on a nonempty open set of its configurations.
+Over pictures where `dim L_G(q)` is generic these form an irreducible vector bundle, on which "rank at
+target" is open, so `G` is at target nowhere there; `X0AttainsGrade` would give such a point.
+(b) `lem:pencil-d-x0-one-witness` (`Graph.x0AttainsGrade_of_exists`, on master) turns the one
+configuration into `G` attaining; the main implication then excludes a failure. (First written with
+semicontinuity at the one picture, which does not reach the general pictures; repaired after S42.) ∎
+
+## S42 — the independent reading of S36, S40, S41 (session 4)
+
+**Review.** A fresh `general-purpose` reader checked S36, S40 and S41 by hand against S9, S14, S28–S31,
+S33 and S34, and tried to refute each. It wrote no script.
+- **CONFIRMED:** S36 (i) and (ii); S40 (i)–(v); S41's main implication, pointwise in the data: if
+  `W ⊇ S(y)` with nonzero hinges and `def(G) = def(G'')`, then `rank G ≤ target(G) − 1`, using neither
+  `G[V₁]` nor `G''` at target.
+- **Repairs, made in place:** S40 (v) now says `F` is connected; S40's last paragraph warns that `Λ̄` is not
+  independent of `M`; S41's "four joins" now reads `k + 1`; S41 (b) needed a main picture and
+  `lem:pencil-d-x0-one-witness`, not semicontinuity at one picture.
+- **Sharper form of S36 (ii)** where `F` attains: `dim ρ ≤ f`, and `f ≤ def₂(F)` for connected `F`, since
+  `val_D(P) − val_3(P) = (D − 3)(|P| − 1 − d_F(P)) ≤ 0`. So S36's corollary reads `f ≥ 6(d − 5)`.
+
+## S43 — the `k = 3` danger cells at `d = 7, 8`: every measured cell is certified (session 4)
+
+**Command.** `python3 notes/attacks/short-core/drivers/d7_short.py --seed N --per 4` (`d = 7`, `N = 1, 2`);
+exit 0. Seed 1's output is byte-identical at `PYTHONHASHSEED = 0` and `1`, and seed 2's rows match seed 1's.
+**Population.** strata.py's `--short` boxes at `k = 3` (`SHORT_FAMS`: a cycle, a theta with hubs `a, b`,
+three thetas with `a, b` inside paths, necklaces of diamonds), the cells from `short_danger`'s own search
+seeded by (family, `d`, `k`), with three caps raised: at most 80 bodies (strata: 40), 3000 box draws (400),
+4 cells per family (2). The driver replays `short_cell` and checks the replay against it.
+**Results at `d = 7`** (`D = 28`): 20 cells, 4 per family. The necklace box (paths of 1–7 edges) yields none.
+- At every cell `G` is at its target, at a main picture (`L = 0`, admissible), so `G` attains
+  (`lem:pencil-d-x0-one-witness`) and S41 excludes a failure. **These 20 graphs are proved cells.**
+- At every cell `κ = 0` and `r = 3` (S31, S33), and `W` holds neither star.
+- `ρ` maps onto `Λ²(V/H)` at every cell. That is S34's sufficient condition, read at one draw, and a lower
+  bound for its generic value.
+- At 15 of the 20, `(ρ ∩ H∧V) + Λ²H = H∧V` at the drawn point: S36 (i)'s necessary condition for failure
+  holds, yet there is no failure. So S36 (i) cannot close G1, and the exclusion runs through S34
+  (`log.md`).
+- `dim ρ ≥ 12 = 6(d − 5)` at 16 of the 20.
+**Caveat.** In these boxes every body but `a`, `b` and the hubs has degree 2. So `Q = F`, Case 2's parts are
+single bodies, and the points are free except near the hubs. The cells are what the boxes give, not a
+census; each certificate proves its own graph only.
+**Necklaces with longer paths, `d = 7`.** `d7_short.py --seed 1 --per 6 --tries 6000 --nmax 90
+--neck-lmax 24` (exit 0): `neck_danger` is `short_danger`'s filter verbatim, its paths widened to 1–24
+edges. 6 cells: 3–6 diamonds, `a` and `b` diamond bodies, so `C_a` and `C_b` are diamonds (`K_4 − e`,
+`P²`-rigid), not single bodies. All 6 are certified as above. At all 6, `κ = 0`, `r = 3` and `ρ` maps onto
+`Λ²(V/H)`. S36 (i)'s condition holds at 5 of the 6, and `dim ρ ≥ 12` at all 6.
+**Fences.** `blindaxes.py --imports --population` lists nothing for the driver, which imports `strata` by
+path. The fences are therefore named here: `short_draw`'s boxes (core lengths `1..D + top`, necklaces of
+3–6 diamonds), `SHORT_NMAX`/`TRIES`/`PER` as raised above, the widened necklace paths, and `strata.COORD = 1000`
+(the picture coordinates and the height coefficients are integers within it). `k = 3` only.
+**Results at `d = 8`** (`D = 36`, `Λ²(V/H)` of dimension 3). `d7_short.py --seed 1 --d 8 --per 3 --nmax 100`
+(exit 0) gives 15 cells, 3 per box family; the necklace box gives none. All 15 are certified as above. At all
+15, `κ = 0`, `r = 3`, and `ρ` maps onto all 3 dimensions of `Λ²(V/H)`. S36 (i)'s condition holds at 6, and
+`dim ρ ≥ 18 = 6(d − 5)` at 8. In all, 41 graphs are proved cells and none fails; the population caveat above
+stands.
