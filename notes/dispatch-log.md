@@ -49,6 +49,9 @@ keeps only what git cannot show.
 
 | Date | Task (short + sha) | Rung | Exception | Notes |
 |---|---|---|---|---|
+| 2026-10-30 | 42b `lem:pencil-d-point-configuration`, `3b98404f` | opus | pin refuted before dispatch (open's planned name) | The open planned part (1) as `…_hasPencilPlaneRealization_ofNormals`. False: `HasCoplanarPanelRealization` asks a nonzero hinge at every label of `β`, and `ofNormals` can put `0` off `E(G)`. Caught by the coordinator's slot-trace against that body and Phase 40's `pencilConfigFramework` patch. The prompt named the trap, and the build landed `toPatchedBodyHinge` clean. A phase open's planned pins are hypotheses until a consumer's definition body is read. |
+| 2026-10-30 | 42b scale-shift, `bfdedeaf` | sonnet | gate-invisible prose defect (F44) | The note called the `t • id` case "a one-line corollary"; the builder's own return said it was not (it also needs the one-height bridge to `pencilConfigPoint`). Caught on the full-diff read; fixed by the next slice's `hygiene` line (`7e5f260b`). |
+| 2026-10-30 | 42b distinct form, `bb43a5b6` | sonnet | gate mechanics (F6 family) | The builder wrapped its first gate build in a shell `timeout` against the core's rule. It finished normally, the builder disclosed it, and later builds used the tool parameter. No harm; no change. |
 
 **Phases 29–34 rows, 2026-07-09 → 07-18: 17 pruned at the 41a grooming
 (2026-10-24); the full rows are in git history at `3a627b3d`.** Those phases
