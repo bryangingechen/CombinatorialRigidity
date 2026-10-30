@@ -1118,3 +1118,158 @@ path. The fences are therefore named here: `short_draw`'s boxes (core lengths `1
 15, `κ = 0`, `r = 3`, and `ρ` maps onto all 3 dimensions of `Λ²(V/H)`. S36 (i)'s condition holds at 6, and
 `dim ρ ≥ 18 = 6(d − 5)` at 8. In all, 41 graphs are proved cells and none fails; the population caveat above
 stands.
+
+## S44 — session 5's consumer diff: no mismatch (session 5, 2026-10-30)
+
+Read against this worktree at `ab64d1e0` and master at `5633c39f` (Phase 42b closed). Between S39's
+master (`bb43a5b6`) and `5633c39f`, no file under `Pencil/MainComponent/` and not `Pencil/Grade/Carrier.lean`
+has changed (`git diff --stat` empty), so S13's diff of `of_openEar_three`, `-four` and S39's reading of
+`Graph.X0AttainsGrade` stand; no hypothesis moved, and brief §3's case decomposition is unchanged. Master
+adds `Pencil/Grade/Witness.lean`: `Graph.x0AttainsGrade_of_exists` (`lem:pencil-d-x0-one-witness`) takes
+`hV : V(G).Nonempty`, a selector `ends` recording every link, `hq₀ : G.IsMainPicture q₀`,
+`hz₀ : z₀ ∈ G.liftingSpaceGrade q₀ m` and the rank of `ofNormals (k := m + 1)` at
+`pencilConfigPointGrade q₀ z₀` at least `screwDim (m + 1)·(|V| − 1) − G.deficiency (m + 2)`, and concludes
+`G.X0AttainsGrade K m`. That is exactly what S41 (b) and S43's certificates use (S43's `L = 0` is
+`dim L_G(q)` at its generic value `3 + def₃(G)`, so `q` is a main picture). PD-STEPS has not opened, so
+the `Pᵈ` step itself is still the model of brief §1.
+
+## S45 — at a danger cell, the `Pᵈ`-optimal quotient of `F` is independent, with every cycle at least `D` long (session 5)
+
+**Setting.** Any `d ≥ 4`, `D = C(d + 1, 2)`, any `k`, a danger cell (`f > def(G) = def(G'')`) at base data where
+`F = G[V₁]` attains: `dim Z_d(F) = D + f`, `f = def[D](F)`. `P` is a partition of `V₁` with `val_D(P) = f`,
+`val_D(P) = D(|P| − 1) − (D − 1)·d_F(P)`. `F/P` is the multigraph on the parts with one edge per crossing edge of
+`F`, carrying that edge's `Pᵈ` hinge.
+**Statement.**
+(i) Every `Pᵈ` motion of `F` is constant on each part of `P`, so `Z_d(F) = Z_d(F/P)` and `ρ` is read on `F/P`.
+(ii) `F/P` is independent: its `(D − 1)|E(F/P)|` rows are independent, so it carries no nonzero self-stress, and a
+load (`ω` at one part, `−ω` at another) is resolved by at most one stress.
+(iii) Every cycle of `F/P` has at least `D` edges; in particular `F/P` is simple. Its cycle rank `c` satisfies
+`|P| − 1 = f + (D − 1)c`.
+(iv) The parts are connected, `a` and `b` lie in different parts, and every bridge of `F/P` is a bridge of `F`.
+(v) *Series.* If a vertex `z` of `F` separates `a` from `b`, with `F = F₁ ∪ F₂`, `F₁ ∩ F₂ = {z}`, `a ∈ F₁`, `b ∈ F₂`,
+then `ρ = ρ(F₁; a, z) + ρ(F₂; z, b)`. If an edge `e = uv` separates them (`u` on `a`'s side), then
+`ρ = ρ(F_a; a, u) + K·b_u∧b_v + ρ(F_b; v, b)`; in particular every `a`–`b` bridge's hinge lies in `ρ`.
+
+**Proof.** (i) The cochains constant on the parts and satisfying the crossing hinges are motions of `F` (an internal
+edge sees difference 0), a space of dimension at least `D|P| − (D − 1)d_F(P) = D + f = dim Z_d(F)`.
+(ii) So `dim Z_d(F/P) = D + f` and its rank is `D|P| − D − f = (D − 1)|E(F/P)|`, the number of its rows. A self-stress
+is a dependence among them; two stresses resolving one load differ by a self-stress.
+(iii) The rows of a cycle of length `ℓ` are among them, hence independent, and a connected framework on `ℓ` bodies has
+rank at most `D(ℓ − 1)`: `(D − 1)ℓ ≤ D(ℓ − 1)`, `ℓ ≥ D`. The count is `f = val_D(P)` with `d_F(P) = |P| − 1 + c` (`F/P` is connected because `F` is, S40 (v)).
+(iv) Splitting a part with `m ≥ 2` components into them raises `val_D` by `D(m − 1)`, against optimality. If `a`, `b`
+shared a part, adding the ear bodies `x₁, …, x_k` to it gives a partition of `V(G)` with the same crossing edges and
+`val_D = f`, so `def(G) ≥ f`, against danger. A bridge of `F/P` is a single crossing edge whose removal disconnects
+the quotient, and the parts are connected, so it disconnects `F`.
+(v) Motions of `F` are pairs of motions of `F₁`, `F₂` agreeing at `z`, and either may be shifted by a constant, so
+`S_b − S_a = (S_b − S_z) + (S_z − S_a)` ranges over the sum. For the edge: `0` on `a`'s side and `b_u∧b_v` on
+`b`'s side is a motion. ∎
+
+At `d = 7` (`D = 28`) and `k = 3`, danger asks `dim ρ ≥ 2d − 4 = 10`, so by (v) and (ii) the `a`–`b` route of `F/P`
+either crosses at least ten bridges (when it is a tree path, `ρ` is spanned by their hinges) or meets a
+2-edge-connected block of `F/P`, whose cycles have at least 28 parts each.
+
+## S46 — at `d = 7`, an `a`–`b` bridge with full `P²` freedom on both sides closes the cell (session 5)
+
+**Setting.** `d = 7`, `k = 3`, a danger cell at base data general in S21's, S31's and S33's senses (so `r = 3`,
+`κ = 0`, `H = Π_a ⊕ Π_b`, `Ē = V/H` a plane, `Λ²(V/H)` a line). `Λ ∈ Z(G'')⊗E ≅ Z(F)⊗E` (S33's lemma gives onto;
+at `k = 3` the three ear hinges span `Λ²K³`, so it is an isomorphism), `b_v = (q̂_v, Λ_v q̂_v)`. For a bridge `e = uv` of `F` with `a` on `u`'s side `F_a` and `b` on
+`v`'s side `F_b`, put `A = {λ_u : λ ∈ Z(F_a), λ_a = 0}`, `B = {λ_v : λ ∈ Z(F_b), λ_b = 0}` in `(K³)*`, and `φ_e`
+the functional vanishing at `q̂_u`, `q̂_v`.
+**Statement.**
+(a) If `(A ∩ (B + Kφ_e)) + Kφ_e = (K³)*` (for instance `A = B = (K³)*`), then off one more nonzero polynomial in the
+base heights, `ρ ⊄ H∧V`, so `ρ` maps onto `Λ²(V/H)` and SHORT-CORE holds at general ear data (S34).
+(b) If `F` has seven `a`–`b` bridges `e₁, …, e₇` in order from `a` to `b`, (a)'s hypothesis holds at `e₄` at a general
+picture (one more nonzero factor on `q'`).
+(c) So a cell whose `F/P` route from `P(a)` to `P(b)` crosses only bridges (S45) is closed at `d = 7`: it has at least
+ten. This covers `G[V₁]` a path (`G` a cycle of length 14 to 28 at `d = 7`), which no T3 family lists.
+
+**Proof.** (a) `b_u∧b_v ∈ ρ` (S45 (v)). Its image in `Λ²(V/H)` is `θ(b_u)∧θ(b_v)`, `θ` as in S40 (iv), which is
+pointwise: `θ(b_w) = Λ̄_w q̂_w` with `Λ̄ = (Λ − Λ_a) mod E_b`. With a fixed volume form, `ω_H∧b_u∧b_v ∈ Λ⁸V ≅ K` is
+a polynomial in the base heights (`ω_H` the wedge of `g_a(e_i)`, `g_b(e_i)`, `g_X x = (x, Λ_X x)`), nonzero exactly
+where the image is; it suffices to find one `Λ` where it is nonzero. A cochain on `F` is a `P²` motion iff its
+restrictions to `F_a`, `F_b` are and `λ_u − λ_v ∈ Kφ_e`, so `{λ_u : λ ∈ Z_{ab}(F)} = A ∩ (B + Kφ_e)`, with
+`Z_{ab}(F)` the motions vanishing at `a` and `b`. `ev : ℓ ↦ (ℓ(q̂_u), ℓ(q̂_v))` has kernel `Kφ_e`, so the hypothesis says
+`λ ↦ (λ_u(q̂_u), λ_u(q̂_v))` maps `Z_{ab}(F)` onto `K²`: take `λ⁴, λ⁵ ∈ Z_{ab}(F)` with independent images. Split
+`E = E_b ⊕ Ē'` with `dim E_b = 3`, take `Λ^b ∈ Z(F)⊗E_b` with `Λ^b_a = 0` and `Λ^b_b` an isomorphism `K³ → E_b`
+(possible since `r = 3`: evaluation at `b` maps the motions vanishing at `a` onto `(K³)*`), and
+`Λ = Λ^b + λ⁴⊗ē₄ + λ⁵⊗ē₅`. Then `κ = 0`, `H = K³ ⊕ E_b`, `θ` is the projection to `Ē'`, and
+`θ(b_u)∧θ(b_v) = det(ev(λ⁴_u), ev(λ⁵_u)) ≠ 0`, using `Λ_v q̂_v = Λ_u q̂_v` (S9 (ii)).
+(b) Let `A_i` be `A` at `e_i`. For `j < i`, extend `λ ∈ Z(F_a(j))` (`u_j`'s side of `e_j`) by the constant
+`λ_{u_j} + sφ_{e_j}` on the bodies between `e_j` and `e_i`: a motion, since only `e_j` joins the two pieces. So
+`A_i ⊇ A_j + Kφ_{e_j}`, and `A₄ ⊇ ⟨φ_{e₁}, φ_{e₂}, φ_{e₃}⟩`, likewise `B₄ ⊇ ⟨φ_{e₅}, φ_{e₆}, φ_{e₇}⟩`. `e₁` and `e₃` lie on
+opposite sides of `e₂`, so they are disjoint; with `q_{u₁}, q_{v₁}` on one axis, `q_{u₃}, q_{v₃}` on another and `e₂`'s
+line missing the origin, the three lines are not concurrent, so `det(φ_{e₁}, φ_{e₂}, φ_{e₃})` is a nonzero polynomial in
+`q'`. Off it and its `e₅, e₆, e₇` twin, `A₄ = B₄ = (K³)*`.
+(c) S45: the route crosses only bridges, so `ρ` is spanned by their hinges, and `dim ρ ≥ 10` gives at least ten. ∎
+
+What it leaves at `d = 7`: cells whose route meets a 2-edge-connected block of `F/P` (cycles of at least 28 parts,
+S45 (iii)) and has fewer than seven bridges in series, or bridges without (a)'s freedom. The theta and necklace
+families are of this kind. At `d ≥ 8` the bridges give decomposables `θ_u∧θ_v`, and one needs `C(d − 5, 2)` of them
+independent; not attempted.
+
+## S47 — at `d = 7`, a failing cell's stress vanishes on every run of free bodies that moves (session 5)
+
+**Setting.** S46's. A body `v ∈ V₁` is *free* if `deg_{G''} v = 2`, both its neighbours have degree 2 in `G''`, and
+`v ∉ N[a] ∪ N[b]`. Then `b_v` is a free coordinate of the base configuration: no closed neighbourhood with four or
+more members contains `v` (S9 (i): only those constrain the heights), and `Π_a`, `Π_b`, so `H` and `ω_H`, are spanned
+by other points (or chosen by the base data, S9). For `α ∈ Λ⁶V`, `rad α = {x : α∧x = 0}`; a nonzero `α` gives the nonzero
+alternating form `(x, y) ↦ α∧x∧y` on `V = K⁸`, of even rank, so `dim rad α ≤ 6`.
+**Statement.** Suppose SHORT-CORE fails at the cell. Then `ω_H ∈ ρ°` (S34 at `d = 7`), so some *stress* `α` on `F`
+(`α_f ∈ Λ⁶V` with `α_f∧h_f = 0` on each edge, net flow `ω_H` from `a` to `b`, conserved elsewhere) resolves it. Let
+`v₀ − v₁ − ⋯ − v_m − v_{m+1}` be a path of `F` with `v₁, …, v_m` free, and `e_i = v_{i−1}v_i`. Then `α` takes one value
+`α_run` on `e₁, …, e_{m+1}`, and:
+(i) for every `Pᵈ` motion of `F`, with `S_{v_i} − S_{v_{i−1}} = t_i b_{v_{i−1}}∧b_{v_i}`, and `1 ≤ i ≤ m`:
+`t_i b_{v_{i−1}} − t_{i+1} b_{v_{i+1}} ∈ rad α_run`;
+(ii) if some motion has every `t_i ≠ 0` (`1 ≤ i ≤ m + 1`) and `b_{v₀}, …, b_{v_{m+1}}` span `V`, then `α_run = 0`;
+(iii) so if runs meeting (ii)'s hypotheses contain an edge cut of `F` separating `a` from `b`, SHORT-CORE holds.
+
+**Proof.** The stress is a resolution of the load `S ↦ ⟨ω_H, S_b − S_a⟩`, which vanishes on `Z_d(F)` exactly when it
+is a combination of the edge rows; conservation at the degree-2 bodies `v_i` gives one value.
+(i) Move `b_{v_i}` to `b_{v_i} + τw` (`w ∈ V`; projectively free). Every other point, `H` and `ω_H` stay put. The pairs
+(stress `α`, scalar `c`) with net flow `c·ω_H` form the kernel of a linear system polynomial in the configuration, of
+least dimension on an open set `U₁`: take the base configuration in `U₁` and in the failure locus, dense by S41;
+then the curve starts in `U₁`, and the tangent lemma (S6, in S35's form) extends
+`(α, 1)` to power series `(α(τ), c(τ))`. The `τ`-coefficients satisfy `α̇_f∧h_f = −α_f∧ḣ_f`, with `ḣ_f = 0` except
+`ḣ_{e_i} = b_{v_{i−1}}∧w`, `ḣ_{e_{i+1}} = w∧b_{v_{i+1}}`, and `α̇` has net flow `ċ·ω_H`. Against a motion `S` (edge
+coefficients `t_f`), summation by parts gives `Σ_f t_f α̇_f∧h_f = ċ·ω_H∧(S_b − S_a) = 0`, as `ω_H ∈ ρ°`. So
+`t_i α_run∧b_{v_{i−1}}∧w + t_{i+1} α_run∧w∧b_{v_{i+1}} = 0` for every `w`, which is (i).
+(ii) Put `R = rad α_run` and `ᾱ` the induced nondegenerate form on `V/R`. By (i) with `t_i, t_{i+1} ≠ 0`,
+`b̄_{v_{i+1}} ∈ K·b̄_{v_{i−1}}` for `1 ≤ i ≤ m`, so `V/R`, spanned by the `b̄_{v_j}`, is spanned by `b̄_{v₀}` and `b̄_{v₁}`.
+`ᾱ(b̄_{v₀}, b̄_{v₁}) = 0` is the hinge condition on `e₁`, so `ᾱ = 0`, `V = R`, `α_run = 0`.
+(iii) The net flow across an `a`–`b` edge cut is `ω_H ≠ 0`. ∎
+
+"Some motion has every `t_i ≠ 0`" says no run edge `e` has `t_e = 0` on all of `Z_d(F)` (a *coloop*: `b_u∧b_v` outside
+the relative screws of `u`, `v` in `F − e`), since a general motion then avoids the finitely many hyperplanes. The
+argument uses that `ρ` is `F`'s (the stress and the motions live on `F`) and moves base data, not ear data; S26's
+abstract `ρ = H∧V` has no such structure. By S45 (i) an edge inside a part of `P` has `t = 0` on all of `Z_d(F)`, so
+the runs (ii) uses consist of crossing edges, and (iii)'s cut lies in `F/P`.
+
+## S48 — at `d = 7`, the family `G[V₁]` a cycle is closed (session 5)
+
+**Statement.** At a `d = 7`, `k = 3` danger cell with base data as in S46, if `F = G[V₁]` is a cycle (through `a` and
+`b`, which have degree 3 in `G''`), SHORT-CORE holds.
+**Proof.** `f = def[28](F) = ℓ − 28` for a cycle of length `ℓ ≥ 28` (0 below), and `ρ ⊆ U₁ ∩ U₂`, `U_j` the span of
+the hinges of the arc `A_j` from `a` to `b`. Danger asks `dim ρ ≥ 10`; `dim ρ ≤ f = ℓ − 28` (S42's form of S36 (ii)), so `ℓ ≥ 38`, and `ρ ⊆ U_j` gives
+`ℓ_j ≥ 10` edges on each arc.
+Every body of `F` other than `a`, `b` has degree 2 in `G''`, so on `A₁ = a v₁ ⋯ v_{ℓ₁−1} b` the bodies `v₂, …, v_{ℓ₁−2}`
+(at least 7) are free, and the run `v₁ − v₂ − ⋯ − v_{ℓ₁−1}` has `ℓ₁ − 1 ≥ 9` points. The only closed neighbourhoods with
+four members are `N[a]`, `N[b]`, which constrain `x₁`, `x₃` to the plane of the other three, so `F`'s points are general
+points of `V` at general base data; nine of them span `V`. No edge is a coloop: `C − e` is a path of `ℓ − 1 ≥ 37`
+edges on general points, which spans `Λ²V` (`drivers/path_span.py --seed 1`, exit 0: rank 28 at one rational path of
+28 edges, a certificate, so at a general one), so `b_u∧b_v` is a combination of the other hinges and some motion has
+`t_e = 1`. S47 (ii) gives `α = 0` on that run of `A₁`, and likewise on `A₂`. One edge from each is an `a`–`b` cut, so
+S47 (iii) applies. ∎
+This is T3's first family and S43's `th3` cells, now by proof at every length. The same argument closes the theta with
+hubs `a`, `b` (`th4`) once its no-coloop condition is checked on each path; not done.
+
+## S49 — the independent reading of S45–S48 (session 5)
+
+**Review.** A fresh `general-purpose` reader checked S45 (i)–(v), S46 (a)–(c), S47 (i)–(iii) and S48 by hand against
+S9, S33, S34, S36, S40–S42, tried to refute each, and ran `path_span.py --seed 1` (rank 28, exit 0). It wrote nothing.
+- **CONFIRMED:** all twelve items. Of note: the identity `Σ_f α_f∧(S_head − S_tail) = c·ω_H∧(S_b − S_a)` holds for every
+  cochain and every configuration, so S47 (i)'s derivative has no sign question; `path_span.py`'s draw is not in the
+  affine chart, but the minor is multihomogeneous, so the certificate stands; S47 assumes nothing about `P`.
+- **Gap, repaired:** S48's `ℓ ≥ 38` needed `dim ρ ≤ f` (S42's form of S36 (ii)), now cited.
+- **Repairs, made in place:** S45 (iv) names the ear bodies for any `k`; S45 (iii) says `F/P` is connected; S46's
+  setting says why restriction is an isomorphism at `k = 3`; S46 (b) asks `e₂`'s line to miss the origin; S47 (i)
+  takes the base configuration in `U₁` and the failure locus; S47 notes that runs inside a part are never used.
