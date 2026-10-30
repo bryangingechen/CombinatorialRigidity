@@ -206,7 +206,8 @@ Result 17's `def[3] ≤ 1` one step further.
   its last two points over `y_k` and `p_b`. At `d = 3` this is the chapter's tetrahedron. **Left,
   SHORT-CORE:** `3 ≤ k ≤ C(d−1, 2) + 2` (3–5 at `d = 4`, 3–8 at `d = 5`), where `ρ`'s image in
   that quotient must supply the rest; the chapter's `k = 3` case split on `ρ` is the `d = 3` model.
-  T3 (§2.4) found no obstruction on 198 danger cells. New mathematics, now bounded.
+  T3 (§2.4) found no obstruction on 198 danger cells. New mathematics, now bounded. Attack brief:
+  `notes/attacks/short-core/brief.md` (DRAFT, awaiting the PI).
 - **ONE-EAR** (rows 14–15): either a motive that asks `G[V₁]` to attain on the locus where `Π_a`
   and `Π_b` meet above a general `q_x`, or another step for `k = 1, 2` at non-adjacent ends, plus
   a `Pᵈ` insertion lemma (at `d ≥ 5` every reachable hinge lies in `Λ²(A+B)`, of dimension ≤ 10).

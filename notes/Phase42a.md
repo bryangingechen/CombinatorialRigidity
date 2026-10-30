@@ -6,8 +6,8 @@ Results 20–26), with no shortfall: SHORT shrinks to SHORT-CORE, ONE-EAR's firs
 wherever M does, and at `D ≥ 10` the coverage needs ONE-EAR only on ONE-CLASS. Then, at the PI's
 call, ONE-CLASS's lemma (Result 27), which takes ONE-EAR out of the coverage; then the PI took the
 route (R2's steps, the embedding as the base row). Next concrete task:
-PD-STATE's open; the research next is SHORT-CORE's attack track, rows 9 and 12 having passed a
-second read. Plan and decisions: `notes/Phase42-design.md`; evidence: `notes/Strata.md`.
+PD-STATE's open; the research next is SHORT-CORE's attack track, its brief drafted for the PI's
+reading. Plan and decisions: `notes/Phase42-design.md`; evidence: `notes/Strata.md`.
 
 ## Current state
 
@@ -17,6 +17,9 @@ second read. Plan and decisions: `notes/Phase42-design.md`; evidence: `notes/Str
   bodies, and lay out PD-STABLE.
 - **SHORT-CORE's attack track** (`/attack`, design doc §2.3), the coverage's only new mathematics
   at `d ≥ 4` since Result 27. Rows 9 and 12, which T5's cover rests on, passed a second read.
+  Its brief is `notes/attacks/short-core/brief.md`, a DRAFT: once the PI has read it,
+  `/attack short-core` runs in its own worktree (branch `attack-short-core`), with no Lean build
+  there, beside PD-STATE's Lean in the main checkout.
 
 **Landed:** the step table, its route verdict (§2.2: R2's step structure, R1's base row) and
 §2.5; then T1, T2 and the content-range graphs as one mode, `strata.py --content`. Row 5's
@@ -73,7 +76,7 @@ proved at `d ≤ 6`. Both need only CARRIER's restatements.
 - [x] **A second read of rows 9 and 12** (design doc §2.1): no gap; GEN|CARRIER, row 12's
   `3 ≤ k ≤ D − 2` given CERT's open ears (proved at `d ≤ 6`).
 - [ ] **SHORT-CORE** (§2.3): an attack track at `d = 4` (`k = 3, 4, 5`; sized by T3, needed by
-  T5's Petersen cells).
+  T5's Petersen cells). Brief drafted (`notes/attacks/short-core/brief.md`), awaiting the PI.
 - [x] **ONE-CLASS** (§2.3; the PI's call over ONE-EAR): proved, `Strata.md` Result 27, checked
   by `oneclass.py`. ONE-EAR leaves the coverage and waits for GENERIC.
 
@@ -86,8 +89,9 @@ proved at `d ≤ 6`. Both need only CARRIER's restatements.
 The next commit is PD-STATE's open as the next sub-phase (*Current state*). On the research side,
 Result 27 leaves SHORT-CORE as the coverage's only new mathematics at `d ≥ 4`: `k = 3, 4, 5` at
 `d = 4`, its `d = 3` model the chapter's `k = 3` case split on `ρ`, needed by T5's Petersen cells.
-Rows 9 and 12, on which T5's cover rests, passed a second read, so its attack track (`/attack`)
-can open; it builds on (⋆) and the X3 range (design doc §2.3). PD-STABLE states the embedding
+Rows 9 and 12, on which T5's cover rests, passed a second read, so its attack track can open once
+the PI has read its DRAFT brief (`notes/attacks/short-core/brief.md`); it builds on (⋆) and the X3
+range (design doc §2.3). PD-STABLE states the embedding
 at every `d′ ≤ d` (the route), its `d′ = 3` case as the coverage consumes it, `def[6] = def[D]`
 (design doc §3). CERT's open ears at
 `d ≥ 7` (§2.3) are PD-STEPS's, for the every-`d` tier. ONE-EAR (the motive, a `Pᵈ` insertion
