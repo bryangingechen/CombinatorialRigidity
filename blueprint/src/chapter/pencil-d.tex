@@ -36,11 +36,19 @@ with its setting and the rank of a flat configuration
 (\cref{sec:pencil-d-induction}). They end with the coverage: over an
 infinite field the general configuration of every graph satisfying the
 standing hypotheses attains in every dimension
-(\cref{sec:pencil-d-coverage}). The last section runs the reduction of
+(\cref{sec:pencil-d-coverage}). The next section runs the reduction of
 \cref{sec:pencil-reduction} in every dimension. It gives every multigraph
 a pencil realization at the deficiency rank in dimension $d$, with
 independent normals at adjacent bodies when the multigraph is simple
-(\cref{sec:pencil-d-reduction}).
+(\cref{sec:pencil-d-reduction}). The last three sections give the third
+conjunct of the conditioned pair: a simple multigraph with a nondegenerate
+realization in dimension $d$ has one at the deficiency rank
+(\cref{thm:pencil-d-generic}). We define nondegenerate realizations in
+dimension $d$ (\cref{sec:pencil-d-nondegenerate}), lift the nondegenerate
+realizations in dimension three to dimension $d$
+(\cref{sec:pencil-d-lift}), and run the induction of
+\cref{sec:main-component-statements} on the lifts
+(\cref{sec:pencil-d-generic}).
 
 We describe a pencil realization by its polar. The polarity of
 \cref{def:meet-complement-iso} takes the panel with normal $b_v$ to the
@@ -4777,4 +4785,1569 @@ $K^{d+1}$ chosen to meet it (\cref{lem:pencil-d-cut-reposition}).
   on the coverage in dimension $d$ (\cref{thm:pencil-d-coverage}). The
   induction of \cref{thm:pencil-reduction} is on the numbers of bodies
   and edges, and the argument does not depend on the dimension.
+\end{proof}
+
+\subsection{Nondegenerate realizations in every dimension}
+\label{sec:pencil-d-nondegenerate}
+
+The conditioned pair (\cref{def:pencil-conditioned-pair}) has a third
+conjunct: a simple multigraph that has a nondegenerate realization has
+a generic one, nondegenerate at the deficiency rank. The previous
+section gives the first two conjuncts in dimension $d$
+(\cref{thm:pencil-d-realization-theorem}). This section and the next
+two give the third. Here we define nondegenerate realizations in
+dimension $d$. In the polar form, the conditions of
+\cref{def:pencil-nondegenerate} on the points become conditions on the
+normals $b_v$, unchanged. The condition on the normals of a closed
+hub-neighbourhood becomes a condition on the subspaces $\Pi_w$ of its
+members: they meet in dimension at most $4 - |S|$ on every set $S$ of
+them, as the planes of $K^4$ with independent normals do. At $d = 3$
+the definition agrees with \cref{def:pencil-nondegenerate} through the
+polarity (\cref{lem:pencil-d-nondegenerate-three}). The conditions are
+kept by injective linear maps and pull back along maps injective on the
+subspaces (\cref{lem:pencil-d-nondegenerate-maps}). A multigraph has a
+nondegenerate realization in dimension $d$ exactly when it has one in
+dimension three (\cref{lem:pencil-d-nondegenerate-feasible}).
+
+% Source: NONDEG workbook (notes/attacks/nondeg/workbook.md), S7: the candidate C2-same,
+% the PI's choice after session 1 (notes/attacks/nondeg/brief.md, header), with S7 (c)
+% for the openness of the three conditions.
+\begin{definition}[Nondegenerate pencil realization in every dimension]
+  \label{def:pencil-d-nondegenerate}
+  \uses{def:pencil-d-realization, def:pencil-nondegenerate,
+        def:pencil-d-rank-hypothesis}
+  Let $d \ge 3$. A pencil realization of a multigraph $G$ in dimension
+  $d$ (\cref{def:pencil-d-realization}), with normals $b_v$ and
+  subspaces $\Pi_v$, is \emph{nondegenerate} when the normals of the two
+  ends of every link are linearly independent; when, at every body $v$
+  that is not a pencil hub, the normals of the closed neighbourhood of
+  $v$ are linearly independent; and when, at every body $v$ and every
+  set $S$ of at least two members of the closed hub-neighbourhood of $v$
+  (\cref{def:pencil-nondegenerate}),
+  \[
+    \dim \bigcap_{w \in S} \Pi_w \;\le\; 4 - |S|.
+  \]
+  The multigraph $G$ is \emph{nondegeneracy-feasible in dimension $d$}
+  when it has a nondegenerate pencil realization in dimension $d$. It has
+  a \emph{generic pencil realization in dimension $d$} when it has one
+  whose rigidity rows span a space of dimension
+  $D(|V(G)| - 1) - \operatorname{def}_d(G)$
+  (\cref{def:pencil-d-rank-hypothesis}).
+\end{definition}
+
+By \cref{lem:pencil-d-point-configuration}, the hinge of every link of a
+nondegenerate realization is a nonzero multiple of $C(b_u, b_v)$. These
+scalars change neither the three conditions nor the rank, so we describe
+a nondegenerate realization by its normals and subspaces, and write
+$(b, \Pi)$ for it. Every member $w$ of the closed neighbourhood of $v$
+has $b_v \in \Pi_w$ (\cref{lem:pencil-d-point-configuration}), so four
+subspaces of a closed hub-neighbourhood would meet in the nonzero vector
+$b_v$. A nondegenerate realization therefore has at most three members
+in every closed hub-neighbourhood, as at $d = 3$
+(\cref{lem:pencil-feasible-hub-conditions}).
+
+The bound $4 - |S|$ does not depend on $d$. Two hubs $v$ and $w$ joined
+by an edge have $b_v, b_w \in \Pi_v \cap \Pi_w$, so their subspaces meet
+in dimension at least two in every dimension $d$. The dimension in which
+two general three-dimensional subspaces of $K^{d+1}$ meet is
+$\max(0, 5 - d)$, so a bound of that kind would exclude every edge
+between two hubs from $d = 4$ on.
+
+Each condition is \emph{open}: it holds off the zero sets of finitely
+many polynomials in the coordinates of the normals and of bases of the
+subspaces, one of which is nonzero wherever it holds. A family of vectors
+is linearly independent exactly when some maximal minor of their
+coordinate matrix is nonzero. As
+$\bigcap_{w \in S} \Pi_w = (\sum_{w \in S} \Pi_w^{\perp})^{\perp}$, the
+third condition at $S$ says that bases of the subspaces $\Pi_w^{\perp}$,
+$w \in S$, together span a space of dimension at least $d - 3 + |S|$,
+which is a condition on the minors of that size.
+
+% Source: NONDEG workbook, S7 (a).
+\begin{lemma}[Nondegeneracy in dimension three]
+  \label{lem:pencil-d-nondegenerate-three}
+  \uses{def:pencil-d-nondegenerate, def:pencil-nondegenerate,
+        def:pencil-generic-motive, lem:pencil-d-agrees-three}
+  Let $d = 3$, and let $b_v, n_v \in K^4$ be nonzero with
+  $\Pi_v = n_v^{\perp}$ at every body $v$ of $G$. A pencil realization of
+  $G$ in dimension three with normals $b$ and subspaces $\Pi$ is
+  nondegenerate (\cref{def:pencil-d-nondegenerate}) exactly when its
+  image under the polarity, a pencil realization with normals $n$ and
+  points $b$, is nondegenerate (\cref{def:pencil-nondegenerate}), and the
+  two have the same rank. So $G$ is nondegeneracy-feasible in dimension
+  three exactly when it is nondegeneracy-feasible, and it has a generic
+  pencil realization in dimension three exactly when it has a generic
+  pencil realization (\cref{def:pencil-generic-motive}).
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-self-dual, lem:screw-map-rows,
+        lem:pencil-d-rank-agrees-three}
+  By \cref{lem:pencil-d-agrees-three}, a pencil realization in dimension
+  three with normals $b$ and subspaces $n^{\perp}$ is a pencil realization
+  with normals $b$ and points $n$. The polarity takes it to a pencil
+  realization with normals $n$ and points $b$ (\cref{lem:pencil-self-dual}),
+  at the same rank (\cref{lem:screw-map-rows}), as in the proof of
+  \cref{lem:pencil-d-rank-agrees-three}. Conversely the polarity takes a
+  pencil realization with normals $n$ and points $p$ to one with normals
+  $p$ and points $n$, which is a pencil realization in dimension three
+  with normals $p$ and subspaces $n^{\perp}$.
+
+  The first and third conditions of \cref{def:pencil-nondegenerate} read
+  the points $b$ of the image. They ask that the points of the two ends
+  of every link be projectively distinct, that is, linearly independent,
+  and that the points of the closed neighbourhood of every body that is
+  not a hub be linearly independent. These are the first two conditions
+  of \cref{def:pencil-d-nondegenerate}. For a set $S$ of bodies,
+  $\bigcap_{w \in S} n_w^{\perp}$ is the orthogonal of the span of the
+  vectors $n_w$, $w \in S$, of dimension $4$ minus the dimension of that
+  span. It is at most $4 - |S|$ exactly when these vectors are linearly
+  independent. So the third condition of
+  \cref{def:pencil-d-nondegenerate} at every set $S$ of at least two
+  members of the closed hub-neighbourhood of $v$ says that the normals
+  $n$ of the image are linearly independent on that neighbourhood, as
+  each is nonzero. This is the second condition of
+  \cref{def:pencil-nondegenerate}. Both definitions of a generic
+  realization ask for the rank $6(|V(G)| - 1) - \operatorname{def}_3(G)$.
+\end{proof}
+
+% Source: NONDEG workbook, S14 (part (1)) and S7's embedding column (part (2)).
+\begin{lemma}[Nondegeneracy under linear maps]
+  \label{lem:pencil-d-nondegenerate-maps}
+  \uses{def:pencil-d-nondegenerate}
+  Let $d, d' \ge 3$. At every body $v$ of $G$ let $b_v \in K^{d+1}$ be
+  nonzero and let $\Pi_v \ni b_v$ be a three-dimensional subspace, and let
+  $p \colon K^{d+1} \to K^{d'+1}$ be linear.
+  \begin{enumerate}
+    \item If $p$ is injective on every $\Pi_v$, and the vectors $p b_v$
+      and subspaces $p\Pi_v$ satisfy the three conditions of
+      \cref{def:pencil-d-nondegenerate}, then so do $b$ and $\Pi$.
+    \item If $p$ is injective and $b$ and $\Pi$ satisfy the three
+      conditions, so do $p b$ and $p \Pi$. In particular the embedding of
+      a nondegenerate pencil realization in dimension $d' \le d$
+      (\cref{lem:pencil-d-embed-realization}) is nondegenerate.
+  \end{enumerate}
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-d-embed-realization}
+  (1) A linear relation among vectors gives one among their images, so
+  vectors with linearly independent images are linearly independent.
+  This gives the first two conditions. Let $S$ be a set of members of a
+  closed hub-neighbourhood. The intersection of the subspaces $\Pi_w$,
+  $w \in S$, lies in each of them, where $p$ is injective, and $p$ maps
+  it into the intersection of the subspaces $p\Pi_w$. So its dimension is
+  at most $4 - |S|$.
+
+  (2) An injective linear map keeps linear independence, and it maps the
+  intersection of subspaces onto the intersection of their images. So all
+  three conditions hold for $pb$ and $p\Pi$. The embedding $\iota$ of
+  \cref{def:pencil-d-embedding} is injective, and the embedded
+  realization has the normals $\iota b_v$ and subspaces $\iota \Pi_v$
+  (\cref{lem:pencil-d-embed-realization}).
+\end{proof}
+
+% Source: NONDEG workbook, S9. The transversal count of its |S| = 3 step is made explicit
+% here: the bad centres lie in finitely many proper subspaces and at most one quadric.
+\begin{lemma}[Nondegeneracy-feasibility does not depend on the dimension]
+  \label{lem:pencil-d-nondegenerate-feasible}
+  \uses{def:pencil-d-nondegenerate, def:pencil-nondegenerate}
+  Let $K$ be infinite, $d \ge 3$ and $G$ a finite multigraph. Then $G$ is
+  nondegeneracy-feasible in dimension $d$
+  (\cref{def:pencil-d-nondegenerate}) exactly when it is
+  nondegeneracy-feasible (\cref{def:pencil-nondegenerate}).
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-d-nondegenerate-three, lem:pencil-d-nondegenerate-maps,
+        lem:pencil-d-embed-realization, lem:pencil-d-point-configuration}
+  At $d = 3$ this is \cref{lem:pencil-d-nondegenerate-three}. Let
+  $d \ge 4$. If $G$ is nondegeneracy-feasible, it has a nondegenerate
+  realization in dimension three (\cref{lem:pencil-d-nondegenerate-three}),
+  and its embedding in dimension $d$ is one in dimension $d$
+  (\cref{lem:pencil-d-embed-realization},
+  \cref{lem:pencil-d-nondegenerate-maps}).
+
+  Conversely, let $(b, \Pi)$ be a nondegenerate realization of $G$ in
+  dimension $d$. We find a linear map $\pi \colon K^{d+1} \to K^4$ such
+  that
+  \begin{enumerate}
+    \item[(a)] $\pi$ is injective on every $\Pi_v$, and
+    \item[(b)] at every body $v$ and every set $S$ of at least two members
+      of its closed hub-neighbourhood,
+      $\dim \bigcap_{w \in S} \pi\Pi_w \le 4 - |S|$.
+  \end{enumerate}
+  Then $\pi b_v$ is nonzero and lies in the three-dimensional subspace
+  $\pi\Pi_v$, and $\pi b_w \in \pi \Pi_v$ for every $w$ in the closed
+  neighbourhood of $v$ (\cref{lem:pencil-d-point-configuration}). The
+  normals of a link, or of a closed neighbourhood, lie in one subspace
+  $\Pi_v$, where $\pi$ is injective, so they stay linearly independent.
+  So part~(1) of \cref{lem:pencil-d-point-configuration} gives a pencil
+  realization in dimension three with normals $\pi b$ and subspaces
+  $\pi \Pi$, which is nondegenerate, and
+  \cref{lem:pencil-d-nondegenerate-three} makes $G$
+  nondegeneracy-feasible.
+
+  Each requirement in (a) and (b), at one body and one set $S$, holds on a
+  Zariski-open subset of the space of linear maps $K^{d+1} \to K^4$. For
+  (a) this is a nonzero minor of $\pi$ applied to a basis of $\Pi_v$.
+  Where $\pi$ is injective on $\Pi_w$, the orthogonal of $\pi \Pi_w$ is
+  spanned by one vector whose coordinates are polynomials in the entries
+  of $\pi$, the $3 \times 3$ minors of $\pi$ applied to a basis of
+  $\Pi_w$; and (b) says that these vectors, $w \in S$, are linearly
+  independent. As $K$ is infinite, finitely many nonempty Zariski-open
+  subsets of this space meet. So it suffices to meet each requirement by
+  some $\pi$. For (a) any $\pi$ injective on $\Pi_v$ will do.
+
+  For (b), fix $v$ and $S$. A nondegenerate realization has
+  $|S| \le 3$, as noted after \cref{def:pencil-d-nondegenerate}. Every
+  $\Pi_w$, $w \in S$, contains $b_v$. Let $W = K^{d+1}/K b_v$ and
+  $A_w = \Pi_w / K b_v$, two-dimensional. The $A_w$ are pairwise
+  distinct, as $\dim(\Pi_w \cap \Pi_{w'}) \le 2$ for $w \ne w'$ in $S$,
+  and when $|S| = 3$ they meet only in $0$, as the three subspaces $\Pi_w$
+  meet in $K b_v$. Suppose a linear map $\bar\pi \colon W \to K^3$ is
+  injective on each $A_w$, with the images $\bar\pi A_w$ pairwise
+  distinct and, when $|S| = 3$, meeting only in $0$. Let $\pi$ map $b_v$
+  to $e_4$ and agree with $\bar\pi$, followed by the inclusion of $K^3$ as
+  the first three coordinates, on a complement of $K b_v$. Then
+  $\pi\Pi_w = K e_4 \oplus \bar\pi A_w$ is three-dimensional, and the
+  subspaces $\pi\Pi_w$, $w \in S$, meet in $K e_4$ plus the intersection
+  of the $\bar\pi A_w$, of dimension $2$ when $|S| = 2$ and $1$ when
+  $|S| = 3$.
+
+  We find $\bar\pi$ by induction on the dimension of $U = \sum_w A_w$,
+  which is at least three. If $\dim U = 3$, take an isomorphism of $U$
+  onto $K^3$, extended to $W$ in any way. If $\dim U \ge 4$, we find a
+  nonzero $c \in U$ such that the quotient map $U \to U/Kc$ keeps the
+  three properties, and apply the induction to the images of the $A_w$.
+  The quotient map is injective on $A_w$ when $c \notin A_w$. It maps
+  $A_w$ and $A_{w'}$ to one subspace only if $A_w + Kc = A_{w'} + Kc$,
+  which needs $\dim(A_w + A_{w'}) = 3$ and $c \in A_w + A_{w'}$. When
+  $|S| = 3$, the three images meet in a nonzero vector exactly when $c$
+  lies in a two-dimensional subspace $B$ of $U$ that meets every $A_w$ in
+  a nonzero vector. The subspaces $A_w$ and the three-dimensional sums
+  $A_w + A_{w'}$ are proper subspaces of $U$. We show that the subspaces
+  $B$ lie in finitely many proper subspaces of $U$ and at most one
+  quadric, the zero set of a nonzero quadratic polynomial. As $K$ is
+  infinite, the product of the polynomials defining these sets has a
+  non-root $c$, which avoids them all.
+
+  Let $A_1, A_2, A_3$ be the three subspaces, and let $B$ contain nonzero
+  vectors $p_i \in A_i$. Suppose first that two of them meet, say
+  $A_1 \cap A_2 = K y$ with $y \ne 0$. If $p_1$ and $p_2$ are linearly
+  independent, then $B \subseteq A_1 + A_2$, of dimension three.
+  Otherwise $p_1 \in A_1 \cap A_2$, so $y \in B$. As $y \notin A_3$,
+  $B = K y + K p_3 \subseteq K y + A_3$, also of dimension three.
+  Suppose next that the three subspaces are pairwise independent. Then
+  $p_1$ and $p_2$ are linearly independent, and $B$ lies in the
+  four-dimensional $T = A_1 \oplus A_2$. If $A_3 \cap T = 0$, there is no
+  such $B$. If $A_3 \cap T = K p$, write $p = p^1 + p^2$ with
+  $p^i \in A_i$, both nonzero as $A_3$ meets neither $A_1$ nor $A_2$. As
+  $p \in B = K p_1 + K p_2$, the vector $p^i$ is a multiple of $p_i$, so
+  $B = K p^1 + K p^2$, a single subspace. If $A_3 \subseteq T$, then
+  $U = T$, and the components $f_i \colon A_3 \to A_i$ of the inclusion
+  are isomorphisms, as $A_3$ meets neither $A_1$ nor $A_2$. Each such $B$
+  is $K f_1(p) + K f_2(p)$ for a nonzero $p \in A_3$. Identify $A_3$ with
+  $K^2$, and $A_i$ with $K^2$ through $f_i$. The vectors of these
+  subspaces $B$ are then the pairs $(\alpha p, \beta p)$ in
+  $K^2 \times K^2$, which are the pairs $(u, u')$ with
+  $\det[u, u'] = 0$, a quadric.
+\end{proof}
+
+\subsection{Lifts of nondegenerate realizations}
+\label{sec:pencil-d-lift}
+
+At $d = 3$ the generic conjunct is proved inside the induction of the
+reduction, through a polynomial parametrization of the nondegenerate
+realizations (\cref{lem:pencil-generic-steer}). It writes the point of a
+body as the vector orthogonal to three normals of $K^4$. In dimension $d$
+the subspaces of the hubs around a body need not meet in a line, and we
+do not parametrize the nondegenerate realizations in dimension $d$.
+Instead we keep the parametrization in dimension three and lift. A
+nondegenerate realization $(b^0, \Pi^0)$ in dimension three is lifted by
+$d - 3$ functions on the bodies, each agreeing on every closed
+neighbourhood with a linear form of the points
+(\cref{def:pencil-d-lift}). Every lift is a nondegenerate realization in
+dimension $d$ (\cref{lem:pencil-d-lift-realization}), and over a fixed
+$(b^0, \Pi^0)$ the lifts form a vector space, on which the rank is lower
+semicontinuous. The induction in dimension $d$ asks that a general lift
+of a general nondegenerate realization in dimension three have the
+deficiency rank in dimension $d$ (\cref{def:pencil-d-lift-attains}). One
+such lift, at a realization where the space of lifts is smallest,
+suffices (\cref{lem:pencil-d-lift-one-witness}). The steps of the
+induction pass from a smaller graph to $G$ by restricting the lifts of
+$G$ to the smaller graph (\cref{lem:pencil-d-lift-transfer}).
+
+For $y_1, y_2, y_3 \in K^4$ we write $y_1 \times y_2 \times y_3$ for the
+vector with $(y_1 \times y_2 \times y_3) \cdot t = \det[y_1, y_2, y_3, t]$
+for every $t \in K^4$, as in the proof of \cref{lem:pencil-generic-steer}.
+It is orthogonal to $y_1$, $y_2$ and $y_3$, its coordinates are
+polynomials in theirs, and it is nonzero exactly when they are linearly
+independent. When they are, it spans the orthogonal of their span. We
+write $r^0 = (b^0, \Pi^0)$ for a realization in dimension three, and
+$\Pi^0_v = n_v^{\perp}$ with $n_v \in K^4$ nonzero. As in the polar form
+of the introduction to this chapter, we also call the normals $b^0_v$
+the points of the realization.
+
+% Source: NONDEG workbook, S18 (i); the auxiliary vectors at a body that is not a hub, for
+% its vector n_v, are S18 (i)'s reading of "any nonzero vector orthogonal to their points".
+\begin{lemma}[A parametrization in dimension three]
+  \label{lem:pencil-d-steer}
+  \uses{def:pencil-d-nondegenerate, lem:pencil-d-nondegenerate-three}
+  Let $G$ be a finite simple multigraph whose closed hub-neighbourhoods
+  have at most three members. Let $\Gamma(G)$ be the space of tuples $s$
+  of vectors of $K^4$, a vector $m_v$ and five auxiliary vectors at every
+  body $v$. At $s \in \Gamma(G)$ define, in this order:
+  \begin{itemize}
+    \item at every pencil hub $v$, $n_v = m_v$;
+    \item at every body $v$, $b^0_v = y_1 \times y_2 \times y_3$, where
+      $y_1, y_2, y_3$ are the vectors $n_w$ for $w$ in the closed
+      hub-neighbourhood of $v$, in a fixed order, followed by as many of
+      the first three auxiliary vectors of $v$ as are needed;
+    \item at every body $v$ that is not a hub, $n_v = y_1 \times y_2
+      \times y_3$, where $y_1, y_2, y_3$ are the vectors $b^0_w$ for $w$
+      in the closed neighbourhood of $v$, in a fixed order, followed by as
+      many of the last two auxiliary vectors of $v$ as are needed.
+  \end{itemize}
+  Then the coordinates of $b^0_v$ and $n_v$ are polynomials in $s$, and
+  $b^0_w \cdot n_v = 0$ for every body $v$ and every $w$ in its closed
+  neighbourhood. The parameters $s$ at which every $b^0_v$ and $n_v$ is
+  nonzero and $(b^0, n^{\perp})$ is a nondegenerate realization of $G$ in
+  dimension three (\cref{def:pencil-d-nondegenerate}) form a Zariski-open
+  subset $U(G)$ of $\Gamma(G)$. For every nondegenerate realization
+  $(b^0, \Pi^0)$ of $G$ in dimension three there is $s \in U(G)$ at which
+  every $b^0_v(s)$ is a nonzero multiple of $b^0_v$ and every
+  $n_v(s)^{\perp}$ is $\Pi^0_v$. In particular $U(G)$ is nonempty exactly
+  when $G$ is nondegeneracy-feasible.
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-generic-steer, lem:pencil-d-point-configuration}
+  A body that is not a hub has at most three members in its closed
+  neighbourhood, and at least one, so at most two auxiliary vectors
+  complete them. The point $b^0_v$ is computed from the vectors $n_w$ of
+  hubs, which are parameters, and $n_v$ at a body that is not a hub from
+  the points. So all coordinates are polynomials in $s$. Let $w$ lie in
+  the closed neighbourhood of $v$. If $v$ is a hub, it lies in the closed
+  hub-neighbourhood of $w$, so $n_v$ is one of the vectors whose product
+  is $b^0_w$, and $b^0_w \cdot n_v = 0$. Otherwise $b^0_w$ is one of the
+  vectors whose product is $n_v$.
+
+  So wherever every $b^0_v$ and $n_v$ is nonzero, the subspace
+  $\Pi^0_v = n_v^{\perp}$ is three-dimensional and contains $b^0_w$ for
+  every $w$ in the closed neighbourhood of $v$. Where moreover the points
+  of the two ends of every link are linearly independent, part~(1) of
+  \cref{lem:pencil-d-point-configuration} gives a pencil realization in
+  dimension three with normals $b^0$ and subspaces $\Pi^0$. Each of these
+  requirements, and each condition of nondegeneracy, is open (the remarks
+  after \cref{def:pencil-d-nondegenerate}), so $U(G)$ is Zariski-open.
+
+  Conversely, let $(b^0, \Pi^0)$ be a nondegenerate realization in
+  dimension three, with $\Pi^0_v = n'^{\perp}_v$. Put $m_v = n'_v$ at
+  every hub. At every body $v$ the vectors $n'_w$, $w$ in the closed
+  hub-neighbourhood of $v$, are linearly independent
+  (\cref{lem:pencil-d-nondegenerate-three}) and orthogonal to $b^0_v$
+  (\cref{lem:pencil-d-point-configuration}). Choose the first auxiliary
+  vectors of $v$ to complete them to a basis of $b^{0\perp}_v$. Then
+  $y_1 \times y_2 \times y_3$ is nonzero and orthogonal to
+  $b^{0\perp}_v$, so it is a nonzero multiple of $b^0_v$. At a body $v$
+  that is not a hub, the points of its closed neighbourhood are linearly
+  independent: by the second condition of nondegeneracy, or, when the
+  neighbourhood has one or two members, as $b^0_v \ne 0$ or by the first.
+  They are orthogonal to $n'_v$. Choose the last auxiliary vectors of $v$
+  to complete them to a basis of $n'^{\perp}_v$. As the points at $s$ are
+  nonzero multiples of these, $n_v(s)$ is a nonzero multiple of $n'_v$.
+  Rescaling the normals $b^0_v$ and the vectors $n_v$ changes none of the
+  conditions, so $s \in U(G)$.
+
+  At $d = 3$ this is the parametrization in the proof of
+  \cref{lem:pencil-generic-steer}, read through the polarity
+  (\cref{lem:pencil-d-nondegenerate-three}): its points are our normals
+  $b^0_v$, and its normals our vectors $n_v$. There a body that is not a
+  hub, with at most two members in its closed neighbourhood, takes any
+  nonzero normal orthogonal to their points. Here it takes their product
+  with auxiliary vectors, so that $n_v$ is a polynomial in $s$ at every
+  body. The construction stays in $K^4$, and so does not depend on $d$.
+\end{proof}
+
+We say that a property holds at a \emph{general nondegenerate
+realization} of $G$ in dimension three if it holds at $r(s) = (b^0(s),
+n(s)^{\perp})$ for every $s$ in a nonempty Zariski-open subset of $U(G)$.
+As $\Gamma(G)$ is a vector space, two nonempty Zariski-open subsets of it
+meet (\cref{lem:pencil-x0-fibre-intersection}), so finitely many
+properties that each hold at a general nondegenerate realization hold
+together there. Let $P$ be a polynomial in the normals $b^0_v$ and the
+vectors $n_v$, homogeneous in each of them. If $P$ is nonzero at one
+nondegenerate realization, then it is nonzero at a general one. Indeed,
+by \cref{lem:pencil-d-steer} and the homogeneity, $P(r(s)) \ne 0$ at some
+$s \in U(G)$, so $s \mapsto P(r(s))$ is a nonzero polynomial on
+$\Gamma(G)$, and its non-roots in $U(G)$ form a nonempty Zariski-open
+subset.
+
+% Source: NONDEG workbook, S18 (ii). The workbook appends the new coordinates after the
+% four of K^4; here they are inserted before the last one, so that the lift by zero is the
+% embedding and the lifts of a configuration are configurations (no coordinate permutation).
+\begin{definition}[Lifts of a realization in dimension three]
+  \label{def:pencil-d-lift}
+  \uses{def:pencil-d-nondegenerate, def:pencil-d-embedding,
+        def:panel-hinge-framework, def:rigidity-matrix}
+  Let $G$ be a multigraph, and at every body $v$ let $b^0_v \in K^4$ and
+  let $\Pi^0_v$ be a three-dimensional subspace of $K^4$, with
+  $b^0_w \in \Pi^0_v$ for every $w$ in the closed neighbourhood of $v$.
+  The \emph{lift space} $\mathcal{L}(b^0, \Pi^0)$ is the vector space of
+  pairs $\lambda = (\zeta, \varphi)$ of a map $\zeta \colon V(G) \to K$
+  and a linear form $\varphi_v$ on $\Pi^0_v$ at every body, such that
+  $\zeta_w = \varphi_v(b^0_w)$ for every body $v$ and every $w$ in its
+  closed neighbourhood. A lift is \emph{trivial} when there is a linear
+  form $\psi$ on $K^4$ with $\zeta_v = \psi(b^0_v)$ and
+  $\varphi_v = \psi|_{\Pi^0_v}$ at every body. We write $L(b^0)$ for the
+  space of the maps $\zeta$ of the lifts.
+
+  Let $d \ge 3$, $m = d - 3$ and $\lambda^1, \dots, \lambda^m \in
+  \mathcal{L}(b^0, \Pi^0)$, with $\lambda^i = (\zeta^i, \varphi^i)$. The
+  \emph{lift} of $(b^0, \Pi^0)$ in dimension $d$ by
+  $\lambda = (\lambda^1, \dots, \lambda^m)$ has at every body $v$ the
+  normal and the subspace
+  \[
+    b_v = (b^0_{v,1}, b^0_{v,2}, b^0_{v,3}, \zeta^1_v, \dots, \zeta^m_v,
+    b^0_{v,4}), \qquad
+    \Pi_v = \{(p_1, p_2, p_3, \varphi^1_v(p), \dots, \varphi^m_v(p), p_4)
+    : p \in \Pi^0_v\}
+  \]
+  of $K^{d+1}$, where $b^0_{v,j}$ and $p_j$ are coordinates. Its
+  \emph{rank} is that of the rigidity matrix
+  (\cref{def:rigidity-matrix}) of the panel-hinge framework on $G$ in
+  $\bigwedge^{d-1} K^{d+1}$ with normals $b$
+  (\cref{def:panel-hinge-framework}).
+\end{definition}
+
+The new coordinates are inserted before the last one, as the embedding
+inserts its zeros (\cref{def:pencil-d-embedding}). So the lift by
+$\lambda = 0$ is the embedding of $(b^0, \Pi^0)$, and a lift of a
+configuration is a configuration (\cref{lem:pencil-d-lift-no-rigid}). At
+$d = 3$ there are no new coordinates, and the only lift is
+$(b^0, \Pi^0)$ itself.
+
+% Source: NONDEG workbook, S18 (ii) (its claim), with the first paragraph of S18 (v) for
+% part (2), and S25's change of coordinates for part (3).
+\begin{lemma}[Lifts are nondegenerate realizations]
+  \label{lem:pencil-d-lift-realization}
+  \uses{def:pencil-d-lift, def:pencil-d-nondegenerate}
+  Let $d \ge 3$, let $(b^0, \Pi^0)$ be a nondegenerate realization of $G$
+  in dimension three, and let $\lambda \in \mathcal{L}(b^0, \Pi^0)^m$.
+  \begin{enumerate}
+    \item The lift by $\lambda$ (\cref{def:pencil-d-lift}), with the
+      hinges $C(b_u, b_v)$, is a nondegenerate pencil realization of $G$
+      in dimension $d$ (\cref{def:pencil-d-nondegenerate}), and its
+      rigidity matrix has the rows of the panel-hinge framework with
+      normals $b$.
+    \item $L(b^0)$ is the space of maps $\zeta$ such that at every body
+      $v$ some linear form $\psi_v$ on $K^4$ has $\zeta_w = \psi_v(b^0_w)$
+      for every $w$ in the closed neighbourhood of $v$. So the normals of
+      the lifts, and their ranks, depend only on $b^0$ and the maps
+      $\zeta^i \in L(b^0)$.
+    \item Let $c_v$ be nonzero scalars and $g$ an invertible linear map
+      of $K^4$. Then $(\zeta, \varphi) \mapsto ((c_v \zeta_v)_v,
+      \varphi)$ maps $\mathcal{L}(b^0, \Pi^0)$ onto
+      $\mathcal{L}(c b^0, \Pi^0)$, and $(\zeta, \varphi) \mapsto
+      (\zeta, (\varphi_v \circ g^{-1})_v)$ maps it onto
+      $\mathcal{L}(g b^0, g \Pi^0)$. Both keep the rank of every lift.
+  \end{enumerate}
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-d-point-configuration, lem:pencil-d-nondegenerate-maps,
+        lem:pencil-d-rank-collineation}
+  (1) The subspace $\Pi_v$ is the image of $\Pi^0_v$ under an injective
+  linear map, so it is three-dimensional. It contains $b_w$ for every
+  $w$ in the closed neighbourhood of $v$, as
+  $\zeta^i_w = \varphi^i_v(b^0_w)$, in particular $b_v$. The linear map
+  $\pi \colon K^{d+1} \to K^4$ that deletes the inserted coordinates
+  maps $b_v$ to $b^0_v$ and $\Pi_v$ onto $\Pi^0_v$, injectively. So every
+  $b_v$ is nonzero, and the normals of the two ends of every link are
+  linearly independent, as their images are. Part~(1) of
+  \cref{lem:pencil-d-point-configuration} gives a pencil realization with
+  the hinges $C(b_u, b_v)$ and the rows of the panel-hinge framework. It
+  is nondegenerate by part~(1) of \cref{lem:pencil-d-nondegenerate-maps},
+  applied to $\pi$.
+
+  (2) A linear form on $\Pi^0_v$ extends to $K^4$, and a linear form on
+  $K^4$ restricts to $\Pi^0_v$, which contains the points of the closed
+  neighbourhood of $v$.
+
+  (3) As $\zeta_w = \varphi_v(b^0_w)$ exactly when
+  $c_w \zeta_w = \varphi_v(c_w b^0_w)$, and exactly when
+  $\zeta_w = (\varphi_v \circ g^{-1})(g b^0_w)$, both maps are linear
+  bijections. Under the first, the normals of a lift are multiplied by
+  the scalars $c_v$, so each hinge $C(b_u, b_v)$ by $c_u c_v$, which does
+  not change the rank. Under the second, they are mapped by the invertible
+  linear map of $K^{d+1}$ that acts by $g$ on the first three and the last
+  coordinates and fixes the inserted ones, which does not change the rank
+  (\cref{lem:pencil-d-rank-collineation}).
+\end{proof}
+
+% Source: NONDEG workbook, S18 (iv), stated in S18 (v)'s pointwise form.
+\begin{definition}[The general lift attains]
+  \label{def:pencil-d-lift-attains}
+  \uses{def:pencil-d-lift, def:D-deficiency}
+  Let $d \ge 3$ and let $G$ be nondegeneracy-feasible
+  (\cref{def:pencil-nondegenerate}). The \emph{general lift of $G$ attains
+  in dimension $d$} if there is a polynomial $Q$ in the coordinates of
+  vectors $b^0_v \in K^4$, $v \in V(G)$, homogeneous in each $b^0_v$ and
+  nonzero at the normals of some nondegenerate realization of $G$ in
+  dimension three, such that every nondegenerate realization
+  $(b^0, \Pi^0)$ of $G$ in dimension three with $Q(b^0) \ne 0$ has a lift
+  in dimension $d$ (\cref{def:pencil-d-lift}) of rank
+  $\operatorname{tgt}_d(G) = D(|V(G)| - 1) - \operatorname{def}_d(G)$.
+\end{definition}
+
+At such a realization, the lifts of rank $\operatorname{tgt}_d(G)$ have
+their parameters $\lambda$ in a nonempty Zariski-open subset of
+$\mathcal{L}(b^0, \Pi^0)^m$. Indeed the normals of a lift are affine in
+$\lambda$, the rows of its rigidity matrix are polynomials in them, and
+its rank is at most $\operatorname{tgt}_d(G)$
+(\cref{lem:relative-deficiency-rank-bound}), as every hinge is nonzero.
+If the general lift of $G$ attains, then $G$ has a generic pencil
+realization in dimension $d$ (\cref{def:pencil-d-nondegenerate}): a lift
+of rank $\operatorname{tgt}_d(G)$ at a realization with $Q(b^0) \ne 0$ is
+one (\cref{lem:pencil-d-lift-realization}).
+
+% Source: NONDEG workbook, S18 (v).
+\begin{lemma}[One lift suffices]
+  \label{lem:pencil-d-lift-one-witness}
+  \uses{def:pencil-d-lift-attains, lem:pencil-d-steer}
+  Let $K$ be infinite, $d \ge 3$, and let $G$ be simple and
+  nondegeneracy-feasible. For points $b^0$, let $\widetilde L(b^0)$ be
+  the space of pairs $(\zeta, \psi)$ of a map $\zeta \colon V(G) \to K$
+  and linear forms $\psi_v$ on $K^4$ with $\zeta_w = \psi_v(b^0_w)$ for
+  every body $v$ and every $w$ in its closed neighbourhood.
+  \begin{enumerate}
+    \item Suppose a nondegenerate realization $r^* = (b^*, \Pi^*)$ of $G$
+      in dimension three, at which $\dim \widetilde L(b^*)$ is least among
+      the nondegenerate realizations of $G$ in dimension three, has a lift
+      in dimension $d$ of rank $\operatorname{tgt}_d(G)$. Then the general
+      lift of $G$ attains in dimension $d$
+      (\cref{def:pencil-d-lift-attains}).
+    \item In particular it attains if a general nondegenerate realization
+      of $G$ in dimension three has a lift in dimension $d$ of rank
+      $\operatorname{tgt}_d(G)$.
+  \end{enumerate}
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-d-lift-realization, lem:relative-deficiency-rank-bound,
+        lem:pencil-x0-fibre-intersection}
+  (1) The space $\widetilde L(b^0)$ is the kernel of the linear map
+  $A(b^0) \colon (\zeta, \psi) \mapsto (\zeta_w - \psi_v(b^0_w))$, one
+  coordinate for every body $v$ and every $w$ in its closed neighbourhood,
+  whose matrix has the entries $0$, $1$ and the coordinates of the points.
+  The maps $\zeta$ of its members form $L(b^0)$
+  (\cref{lem:pencil-d-lift-realization}). Let $N = \dim \widetilde
+  L(b^*)$, let $c$ be the number of columns, and let $M$ be a nonzero
+  minor of size $c - N$ of $A(b^*)$, on a set $I$ of rows and $J$ of
+  columns. Let $(b^0, \Pi^0)$ be a nondegenerate realization with
+  $M(b^0) \ne 0$. Then $A(b^0)$ has rank at least $c - N$, and at most
+  $c - N$ by the choice of $r^*$, so its kernel is that of the rows $I$.
+  Solving these rows by Cramer's rule gives, for each column $j \notin J$,
+  a kernel vector $k_j(b^0)$ with $M(b^0)$ at $j$, zero at the other
+  columns outside $J$, and minors of $A(b^0)$ at the columns of $J$. These
+  $N$ vectors, polynomial in $b^0$, are a basis of the kernel.
+
+  For $\gamma = (\gamma^i_j)$ in $K^{N \times m}$, let $\zeta^i$ be the
+  map of $\sum_j \gamma^i_j k_j(b^0)$. The rigidity matrix of the
+  panel-hinge framework with the normals of the lift by these maps has
+  entries polynomial in $(b^0, \gamma)$. Some lift of $r^*$ has rank
+  $t = \operatorname{tgt}_d(G)$, so some minor $P(b^0, \gamma)$ of size
+  $t$ is nonzero at $b^*$ and some $\gamma^*$. Write $P$ as a polynomial
+  in $\gamma$ with coefficients polynomial in $b^0$, and let $P_\alpha$ be
+  a coefficient with $P_\alpha(b^*) \ne 0$. Let
+  $Q_0 = M \cdot P_\alpha$. At a nondegenerate realization with
+  $Q_0(b^0) \ne 0$, the polynomial $P(b^0, \cdot)$ is nonzero, so it has
+  a non-root $\gamma$, as $K$ is infinite. The lift by $\gamma$ then has
+  rank at least $t$, and at most $t$
+  (\cref{lem:relative-deficiency-rank-bound}).
+
+  It remains to make $Q_0$ homogeneous in each point. Let $Q$ be a sum of
+  the terms of $Q_0$ of one degree in each $b^0_v$ with $Q(b^*) \ne 0$.
+  Let $(b^0, \Pi^0)$ be a nondegenerate realization with $Q(b^0) \ne 0$.
+  As a polynomial in scalars $c = (c_v)$, $Q_0(c b^0)$ has $Q(b^0)$ as the
+  coefficient of one monomial, so its product with $\prod_v c_v$ has a
+  non-root $c$. The realization $(c b^0, \Pi^0)$ is nondegenerate with
+  $Q_0(c b^0) \ne 0$, so it has a lift of rank $t$, and so does
+  $(b^0, \Pi^0)$ (part~(3) of \cref{lem:pencil-d-lift-realization}).
+
+  (2) Rescaling each point does not change $\dim \widetilde L(b^0)$. By
+  \cref{lem:pencil-d-steer}, the least value of $\dim \widetilde L$ over
+  the nondegenerate realizations is its least value on $U(G)$, where it is
+  the least exactly where $A(b^0(s))$ has the largest rank. That is a
+  nonempty Zariski-open subset of $U(G)$. It meets the subset where a lift
+  of rank $\operatorname{tgt}_d(G)$ exists
+  (\cref{lem:pencil-x0-fibre-intersection}), and a common point gives
+  $r^*$.
+
+  At $d = 3$ the only lift is the realization, and (2) is the step of the
+  proof of \cref{lem:pencil-generic-steer} that keeps the rank as a lower
+  bound off the zero set of a polynomial. In dimension $d$ the lifts form
+  the space $\mathcal{L}(b^0, \Pi^0)^m$, whose dimension can jump. The
+  basis $k_j$ is polynomial only where $\dim \widetilde L$ takes its
+  least value, and this is why (1) asks for the least value at $r^*$.
+\end{proof}
+
+% Source: NONDEG workbook, S19.
+\begin{lemma}[Lifts restrict to a subgraph]
+  \label{lem:pencil-d-lift-transfer}
+  \uses{def:pencil-d-lift-attains, lem:pencil-d-steer}
+  Let $K$ be infinite and $d \ge 3$, let $G$ be simple and
+  nondegeneracy-feasible, and let $H = G[V']$ for a nonempty set $V'$ of
+  bodies. For a realization $r^0 = (b^0, \Pi^0)$ of $G$ in dimension
+  three, write $r^0|_H$ for the normals and subspaces of the bodies of
+  $H$. As every closed neighbourhood in $H$ lies in the one in $G$,
+  restricting $\zeta$ and $\varphi$ to $V'$ maps
+  $\mathcal{L}(r^0)$ into $\mathcal{L}(r^0|_H)$. Suppose:
+  \begin{itemize}
+    \item[(T1)] there is a polynomial $E$ in the normals and the vectors
+      $n_v$ of the bodies of $H$, homogeneous in each, and nonzero at some
+      nondegenerate realization of $H$ in dimension three, such that every
+      nondegenerate realization of $H$ in dimension three at which
+      $E \ne 0$ has the normals of $r|_H$, and its subspaces at every body
+      of degree at least two in $H$, for some nondegenerate realization
+      $r$ of $G$ in dimension three; and
+    \item[(T2)] at a general nondegenerate realization of $G$ in dimension
+      three, with normals $b^0$, every map in $L(b^0|_{V'})$ for $H$ is
+      the restriction to $V'$ of a map in $L(b^0)$ for $G$.
+  \end{itemize}
+  If the general lift of $H$ attains in dimension $d$, then at a general
+  nondegenerate realization $r^0$ of $G$ in dimension three, $r^0|_H$ is a
+  nondegenerate realization of $H$, and the $\lambda \in
+  \mathcal{L}(r^0)^m$ at which the panel-hinge framework on $H$ with the
+  normals of the lift by $\lambda$ has rank $\operatorname{tgt}_d(H)$
+  form a nonempty Zariski-open subset of $\mathcal{L}(r^0)^m$.
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-d-lift-realization, lem:pencil-x0-fibre-intersection}
+  Let $Q_H$ be the polynomial of \cref{def:pencil-d-lift-attains} for $H$.
+  Both $E$ and $Q_H$ are nonzero at some nondegenerate realization of $H$,
+  so both are nonzero at a general one, and together at some $r_H$
+  (the remarks after \cref{lem:pencil-d-steer}). By (T1), $r_H$ has the
+  normals of $r|_H$ for a nondegenerate realization $r$ of $G$, and its
+  subspaces at the bodies of degree at least two in $H$. A body of degree
+  at most one in $H$ is not a hub of $H$, so its subspace enters no
+  condition of nondegeneracy for $H$. Its subspace in $r$ contains the
+  normals of its closed neighbourhood in $G$, which contains the one in
+  $H$. So $r|_H$ is a nondegenerate realization of $H$ with
+  $Q_H \ne 0$. By \cref{lem:pencil-d-steer}, $r$ is $r(s_1)$ for some
+  $s_1 \in U(G)$, up to nonzero multiples of the normals. Hence
+  $r(s_1)|_H$ is nondegenerate, and $Q_H$ is nonzero at its normals, as
+  $Q_H$ is homogeneous in each.
+
+  Each of the two conditions on $s \in U(G)$, that $r(s)|_H$ be a
+  nondegenerate realization of $H$ and that $Q_H$ be nonzero at its
+  normals, holds off the zero set of a polynomial in $s$ that is nonzero
+  at $s_1$. So both hold at a general nondegenerate realization $r^0 =
+  r(s)$ of $G$, and so does (T2). There $r^0|_H$ has a lift of rank
+  $\operatorname{tgt}_d(H)$. The maps $\zeta = (\zeta^1, \dots, \zeta^m)$
+  in $L(b^0|_{V'})^m$ whose lift has this rank form a nonempty
+  Zariski-open subset of that vector space
+  (\cref{lem:pencil-d-lift-realization}, and the remarks after
+  \cref{def:pencil-d-lift-attains}). By (T2), the linear map
+  $\mathcal{L}(r^0)^m \to L(b^0|_{V'})^m$ that restricts each $\zeta^i$ to
+  $V'$ is onto. The preimage of a nonempty Zariski-open subset under a
+  surjective linear map is nonempty and Zariski-open. The lift of $r^0$ by
+  $\lambda$ has, on $H$, the normals of the lift of $r^0|_H$ by the
+  restriction of $\lambda$, which gives the claim.
+
+  At $d = 3$ this is the step of \cref{lem:pencil-generic-steer}(b) that
+  combines a generic realization of a subgraph with a nondegenerate
+  realization of $G$. There the rank of the subgraph is a lower bound off
+  the zero set of a polynomial in the parameters of $H$. In dimension $d$
+  the rank is read at a lift, and the lifts of $G$ must restrict onto the
+  lifts of $H$, which is (T2).
+\end{proof}
+
+\subsection{The generic conjunct in every dimension}
+\label{sec:pencil-d-generic}
+
+This section proves that the general lift attains in dimension $d$ at
+every simple nondegeneracy-feasible multigraph with a body, by strong
+induction on the number of bodies (\cref{thm:pencil-d-generic}). We follow
+the case split of \cref{thm:pencil-conditioned-pair-nonempty} and
+\cref{thm:pencil-generic-step}. On at most two bodies and at a triangle
+every lift attains, and a disconnected multigraph reduces to its parts
+(\cref{lem:pencil-d-lift-small}). At a cut edge, at a body of degree one
+and at a pendant triangle the lifts of the smaller graphs extend
+(\cref{lem:pencil-d-lift-cut-edge}, \cref{lem:pencil-d-lift-pendant},
+\cref{lem:pencil-d-lift-pendant-triangle}). Without a planar-rigid set we
+lift a nondegenerate configuration by attaining heights, which the
+coverage provides (\cref{lem:pencil-d-lift-no-rigid}). Otherwise a
+minimal planar-rigid set $W_0$ gives a pendant triangle or a body $x$ of
+degree two in $W_0$ whose neighbours are hubs
+(\cref{lem:pencil-d-good-ear}). At such a body the lift of $x$ is forced
+by those of its neighbours $a$ and $b$, and the two values it must take
+agree only under one linear condition on the lifts of $G - x$
+(\cref{lem:pencil-d-lift-ear}). The condition holds because the rest of
+$W_0$ lifts only trivially (\cref{lem:pencil-d-ear-free}). We prove this
+by choosing the points of $W_0 \setminus \{x\}$ first, without regard to
+the rest of $G$, and extending them to realizations of $G$
+(\cref{lem:pencil-d-ear-extend}).
+
+% Source: NONDEG workbook, S20.
+\begin{lemma}[Few bodies, a triangle, and a disconnected multigraph]
+  \label{lem:pencil-d-lift-small}
+  \uses{def:pencil-d-lift-attains}
+  Let $K$ be infinite and $d \ge 3$, and let $G$ be simple and
+  nondegeneracy-feasible.
+  \begin{enumerate}
+    \item If $G$ has at most two bodies, or is a triangle, the general
+      lift of $G$ attains in dimension $d$.
+    \item If $V(G)$ is the disjoint union of nonempty sets $V_1$ and $V_2$
+      with no edge between them, then $G[V_1]$ and $G[V_2]$ are
+      nondegeneracy-feasible, and if their general lifts attain in
+      dimension $d$, so does that of $G$.
+  \end{enumerate}
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-d-lift-realization, lem:cycle-realization-rigid,
+        def:panel-support-extensor, lem:block-rank-cut-vertex,
+        lem:cut-edge-decomposition, def:D-deficiency}
+  (1) We show that every lift of every nondegenerate realization in
+  dimension three has rank $\operatorname{tgt}_d(G)$, so that $Q = 1$
+  serves in \cref{def:pencil-d-lift-attains}. On one body the rank and
+  the target are zero, as the only partition has value zero. On two
+  bodies with no edge the rank is zero, and the partition into singletons
+  has value $D$, so the target is zero. On two bodies $u, v$ joined by an
+  edge, the normals $b_u$ and $b_v$ of a lift are linearly independent
+  (\cref{lem:pencil-d-lift-realization}), so the hinge $C(b_u, b_v)$ is
+  nonzero and the rank is $D - 1$, as in \cref{lem:pencil-d-base-case}.
+  The partition into singletons has value $D - (D - 1) = 1$, so the
+  target is $D - 1$. At a triangle no body is a hub, so the normals of
+  the three bodies are linearly independent in dimension three, and so
+  are those of a lift. Their three joins are then linearly independent,
+  and so are the hinges $C(b_i, b_j)$, their images under the complement
+  isomorphism (\cref{def:panel-support-extensor}). So the lift is
+  infinitesimally rigid (\cref{lem:cycle-realization-rigid}), of rank
+  $2D$. The partition into singletons has value $2D - 3(D - 1) < 0$, and
+  a partition into two parts has value $D - 2(D - 1) < 0$, so the
+  deficiency is zero and the target is $2D$.
+
+  (2) Every closed neighbourhood and every closed hub-neighbourhood lies
+  in $V_1$ or in $V_2$. So a nondegenerate realization of $G$ in
+  dimension three restricts to one of each side, two such realizations of
+  the sides form one of $G$, and the lift space of $G$ is the product of
+  those of the sides. The rank of a lift is the sum of the ranks on the
+  sides (\cref{lem:block-rank-cut-vertex}, with $V_1 \cap V_2$ empty). As
+  $\operatorname{def}_d(G) = \operatorname{def}_d(G[V_1]) +
+  \operatorname{def}_d(G[V_2]) + D$ (\cref{lem:cut-edge-decomposition},
+  with no crossing edge), the targets add too. The product of the
+  polynomials of \cref{def:pencil-d-lift-attains} for the two sides,
+  each in the normals of its side, serves for $G$.
+
+  At $d = 3$, part (1) is the direct construction of
+  \cref{thm:pencil-generic-step} at the triangle and of
+  \cref{lem:pencil-pair-loop-base-cut} on at most two bodies, and (2) its
+  case of a cut with no crossing edge. The counts read $D$ in place of
+  $6$, and $2D - 3(D - 1) < 0$ holds for every $D \ge 4$.
+\end{proof}
+
+% Source: NONDEG workbook, S21 (restriction, (T2) and the rank count), with S32 for (T1):
+% the glue matches each side's point at the far end, and E_1 is the cross condition.
+\begin{lemma}[A cut edge between two sides of at least two bodies]
+  \label{lem:pencil-d-lift-cut-edge}
+  \uses{def:pencil-d-lift-attains, def:cut-edges-2ec}
+  Let $K$ be infinite and $d \ge 3$, and let $G$ be simple and
+  nondegeneracy-feasible. Let $uv$ be the only edge between $V_1 \ni u$
+  and $V_2 = V(G) \setminus V_1 \ni v$, with $|V_1|, |V_2| \ge 2$, and let
+  $G_1 = G[V_1 \cup \{v\}]$ and $G_2 = G[V_2 \cup \{u\}]$. Then $G_1$ and
+  $G_2$ are nondegeneracy-feasible, and if their general lifts attain in
+  dimension $d$, so does that of $G$.
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-d-lift-transfer, lem:pencil-d-lift-one-witness,
+        lem:pencil-d-lift-realization, lem:block-rank-cut,
+        lem:cut-edge-decomposition, lem:relative-deficiency-rank-bound,
+        lem:pencil-feasible-hub-conditions}
+  \emph{Restriction.} In $G_1$ the bodies of $V_1$ keep their closed
+  neighbourhoods and their degrees. The body $v$ has degree one, so it is
+  not a hub of $G_1$, and its closed neighbourhood is $\{u, v\}$, whose
+  normals are independent by the first condition. The closed
+  hub-neighbourhood of $u$ in $G_1$ lies in the one in $G$, and every
+  other one is unchanged or has at most one member. Hence the
+  restriction of a nondegenerate realization of $G$ in dimension three to
+  $G_1$ is nondegenerate, and $G_1$ is nondegeneracy-feasible. Likewise
+  $G_2$.
+
+  \emph{The glue.} Let $r_1$ and $r_2$ be nondegenerate realizations of
+  $G_1$ and $G_2$ in dimension three, with normals $b$ and $b'$ and
+  subspaces $n^{\perp}$ and $n'^{\perp}$. Let $\mathcal{G}$ be the set of
+  invertible linear maps $g$ of $K^4$ with $g b'_u = b_u$ and
+  $g b'_v = b_v$, a nonempty Zariski-open subset of an affine space, as
+  both pairs are linearly independent. For $g \in \mathcal{G}$ let $h$ be
+  its inverse transpose, so that $g p \cdot h q = p \cdot q$. Glue $r_1$
+  on $V_1$ and the image of $r_2$ (normals $g b'$, vectors $h n'$) on
+  $V_2$. The closed neighbourhood in $G$ of a body of $V_1$ lies in
+  $V_1 \cup \{v\}$, where the glued normals are those of $r_1$, as
+  $g b'_v = b_v$. Likewise on $V_2$. So the incidences hold. The normals
+  of the two ends of every link are independent, at $uv$ as in $r_1$. A
+  body that is not a hub has the closed neighbourhood it has in its side,
+  with that side's normals, moved by $g$ on $V_2$. A closed hub-neighbourhood of a body of $V_1$ other than $u$ lies in
+  $V_1$, and is the one in $G_1$; likewise on $V_2$. So the only
+  conditions of nondegeneracy of $G$ that read both sides are those at
+  $u$ and at $v$ at sets $S$ containing the far end of $uv$, which is
+  then a hub of $G$.
+
+  Consider $u$ and a set $S$ in its closed hub-neighbourhood in $G$ with
+  $v \in S$, $|S| \ge 2$. The condition asks that $h n'_v$ and the
+  vectors $n_w$, $w \in S \setminus \{v\}$, be linearly independent. The
+  latter are independent (the condition at $u$ for $r_1$), and span a
+  space $N$ of dimension $|S| - 1$. As $n'_v$ is orthogonal to $b'_u$ and
+  $b'_v$, the vector $h n'_v$ lies in the two-dimensional
+  $P = \{b_u, b_v\}^{\perp}$. Every nonzero $t \in P$ is $h n'_v$ for some
+  $g \in \mathcal{G}$: complete $b'_u, b'_v$ to a basis of $n'^{\perp}_v$
+  and then of $K^4$ by a vector $e'$ with $n'_v \cdot e' = 1$, complete
+  $b_u, b_v$ likewise to a basis of $t^{\perp}$ and by $e$ with
+  $t \cdot e = 1$, and let $g$ map the first basis to the second. So the
+  condition holds for some $g$, and then for $g$ in a nonempty
+  Zariski-open subset of $\mathcal{G}$, exactly when $P \not\subseteq N$.
+  If $|S| = 2$, then $\dim N = 1 < \dim P$. If $|S| = 3$, then $u$ is a
+  hub, as a body that is not a hub has at most two members in its closed
+  hub-neighbourhood, and $S = \{u, v, w_1\}$ is all of it
+  (\cref{lem:pencil-feasible-hub-conditions}). Then $n_u \in P$, as
+  $b_u, b_v \in n_u^{\perp}$, and $N$ is spanned by $n_u$ and $n_{w_1}$.
+  So $P \subseteq N$ exactly when $P = N$, that is, exactly when
+  $n_{w_1} \in P$. As $b_u \cdot n_{w_1} = 0$ already, this happens
+  exactly when $E_1(r_1) = 0$, where $E_1 = b_v \cdot n_{w_1}$ when $u$
+  and $v$ are hubs of $G$ with closed hub-neighbourhood
+  $\{u, v, w_1\}$ of $u$, and $E_1 = 1$ otherwise. At $v$ the same holds
+  with $E_2 = b'_u \cdot n'_{w_2}$, which $g$ does not change. So when
+  $E_1(r_1) E_2(r_2) \ne 0$, a common $g$ in these finitely many nonempty
+  Zariski-open subsets of $\mathcal{G}$ makes the glued realization
+  nondegenerate.
+
+  \emph{(T1) and (T2).} The polynomial $E_2$ is nonzero at some
+  nondegenerate realization of $G_2$. If $E_2 \ne 1$, take the restriction
+  of a nondegenerate realization of $G$, and replace the normal of $u$,
+  of degree one in $G_2$, by a vector of $n'^{\perp}_v$ outside
+  $K b'_v$ and outside $n'^{\perp}_{w_2}$, and its subspace by one through
+  that vector and $b'_v$. This keeps the realization nondegenerate, as
+  $u$ enters only the independence at $uv$, and makes $E_2 \ne 0$. Such a
+  vector exists, as $n'^{\perp}_v \ne n'^{\perp}_{w_2}$ by the condition
+  at $v$. So every nondegenerate realization $r_1$ of $G_1$ with
+  $E_1(r_1) \ne 0$, glued with such a realization of $G_2$, gives a
+  nondegenerate realization of $G$ that restricts to $r_1$ except at the
+  subspace of $v$, of degree one in $G_1$; and $E_1$ is nonzero at some
+  nondegenerate realization of $G_1$ by the same argument. This is (T1) of
+  \cref{lem:pencil-d-lift-transfer} for $G_1$, and likewise for $G_2$.
+  For (T2), let $r^0$ be a nondegenerate realization of $G$ and
+  $(\zeta_1, \varphi_1)$ a lift of $r^0|_{G_1}$. Extend
+  $\varphi_{1,v}$, a linear form on the subspace of $v$, to a linear form
+  $\psi$ on $K^4$, and put $\zeta_y = \psi(b^0_y)$ and
+  $\varphi_y = \psi|_{\Pi^0_y}$ on $V_2 \setminus \{v\}$. The conditions
+  at the bodies of $V_1$ are those of $G_1$. At $v$, the form
+  $\varphi_{1,v} = \psi|_{\Pi^0_v}$ has $\varphi_{1,v}(b^0_u) =
+  \zeta_{1,u}$ and $\varphi_{1,v}(b^0_v) = \zeta_{1,v}$ by the conditions
+  of $G_1$ at $v$, and agrees with $\psi$ on $V_2$. At a body of
+  $V_2 \setminus \{v\}$ the lift is trivial near it. So this is a lift of
+  $r^0$ restricting to the given one, and likewise for $G_2$.
+
+  \emph{The rank.} By \cref{lem:pencil-d-lift-transfer} for $G_1$ and for
+  $G_2$, at a general nondegenerate realization $r^0$ of $G$ and a general
+  $\lambda$ (\cref{lem:pencil-x0-fibre-intersection}), the panel-hinge
+  frameworks on $G_1$ and $G_2$ with the normals of the lift have ranks
+  $\operatorname{tgt}_d(G_1)$ and $\operatorname{tgt}_d(G_2)$. Every
+  hinge of the lift is nonzero, so the rank of $G$ is at least those of
+  $G[V_1]$ and $G[V_2]$ plus $D - 1$ (\cref{lem:block-rank-cut}). The edge
+  $uv$ has $D - 1$ rows, so the rank of $G_i$ is at most that of
+  $G[V_i]$ plus $D - 1$. Hence the rank of $G$ is at least
+  $\operatorname{tgt}_d(G_1) + \operatorname{tgt}_d(G_2) - (D - 1)$. By
+  part~(1) of \cref{lem:cut-edge-decomposition},
+  $\operatorname{def}_d(G) = \operatorname{def}_d(G[V_1]) +
+  \operatorname{def}_d(G[V_2]) + 1$ and $\operatorname{def}_d(G_i) =
+  \operatorname{def}_d(G[V_i]) + 1$. So
+  $\operatorname{tgt}_d(G_1) + \operatorname{tgt}_d(G_2) - (D - 1) =
+  D|V(G)| - \operatorname{def}_d(G) - 1 - D + 1 =
+  \operatorname{tgt}_d(G)$, and the lift has rank
+  $\operatorname{tgt}_d(G)$ (\cref{lem:relative-deficiency-rank-bound}).
+  \Cref{lem:pencil-d-lift-one-witness} completes the proof.
+
+  At $d = 3$ this is the cut-edge case of
+  \cref{lem:pencil-pair-loop-base-cut} with two sides of at least two
+  bodies. There the second side is moved by a map that avoids finitely
+  many subspaces, and the generic realizations are combined through
+  \cref{lem:pencil-generic-steer}(b). In dimension $d$ we glue
+  realizations in dimension three. The two sides meet only in the
+  conditions at $u$ and at $v$, which hold when $E_1$ and $E_2$ are
+  nonzero. The rank count reads $D - 1$ in place of $5$.
+\end{proof}
+
+% Source: NONDEG workbook, S22.
+\begin{lemma}[A body of degree one]
+  \label{lem:pencil-d-lift-pendant}
+  \uses{def:pencil-d-lift-attains}
+  Let $K$ be infinite and $d \ge 3$, and let $G$ be simple and
+  nondegeneracy-feasible, with a body $v$ of degree one whose neighbour
+  $u$ has another neighbour. Let $H = G - v$. Then $H$ is
+  nondegeneracy-feasible, and if its general lift attains in dimension
+  $d$, so does that of $G$.
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-generic-steer, lem:pencil-d-nondegenerate-three,
+        lem:pencil-d-lift-transfer, lem:pencil-d-lift-one-witness,
+        lem:block-rank-cut, lem:cut-edge-decomposition,
+        lem:relative-deficiency-rank-bound}
+  \emph{(T1).} The body $v$ is not a hub, and it is the only neighbour
+  that a body of $H$ loses. By \cref{lem:pencil-generic-steer}(a), read
+  through \cref{lem:pencil-d-nondegenerate-three}, $G$ has a nondegenerate
+  realization $r$ in dimension three whose restriction to $H$ is
+  nondegenerate. Let $E$ be a product of polynomials, one for each
+  condition of nondegeneracy of $G$ that reads only bodies of $H$ and is
+  not a condition for $H$, each a minor nonzero at $r|_H$. These are the
+  conditions at sets containing $u$, when $u$ is a hub of $G$ but not of
+  $H$. Let $r_H$ be a nondegenerate realization of $H$ with
+  $E(r_H) \ne 0$. If $u$ has at least two neighbours in $H$, it is a hub
+  of $G$. Put $b^0_v$ in $\Pi^0_u$ outside $K b^0_u$, and let $\Pi^0_v$
+  be a three-dimensional subspace through $b^0_u$ and $b^0_v$. If $u$ has
+  one neighbour $w$ in $H$, put $b^0_v$ outside the span of $b^0_u$ and
+  $b^0_w$, and replace $\Pi^0_u$, the subspace of a body of degree one in
+  $H$, by the span of $b^0_u$, $b^0_v$ and $b^0_w$; let $\Pi^0_v$ be that
+  span too. In both cases the incidences hold, the normals at $uv$ are
+  independent, and so are those of the closed neighbourhood of $u$ when
+  $u$ is not a hub of $G$. The body $v$ is in no closed
+  hub-neighbourhood, and its closed neighbourhood is $\{u, v\}$. The
+  other conditions are those of $H$ and those of $E$. So this is a
+  nondegenerate realization of $G$ restricting to $r_H$, except at the
+  subspace of a body of degree one in $H$.
+
+  \emph{(T2).} Let $r^0$ be a nondegenerate realization of $G$ and
+  $(\zeta, \varphi)$ a lift of $r^0|_H$, whose subspace at $u$ is that of
+  $r^0$. Put $\zeta_v = \varphi_u(b^0_v)$, and let $\varphi_v$ be the
+  linear form on $\Pi^0_v$ with the values $\zeta_u$ and $\zeta_v$ at the
+  independent $b^0_u$ and $b^0_v$, extended in any way. This is a lift of
+  $r^0$: the new conditions are at $u$, for $w = v$, and at $v$.
+
+  \emph{The rank.} By \cref{lem:pencil-d-lift-transfer}, at a general
+  nondegenerate realization of $G$ and a general $\lambda$, the
+  framework on $H$ has rank $\operatorname{tgt}_d(H)$. The hinge of $uv$
+  is nonzero, so the rank of $G$ is at least
+  $\operatorname{tgt}_d(H) + D - 1$ (\cref{lem:block-rank-cut}). By
+  \cref{lem:cut-edge-decomposition} at $V' = \{v\}$,
+  $\operatorname{def}_d(G) = \operatorname{def}_d(H) + 1$, so
+  $\operatorname{tgt}_d(G) = \operatorname{tgt}_d(H) + D - 1$, and the
+  lift has rank $\operatorname{tgt}_d(G)$
+  (\cref{lem:relative-deficiency-rank-bound}).
+  \Cref{lem:pencil-d-lift-one-witness} completes the proof.
+
+  At $d = 3$ this is the cut-edge case of
+  \cref{lem:pencil-pair-loop-base-cut} with a side of one body. There $v$
+  gets a point and a panel avoiding finitely many subspaces, and the rank
+  rises by $5$. In dimension $d$ the lift of $v$ is read off that of $u$,
+  and the rank rises by $D - 1$.
+\end{proof}
+
+% Source: NONDEG workbook, S23.
+\begin{lemma}[A pendant triangle]
+  \label{lem:pencil-d-lift-pendant-triangle}
+  \uses{def:pencil-d-lift-attains}
+  Let $K$ be infinite and $d \ge 3$, and let $G$ be simple and
+  nondegeneracy-feasible, with two adjacent bodies $x_1, x_2$ of degree
+  two, both joined to a body $c$ of degree at least four. Let
+  $H = G - \{x_1, x_2\}$. Then $H$ is nondegeneracy-feasible, and if its
+  general lift attains in dimension $d$, so does that of $G$.
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-generic-steer, lem:pencil-d-nondegenerate-three,
+        lem:pencil-d-lift-transfer, lem:pencil-d-lift-one-witness,
+        lem:pencil-d-lift-small, lem:block-rank-cut-vertex,
+        lem:deficiency-cut-vertex, lem:relative-deficiency-rank-bound}
+  \emph{(T1).} Of the bodies of $H$ only $c$ can stop being a hub, and the
+  neighbours it loses are not hubs. By \cref{lem:pencil-generic-steer}(a),
+  read through \cref{lem:pencil-d-nondegenerate-three}, $G$ has a
+  nondegenerate realization $r$ in dimension three whose restriction to
+  $H$ is nondegenerate. Let $E$ be a product of minors, nonzero at
+  $r|_H$, for the conditions of $G$ at sets containing $c$ that are not
+  conditions of $H$. Let $r_H$ be a nondegenerate realization of $H$ with
+  $E(r_H) \ne 0$. Put $b^0_{x_1}, b^0_{x_2}$ in $\Pi^0_c$ with $b^0_c$,
+  $b^0_{x_1}$ and $b^0_{x_2}$ linearly independent, and let
+  $\Pi^0_{x_1} = \Pi^0_{x_2} = \Pi^0_c$. The incidences hold, the normals
+  of the closed neighbourhood $\{x_1, x_2, c\}$ of each $x_i$ are
+  independent, and so are those of every link of the triangle. The closed
+  hub-neighbourhood of $x_i$ is $\{c\}$. The other conditions are those of
+  $H$ and of $E$. So this is a nondegenerate realization of $G$
+  restricting to $r_H$.
+
+  \emph{(T2).} Given a lift $(\zeta, \varphi)$ of $r^0|_H$, put
+  $\zeta_{x_i} = \varphi_c(b^0_{x_i})$ and $\varphi_{x_i} = \varphi_c$,
+  using that $\Pi^0_{x_i} = \Pi^0_c$ at every nondegenerate realization
+  of $G$: the normals of $x_1$, $x_2$ and $c$ are independent and lie in
+  both. The conditions at $c$ and at $x_1$, $x_2$ hold.
+
+  \emph{The rank.} At a lift, the normals of $c$, $x_1$ and $x_2$ are
+  linearly independent, so the triangle is infinitesimally rigid, of rank
+  $2D$, as in \cref{lem:pencil-d-lift-small}. The ranks of $H$ and of the
+  triangle add at the cut vertex $c$ (\cref{lem:block-rank-cut-vertex}),
+  and so do the deficiencies (\cref{lem:deficiency-cut-vertex}), the
+  triangle's being zero. So $\operatorname{tgt}_d(G) =
+  \operatorname{tgt}_d(H) + 2D$, and at a general nondegenerate
+  realization and a general $\lambda$ the lift has rank
+  $\operatorname{tgt}_d(G)$ (\cref{lem:pencil-d-lift-transfer},
+  \cref{lem:relative-deficiency-rank-bound}).
+  \Cref{lem:pencil-d-lift-one-witness} completes the proof.
+
+  At $d = 3$ this is \cref{lem:pencil-generic-pendant-triangle}, whose
+  triangle has rank $12$. In dimension $d$ the lifts of $x_1$ and $x_2$
+  are read off that of $c$, and the triangle has rank $2D$.
+\end{proof}
+
+% Source: NONDEG workbook, S25 (with S13 and S14's corollary). The fresh read of the
+% coverage notes that S25's points are a coordinate permutation of the chapter's; with the
+% coordinates of def:pencil-d-lift inserted before the last one, they are the chapter's.
+\begin{lemma}[Without a planar-rigid set]
+  \label{lem:pencil-d-lift-no-rigid}
+  \uses{def:pencil-d-lift-attains, def:pencil-d-x0-attains,
+        def:pencil-x0-standing}
+  Let $K$ be infinite and $d \ge 3$, and let $G$ satisfy the standing
+  hypotheses (\cref{def:pencil-x0-standing}), be nondegeneracy-feasible,
+  and have $\operatorname{def}_2(G[Y]) \ne 0$ for every set $Y$ of at
+  least two bodies. If the general configuration of $G$ attains in
+  dimension $d$ (\cref{def:pencil-d-x0-attains}), then the general lift
+  of $G$ attains in dimension $d$.
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-feasible-hub-conditions, thm:pencil-jj-equality,
+        lem:pencil-x0-planes-separate, lem:pencil-x0-conjunct-three,
+        lem:pencil-condition-linear, lem:pencil-x0-fibre-intersection,
+        lem:pencil-d-nondegenerate-three, lem:pencil-d-lift-realization,
+        lem:pencil-d-lift-one-witness, def:pencil-main-picture,
+        def:pencil-d-configuration}
+  \emph{A nondegenerate configuration.} Every closed hub-neighbourhood has
+  at most three members (\cref{lem:pencil-feasible-hub-conditions}). Take
+  a picture $q$ off the zero sets of these nonzero polynomials: one
+  witnessing that the general configuration attains in dimension $d$,
+  whose non-roots are admissible; that of Jackson and Jord\'an's equality
+  (\cref{thm:pencil-jj-equality}), whose non-roots are main pictures
+  with $\dim L(q) = \ell_0 = 3 + \operatorname{def}_2(G)$; for every three
+  distinct bodies, the determinant of their homogeneous picture points;
+  and for every two distinct bodies, the polynomial of
+  \cref{lem:pencil-x0-planes-separate}. Over $q$ the attaining heights
+  $z = (z^1, \dots, z^{d-2})$ contain a nonempty Zariski-open subset of
+  $L(q)^{d-2}$. At an admissible picture, the affine function $h_v$ that
+  agrees with $z^1$ on the closed neighbourhood of $v$ is unique and
+  linear in $z^1$, and for two distinct bodies $u$ and $w$ some
+  coordinate of $h_u - h_w$ is nonzero at some $z^1$
+  (\cref{lem:pencil-x0-planes-separate}). So some attaining $z$ has the
+  planes $h_v$ of $z^1$ pairwise distinct
+  (\cref{lem:pencil-x0-fibre-intersection}). Then the configuration
+  $(q, z^1)$ is a nondegenerate pencil realization with its plane normals
+  (\cref{lem:pencil-x0-conjunct-three}). By
+  \cref{lem:pencil-d-nondegenerate-three}, its points $b^0$ with the
+  subspaces $\Pi^0_v$ spanned by the points of the closed neighbourhoods
+  form a nondegenerate realization $r^*$ in dimension three.
+
+  \emph{Its lifts.} At a configuration $(q, z^1)$ with $z^1 \in L(q)$, a
+  map $\zeta$ agrees on a closed neighbourhood with a linear form of the
+  points exactly when it agrees there with an affine function of the
+  picture, as the height $z^1$ is one. So $L(b^0) = L(q)$, and the lift
+  of $r^*$ by $\zeta^1, \dots, \zeta^m \in L(q)$ has the normals
+  $(x_v, y_v, z^1_v, \zeta^1_v, \dots, \zeta^m_v, 1)$, those of the
+  configuration $(q, (z^1, \zeta^1, \dots, \zeta^m))$
+  (\cref{def:pencil-d-configuration}). The lift by
+  $(z^2, \dots, z^{d-2})$ therefore has rank $\operatorname{tgt}_d(G)$.
+
+  \emph{The least lift space.} We show that $\dim \widetilde L$ is least
+  at $r^*$ (\cref{lem:pencil-d-lift-one-witness}). At $r^*$ the points of
+  each closed neighbourhood span a three-dimensional subspace, so
+  $\dim \widetilde L(b^0) = \dim L(b^0) + |V(G)| = \ell_0 + |V(G)|$.
+  Let $(b^0, \Pi^0)$ be a nondegenerate realization at which the points
+  of every closed neighbourhood span $\Pi^0_v$. Take an invertible linear
+  map $g$ of $K^4$ with $g b^0_v$ of nonzero last coordinate and $g
+  \Pi^0_v$ not containing $e_3$ at every body, which exists as $K$ is
+  infinite. Rescale the points to last coordinate $1$. Neither step changes $\dim \widetilde L$, as
+  $(\zeta, \psi) \mapsto ((c_v \zeta_v)_v, \psi)$ and
+  $(\zeta, \psi) \mapsto (\zeta, (\psi_v \circ g^{-1})_v)$ are linear
+  bijections, nor the nondegeneracy and the spanning. Then the projection
+  forgetting the third coordinate is injective on each $g\Pi^0_v$, so the
+  third coordinate is an affine function of the first two there. Hence the
+  points are a configuration $(q', z')$ with $z' \in L(q')$. Its picture
+  $q'$ is admissible: the projection maps independent points of one
+  subspace to independent homogeneous picture points, at the two ends of a
+  link and at three spanning points of a closed neighbourhood. So
+  $\dim \widetilde L = \dim L(q') + |V(G)| \ge \ell_0 + |V(G)|$
+  (\cref{def:pencil-main-picture}). The
+  spanning condition is open and holds at $r^*$, so it holds at a general
+  nondegenerate realization, where $\dim \widetilde L$ takes its least
+  value (the proof of \cref{lem:pencil-d-lift-one-witness}). So that value
+  is at least $\ell_0 + |V(G)|$, and $r^*$ attains it.
+  \Cref{lem:pencil-d-lift-one-witness} completes the proof.
+
+  At $d = 3$ this is \cref{thm:pencil-x0-base-generic}: there the
+  attaining configuration $(q, z^1)$ is itself the generic realization. In
+  dimension $d$ the first height makes the realization nondegenerate in
+  dimension three, the other $d - 3$ heights are a lift of it, and the
+  coverage in dimension $d$ supplies heights that do both at once.
+\end{proof}
+
+% Source: NONDEG workbook, S33 (O8, the good-ear lemma returning W_0; review 1's F1), with
+% S29 (1) for (iii) and S24 (1) for (iv); part (v) is S31.
+\begin{lemma}[A body of degree two in a minimal planar-rigid set, or a pendant triangle]
+  \label{lem:pencil-d-good-ear}
+  \uses{def:pencil-x0-standing, def:D-deficiency, def:cut-edges-2ec,
+        def:pencil-nondegenerate}
+  Let $G$ satisfy the standing hypotheses (\cref{def:pencil-x0-standing})
+  and be two-edge-connected on at least four bodies, with every closed
+  hub-neighbourhood of at most three members and no triangle containing
+  two pencil hubs, and suppose $\operatorname{def}_2(G[Y]) = 0$ for some
+  set $Y$ of at least two bodies. Write $s$ for the singleton value at
+  $D = 3$ (\cref{sec:main-component-sparse}). Then $G$ has two adjacent
+  bodies of degree two with a common neighbour of degree at least four,
+  or a set $W_0$ of bodies and a body $x \in W_0$ such that:
+  \begin{enumerate}
+    \item[(i)] $s(W_0) \le 0$, $s(Z) \ge 1$ for every $Z \subsetneq W_0$
+      with $|Z| \ge 2$, and every body of $W_0$ has at least two
+      neighbours in $W_0$;
+    \item[(ii)] $x$ has degree two, and its neighbours $a$ and $b$ are
+      pencil hubs in $W_0$, not adjacent;
+    \item[(iii)] $X = W_0 \setminus \{x\}$ has at least three bodies,
+      $G[X]$ is connected of minimum degree at least two,
+      $s(X) = 1 = \operatorname{def}_2(G[X])$, and
+      $\operatorname{def}_2(G[Z]) \ne 0$ for every $Z \subseteq X$ with
+      $|Z| \ge 2$;
+    \item[(iv)] $\operatorname{def}_d(G - x) = \operatorname{def}_d(G)$
+      for every $d \ge 3$;
+    \item[(v)] every body outside $W_0$ has at most two neighbours in
+      $W_0$, all of them pencil hubs, and every body of $W_0$ with a
+      neighbour outside $W_0$ is a pencil hub.
+  \end{enumerate}
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-rigid-good-ear, lem:deficiency-sparse,
+        lem:deficiency-add-body, lem:deficiency-singleton-bound,
+        lem:deficiency-tight-rigid, lem:deficiency-rigid-higher,
+        lem:deficiency-merge-rigid, lem:deficiency-ear-merge}
+  The proof of \cref{lem:pencil-rigid-good-ear} takes a planar-rigid set
+  $W_0$ with as few bodies as possible, which gives (i), and returns the
+  pendant triangle or a body $x \in W_0$ of degree two whose neighbours
+  $a, b \in W_0$ are hubs. They are not adjacent, or $x a b$ would be a
+  triangle with two hubs.
+
+  (iii) Suppose $a$ had only one neighbour $a'$ in $W_0$ besides $x$.
+  Then $x$ and $a$ are adjacent bodies of $W_0$ each with at most one
+  neighbour in $W_0 \setminus \{x, a\}$, namely $b$ and $a'$. The triangle
+  argument of the proof of \cref{lem:pencil-rigid-good-ear} makes $W_0$ a
+  triangle on $x$, $a$ and a third body, which is the other neighbour $b$
+  of $x$, against $a \not\sim b$. So $a$, and likewise
+  $b$, has at least two neighbours in $X$. A body of $X$ other than $a, b$
+  is not adjacent to $x$, so it keeps its neighbours in $W_0$. Hence
+  $G[X]$ has minimum degree at least two, and $|X| \ge 3$ as $G$ is
+  simple. Removing $x$ with its two edges into $X$ changes the singleton
+  value by $-(3 - 4)$ (\cref{lem:deficiency-add-body}), so
+  $s(X) = s(W_0) + 1 \le 1$, and $s(X) \ge 1$ by (i). A partition of $X$
+  with a part $Z$, $2 \le |Z| < |X|$, has value at most
+  $s(X) - s(Z) \le 0$ (\cref{lem:deficiency-singleton-bound}, as every
+  nonempty set has nonnegative singleton value by (i)), and $\{X\}$ has
+  value $0$, so $\operatorname{def}_2(G[X]) = s(X) = 1$. A planar-rigid
+  $Z \subseteq X$ with $|Z| \ge 2$ would be smaller than $W_0$. If $G[X]$
+  were the disjoint union of $G[X_1]$ and $G[X_2]$ with no edge between,
+  then $s(X) = s(X_1) + s(X_2) + 3 \ge 3$, against $s(X) = 1$.
+
+  (iv) By (i) and (iii), $s(Z) \ge 1$ for every $Z \subseteq X$ with
+  $|Z| \ge 2$ and $s(X) \le 1$, so $\operatorname{def}_3(G[X]) = 0$
+  (\cref{lem:deficiency-tight-rigid}), and $\operatorname{def}_d(G[X]) =
+  0$ (\cref{lem:deficiency-rigid-higher}). As $a, b \in X$, the merged
+  deficiency $\operatorname{def}_d(G - x; a, b)$ equals
+  $\operatorname{def}_d(G - x)$ (\cref{lem:deficiency-merge-rigid}), so
+  some partition of $V(G - x)$ of value $\operatorname{def}_d(G - x)$ has
+  $a$ and $b$ in one part, and $\operatorname{def}_d(G - x) \le
+  \operatorname{def}_d(G)$ (\cref{lem:deficiency-ear-merge}). Conversely,
+  a partition of $V(G)$ has value at most that of its restriction to
+  $V(G - x)$. By \cref{lem:deficiency-add-body}, the two differ by
+  $D - 2(D - 1) < 0$ when $x$ is alone in its part, and by
+  $-(D - 1)t \le 0$ otherwise.
+
+  (v) A neighbour $w \in W_0$ of a body outside $W_0$ has two neighbours
+  in $W_0$ by (i), so it has degree at least three. A body outside $W_0$
+  with three neighbours in $W_0$, all hubs, would be a hub with four
+  members in its closed hub-neighbourhood.
+
+  At $d = 3$ this is \cref{lem:pencil-rigid-good-ear}, which returns the
+  body $x$ alone, with $\operatorname{def}_3(G - x) \le
+  \operatorname{def}_3(G)$. The other parts are read off its proof, and
+  do not depend on the dimension except (iv), which holds at every
+  $D \ge 3$.
+\end{proof}
+
+% Source: NONDEG workbook, S24 (1)-(4). Part (3)'s identification of the lifts of G with
+% the kernel of mu is used here only in the direction that extends a lift of G - x.
+\begin{lemma}[A body of degree two with hub neighbours]
+  \label{lem:pencil-d-lift-ear}
+  \uses{def:pencil-d-lift-attains}
+  Let $K$ be infinite and $d \ge 3$, and let $G$ be simple and
+  nondegeneracy-feasible, with a body $x$ of degree two whose neighbours
+  $a$ and $b$ are pencil hubs, not adjacent, and with
+  $\operatorname{def}_d(G - x) \le \operatorname{def}_d(G)$. Let
+  $H = G - x$. Then $H$ is nondegeneracy-feasible. Suppose that at a
+  general nondegenerate realization $r^0$ of $G$ in dimension three, every
+  lift $(\zeta, \varphi)$ of $r^0|_H$ has
+  $\varphi_a(b^0_x) = \varphi_b(b^0_x)$. If the general lift of $H$
+  attains in dimension $d$, so does that of $G$.
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-generic-steer, lem:pencil-d-nondegenerate-three,
+        lem:pencil-d-lift-transfer, lem:pencil-d-lift-one-witness,
+        lem:block-rank-ear, def:panel-support-extensor,
+        lem:relative-deficiency-rank-bound}
+  \emph{(T1).} An end of degree three is not a hub of $H$, and the only
+  neighbour it loses is $x$, which is not a hub. By
+  \cref{lem:pencil-generic-steer}(a), read through
+  \cref{lem:pencil-d-nondegenerate-three}, $G$ has a nondegenerate
+  realization $r$ in dimension three whose restriction to $H$ is
+  nondegenerate. At $r$, the products $b^0_a \cdot n_b$ and
+  $b^0_b \cdot n_a$ are not both zero: otherwise the independent normals
+  of $x$, $a$ and $b$ would lie in the two-dimensional
+  $\Pi^0_a \cap \Pi^0_b$. Let $E$ be the product of one of them nonzero
+  at $r$ and of minors, nonzero at $r|_H$, for the conditions of $G$ that
+  read only bodies of $H$ and are not conditions of $H$. These include
+  $\Pi^0_a \ne \Pi^0_b$, the condition at $x$. Let $r_H$ be a nondegenerate
+  realization of $H$ with $E(r_H) \ne 0$. Then $\Pi^0_a \cap \Pi^0_b$ is
+  two-dimensional, and $b^0_a$ and $b^0_b$ are linearly independent and
+  not both in it, so it meets their span in dimension at most one. Put
+  $b^0_x$ in $\Pi^0_a \cap \Pi^0_b$ outside that span, and let $\Pi^0_x$
+  be the span of $b^0_a$, $b^0_x$ and $b^0_b$, which are linearly
+  independent. The incidences hold, the normals at $ax$ and $xb$ and on
+  the closed neighbourhood $\{x, a, b\}$ are independent, and the closed
+  hub-neighbourhood $\{a, b\}$ of $x$ asks $\Pi^0_a \ne \Pi^0_b$. The
+  other conditions are those of $H$ and of $E$. So this is a nondegenerate
+  realization of $G$ restricting to $r_H$.
+
+  \emph{(T2).} At a general nondegenerate realization $r^0$ of $G$, let
+  $(\zeta, \varphi)$ be a lift of $r^0|_H$. Put
+  $\zeta_x = \varphi_a(b^0_x) = \varphi_b(b^0_x)$, and let $\varphi_x$ be
+  the linear form on $\Pi^0_x$ with the values $\zeta_a$, $\zeta_x$ and
+  $\zeta_b$ at its basis $b^0_a$, $b^0_x$, $b^0_b$. The new conditions,
+  at $a$ and at $b$ for $w = x$ and at $x$, hold, so this is a lift of
+  $r^0$.
+
+  \emph{The rank.} At a general nondegenerate realization and a general
+  $\lambda$, the framework on $H$ has rank $\operatorname{tgt}_d(H)$
+  (\cref{lem:pencil-d-lift-transfer}). The normals $b_a$, $b_x$ and $b_b$
+  of the lift are linearly independent, as their images in dimension
+  three are. So the joins $b_a \vee b_x$ and $b_x \vee b_b$ are linearly
+  independent, and so are the hinges $C(b_a, b_x)$ and $C(b_x, b_b)$
+  (\cref{def:panel-support-extensor}). By \cref{lem:block-rank-ear} with
+  one interior body, the rank of $G$ is at least the rank of $H$ plus
+  $2(D - 1) + 2 - D = D$. As $\operatorname{def}_d(H) \le
+  \operatorname{def}_d(G)$, $\operatorname{tgt}_d(G) \le
+  \operatorname{tgt}_d(H) + D$, and the lift has rank
+  $\operatorname{tgt}_d(G)$ (\cref{lem:relative-deficiency-rank-bound}).
+  \Cref{lem:pencil-d-lift-one-witness} completes the proof.
+
+  At $d = 3$ this is \cref{lem:pencil-generic-one-ear}, where the point of
+  $x$ goes anywhere on the line $\Pi^0_a \cap \Pi^0_b$ off the span of
+  $b^0_a$ and $b^0_b$, with no hypothesis on the lifts. The dimension
+  enters only through the lift of $x$, which does not exist at $d = 3$.
+  In dimension $d$ the lift of $x$ must agree with the lifts of both $a$
+  and $b$ at the normal $b^0_x$, which lies in both of their subspaces. So
+  a lift of $H$ extends to $G$ only if
+  $\varphi_a(b^0_x) = \varphi_b(b^0_x)$, a linear condition, which the
+  hypothesis asks of every lift of $H$.
+\end{proof}
+
+At $W_0$ and $x$ of \cref{lem:pencil-d-good-ear} we show the hypothesis
+of \cref{lem:pencil-d-lift-ear}. Let $X = W_0 \setminus \{x\}$ and
+$Y = G[X]$. A lift of $G - x$ restricts to a lift of $Y$. If the normals
+of every closed neighbourhood of $Y$ span its subspace and the lifts of
+$Y$ are trivial, given by one linear form $\psi$ on $K^4$, then
+$\varphi_a$ and $\varphi_b$ are both restrictions of $\psi$, and agree at
+$b^0_x$. We show that the lifts of $Y$ are trivial at a general
+nondegenerate realization of $G$. At a configuration of $Y$ over a
+general picture, the maps of its lifts are the heights in $L(q)$, of
+dimension $3 + \operatorname{def}_2(Y) = 4$ (\cref{thm:pencil-jj-equality}),
+and so the lifts are trivial. That the lifts of $Y$ are trivial is an open
+condition on the points of $X$, and it remains to carry it to the points
+of $X$ in a general nondegenerate realization of $G$. A hub outside $W_0$ asks only that its
+subspace contain the points of its neighbours in $X$, of which there are
+at most two (\cref{lem:pencil-d-good-ear}). So its subspace can be chosen
+after the points of $X$ (\cref{lem:pencil-d-ear-extend}).
+
+% Source: NONDEG workbook, S35 (b), on S34's labelled family S_L(Y) (its setting, not its
+% dimension count), parametrized here as the parametrization of lem:pencil-d-steer is.
+\begin{lemma}[Extending the points of the rigid set]
+  \label{lem:pencil-d-ear-extend}
+  \uses{lem:pencil-d-good-ear, lem:pencil-d-steer}
+  Let $G$ be simple and nondegeneracy-feasible, let $W_0$ and $x$ be as
+  in \cref{lem:pencil-d-good-ear}, let $X = W_0 \setminus \{x\}$ and
+  $Y = G[X]$, and let $L$ be the set of pencil hubs of $G$ in $X$. For
+  $v \in X$ let $H_L[v]$ be the members of $L$ in the closed
+  neighbourhood of $v$ in $Y$. Let $\Gamma_L$ be the space of tuples $t$
+  of vectors of $K^4$: a vector $m_h$ at every $h \in L$ and three
+  auxiliary vectors at every $v \in X$. At $t$ let
+  $b_v(t) = y_1 \times y_2 \times y_3$, where $y_1, y_2, y_3$ are the
+  vectors $m_h$, $h \in H_L[v]$, in a fixed order, followed by as many
+  auxiliary vectors of $v$ as are needed. There is a nonzero polynomial $E_L$ on
+  $\Gamma_L$ such that for every $t$ with $E_L(t) \ne 0$ there is
+  $s \in \Gamma(G)$ (\cref{lem:pencil-d-steer}) at which the normal
+  $b^0_v(s)$ of every $v \in X$ is a nonzero multiple of $b_v(t)$.
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-feasible-hub-conditions, lem:pencil-x0-fibre-intersection}
+  The closed hub-neighbourhood of $v \in X$ in $G$ consists of $H_L[v]$
+  and the set $O_v$ of the hubs outside $W_0$ adjacent to $v$, as $x$ is
+  not a hub and the closed neighbourhood of $v$ in $Y$ is the one in $G$
+  met with $X$. It has at most three members
+  (\cref{lem:pencil-feasible-hub-conditions}).
+
+  \emph{The polynomial.} Consider two conditions on $t$: (a) every
+  $b_v(t)$ is nonzero; (b) $b_{v'}(t) \cdot m_v \ne 0$ for every
+  $v \in L$ and every $v' \in X$ outside the closed neighbourhood of $v$
+  in $Y$. Both hold at some $t'$. Take the vectors $m_h$ with every four
+  of them linearly independent, for instance at distinct points of the
+  curve $\tau \mapsto (1, \tau, \tau^2, \tau^3)$. At $v' \in X$ the
+  vectors $m_h$, $h \in H_L[v']$, together with any one $m_v$,
+  $v \in L \setminus H_L[v']$, are then independent and can be completed
+  to a basis by auxiliary vectors of $v'$. Each requirement on the
+  auxiliary vectors of $v'$ is then a polynomial in them that is nonzero
+  somewhere, so one choice meets them all. Each condition holds off the
+  zero set of a polynomial nonzero at $t'$, and $E_L$ is their product.
+
+  \emph{The extension.} Let $E_L(t) \ne 0$ and write $b_v = b_v(t)$. For
+  every hub $u$ of $G$ outside $W_0$ with a neighbour in $X$, let
+  $A_u = \{y : y \cdot b_w = 0 \text{ for every neighbour } w \in X
+  \text{ of } u\}$. By part~(v) of \cref{lem:pencil-d-good-ear}, $u$ has
+  at most two neighbours in $X$, so $\dim A_u \ge 2$. We choose
+  $n_u \in A_u$ such that, at every $v \in X$, the vectors $m_h$,
+  $h \in H_L[v]$, and $n_u$, $u \in O_v$, are linearly independent. Each
+  of these finitely many requirements is a polynomial condition on
+  $(n_u)_u$ in the vector space $\prod_u A_u$, so it suffices that each
+  holds for some choice (\cref{lem:pencil-x0-fibre-intersection}). If
+  $O_v$ is empty, it holds by (a). Otherwise $v$ has a neighbour outside
+  $W_0$, so it is a hub (part~(v)), and $v \in H_L[v]$. All these vectors
+  are orthogonal to $b_v$.
+  \begin{itemize}
+    \item If $O_v = \{u\}$, let $N_v$ be the span of the $m_h$,
+      $h \in H_L[v]$, of dimension at most two. The requirement fails for
+      every choice only if $A_u \subseteq N_v$, so only if both have
+      dimension two. Then $H_L[v] = \{v, w\}$, and $u$ has a second
+      neighbour $v_2 \in X$ with $b_v$ and $b_{v_2}$ independent and
+      $m_v \in A_u$, so $b_{v_2} \cdot m_v = 0$.
+    \item If $O_v = \{u, u'\}$, then $H_L[v] = \{v\}$, and $m_v$, $A_u$
+      and $A_{u'}$ lie in the three-dimensional $b_v^{\perp}$. If
+      $K m_v + A_u + A_{u'}$ is all of $b_v^{\perp}$, choose
+      $n_{u'} \in A_{u'}$ with $K m_v + K n_{u'}$ two-dimensional and not
+      containing $A_u$, and then $n_u \in A_u$ outside it. Such
+      $n_{u'}$ exists: otherwise every such plane would be $A_u$, so
+      $A_{u'} \subseteq A_u \ni m_v$ and the sum would be $A_u$.
+      Otherwise the sum is $A_u = A_{u'}$, two-dimensional and containing
+      $m_v$, and as before $u$ has a second neighbour $v_2 \in X$ with
+      $b_{v_2} \cdot m_v = 0$.
+  \end{itemize}
+  In both exceptional cases $v_2$ is not adjacent to $v$, since $u v v_2$
+  would be a triangle with two hubs; so $v_2$ is outside the closed
+  neighbourhood of $v$ in $Y$, and (b) gives $b_{v_2} \cdot m_v \ne 0$.
+  So a choice of the $n_u$ exists.
+
+  Now let $s \in \Gamma(G)$ have $m_h$ at every hub $h \in L$ and $n_u$ at
+  every hub $u$ outside $W_0$ adjacent to $X$, its other parameters
+  arbitrary, except the first auxiliary vectors of each $v \in X$. These
+  complete the independent vectors $m_h$, $h \in H_L[v]$, and $n_u$,
+  $u \in O_v$, all orthogonal to $b_v$, to a basis of $b_v^{\perp}$. Then
+  $b^0_v(s)$ is a nonzero multiple of $b_v$.
+\end{proof}
+
+% Source: NONDEG workbook, S36 by review 2's shorter route (its F2: the base-generic
+% witness lies in S_L(Y), so S35 (b)'s good set and the preimage of C_W meet in S_L(Y);
+% S34's count and S35 (c) are not used), with S29 (2)-(3) for the last claim.
+\begin{lemma}[The rest of the rigid set lifts only trivially]
+  \label{lem:pencil-d-ear-free}
+  \uses{lem:pencil-d-good-ear, def:pencil-d-lift}
+  Let $K$ be infinite and let $G$ be simple and nondegeneracy-feasible.
+  Let $W_0$ and $x$ be as in \cref{lem:pencil-d-good-ear}, with
+  neighbours $a$ and $b$ of $x$, and let $X = W_0 \setminus \{x\}$ and
+  $Y = G[X]$. At a general nondegenerate realization $r^0$ of $G$ in
+  dimension three, the normals of every closed neighbourhood of $Y$ span
+  a three-dimensional subspace, the normals of $X$ span $K^4$, and every
+  lift of $r^0|_Y$ is trivial (\cref{def:pencil-d-lift}). Consequently
+  every lift $(\zeta, \varphi)$ of $r^0|_{G - x}$ has
+  $\varphi_a(b^0_x) = \varphi_b(b^0_x)$.
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-d-ear-extend, lem:pencil-d-steer,
+        lem:pencil-d-lift-one-witness, thm:pencil-jj-equality,
+        lem:pencil-x0-planes-separate, lem:pencil-x0-conjunct-three,
+        lem:pencil-condition-linear, lem:pencil-x0-fibre-intersection,
+        lem:pencil-feasible-hub-conditions, def:pencil-main-picture}
+  \emph{Three conditions.} For vectors $b_v \in K^4$, $v \in X$, consider:
+  (a) the vectors of every closed neighbourhood of $Y$ span a
+  three-dimensional subspace; (b) the vectors of $X$ span $K^4$;
+  (c) $\dim \widetilde L_Y(b) \le |X| + 4$, where $\widetilde L_Y$ is the
+  space of \cref{lem:pencil-d-lift-one-witness} for $Y$. Each is a
+  condition on minors, and none changes when the vectors are rescaled. By
+  (b), $\psi \mapsto (\psi(b_v))_v$ is injective, so the maps of the
+  trivial lifts form a four-dimensional subspace of $L_Y(b)$. Under (a),
+  $\dim \widetilde L_Y(b) = \dim L_Y(b) + |X|$, as the linear forms
+  vanishing on a closed neighbourhood form a line. So under (a), (b) and
+  (c), $L_Y(b)$ consists of the maps of the trivial lifts. At a
+  realization whose subspaces contain the normals of the closed
+  neighbourhoods, (a) makes each subspace the span of these normals, so
+  every lift of $Y$ is then trivial.
+
+  \emph{A configuration of $Y$.} The graph $Y$ is simple, its closed
+  neighbourhoods have at least three members, and
+  $\operatorname{def}_2(Y[Z]) \ne 0$ for every set $Z$ of at least two
+  bodies (part~(iii) of \cref{lem:pencil-d-good-ear}). Take a picture $q$
+  of $Y$ off the zero sets of the polynomial of
+  \cref{thm:pencil-jj-equality} for $Y$, the determinants of the
+  homogeneous picture points of every three distinct bodies, and the
+  polynomials of \cref{lem:pencil-x0-planes-separate} for every two
+  distinct bodies. Then $q$ is a main picture with
+  $\dim L_Y(q) = 3 + \operatorname{def}_2(Y) = 4$, and as in the proof of
+  \cref{lem:pencil-d-lift-no-rigid} some $z \in L_Y(q)$ has the planes
+  $h_v$ of all bodies pairwise distinct. Let $b$ be the points of the
+  configuration $(q, z)$. They satisfy (a), as $q$ is admissible and
+  $z \in L_Y(q)$. They satisfy (b): a linear form vanishing on all of them
+  would make $z$ agree with one affine function everywhere, so that all
+  the planes $h_v$ agree, or put all the picture points on a line. They
+  satisfy (c), as $L_Y(b) = L_Y(q)$ (as in the proof of
+  \cref{lem:pencil-d-lift-no-rigid}), of dimension four.
+
+  \emph{The configuration in $\Gamma_L$.} Let $n_h$ be the plane normal at
+  $h \in L$, a nonzero multiple of $(\alpha, \beta, -1, \gamma)$ when the
+  plane of $h$ is $\zeta = \alpha \xi + \beta \eta + \gamma$
+  (\cref{lem:pencil-condition-linear}). At every $v \in X$, the vectors
+  $n_h$, $h \in H_L[v]$, are linearly independent. The set $H_L[v]$ lies
+  in the closed hub-neighbourhood of $v$ in $G$, so it has at most three
+  members (\cref{lem:pencil-feasible-hub-conditions}). The normals of two
+  distinct planes are linearly independent. If $v \notin L$, then $v$ has
+  degree two in $G$, and $H_L[v]$ has at most two members. If $H_L[v]$
+  has three members, then $v \in L$ and $H_L[v] = \{v, w_1, w_2\}$ with
+  $w_1$ and $w_2$ neighbours of $v$. The argument of
+  \cref{lem:pencil-x0-conjunct-three} applies: the planes of $v$, $w_1$
+  and $w_2$ are pairwise distinct, and $q_v$, $q_{w_1}$, $q_{w_2}$ are not
+  collinear, so the three planes are affinely independent and their
+  normals linearly independent. These normals are orthogonal to $b_v$, as
+  $b_v$ lies in the plane of every member of its closed neighbourhood.
+  Completing them by auxiliary vectors to a basis of $b_v^{\perp}$, with
+  $m_h = n_h$, gives $t_0 \in \Gamma_L$ with every $b_v(t_0)$ a nonzero
+  multiple of $b_v$ (\cref{lem:pencil-d-ear-extend}). So (a), (b) and (c)
+  hold at the vectors $b_v(t_0)$.
+
+  \emph{Into $G$.} Conditions (a), (b) and (c) at the vectors $b_v(t)$
+  hold for $t$ off the zero set of a polynomial on $\Gamma_L$ that is
+  nonzero at $t_0$. Its product with the polynomial $E_L$ of
+  \cref{lem:pencil-d-ear-extend} is nonzero, and has a non-root $t_1$, as
+  $K$ is infinite. \Cref{lem:pencil-d-ear-extend} gives $s_1 \in
+  \Gamma(G)$ whose normals $b^0_v(s_1)$, $v \in X$, are nonzero multiples
+  of the $b_v(t_1)$, so they satisfy (a), (b) and (c). These conditions at
+  the normals $b^0_v(s)$, $v \in X$, hold for $s$ off the zero set of a
+  polynomial on $\Gamma(G)$ nonzero at $s_1$. As $G$ is
+  nondegeneracy-feasible, $U(G)$ is nonempty (\cref{lem:pencil-d-steer}),
+  so they hold at a general nondegenerate realization $r^0$ of $G$. There
+  the subspace of every $v \in X$ contains the normals of its closed
+  neighbourhood in $Y$, so every lift of $r^0|_Y$ is trivial.
+
+  \emph{The consequence.} Let $(\zeta, \varphi)$ be a lift of
+  $r^0|_{G - x}$. Its restriction to $X$ is a lift of $r^0|_Y$, so
+  $\zeta_w = \psi(b^0_w)$ on $X$ for a linear form $\psi$ on $K^4$. The
+  form $\varphi_a$ agrees with $\psi$ at the normals of the closed
+  neighbourhood of $a$ in $Y$, which span $\Pi^0_a$ by (a), so
+  $\varphi_a = \psi|_{\Pi^0_a}$; likewise $\varphi_b = \psi|_{\Pi^0_b}$.
+  As $b^0_x$ lies in both subspaces,
+  $\varphi_a(b^0_x) = \psi(b^0_x) = \varphi_b(b^0_x)$.
+
+  At $d = 3$ no lift is needed, and the step at $x$ holds at every body of
+  degree two with hub neighbours and $\operatorname{def}_3(G - x) \le
+  \operatorname{def}_3(G)$ (\cref{lem:pencil-generic-one-ear}). The lemma
+  holds in every dimension, as it concerns realizations in dimension
+  three; it is the reason we take $x$ inside a minimal planar-rigid set.
+\end{proof}
+
+% Source: NONDEG workbook, S26 (its (B) not used), with S36's consequence and S38's
+% assembly; the coverage (A) is thm:pencil-d-coverage, of which it is a special case.
+\begin{theorem}[The generic conjunct, in every dimension]
+  \label{thm:pencil-d-generic}
+  \uses{def:pencil-d-nondegenerate}
+  Let $K$ be infinite and $d \ge 3$. Every simple multigraph with at least
+  one body that is nondegeneracy-feasible in dimension $d$ has a generic
+  pencil realization in dimension $d$ (\cref{def:pencil-d-nondegenerate}).
+\end{theorem}
+\begin{proof}
+  \uses{lem:pencil-d-nondegenerate-feasible, lem:pencil-d-nondegenerate-three,
+        def:pencil-d-lift-attains, lem:pencil-d-lift-small,
+        lem:pencil-d-lift-cut-edge, lem:pencil-d-lift-pendant,
+        lem:pencil-d-lift-pendant-triangle, lem:pencil-d-lift-no-rigid,
+        thm:pencil-d-coverage, lem:pencil-feasible-hub-conditions,
+        lem:pencil-d-good-ear, lem:pencil-d-lift-ear, lem:pencil-d-ear-free,
+        def:cut-edges-2ec, lem:two-edge-connected-degree,
+        thm:pencil-conditioned-pair-nonempty}
+  By \cref{lem:pencil-d-nondegenerate-feasible}, such a multigraph is
+  nondegeneracy-feasible. We show that at every simple
+  nondegeneracy-feasible multigraph $G$ with at least one body, the general
+  lift attains in dimension $d$ (\cref{def:pencil-d-lift-attains}). Then
+  $G$ has a generic pencil realization in dimension $d$, as noted after
+  that definition. We argue by strong induction on the number of bodies.
+  Each smaller graph below is simple, has a body, and is
+  nondegeneracy-feasible by the lemma that uses it.
+
+  If $G$ has at most two bodies, \cref{lem:pencil-d-lift-small} applies.
+  If $G$ is disconnected, its bodies split into two nonempty sets with no
+  edge between, and part~(2) of \cref{lem:pencil-d-lift-small} applies.
+  Let $G$ be connected with at least three bodies. If it is not
+  two-edge-connected, exactly one edge $uv$ joins some nonempty proper
+  $V_1 \ni u$ to $V_2 = V(G) \setminus V_1 \ni v$
+  (\cref{def:cut-edges-2ec}). If both sides have at least two bodies,
+  $G[V_1 \cup \{v\}]$ and $G[V_2 \cup \{u\}]$ have fewer bodies than $G$,
+  and \cref{lem:pencil-d-lift-cut-edge} applies. Otherwise one side, say
+  $V_2$, is the single body $v$, of degree one, and its neighbour $u$ has
+  another neighbour, as $G$ is connected with at least three bodies; then
+  \cref{lem:pencil-d-lift-pendant} applies.
+
+  Let $G$ be two-edge-connected. Its bodies have degree at least two
+  (\cref{lem:two-edge-connected-degree}), so $G$ satisfies the standing
+  hypotheses, and on three bodies it is a triangle
+  (\cref{lem:pencil-d-lift-small}). Let $G$ have at least four bodies. If
+  $\operatorname{def}_2(G[Y]) \ne 0$ for every set $Y$ of at least two
+  bodies, the general configuration of $G$ attains in dimension $d$
+  (\cref{thm:pencil-d-coverage}), and \cref{lem:pencil-d-lift-no-rigid}
+  applies. Otherwise the hypotheses of \cref{lem:pencil-d-good-ear} hold,
+  by \cref{lem:pencil-feasible-hub-conditions}. Its first outcome is a
+  pendant triangle, and \cref{lem:pencil-d-lift-pendant-triangle} applies.
+  In its second, $x$ has non-adjacent hub neighbours and
+  $\operatorname{def}_d(G - x) = \operatorname{def}_d(G)$; the hypothesis
+  of \cref{lem:pencil-d-lift-ear} holds by \cref{lem:pencil-d-ear-free},
+  and \cref{lem:pencil-d-lift-ear} applies.
+
+  At $d = 3$ this is the generic conjunct of
+  \cref{thm:pencil-conditioned-pair-nonempty}, through
+  \cref{lem:pencil-d-nondegenerate-three}, and the case split is that of
+  \cref{thm:pencil-generic-step}. There the dimension enters in three
+  places. First, the parametrization of the nondegenerate realizations
+  (\cref{lem:pencil-generic-steer}) writes the point of a body as the
+  vector orthogonal to three normals of $K^4$. In dimension $d$ we keep it
+  in dimension three, and the induction statement asks for a general lift
+  of a general realization (\cref{def:pencil-d-lift-attains}). Second,
+  without a planar-rigid set, the general configuration is a generic
+  realization (\cref{thm:pencil-x0-base-generic}). In dimension $d$ a
+  nondegenerate configuration in dimension three is lifted by heights
+  that attain, which the coverage in dimension $d$ provides. Third, at a
+  body $x$ of degree two with hub neighbours, the point of $x$ goes on the
+  line where the panels of its neighbours meet
+  (\cref{lem:pencil-generic-one-ear}). In dimension $d$ the lift of $x$
+  is forced, and exists only under a linear condition on the lifts of
+  $G - x$. We take $x$ in a minimal planar-rigid set, where the condition
+  holds (\cref{lem:pencil-d-ear-free}).
+\end{proof}
+
+% Source: NONDEG workbook, S38 (its verdict on Q4) for the third conjunct; the first two are
+% thm:pencil-d-realization-theorem.
+\begin{corollary}[The conditioned pair, in every dimension]
+  \label{cor:pencil-d-conditioned-pair}
+  \uses{def:pencil-d-rank-hypothesis, def:pencil-d-distinct-motive,
+        def:pencil-d-nondegenerate}
+  Let $K$ be an infinite field and $d \ge 3$. Every multigraph $G$ with at
+  least one body has a pencil realization at the deficiency rank in
+  dimension $d$ (\cref{def:pencil-d-rank-hypothesis}). If $G$ is simple,
+  it has an adjacent-distinct one (\cref{def:pencil-d-distinct-motive}).
+  If $G$ is simple and nondegeneracy-feasible in dimension $d$, it has a
+  generic one (\cref{def:pencil-d-nondegenerate}).
+\end{corollary}
+\begin{proof}
+  \uses{thm:pencil-d-realization-theorem, thm:pencil-d-generic,
+        lem:pencil-d-rank-agrees-three, lem:pencil-d-nondegenerate-three,
+        thm:pencil-conditioned-pair-nonempty}
+  The first two claims are \cref{thm:pencil-d-realization-theorem}, and
+  the third is \cref{thm:pencil-d-generic}. At $d = 3$ these are the three
+  conjuncts of the conditioned pair (\cref{def:pencil-conditioned-pair},
+  \cref{thm:pencil-conditioned-pair-nonempty}), through
+  \cref{lem:pencil-d-rank-agrees-three} and
+  \cref{lem:pencil-d-nondegenerate-three}.
 \end{proof}
