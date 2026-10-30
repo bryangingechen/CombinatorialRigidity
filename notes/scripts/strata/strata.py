@@ -108,6 +108,25 @@ output byte-identical; `notes/Phase42-design.md` sections 2.3-2.4):
       and at two shared neighbours the premises of a forced motion of G1
       on the locus (asserted).
 
+Added for Phase 42a's T3 (2026-10-29; the twelve modes above unchanged, their
+output byte-identical; `notes/Phase42-design.md` sections 2.3-2.4):
+
+  python3 notes/scripts/strata/strata.py --short [--seed N]
+      T3, SHORT.  An open ear a - x_1 - ... - x_k - b on V1 with
+      3 <= k <= D-2 and def_D(G[V1]) > def_D(G), and G'' = G with x_2
+      suppressed (sec:main-component-short).  The d = 3 step's two stages at
+      d = 3, 4, 5: base data from a configuration of G'', a general ear
+      datum y, W = rho + span(the ear joins of G''); then x_2 put back at a
+      general affine point.  Only the danger cells: def_D(G'') = def_D(G)
+      (so (*) needs one dimension more than W) and 2d-1 <= dim W <= D-1 (so
+      W can contain both stars and still not be Lambda^2); off them the
+      d-general insertion lemma settles the step.  Reported at d = 4, 5:
+      whether W contains star(y_1), star(y_3), both (X3 fails), the images
+      of rho, of the far joins and of W modulo the two stars, the step's (*)
+      and (*) at a general ear datum of G; asserted at d = 3, where the
+      chapter proves them, and everywhere: the ear rank formula, every
+      deficiency by a partition matched by a generic-hinge rank.
+
 Verdict: the last line is `OK: every target met`, or `FAILED: ...` with exit
 status 1; a mismatch in any mode counts.
 
@@ -120,7 +139,8 @@ is drawn ONCE per stratum per run and reused for every graph; the hinges vary
 per graph.  The per-body modes draw their per-body data afresh per graph.
 Coordinates are integers in [-COORD, COORD]; combination coefficients are
 nonzero integers in that range.  Exact Q throughout (`fractions.Fraction`,
-no GF(p)).  The deficiency DP is exponential (3^n), hence n <= 12.
+no GF(p)).  The deficiency DP is exponential (3^n), hence n <= 12; `--short`
+works past it, with each deficiency certified by a partition and a rank.
 """
 import argparse
 import os
@@ -1723,8 +1743,394 @@ def mode_oneear(s):
     return bad
 
 
+# ---------------- Phase 42a: T3, the short ears (SHORT) ----------------
+
+SHORT_DIMS = (3, 4, 5)
+SHORT_PER = 2       # danger cells drawn per (family, d, k)
+SHORT_TRIES = 400   # box draws per (family, d, k)
+SHORT_NMAX = 40     # bodies of G
+SHORT_REDRAWS = 3   # fresh points per cell after a failed degeneracy guard
+
+
+def core_subdivision(core_n, core_edges, lengths):
+    """The core multigraph with edge i replaced by a path of lengths[i] edges:
+    n, the edges, and each core edge's path (ends included)."""
+    n, E, paths = core_n, [], []
+    for (u, v), m in zip(core_edges, lengths):
+        p = [u] + list(range(n, n + m - 1)) + [v]
+        n += m - 1
+        E += list(zip(p, p[1:]))
+        paths.append(p)
+    return n, E, paths
+
+
+def partition_value(n, edges, parts, D):
+    """D(|P|-1) - (D-1) e(P) for the given parts, singletons elsewhere."""
+    lab = list(range(n))
+    for i, part in enumerate(parts):
+        for v in part:
+            lab[v] = n + i
+    e = sum(1 for u, v in edges if lab[u] != lab[v])
+    return D * (len(set(lab)) - 1) - (D - 1) * e
+
+
+def path_partitions_def(n, edges, paths, D, blocks=()):
+    """The best of the trivial partition and the partitions whose parts are
+    the components of a union of whole paths and every block, singletons
+    elsewhere: a lower bound on def_D.  In a subdivision an optimal partition
+    has this form (a part ending inside a path gains by shedding the tail, a
+    part with no cycle by splitting into singletons); `def_certified` checks
+    it at every use."""
+    best = 0
+    for S in range(1 << len(paths)):
+        comps = []
+        for p in [paths[i] for i in range(len(paths)) if (S >> i) & 1] + list(blocks):
+            c = set(p)
+            for o in [o for o in comps if o & c]:
+                comps.remove(o)
+                c |= o
+            comps.append(c)
+        best = max(best, partition_value(n, edges, comps, D))
+    return best
+
+
+def def_certified(s, n, edges, paths, D, blocks=()):
+    """def_D past the DP cap: `path_partitions_def`, a lower bound, matched by
+    the rank at a generic-hinge point, which is at most D(n-1) - def_D
+    (Tay-Whiteley).  A match certifies; a gap raises Degenerate."""
+    t = D * (n - 1) - path_partitions_def(n, edges, paths, D, blocks)
+    r = motion_rank(n, edges, [s.vec(D) for _ in edges])
+    assert r <= t, ("partition bound", r, t)
+    need(r == t, f"def_{D}: generic rank {r} below the partition count {t}")
+    return D * (n - 1) - t
+
+
+def tree_path(n, edges, a, b):
+    """A path a -> b as a signed edge dict with boundary b - a, the signs as
+    in `fund_cycles`."""
+    parent, order = {a: None}, [a]
+    while order:
+        x = order.pop()
+        for j, (u, v) in enumerate(edges):
+            for p, q, sg in ((u, v, 1), (v, u, -1)):
+                if p == x and q not in parent:
+                    parent[q] = (x, j, sg)
+                    order.append(q)
+    need(b in parent, "tree_path: b not reached")
+    out = {}
+    while parent[b] is not None:
+        p, j, sg = parent[b]
+        out[j] = out.get(j, 0) + sg
+        b = p
+    return out
+
+
+def rel_screws(n, edges, H, a, b):
+    """rho: a basis of the relative screws S_b - S_a over the motions, read as
+    motion assignments (Result 1): lambda in K^E with sum +-lambda_e H_e = 0 on
+    every cycle, and S_v - S_u = lambda_e H_e at an edge (u, v)."""
+    D = len(H[0])
+    M = [[F(z.get(j, 0)) * H[j][i] for j in range(len(edges))]
+         for z in fund_cycles(n, edges) for i in range(D)]
+    mot = nullspace(M) if M else [[F(int(i == j)) for i in range(len(edges))]
+                                  for j in range(len(edges))]
+    path = tree_path(n, edges, a, b)
+    rho = [[sum((sg * lam[j] * H[j][i] for j, sg in path.items()), F(0))
+            for i in range(D)] for lam in mot]
+    return [rho[i] for i in _pivots(rho)]
+
+
+def point_over(P, uv):
+    """The affine point over the picture point uv of the 3-space span(P), as
+    an ear datum puts x_1 on the plane of a (def:pencil-ear-data)."""
+    d = len(P[0]) - 1
+    A = [[P[i][c] for i in range(3)] for c in (0, 1, d)]
+    det = det_exact(A)
+    need(det != 0, "point_over: the plane is vertical")
+    rhs = [uv[0], uv[1], F(1)]
+    c = [det_exact([row[:i] + [rhs[r]] + row[i + 1:] for r, row in enumerate(A)]) / det
+         for i in range(3)]
+    return [sum((c[i] * P[i][j] for i in range(3)), F(0)) for j in range(d + 1)]
+
+
+def star(y):
+    """The joins y v e_i, which span star(y), the lines through y."""
+    return [ext([y, [F(int(i == j)) for j in range(len(y))]]) for i in range(len(y))]
+
+
+def affine_pt(s, d):
+    return [s.num() for _ in range(d)] + [F(1)]
+
+
+class CoreEar:
+    """A subdivided core multigraph whose last core edge is the ear: V1 is
+    labelled first, the ear's interior after it in order from a."""
+
+    def __init__(self, core, lengths):
+        (self.cn, self.ce), self.ls, self.k = core, list(lengths), lengths[-1] - 1
+        self.key = tuple(lengths)
+
+    def graph(self, k):
+        n, E, paths = core_subdivision(self.cn, self.ce, self.ls[:-1] + [k + 1])
+        return n, E, paths, (), paths[-1][0], paths[-1][-1]
+
+    def base(self):
+        return core_subdivision(self.cn, self.ce[:-1], self.ls[:-1]) + ((),)
+
+    def label(self):
+        return ",".join(map(str, self.ls[:-1]))
+
+
+class NecklaceEar:
+    """r diamonds K_4 - e (bodies t, u, v, w; edges tu tv uv uw vw) in a ring,
+    w of each joined to t of the next by a path of ells[i] edges, so a pencil
+    condition binds at every diamond body.  The ear runs from the body of
+    role ra in diamond 0 to the body of role rb in diamond B.  Paths: the two
+    ring arcs between diamonds 0 and B, and the ear; blocks: the diamonds."""
+
+    def __init__(self, ells, B, ra, rb, k):
+        self.k, self.key = k, (tuple(ells), B, ra, rb, k)
+        E, dia, n = [], [], 0
+        for _ in ells:
+            E += [(n, n + 1), (n, n + 2), (n + 1, n + 2), (n + 1, n + 3), (n + 2, n + 3)]
+            dia.append([n, n + 1, n + 2, n + 3])
+            n += 4
+        segs = []
+        for i, m in enumerate(ells):
+            p = [dia[i][3]] + list(range(n, n + m - 1)) + [dia[(i + 1) % len(ells)][0]]
+            n += m - 1
+            E += list(zip(p, p[1:]))
+            segs.append(p)
+        self.n1, self.E1, self.blocks = n, E, [set(x) for x in dia]
+        self.a, self.b = dia[0]["tuvw".index(ra)], dia[B]["tuvw".index(rb)]
+        ends = set(dia[0]) | set(dia[B])
+        self.arcs = [sorted(ends.union(*(set(segs[i]) | set(dia[i]) for i in idx)))
+                     for idx in (range(B), range(B, len(ells)))]
+
+    def graph(self, k):
+        ear = [self.a] + list(range(self.n1, self.n1 + k)) + [self.b]
+        return (self.n1 + k, self.E1 + list(zip(ear, ear[1:])), self.arcs + [ear],
+                self.blocks, self.a, self.b)
+
+    def base(self):
+        return self.n1, self.E1, self.arcs, self.blocks
+
+    def label(self):
+        ells, B, ra, rb, _ = self.key
+        return ",".join(map(str, ells)) + f"/{B}{ra}{rb}"
+
+
+SHORT_FAMS = {
+    # name: (core or None, the box's top length, G[V1] and the ends a, b)
+    "th3": ((2, [(0, 1)] * 3), 4, "a cycle; a, b at arc lengths l1, l2"),
+    "th4": ((2, [(0, 1)] * 4), 4, "a theta; a, b its hubs"),
+    "k4": ((4, [(0, 1), (0, 2), (1, 2), (0, 3), (1, 3), (2, 3)]), 0,
+           "a theta (K_4 - e subdivided); a, b inside two of its paths"),
+    "same": ((4, [(0, 1), (0, 1), (0, 2), (2, 3), (3, 1), (2, 3)]), 0,
+             "a theta; a, b inside one of its paths"),
+    "hub": ((3, [(0, 1), (0, 1), (0, 2), (2, 1), (0, 2)]), 0,
+            "a theta; a a hub, b inside a path"),
+    "neck": (None, 0, "a necklace of 3-6 diamonds joined by paths of 1-7 edges; "
+             "a, b diamond bodies"),
+}
+
+
+def short_draw(R, fam, D, k):
+    """One spec from fam's box: core lengths in [1, D + top] (the theta
+    families' sorted), or a necklace; None if G is not simple."""
+    core, top, _ = SHORT_FAMS[fam]
+    if core is None:
+        r = R.randint(3, 6)
+        return NecklaceEar([R.randint(1, 7) for _ in range(r)], R.randint(1, r - 1),
+                           R.choice("tuvw"), R.choice("tuvw"), k)
+    ls = [R.randint(1, D + top) for _ in core[1][1:]]
+    if top:
+        ls.sort()
+    ls.append(k + 1)
+    unit = [frozenset(e) for e, m in zip(core[1], ls) if m == 1]
+    return CoreEar(core, ls) if len(unit) == len(set(unit)) else None
+
+
+def short_danger(fam, d, k):
+    """Up to SHORT_PER danger cells for (fam, d, k), by a search of fam's box
+    seeded by (fam, d, k) alone, so the same at every --seed.  A danger cell:
+    n <= SHORT_NMAX, def_3(G) >= d-2 (the content range), def_D(G[V1]) >
+    def_D(G) (SHORT's hypothesis), def_D(G'') = def_D(G) (no slack: (*) needs
+    dim W + 1), and 2d-1 <= k + def_D(G[V1]) - def_D(G'') <= D-1 (the count
+    of dim W, at which W can hold both stars and be proper).  The deficiencies
+    here are `path_partitions_def`'s; `short_cell` certifies them."""
+    D = (d + 1) * d // 2
+    R = random.Random(10000 * list(SHORT_FAMS).index(fam) + 100 * d + k)
+    found, seen = [], set()
+    for _ in range(SHORT_TRIES):
+        spec = short_draw(R, fam, D, k)
+        if spec is None or spec.key in seen:
+            continue
+        seen.add(spec.key)
+        n, E, paths, blocks, _, _ = spec.graph(k)
+        if n > SHORT_NMAX or path_partitions_def(n, E, paths, 3, blocks) < d - 2:
+            continue
+        dG = path_partitions_def(n, E, paths, D, blocks)
+        n1, E1, paths1, blocks1 = spec.base()
+        f = path_partitions_def(n1, E1, paths1, D, blocks1)
+        n2, E2, paths2, blocks2, _, _ = spec.graph(k - 1)
+        d2 = path_partitions_def(n2, E2, paths2, D, blocks2)
+        if f > dG == d2 and 2 * d - 1 <= k + f - d2 <= D - 1:
+            found.append(spec)
+            if len(found) == SHORT_PER:
+                break
+    return found
+
+
+def short_cell(s, spec, d):
+    """The d = 3 step's two stages (thm:pencil-x0-open-ear-three, -four) in P^d,
+    at one seeded point.  Stage 1: a picture and heights in L_G''(q), whose
+    restriction to V1 is the base data; Pi_a, Pi_b the planes of a and b in
+    G''.  Stage 2: a general ear datum of G'' (y_1 on Pi_a over a fresh
+    picture point, y_k on Pi_b, the middle bodies free affine points), W =
+    rho + span(its ear joins).  Then x_2 put back at a general affine point,
+    and a fresh general ear datum of G over the same base."""
+    D, k = (d + 1) * d // 2, spec.k
+    n, E, paths, blocks, a, b = spec.graph(k)
+    n2, E2, paths2, blocks2, _, _ = spec.graph(k - 1)
+    n1, E1, paths1, blocks1 = spec.base()
+    dG, d2 = def_certified(s, n, E, paths, D, blocks), def_certified(s, n2, E2, paths2, D, blocks2)
+    f, d3 = def_certified(s, n1, E1, paths1, D, blocks1), def_certified(s, n, E, paths, 3, blocks)
+    q2 = [s.vec(2) for _ in range(n2)]
+    b2, H2 = pd_pencil(s, n2, E2, d, q2, lifting_space(n2, E2, q2))
+    body_guard(n2, E2, H2)
+    base = b2[:n1]
+    H1 = [ext([base[u], base[v]]) for u, v in E1]
+    r1 = motion_rank(n1, E1, H1)
+    PA, PB = plane_of(b2, E2, a), plane_of(b2, E2, b)
+    need(len(PA) == 3 and len(PB) == 3, "the planes of a, b in G''")
+    rho = rel_screws(n1, E1, H1, a, b)
+    y = {1: point_over(PA, s.vec(2)), k: point_over(PB, s.vec(2))}
+    for i in range(3, k):
+        y[i] = affine_pt(s, d)
+    ear2 = [base[a], y[1]] + [y[i] for i in range(3, k + 1)] + [base[b]]
+    J2 = [ext([p, p2]) for p, p2 in zip(ear2, ear2[1:])]
+    W = rho + J2
+    dW = rank(W)
+    pts2 = base + ear2[1:-1]
+    r2 = motion_rank(n2, E2, [ext([pts2[u], pts2[v]]) for u, v in E2])
+    holds = lambda U, V: rank(U + V) == rank(U)  # noqa: E731
+    in1, in3 = holds(W, star(y[1])), holds(W, star(y[3]))
+    # R_i: rho and the joins of G'''s ear away from y_i
+    caps = []
+    for yi, R in ((y[1], rho + J2[2:]), (y[3], rho + J2[:1] + J2[3:])):
+        caps.append((rank(R) + d - rank(R + star(yi)), max(0, rank(R) + d - D)))
+    stars = star(y[1]) + star(y[3])
+    ctrl = holds(stars, star(y[1])) and holds(stars, star(y[3])) and rank(stars) == 2 * d - 1
+    # images in Lambda^2 / (star(y_1) + star(y_3)), of dimension C(d-1, 2): of
+    # rho, of the joins y_4 y_5, .., y_k p_b (the others lie in the stars),
+    # and of W; X3 holds at the cell iff W's image is everything or W misses
+    # a star
+    img = [rank(stars + U) - rank(stars) for U in (rho, J2[3:], W)]
+    ear = [base[a], y[1], affine_pt(s, d)] + ear2[2:]
+    dI = rank(rho + [ext([p, p2]) for p, p2 in zip(ear, ear[1:])])
+    pts = base + ear[1:-1]
+    rG = motion_rank(n, E, [ext([pts[u], pts[v]]) for u, v in E])
+    gen = ([base[a], point_over(PA, s.vec(2))] + [affine_pt(s, d) for _ in range(k - 2)]
+           + [point_over(PB, s.vec(2)), base[b]])
+    dGen = rank(rho + [ext([p, p2]) for p, p2 in zip(gen, gen[1:])])
+    return dict(D=D, k=k, n=n, d3=d3, dG=dG, d2=d2, f=f, r1=r1, t1=D * (n1 - 1) - f,
+                r2=r2, t2=D * (n2 - 1) - d2, rG=rG, tG=D * (n - 1) - dG, dW=dW,
+                rho=len(rho), in1=in1, in3=in3, caps=caps, ctrl=ctrl, img=img, dI=dI, dGen=dGen,
+                need=k + 1 + f - dG)
+
+
+def mode_short(s):
+    print("T3 (Phase 42a; Phase42-design.md sections 2.3-2.4, SHORT): an open "
+          "ear a - x_1 - .. - x_k - b on V1, 3 <= k <= D-2, and G'' = G with x_2 "
+          "suppressed (sec:main-component-short).  Danger cells only (`short_"
+          "danger`: def_D(G[V1]) > def_D(G) = def_D(G''), 2d-1 <= dim W <= D-1, "
+          "def_3(G) >= d-2), drawn from each family's box by a search seeded by "
+          "(family, d, k) alone.  Per cell: def_3, f = def_D(G[V1]), def_D(G), "
+          "def_D(G''); sh1, sh2: G[V1] and G'' below target (0 = at it); W = dim "
+          "W; rho = dim rho; st: W contains star(y_1), star(y_3); cap: dim(R_i "
+          "cap star(y_i)) / the general-position value max(0, dim R_i + d - D), "
+          "R_i = rho + the joins of G'''s ear away from y_i; img: the dimensions "
+          "of the images of rho, of the joins y_4 y_5 .. y_k p_b and of W in "
+          "Lambda^2 / (star(y_1) + star(y_3)), / its dimension C(d-1, 2) (X3 "
+          "holds where W's image is everything); need = k+1+f-def_D(G), (*)'s "
+          "bound; step: dim(rho + Lambda) with x_2 at a general affine point; "
+          "gen: at a fresh general ear datum of G.  'X' marks W containing both "
+          "stars and W != Lambda^2 (X3 fails), '*' the step's (*) failing, '~' "
+          "a redraw after a failed degeneracy guard.  Asserted at every cell: "
+          "every deficiency certified "
+          "(`def_certified`), the ear rank formula (lem:block-rank-ear) at G'' and "
+          "at G, every rank at most its count, dim W = k + f - def_D(G'') where "
+          "G[V1] and G'' attain, and the containment test's control (star(y_1) + "
+          "star(y_3) contains both, of dimension 2d-1).  At d = 3, where the "
+          "chapter proves the step (thm:pencil-x0-open-ear-three, -four): G[V1] "
+          "and G'' at target, no 'X', no '*'.")
+    print("families (G[V1]; a, b): " + "; ".join(f"{g}: {v[2]}" for g, v in SHORT_FAMS.items()))
+    print(f"{'fam':5}{'lengths':18}{'d':>2}{'n':>4}{'k':>3}{'d3':>4}{'f':>4}{'dG':>4}"
+          f"{'dG2':>4}{'sh1':>4}{'sh2':>4}{'W':>4}{'rho':>4}{'st':>4}{'cap':>10}"
+          f"{'img':>10}{'need':>5}{'step':>5}{'gen':>5}")
+    cols = ("cells", "G[V1] at target", "G'' at target", "X3 fails",
+            "W contains a star", "caps at the general-position value",
+            "the step's (*)", "(*) at a general ear datum", "the step gains over W",
+            "the joins y_4 .. p_b fill the quotient", "rho fills it")
+    bad, tally = 0, {}
+    for d in SHORT_DIMS:
+        D, Q = (d + 1) * d // 2, (d - 1) * (d - 2) // 2
+        for fam in SHORT_FAMS:
+            for k in range(3, D - 1):
+                for spec in short_danger(fam, d, k):
+                    # a failed guard redraws the point, up to SHORT_REDRAWS
+                    # times ('~' per redraw); a deficiency not certified fails
+                    # at every draw
+                    for draws in range(SHORT_REDRAWS + 1):
+                        try:
+                            c = short_cell(s, spec, d)
+                            break
+                        except Degenerate as e:
+                            err = e
+                    else:
+                        bad += 1
+                        print(f"{fam:5}{spec.label():18}{d:>2}  degenerate: {err}")
+                        continue
+                    sh1, sh2 = c["t1"] - c["r1"], c["t2"] - c["r2"]
+                    bad += min(sh1, sh2, c["tG"] - c["rG"]) < 0
+                    bad += c["r2"] != c["r1"] + (D - 1) * (k - 1) + c["dW"] - 1
+                    bad += c["rG"] != c["r1"] + (D - 1) * k + c["dI"] - 1
+                    bad += sh1 == sh2 == 0 and c["dW"] != k + c["f"] - c["d2"]
+                    bad += not c["ctrl"]
+                    x3 = c["in1"] and c["in3"] and c["dW"] < D
+                    star_fail = c["dI"] < c["need"]
+                    if d == 3:
+                        bad += sh1 != 0 or sh2 != 0 or x3 or star_fail
+                    t = tally.setdefault((fam, d), [0] * len(cols))
+                    for i, v in enumerate((1, sh1 == 0, sh2 == 0, x3, c["in1"] or c["in3"],
+                                           all(x == e for x, e in c["caps"]),
+                                           not star_fail, c["dGen"] >= c["need"],
+                                           c["dI"] > c["dW"], c["img"][1] == Q,
+                                           c["img"][0] == Q)):
+                        t[i] += v
+                    cap = "|".join(f"{x}" for x, _ in c["caps"]) + "/" + \
+                        "|".join(f"{e}" for _, e in c["caps"])
+                    img = "|".join(map(str, c["img"])) + f"/{Q}"
+                    print(f"{fam:5}{spec.label():18}{d:>2}{c['n']:>4}{k:>3}{c['d3']:>4}"
+                          f"{c['f']:>4}{c['dG']:>4}{c['d2']:>4}{sh1:>4}{sh2:>4}{c['dW']:>4}"
+                          f"{c['rho']:>4}{int(c['in1']):>3}{int(c['in3'])}{cap:>10}{img:>10}"
+                          f"{c['need']:>5}{c['dI']:>5}{c['dGen']:>5} "
+                          + ("X" if x3 else "") + ("*" if star_fail else "") + "~" * draws)
+    print("per family and d, the columns: " + "; ".join(cols))
+    for d in SHORT_DIMS:
+        row = [0] * len(cols)
+        for (fam, dd), t in tally.items():
+            if dd == d:
+                print(f"  d={d} {fam:5}" + " ".join(f"{v:>4}" for v in t))
+                row = [x + v for x, v in zip(row, t)]
+        print(f"  d={d} all  " + " ".join(f"{v:>4}" for v in row))
+    print(f"mismatches (asserted): {bad}")
+    return bad
+
+
 MODES = ("linear", "mixed", "perbody", "examples", "selftest",
-         "complexes", "residual4", "d4", "lifting", "pd", "content", "oneear")
+         "complexes", "residual4", "d4", "lifting", "pd", "content", "oneear", "short")
 
 
 def main():

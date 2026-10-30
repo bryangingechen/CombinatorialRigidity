@@ -3,7 +3,7 @@
 **Status:** its `Pᵈ` pencil part opened as **Phase 42** (PENCIL-D, the PI, 2026-10-29; plan
 `notes/Phase42-design.md`). Three sessions with the PI after Phase 40: the first found
 Results 1–10; the second checked the literature (*Literature*) and ran Results 9–11's tests; the
-third set the `Pᵈ` picture, Results 12–19. Phase 42a's tests added Results 20–23. Next concrete
+third set the `Pᵈ` picture, Results 12–19. Phase 42a's tests added Results 20–24. Next concrete
 task: Phase 42a's (`notes/Phase42a.md`). No Lean, no blueprint here. Evidence driver:
 `notes/scripts/strata/strata.py` (exact ℚ, seeded). Editing discipline as for phase notes (≤ 8-line
 entries). `HARNESS.md` *Evidence* and *Reproducibility* bind this work; it is not an attack track.
@@ -229,6 +229,15 @@ in every `Pᵈ` (Results 12–19), which PENCIL-D sets out to prove.
     miss, `k = 10` at `d = 4`, is forced: the hubs' planes coincide, so the cycle `a y b w` has
     dependent hinges, and the `k`-path extends that to a motion of `G₁` once its hinges span `Λ²`
     (`k ≥ D`). The proof and the cells: `notes/Phase42-design.md` §2.4.
+24. `[MEASURED]`, one implication `[PROVED]`: **The short ears' obstruction does not occur** (Phase
+    42a's T3; `--short`, seeds 1–3). On 198 danger cells at `d = 4, 5` (an open ear, `3 ≤ k ≤ D − 2`,
+    `def_D(G[V₁]) > def_D(G) = def_D(G'')`, `2d − 1 ≤ dim W ≤ D − 1`; six families, `n ≤ 40`) the
+    span `W` of the step at `G''` contains neither star unless `W = Λ²`, and `x₂` put back gains the
+    dimension `(⋆)` needs. Modulo `star(y₁) + star(y₃)`, of codimension `C(d−1, 2)`, `W`'s image is
+    always everything: the joins `y₄ y₅, …, y_k p_b` fill it once `k ≥ C(d−1, 2) + 3`, which a
+    certificate proves for every graph, and below that `ρ`'s image supplies the rest, in general
+    position. The 24 cells at `d = 3`, where the chapter proves the step, are the control. The
+    argument and the cells: `notes/Phase42-design.md` §2.3–2.4.
 
 ## The PENCIL-D program
 
@@ -274,11 +283,11 @@ Hunt, *J. Mechanisms* 2 (1967) 307–327, doi:10.1016/0022-2569(67)90005-5.
 
 ## Evidence
 
-Five commands, `N ∈ {1, 2, 3}`, verdict `OK: every target met` at all three:
+Six commands, `N ∈ {1, 2, 3}`, verdict `OK: every target met` at all three:
 `python3 notes/scripts/strata/strata.py --linear --mixed --perbody --examples --selftest
 --seed N` and `... --complexes --residual4 --d4 --lifting --seed N` (~20 s each), `... --pd
---seed N` and `... --content --seed N` (~4 s each), `... --oneear --seed N` (~1 s). Output is
-byte-identical under `PYTHONHASHSEED` 0 and 7.
+--seed N` and `... --content --seed N` (~4 s each), `... --oneear --seed N` (~1 s) and
+`... --short --seed N` (~70 s). Output is byte-identical under `PYTHONHASHSEED` 0 and 7.
 - **First command** (session 1; byte-identical after sessions 2 and 3): 184 linear cells
   (23 graphs × 8 rungs) where the rank at a point, the count and the rank at the per-edge
   linear envelope agree; 7 mixed cases; every per-body cell (molecular, panel, pencil, flat
@@ -311,6 +320,16 @@ byte-identical under `PYTHONHASHSEED` 0 and 7.
   `dim(Π_a ∩ Π_b)` and the `d = 3` step's two hypotheses. Support: one picture per graph, fresh
   heights per `d` for `G` and for `G₁`'s control at the same picture. Fences: `d ∈ {4, 5}`,
   `k ≤ 10` (`k ≤ 9` for `θ(2, 3, k)`), the DP cap at `n₁ ≤ 12`. The cells do not vary with the seed.
+- **`--short`** (Phase 42a's T3; the twelve earlier modes' output byte-identical at seeds 1–3
+  against the previous driver): Result 24. Asserted at every cell: each deficiency, a partition's
+  value matched by a generic-hinge rank (`def_certified`; `n ≥ 17` at `d = 4, 5`); the ear rank
+  formula at `G''` and at `G`; every rank at most its count; `dim W = k + f − def_D(G'')` where
+  `G[V₁]` and `G''` attain; a positive control of the containment test. At `d = 3` also `G[V₁]`
+  and `G''` at target, X3 and the step's `(⋆)`. Support: one picture and heights of `G''` per
+  cell, then fresh ear data; a failed guard redraws the point (`~`, once at seed 2). Population:
+  `SHORT_PER = 2` danger cells per family, `d` and `k`, by a box search seeded by them alone
+  (`SHORT_TRIES = 400`, `n ≤ 40`), so the cells and their figures do not vary with the seed; the
+  four-path theta has none at `d = 5`, `k ≥ 11`, under that cap.
 - **Bounds:** a point's rank is a lower bound for the stratum's generic rank, and each count
   an upper bound (Results 3, 5, and `D(n−1) − def_D` in `Pᵈ`), so a match certifies the
   generic rank on that graph. A shortfall at a point would prove nothing.

@@ -9,9 +9,12 @@ and the content at `def[3] ≥ d − 2`. T1, T2 and the content-range graphs hav
 §2.5): row 5's formulas hold, CERT holds at `d ≤ 6` over every field, and 38 more content cells
 reach their target, on graphs where rows 14 and 22 fail as written. T4's first half has landed
 (§2.4): where the `d = 3` one-body step's hypotheses hold, `G[V₁]` attains on the incidence locus
-at every cell measured, `d = 4, 5`, so ONE-EAR's first option stands there.
-Next concrete task: PD-STATE's open as the next sub-phase, or T3 at `d = 4, 5`, in either order
-(§1's defaults). The route stays open (§4). Evidence: `notes/Strata.md`, Results 12–23.
+at every cell measured, `d = 4, 5`, so ONE-EAR's first option stands there. T3 has landed
+(§2.3–2.4): on 198 danger cells at `d = 4, 5` the short ears' obstruction never occurs, and X3
+holds for `k ≥ C(d−1, 2) + 3` at every graph, so SHORT is left at `k ≤ 5` at `d = 4` (`k ≤ 8` at
+`d = 5`). Next concrete task: PD-STATE's open as the next sub-phase, or T4's second half, in
+either order (§1's defaults). The route stays open (§4). Evidence: `notes/Strata.md`, Results
+12–24.
 
 This file is the phase's entry point: the target (§0), the PI's decisions (§1), the recon (§2),
 the layers by stable code (§3) and the open questions (§4). Letters are minted when a sub-phase
@@ -153,8 +156,18 @@ Result 17's `def[3] ≤ 1` one step further.
   for PD-STEPS: a uniform construction for `m < D` and the open ears (or, at the cycle, KT, since a
   cycle's pencil condition is empty).
 - **SHORT** (row 13): ears with `3 ≤ k ≤ D_d − 2` and `def[D](G[V₁]) > def[D](G)`. Re-inserting
-  `x₂` adds only joins in `star(y₁) + star(y₃)`; X3 would be "at general ear data, `W` containing
-  both stars is `Λ²K^{d+1}`", or the step moves `x₁` and `x₃` too. New mathematics.
+  `x₂` adds only joins in `star(y₁) + star(y₃)`, so the step needs X3: at general ear data, `W`
+  containing both stars is `Λ²K^{d+1}`. It is needed only where `def[D](G'') = def[D](G)` and
+  `2d − 1 ≤ dim W ≤ D − 1` (the danger cells); elsewhere the `d`-general insertion lemma settles
+  the step. **X3 holds for `k ≥ C(d−1, 2) + 3`** (6 at `d = 4`, 9 at `d = 5`) at every graph.
+  The stars have codimension `C(d−1, 2)`, and the joins `y₄ y₅, …, y_k p_b` of `G''`'s ear lie in
+  `W`; they span the quotient at one ear datum, hence at a general one. There `y₄, …, y_{k−1}` are
+  free and `y_k` any point of `Π_b`, so a linear map onto `K^{d+1}/⟨y₁, y₃⟩` places CERT's closed
+  `C(d−1, 2)`-gon of `P^{d−2}` (Result 21: the triangle at `d = 4`, the hexagon at `d = 5`) with
+  its last two points over `y_k` and `p_b`. At `d = 3` this is the chapter's tetrahedron. **Left,
+  SHORT-CORE:** `3 ≤ k ≤ C(d−1, 2) + 2` (3–5 at `d = 4`, 3–8 at `d = 5`), where `ρ`'s image in
+  that quotient must supply the rest; the chapter's `k = 3` case split on `ρ` is the `d = 3` model.
+  T3 (§2.4) found no obstruction on 198 danger cells. New mathematics, now bounded.
 - **ONE-EAR** (rows 14–15): either a motive that asks `G[V₁]` to attain on the locus where `Π_a`
   and `Π_b` meet above a general `q_x`, or another step for `k = 1, 2` at non-adjacent ends, plus
   a `Pᵈ` insertion lemma (at `d ≥ 5` every reachable hinge lies in `Λ²(A+B)`, of dimension ≤ 10).
@@ -170,7 +183,7 @@ Result 17's `def[3] ≤ 1` one step further.
   feasibility unchecked). It has `def[3] = 0` (Result 22), so its rank is Result 17's; the
   question it raises is GENERIC's alone.
 
-### 2.4 Proposed tests (T1, T2 and T4's first half run; T3, T4's second half and T5 not run)
+### 2.4 Proposed tests (T1, T2, T3 and T4's first half run; T4's second half and T5 not run)
 
 - **T1** (row 5): at `d = 4` on the `--d4` population, the flat rank `10(n−1) + 3 − dim L(q)` and
   R1's base `10(n−1) − def[6]`. **Run** at `d = 4, 5, 6` (`Strata.md` Result 20): both formulas
@@ -179,7 +192,19 @@ Result 17's `def[3] ≤ 1` one step further.
 - **T2** (CERT): the certificates at `d = 4, 5, 6`, by exact rank. **Run** at `d = 3..6`, over
   every field (Result 21; §2.3).
 - **T3** (SHORT): at `d = 4`, ears with `3 ≤ k ≤ 8` and `def[10](G[V₁]) > def[10](G)`: does a
-  general datum give `W ⊇ star(y₁) + star(y₃)` with `W ≠ Λ²`, and does (⋆) hold?
+  general datum give `W ⊇ star(y₁) + star(y₃)` with `W ≠ Λ²`, and does (⋆) hold? **Run** at
+  `d = 3, 4, 5` (`Strata.md` Result 24; `--short`, seeds 1–3, the cells seed-independent), on
+  danger cells only (§2.3), two per family, `d` and `k`, `n ≤ 40`. `G[V₁]` is a cycle, or a theta
+  with `a, b` its hubs, inside two paths, inside one, or a hub and a path body, or a necklace of
+  diamonds, where a pencil condition binds at every diamond body. Every deficiency is certified by
+  a partition and a generic rank (the cells at `d = 4, 5` have `n ≥ 17`, past the DP cap). At all
+  72 cells at `d = 4` and 126 at `d = 5`,
+  `G[V₁]` and `G''` attain, `W` contains neither star, each star meets the rest of `W` in the
+  general-position dimension, and `x₂` at a general point gains the dimension (⋆) needs; (⋆) also
+  holds at a general ear datum of `G`. Modulo the stars, `ρ`'s image has dimension
+  `min(dim ρ, C(d−1, 2))`, the joins' `min(k − 3, C(d−1, 2))`, and `W`'s is everything. The 24
+  cells at `d = 3` assert the chapter's theorem. So X3 stands, and the step that moves `x₁` and
+  `x₃` is not needed on this population; §2.3 bounds what is left.
 - **T4** (ONE-EAR): at `d = 4, 5`, the rank of `G[V₁]` on `G`'s configurations, one-body chains
   whose ends share a neighbour; at `d = 5, 6`, `dim(ρ + Λ²(A+B))` against `3 + f − def[D](G)`.
   **First half run** (`Strata.md` Result 23; `--oneear`, seeds 1–3, the cells seed-independent).
@@ -284,7 +309,8 @@ landed.
 The PI's planning defaults (§1) answer most of the calls put at the open. A session follows them
 unless a finding argues otherwise:
 - `d = 4` first, as Tier 1 of three. SHORT is attacked at `d = 4` and ONE-EAR at `d = 5`, as
-  attack tracks once T3 and T4 size them (§2.5).
+  attack tracks once T3 and T4 size them (§2.5). T3 has: SHORT's attack is SHORT-CORE, `k = 3, 4,
+  5` at `d = 4` (§2.3).
 - The headline ships the bare and distinct conjuncts first, GENERIC after (row 22). Nondegeneracy
   enters `PencilPair` only in the generic conjunct (`Pencil/Motive.lean`), so with row 22's reading
   its `Pᵈ` lift is deferred with it.

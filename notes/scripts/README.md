@@ -1498,6 +1498,9 @@ Its per-mode prose is its module docstring, and its reading is
 | `python3 notes/scripts/strata/strata.py --linear --mixed --perbody --examples --selftest --seed N`, `N ∈ {1, 2, 3}` | 20 s | `notes/Strata.md` *Evidence* (Results 1, 3, 5, 6, 7) |
 | `python3 notes/scripts/strata/strata.py --complexes --residual4 --d4 --lifting --seed N`, `N ∈ {1, 2, 3}` | 20 s | `notes/Strata.md` *Evidence* (Results 3, 4, 8, 9, 11); its helpers `span_cap`, `det_exact`, `ext`, `fund_cycles`, `lovasz_rank`, `rig_rank_dot` are direction-local and deliberately not catalogued |
 | `python3 notes/scripts/strata/strata.py --pd --seed N`, `N ∈ {1, 2, 3}` | 4 s | `notes/Strata.md` *Evidence* (Results 15, 16, 18: the pencil of `Pᵈ` at `d = 2..6`, the stable range and the deficiency lemma); `pd_pencil`, `subdivide` and `PD_PAST_CAP` are direction-local |
+| `python3 notes/scripts/strata/strata.py --content --seed N`, `N ∈ {1, 2, 3}` | 4 s | `notes/Strata.md` *Evidence* (Results 20–22: Phase 42a's T1, T2 and the content-range graphs); `cert_search`, `cert_top` and `elementary_divisors` are direction-local |
+| `python3 notes/scripts/strata/strata.py --oneear --seed N`, `N ∈ {1, 2, 3}` | 1 s | `notes/Strata.md` *Evidence* (Result 23: Phase 42a's T4, first half) |
+| `python3 notes/scripts/strata/strata.py --short --seed N`, `N ∈ {1, 2, 3}` | 70 s | `notes/Strata.md` *Evidence* (Result 24: Phase 42a's T3, the short ears' danger cells); `def_certified` (a partition matched by a generic rank, past the DP cap), `rel_screws` and the ear specs are direction-local |
 
 Per-driver prose — *what* each mode asserts — stays in the four per-directory
 READMEs (`escape/README.md`, `kbare/README.md`, `w4/README.md`,
