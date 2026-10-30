@@ -148,17 +148,26 @@ realization, though their hinges do not form a pencil.
 
 \begin{lemma}[Pencil realizations with independent adjacent normals]
   \label{lem:pencil-d-point-configuration}
-  \uses{def:pencil-d-realization, def:panel-support-extensor}
-  Let $b_v \in K^{d+1}$ and a three-dimensional subspace $\Pi_v$
-  containing $b_v$ be given at each body $v$ of $G$, with $b_u$ and $b_v$
-  linearly independent at every edge $uv$.
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.toPatchedBodyHinge,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.span_rigidityRows_toPatchedBodyHinge,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.hasPencilPlaneRealization_toPatchedBodyHinge,
+        CombinatorialRigidity.Molecular.HasPencilPlaneRealization.supportExtensor_eq_smul_panelSupportExtensor,
+        CombinatorialRigidity.Molecular.HasPencilPlaneRealization.normal_mem_plane_of_mem_closedNbhd}
+  \leanok
+  \uses{def:pencil-d-realization, def:panel-support-extensor,
+        def:panel-hinge-framework, def:rigidity-matrix}
+  Let a nonzero $b_v \in K^{d+1}$ and a three-dimensional subspace
+  $\Pi_v$ containing $b_v$ be given at each body $v$ of $G$, with $b_u$
+  and $b_v$ linearly independent at every edge $uv$.
   \begin{enumerate}
     \item If $b_w \in \Pi_v$ for every body $v$ and every $w$ in the
           closed neighbourhood of $v$, the framework on $G$ whose hinge
           at each edge $uv$ is the panel-support extensor $C(b_u, b_v)$
           (\cref{def:panel-support-extensor}) is, with the normals $b$
           and the subspaces $\Pi$, a pencil realization of $G$ in
-          dimension $d$.
+          dimension $d$. Its rigidity matrix (\cref{def:rigidity-matrix})
+          has the rows of the panel-hinge framework on $G$ with normals
+          $b$ (\cref{def:panel-hinge-framework}).
     \item Conversely, in a pencil realization of $G$ in dimension $d$
           with normals $b$ and subspaces $\Pi$, the hinge of every edge
           $uv$ is a nonzero multiple of $C(b_u, b_v)$, and $b_w \in \Pi_v$
@@ -166,16 +175,41 @@ realization, though their hinges do not form a pencil.
   \end{enumerate}
 \end{lemma}
 \begin{proof}
-  \uses{lem:panel-support-extensor-join}
-  As $b_u$ and $b_v$ are independent, $C(b_u, b_v)$ is a nonzero extensor
-  of a basis of $b_u^{\perp} \cap b_v^{\perp}$
-  (\cref{lem:panel-support-extensor-join}), and every nonzero extensor of
-  $d - 1$ vectors of both panels is a multiple of it. Its span contains
-  $\Pi_v^{\perp}$ exactly when $b_u$ and $b_v$ lie in
-  $(\Pi_v^{\perp})^{\perp} = \Pi_v$. Both statements follow, as the
-  closed neighbourhood of $v$ consists of $v$ and the other ends of its
-  links.
+  \leanok
+  \uses{lem:panel-support-extensor-join, lem:meet-two-hyperplanes,
+        lem:decomposable-extensor-span-unique}
+  Let $uv$ be an edge. As $b_u$ and $b_v$ are independent, $C(b_u, b_v)$
+  is a nonzero extensor of $d - 1$ independent vectors of the
+  $(d-1)$-dimensional subspace $b_u^{\perp} \cap b_v^{\perp}$
+  (\cref{lem:panel-support-extensor-join}), so of a basis of it. So it
+  lies in both panels, and its span contains $\Pi_v^{\perp}$ when $b_u$
+  and $b_v$ lie in $\Pi_v$, as then
+  $\Pi_v^{\perp} \subseteq b_u^{\perp} \cap b_v^{\perp}$. This gives (1),
+  as $u$ and $v$ lie in the closed neighbourhoods of both. Its hinges at
+  the edges are those of the panel-hinge framework, so its rows are too.
+
+  For (2), a nonzero extensor determines the span of its vectors, by the
+  argument of \cref{lem:decomposable-extensor-span-unique} with $d - 1$
+  vectors in place of two. The hinge of $uv$ is nonzero and lies in both
+  panels, so it is the extensor of $d - 1$ independent vectors orthogonal
+  to $b_u$ and $b_v$, and a nonzero multiple of $C(b_u, b_v)$
+  (\cref{lem:meet-two-hyperplanes}). It also passes through
+  $\Pi_v^{\perp}$, so $\Pi_v^{\perp}$ lies in the span of vectors
+  orthogonal to $b_u$, and
+  $b_u \in (\Pi_v^{\perp})^{\perp} = \Pi_v$. This part does not use the
+  independence of $b_u$ and $b_v$. As $b_v \in \Pi_v$, it covers the
+  closed neighbourhood of $v$, which consists of $v$ and the other ends
+  of the links at $v$.
 \end{proof}
+
+\begin{fmlnote}
+  A body-hinge framework has a hinge at every label of the ambient set
+  of edge labels, also at labels that are not edges of $G$. There the
+  formal framework of (1) has the fixed nonzero hinge $C(e_0, e_1)$ of
+  two standard basis vectors. No rigidity row reads it, and it keeps
+  every hinge nonzero, as a hinge-coplanar panel realization requires
+  (\cref{def:coplanar-panel-realization}).
+\end{fmlnote}
 
 \begin{definition}[Pencil realization at the deficiency rank, in every dimension]
   \label{def:pencil-d-rank-hypothesis}

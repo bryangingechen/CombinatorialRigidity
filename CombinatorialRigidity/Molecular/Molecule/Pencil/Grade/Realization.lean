@@ -7,6 +7,7 @@ module
 
 public import CombinatorialRigidity.Mathlib.LinearAlgebra.Matrix.BilinearForm
 public import CombinatorialRigidity.Molecular.GenericLift.HingeGeneric
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Motive
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Statement
 public import Mathlib.LinearAlgebra.BilinearForm.Orthogonal
 
@@ -32,6 +33,8 @@ definition is hinge-coplanarity.
 * `dotPerp`: the orthogonal of a subspace of `K^n` for the dot product.
 * `ExtensorThroughSubspace`: `def:extensor-through-flat`.
 * `HasPencilPlaneRealization`: `def:pencil-d-realization`.
+* `PanelHingeFramework.toPatchedBodyHinge`: the panel hinges at the edges, a fixed nonzero hinge
+  off them (the framework of `lem:pencil-d-point-configuration`).
 
 ## Main results
 
@@ -40,6 +43,13 @@ definition is hinge-coplanarity.
   panel realization (`def:pencil-d-realization`).
 * `hasPencilPlaneRealization_two_iff` and `exists_hasPencilPlaneRealization_two_iff`:
   `lem:pencil-d-agrees-three`.
+* `span_range_eq_of_extensor_eq_grade`: equal nonzero extensors span the same subspace, in every
+  grade.
+* `PanelHingeFramework.hasPencilPlaneRealization_toPatchedBodyHinge`,
+  `PanelHingeFramework.span_rigidityRows_toPatchedBodyHinge`,
+  `HasPencilPlaneRealization.supportExtensor_eq_smul_panelSupportExtensor` and
+  `HasPencilPlaneRealization.normal_mem_plane_of_mem_closedNbhd`:
+  `lem:pencil-d-point-configuration`.
 * `HasGradedPencilRealization`: `def:pencil-d-rank-hypothesis`, the realization at the deficiency
   rank.
 * `hasGradedPencilRealization_two_iff`: the first equivalence of `lem:pencil-d-rank-agrees-three`.
@@ -102,6 +112,29 @@ theorem exists_eq_dotPerp_span_singleton {n : ℕ} (P : Submodule K (Fin (n + 1)
   rintro rfl
   rw [hq, Submodule.span_singleton_eq_bot.2 rfl, finrank_bot] at h1
   exact zero_ne_one h1
+
+/-- **The orthogonal of a span is that of the spanning family**: `x` is orthogonal to the span of
+the vectors `v i` exactly when `x ⬝ᵥ v i = 0` for every `i`, as `y ↦ x ⬝ᵥ y` is linear
+(`Submodule.span_induction`). -/
+theorem mem_dotPerp_span_range {n : ℕ} {ι : Type*} {v : ι → Fin n → K} {x : Fin n → K} :
+    x ∈ dotPerp (Submodule.span K (Set.range v)) ↔ ∀ i, x ⬝ᵥ v i = 0 := by
+  rw [mem_dotPerp]
+  refine ⟨fun h i => h _ (Submodule.subset_span ⟨i, rfl⟩), fun h y hy => ?_⟩
+  induction hy using Submodule.span_induction with
+  | mem y hy => obtain ⟨i, rfl⟩ := hy; exact h i
+  | zero => exact dotProduct_zero x
+  | add y z _ _ hy hz => rw [dotProduct_add, hy, hz, add_zero]
+  | smul c y _ hy => rw [dotProduct_smul, hy, smul_zero]
+
+/-- **A vector orthogonal to a family is orthogonal to its span**: if `p i ⬝ᵥ y = 0` for every `i`,
+then `x ⬝ᵥ y = 0` for every `x` in the span of the `p i` (`mem_dotPerp_span_range`). It is the
+form in every dimension of `dotProduct_eq_zero_of_mem_span` (`Pencil/Statement.lean`, two vectors
+of `K⁴`). -/
+theorem dotProduct_eq_zero_of_mem_span_range {n : ℕ} {ι : Type*} {p : ι → Fin n → K}
+    {x y : Fin n → K} (hp : ∀ i, p i ⬝ᵥ y = 0) (hx : x ∈ Submodule.span K (Set.range p)) :
+    x ⬝ᵥ y = 0 := by
+  rw [dotProduct_comm]
+  exact mem_dotPerp.1 (mem_dotPerp_span_range.2 fun i => by rw [dotProduct_comm]; exact hp i) x hx
 
 /-! ## A screw element through a subspace -/
 
@@ -214,6 +247,291 @@ theorem exists_hasPencilPlaneRealization_two_iff {G : Graph α β}
     · exact ⟨0, fun h => absurd h hv⟩
   choose point hpoint using hex
   exact ⟨point, (hasPencilPlaneRealization_two_iff hpoint).1 hreal⟩
+
+/-! ## Extensors of a common orthogonal
+
+A nonzero extensor of `j` vectors determines their span, in every grade, and `k` independent vectors
+of `K^(k+2)` orthogonal to two independent vectors span their common orthogonal. So the panel
+support extensor of two independent normals, which `exists_extensor_eq_panelSupportExtensor_gen`
+writes as an extensor of such vectors, passes through the orthogonal of every subspace containing
+both normals, and a nonzero screw element in both panels is a multiple of it. -/
+
+/-- **Equal nonzero extensors span the same subspace, in every grade** (the argument of
+`lem:decomposable-extensor-span-unique` with `j` vectors in place of two): if
+`extensor p = extensor p' ≠ 0` for `p p' : Fin j → K^(d+1)`, then the two families have the same
+span. For every `x`, the extensor of `x` followed by `p` is `ι x * extensor p`
+(`ExteriorAlgebra.ιMulti_succ_apply`), so it equals that of `x` followed by `p'`; and as `p` is
+linearly independent, `x` lies in its span exactly when this extensor is `0`
+(`extensor_ne_zero_iff_linearIndependent`, `linearIndependent_finCons`). The case `j = 2` is
+`span_range_eq_of_extensor_eq` (`Meet.lean`). -/
+theorem span_range_eq_of_extensor_eq_grade {d j : ℕ} {p p' : Fin j → Fin (d + 1) → K}
+    (hp : extensor p ≠ 0) (heq : extensor p = extensor p') :
+    Submodule.span K (Set.range p') = Submodule.span K (Set.range p) := by
+  have hmem : ∀ q : Fin j → Fin (d + 1) → K, LinearIndependent K q → ∀ x,
+      x ∈ Submodule.span K (Set.range q) ↔ extensor (Fin.cons x q) = 0 := by
+    intro q hq x
+    rw [← not_iff_not, ← Ne, extensor_ne_zero_iff_linearIndependent, linearIndependent_finCons]
+    simp [hq]
+  have hcons : ∀ (q : Fin j → Fin (d + 1) → K) x,
+      extensor (Fin.cons x q) = ExteriorAlgebra.ι K x * extensor q := by
+    intro q x
+    rw [extensor_apply, extensor_apply, ExteriorAlgebra.ιMulti_succ_apply]
+    rfl
+  have hpli := (extensor_ne_zero_iff_linearIndependent p).1 hp
+  have hp'li := (extensor_ne_zero_iff_linearIndependent p').1 (heq ▸ hp)
+  ext x
+  rw [hmem p' hp'li, hmem p hpli, hcons, hcons, heq]
+
+/-- **`k` independent vectors orthogonal to two independent vectors span their common orthogonal**:
+in `K^(k+2)`, if `p : Fin k → K^(k+2)` and `n : Fin 2 → K^(k+2)` are linearly independent and every
+`p i` is orthogonal to `n 0` and `n 1`, then the span of the `p i` is the orthogonal of the span of
+`n 0` and `n 1`. It lies in that orthogonal (`mem_dotPerp_span_range`), and both have dimension `k`
+(`finrank_span_eq_card`, `finrank_dotPerp`). -/
+theorem span_range_eq_dotPerp_of_linearIndependent {k : ℕ} {p : Fin k → Fin (k + 2) → K}
+    {n : Fin 2 → Fin (k + 2) → K} (hp : LinearIndependent K p) (hn : LinearIndependent K n)
+    (hperp : ∀ i j, p i ⬝ᵥ n j = 0) :
+    Submodule.span K (Set.range p) = dotPerp (Submodule.span K (Set.range n)) := by
+  refine Submodule.eq_of_le_of_finrank_eq ?_ ?_
+  · rw [Submodule.span_le, Set.range_subset_iff]
+    exact fun i => mem_dotPerp_span_range.2 (hperp i)
+  · rw [finrank_span_eq_card hp, finrank_dotPerp, finrank_span_eq_card hn]
+    simp
+
+/-- **Two standard basis vectors are linearly independent**: the first two vectors `e₀` and `e₁`
+of the standard basis of `K^(k+2)`, read at the coordinates `0` and `1`. Their panel support
+extensor is the fixed nonzero hinge of `PanelHingeFramework.toPatchedBodyHinge` off the edges. -/
+theorem linearIndependent_single_zero_one {k : ℕ} :
+    LinearIndependent K ![(Pi.single 0 1 : Fin (k + 2) → K), Pi.single 1 1] := by
+  rw [LinearIndependent.pair_iff]
+  intro s t h
+  have h0 := congrFun h 0
+  have h1 := congrFun h 1
+  simp only [Pi.add_apply, Pi.smul_apply, Pi.single_eq_same, smul_eq_mul, mul_one, ne_eq,
+    zero_ne_one, not_false_eq_true, Pi.single_eq_of_ne, mul_zero, add_zero, Pi.zero_apply,
+    one_ne_zero, zero_add] at h0 h1
+  exact ⟨h0, h1⟩
+
+/-- **The panel support extensor lies in both panels, in every grade** (`ExtensorInPanel`): for
+`k ≥ 1` and linearly independent `n₁ n₂ : K^(k+2)`, `C(n₁, n₂)` lies in the panel of `n₁` and in
+that of `n₂`, the same vectors serving for both (`exists_extensor_eq_panelSupportExtensor_gen`,
+`lem:panel-support-extensor-join`). The case `k = 2` is `extensorInPanel_panelSupportExtensor`. -/
+theorem extensorInPanel_panelSupportExtensor_gen {k : ℕ} [NeZero k] {n₁ n₂ : Fin (k + 2) → K}
+    (h : LinearIndependent K ![n₁, n₂]) :
+    ExtensorInPanel (panelSupportExtensor (k := k) n₁ n₂) n₁ ∧
+    ExtensorInPanel (panelSupportExtensor (k := k) n₁ n₂) n₂ := by
+  obtain ⟨p, heq, hperp⟩ := exists_extensor_eq_panelSupportExtensor_gen h
+  exact ⟨⟨p, heq, fun i => (hperp i).1⟩, ⟨p, heq, fun i => (hperp i).2⟩⟩
+
+/-- **The panel support extensor passes through the orthogonal of a subspace containing both
+normals** (a step of `lem:pencil-d-point-configuration`): for `k ≥ 1`, linearly independent
+`n₁ n₂ : K^(k+2)` and a subspace `A` containing both, `C(n₁, n₂)` passes through `A^⊥`
+(`ExtensorThroughSubspace`). It is the extensor of `k` vectors orthogonal to `n₁` and `n₂`
+(`exists_extensor_eq_panelSupportExtensor_gen`), independent as `C(n₁, n₂) ≠ 0`
+(`panelSupportExtensor_ne_zero_iff`), so they span the orthogonal of `span {n₁, n₂}`
+(`span_range_eq_dotPerp_of_linearIndependent`), which contains `A^⊥`. -/
+theorem extensorThroughSubspace_panelSupportExtensor {k : ℕ} [NeZero k]
+    {n₁ n₂ : Fin (k + 2) → K} (h : LinearIndependent K ![n₁, n₂])
+    {A : Submodule K (Fin (k + 2) → K)} (h₁ : n₁ ∈ A) (h₂ : n₂ ∈ A) :
+    ExtensorThroughSubspace (panelSupportExtensor (k := k) n₁ n₂) (dotPerp A) := by
+  obtain ⟨p, heq, hperp⟩ := exists_extensor_eq_panelSupportExtensor_gen h
+  have hpli : LinearIndependent K p := (extensor_ne_zero_iff_linearIndependent p).1
+    (heq ▸ ScrewSpace.val_injective.ne ((panelSupportExtensor_ne_zero_iff n₁ n₂).2 h))
+  refine ⟨p, heq, ?_⟩
+  rw [span_range_eq_dotPerp_of_linearIndependent hpli h fun i j => by
+    fin_cases j
+    exacts [(hperp i).1, (hperp i).2]]
+  refine LinearMap.BilinForm.orthogonal_le ?_
+  rw [Submodule.span_le, Set.range_subset_iff]
+  intro j; fin_cases j
+  exacts [h₁, h₂]
+
+/-- **A nonzero screw element in two independent panels is a multiple of their panel support
+extensor** (a step of `lem:pencil-d-point-configuration`; the remark after
+`def:coplanar-panel-realization`): if `C ≠ 0` lies in the panels of the linearly
+independent `n₁` and `n₂` (`ExtensorInPanel`), then `C = c • C(n₁, n₂)` for some `c ≠ 0`. The two
+panels give families `p`, orthogonal to `n₁`, and `p'`, orthogonal to `n₂`, with extensor `C`; as
+`C ≠ 0` they span the same subspace (`span_range_eq_of_extensor_eq_grade`), so `p` is orthogonal
+to both, and independent; then `lem:meet-two-hyperplanes`
+(`extensor_join_proportional_complementIso_meet`) gives `c`, nonzero as `C` is. -/
+theorem exists_smul_panelSupportExtensor_eq_of_extensorInPanel {k : ℕ}
+    {C : ScrewSpace K k} {n₁ n₂ : Fin (k + 2) → K} (hC : C ≠ 0)
+    (h₁ : ExtensorInPanel C n₁) (h₂ : ExtensorInPanel C n₂)
+    (h : LinearIndependent K ![n₁, n₂]) :
+    ∃ c : K, c ≠ 0 ∧ C = c • panelSupportExtensor (k := k) n₁ n₂ := by
+  obtain ⟨p, hp, hp₁⟩ := h₁
+  obtain ⟨p', hp', hp'₂⟩ := h₂
+  have hpne : extensor p ≠ 0 := hp ▸ ScrewSpace.val_injective.ne hC
+  -- The two families span the same subspace, so each `p i` is orthogonal to both normals.
+  have hspan := span_range_eq_of_extensor_eq_grade hpne (hp.symm.trans hp')
+  have hp₂ : ∀ i, p i ⬝ᵥ n₂ = 0 := fun i =>
+    dotProduct_eq_zero_of_mem_span_range hp'₂ (hspan ▸ Submodule.subset_span ⟨i, rfl⟩)
+  obtain ⟨c, hc⟩ := extensor_join_proportional_complementIso_meet ![n₁, n₂] p
+    ((extensor_ne_zero_iff_linearIndependent p).1 hpne) h fun i j => by
+      rw [piBasisFun_toDual_eq_dotProduct]
+      fin_cases j
+      exacts [hp₁ i, hp₂ i]
+  have hcval := congrArg Subtype.val hc
+  refine ⟨c, ?_, ScrewSpace.ext ?_⟩
+  · rintro rfl
+    rw [zero_smul] at hcval
+    exact hpne hcval.symm
+  · rw [ScrewSpace.val_smul, panelSupportExtensor_eq_complementIso_extensor, hp]
+    exact hcval.symm
+
+/-! ## Pencil realizations with independent adjacent normals
+
+`lem:pencil-d-point-configuration`. The hinge of a panel-hinge framework at a label off `E(G)` is
+read at whatever bodies `ends` names, and may be zero, while `HasCoplanarPanelRealization` asks
+for a nonzero hinge at every label. So the framework of part (1) is `toPatchedBodyHinge`, which
+keeps the panel hinges at the edges and puts a fixed nonzero one elsewhere, as
+`pencilConfigFramework` does at grade `2` (`Pencil/MainComponent/Configuration.lean`); it has the
+rows of the panel-hinge framework (`span_rigidityRows_toPatchedBodyHinge`). -/
+
+namespace PanelHingeFramework
+
+open Classical in
+/-- **The body-hinge interpretation patched off the edges** (the framework of
+`lem:pencil-d-point-configuration`): the body-hinge framework on `P.graph` whose hinge at an edge
+`e` is that of `P.toBodyHinge`, the panel support extensor `C(b_u, b_v)` of the normals at
+`(u, v) = P.ends e`, and whose hinge at a label off `E(P.graph)` is the fixed nonzero
+`C(e₀, e₁)` of two standard basis vectors (`linearIndependent_single_zero_one`). Its rows are those
+of `P.toBodyHinge` (`span_rigidityRows_toPatchedBodyHinge`), as a label off the edges has no row;
+unlike `P.toBodyHinge`, it can satisfy `HasCoplanarPanelRealization`, which asks for a nonzero hinge
+at every label (`hasPencilPlaneRealization_toPatchedBodyHinge`). -/
+noncomputable def toPatchedBodyHinge {k : ℕ} (P : PanelHingeFramework K k α β) :
+    BodyHingeFramework K k α β where
+  graph := P.graph
+  supportExtensor e :=
+    if e ∈ E(P.graph) then panelSupportExtensor (P.normal (P.ends e).1) (P.normal (P.ends e).2)
+    else panelSupportExtensor (Pi.single 0 1) (Pi.single 1 1)
+
+@[simp]
+theorem toPatchedBodyHinge_graph {k : ℕ} (P : PanelHingeFramework K k α β) :
+    P.toPatchedBodyHinge.graph = P.graph := rfl
+
+/-- The hinge of `toPatchedBodyHinge` at an edge: that of `P.toBodyHinge`. -/
+theorem toPatchedBodyHinge_supportExtensor_of_mem {k : ℕ} (P : PanelHingeFramework K k α β)
+    {e : β} (he : e ∈ E(P.graph)) :
+    P.toPatchedBodyHinge.supportExtensor e = P.toBodyHinge.supportExtensor e := by
+  classical
+  exact ite_eq_left he
+
+/-- The hinge of `toPatchedBodyHinge` off the edges: `C(e₀, e₁)`. -/
+theorem toPatchedBodyHinge_supportExtensor_of_not_mem {k : ℕ} (P : PanelHingeFramework K k α β)
+    {e : β} (he : e ∉ E(P.graph)) :
+    P.toPatchedBodyHinge.supportExtensor e =
+      panelSupportExtensor (Pi.single 0 1) (Pi.single 1 1) := by
+  classical
+  exact ite_eq_right he
+
+/-- **The patched framework has the rows of the panel-hinge framework**
+(`lem:pencil-d-point-configuration`): the two agree at every link, whose label is an edge, so they
+have the same span of rigidity rows (`span_rigidityRows_eq_of_supportExtensor_agree`). -/
+theorem span_rigidityRows_toPatchedBodyHinge {k : ℕ} (P : PanelHingeFramework K k α β) :
+    Submodule.span K P.toPatchedBodyHinge.rigidityRows =
+      Submodule.span K P.toBodyHinge.rigidityRows :=
+  span_rigidityRows_eq_of_supportExtensor_agree _ P.toBodyHinge rfl fun _ _ _ he =>
+    P.toPatchedBodyHinge_supportExtensor_of_mem he.edge_mem
+
+/-- **Normals that put each closed neighbourhood in the subspace of its body give a pencil
+realization** (`lem:pencil-d-point-configuration`, part (1)): for `k ≥ 1`, let the normals of `P`
+be nonzero on `V(G)` (`hne`) and linearly independent at the ends of every link (`hind`), and let
+`plane v` be three-dimensional (`hdim`) and contain the normal of every member of the closed
+neighbourhood of `v` (`hmem`), at each body `v`. Then the patched framework
+(`toPatchedBodyHinge`), with the normals of `P` and the subspaces `plane`, is a pencil realization
+(`HasPencilPlaneRealization`). At a link `e` from `u` to `v`, the hinge is `C(b_x, b_y)` for
+`(x, y) = P.ends e`, one of `(u, v)` and `(v, u)`: it is nonzero and lies in both panels
+(`extensorInPanel_panelSupportExtensor_gen`), and as both ends lie in the closed neighbourhoods of
+`u` and of `v`, it passes through `plane u`'s and `plane v`'s orthogonals
+(`extensorThroughSubspace_panelSupportExtensor`). Off the edges the hinge is `C(e₀, e₁) ≠ 0`. -/
+theorem hasPencilPlaneRealization_toPatchedBodyHinge {k : ℕ} [NeZero k]
+    (P : PanelHingeFramework K k α β) {plane : α → Submodule K (Fin (k + 2) → K)}
+    (hne : ∀ v ∈ V(P.graph), P.normal v ≠ 0)
+    (hind : ∀ e u v, P.graph.IsLink e u v → LinearIndependent K ![P.normal u, P.normal v])
+    (hdim : ∀ v ∈ V(P.graph), Module.finrank K (plane v) = 3)
+    (hmem : ∀ v ∈ V(P.graph), ∀ w ∈ P.graph.closedNbhd v, P.normal w ∈ plane v) :
+    HasPencilPlaneRealization P.graph P.toPatchedBodyHinge P.normal plane := by
+  -- At a link `e` from `u` to `v`, the hinge is `C(b_x, b_y)` for `(x, y) = ends e`, one of
+  -- `(u, v)` and `(v, u)`; both ends lie in the closed neighbourhoods of `u` and of `v`.
+  have hlink : ∀ e u v, P.graph.IsLink e u v →
+      P.toPatchedBodyHinge.supportExtensor e =
+        panelSupportExtensor (P.normal (P.ends e).1) (P.normal (P.ends e).2) ∧
+      LinearIndependent K ![P.normal (P.ends e).1, P.normal (P.ends e).2] ∧
+      (P.ends e).1 ∈ ({u, v} : Set α) ∧ (P.ends e).2 ∈ ({u, v} : Set α) := by
+    intro e u v huv
+    refine ⟨P.toPatchedBodyHinge_supportExtensor_of_mem huv.edge_mem,
+      hind e _ _ (P.isLink_ends.isLink huv), ?_⟩
+    rcases P.isLink_ends.eq_or_swap huv with ⟨h1, h2⟩ | ⟨h1, h2⟩ <;> simp [h1, h2]
+  have hnbhd : ∀ e u v, P.graph.IsLink e u v → ∀ w ∈ ({u, v} : Set α),
+      P.normal w ∈ plane u := by
+    intro e u v huv w hw
+    rcases hw with rfl | rfl
+    · exact hmem w huv.left_mem w (Or.inl rfl)
+    · exact hmem u huv.left_mem w (Or.inr ⟨e, huv⟩)
+  refine ⟨⟨rfl, hne, fun e => ?_, fun e u v huv => ?_⟩, hdim,
+    fun v hv => hmem v hv v (Or.inl rfl), fun e u v huv => ?_⟩
+  · by_cases he : e ∈ E(P.graph)
+    · obtain ⟨x, y, hxy⟩ := Graph.exists_isLink_of_mem_edgeSet he
+      obtain ⟨hC, hli, -⟩ := hlink e x y hxy
+      rw [hC, panelSupportExtensor_ne_zero_iff]
+      exact hli
+    · rw [P.toPatchedBodyHinge_supportExtensor_of_not_mem he, panelSupportExtensor_ne_zero_iff]
+      exact linearIndependent_single_zero_one
+  · obtain ⟨hC, hli, -⟩ := hlink e u v huv
+    rw [hC]
+    rcases P.isLink_ends.eq_or_swap huv with ⟨h1, h2⟩ | ⟨h1, h2⟩ <;> rw [h1, h2] at hli ⊢
+    · exact extensorInPanel_panelSupportExtensor_gen hli
+    · exact (extensorInPanel_panelSupportExtensor_gen hli).symm
+  · obtain ⟨hC, hli, hx, hy⟩ := hlink e u v huv
+    rw [hC]
+    exact ⟨extensorThroughSubspace_panelSupportExtensor hli (hnbhd e u v huv _ hx)
+        (hnbhd e u v huv _ hy),
+      extensorThroughSubspace_panelSupportExtensor hli
+        (hnbhd e v u huv.symm _ (Set.pair_comm u v ▸ hx))
+        (hnbhd e v u huv.symm _ (Set.pair_comm u v ▸ hy))⟩
+
+end PanelHingeFramework
+
+namespace HasPencilPlaneRealization
+
+variable {k : ℕ} {G : Graph α β} {F : BodyHingeFramework K k α β}
+  {normal : α → Fin (k + 2) → K} {plane : α → Submodule K (Fin (k + 2) → K)}
+
+/-- **In a pencil realization, the hinge of a link with independent normals is a nonzero multiple of
+their panel support extensor** (`lem:pencil-d-point-configuration`, part (2)): if `e` links `u` and
+`v` in `G` and `normal u`, `normal v` are linearly independent, then
+`F.supportExtensor e = c • C(normal u, normal v)` for some `c ≠ 0`. The hinge is nonzero and lies in
+both panels (`HasCoplanarPanelRealization`), so
+`exists_smul_panelSupportExtensor_eq_of_extensorInPanel` applies; the subspaces are not used. -/
+theorem supportExtensor_eq_smul_panelSupportExtensor
+    (h : HasPencilPlaneRealization G F normal plane) {e : β} {u v : α} (huv : G.IsLink e u v)
+    (hind : LinearIndependent K ![normal u, normal v]) :
+    ∃ c : K, c ≠ 0 ∧ F.supportExtensor e = c • panelSupportExtensor (normal u) (normal v) :=
+  exists_smul_panelSupportExtensor_eq_of_extensorInPanel (h.1.2.2.1 e) (h.1.2.2.2 e u v huv).1
+    (h.1.2.2.2 e u v huv).2 hind
+
+/-- **In a pencil realization, the subspace of a body contains the normals of its closed
+neighbourhood** (`lem:pencil-d-point-configuration`, part (2)): for `v ∈ V(G)` and `w` in the closed
+neighbourhood `G.closedNbhd v`, `normal w ∈ plane v`. For `w = v` this is part of the definition.
+For a link `e` from `v` to `w`, the hinge passes through `plane v`'s orthogonal, the extensor of a
+family `p` whose span contains it, and lies in the panel of `w`, the extensor of a family `p'`
+orthogonal to `normal w`; as the hinge is nonzero the two families have the same span
+(`span_range_eq_of_extensor_eq_grade`), so `normal w` is orthogonal to `plane v`'s orthogonal and
+lies in `plane v` (`dotPerp_dotPerp`). It needs no independence of the normals. -/
+theorem normal_mem_plane_of_mem_closedNbhd (h : HasPencilPlaneRealization G F normal plane)
+    {v w : α} (hv : v ∈ V(G)) (hw : w ∈ G.closedNbhd v) : normal w ∈ plane v := by
+  obtain rfl | ⟨e, hvw⟩ := hw
+  · exact h.2.2.1 w hv
+  obtain ⟨p, hp, hle⟩ := (h.2.2.2 e v w hvw).1
+  obtain ⟨p', hp', hperp⟩ := (h.1.2.2.2 e v w hvw).2
+  have hspan := span_range_eq_of_extensor_eq_grade
+    (hp ▸ ScrewSpace.val_injective.ne (h.1.2.2.1 e)) (hp.symm.trans hp')
+  rw [← dotPerp_dotPerp (plane v), mem_dotPerp]
+  intro y hy
+  rw [dotProduct_comm]
+  exact dotProduct_eq_zero_of_mem_span_range hperp (hspan ▸ hle hy)
+
+end HasPencilPlaneRealization
 
 /-! ## The deficiency rank in every dimension -/
 

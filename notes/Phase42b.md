@@ -2,16 +2,30 @@
 
 **Status:** in progress, opened 2026-10-30 beside 42a (the PI's planning default, design doc §1,
 item 4), the Lean under `/coordinate-phase`. Forward mode: the dep-graph is
-`blueprint/src/chapter/pencil-d.tex`, 17 nodes, 13 green (the collineation lemma, the
-configuration, the scale-shift, the contraction's rank, the attaining definition and its `d = 3` agreement, `def:extensor-through-flat` and its point form, `def:pencil-d-realization` and its `d = 3` agreement, `def:pencil-d-rank-hypothesis`, `def:pencil-d-distinct-motive`, `lem:pencil-d-rank-agrees-three`), Lean in `Pencil/Grade/`. The carrier is the PI's (2026-10-30, design doc §1): the
+`blueprint/src/chapter/pencil-d.tex`, 17 nodes, 14 green (the collineation lemma, the
+configuration, the scale-shift, the contraction's rank, the attaining definition and its `d = 3` agreement, `def:extensor-through-flat` and its point form, `def:pencil-d-realization` and its `d = 3` agreement, `def:pencil-d-rank-hypothesis`, `def:pencil-d-distinct-motive`, `lem:pencil-d-rank-agrees-three`, `lem:pencil-d-point-configuration`), Lean in `Pencil/Grade/`. The carrier is the PI's (2026-10-30, design doc §1): the
 dual form with each body's 3-space as data, as the chapter states. Next concrete task:
-`lem:pencil-d-point-configuration` (uses `dotPerp_dotPerp`) or `lem:pencil-d-x0-one-witness`; they interleave.
+`lem:pencil-d-config-realization` or `lem:pencil-d-x0-one-witness`; they interleave.
 
 ## Current state
 
-**Next:** `lem:pencil-d-point-configuration` (uses `dotPerp_dotPerp`) and `lem:pencil-d-x0-one-witness`
-(`Graph.x0AttainsGrade_of_exists`, using `Graph.liftingSpaceGrade`) can interleave; either is the
-next commit.
+**Next:** `lem:pencil-d-config-realization` (`Graph.IsAdmissiblePicture.hasGradedDistinctPencilRealization`)
+and `lem:pencil-d-x0-one-witness` (`Graph.x0AttainsGrade_of_exists`, using `Graph.liftingSpaceGrade`)
+can interleave; either is the next commit. The first takes `P := ofNormals (k := m + 1) G ends` at
+the points `pencilConfigPointGrade q z`, the framework `P.toPatchedBodyHinge`, `plane v` the span of
+the closed neighbourhood's points, and part (1) below; its own work is `finrank (plane v) = 3` and
+the independence at links (the chapter's proof), and the rank by `span_rigidityRows_toPatchedBodyHinge`.
+
+**Landed:** `lem:pencil-d-point-configuration` (`Grade/Realization.lean`, which now imports
+`Pencil/Motive.lean` for `Graph.closedNbhd`). Part (1),
+`PanelHingeFramework.hasPencilPlaneRealization_toPatchedBodyHinge` (`[NeZero k]`; nonzero normals on
+`V(G)`, independent at links, `plane v` three-dimensional containing the closed neighbourhood's
+normals), on `P.toPatchedBodyHinge` (*Decisions*), with `span_rigidityRows_toPatchedBodyHinge`.
+Part (2), `HasPencilPlaneRealization.supportExtensor_eq_smul_panelSupportExtensor` (independence at
+the link, any `k`) and `.normal_mem_plane_of_mem_closedNbhd` (no independence). Grade-general helpers:
+`span_range_eq_of_extensor_eq_grade`, `extensorInPanel_panelSupportExtensor_gen`,
+`extensorThroughSubspace_panelSupportExtensor`, `exists_smul_panelSupportExtensor_eq_of_extensorInPanel`
+(through `extensor_join_proportional_complementIso_meet`); FRICTION mirror-candidate for their homes.
 
 **Landed:** `def:pencil-d-distinct-motive` and the second equivalence of `lem:pencil-d-rank-agrees-three`
 (`Grade/Realization.lean`): `HasGradedDistinctPencilRealization K k n G` is `HasGradedPencilRealization`
@@ -97,8 +111,11 @@ may refine a name, and the pin lands with the Lean.
   `exists_hasPencilPlaneRealization_one_iff`
 - [x] `lem:pencil-d-agrees-three` — `hasPencilPlaneRealization_two_iff`,
   `exists_hasPencilPlaneRealization_two_iff`
-- [ ] `lem:pencil-d-point-configuration` — `PanelHingeFramework.hasPencilPlaneRealization_ofNormals`,
-  `HasPencilPlaneRealization.supportExtensor_eq_smul_panelSupportExtensor`
+- [x] `lem:pencil-d-point-configuration` — `PanelHingeFramework.toPatchedBodyHinge`,
+  `PanelHingeFramework.span_rigidityRows_toPatchedBodyHinge`,
+  `PanelHingeFramework.hasPencilPlaneRealization_toPatchedBodyHinge`,
+  `HasPencilPlaneRealization.supportExtensor_eq_smul_panelSupportExtensor`,
+  `HasPencilPlaneRealization.normal_mem_plane_of_mem_closedNbhd`
 - [x] `def:pencil-d-rank-hypothesis` — `HasGradedPencilRealization`
 - [x] `def:pencil-d-distinct-motive` — `HasGradedDistinctPencilRealization`
 - [x] `lem:pencil-d-rank-agrees-three` — `hasGradedPencilRealization_two_iff`,
@@ -131,13 +148,20 @@ may refine a name, and the pin lands with the Lean.
 
 ## Hand-off / next phase
 
-The next commit is `lem:pencil-d-point-configuration` or `lem:pencil-d-x0-one-witness`
+The next commit is `lem:pencil-d-config-realization` or `lem:pencil-d-x0-one-witness`
 (*Current state*; either, one session each). Optional, any time: the `k = 2` form
 `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv` is the new lemma at
 `k := 2` verbatim, so it could be re-proved from it once `Configuration.lean` imports
 `Grade/Collineation.lean` (not done: the commits stay additive).
 
 ## Decisions made during this phase
+
+- **The point-configuration lemma's framework (2026-10-30):** `HasCoplanarPanelRealization` asks a
+  nonzero hinge at every label of `β`, and `ofNormals`'s may vanish off `E(G)`, so part (1) is about
+  `P.toPatchedBodyHinge` (any `PanelHingeFramework P`): `P.toBodyHinge`'s hinge on `E(P.graph)`,
+  `C(e₀, e₁)` off it, the grade-`k` form of Phase 40's `pencilConfigFramework`; its rows are
+  `P.toBodyHinge`'s. The chapter statement gained "nonzero `b_v`" (an isolated body's normal is not
+  forced by independence) and the rows sentence; an fmlnote records the patch.
 
 - **The realization (2026-10-30):** `plane` is `Submodule`-valued data, asked about only on `V(G)`
   (as `point` is). The `d = 3` agreement is stated pointwise under `plane v = dotPerp (K ∙ point v)`

@@ -129,6 +129,28 @@ to be re-derived by re-reading entries later.
   closes `det g • ⋀^(k+2-2) h (complementIso _ X) = det g • screwEquivOfLinearEquiv h (…)`.
 - **Status:** open.
 
+### [mirror-candidate] Grade-general extensor and panel lemmas live in `Pencil/Grade/Realization.lean`
+- **Where it bit:** Phase 42b, `lem:pencil-d-point-configuration`. The project had only grade-2 or
+  `K⁴` forms: `span_range_eq_of_extensor_eq` (`Meet.lean`, two vectors),
+  `extensorInPanel_panelSupportExtensor` (`PanelLayer.lean`, `Fin 4`) and
+  `dotProduct_eq_zero_of_mem_span` (`Pencil/Statement.lean`, two vectors of `K⁴`).
+- **Friction:** proved in every grade locally: `span_range_eq_of_extensor_eq_grade` (by
+  `ExteriorAlgebra.ιMulti_succ_apply` and `linearIndependent_finCons`, shorter than the grade-2
+  proof), `extensorInPanel_panelSupportExtensor_gen`, `dotProduct_eq_zero_of_mem_span_range`.
+- **Proposed fix:** move the first to `Meet.lean` and the second to `PanelLayer.lean`, each beside
+  its grade-2 form, which then becomes a one-line corollary. Not done here: both files are upstream
+  of most of the tree, and the commit stays on one file.
+- **Status:** open (mirror-candidate, project-internal).
+
+### [idiom] `C ≠ 0 → C.val ≠ 0` for a screw is `ScrewSpace.val_injective.ne hC`
+- **Where it bit:** Phase 42b, `Pencil/Grade/Realization.lean` (three sites). `ScrewSpace` has no
+  `val_ne_zero`; earlier files write `fun h0 => hC (ScrewSpace.ext (h0.trans
+  ScrewSpace.val_zero.symm))`, and a `rw [Ne, ← ScrewSpace.val_zero, val_injective.eq_iff]` chain
+  works too.
+- **Friction:** none once known: `ScrewSpace.val_zero` is `rfl`, so `val_injective.ne hC`, of type
+  `C.val ≠ (0 : ScrewSpace K k).val`, is accepted where `C.val ≠ 0` is expected.
+- **Status:** idiom.
+
 ### [idiom] `simp [h, annihRow_apply_self]` does not fire: the `@[simp]` `annihRow_apply` unfolds the row first
 - **Where it bit:** Phase 41e, item U12's spike (`case_II_placement_rank`, `CaseII.lean`, the rows of
   `G_v^{ab}` at an edge `e ≠ e₀`): with `h : FG.supportExtensor e = -FGab.supportExtensor e`, the
