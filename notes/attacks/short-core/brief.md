@@ -6,7 +6,9 @@
 > S50): §6 makes the need question N the next deliverable and holds G1 until N is answered; §6's
 > counterexample sentence follows S41; §4 records 42c's deficiency lemma. Closed at review 3,
 > 2026-10-30, on the PI's word (workbook S56): `state.md` holds what the track delivers and G1's
-> revival trigger.**
+> revival trigger. G1 retired, 2026-10-30, on the PI's word (the question put, from CERT session 1:
+> "S9 shows G1's revival trigger cannot fire. Is G1 retired?"; the answer: "(a) Retire G1"; CERT's
+> workbook S9).**
 > Written 2026-10-29 by an agent (Claude
 > Opus 5.5) against the tree at `fa295157`, from the owning sections: `notes/Phase42-design.md`
 > §2.1 rows 12–13, §2.3 SHORT and §2.4 T3; `notes/Strata.md` Result 24; the short-ear subsection

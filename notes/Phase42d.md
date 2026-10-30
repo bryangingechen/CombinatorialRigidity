@@ -28,7 +28,7 @@ The hub's registry. Count-free: each attack's status is its `state.md` (`HARNESS
 
 | Track | Kind | Home | Agent | Status |
 |---|---|---|---|---|
-| CERT | attack | `notes/attacks/cert/` | `attack-opus` | ready: session 1 checks R1 (brief §5) |
+| CERT | attack | `notes/attacks/cert/` | `attack-opus` | held: R1 proved by hand (workbook S1–S9); `/review-attack cert` in flight, and CERT closes on its verdict (the PI) |
 | NONDEG | attack (a question) | `notes/attacks/nondeg/` | `attack-opus` | ready: session 1 settles §4's `[READING]` items |
 | WRITE-UP | write-up | `blueprint/src/chapter/pencil-d.tex`, new sections | `writeup-opus` | ready: slice W1 |
 | COUNT | lean | *Lean now* below; nodes in `pencil-d.tex` | `phase-builder-opus` | ready: COUNT-B (A landed) |
