@@ -2,16 +2,22 @@
 
 **Status:** in progress, opened 2026-10-30 beside 42a (the PI's planning default, design doc §1,
 item 4), the Lean under `/coordinate-phase`. Forward mode: the dep-graph is
-`blueprint/src/chapter/pencil-d.tex`, 17 nodes, 16 green (the collineation lemma, the
-configuration, the scale-shift, the contraction's rank, the attaining definition and its `d = 3` agreement, `def:extensor-through-flat` and its point form, `def:pencil-d-realization` and its `d = 3` agreement, `def:pencil-d-rank-hypothesis`, `def:pencil-d-distinct-motive`, `lem:pencil-d-rank-agrees-three`, `lem:pencil-d-point-configuration`, `lem:pencil-d-config-realization`, `lem:pencil-d-x0-one-witness`), Lean in `Pencil/Grade/`. The carrier is the PI's (2026-10-30, design doc §1): the
-dual form with each body's 3-space as data, as the chapter states. Next concrete task:
-`lem:pencil-d-join-independence-open`.
+`blueprint/src/chapter/pencil-d.tex`, 17 nodes, all 17 green (the collineation lemma, the
+configuration, the scale-shift, the contraction's rank, the attaining definition and its `d = 3` agreement, `def:extensor-through-flat` and its point form, `def:pencil-d-realization` and its `d = 3` agreement, `def:pencil-d-rank-hypothesis`, `def:pencil-d-distinct-motive`, `lem:pencil-d-rank-agrees-three`, `lem:pencil-d-point-configuration`, `lem:pencil-d-config-realization`, `lem:pencil-d-x0-one-witness`, `lem:pencil-d-join-independence-open`), Lean in `Pencil/Grade/`. The carrier is the PI's (2026-10-30, design doc §1): the
+dual form with each body's 3-space as data, as the chapter states. The chapter is all green; next concrete task: the phase-close review
+(`PHASE-BOUNDARIES.md`, coordinator).
 
 ## Current state
 
-**Next:** `lem:pencil-d-join-independence-open` (`exists_mvPolynomial_linearIndependent_join_picture_grade`,
-`exists_mvPolynomial_linearIndependent_join_heights_grade`), the last red node; read its chapter
-statement first and assess whether the picture and heights halves are one session or two.
+**Next:** none in the chapter (all nodes green); the phase-close review, run separately by the coordinator.
+
+**Landed:** `lem:pencil-d-join-independence-open` (`Pencil/Grade/JoinIndependence.lean`, new, imports
+`Grade/Witness.lean` and `PanelLayer.lean`): `exists_mvPolynomial_linearIndependent_normalsJoin` (the
+shared step: points with polynomial coordinates, the coordinates of `normalsJoin` being
+`normalsJoinPoly` composed with them, fed to `exists_polynomial_ne_zero_of_linearIndependent_at_reindex`
+through `b.equivFun` of the exterior-power basis) and the two halves
+`exists_mvPolynomial_linearIndependent_join_picture_grade` / `…_heights_grade` (joins of
+`pencilConfigPointGrade` as `normalsJoin`). `map_vecCons_vecCons_snoc` is now non-private in `Witness.lean`.
 
 **Landed:** `lem:pencil-d-x0-one-witness` (`Pencil/Grade/Witness.lean`, new, imports
 `Grade/Configuration.lean`): `Graph.x0AttainsGrade_of_exists` (`hz₀ : z₀ ∈ G.liftingSpaceGrade q₀ m`,
@@ -167,7 +173,7 @@ may refine a name, and the pin lands with the Lean.
 
 ## Hand-off / next phase
 
-The next commit is `lem:pencil-d-join-independence-open` (*Current state*), the last red node. Optional, any time: the `k = 2` form
+The chapter is all green; the next step is the phase-close review (coordinator). Optional, any time: the `k = 2` form
 `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv` is the new lemma at
 `k := 2` verbatim, so it could be re-proved from it once `Configuration.lean` imports
 `Grade/Collineation.lean` (not done: the commits stay additive).

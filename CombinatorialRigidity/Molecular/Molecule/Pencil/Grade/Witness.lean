@@ -46,7 +46,7 @@ theorem _root_.Graph.IsAdmissiblePicture.supportExtensor_ne_zero_grade {G : Grap
 
 /-- A ring map commutes with the block layout `(x, y, u, w)` of a vector of `K^(m+3)`
 (`pencilConfigPointGrade`): the coordinates `0` and `1`, the `m` heights, and the last. -/
-private theorem map_vecCons_vecCons_snoc {R S : Type*} [CommSemiring R] [CommSemiring S]
+theorem map_vecCons_vecCons_snoc {R S : Type*} [CommSemiring R] [CommSemiring S]
     (f : R →+* S) (x y : R) (u : Fin m → R) (w : R) (j : Fin (m + 1 + 2)) :
     f (Matrix.vecCons x (Matrix.vecCons y (Fin.snoc u w)) j) =
       Matrix.vecCons (f x) (Matrix.vecCons (f y) (Fin.snoc (fun i => f (u i)) (f w))) j := by

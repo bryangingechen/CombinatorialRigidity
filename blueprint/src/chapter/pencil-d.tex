@@ -473,6 +473,9 @@ each closed neighbourhood lie in a plane.
 
 \begin{lemma}[Independence of joins is an open condition, in every dimension]
   \label{lem:pencil-d-join-independence-open}
+  \lean{CombinatorialRigidity.Molecular.exists_mvPolynomial_linearIndependent_join_picture_grade,
+        CombinatorialRigidity.Molecular.exists_mvPolynomial_linearIndependent_join_heights_grade}
+  \leanok
   \uses{def:pencil-d-configuration, def:extensor}
   Let $(u_i, w_i)_{i \in I}$ be a finite family of pairs of bodies, and
   write $b$ for the points of a configuration $(q, z)$ in dimension $d$.
@@ -489,4 +492,5 @@ each closed neighbourhood lie in a plane.
   heights at a fixed picture. A finite family of vectors is linearly
   independent exactly when some maximal minor of its coordinate matrix
   is nonzero; take for $P$, or $R$, one such minor.
+  \leanok
 \end{proof}
