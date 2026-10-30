@@ -110,7 +110,7 @@ moment you resolve the entry) is what makes the sweep a pure
 to be re-derived by re-reading entries later.
 
 ## Open
-### [open] No linear-equivalence form of `contragredient`, and no `exteriorPower.map 2` lemma for `normalsJoin`
+### [open] No linear-equivalence form of `contragredient`; the `normalsJoin` map lemma sits outside `PanelLayer.lean`
 - **Where it bit:** Phase 42b, `lem:pencil-d-rank-collineation` (`Pencil/Grade/Collineation.lean`,
   `panelSupportExtensor_linearEquiv_eq_det_smul` and its caller). The screw map
   `screwEquivOfLinearEquiv` takes a `LinearEquiv`, and `Meet.lean`'s `contragredient` is a `LinearMap`;
@@ -123,12 +123,15 @@ to be re-derived by re-reading entries later.
   exteriorPower.map_apply_ιMulti]; congr 1; funext i; fin_cases i <;> rfl`; mathlib's
   `LinearEquiv.smulOfUnit` has no `_apply` lemma (`smulOfNeZero` has one, so `M` uses it); and
   `LinearMap.det ↑g ≠ 0` for an equiv is `LinearEquiv.coe_det g ▸ (LinearEquiv.det g).ne_zero`.
-- **Proposed fix:** `contragredientEquiv` beside `contragredient` in `Meet.lean`, and
-  `exteriorPower_map_normalsJoin` in `PanelLayer.lean`; not added here, to keep the commit off two
-  files upstream of the whole tree. The second lands with Phase 42c's
-  `lem:pencil-d-embedding-join`, which maps joins by `Λ²ι` (`notes/Phase42c.md`). The `k + 2 - 2` cast to `ScrewSpace K k` was no friction: `rfl`
-  closes `det g • ⋀^(k+2-2) h (complementIso _ X) = det g • screwEquivOfLinearEquiv h (…)`.
-- **Status:** open.
+- **Proposed fix:** `contragredientEquiv` beside `contragredient` in `Meet.lean`, still open. The
+  `normalsJoin` half landed with Phase 42c's `lem:pencil-d-embedding-join` as
+  `exteriorPower_map_normalsJoin` (any linear `f : K^(k'+2) → K^(k+2)`), in
+  `Pencil/Grade/Embedding.lean`. Its natural home is `PanelLayer.lean`, beside `normalsJoin`, where
+  `Collineation.lean`'s inline proof above could call it; the move is deferred, since a new
+  declaration there rebuilds most of `Molecular/`. The `k + 2 - 2` cast to `ScrewSpace K k` was no
+  friction: `rfl` closes `det g • ⋀^(k+2-2) h (complementIso _ X) = det g • screwEquivOfLinearEquiv h (…)`.
+- **Status:** open (`contragredientEquiv`; and the move of `exteriorPower_map_normalsJoin` to
+  `PanelLayer.lean`, with the next commit that edits that file).
 
 ### [resolved] A `∘ₗ` composite into `ScrewSpace K k` through `complementIso` elaborates, but `rw [LinearMap.comp_apply]` cannot match it
 - **Where it bit:** Phase 42c, `def:pencil-d-embedding` (`Pencil/Grade/Embedding.lean`,
@@ -139,10 +142,10 @@ to be re-derived by re-reading entries later.
   `→ₗ ScrewSpace K k` in the `comp`'s instance arguments.
 - **Fix:** `screwEmbed_apply`, by `rfl`, states `φ C = complementIso (map 2 ι (complementIso.symm C))`,
   the form of `panelSupportExtensor`'s body; then `rw [screwEmbed_apply, panelSupportExtensor,
-  panelSupportExtensor, LinearEquiv.symm_apply_apply, normalsJoin, normalsJoin,
-  exteriorPower.map_apply_ιMulti]; congr 2` closes `lem:pencil-d-embedding-join`'s map lemma in
-  scratch. Also: `omega` does not read `hi : gradeEmbedIndex h (Fin.last _) = j` as a bound on `↑j`;
-  `subst hi` first (`gradeEmbed_apply_eq_zero`).
+  panelSupportExtensor, LinearEquiv.symm_apply_apply, exteriorPower_map_normalsJoin]` closes
+  `screwEmbed_panelSupportExtensor` (`lem:pencil-d-embedding-join`). Also: `omega` does not read
+  `hi : gradeEmbedIndex h (Fin.last _) = j` as a bound on `↑j`; `subst hi` first
+  (`gradeEmbed_apply_eq_zero`).
 - **Status:** resolved (project helper `screwEmbed_apply`).
 
 ### [mirror-candidate] Grade-general extensor and panel lemmas live in `Pencil/Grade/Realization.lean`

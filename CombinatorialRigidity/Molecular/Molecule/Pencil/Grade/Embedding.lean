@@ -5,17 +5,19 @@ Authors: Bryan Gin-ge Chen
 -/
 module
 
-public import CombinatorialRigidity.Molecular.RigidityMatrix.Basic
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.PanelLayer
 
 /-!
 # Embedding a lower dimension
 
-`def:pencil-d-embedding` (`blueprint/src/chapter/pencil-d.tex`, `sec:pencil-d-stable`): for grades
+`def:pencil-d-embedding` and `lem:pencil-d-embedding-join` (`blueprint/src/chapter/pencil-d.tex`,
+`sec:pencil-d-stable`): for grades
 `k' ≤ k`, that is dimensions `d' = k' + 1 ≤ d = k + 1`, the embedding `ι : K^(k'+2) → K^(k+2)`
 inserts `k − k'` zero coordinates before the last one (`gradeEmbed`), and the screw embedding
 `φ : ScrewSpace K k' → ScrewSpace K k` is `* ∘ ⋀²ι ∘ *⁻¹`, for the complement isomorphisms
 `* : ⋀² K^(k+2) ≃ ⋀^k K^(k+2)` of `Meet.lean` (`complementIso`, `def:meet-complement-iso`) at the
-two grades (`screwEmbed`). Both are linear and injective.
+two grades (`screwEmbed`). Both are linear and injective, and `φ` takes the panel support extensor
+`C(u, w)` to `C(ι u, ι w)`.
 
 The embedding `ι` extends by zero (`Function.ExtendByZero.linearMap`) along the index map
 `gradeEmbedIndex`, which fixes the last index and is `Fin.castLE` elsewhere. Its coordinates are
@@ -33,6 +35,8 @@ embedding passes through the complement isomorphisms as the panel support extens
 
 * `gradeEmbed_injective`, `screwEmbed_injective`: both are injective, `⋀²ι` by
   `exteriorPower.map_injective_field`.
+* `exteriorPower_map_normalsJoin`: `⋀²f (u ∨ w) = f u ∨ f w` for a linear map `f`.
+* `screwEmbed_panelSupportExtensor`: `φ C(u, w) = C(ι u, ι w)` (`lem:pencil-d-embedding-join`).
 -/
 
 @[expose] public section
@@ -133,5 +137,29 @@ theorem screwEmbed_injective (h : k' ≤ k) : Function.Injective (screwEmbed (K 
   (complementIso (k := k) (j := 2) (by omega)).injective.comp <|
     (exteriorPower.map_injective_field (gradeEmbed_injective h)).comp
       (complementIso (k := k') (j := 2) (by omega)).symm.injective
+
+/-! ## The hinge of two panels (`lem:pencil-d-embedding-join`) -/
+
+/-- **A linear map takes the join of two normals to the join of their images** (a step of
+`lem:pencil-d-embedding-join`): `⋀²f (n₁ ∨ n₂) = f n₁ ∨ f n₂` for a linear map
+`f : K^(k'+2) → K^(k+2)`, the defining property of `exteriorPower.map` on the join
+`normalsJoin n₁ n₂ = exteriorPower.ιMulti K 2 ![n₁, n₂]` (`exteriorPower.map_apply_ιMulti`). -/
+theorem exteriorPower_map_normalsJoin (f : (Fin (k' + 2) → K) →ₗ[K] (Fin (k + 2) → K))
+    (n₁ n₂ : Fin (k' + 2) → K) :
+    exteriorPower.map 2 f (normalsJoin n₁ n₂) = normalsJoin (f n₁) (f n₂) := by
+  rw [normalsJoin, normalsJoin, exteriorPower.map_apply_ιMulti]
+  congr 1
+  funext i
+  fin_cases i <;> rfl
+
+/-- **The screw embedding of a hinge of two panels** (`lem:pencil-d-embedding-join`): for normals
+`n₁, n₂ ∈ K^(k'+2)`, `φ` takes the panel support extensor `C(n₁, n₂)` to `C(ι n₁, ι n₂)`. The
+extensor is `*(n₁ ∨ n₂)` (`panelSupportExtensor`), so `φ C(n₁, n₂) = *(⋀²ι (n₁ ∨ n₂))`
+(`screwEmbed_apply`), and `⋀²ι (n₁ ∨ n₂) = ι n₁ ∨ ι n₂` (`exteriorPower_map_normalsJoin`). -/
+theorem screwEmbed_panelSupportExtensor (h : k' ≤ k) (n₁ n₂ : Fin (k' + 2) → K) :
+    screwEmbed h (panelSupportExtensor n₁ n₂)
+      = panelSupportExtensor (gradeEmbed h n₁) (gradeEmbed h n₂) := by
+  rw [screwEmbed_apply, panelSupportExtensor, panelSupportExtensor, LinearEquiv.symm_apply_apply,
+    exteriorPower_map_normalsJoin]
 
 end CombinatorialRigidity.Molecular

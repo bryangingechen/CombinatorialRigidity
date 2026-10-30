@@ -2,18 +2,22 @@
 
 **Status:** in progress, opened 2026-10-30 by the PI (design doc §3's scope as written), a
 sub-phase of Phase 42 beside 42a. Forward mode, the Lean under `/coordinate-phase`: the dep-graph
-is `blueprint/src/chapter/pencil-d.tex` §`sec:pencil-d-stable`, 9 nodes, 2 green (`lem:deficiency-stable`, `def:pencil-d-embedding`), 7 red.
+is `blueprint/src/chapter/pencil-d.tex` §`sec:pencil-d-stable`, 9 nodes, 3 green (`lem:deficiency-stable`, `def:pencil-d-embedding`,
+`lem:pencil-d-embedding-join`), 6 red.
 The open corrected the deficiency lemma (it needs `G` connected) and found its proof gives a
-sharper range; the PI widened the theorem to `def_2 ≤ 3` (*Architectural choices*). `lem:deficiency-stable` and `def:pencil-d-embedding` landed. Next concrete task: `lem:pencil-d-embedding-join`.
+sharper range; the PI widened the theorem to `def_2 ≤ 3` (*Architectural choices*). Next concrete task: `lem:pencil-d-x0-attains-distinct`.
 
 ## Current state
 
-**Next:** `lem:pencil-d-embedding-join`, now a leaf, its route checked in scratch (FRICTION *A `∘ₗ`
-composite into `ScrewSpace K k`*: `screwEmbed_apply`, then five rewrites and `congr 2`); then the
-leaves `lem:screw-embedding-rank` and `lem:pencil-d-x0-attains-distinct` (*Lemma checklist*).
+**Next:** `lem:pencil-d-x0-attains-distinct`, a leaf: the every-`d` form of
+`Graph.X0Attains.hasDistinctPencilRealization` (four lines, `MainComponent/Configuration.lean`)
+through `Graph.IsAdmissiblePicture.hasGradedDistinctPencilRealization`. Then the other leaf,
+`lem:screw-embedding-rank`, whose size is unassessed (*Lemma checklist*).
 
-**Landed:** `def:pencil-d-embedding` (green), new file `Pencil/Grade/Embedding.lean`: `gradeEmbed`
-(`ι`), `screwEmbed` (`φ`), their injectivity, `ι`'s coordinates, and `screwEmbed_apply` (*Decisions*).
+**Landed:** `def:pencil-d-embedding` and `lem:pencil-d-embedding-join` (green), new file
+`Pencil/Grade/Embedding.lean`: `gradeEmbed` (`ι`), `screwEmbed` (`φ`), their injectivity, `ι`'s
+coordinates, `screwEmbed_apply` (*Decisions*), `exteriorPower_map_normalsJoin` (any linear `f`; its
+natural home is `PanelLayer.lean`, the move deferred, FRICTION) and `screwEmbed_panelSupportExtensor`.
 
 **Landed:** `lem:deficiency-stable` (green): `Graph.Connected.deficiency_eq_of_deficiency_two_add_three_le`
 (the sharp range, the scratch proof transcribed unchanged but for restoring `deficiency_nonneg n`,
@@ -62,7 +66,7 @@ may refine a name, and the pin lands with the Lean.
   `Graph.Connected.deficiency_eq_of_two_add_deficiency_two_le`
 - [x] `def:pencil-d-embedding` — `gradeEmbed` (`ι`, for `k' ≤ k`), `screwEmbed` (`φ`),
   `gradeEmbed_injective`, `screwEmbed_injective` (`exteriorPower.map_injective_field`)
-- [ ] `lem:pencil-d-embedding-join` (**next**) — `exteriorPower_map_normalsJoin` (FRICTION),
+- [x] `lem:pencil-d-embedding-join` — `exteriorPower_map_normalsJoin` (FRICTION; in `Embedding.lean`),
   `screwEmbed_panelSupportExtensor`
 - [ ] `lem:screw-embedding-rank` — `BodyHingeFramework.map` (hinges `φ C_e`, grade-changing),
   `BodyHingeFramework.finrank_span_rigidityRows_map_injective` (`G` connected, `[Finite α]`)
@@ -73,7 +77,7 @@ may refine a name, and the pin lands with the Lean.
   `Graph.padHeights_mem_liftingSpaceGrade`
 - [ ] `lem:pencil-d-x0-attains-of-le` — `Graph.X0AttainsGrade.of_le` (`[Infinite K]`, `G` connected,
   `G.deficiency (m' + 2) = G.deficiency (m + 2)`)
-- [ ] `lem:pencil-d-x0-attains-distinct` — `Graph.X0AttainsGrade.hasGradedDistinctPencilRealization`
+- [ ] `lem:pencil-d-x0-attains-distinct` (**next**) — `Graph.X0AttainsGrade.hasGradedDistinctPencilRealization`
 - [ ] `thm:pencil-d-deficiency-two-le-three` — `Graph.x0AttainsGrade_of_deficiency_two_le_three`,
   `Graph.hasGradedDistinctPencilRealization_of_deficiency_two_le_three` (`G.IsX0Graph`, `1 ≤ m`)
 
@@ -88,10 +92,9 @@ may refine a name, and the pin lands with the Lean.
 
 ## Hand-off / next phase
 
-The next commit is `lem:pencil-d-embedding-join` (*Current state*), with FRICTION's `normalsJoin`
-map lemma (`PanelLayer.lean` rebuilds most of `Molecular/`; `Embedding.lean` is the cheap home). The
-other leaves are `lem:screw-embedding-rank` and `lem:pencil-d-x0-attains-distinct`; then the
-statement and configuration forms, `lem:pencil-d-x0-attains-of-le`,
+The next commit is `lem:pencil-d-x0-attains-distinct` (*Current state*). The other leaf is
+`lem:screw-embedding-rank` (size unassessed: say whether it is one commit or two once its motion
+count is laid out); then the statement and configuration forms, `lem:pencil-d-x0-attains-of-le`,
 and the theorem last, at `def_2 ≤ 3` (the PI's widening from `≤ 1`, *Architectural choices*).
 
 ## Decisions made during this phase

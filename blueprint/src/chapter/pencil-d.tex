@@ -580,12 +580,16 @@ $\operatorname{def}_2(G) \le 3$.
 
 \begin{lemma}[The screw embedding of a hinge of two panels]
   \label{lem:pencil-d-embedding-join}
+  \lean{CombinatorialRigidity.Molecular.screwEmbed_panelSupportExtensor,
+        CombinatorialRigidity.Molecular.exteriorPower_map_normalsJoin}
+  \leanok
   \uses{def:pencil-d-embedding, def:panel-support-extensor}
   For $u, w \in K^{d'+1}$, the screw embedding takes the panel-support
   extensor $C(u, w)$ (\cref{def:panel-support-extensor}) to
   $C(\iota u, \iota w)$.
 \end{lemma}
 \begin{proof}
+  \leanok
   The extensor $C(u, w)$ is the image of the join $u \vee w$ under the
   complement isomorphism (\cref{def:panel-support-extensor}). So
   $\varphi(C(u, w))$ is the image of
