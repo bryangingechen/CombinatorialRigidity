@@ -5,8 +5,8 @@ target is an informal proof, at every `d`, of the conditioned pair's three conju
 adjacent-distinct and a generic one), written as red nodes of `pencil-d.tex` before any more
 formalization. Three tracks, CERT, NONDEG and WRITE-UP, run in parallel from one central session,
 `/coordinate-tracks 42d`, with a Lean track, COUNT, for the coverage's counting at every `D`
-(COUNT-A and COUNT-B landed: 11 green nodes; W1–W3 written). CERT is closed; NONDEG, under
-the PI's C2-same, is down to one obligation, (W). **Next:** W4 and NONDEG's review 1. Plan and the PI's decisions:
+(COUNT-A and COUNT-B landed: 11 green nodes; W1–W4 written). CERT is closed; NONDEG, under
+the PI's C2-same, is down to one obligation, (W). **Next:** W5 and NONDEG session 3. Plan and the PI's decisions:
 `notes/Phase42-design.md` (§1, §3 PD-ALL).
 
 ## Current state
@@ -20,8 +20,9 @@ the PI called review 1 early, before session 3 attacks (W).
 Slice W1 has landed (`sec:pencil-d-induction`, `sec:pencil-d-flat`: four red nodes and a remark).
 **COUNT-B has landed**: six more green nodes in `sec:pencil-d-deficiency` (*Lean now*), which
 closes the COUNT track. Slices W2 (`sec:pencil-d-cut`) and W3 (`sec:pencil-d-contract`) have
-landed, three red nodes each. The next concrete step is the hub's: dispatch W4, and merge
-NONDEG's review 1 (in flight).
+landed, three red nodes each, and W4 (`sec:pencil-d-splitoff`), one. NONDEG's review 1 said
+"continue" with two findings (F1, F2), which session 3 records first (the PI). The next concrete
+step is the hub's: dispatch W5 and NONDEG session 3.
 
 In place at the open: the hub command (`.claude/commands/coordinate-tracks.md`), the write-up
 agent (`.claude/agents/writeup-opus.md`), `worktree.baseRef: head` in `.claude/settings.json`
@@ -36,8 +37,8 @@ The hub's registry. Count-free: each attack's status is its `state.md` (`HARNESS
 | Track | Kind | Home | Agent | Status |
 |---|---|---|---|---|
 | CERT | attack | `notes/attacks/cert/` | `attack-opus` | closed at review 1: R1 proved by hand at every `d` (workbook S1–S9) |
-| NONDEG | attack (a question) | `notes/attacks/nondeg/` | `attack-opus` | review due: review 1 early (the PI), then session 3 attacks (W) |
-| WRITE-UP | write-up | `blueprint/src/chapter/pencil-d.tex`, new sections | `writeup-opus` | ready: slice W4 |
+| NONDEG | attack (a question) | `notes/attacks/nondeg/` | `attack-opus` | ready: session 3 repairs S21 (F2), adds O8 (F1), then attacks (W) (review 1) |
+| WRITE-UP | write-up | `blueprint/src/chapter/pencil-d.tex`, new sections | `writeup-opus` | ready: slice W5 |
 | COUNT | lean | *Lean now* below; nodes in `pencil-d.tex` | `phase-builder-opus` | done: A and B landed; C waits for formalization |
 
 `pencil-d.tex` has one writer in flight at a time: COUNT's commits and the write-up's slices
@@ -52,7 +53,8 @@ alternate.
   population at the deficiency rank in `d = 3, 4, 5`, S11, S16; feasibility Phase 39's in every
   `d`, S9). Session 2: the carrier is the lifts of a `P³` realization (motive `RL_d`), every arm
   of the reduction lifts, and one obligation is open, (W) (O7; certified on every graph with at most
-  nine bodies, S30). The PI: review 1 now, then session 3 attacks (W).
+  nine bodies, S30). Review 1: continue, after F1 (O8, the good-ear lemma returning `W₀`) and F2
+  (S21's cut-edge glue) are recorded; session 3 does both first, then attacks (W).
 
 ## Write-up
 
@@ -73,7 +75,7 @@ Slices, leaf-first, one session each (a slice's nodes may `\uses` only nodes alr
   (row 5), Jackson–Jordán's equality as consumed (row 6).
 - [x] **W2** cut vertices and chains of bridges (rows 7–8).
 - [x] **W3** contraction at an additive core (row 9, with its second read).
-- [ ] **W4** split-off (row 16) and the sparse estimates at `D` (row 17); the estimates are
+- [x] **W4** split-off (row 16) and the sparse estimates at `D` (row 17); the estimates are
   COUNT-A's green nodes in `sec:pencil-d-deficiency`, cited, not rewritten.
 - [ ] **W5** Theorem S at `D` (§2.4 T5), ONE-CLASS (`notes/Strata.md` Result 27) and S53's
   counting (SHORT-CORE's workbook). Theorem S, ONE-CLASS and S52 are COUNT-B's green nodes in
@@ -148,9 +150,9 @@ landing them.
 
 ## Hand-off / next phase
 
-Next concrete step: the `/coordinate-tracks 42d` hub dispatches slice W4 (split-off and the sparse
-estimates at `D`) as the next `pencil-d.tex` writer; NONDEG runs review 1, then
-session 3 on (W) (CERT is closed; COUNT is done). 42d closes when the new sections give an informal proof at every
+Next concrete step: the `/coordinate-tracks 42d` hub dispatches slice W5 (Theorem S at `D`,
+ONE-CLASS and S53's counting) as the next `pencil-d.tex` writer, and NONDEG session 3 (F2, O8,
+then (W)) (CERT is closed; COUNT is done). 42d closes when the new sections give an informal proof at every
 `d` of the conjuncts the PI keeps, with CERT and NONDEG closed. Formalization (PD-CARRIER, PD-STEPS, PD-COVERAGE, PD-REDUCTION, PD-HEAD; design doc
 §3) follows at the PI's word.
 

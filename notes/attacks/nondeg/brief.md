@@ -19,6 +19,11 @@
 > general for G[X] to a nondegenerate realization of G, one condition at a time, and hunt for
 > counterexamples beyond nine bodies." Asked whether review 1 runs early, the PI answered "Review
 > now": `/review-attack nondeg` runs before session 3.
+> Review 1, 2026-10-30, verdict "continue", with two findings: F1, S24 (1) and S29 need the minimal
+> planar-rigid set W₀ from the good-ear lemma's statement, which returns only the ear (O8); F2,
+> S21's (T1) is false as written (the cut-edge glue), with a one-paragraph repair. On the PI's word
+> (asked "May NONDEG session 3 record F1 and F2 in its state before attacking (W)?", answered "(a)
+> Yes, both first"): session 3's first results are the S21 repair and O8 in the state, then (W).
 > Written 2026-10-30 by an agent (Claude
 > Opus 5.5) against the tree at `947fa75d`, from the owning sections: `notes/Phase42-design.md`
 > §2.1 rows 19–22, §2.2, §2.3 ONE-EAR, CARRIER and GENERIC, §2.4 T4 and §2.5; `pencil.tex`'s
