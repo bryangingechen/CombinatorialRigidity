@@ -2244,3 +2244,180 @@ part~(1) of \cref{lem:deficiency-one-body-chain}, which is planar.
   polynomial curve are lemmas on panel-hinge frameworks with normals in
   any dimension.
 \end{proof}
+
+\subsection{Chains with few interior bodies in every dimension}
+\label{sec:pencil-d-chains}
+
+At $d = 3$, once the first five cases of the coverage fail, a usable
+chain gives a step, and a core is found when no chain is usable
+(\cref{sec:main-component-coverage}). This core exists in every
+dimension: if no chain is usable in dimension $d$, then $G$ has a core
+in dimension $d$ (\cref{thm:pencil-d-theorem-s}). But a usable chain
+with one interior body, or with two at non-adjacent ends, may meet only
+the conditions of the ear steps of \cref{sec:main-component-orbit}
+(\cref{thm:pencil-x0-open-ear-one} and
+\cref{thm:pencil-x0-open-ear-two-orbit}). Both steps place the point of
+$x_1$ in $\Pi_a \cap \Pi_b$. Two three-dimensional subspaces of $K^4$
+meet in a subspace of dimension at least two, while for $d \ge 5$ two
+three-dimensional subspaces of $K^{d+1}$ can meet only in zero. We do
+not extend these two steps, and count edges along the chains instead.
+
+Let every chain have at most $\ell$ interior bodies, where
+$3(\ell + 1) \le D$. Then $s_D(V_1) < 0$ for every chain on $V_1$
+(\cref{lem:pencil-d-chain-count}). If moreover
+none of the first five cases settles $G$, then $G$ has a core in
+dimension $d$ unless every chain has one interior body and
+$\operatorname{def}_3(G) = 0$ (\cref{thm:pencil-d-chain-or-core}). We
+may take $\ell = 2$ at $d = 4$, and $\ell = 3$ at every $d \ge 5$. So
+the coverage needs no step at a chain with at most two interior bodies
+at $d = 4$, nor at one with at most three from $d = 5$ on.
+
+In the coverage in dimension $d$, a chain with more than $\ell$
+interior bodies is settled by an ear step with at least three interior
+bodies; at $d = 3$ these are \cref{thm:pencil-x0-open-ear-three},
+\cref{thm:pencil-x0-open-ear-four} and \cref{thm:pencil-x0-open-ear}. A
+core is settled by the contraction (\cref{thm:pencil-d-contract-additive}).
+The general configuration of $G$ attains in dimension three
+(\cref{thm:pencil-x0-coverage}, \cref{lem:pencil-d-x0-attains-three}).
+So when $\operatorname{def}_3(G) = \operatorname{def}_d(G)$, it attains
+in dimension $d$ (\cref{lem:pencil-d-x0-attains-of-le}).
+
+% Source: SHORT-CORE workbook (notes/attacks/short-core/workbook.md), S53 (a).
+\begin{lemma}[Counting edges when every chain has few interior bodies]
+  \label{lem:pencil-d-chain-count}
+  \uses{def:pencil-x0-chain, def:pencil-x0-standing}
+  Let $d \ge 3$ and $D = \binom{d+1}{2}$, and let $\ell \ge 1$ with
+  $3(\ell + 1) \le D$. Let $G$ satisfy the standing hypotheses
+  (\cref{def:pencil-x0-standing}), with $G - v$ connected for every body
+  $v$ and some body of degree other than two, and let every chain of $G$
+  (\cref{def:pencil-x0-chain}) have at most $\ell$ interior bodies. Then
+  every chain of $G$ on $V_1$ has
+  \[
+    s_D(V_1) \;\le\; -(\ell + 1),
+  \]
+  where $s_D(V_1) = D(|V_1| - 1) - (D - 1)\,e(V_1)$ is the singleton
+  value of $V_1$ (\cref{sec:main-component-sparse}).
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-x0-chain-exists, def:open-ear}
+  Call a body of degree at least three a \emph{branch body}, and let $B$
+  be the set of branch bodies. It is nonempty, as $G$ has minimum degree
+  two and a body of degree other than two. Call a chain, or an edge
+  joining two branch bodies, a \emph{segment}. Its \emph{length} is its
+  number of edges, one more than its number of interior bodies.
+
+  \emph{The segments.} Every body $x$ of degree two is an interior body
+  of a chain (\cref{lem:pencil-x0-chain-exists}). On a chain the two
+  bodies next to an interior body are distinct and adjacent to it, so
+  they are its two neighbours. So the chain through $x$ is found by
+  walking from $x$ in both directions through bodies of degree two up to
+  the first branch body, and it is unique up to reversal. An edge with an
+  end of degree two lies on the chain of that end. It lies on no other
+  segment, since a segment through it has that end as an interior body.
+  An edge joining two branch bodies lies on no chain, as every
+  edge of a chain has an interior end. So every edge of $G$ lies on
+  exactly one segment, and every body of degree two is an interior body
+  of exactly one. Let the segments be $\sigma_1, \dots, \sigma_e$, of
+  lengths $L_1, \dots, L_e$. Then
+  \[
+    |E(G)| \;=\; \sum_j L_j, \qquad
+    |V(G)| \;=\; |B| + \sum_j (L_j - 1).
+  \]
+
+  \emph{The degrees.} The ends of a segment are two distinct branch
+  bodies, as the ends of an open ear are distinct (\cref{def:open-ear})
+  and $G$ is simple. A branch body $v$ is an interior body of no
+  segment. So each edge at $v$ lies on a segment that ends at $v$. A
+  segment that ends at $v$ has exactly one edge at $v$, as its bodies
+  are distinct and its other end is not $v$. Hence the
+  degree of $v$ is the number of segments that end at $v$, and the
+  degrees of the branch bodies sum to $2e$. As each is at least three,
+  $3|B| \le 2e$, that is, $e - |B| \ge e/3$.
+
+  \emph{The count.} Let $\sigma_i$ be a chain
+  $a - x_1 - \cdots - x_k - b$ on $V_1$, so that $k = L_i - 1$. By
+  \cref{def:open-ear}, $V_1$ is $V(G)$ without $x_1, \dots, x_k$, and
+  every edge of $G$ off the chain lies inside $V_1$. Every edge of the
+  chain has an interior end. So
+  \[
+    |V_1| - 1 \;=\; |B| - e + \sum_{j \neq i} L_j, \qquad
+    e(V_1) \;=\; \sum_{j \neq i} L_j,
+  \]
+  and therefore
+  \[
+    s_D(V_1) \;=\; \sum_{j \neq i} L_j \;-\; D\,(e - |B|).
+  \]
+  Every segment has at most $\ell + 1$ edges. With $e - |B| \ge e/3$
+  this gives
+  \[
+    s_D(V_1) \;\le\; (\ell + 1)(e - 1) - \frac{D e}{3}
+    \;=\; e\Bigl(\ell + 1 - \frac{D}{3}\Bigr) - (\ell + 1)
+    \;\le\; -(\ell + 1),
+  \]
+  as $3(\ell + 1) \le D$.
+
+  At $d = 3$ only $\ell = 1$ is allowed. A chain then has one interior
+  body $x$, whose neighbours have degree at least three, and the bound
+  $s_6(V(G) \setminus \{x\}) \le -2$ is the one that the count in the
+  proof of part~(2) of \cref{lem:pencil-x0-sparse-count} gives. The
+  dimension enters the count only through the coefficients $D$ and
+  $D - 1$ of the singleton value. The bound needs $3(\ell + 1) \le D$,
+  so it reaches the chains with two interior bodies at $d = 4$, where
+  $D = 10$, and those with three at every $d \ge 5$, where $D \ge 15$.
+\end{proof}
+
+% Source: SHORT-CORE workbook (notes/attacks/short-core/workbook.md), S53 (b),
+% with S52 and the ONE-CLASS lemma, both formalized in sec:pencil-d-deficiency.
+\begin{theorem}[A chain with many interior bodies, a core, or rigidity in dimension three]
+  \label{thm:pencil-d-chain-or-core}
+  \uses{def:pencil-x0-chain, def:pencil-x0-standing,
+        def:rigid-contraction, def:D-deficiency}
+  Let $d \ge 3$ and $D = \binom{d+1}{2}$, and let $\ell \ge 1$ with
+  $3(\ell + 1) \le D$. Let $G$ satisfy the standing hypotheses
+  (\cref{def:pencil-x0-standing}), with $G - v$ connected for every body
+  $v$, some body of degree other than two, and no planar-rigid set. Then
+  $G$ has a chain (\cref{def:pencil-x0-chain}) with more than $\ell$
+  interior bodies, or $G$ has a core in dimension $d$
+  (\cref{sec:pencil-d-deficiency}), or every chain of $G$ has one
+  interior body and
+  $\operatorname{def}_3(G) = \operatorname{def}_d(G) = 0$.
+\end{theorem}
+\begin{proof}
+  \uses{lem:deficiency-sparse, lem:pencil-d-chain-count,
+        lem:pencil-d-chain-core, lem:pencil-x0-chain-exists,
+        lem:pencil-d-core-positive-deficiency,
+        lem:deficiency-rigid-higher}
+  Suppose that every chain of $G$ has at most $\ell$ interior bodies.
+  As $G$ has no planar-rigid set, it is sparse
+  (\cref{lem:deficiency-sparse}).
+
+  Let some chain $a - x_1 - \cdots - x_k - b$ on $V_1$ have $k \ge 2$.
+  Then $s_D(V_1) \le -(\ell + 1) < 0$
+  (\cref{lem:pencil-d-chain-count}). A chain is an open ear, so $G$ has
+  a core in dimension $d$ that avoids $x_1$
+  (\cref{lem:pencil-d-chain-core}).
+
+  Otherwise every chain has one interior body, and then no two bodies
+  of degree two are adjacent. Indeed, let $x$ and $y$ be adjacent bodies
+  of degree two. Then $x$ is an interior body of a chain
+  (\cref{lem:pencil-x0-chain-exists}). The two bodies next to $x$ on it
+  are the two neighbours of $x$, so $y$ is one of them. As the ends of a
+  chain have degree at least three, $y$ is an interior body too, and the
+  chain has two. So if $\operatorname{def}_3(G) > 0$, then $G$ has a
+  core in dimension $d$ (\cref{lem:pencil-d-core-positive-deficiency}).
+  Otherwise $\operatorname{def}_3(G) = 0$, and then
+  $\operatorname{def}_d(G) = 0$, as $d \ge 3$
+  (\cref{lem:deficiency-rigid-higher}).
+
+  At $d = 3$ these graphs are settled by the usable chains and
+  \cref{thm:pencil-x0-theorem-s}, and the dimension enters through
+  usability. A chain with three or more interior bodies is usable. A
+  chain with one or two is usable under a condition on its merged
+  deficiencies, at $D = 6$ or in the plane. In dimension $d$ the count
+  replaces these conditions at the chains with two to $\ell$ interior
+  bodies, and \cref{lem:pencil-d-core-positive-deficiency} replaces them
+  when every chain has one. At $d = 3$ only $\ell = 1$ is allowed, and
+  the theorem then leaves every chain with two or more interior bodies
+  to the ear steps. The two lemmas that give the core hold in every
+  dimension, with rigidity read at $D$ and additivity in the plane.
+\end{proof}
