@@ -33,7 +33,14 @@ with them a core to contract when no chain is usable
 (\cref{sec:pencil-d-deficiency}). The sections after it extend the
 induction of \cref{sec:main-component} to every dimension, beginning
 with its setting and the rank of a flat configuration
-(\cref{sec:pencil-d-induction}).
+(\cref{sec:pencil-d-induction}). They end with the coverage: over an
+infinite field the general configuration of every graph satisfying the
+standing hypotheses attains in every dimension
+(\cref{sec:pencil-d-coverage}). The last section runs the reduction of
+\cref{sec:pencil-reduction} in every dimension. It gives every multigraph
+a pencil realization at the deficiency rank in dimension $d$, with
+independent normals at adjacent bodies when the multigraph is simple
+(\cref{sec:pencil-d-reduction}).
 
 We describe a pencil realization by its polar. The polarity of
 \cref{def:meet-complement-iso} takes the panel with normal $b_v$ to the
@@ -1192,8 +1199,8 @@ From here on we extend the induction of \cref{sec:main-component} to
 every dimension $d \ge 3$, to show that the general configuration of
 every graph satisfying the standing hypotheses
 (\cref{def:pencil-x0-standing}) attains in dimension $d$
-(\cref{def:pencil-d-x0-attains}). At $d = 3$ this is
-\cref{thm:pencil-x0-coverage}. As there, we argue by strong induction on
+(\cref{def:pencil-d-x0-attains}), which \cref{thm:pencil-d-coverage}
+proves. At $d = 3$ this is \cref{thm:pencil-x0-coverage}. As there, we argue by strong induction on
 the number of bodies, at a fixed $d$, with all $d - 2$ heights of a
 configuration general. A graph also attains in dimension $d$ when it
 attains in a lower dimension $d'$ with
@@ -4111,4 +4118,663 @@ $J_i = Y_i \vee Y_{i+1}$, indices read modulo $m$.
   \cref{thm:pencil-x0-open-ear-four}). In dimension $d$ the argument
   above uses $k$ only through $k \ge 2$ and the closed $(k + 1)$-gon of
   \cref{lem:pencil-d-polygons}, which exists for $k + 1 \le D$.
+\end{proof}
+
+\subsection{The coverage in every dimension}
+\label{sec:pencil-d-coverage}
+
+This section completes the induction in dimension $d$: the general
+configuration of every graph satisfying the standing hypotheses attains
+in dimension $d$ (\cref{thm:pencil-d-coverage}). At $d = 3$ this is
+\cref{thm:pencil-x0-coverage}, and we take its cases in the same order
+(\cref{sec:main-component-coverage}). The first five are a chain of
+bridges, a cut vertex, a cycle, equal deficiencies and a planar-rigid
+set. The steps of \cref{sec:pencil-d-cut}, \cref{sec:pencil-d-long},
+\cref{sec:pencil-d-flat} and \cref{sec:pencil-d-contract} settle them,
+at the smaller graphs that the case analysis at $d = 3$ finds. When the
+five fail, the proof at $d = 3$ looks for a usable chain. In dimension
+$d \ge 4$ we first try the embedding of dimension three, which applies
+when $\operatorname{def}_3(G) = \operatorname{def}_d(G)$
+(\cref{lem:pencil-d-x0-attains-of-le}). Otherwise
+\cref{thm:pencil-d-chain-or-core} gives a chain with more than $\ell$
+interior bodies or a core in dimension $d$, where $\ell = 2$ at $d = 4$
+and $\ell = 3$ from $d = 5$ on. An open ear step settles the first
+(\cref{sec:pencil-d-short}, \cref{sec:pencil-d-long}), and the
+contraction the second (\cref{thm:pencil-d-contract-additive}). So the
+coverage needs no step at a chain with one or two interior bodies, such
+as the split-off (\cref{thm:pencil-d-splitoff}). At a chain with three
+or more it uses the ear steps that assume no bound on the deficiencies,
+and not \cref{thm:pencil-d-open-ear-deficiency}.
+
+When the general configuration of a graph attains, the graph has an
+adjacent-distinct pencil realization
+(\cref{lem:pencil-d-x0-attains-distinct}). With the coverage this gives
+the distinct main-component statement in dimension $d$
+(\cref{lem:pencil-d-distinct-statement}), which the reduction of
+\cref{sec:pencil-d-reduction} uses at the simple two-edge-connected
+multigraphs.
+
+% Source: SHORT-CORE workbook (notes/attacks/short-core/workbook.md), S53 (b), through
+% thm:pencil-d-chain-or-core. Its case without a planar-rigid set, on at least four bodies,
+% is the coverage (A) that the NONDEG workbook (notes/attacks/nondeg/workbook.md) consumes
+% in S25, S26 and S38.
+\begin{theorem}[The coverage, in every dimension]
+  \label{thm:pencil-d-coverage}
+  \uses{def:pencil-d-x0-attains, def:pencil-x0-standing,
+        def:cut-edges-2ec}
+  Let $K$ be infinite and $d \ge 3$. The general configuration of every
+  graph satisfying the standing hypotheses
+  (\cref{def:pencil-x0-standing}) attains in dimension $d$
+  (\cref{def:pencil-d-x0-attains}). In particular, so does that of every
+  simple $2$-edge-connected graph on at least three bodies.
+\end{theorem}
+\begin{proof}
+  \uses{thm:pencil-x0-coverage, lem:pencil-d-x0-attains-three,
+        lem:pencil-x0-cut-reduces, thm:pencil-d-bridge, thm:pencil-d-cut,
+        lem:pencil-x0-cycle-reduces, thm:pencil-d-cycle,
+        cor:pencil-d-jj-flat, lem:deficiency-antitone,
+        lem:pencil-x0-planar-rigid-reduces, lem:deficiency-add-body,
+        lem:pencil-contract-standing, lem:reduction-measure,
+        cor:pencil-d-contract-rigid, lem:pencil-d-x0-attains-of-le,
+        thm:pencil-d-chain-or-core, def:pencil-x0-chain,
+        lem:pencil-x0-chain-standing, thm:pencil-d-open-ear-long,
+        thm:pencil-d-open-ear-four, thm:pencil-d-open-ear-three,
+        lem:pencil-contract-standing-rigid,
+        thm:pencil-d-contract-additive, lem:two-edge-connected-degree}
+  At $d = 3$ this is \cref{thm:pencil-x0-coverage}
+  (\cref{lem:pencil-d-x0-attains-three}). Let $d \ge 4$ and
+  $D = \binom{d+1}{2}$. Let $\ell = 2$ if $d = 4$, and $\ell = 3$ if
+  $d \ge 5$. Then $3(\ell + 1) \le D$, as $D = 10$ at $d = 4$ and
+  $D \ge 15$ from $d = 5$ on. We argue by strong induction on the number
+  of bodies. Let $G$ satisfy the standing hypotheses, and suppose that
+  the general configuration of every graph smaller than $G$
+  (\cref{sec:pencil-d-induction}) attains in dimension $d$.
+
+  \emph{The first five cases.} If $G$ is not $2$-edge-connected, the
+  proof of part~(1) of \cref{lem:pencil-x0-cut-reduces} gives a chain of
+  bridges between sets $V_1$ and $V_2$ as in \cref{thm:pencil-d-bridge},
+  with $G[V_1]$ and $G[V_2]$ smaller than $G$. So
+  \cref{thm:pencil-d-bridge} applies. If $G$ is $2$-edge-connected and
+  $G - v$ is disconnected for some body $v$, the proof of part~(2) gives
+  the two sides $V_1$ and $V_2$ of a cut vertex, with $G[V_1]$ and
+  $G[V_2]$ smaller than $G$, and \cref{thm:pencil-d-cut} applies. If
+  every body has degree two, $G$ is a cycle, given by an edge $ab$ and a
+  path from $a$ to $b$ through the other bodies (the proof of
+  \cref{lem:pencil-x0-cycle-reduces}). It has at least three bodies, as
+  $G$ is simple, and \cref{thm:pencil-d-cycle} applies. If
+  $\operatorname{def}_2(G) = \operatorname{def}_d(G)$, then
+  \cref{cor:pencil-d-jj-flat} applies, as $G$ is connected and simple
+  with at least three members in every closed neighbourhood
+  (\cref{def:pencil-x0-standing}).
+
+  Otherwise $\operatorname{def}_2(G) > \operatorname{def}_d(G) \ge 0$.
+  Indeed $\operatorname{def}_d(G) \le \operatorname{def}_2(G)$, as $G$
+  is connected (\cref{lem:deficiency-antitone}), and the partition with
+  one part has value zero. Suppose that $G$ has a planar-rigid set, and
+  let $W$ be a maximal one. As in the proof of
+  \cref{lem:pencil-x0-planar-rigid-reduces}, $W$ is proper, since
+  $\operatorname{def}_2(G) > 0$. A body outside $W$ with two neighbours
+  in $W$ would enlarge it (\cref{lem:deficiency-add-body}, at $d = 2$).
+  So no body outside $W$ is adjacent to two bodies of $W$, and the
+  contraction $G/G[W]$ is smaller than $G$
+  (\cref{lem:pencil-contract-standing}, \cref{lem:reduction-measure}).
+  Then \cref{cor:pencil-d-contract-rigid} applies.
+
+  \emph{The embedding.} In the remaining case $G$ is
+  $2$-edge-connected, $G - v$ is connected for every body $v$, some body
+  has degree other than two, and $G$ has no planar-rigid set. Suppose
+  that $\operatorname{def}_3(G) = \operatorname{def}_d(G)$. The general
+  configuration of $G$ attains in dimension three
+  (\cref{thm:pencil-x0-coverage}, \cref{lem:pencil-d-x0-attains-three}).
+  As $G$ is connected, it attains in dimension $d$
+  (\cref{lem:pencil-d-x0-attains-of-le}, with $d' = 3$).
+
+  \emph{A chain or a core.} Otherwise
+  $\operatorname{def}_3(G) \neq \operatorname{def}_d(G)$, and the
+  hypotheses of \cref{thm:pencil-d-chain-or-core} hold. Its third
+  outcome has $\operatorname{def}_3(G) = \operatorname{def}_d(G)$. So
+  $G$ has a chain with more than $\ell$ interior bodies, or a core in
+  dimension $d$.
+
+  Let $a - x_1 - \cdots - x_k - b$ on $V_1$ be a chain with $k > \ell$,
+  so that $k \ge 3$. As $G - v$ is connected for every body $v$, the
+  graph $G[V_1]$ satisfies the standing hypotheses (part~(1) of
+  \cref{lem:pencil-x0-chain-standing}). It has fewer bodies than $G$.
+  Let $G''$ be $G$ with $x_2$ suppressed, as in
+  \cref{thm:pencil-d-open-ear-four}. As the interior bodies of a chain
+  have degree two (\cref{def:pencil-x0-chain}), the edges at $x_2$ join
+  it to $x_1$ and to $x_3$, and the neighbours of $x_1$ are $a$ and
+  $x_2$. The bodies of the chain are distinct, so $x_3$ is neither $a$
+  nor $x_2$, and $x_1$ and $x_3$ are distinct and not adjacent. So $G''$
+  satisfies the standing hypotheses (part~(2) of
+  \cref{lem:pencil-x0-chain-standing}), and it has one body fewer than
+  $G$ (\cref{lem:reduction-measure}). Thus $G[V_1]$ and $G''$ are
+  smaller than $G$, and their general configurations attain in dimension
+  $d$. A chain is an open ear (\cref{def:pencil-x0-chain}). If
+  $k \ge D - 1$, then \cref{thm:pencil-d-open-ear-long} applies. If
+  $4 \le k \le D - 2$, then \cref{thm:pencil-d-open-ear-four} applies.
+  If $k = 3$, then $\ell = 2$, so $d = 4$, and
+  \cref{thm:pencil-d-open-ear-three} applies.
+
+  Let $W$, with a body $r \in W$, be a core of $G$ in dimension $d$
+  (\cref{sec:pencil-d-deficiency}). So $W \subsetneq V(G)$ has at least
+  two bodies and $\operatorname{def}_d(G[W]) = 0$, no body outside $W$
+  is adjacent to two bodies of $W$, and
+  $\operatorname{def}_2(G[W]) + \operatorname{def}_2(G/G[W]) \le
+  \operatorname{def}_2(G)$, where $G/G[W]$ contracts $W$ to $r$. The
+  core $G[W]$ satisfies the standing hypotheses
+  (\cref{lem:pencil-contract-standing-rigid}, at $d$), and so does
+  $G/G[W]$ (\cref{lem:pencil-contract-standing}), as $G$ is
+  $2$-edge-connected. Both have fewer bodies than $G$, as $W$ is proper
+  and has at least two bodies (\cref{lem:reduction-measure}). So their
+  general configurations attain in dimension $d$, and
+  \cref{thm:pencil-d-contract-additive} applies.
+
+  For the last claim, a simple $2$-edge-connected graph on at least
+  three bodies is connected (\cref{def:cut-edges-2ec}), since no edge
+  leaves the bodies of a component. Its minimum degree is at least two
+  (\cref{lem:two-edge-connected-degree}), so it satisfies the standing
+  hypotheses.
+
+  At $d = 3$ this is \cref{thm:pencil-x0-coverage}. There the dimension
+  enters in three places. First, the fourth case reads
+  $\operatorname{def}_2(G) = \operatorname{def}_3(G)$. In dimension $d$
+  it reads $\operatorname{def}_2(G) = \operatorname{def}_d(G)$, and the
+  steps of the first five cases hold in dimension $d$ with the same
+  combinatorial hypotheses. Second, once the five cases fail, the proof
+  at $d = 3$ finds a usable chain or a core
+  (\cref{thm:pencil-x0-theorem-s}). A usable chain with one interior
+  body, or with two at ends that are not adjacent, may need the steps of
+  \cref{sec:main-component-orbit}, which we do not extend
+  (\cref{sec:pencil-d-chains}). In dimension $d \ge 4$, when every chain
+  has at most $\ell$ interior bodies, the count of
+  \cref{thm:pencil-d-chain-or-core} finds a core, or shows that
+  $\operatorname{def}_3(G) = \operatorname{def}_d(G) = 0$, and then the
+  embedding of dimension three applies. The count needs
+  $3(\ell + 1) \le D$, which at $d = 3$ allows only $\ell = 1$. Third,
+  the ranges of the ear steps
+  depend on $d$. The long ear starts at $k = D - 1$, which is five at
+  $d = 3$. The step at three interior bodies is proved for
+  $4 \le d \le 6$ (\cref{thm:pencil-d-open-ear-three}), and the coverage
+  needs it only at $d = 4$.
+\end{proof}
+
+\begin{lemma}[The distinct main-component statement, in every dimension]
+  \label{lem:pencil-d-distinct-statement}
+  \uses{def:pencil-d-distinct-motive, def:cut-edges-2ec}
+  Let $K$ be infinite and $d \ge 3$. Every simple $2$-edge-connected
+  multigraph on at least three bodies has an adjacent-distinct pencil
+  realization in dimension $d$ (\cref{def:pencil-d-distinct-motive}).
+\end{lemma}
+\begin{proof}
+  \uses{thm:pencil-d-coverage, lem:pencil-d-x0-attains-distinct}
+  The general configuration of such a multigraph attains in dimension
+  $d$ (\cref{thm:pencil-d-coverage}). So it has an adjacent-distinct
+  pencil realization in dimension $d$
+  (\cref{lem:pencil-d-x0-attains-distinct}).
+
+  At $d = 3$ this is \cref{lem:pencil-x0-distinct-statement}, through
+  \cref{lem:pencil-d-rank-agrees-three}. The dimension enters only
+  through the coverage. An attaining configuration is a realization with
+  independent points at adjacent bodies in every dimension
+  (\cref{lem:pencil-d-config-realization}).
+\end{proof}
+
+\subsection{Reduction on all multigraphs in every dimension}
+\label{sec:pencil-d-reduction}
+
+This section runs the reduction of \cref{sec:pencil-reduction} in
+dimension $d$. Over an infinite field it gives every multigraph with at
+least one body a pencil realization at the deficiency rank in dimension
+$d$, and an adjacent-distinct one when the multigraph is simple
+(\cref{thm:pencil-d-realization-theorem}). At $d = 3$ these are the
+first two conjuncts of \cref{thm:pencil-realization-theorem}, and we
+keep its proof. It is the induction of \cref{thm:pencil-reduction}, with
+the cases at a loop, on at most two bodies and at a cut edge
+(\cref{lem:pencil-loop-case}, \cref{lem:pencil-base-case},
+\cref{lem:pencil-cut-case}). At a two-edge-connected multigraph it uses
+the distinct main-component statement, or contracts two parallel edges
+(\cref{thm:pencil-conditional-realization-main-component},
+\cref{lem:pencil-nonsimple-case}).
+
+The cases at a loop, at a cut edge and at parallel edges each place a
+hinge that must lie in the panels of its two ends and pass through
+their $(d-3)$-flats. In the polar form of \cref{def:pencil-d-realization},
+such a hinge at a link $uv$ is the polar of a line through $b_u$ and
+$b_v$ inside $\Pi_u \cap \Pi_v$, that is, of a two-dimensional subspace
+$B$ of $\Pi_u \cap \Pi_v$ containing $b_u$ and $b_v$
+(\cref{lem:pencil-d-two-pencil-extension}). At $d = 3$ two
+three-dimensional subspaces of $K^4$ meet in dimension at least two. So
+the hinge exists exactly when $b_u \in \Pi_v$ and $b_v \in \Pi_u$, the
+cross-incidences of \cref{lem:two-pencil-extension-iff}. From $d = 4$
+on, two three-dimensional subspaces of $K^{d+1}$ can meet in dimension
+less than two. When $b_u$ and $b_v$ are dependent, the hinge then asks
+also that $\dim(\Pi_u \cap \Pi_v) \ge 2$. At a loop and at
+parallel edges the two ends have the same normal and subspace, and the
+condition holds. At a cut edge we move one side by a linear map of
+$K^{d+1}$ chosen to meet it (\cref{lem:pencil-d-cut-reposition}).
+
+\begin{lemma}[A hinge in two pencils, in every dimension]
+  \label{lem:pencil-d-two-pencil-extension}
+  \uses{def:genuine-hinge-realization, def:extensor-through-flat}
+  Let $d \ge 3$, let $b_u, b_v \in K^{d+1}$ be nonzero, and let
+  $\Pi_u \ni b_u$ and $\Pi_v \ni b_v$ be three-dimensional subspaces of
+  $K^{d+1}$. For a two-dimensional subspace $B$ of $K^{d+1}$, write
+  $C_B$ for the extensor of a basis of $B^{\perp}$, which is determined
+  by $B$ up to a nonzero scalar.
+  \begin{enumerate}
+    \item If $B \subseteq \Pi_u \cap \Pi_v$ contains $b_u$ and $b_v$,
+      then $C_B$ is nonzero, lies in the panels with normals $b_u$ and
+      $b_v$ (\cref{def:genuine-hinge-realization}), and passes through
+      $\Pi_u^{\perp}$ and $\Pi_v^{\perp}$
+      (\cref{def:extensor-through-flat}).
+    \item Every nonzero $C \in \bigwedge^{d-1} K^{d+1}$ that lies in
+      these two panels and passes through $\Pi_u^{\perp}$ and
+      $\Pi_v^{\perp}$ is a nonzero multiple of $C_B$ for such a subspace
+      $B$. So such a $C$ exists if and only if $b_u$ and $b_v$ lie in
+      $\Pi_u \cap \Pi_v$ and $\dim(\Pi_u \cap \Pi_v) \ge 2$.
+    \item If $B \neq B'$, then $C_B$ and $C_{B'}$ are linearly
+      independent.
+  \end{enumerate}
+\end{lemma}
+\begin{proof}
+  \uses{def:extensor, lem:decomposable-extensor-span-unique}
+  As the dot product of $K^{d+1}$ is nondegenerate, $B^{\perp}$ has
+  dimension $d - 1$ and $(B^{\perp})^{\perp} = B$. The extensor of
+  linearly independent vectors is nonzero (\cref{def:extensor}). The
+  extensors of two bases of one subspace differ by the determinant of
+  the change of basis, so $C_B$ is determined up to a nonzero scalar.
+
+  (1) As $b_u \in B$, every vector of $B^{\perp}$ is orthogonal to
+  $b_u$, so $C_B$ lies in the panel of $b_u$, and likewise in that of
+  $b_v$. As $B \subseteq \Pi_u$, the subspace $\Pi_u^{\perp}$ lies in
+  $B^{\perp}$, the span of the basis. So $C_B$ passes through
+  $\Pi_u^{\perp}$, and likewise through $\Pi_v^{\perp}$.
+
+  (2) As $C$ lies in the panel of $b_u$, it is the extensor of $d - 1$
+  vectors orthogonal to $b_u$. They are linearly independent, as
+  $C \neq 0$. Let $A$ be their span, of dimension $d - 1$. A nonzero
+  extensor determines the span of its vectors, by the argument of
+  \cref{lem:decomposable-extensor-span-unique} with $d - 1$ vectors in
+  place of two. So every expression of $C$ as an extensor has vectors
+  spanning $A$: the one in the panel of $b_v$, and those whose spans
+  contain $\Pi_u^{\perp}$ and $\Pi_v^{\perp}$. Let $B = A^{\perp}$, of
+  dimension two. Then $b_u, b_v \in B$. As
+  $\Pi_u^{\perp} \subseteq A$, we have
+  $B \subseteq (\Pi_u^{\perp})^{\perp} = \Pi_u$, and likewise
+  $B \subseteq \Pi_v$. As $A = B^{\perp}$, the extensor $C$ is a nonzero
+  multiple of $C_B$. For the last claim, such a subspace $B$ gives
+  $b_u, b_v \in \Pi_u \cap \Pi_v$ and $\dim(\Pi_u \cap \Pi_v) \ge 2$.
+  Conversely, under these conditions let $B$ be the span of $b_u$ and
+  $b_v$ if they are linearly independent. Otherwise let it be the span
+  of $b_u$ and a vector of $\Pi_u \cap \Pi_v$ independent of $b_u$. Then
+  (1) applies.
+
+  (3) As $B = (B^{\perp})^{\perp}$, the subspaces $B^{\perp}$ and
+  $B'^{\perp}$ differ. So $C_B$ and $C_{B'}$ are nonzero extensors whose
+  vectors have different spans. By the argument of (2), neither is a
+  multiple of the other, so they are linearly independent.
+
+  At $d = 3$ write $\Pi_v = q_v^{\perp}$, as in
+  \cref{lem:pencil-d-agrees-three}. Passing through $\Pi_v^{\perp}$ is
+  then passing through the point $q_v$, and $b_u \in \Pi_v$ is the
+  cross-incidence $q_v \cdot b_u = 0$. Two three-dimensional subspaces
+  of $K^4$ meet in dimension at least two, so (2) is
+  \cref{lem:two-pencil-extension-iff}. Part~(3) gives the two
+  independent hinges through a point of a panel of
+  \cref{lem:extensor-pair-through-given-point}. The dimension enters only
+  in (2). From $d = 4$ on, two three-dimensional subspaces of $K^{d+1}$
+  can meet in dimension less than two. When $b_u$ and $b_v$ are linearly
+  independent, the condition of (2) is still the two incidences
+  $b_u \in \Pi_v$ and $b_v \in \Pi_u$, and $B$ is the span of $b_u$ and
+  $b_v$. When they are dependent, it asks also for a two-dimensional
+  subspace of $\Pi_u \cap \Pi_v$ through $b_u$, which then need not
+  exist.
+\end{proof}
+
+\begin{lemma}[Moving a pencil realization by a linear map, in every dimension]
+  \label{lem:pencil-d-projective-transport}
+  \uses{def:pencil-d-realization, def:induced-screw-map}
+  Let $d \ge 3$, let $g$ be an invertible linear map of $K^{d+1}$, and
+  let $h$ be its inverse transpose, so that $h x \cdot g y = x \cdot y$
+  for all $x, y \in K^{d+1}$. Let a pencil realization of $G$ in
+  dimension $d$ (\cref{def:pencil-d-realization}) have hinges $C_e$,
+  normals $b_v$ and subspaces $\Pi_v$. Then the framework on $G$ with the
+  hinges $\Lambda_h(C_e)$ (\cref{def:induced-screw-map}), the normals
+  $g b_v$ and the subspaces $g\Pi_v$ is a pencil realization of $G$ in
+  dimension $d$, whose rigidity rows span a space of the same dimension.
+  Its normals are linearly independent at every link where the given
+  ones are.
+\end{lemma}
+\begin{proof}
+  \uses{lem:screw-map-rows}
+  If $C_e = x_1 \vee \cdots \vee x_{d-1}$, then
+  $\Lambda_h(C_e) = h x_1 \vee \cdots \vee h x_{d-1}$. When every $x_i$
+  is orthogonal to $b_v$, every $h x_i$ is orthogonal to $g b_v$, as
+  $h x_i \cdot g b_v = x_i \cdot b_v$. So a hinge in the panel of $b_v$
+  goes to a hinge in the panel of $g b_v$. In the same way $h$ maps
+  $\Pi_v^{\perp}$ into $(g\Pi_v)^{\perp}$, and onto it, as both have
+  dimension $d - 2$. So when the span of the $x_i$ contains
+  $\Pi_v^{\perp}$, the span of the $h x_i$ contains $(g\Pi_v)^{\perp}$.
+  The subspace $g\Pi_v$ has dimension three and contains $g b_v$, which
+  is nonzero. The screw map $\Lambda_h$ is invertible, with inverse the
+  screw map of $h^{-1}$. So every hinge stays nonzero, and the rank is
+  unchanged (\cref{lem:screw-map-rows}). As $g$ is invertible,
+  independent normals stay independent.
+
+  At $d = 3$ this is \cref{lem:pencil-projective-transport}, with $g$
+  and $h$ exchanged. There $g$ moves the points and the hinges, and $h$
+  the normals. Here $g$ moves the normals and the subspaces, so the
+  point $q_v$ of $\Pi_v = q_v^{\perp}$ moves by $h$. The proof does not
+  use the dimension.
+\end{proof}
+
+\begin{lemma}[Moving one side of a cut edge, in every dimension]
+  \label{lem:pencil-d-cut-reposition}
+  Let $d \ge 3$, let $b_u, b_v \in K^{d+1}$ be nonzero, and let
+  $\Pi_u \ni b_u$ and $\Pi_v \ni b_v$ be three-dimensional subspaces of
+  $K^{d+1}$. There is an invertible linear map $g$ of $K^{d+1}$ such that
+  $b_u$ and $g b_v$ are linearly independent and both lie in
+  $\Pi_u \cap g\Pi_v$.
+\end{lemma}
+\begin{proof}
+  As $\Pi_u$ has dimension three, it contains a vector $c$ such that
+  $b_u$ and $c$ are linearly independent. Likewise $\Pi_v$ contains a
+  vector $c'$ such that $b_v$ and $c'$ are linearly independent. Extend
+  the pairs $b_v, c'$ and $c, b_u$ to bases of $K^{d+1}$, and let $g$
+  map the first basis to the second, with $g b_v = c$ and $g c' = b_u$.
+  Then $b_u$ and $g b_v = c$ are linearly independent and lie in
+  $\Pi_u$. They also lie in $g\Pi_v$, since $b_u = g c'$ and
+  $c = g b_v$ with $b_v, c' \in \Pi_v$.
+
+  At $d = 3$ this is \cref{lem:pencil-cut-nondegeneracy} with the roles
+  of the normals and the points exchanged, as by the polarity
+  (\cref{lem:pencil-self-dual}). With $\Pi_v = q_v^{\perp}$, the
+  incidences $g b_v \in \Pi_u$ and $b_u \in g\Pi_v$ are its two
+  cross-incidences after the move, and the independence of $b_u$ and
+  $g b_v$ is its distinctness clause. Its proof picks its vectors in the
+  hyperplanes orthogonal to the normals, which after the exchange are
+  $\Pi_u$ and $\Pi_v$. In dimension $d$ these subspaces still have
+  dimension three, though they are no longer hyperplanes, and the same
+  choice works. The span of $b_u$ and $g b_v$ is then the
+  two-dimensional subspace of $\Pi_u \cap g\Pi_v$ that the hinge of the
+  cut edge needs (\cref{lem:pencil-d-two-pencil-extension}).
+\end{proof}
+
+\begin{lemma}[The loop case, in every dimension]
+  \label{lem:pencil-d-loop-case}
+  \uses{def:pencil-d-rank-hypothesis}
+  Let $d \ge 3$, and let $e$ be a loop of $G$ at a body $v$. If $G - e$
+  has a pencil realization at the deficiency rank in dimension $d$
+  (\cref{def:pencil-d-rank-hypothesis}), then so does $G$.
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-d-two-pencil-extension, def:hinge-constraint,
+        def:D-deficiency}
+  Keep the realization of $G - e$, with normals $b$ and subspaces $\Pi$.
+  Give $e$ the hinge $C_B$ of \cref{lem:pencil-d-two-pencil-extension},
+  with $u = v$ and a two-dimensional subspace $B$ of $\Pi_v$ containing
+  $b_v$. It is nonzero, lies in the panel of $v$ and passes through
+  $\Pi_v^{\perp}$. The hinge constraint of a loop asks $S(v) - S(v) = 0$
+  to lie in the span of its hinge (\cref{def:hinge-constraint}), so the
+  loop leaves the motions and the rank unchanged. A loop joins no two
+  parts of a partition, so deleting it leaves the deficiency unchanged
+  (\cref{def:D-deficiency}).
+
+  At $d = 3$ this is \cref{lem:pencil-loop-case}, whose hinge is a line
+  of the panel through the point of $v$. In dimension $d$ it is a
+  $(d-2)$-flat of the panel that contains the $(d-3)$-flat
+  $\Pi_v^{\perp}$. Such flats exist, as $\Pi_v$ has dimension three.
+\end{proof}
+
+\begin{lemma}[At most two bodies, in every dimension]
+  \label{lem:pencil-d-base-case}
+  \uses{def:pencil-d-rank-hypothesis, def:pencil-d-distinct-motive}
+  Let $d \ge 3$. Every loopless multigraph with one or two bodies has a
+  pencil realization at the deficiency rank in dimension $d$
+  (\cref{def:pencil-d-rank-hypothesis}). If it is simple, it has an
+  adjacent-distinct one (\cref{def:pencil-d-distinct-motive}).
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-d-two-pencil-extension, lem:theorem-55-base,
+        def:rigidity-matrix, def:hinge-constraint, def:D-deficiency}
+  Let $D = \binom{d+1}{2}$. We read ranks off the motions: on a set $U$
+  of bodies the rank is $D|U| - \dim Z$, where $Z$ is the space of
+  screw assignments $S$ with $S(x) - S(y)$ in the span of the hinge of
+  every edge $xy$ (\cref{def:rigidity-matrix},
+  \cref{def:hinge-constraint}). As the multigraph is loopless, its
+  edges, if any, join its two bodies $u$ and $v$.
+
+  Take a nonzero $b \in K^{d+1}$ and a three-dimensional subspace
+  $\Pi \ni b$, and give every body the normal $b$ and the subspace $\Pi$.
+  The two-dimensional subspaces of $\Pi$ containing $b$ correspond to
+  the one-dimensional subspaces of the two-dimensional space $\Pi / Kb$.
+  So there are two distinct ones, $B_1$ and $B_2$. Their hinges
+  $C_1 = C_{B_1}$ and $C_2 = C_{B_2}$ lie in the panel of $b$, pass
+  through $\Pi^{\perp}$, and are linearly independent
+  (\cref{lem:pencil-d-two-pencil-extension}).
+  \begin{itemize}
+    \item With no edge, the rank is zero. The deficiency is $0$ on one
+      body, and $D$ on two bodies, attained by the partition into
+      singletons. Either way the target is zero.
+    \item With one edge, give it the hinge $C_1$. The motions are the
+      $S$ with $S(u) - S(v) \in K C_1$, so $\dim Z = D|U| - (D - 1)$ and
+      the rank is $D - 1$. The partition into singletons has value
+      $D - (D - 1) = 1$, so the deficiency is $1$, and the target is
+      $D - 1$.
+    \item With $m \ge 2$ edges, give one the hinge $C_1$ and the others
+      $C_2$. Every motion has $S(u) = S(v)$ (\cref{lem:theorem-55-base}),
+      and every $S$ with $S(u) = S(v)$ is a motion, so the rank is $D$.
+      The partition into singletons has value $D - (D - 1)m < 0$, so the
+      deficiency is $0$, and the target is $D$.
+  \end{itemize}
+
+  A simple multigraph with one or two bodies has at most one edge. With
+  no edge the realization above has no link, and is adjacent-distinct.
+  With one edge $uv$, take linearly independent $b_u, b_v \in K^{d+1}$
+  and a three-dimensional subspace $\Pi$ containing both, and let
+  $\Pi_u = \Pi_v = \Pi$. Give $uv$ the hinge $C_B$ with $B$ the span of
+  $b_u$ and $b_v$ (\cref{lem:pencil-d-two-pencil-extension}). The rank
+  is $D - 1$, as before.
+
+  At $d = 3$ this is \cref{lem:pencil-base-case}, with the
+  adjacent-distinct case of \cref{lem:pencil-pair-loop-base-cut}. There
+  the two independent hinges are two lines through the point of the
+  panel (\cref{lem:extensor-pair-through-point}). In dimension $d$ they
+  are the polars of two lines through $b$ inside $\Pi$, and the counts
+  read $D$ in place of $6$.
+\end{proof}
+
+\begin{lemma}[The cut-edge case, in every dimension]
+  \label{lem:pencil-d-cut-case}
+  \uses{def:pencil-d-rank-hypothesis, def:pencil-d-distinct-motive,
+        def:cut-edges-2ec}
+  Let $d \ge 3$, and let $G$ be a multigraph that is not
+  two-edge-connected, so that at most one edge crosses some nonempty
+  proper subset $V_1 \subsetneq V(G)$. Let $V_2 = V(G) \setminus V_1$. If
+  $G[V_1]$ and $G[V_2]$ each have a pencil realization at the deficiency
+  rank in dimension $d$ (\cref{def:pencil-d-rank-hypothesis}), then so
+  does $G$. The same holds for adjacent-distinct pencil realizations in
+  dimension $d$ (\cref{def:pencil-d-distinct-motive}).
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-d-cut-reposition, lem:pencil-d-projective-transport,
+        lem:pencil-d-two-pencil-extension, lem:block-rank-cut,
+        lem:cut-edge-decomposition, lem:relative-deficiency-rank-bound}
+  Let $D = \binom{d+1}{2}$. Realize the two sides separately. Give each
+  body of $V_i$ its normal and subspace, and each edge of $G[V_i]$ its
+  hinge, in the realization of $G[V_i]$. If no edge crosses, this
+  realizes $G$.
+
+  Suppose that one edge $e$ crosses, joining $u \in V_1$ to $v \in V_2$,
+  and write $b$ and $\Pi$ for the normals and the subspaces. Let $g$ be
+  the map of \cref{lem:pencil-d-cut-reposition} for $b_u, \Pi_u$ and
+  $b_v, \Pi_v$, and move the realization of $G[V_2]$ by $g$
+  (\cref{lem:pencil-d-projective-transport}). It is still a pencil
+  realization of $G[V_2]$ at its deficiency rank, now with normals
+  $g b_w$ and subspaces $g\Pi_w$. Its normals are independent at every
+  link where they were. The normals $b_u$ and $g b_v$ are linearly
+  independent and span a two-dimensional subspace $B$ of
+  $\Pi_u \cap g\Pi_v$. Give $e$ the hinge $C_B$ of
+  \cref{lem:pencil-d-two-pencil-extension}. It is nonzero, lies in the
+  panels of $b_u$ and $g b_v$, and passes through $\Pi_u^{\perp}$ and
+  $(g\Pi_v)^{\perp}$. Every hinge of $G$ now lies in the panels of its
+  two ends and passes through the orthogonals of their subspaces. So this
+  is a pencil realization of $G$ in dimension $d$.
+
+  \emph{The rank.} Let $c \in \{0, 1\}$ be the number of edges crossing
+  $V_1$. Every hinge is nonzero, so the rank of $G$ is at least the sum
+  of the ranks of $G[V_1]$ and $G[V_2]$ and $(D - 1)c$
+  (\cref{lem:block-rank-cut}). Also
+  $\operatorname{def}_d(G) = \operatorname{def}_d(G[V_1]) +
+  \operatorname{def}_d(G[V_2]) + D - (D - 1)c$ (part~(1) of
+  \cref{lem:cut-edge-decomposition}, at $D$). As
+  $|V(G)| - 1 = (|V_1| - 1) + (|V_2| - 1) + 1$,
+  \[
+    \operatorname{tgt}_d(G) \;=\; \operatorname{tgt}_d(G[V_1]) +
+    \operatorname{tgt}_d(G[V_2]) + (D - 1)c.
+  \]
+  So the rank of $G$ is at least its target. It is at most its target
+  (\cref{lem:relative-deficiency-rank-bound}), as every hinge is nonzero.
+
+  \emph{Adjacent-distinct.} If both given realizations have independent
+  normals at every link, so does the moved realization of $G[V_2]$, and
+  at $e$ the normals $b_u$ and $g b_v$ are independent.
+
+  At $d = 3$ this is \cref{lem:pencil-cut-case}. There the dimension
+  enters in two places. First, the crossing edge needs only the two
+  cross-incidences, which the move of \cref{lem:pencil-cut-nondegeneracy}
+  provides. In dimension $d$ it needs a two-dimensional subspace through
+  $b_u$ and $g b_v$ inside $\Pi_u \cap g\Pi_v$, and
+  \cref{lem:pencil-d-cut-reposition} provides it with the incidences.
+  Second, the counts read $D = 6$. The rank addition at a cut edge and
+  the deficiency at a cut of at most one edge hold at every $D$.
+\end{proof}
+
+\begin{lemma}[A multigraph with parallel edges, in every dimension; cf.\ KT Lemma~6.2]
+  \label{lem:pencil-d-nonsimple-case}
+  \uses{def:pencil-d-rank-hypothesis}
+  Let $d \ge 3$, and let $G$ be a loopless multigraph on at least three
+  bodies that is not simple. If every multigraph with at least one body
+  and fewer bodies than $G$ has a pencil realization at the deficiency
+  rank in dimension $d$ (\cref{def:pencil-d-rank-hypothesis}), then so
+  does $G$.
+\end{lemma}
+\begin{proof}
+  \uses{def:D-deficiency, def:rigid-subgraph, def:rigid-contraction,
+        lem:pencil-contraction-deficiency, lem:reduction-measure,
+        lem:pencil-d-two-pencil-extension, lem:theorem-55-base,
+        def:rigidity-matrix, def:hinge-constraint}
+  We follow the proof of \cref{lem:pencil-nonsimple-case}, after KT
+  Lemma~6.2~\cite[p.~673]{katohTanigawa2011}. Let
+  $D = \binom{d+1}{2}$. As $G$ is loopless and not simple, two edges $e$
+  and $f$ join two bodies $u$ and $w$.
+
+  \emph{The contraction.} Let $H$ be the subgraph on $\{u, w\}$ with the
+  edges $e$ and $f$. Its partition into singletons has value
+  $D - 2(D - 1) < 0$, so $\operatorname{def}_d(H) = 0$
+  (\cref{def:D-deficiency}). So $H$ is a rigid subgraph
+  (\cref{def:rigid-subgraph}), proper as $G$ has at least three bodies.
+  Let $G/H$ be the contraction of $H$ to $u$
+  (\cref{def:rigid-contraction}). Its edges are those of $G$ other than
+  $e$ and $f$, with the end $w$ replaced by $u$, so the other edges
+  joining $u$ and $w$ become loops at $u$. It has $|V(G)| - 1$ bodies
+  (\cref{lem:reduction-measure}), and
+  $\operatorname{def}_d(G/H) = \operatorname{def}_d(G)$
+  (\cref{lem:pencil-contraction-deficiency}). By hypothesis $G/H$ has a
+  pencil realization at the deficiency rank in dimension $d$, with
+  normals $b'$ and subspaces $\Pi'$.
+
+  \emph{The realization.} Give every body $x \neq w$ of $G$ the normal
+  $b'_x$ and the subspace $\Pi'_x$, and give $w$ the normal $b'_u$ and
+  the subspace $\Pi'_u$. Every edge of $G$ that does not join $u$ and
+  $w$ keeps its hinge in $G/H$. Let $B_1 \neq B_2$ be two-dimensional
+  subspaces of $\Pi'_u$ containing $b'_u$. Give $e$ the hinge $C_{B_1}$,
+  and every other edge joining $u$ and $w$ the hinge $C_{B_2}$. These two
+  hinges lie in the panel of $b'_u$, pass through $\Pi'^{\perp}_u$, and
+  are linearly independent (\cref{lem:pencil-d-two-pencil-extension}).
+  An edge of $G$ with an end at $w$ has that end at $u$ in $G/H$, and $w$
+  now has the normal and the subspace of $u$. So every hinge lies in the
+  panels of its two ends and passes through the orthogonals of their
+  subspaces, and this is a pencil realization of $G$ in dimension $d$.
+
+  \emph{The rank.} Let $U$ be the set of bodies, so that $w \in U$ lies
+  on no edge of $G/H$. A motion $S$ of $G$ has $S(u) = S(w)$, as the
+  hinges of $e$ and $f$ are independent (\cref{lem:theorem-55-base}).
+  Then the hinge constraint of every edge joining $u$ and $w$ holds, and
+  that of every other edge is its constraint in $G/H$
+  (\cref{def:hinge-constraint}). So the motions of $G$ are the motions
+  $S'$ of $G/H$ with $S'(w) = S'(u)$. In the motions of $G/H$ the value
+  at $w$ is free, so these have codimension $D$. The rank of $G$ is
+  therefore that of $G/H$ plus $D$ (\cref{def:rigidity-matrix}), which is
+  \[
+    D\bigl(|V(G)| - 2\bigr) - \operatorname{def}_d(G) + D \;=\;
+    \operatorname{tgt}_d(G).
+  \]
+
+  At $d = 3$ this is \cref{lem:pencil-nonsimple-case}. There the
+  dimension enters in three places. First, $2(D - 1) \ge D$ copies of
+  $e$ and $f$ make $H$ rigid. In dimension $d$ this holds as $D \ge 2$.
+  Second, $e$ and $f$ get two independent lines through the point of the
+  contracted body in its panel
+  (\cref{lem:extensor-pair-through-given-point}). In dimension $d$ they
+  get the polars of two lines through $b'_u$ inside $\Pi'_u$. Third, the
+  rows of $e$ and $f$ add $D = 6$ to the rank, by the block-triangular
+  count of KT eqs.~(6.3)--(6.5) (\cref{lem:rigidityRows-splice-rank-add}).
+  The count of motions above adds $D$ in every dimension.
+\end{proof}
+
+\begin{theorem}[Pencil realizations at the deficiency rank, in every dimension]
+  \label{thm:pencil-d-realization-theorem}
+  \uses{def:pencil-d-rank-hypothesis, def:pencil-d-distinct-motive}
+  Let $K$ be an infinite field and $d \ge 3$. Every multigraph with at
+  least one body has a pencil realization at the deficiency rank in
+  dimension $d$ (\cref{def:pencil-d-rank-hypothesis}), and an
+  adjacent-distinct one (\cref{def:pencil-d-distinct-motive}) when it is
+  simple.
+\end{theorem}
+\begin{proof}
+  \uses{thm:pencil-reduction, lem:pencil-d-loop-case,
+        lem:pencil-d-base-case, lem:pencil-d-cut-case,
+        lem:pencil-d-distinct-statement, lem:pencil-d-nonsimple-case}
+  Say that a multigraph has property $\mathcal P$ if it has a pencil
+  realization at the deficiency rank in dimension $d$, and an
+  adjacent-distinct one when it is simple. We apply the induction of
+  \cref{thm:pencil-reduction} to $\mathcal P$, as
+  \cref{thm:pencil-conditional-realization-pair} and
+  \cref{thm:pencil-conditional-realization-main-component} apply it to
+  the conditioned pair. Let $G$ be a multigraph with at least one body.
+
+  \emph{A loop.} Let $e$ be a loop of $G$. Then $G - e$ has the bodies of
+  $G$ and fewer edges, so it has $\mathcal P$, and
+  \cref{lem:pencil-d-loop-case} gives $G$ a realization at the
+  deficiency rank. As $G$ has a loop, it is not simple.
+
+  \emph{At most two bodies.} If $G$ is loopless with at most two bodies,
+  \cref{lem:pencil-d-base-case} gives $\mathcal P$.
+
+  \emph{At least three bodies.} Let $G$ be loopless with at least three
+  bodies, and suppose that every multigraph with at least one body and
+  fewer bodies than $G$ has $\mathcal P$. If $G$ is not
+  two-edge-connected, \cref{lem:pencil-d-cut-case} gives $\mathcal P$, in
+  both of its forms. Its two sides have at least one body and fewer
+  bodies than $G$, and they are simple when $G$ is. If $G$ is
+  two-edge-connected and simple, \cref{lem:pencil-d-distinct-statement}
+  gives an adjacent-distinct realization, which is in particular one at
+  the deficiency rank. If $G$ is two-edge-connected and not simple,
+  \cref{lem:pencil-d-nonsimple-case} gives a realization at the
+  deficiency rank. This argument does not use the proper rigid subgraph
+  of the contraction case of \cref{thm:pencil-reduction}, nor the body of
+  degree two of its split case, so it settles both.
+
+  At $d = 3$ this gives the first two conjuncts of
+  \cref{thm:pencil-realization-theorem}
+  (\cref{lem:pencil-d-rank-agrees-three}). There the dimension enters
+  through the cases and through the distinct main-component statement.
+  In dimension $d$ the cases at a loop, on at most two bodies, at a cut
+  edge and at parallel edges take their hinges from
+  \cref{lem:pencil-d-two-pencil-extension}. The distinct statement rests
+  on the coverage in dimension $d$ (\cref{thm:pencil-d-coverage}). The
+  induction of \cref{thm:pencil-reduction} is on the numbers of bodies
+  and edges, and the argument does not depend on the dimension.
 \end{proof}
