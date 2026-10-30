@@ -67,8 +67,8 @@ the chapter is the index (forward mode), and the file map is under *Current stat
 
 ## Hand-off / next phase
 
-Phase 42 continues with 42a: SHORT-CORE's attack track runs on branch `attack-short-core`. Which
-sub-phase opens next goes to the PI: PD-CARRIER / PD-STEPS / PD-COVERAGE (Phase 40's induction in
+Phase 42 continued with 42a, closed 2026-10-30 with SHORT-CORE's attack track (`notes/Phase42a.md`).
+Which sub-phase opens next goes to the PI: PD-CARRIER / PD-STEPS / PD-COVERAGE (Phase 40's induction in
 `Pᵈ` on R2's steps), PD-REDUCTION or PD-HEAD (design doc §3). What 42c leaves them: PD-COVERAGE
 consumes `Graph.X0AttainsGrade.of_le` at `d′ = 3` with `lem:deficiency-stable`
 (`def[6](G) = def[D](G)`); PD-HEAD rewrites `def_{d′} = def_d` into

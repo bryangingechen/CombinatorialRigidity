@@ -218,7 +218,8 @@ pencil when they contain a common `(d−3)`-flat and lie in a hyperplane;
 the theorem is formalized at `d = 2` and `d = 3`, and the general case
 would imply Katoh–Tanigawa's panel theorem in every dimension. A paper
 check found most of the `d = 3` proof dimension-general, with one step
-needing new mathematics from dimension four. Beside that research, a new
+needing new mathematics from dimension four; that step now has a proof on
+paper in dimension four, not yet formalized. Beside that research, a new
 blueprint chapter, formalized throughout, states pencil realizations in
 every dimension, their agreement with the three-dimensional ones, and the
 tools a proof in every dimension would use. Its last section embeds a

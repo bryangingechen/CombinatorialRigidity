@@ -278,7 +278,9 @@ in every `Pᵈ` (Results 12–19), which PENCIL-D sets out to prove.
 ## The PENCIL-D program
 
 Opened 2026-10-29 with the PI as **Phase 42**: the target, the routes, the layers and the PI's
-decisions are `notes/Phase42-design.md`, the recon's work log `notes/Phase42a.md`.
+decisions are `notes/Phase42-design.md`, the recon's work log `notes/Phase42a.md` (closed 2026-10-30).
+SHORT-CORE, the coverage's new mathematics after Results 26–27, is settled by its attack track:
+`notes/attacks/short-core/state.md`, results by workbook S-number.
 
 ## Literature (next test 1, 2026-10-29)
 

@@ -1,121 +1,79 @@
 # Phase 42a — PD-RECON: does Phase 40's induction run in every `Pᵈ`? (work log)
 
-**Status:** in progress, opened 2026-10-29 with the PI, attended. Research only: no Lean, no
-blueprint. Landed: the step table and thresholds (design doc §2.1–§2.5); T1–T5 (`Strata.md`
-Results 20–26), with no shortfall: SHORT shrinks to SHORT-CORE, ONE-EAR's first option holds
-wherever M does, and at `D ≥ 10` the coverage needs ONE-EAR only on ONE-CLASS. Then, at the PI's
-call, ONE-CLASS's lemma (Result 27), which takes ONE-EAR out of the coverage; then the PI took the
-route (R2's steps, the embedding as the base row). PD-STATE ran beside it as 42b
-(`notes/Phase42b.md`, closed 2026-10-30), and PD-STABLE as 42c (`notes/Phase42c.md`, closed
-2026-10-30, every `d` at `def_3 ≤ 3`). Next concrete task here: SHORT-CORE's attack track, running
-on branch `attack-short-core`. Plan and decisions: `notes/Phase42-design.md`; evidence: `notes/Strata.md`.
+**Status:** ✓ closed 2026-10-30 (opened 2026-10-29 with the PI, attended), a sub-phase of Phase
+42, which stays in progress with no sub-phase open. Research only: no Lean, no blueprint. The route
+is the PI's (R2's steps, the embedding as the base row), and the coverage's only new mathematics,
+SHORT-CORE, is proved by hand at `d = 4` by its attack track (closed 2026-10-30,
+`notes/attacks/short-core/state.md`). PD-STATE (42b) and PD-STABLE (42c) ran beside it, both
+closed 2026-10-30. Next (*Hand-off*): which sub-phase opens as 42d goes to the PI. Plan and
+decisions: `notes/Phase42-design.md`; evidence: `notes/Strata.md`.
 
 ## Current state
 
-**Next** (the PI's defaults, design doc §1):
-- **PD-STATE** ran beside the research as **42b** (`notes/Phase42b.md`) and closed 2026-10-30,
-  its chapter formalized; PD-STABLE then ran as **42c** (`notes/Phase42c.md`) and closed
-  2026-10-30: every `d` at `def_3 ≤ 3`, by the sharp deficiency lemma.
-- **SHORT-CORE's attack track** (`/attack`, design doc §2.3), the coverage's only new mathematics
-  at `d ≥ 4` since Result 27. Rows 9 and 12, which T5's cover rests on, passed a second read.
-  Its brief is `notes/attacks/short-core/brief.md`; `/attack short-core` runs in its own worktree
-  (branch `attack-short-core`), with no Lean build there. Its review 2 found its scope unchanged
-  by 42c's sharp range: every danger cell has `def_3 ≥ 2d − 3` (design doc §4).
-
-**Landed:** the step table, its route verdict (§2.2: R2's step structure, R1's base row) and
-§2.5; then T1, T2 and the content-range graphs as one mode, `strata.py --content`. Row 5's
-formulas hold. CERT holds at `d ≤ 6` over every field, its `D`-gon by a construction in every `d`
-(§2.3). All 38 new content cells attain, on graphs carrying rows 14's and 22's configurations, so
-the obstruction measured so far is the proof's, not the statement's. The steps break at `d = 4`
-(SHORT) and `d = 5` (ONE-EAR). Then T4's first half, `strata.py --oneear` (Result 23, §2.4): on
-`θ(2, 2, k)` and `θ(2, 3, k)` `G[V₁]` attains on the incidence locus at all 26 cells, `d = 4, 5`;
-on `θ(2, 2, 2, k)`, where the merged hypothesis fails, it misses once, provably (`k = 10`, `d = 4`).
-Then T3, `strata.py --short` (Result 24, §2.3–2.4): on 198 danger cells at `d = 4, 5`, six
-families, `W` never contains a star unless `W = Λ²`, and `x₂` put back gains what (⋆) needs. X3
-is proved for `k ≥ C(d−1, 2) + 3` (a CERT polygon in the quotient by the stars), so SHORT's open
-part is SHORT-CORE, `k = 3–5` at `d = 4` (`3–8` at `d = 5`), where `ρ` must fill that quotient.
-Then T4's second half, `strata.py --orbit` (Result 25, §2.3–2.4): the orbit ears at `d = 3..6`.
-At 46 one-body cells `G[V₁]` attains on the locus and `(⋆)` holds; at 69 two-body cells Phase
-40's route (`G₁` on the locus, then `x₂` put back) reaches `min(s + 1, dim(ρ + Λ²(A+B)))`, which
-is `(⋆)` at all 62 with M. The 7 without M fail as at `d = 3`: the locus forces `Π_a = Π_b`.
-Then T5, `strata.py --coverage` (Result 26, §2.4): Theorem S holds at every `D ≥ 6`, so ONE-EAR's
-third part is never needed, and at `D ≥ 10` a graph with no GEN row has a chain with `k ≥ 3` or
-lies in ONE-CLASS's shape (both by hand). On subdivisions of ten cores every cell at `d = 4, 5, 6`
-has a GEN row, a core at every one; Petersen's 4- and 6-path subdivisions need SHORT-CORE.
-Then ONE-CLASS, at the PI's call (Result 27, §2.3–2.4): a graph whose chains are all one-body has
-a core at every `D ≥ 6` or `def[6] = 0`, so Phase 40 embeds; checked by `oneclass.py`. Then the
-second read of rows 9 and 12 (§2.1), by two recons in parallel: no gap. Contraction holds under
-R2 at every `d ≥ 4`; the two-body ear at every `d`, and longer ears up to `k = D − 2` given CERT,
-proved at `d ≤ 6`. Both need only CARRIER's restatements.
+**Closed.** What the research settled, each with its home:
+- **The step table** (design doc §2.1, 22 rows) and the route (§2.2, the PI's call in §1): R2's
+  induction with Result 15's embedding as the base row; an outer induction on `d` is Tier 2's.
+- **The tests** T1–T5 (§2.4; `Strata.md` Results 20–26) and the content range (§2.5): every graph
+  built to carry a failing row's configuration attains, so the obstruction is the proof's.
+- **The obligations** (§2.3): CERT holds at `d ≤ 6`, its open ears at `d ≥ 7` left to PD-STEPS;
+  ONE-CLASS is Phase 40's (Result 27), so ONE-EAR leaves the coverage for GENERIC; SHORT's X3 holds
+  for `k ≥ C(d − 1, 2) + 3`, and **SHORT-CORE** below it:
+  - `d = 4`, `k = 3, 4, 5`: proved by hand (workbook S1–S21, S35), read by three readers.
+  - `k ≥ 4` in every `d`, every `ρ` (S35); `k = 3` at `d = 5, 6` (S28–S33).
+  - From `d = 5` on the coverage never needs the `k = 3` short row, nor row 15 (S52–S53, given
+    CERT's open ears); so G1 (`k = 3`, `d ≥ 7`) is parked, its revival trigger CERT failing at
+    some `d ≥ 7` (workbook S56).
+- **The second read of rows 9 and 12** (§2.1): no gap; both need only CARRIER's restatements.
 
 ## Architectural choices made up front
 
-- **Research rules.** `HARNESS.md` *Evidence* and *Reproducibility* bind; this is not an attack
-  track. A step that turns out to need a new argument may be split off as one (the PI, §1).
-- **One home per kind.** The step table and the recon's verdicts live in the design doc §2; this
-  note carries the checklist and the hand-off. `notes/Strata.md`'s Results are cited by number.
+- **Research rules.** `HARNESS.md` *Evidence* and *Reproducibility* bound the phase; SHORT-CORE,
+  the one step that needed a new argument, was split off as an attack track (the PI, §1).
+- **One home per kind.** The step table and verdicts live in the design doc §2; `Strata.md`'s
+  Results are cited by number; SHORT-CORE's results by workbook S-number
+  (`notes/attacks/short-core/workbook.md`).
 
 ## Lemma checklist
 
 - [x] **The step table** (design doc §2.1): 22 rows over `main-component.tex` and `pencil.tex`.
 - [x] **Phase 39's reduction in `Pᵈ`**: `d`-general for the bare and distinct conjuncts given
   CARRIER (row 19); route B's generic conjunct fails as written and is separable (row 22).
-- [x] **The route verdict** (§2.2): neither closes as written; R2's induction with R1's base row is
-  the recon's proposal, taken by the PI (design doc §1), the induction on `d` left to Tier 2.
+- [x] **The route verdict** (§2.2), taken by the PI (§1).
 - [x] **The thresholds and the content range** (§2.5).
-- [x] **T1, T2** (§2.4): the flat formulas at `d = 4, 5, 6`; CERT's certificates at `d = 3..6`,
-  over every field (`Strata.md` Results 20–21).
-- [x] **The content-range graphs** (§2.5): 38 content cells at `d = 4, 5, 6`, all at target
-  (Result 22).
-- [x] **T4's first half** (§2.4): `G[V₁]` on `G`'s configurations at `d = 4, 5` (Result 23).
-- [x] **T3** (§2.4): SHORT's danger cells at `d = 3, 4, 5` (Result 24); X3 for
-  `k ≥ C(d−1, 2) + 3` proved (§2.3).
-- [x] **T4's second half** (§2.4): the orbit cells at `d = 3..6` (Result 25); ONE-EAR sized as
-  the motive, the insertion and X2 (§2.3).
-- [x] **T5** (§2.4): the coverage at `D = 6..21` on subdivisions of ten cores (Result 26);
-  Theorem S at `D` and the `D ≥ 10` reduction proved by hand.
-- [x] **A second read of rows 9 and 12** (design doc §2.1): no gap; GEN|CARRIER, row 12's
-  `3 ≤ k ≤ D − 2` given CERT's open ears (proved at `d ≤ 6`).
-- [ ] **SHORT-CORE** (§2.3): an attack track at `d = 4` (`k = 3, 4, 5`; sized by T3, needed by
-  T5's Petersen cells). Brief drafted (`notes/attacks/short-core/brief.md`), awaiting the PI.
-- [x] **ONE-CLASS** (§2.3; the PI's call over ONE-EAR): proved, `Strata.md` Result 27, checked
-  by `oneclass.py`. ONE-EAR leaves the coverage and waits for GENERIC.
+- [x] **T1, T2** (Results 20–21), **the content-range graphs** (Result 22), **T4** (Results 23,
+  25), **T3** (Result 24, X3's range proved), **T5** (Result 26, Theorem S at `D` proved).
+- [x] **A second read of rows 9 and 12** (§2.1): no gap.
+- [x] **ONE-CLASS** (§2.3; Result 27, `oneclass.py`): ONE-EAR leaves the coverage.
+- [x] **SHORT-CORE** (§2.3): the attack track, closed 2026-10-30 at its review 3 on the PI's word;
+  `d = 4` proved by hand, and from `d = 5` on the `k = 3` row is never needed (workbook S53, S56).
 
 ## Blockers / open questions
 
-- None. The route is settled (the PI, design doc §1 and §4).
+- None. 42d opens at the PI's word (*Hand-off*).
 
 ## Hand-off / next phase
 
-PD-STATE ran as 42b and PD-STABLE as 42c (both closed 2026-10-30). Here the next step is
-SHORT-CORE's attack track, running on branch `attack-short-core` (`notes/attacks/short-core/brief.md`). Result
-27 leaves SHORT-CORE as the coverage's only new mathematics at `d ≥ 4`: `k = 3, 4, 5` at `d = 4`,
-its `d = 3` model the chapter's `k = 3` case split on `ρ`, needed by T5's Petersen cells. Rows 9
-and 12, on which T5's cover rests, passed a second read; the track builds on (⋆) and the X3 range
-(design doc §2.3). PD-STABLE (42c, `notes/Phase42c.md`, closed) proved the embedding at every
-`d′ ≤ d` (the route), its `d′ = 3` case as the coverage consumes it, `def[6] = def[D]`. CERT's open
-ears at `d ≥ 7` (§2.3) are PD-STEPS's, for the every-`d` tier. ONE-EAR (the motive, a `Pᵈ`
-insertion lemma, X2) is GENERIC's now, deferred with it.
+Phase 42 has no open sub-phase. **The next concrete task is putting 42d's open to the PI**: which
+of PD-CARRIER, PD-STEPS and PD-COVERAGE (Phase 40's carrier, steps and coverage in `Pᵈ` on R2's
+steps, design doc §3) opens first, toward Tier 1's `P⁴` theorem; PD-REDUCTION and PD-HEAD come
+after. What 42a leaves them, each listed in design doc §3:
+- **PD-STEPS:** the `Pᵈ` short-ear step, from SHORT-CORE's workbook (S56 lists what each `k` and
+  `d` uses); `lem:deficiency-core-bound` at every `D ≥ 3` (row 17; S52 (iv) uses it, its Lean is
+  pinned at `deficiency 3`); CERT's uniform `m`-gons and open ears at `d ≥ 7` (§2.3).
+- **PD-COVERAGE:** Theorem S at `D` (§2.4 T5), ONE-CLASS (Result 27), and SHORT-CORE's S53 at
+  `d ≥ 5`.
+- **GENERIC**, deferred: ONE-EAR (the motive, a `Pᵈ` insertion lemma, X2) and route B (row 22).
+- **Tier 2, parked:** SHORT-CORE's G1 (`notes/attacks/short-core/state.md`), only if CERT's open
+  ears fail at some `d ≥ 7`.
 
 ## Decisions made during this phase
 
-- The open's decisions are the PI's, recorded verbatim in the design doc §1, as are the call of
-  ONE-CLASS over ONE-EAR (after T5) and the route (after the second reads), both 2026-10-29.
-- The step table's rows are the four recon passes' readings, cited by row; the coordinator's own
-  checks are listed under §2.1.
-- **The PI's planning defaults** (design doc §1, 2026-10-29): content-range tests first; three
-  tiered targets; GENERIC after; PD-STATE and PD-STABLE beside the research once T1 and T2 land;
-  a second read of rows 9 and 12.
-- **One driver mode per test, so earlier figures do not move:** `strata.py --content` (T1, T2),
-  `--oneear` and `--orbit` (T4), `--short` (T3, danger cells only), `--coverage` (T5), and a new
-  driver, `oneclass.py` (ONE-CLASS). Supports, fences and seeds: `Strata.md` *Evidence*. Every
-  cell is seeded by itself alone, and T5 and ONE-CLASS draw no point. T2's `D`-gon is built
-  (`cert_top`): a `{−1, 0, 1}` search found none at `d = 5, 6` in 5000 tries (measured, script
-  not retained).
-- **The second reads ran as two parallel read-only recons** (the PI, design doc §1), each briefed
-  to refute and to form its verdict before reading the table's; their probes are not retained.
-- **Proved where possible, not read off a point:** T4's one miss is forced from asserted premises;
-  T5's two reductions and ONE-CLASS's lemma are proofs by hand (design doc §2.3–2.4), checked by
-  their drivers. `oneclass.py` checks the proof's own set, not only a core's existence, and adds
-  necklaces, as small cores never have `def_6 > 0`. The lemma first posed for ONE-CLASS (empty
-  at `D ≥ 15`) gave way to the one that holds, `def_6 = 0`.
+- The open's decisions, ONE-CLASS over ONE-EAR, the route, and SHORT-CORE's rulings are the PI's,
+  verbatim in the design doc §1 and in SHORT-CORE's workbook (S25, S50, S56).
+- The step table's rows are the four recon passes' readings, cited by row (design doc §2.1).
+- One driver mode per test, so earlier figures do not move: `strata.py --content`, `--oneear`,
+  `--orbit`, `--short`, `--coverage`; `oneclass.py`; SHORT-CORE's `drivers/` (`Strata.md`
+  *Evidence*).
+- The second reads ran as two parallel read-only recons, each briefed to refute (the PI, §1).
+- Proved where possible, not read off a point: T4's one miss, T5's two reductions, ONE-CLASS and
+  SHORT-CORE are proofs by hand, each checked by its driver.

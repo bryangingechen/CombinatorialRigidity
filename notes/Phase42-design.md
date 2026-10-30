@@ -1,18 +1,19 @@
 # Phase 42 — PENCIL-D: design (cross-phase plan and recon)
 
-**Status:** opened 2026-10-29 with the PI, sub-lettered, research first. **42a** (PD-RECON,
-`notes/Phase42a.md`) is open: the step table (§2.1), the thresholds `d = 4, 5` and the content
-`def[3] ≥ C(d,2) − 2` (§2.5; T1–T5 drew on the old, wider `def[3] ≥ d − 2`), T1–T5 (§2.4) and ONE-CLASS's lemma (§2.3, Result 27) have landed, so
-**the coverage at `d ≥ 4` needs SHORT-CORE and no ONE-EAR**; ONE-EAR waits for GENERIC. The route
-is the PI's (§1): R2's steps, Result 15's embedding as the base row, any induction on `d` left to
-Tier 2. SHORT-CORE's attack track is running, on branch `attack-short-core`. **42b** (PD-STATE,
-`notes/Phase42b.md`) ran beside it and **closed 2026-10-30**: the statement layer in `Pᵈ`, its
-chapter `blueprint/src/chapter/pencil-d.tex` formalized (17 nodes), on the carrier the PI took
-(§1, option (a); §2.3 CARRIER). **42c** (PD-STABLE, `notes/Phase42c.md`) opened the same day at
-the PI's word (§1) and **closed 2026-10-30**: the embedding, the sharp deficiency lemma and `Pᵈ` at
-`def[3] ≤ 3` (Tier 0, which the PI widened from `≤ 1`, §1), the last section of `pencil-d.tex`,
-formalized (9 nodes; verdict §3). Which sub-phase opens next (§3) goes to the PI. Evidence:
-`notes/Strata.md`, Results 12–27.
+**Status:** opened 2026-10-29 with the PI, sub-lettered, research first; **no sub-phase is open**.
+**42a** (PD-RECON, `notes/Phase42a.md`) **closed 2026-10-30**: the step table (§2.1), the thresholds
+and the content `def[3] ≥ C(d,2) − 2` (§2.5), T1–T5 (§2.4), ONE-CLASS (§2.3, Result 27) and
+SHORT-CORE's attack track (§2.3; closed 2026-10-30, `notes/attacks/short-core/state.md`): the
+coverage's only new mathematics, the short ears at `d = 4`, is proved by hand, and from `d = 5` on
+the coverage never needs the 3-body short ear, given CERT's open ears. The route is the PI's (§1):
+R2's steps, Result 15's embedding as the base row, any induction on `d` left to Tier 2. **42b**
+(PD-STATE, `notes/Phase42b.md`) **closed 2026-10-30**: the statement layer in `Pᵈ`, its chapter
+`blueprint/src/chapter/pencil-d.tex` formalized (17 nodes), on the carrier the PI took (§1, option
+(a); §2.3 CARRIER). **42c** (PD-STABLE, `notes/Phase42c.md`) **closed 2026-10-30**: the embedding,
+the sharp deficiency lemma and `Pᵈ` at `def[3] ≤ 3` (Tier 0, which the PI widened from `≤ 1`, §1),
+the last section of `pencil-d.tex`, formalized (9 nodes; verdict §3). **Next: 42d's open goes to
+the PI**, which of PD-CARRIER, PD-STEPS and PD-COVERAGE (§3) first, toward Tier 1's `P⁴` theorem;
+§3 lists what each inherits. Evidence: `notes/Strata.md`, Results 12–27.
 
 This file is the phase's entry point: the target (§0), the PI's decisions (§1), the recon (§2),
 the layers by stable code (§3) and the open questions (§4). Letters are minted when a sub-phase
@@ -236,8 +237,14 @@ Result 17's `def[3] ≤ 1` one step further.
   its last two points over `y_k` and `p_b`. At `d = 3` this is the chapter's tetrahedron. **Left,
   SHORT-CORE:** `3 ≤ k ≤ C(d−1, 2) + 2` (3–5 at `d = 4`, 3–8 at `d = 5`), where `ρ`'s image in
   that quotient must supply the rest; the chapter's `k = 3` case split on `ρ` is the `d = 3` model.
-  T3 (§2.4) found no obstruction on 198 danger cells. New mathematics, now bounded. Attack brief:
-  `notes/attacks/short-core/brief.md` (DRAFT, awaiting the PI).
+  T3 (§2.4) found no obstruction on 198 danger cells. **SHORT-CORE: closed 2026-10-30, by its
+  attack track** (`notes/attacks/short-core/`; status `state.md`, results by workbook S-number).
+  `d = 4`, `k = 3, 4, 5` is proved by hand (S1–S21, S35; three readers), with base data chosen
+  general (S21); `k ≥ 4` in every `d` for every `ρ` (S35), so the `P³` step's every-`ρ` insertion
+  hypothesis transcribes there; `k = 3` at `d = 5, 6` (S28–S33). At `k = 3` the every-`ρ` form
+  fails once `κ ≥ 7 − d` (S26), so the step must use `G[V₁]`'s own `ρ`. From `d = 5` on no graph
+  past rows 1–5 needs the `k = 3` short row (S52–S53, given CERT's open ears), so `k = 3` at
+  `d ≥ 7` (G1) is parked, to revive only if CERT's open ears fail there (S56).
 - **ONE-EAR** (rows 14–15): either a motive that asks `G[V₁]` to attain on the locus where `Π_a`
   and `Π_b` meet above a general `q_x`, or another step for `k = 1, 2` at non-adjacent ends, plus
   a `Pᵈ` insertion lemma (at `d ≥ 5` every reachable hinge lies in `Λ²(A+B)`, of dimension ≤ 10).
@@ -488,7 +495,9 @@ leaves out each graph's top cell, `d = 2 + def[3]`, which also carries content.
 
 ## 3. Layers (stable codes)
 
-- **PD-RECON** (42a, open): settle R1 or R2 on paper, or refute with a certificate (§2).
+- **PD-RECON** (42a, **closed 2026-10-30**, `notes/Phase42a.md`): settle R1 or R2 on paper, or
+  refute with a certificate (§2). Verdict: R2's steps with the embedding as base row (§1, §2.2);
+  the coverage's new mathematics, SHORT-CORE, proved by hand at `d = 4` (§2.3).
 - **PD-STATE** (42b, **closed 2026-10-30**, `notes/Phase42b.md`): the `Pᵈ` statement layer,
   formalized in `Pencil/Grade/`, agreeing with Phase 39's `P³` definitions. Its dep-graph is
   `blueprint/src/chapter/pencil-d.tex`, 17 nodes: the carrier definitions (an extensor through a
@@ -522,6 +531,18 @@ leaves out each graph's top cell, `d = 2 + def[3]`, which also carries content.
      `Graph.hasGradedDistinctPencilRealization_of_deficiency_two_le_three` use the three standard
      axioms.
 - **PD-CARRIER**, **PD-STEPS**, **PD-COVERAGE**: Phase 40b–40m in `Pᵈ`, on R2's steps (§1).
+  **Handed on from PD-RECON** (42a's close; SHORT-CORE's workbook S56 has the detail):
+  - *PD-STEPS, the short-ear step (row 13).* At `d = 4`, `k = 3, 4, 5`: the `P³` factoring
+    (`Graph.X0Attains.of_openEar_splitOff`) with `D = 10`, its insertion hypothesis taken at base
+    data with (P) `p_a`, `p_b` independent and (B) `la ≠ lb` or `ρ ⊆ Λ²Π_a` (S19–S21), SHORT-CORE at
+    those base data (S1–S18, S35). At `k ≥ 4` in every `Pᵈ` the every-`ρ` insertion holds (S35), so
+    the factoring transcribes with `D` for 6 (written out at `d = 4` only, S20). At `k = 3`,
+    `d = 5, 6`: S28–S33. At `k = 3`, `d ≥ 7`: not needed (S53), given CERT's open ears.
+  - *PD-STEPS, the sparse estimates (row 17).* `lem:deficiency-core-bound` at every `D ≥ 3`, read
+    with "rigid" as `def[D] = 0` (S52 (iv)); its Lean pins are at `deficiency 3` only.
+  - *PD-COVERAGE.* Theorem S at `D` (§2.4 T5); ONE-CLASS (§2.3); and S53: from `d = 5` on, a graph
+    past rows 1–5 with a chain of two or three interior bodies has a chain with `k ≥ 4` or a core
+    at `D`, so the coverage there needs neither the `k = 3` short row nor row 15.
   **Deferred to them from PD-STATE**, each optional until a consumer needs it: Phase 40's `k = 2`
   collineation (`PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv`) re-proved
   as the grade lemma at `k := 2`, and its scale-shift
@@ -550,11 +571,11 @@ PD-STATE opened and closed as 42b on 2026-10-30, and PD-STABLE as 42c the same d
 The PI's planning defaults (§1) answer most of the calls put at the open. A session follows them
 unless a finding argues otherwise:
 - `d = 4` first, as Tier 1 of three. SHORT is attacked at `d = 4` and ONE-EAR at `d = 5`, as
-  attack tracks once T3 and T4 size them (§2.5). Both have: SHORT's attack is SHORT-CORE, `k = 3,
+  attack tracks once T3 and T4 size them (§2.5). Both have: SHORT's attack was SHORT-CORE, `k = 3,
   4, 5` at `d = 4`. ONE-EAR (the motive, the insertion and X2 at `d = 5`) has left the coverage
   (Result 27, §2.3), so it waits for GENERIC. SHORT-CORE's scope does not shrink at `d = 4`: its
   targets never occur at `def[3] ≤ 3`, and at every danger cell `def_3(G) ≥ 2d − 3` (SHORT-CORE's
-  review 2, workbook S50, branch `attack-short-core`, commit `38f41bf9`, not on master).
+  review 2, workbook S50). The track closed 2026-10-30 with `d = 4` proved by hand (§2.3).
 - The headline ships the bare and distinct conjuncts first, GENERIC after (row 22). Nondegeneracy
   enters `PencilPair` only in the generic conjunct (`Pencil/Motive.lean`), so with row 22's reading
   its `Pᵈ` lift is deferred with it.
@@ -565,7 +586,7 @@ unless a finding argues otherwise:
 
 Settled by the PI (§1): the route. R2's steps with Result 15's embedding as the base row; an outer
 induction on `d` is Tier 2's question, entering if at all through CERT's open ears at `d ≥ 7`.
-The carrier: each body's 3-space as data (§2.3 CARRIER, option (a)). Nothing is open for the PI here: SHORT-CORE's attack track is running, and the sharp deficiency range
+The carrier: each body's 3-space as data (§2.3 CARRIER, option (a)). Open for the PI: 42d's open (§3). SHORT-CORE closed 2026-10-30 (§2.3), and the sharp deficiency range
 `def[3] + 3 ≤ D′` (tight on cycles) is settled: Tier 0 widened to `def[3] ≤ 3` (§1), §2.5's content range
 restated `def[3] ≥ C(d,2) − 2` and Tier 1's reach `def[3] ≤ 7` (the dated note under §1's planning entry).
 

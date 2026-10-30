@@ -180,7 +180,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (RECONCILE 3/3: the Lean outside the phase's footprint) | the Lean's dead code, signatures, docstrings and the pebble game's search, a non-vacuity witness per main result, and the blueprint pins they move (no main result's statement changes) | ✓ Complete — dead code deleted, unneeded hypotheses dropped and the blueprint statements they reached restated, the search re-proved, the docstrings checked and a non-vacuity witness per main result outside the next phase's rows, no main result's statement changed (see `notes/Reconcile-lean-cleanup.md`; plan `notes/Reconcile.md`; round manual: `CLEANUP.md`) |
 | ⋮ Toolchain bump to Lean v4.36.0-rc1 (maintenance, cross-phase) | `lean-toolchain`, `lake-manifest.json`, `lakefile.toml` (+ renames, imports and one-line fixes in 39 Lean files) | ✓ Complete — v4.34.0-rc2 → v4.36.0-rc1, mathlib → `930ae14`, `Matroid` → `8ece630`; every gate green, all 19 main results' axioms unchanged; pushed 2026-10-25, CI green at `4c892cb6` (see `notes/Bump-v4.36.0-rc1.md`; record `notes/ToolchainBumps.md`) |
 | 41. The panel-hinge carrier and its graph (post-program) — RECONCILE-FORMAL | `Molecular/` (structural edit; sub-lettered, 41a–41e) | ✓ Complete — each hinge at its own edge's ends, and the RECONCILE program closed (see `notes/Phase41e.md`; plan `notes/Phase41-design.md`) |
-| 42. The pencil realization theorem in every dimension (post-program) — PENCIL-D | research first, then `Molecular/`, `pencil-d.tex` (sub-lettered, 42a–42c) | In progress — 42a, PD-RECON, the research; 42b ✓ PD-STATE, the statement in every dimension; 42c ✓ PD-STABLE, the pencil from a lower dimension (see `notes/Phase42a.md`, `notes/Phase42b.md`, `notes/Phase42c.md`; plan `notes/Phase42-design.md`) |
+| 42. The pencil realization theorem in every dimension (post-program) — PENCIL-D | research first, then `Molecular/`, `pencil-d.tex` (sub-lettered, 42a–42c) | In progress — 42a ✓ PD-RECON, 42b ✓ PD-STATE, 42c ✓ PD-STABLE; 42d is the PI's call (see `notes/Phase42-design.md` §3; work logs `notes/Phase42a.md`–`notes/Phase42c.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1271,36 +1271,31 @@ pencil when they contain a common `(d−3)`-flat and lie in a hyperplane, the bo
 per-body flag conditions; a theorem there implies every one of them, Katoh–Tanigawa's all-`d`
 panel theorem among them. `d = 2` (Jackson–Jordán's pin-collinear theorem) and `d = 3` (Phase 40)
 are formalized; `d = 4, 5, 6` reach the generic rank at every graph measured (36 simple graphs with
-`n ≤ 12`, 8 past that cap), and every `d` follows from Phase 40 when `def_3(G) ≤ 3`. The phase is
-research first: **PD-RECON** (42a, `notes/Phase42a.md`) asks, step by step, whether Phase 40's
-induction runs in `Pᵈ`. Then, by stable code: PD-STATE and PD-STABLE (the statement layer and the
-`def_3 ≤ 3` corollary, independent of the route), Phase 40's carrier, steps and coverage in `Pᵈ`,
-Phase 39's reduction, and the headline. PD-RECON's step table finds most of Phase 40's induction
-and Phase 39's reduction dimension-general, given routine or formal work. The short ears, the
-one-body and orbit ears and the generic statement's route B fail as written: in `P³` two bodies'
-planes always share a line, in `Pᵈ` they need not. The steps break at `d = 4` and `d = 5`, and the
-conjecture's new content at `d` is the sparse graphs with `def_3 ≥ C(d,2) − 2`. Five test modes then
-measured where the proof breaks. Every graph built there reaches the generic rank, so the
-obstruction is the proof's, not the statement's. The short ears' obstruction never occurred, and
-a construction confines their new mathematics to 3–5 interior bodies at `d = 4` (SHORT-CORE). The
-one-body ear needs new mathematics from `d = 5` (ONE-EAR), but the coverage, the case analysis
-that picks a step for each graph, needs it only on one class of graphs (ONE-CLASS). At the PI's
-call that class came first, and it is Phase 40's: a graph whose chains all have one interior body
-has a contractible core or `def_6 = 0`, and then Phase 40's witness embeds. So in every `Pᵈ` the
-coverage needs, beyond formal work, only SHORT-CORE; ONE-EAR waits for the generic conjunct.
-A second read found contraction and the two-body ear dimension-general. By the PI's defaults the
-statement layer ran beside the research as **PD-STATE** (42b, opened and closed 2026-10-30,
-`notes/Phase42b.md`): the chapter `pencil-d.tex`, all 17 nodes formalized in `Pencil/Grade/`,
-states pencil realizations in dimension `d` in the polar form with each body's plane as data (the
-PI's reading, after the open found the plain polar form disagreeing with Phase 39's), their
-agreement with Phases 39–40 at `d = 3`, and Phase 40's carrier in dimension `d`. The `def_3 ≤ 3`
-corollary then ran at the PI's word as **PD-STABLE** (42c, opened and closed 2026-10-30,
-`notes/Phase42c.md`): the last section of `pencil-d.tex`, all 9 nodes formalized, embeds a pencil
-realization of a lower dimension with the rank it gains, and proves that a connected graph's
-deficiency stops changing once `def_3 + 3 ≤ D`, a sharper range than planned, which the PI took to
-widen the corollary from `def_3 ≤ 1`. So Phase 40 gives every `Pᵈ` at `def_3 ≤ 3`
-(`Graph.x0AttainsGrade_of_deficiency_two_le_three`). SHORT-CORE's attack track is running, on
-branch `attack-short-core`; which sub-phase opens next goes to the PI (design doc §3).
+`n ≤ 12`, 8 past that cap), and every `d` follows from Phase 40 when `def_3(G) ≤ 3`. The phase ran
+research first: **PD-RECON** (42a, opened and closed 2026-10-29/30, `notes/Phase42a.md`) asked,
+step by step, whether Phase 40's induction runs in `Pᵈ`. Most of it, and Phase 39's reduction, is
+dimension-general given routine or formal work. The steps that break do so because in `P³` two
+bodies' planes always share a line and in `Pᵈ` they need not: the short ears from `d = 4`, the
+one-body and orbit ears from `d = 5`, and the generic statement's route B. Five test modes found
+every graph built to carry those configurations at the generic rank, so the obstruction is the
+proof's, not the statement's. The PI took the route: Phase 40's induction run once with `d − 2`
+heights, the embedding of a lower dimension as its base row. The coverage needs no one-body-ear
+mathematics (ONE-CLASS is Phase 40's), and its only new mathematics was the short ears with few
+interior bodies (3–5 at `d = 4`). An attack track (SHORT-CORE, closed 2026-10-30,
+`notes/attacks/short-core/state.md`) proved that step by hand at `d = 4`, the ears of 4 or more
+interior bodies in every `d`, and that from `d = 5` on the coverage never needs the 3-body short
+ear, given the long ears' certificates (CERT, open at `d ≥ 7`). Beside the research ran **PD-STATE** (42b, opened and
+closed 2026-10-30, `notes/Phase42b.md`): the chapter `pencil-d.tex`, all 17 nodes formalized in
+`Pencil/Grade/`, states pencil realizations in dimension `d` in the polar form with each body's
+plane as data (the PI's reading, after the open found the plain polar form disagreeing with Phase
+39's), their agreement with Phases 39–40 at `d = 3`, and Phase 40's carrier in dimension `d`. The
+`def_3 ≤ 3` corollary then ran at the PI's word as **PD-STABLE** (42c, opened and closed
+2026-10-30, `notes/Phase42c.md`): the last section of `pencil-d.tex`, all 9 nodes formalized, embeds
+a pencil realization of a lower dimension with the rank it gains, and proves that a connected
+graph's deficiency stops changing once `def_3 + 3 ≤ D`, a sharper range than planned, which the PI
+took to widen the corollary from `def_3 ≤ 1`. So Phase 40 gives every `Pᵈ` at `def_3 ≤ 3`
+(`Graph.x0AttainsGrade_of_deficiency_two_le_three`). No sub-phase is open: which of Phase 40's
+carrier, steps and coverage in `Pᵈ` opens next as 42d goes to the PI (design doc §3).
 The targets are three tiers: every `d` at `def_3 ≤ 3` (proved, 42c), a `P⁴` theorem (every `d` at
 `def_3 ≤ 7`, by the sharp lemma), and every `d`.
 
