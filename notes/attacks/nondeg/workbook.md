@@ -393,3 +393,388 @@ on the population under C2-same, every cell an exact certificate (caps in S11, S
 conjunct costs the coverage plus an irreducible carrier for graphs with a planar-rigid set and for the
 pendant and cut-edge arms (S15); C2-vac's costs the coverage plus N3 through the reduction (a reading,
 not checked arm by arm).
+
+---
+
+Session 2 (2026-10-30): C2-same is the definition (the PI's word, brief header). Consumer diff
+re-run at `5c9948e2`: the Lean of S1's declarations is unchanged since `97a631ba` (only
+`Induction/SparseDeficiency.lean` moved, COUNT-A's `n`-general siblings, none named by the brief);
+the definition bodies and `hasGenericPencilRealization_of_IH` re-read, no mismatch. Below,
+`t_d(G) := D(|V(G)| − 1) − def_d(G)`, `m := d − 3`, and "general" means off the zero set of a
+polynomial that is nonzero somewhere on the set in question.
+
+## S18 — the carrier: lifts over a nondegenerate `P³` realization, and the motive `RL_d`
+
+**Setting.** `K` infinite, `G` finite and simple. `𝒩(G)` is the set of C2-same realizations in
+dimension 3: `(b⁰, Π⁰)`, `b⁰_v ∈ K⁴ ∖ 0`, `Π⁰_v = n_v^⊥` a 3-space, `b⁰_w ∈ Π⁰_v` for `w ∈ N[v]`,
+N1, N3, C2(`4 − |S|`). By S7 (a) and `lem:pencil-d-agrees-three` these are Phase 39's nondegenerate
+realizations with normals `n` and points `b⁰`, the hinge of `uv` the line through `b⁰_u, b⁰_v`.
+
+**(i) An irreducible carrier at `d = 3`.** `lem:pencil-generic-steer`'s parametrization (its
+proof's first three paragraphs) is a polynomial map `σ_G` from an affine space `Γ(G)` to points and
+normals: hub normals are parameters, `b⁰_v` is the triple product of `H[v]`'s normals completed by
+auxiliary vectors, a non-hub's normal the product of its closed neighbourhood's points (completed
+by auxiliaries when `|N[v]| ≤ 2`: my reading of "any nonzero vector orthogonal to their points").
+Nondegeneracy of `σ_G(s)` is a finite list of nonvanishing conditions, so holds on an open
+`U(G) ⊆ Γ(G)`, nonempty iff `G` is feasible; and every member of `𝒩(G)` is some `σ_G(s)` up to a
+nonzero scalar at each point and normal (the steer's converse). "A general point of `𝒩(G)`" means
+`σ_G(s)` for general `s ∈ Γ(G)`; a polynomial condition on points and normals, homogeneous in each,
+is scale-invariant and so is read on `𝒩(G)` itself.
+
+**(ii) The lift space.** For `r⁰ = (b⁰, Π⁰) ∈ 𝒩(G)` let `L¹(r⁰)` be the space of `(ζ, φ)`,
+`ζ ∈ K^{V(G)}` and `φ_v` a linear functional on `Π⁰_v`, with `ζ_w = φ_v(b⁰_w)` for every `v` and
+`w ∈ N[v]`. At `λ = (λ¹, …, λ^m) ∈ L¹(r⁰)^m` the lift `R(r⁰, λ)` has `b_v = (b⁰_v, ζ¹_v, …, ζ^m_v)`
+and `Π_v = {(p, φ¹_v(p), …, φ^m_v(p)) : p ∈ Π⁰_v}` in `K^{d+1}`. The trivial lifts `ζ_v = ψ(b⁰_v)`,
+`φ_v = ψ|_{Π⁰_v}` (`ψ ∈ (K⁴)*`) lie in `L¹(r⁰)`. **Claim:** every `R(r⁰, λ)` is a C2-same
+realization in dimension `d` with hinges `C(b_u, b_v)`, and its rank depends on `b` alone.
+*Proof.* `Π_v` is a graph over `Π⁰_v`, so 3-dimensional; `b_w ∈ Π_v` for `w ∈ N[v]` is the
+defining equation; `b_u, b_v` are independent since their images `b⁰_u, b⁰_v` are. So
+`lem:pencil-d-point-configuration` (1) makes it a pencil realization with the panel-hinge rows of
+`b`. Forgetting the last `m` coordinates is injective on each `Π_v` and maps `(b, Π)` onto
+`(b⁰, Π⁰)`, which is C2-same; S14 pulls C2-same back. ∎
+
+**(iii) Pendant planes do not matter.** At a body with `|N[v]| ≤ 2` (degree at most one) every
+choice of `(ζ_w)_{w ∈ N[v]}` extends to some `φ_v` (at most two conditions at independent vectors of
+the 3-space `Π⁰_v`), and `Π⁰_v` enters no C2 condition (`H[·]` holds hubs only) and no N3 condition
+of another body. So whether `r⁰ ∈ 𝒩(G)`, the `ζ`-parts of `L¹(r⁰)` and the ranks of the lifts do
+not depend on the planes of bodies of degree at most one.
+
+**(iv) The motive.** `RL_d(G)`: at a general `r⁰ ∈ 𝒩(G)` a general `λ ∈ L¹(r⁰)^m` gives `R(r⁰, λ)`
+rank `t_d(G)`. By (ii), `RL_d(G)` gives `Generic_d(G)` under C2-same. **`RL_3` holds at every simple
+feasible `G`** (`m = 0`): `pencilPair_of_nonempty` gives a generic realization, `σ_G(s*)` up to
+scalars, which keep the rank (the steer's proof); a `t_3(G)`-minor of the rows is a polynomial in
+`s` nonzero at `s*`, and `t_3(G)` bounds every rank (`lem:relative-deficiency-rank-bound`).
+
+**(v) One witness suffices, and the pointwise form.** Let `L̃(r⁰)` allow `φ̃_v ∈ (K⁴)*`; then
+`L¹(r⁰) = L̃(r⁰)/⊕_v K·n_v`, and `L̃` is the kernel of a matrix `A(b⁰)` polynomial in the points
+alone: the planes enter only the quotient, so the `ζ`-parts and the lifts' ranks are functions of `b⁰`. Let `N` be the least `dim L̃` on `𝒩(G)`. Suppose some `r* ∈ 𝒩(G)` with `dim L̃(r*) = N` and
+some `λ*` give `R(r*, λ*)` rank `t_d(G)`. Fix a nonzero maximal minor `M` of `A(r*)`; where
+`M ≠ 0` on `𝒩(G)`, `rank A ≥ rank A(r*)` and `dim L̃ ≥ N` force `dim L̃ = N`, and Cramer's rule on
+`M`'s rows gives a kernel basis `k_1, …, k_N` polynomial in `b⁰` after scaling by `M`. With
+`λ = Σ c_i k_i`, a `t_d(G)`-minor of `R`'s rows is a polynomial `P(r, c)` with `P(r*, c*) ≠ 0`; let
+`Q_G` be `M` times a `c`-coefficient of `P` nonzero at `r*`, a polynomial in the points alone. **Every `r⁰ ∈ 𝒩(G)` with
+`Q_G(r⁰) ≠ 0` has its general lift at rank `t_d(G)`**, and `Q_G` is nonzero at `r*`, hence at a
+general point of `𝒩(G)` (pull back along `σ_G`; `Γ(G)` is irreducible). So `RL_d(G)` holds as soon
+as one such witness exists. Conversely `RL_d(G)` supplies such a `Q_G` (take `r*` general). ∎
+
+**Remark (S13's form).** When `r⁰` is the configuration `(q₀, z¹)` over an admissible picture, a
+lift is `ζ ∈ L(q₀)` (each `φ_v` is the affine function of `ζ` on `N[v]`, the planes being graphs
+over the picture), so `L¹(r⁰) = L(q₀)` and `RL_d(G)` is S13's hypothesis at the picture of a general
+point of `𝒩(G)`. S11's and S16's `--steer` cells are draws of `R(r⁰, λ)`: their `=` cells certify
+`Generic_d`, not `RL_d` (a draw does not certify `dim L̃ = N`).
+
+## S19 — the transfer: a general lift of `G` restricts to a general lift of `H`
+
+**Statement.** Let `G` be simple and feasible, `d ≥ 4`, and `H = G[V′]` with `V′ ≠ ∅`. Restriction
+`ρ` keeps the points and planes of the bodies of `H`; at `r⁰ ∈ 𝒩(G)`, `ρ(r⁰)` is a pencil
+realization of `H` in dimension 3, and `λ ↦ λ|_H` maps `L¹_G(r⁰)` into `L¹_H(ρ r⁰)` (`N_H[v] ⊆
+N_G[v]`, and `Π⁰_v` contains `b⁰(N_G[v])`). Suppose
+- **(T1)** there is a polynomial `E` in `H`'s points and normals, homogeneous in each and nonzero
+  somewhere on `𝒩(H)`, such that every `r_H ∈ 𝒩(H)` with `E(r_H) ≠ 0` agrees with `ρ(r)` for some
+  `r ∈ 𝒩(G)`, except perhaps at the planes of bodies of degree at most one in `H`;
+- **(T2)** at a general `r⁰ ∈ 𝒩(G)`, the `ζ`-part of `λ ↦ λ|_H` maps `L¹_G(r⁰)` onto that of
+  `L¹_H(ρ r⁰)`.
+
+Then `H` is feasible, and if `RL_d(H)`, at a general `r⁰ ∈ 𝒩(G)` a general `λ ∈ L¹_G(r⁰)^m` gives
+`R(r⁰, λ)|_H = R(ρ r⁰, λ|_H)` the rank `t_d(H)`.
+
+**Proof.** Feasibility: `E ≠ 0` somewhere on `𝒩(H)`, so `𝒩(H) ≠ ∅`. Take `Q_H` from S18 (v) and
+`s′ ∈ U(H)` with `(E·Q_H)(σ_H s′) ≠ 0` (`Γ(H)` is irreducible and both are nonzero somewhere on
+`σ_H(U(H))`). By (T1), `σ_H(s′)` agrees with `ρ(r)` for some `r ∈ 𝒩(G)` off the planes of bodies of
+degree at most one, and `r = σ_G(s)` up to scalars. By S18 (iii) and homogeneity,
+`ρσ_G(s) ∈ 𝒩(H)` and `Q_H(ρσ_G(s)) ≠ 0`, as `Q_H` reads the points only (S18 (v)). Both conditions on `s` are open in `Γ(G)` (each a nonvanishing of a
+polynomial in `s`, `ρσ_G` being polynomial), and hold at `s`, so at a general `s`. There the set of
+`ζ`-parts of `λ_H ∈ L¹_H(ρσ_G s)^m` whose lift attains is a nonempty open subset of a vector space,
+and its preimage under the linear surjection of (T2) is a nonempty open subset of `L¹_G(σ_G s)^m`. ∎
+
+**How a step uses it.** If also `R(r⁰, λ)` has rank at least `rank R(r⁰, λ)|_H + c` at a general
+lift and `t_d(G) ≤ t_d(H) + c`, then `R(r⁰, λ)` attains `t_d(G)` at a general point of `G`'s family
+(where `dim L̃_G` is least, an open condition met at a general `r⁰`), and S18 (v) gives `RL_d(G)`.
+For two restrictions at once (S21) apply the proof to each and intersect the open sets.
+
+## S20 — `RL_d` at few bodies, at the triangle, and across a disconnection
+
+**Statement.** Let `d ≥ 4` and `G` simple and feasible. (α) If `|V(G)| ≤ 2`, `RL_d(G)`. (τ) If `G`
+is a triangle, `RL_d(G)`. (β) If `V(G) = V₁ ⊔ V₂`, both nonempty, with no edge between, and
+`RL_d(G[V_i])` for `i = 1, 2`, then `RL_d(G)`.
+
+**Proof.** In each case every lift is checked directly (S18 (v): one witness at a point where
+`dim L̃` is least suffices, and here the rank is the same at every lift, so at that point too).
+(α) One body: rank `0 = t`. Two bodies and an edge: N1 keeps `b_u, b_v` independent at every lift,
+rank `D − 1`, and `def_d = 1` (the singletons: `D − (D − 1)`), so `t = D − 1`. No edge: rank `0`,
+`def_d = D`, `t = 0`. (τ) No body is a hub, so N3 keeps `b_1, b_2, b_3` independent at every lift;
+the hinges `b_i ∧ b_j` are three joins of independent vectors, independent in `Λ²`, so the cycle is
+rigid (`lem:cycle-realization-rigid`'s argument: a motion has `t₁₂C₁₂ + t₂₃C₂₃ + t₃₁C₃₁ = 0`), rank
+`2D`; `def_d = 0` (singletons `2D − 3(D − 1) < 0`, two parts `D − 2(D − 1) < 0`). (β) Every closed
+neighbourhood and closed hub-neighbourhood lies in one side, so `𝒩(G) = 𝒩(G₁) × 𝒩(G₂)`,
+`L¹_G = L¹_{G₁} × L¹_{G₂}` and the rows split; the ranks add, and `def_d(G) = def_d(G₁) + def_d(G₂) +
+D` (S15 (β)), so `t_d(G) = t_d(G₁) + t_d(G₂)`. With `Q_{G₁}·Q_{G₂}` (S18 (v)) a general point of each
+side attains. The sides are feasible: a C2-same realization of `G` restricts to one of each. ∎
+
+## S21 — `RL_d` across a cut edge with two sides of at least two bodies
+
+**Statement.** Let `d ≥ 4`, `G` simple and feasible, `uv` the only edge between `V₁ ∋ u` and
+`V₂ ∋ v`, `|V₁|, |V₂| ≥ 2`, and `G₁ = G[V₁ ∪ {v}]`, `G₂ = G[V₂ ∪ {u}]`. If `RL_d(G₁)` and
+`RL_d(G₂)`, then `RL_d(G)`.
+
+**Proof.** *Restriction to a side is nondegenerate.* Of the bodies of `G₁`, only `v` changes degree,
+to one; it is not a hub of `G₁`, its N3 is N1, and `H_{G₁}[u] ⊆ H_G[u]`; every other body keeps its
+closed neighbourhood and closed hub-neighbourhood. So `ρ₁` maps `𝒩(G)` into `𝒩(G₁)`.
+*(T1).* Given any `r₁ ∈ 𝒩(G₁)`, `r₂ ∈ 𝒩(G₂)`, the `P³` cut arm (`lem:pencil-pair-loop-base-cut`'s
+proof, as `lem:pencil-cut-case`) moves `r₂` by an automorphism `g` fixing the lines of `b⁰_u, b⁰_v`
+and avoiding finitely many subspaces, and joins: `u`'s plane from `r₁`, `v`'s from `g r₂`. That
+proof takes the two sides' realizations as given, so it applies to every pair; the result is in
+`𝒩(G)` and agrees with `r₁` on `G₁` except at the plane of `v`, of degree one in `G₁`. So (T1) holds
+with `E = 1`, for each side.
+*(T2).* Given `λ₁ ∈ L¹_{G₁}(ρ₁ r⁰)`, take the trivial lift of a `ψ ∈ (K⁴)*` extending `λ₁`'s `φ_v`
+(a functional on `Π⁰_v` of `r⁰`, which `G₁` constrains only at `b⁰_u, b⁰_v`) on `V₂ ∪ {u}`, and
+replace its `φ_u` by `λ₁`'s (`G₂` constrains `φ_u` only at `b⁰_u, b⁰_v`, where both agree). Glued,
+this is in `L¹_G(r⁰)`: each closed neighbourhood of `G` is one of `G₁` (bodies of `V₁`) or of `G₂`
+(bodies of `V₂`). So `L¹_G(r⁰) → L¹_{G_i}(ρ_i r⁰)` is onto, `i = 1, 2`.
+*Rank.* By S19 for each side, a general lift of a general `r⁰ ∈ 𝒩(G)` restricts to rank `t_d(G_i)`
+on both (two nonempty open subsets of the irreducible `L¹_G(r⁰)^m`). The row spaces `R_i` of `G_i`
+meet in the rows of `uv`: a combination of `R₁` supported on the columns of `u, v` is a multiple of
+`uv`'s rows plus a combination of `G[V₁]`'s rows supported on `u`'s column alone, which is zero (each
+row has opposite blocks at its two ends). So `rank G = rank G₁ + rank G₂ − (D − 1)`, N1 giving the
+edge rank `D − 1`, and `t_d(G) = t_d(G₁) + t_d(G₂) − (D − 1)` (S15 (γ)). ∎
+
+## S22 — `RL_d` across a pendant body
+
+**Statement.** Let `d ≥ 4`, `G` simple and feasible on at least three bodies, `v` of degree one with
+neighbour `u`, and `G₁ = G − v`. If `RL_d(G₁)`, then `RL_d(G)`.
+
+**Proof.** *(T1).* `v` is not a hub and is the only neighbour `G₁` takes from any body, so
+`lem:pencil-generic-steer` (a) gives `r ∈ 𝒩(G)` with `ρ(r) ∈ 𝒩(G₁)`. Let `E` be the product of
+`G`'s conditions that read only bodies of `G₁` — C2 at the sets containing `u` when `u` is a hub of
+`G` but not of `G₁` — as minors (S7 (c)); `E(ρ r) ≠ 0`. Given `r₁ ∈ 𝒩(G₁)` with `E(r₁) ≠ 0`, extend:
+`b⁰_v` general in `Π⁰_u`, and `Π⁰_v` any 3-space through `b⁰_u, b⁰_v`. If `u` has at least two
+neighbours in `G₁`, `Π⁰_u` is `r₁`'s plane (for a non-hub of `G₁`, N3 makes it the span of its three
+closed-neighbourhood points); if one, `u` is a non-hub of `G` with `N_G[u] = {u, v, w}` and its plane
+becomes `span(b⁰_u, b⁰_v, b⁰_w)`, a change at a body of degree one in `G₁`. N1 at `uv` and N3 at `v`
+and at a non-hub `u` hold for general `b⁰_v`; `v` enters no `H[·]`; the C2 conditions at `u`'s plane
+are `E`. *(T2).* Given `λ₁`, set `ζ_v := φ_u(b⁰_v)` (if `u` has one neighbour in `G₁`, `ζ_v` is free
+and `φ_u` is the functional with the values of `ζ` at `b⁰_u, b⁰_v, b⁰_w`), and `φ_v` any functional
+on `Π⁰_v` with the values `ζ_u, ζ_v` at `b⁰_u, b⁰_v`. Onto. *Rank.* `uv`'s `D − 1` rows are the only
+ones reading `v`'s column, so `rank G = rank G₁ + D − 1`; `def_d(G) = def_d(G₁) + 1`
+(`lem:deficiency-cut-vertex` at `u`, `def_d(K₂) = 1`), so `t_d(G) = t_d(G₁) + D − 1`. S19 finishes. ∎
+
+## S23 — `RL_d` across a pendant triangle
+
+**Statement.** Let `d ≥ 4`, `G` simple and feasible, with adjacent `x₁, x₂` of degree two both joined
+to `c` of degree at least four, and `H = G − {x₁, x₂}`. If `RL_d(H)`, then `RL_d(G)`.
+
+**Proof.** *(T1).* Only `c` can stop being a hub, and the neighbours it loses are not hubs, so
+`lem:pencil-generic-steer` (a) gives `r ∈ 𝒩(G)` with `ρ(r) ∈ 𝒩(H)`; `E` is the product of `G`'s C2
+conditions at the sets containing `c` (minors in `H`'s planes, nonzero at `ρ(r)`). In `G`, `Π⁰_c`
+contains `b⁰(N_G[c]) ⊇ b⁰(N_H[c])`, which spans `H`'s plane of `c` (as a hub, or by N3 if `c` has
+degree two in `H`); so `G` and `H` give `c` one plane. Given `r_H ∈ 𝒩(H)` with `E ≠ 0`, put
+`b⁰_{x₁}, b⁰_{x₂}` general in `Π⁰_c` and `Π⁰_{x_i} = Π⁰_c`: N3 at `x_i` (`b⁰_c, b⁰_{x₁}, b⁰_{x₂}`
+independent) and N1 hold, `H[x_i] = {c}` asks nothing, and the rest is `E` or `H`'s own conditions.
+*(T2).* Given `λ_H`, `ζ_{x_i} := φ_c(b⁰_{x_i})` and `φ_{x_i} := φ_c`; the conditions at `x₁, x₂`
+(closed neighbourhood `{x₁, x₂, c}`) and the new ones at `c` hold. Onto (indeed bijective).
+*Rank.* At every lift `b_c, b_{x₁}, b_{x₂}` are independent (their images are), so the triangle's
+three hinges are independent and it is rigid (S20 (τ)); its bodies move with `c`, the motion spaces
+of `G` and `H` agree, and `rank G = rank H + 2D`. `def_d(G) = def_d(H) + def_d(K₃) = def_d(H)`
+(`lem:deficiency-cut-vertex` at `c`; S20 (τ)), so `t_d(G) = t_d(H) + 2D`. S19 finishes. ∎
+
+## S24 — `RL_d` across a good ear: the lifts of `G` are a hyperplane `ker μ`, free when `μ = 0`
+
+**Setting.** `d ≥ 4`; `G` simple, feasible, two-edge-connected on at least four bodies, with a
+planar-rigid set; `x` of degree two with hub neighbours `a, b` and `def_3(G − x) ≤ def_3(G)`, as
+`lem:pencil-rigid-good-ear` gives; `H = G − x`. Then `a ≁ b` (else `xab` is a triangle with two
+hubs, `lem:pencil-feasible-hub-conditions`).
+
+**Statement.** (1) `def_d(H) = def_d(G)`, so `t_d(G) = t_d(H) + D`. (2) (T1) holds. (3) For
+`r⁰ ∈ 𝒩(G)`, restriction identifies `L¹_G(r⁰)` with `ker μ ⊆ L¹_H(ρ r⁰)`, where
+`μ(λ) := φ_a(b⁰_x) − φ_b(b⁰_x)`. (4) If `μ = 0` on `L¹_H(ρ r⁰)` at a general `r⁰`, then
+`RL_d(H) ⟹ RL_d(G)`. (5) `μ = 0` at a general `r⁰` whenever `a` and `b` have two common
+neighbours in `H` (the case **E2**; **E1**, **E0**: one, none).
+
+**Proof.** (1) The good-ear lemma's proof finds `X ⊆ V(H)` with `a, b ∈ X`, `|X| ≥ 3`, `s(X) ≤ 1`
+and `s(Z) ≥ 1` for `Z ⊆ X`, `|Z| ≥ 2`. Then `def_3(G[X]) = 0` (`lem:deficiency-tight-rigid`),
+`def_d(G[X]) = 0` (`lem:deficiency-rigid-higher`), `def_d(H; a, b) = def_d(H)`
+(`lem:deficiency-merge-rigid` (2), `D ≥ 1`), and `def_d(H) ≤ def_d(G)` (`lem:deficiency-ear-merge`,
+`k = 1`). Conversely every partition of `V(G)` has value at most its restriction's: with `x` alone,
+lower by `2(D − 1) − D`; otherwise no fewer crossing edges. So `def_d(G) ≤ def_d(H)`.
+(2) As in `lem:pencil-generic-one-ear`'s proof: an end of degree three is not a hub of `H` and
+loses only `x`, not a hub, so `lem:pencil-generic-steer` (a) gives `r ∈ 𝒩(G)` with `ρ(r) ∈ 𝒩(H)`.
+`E` collects, as minors in `H`'s points and planes, `G`'s C2 conditions at the sets containing `a`
+or `b`, `Π⁰_a ≠ Π⁰_b`, and "`b⁰_a ∉ Π⁰_b` or `b⁰_b ∉ Π⁰_a`" (the one-ear proof's
+`p_a·n_b ≠ 0` or `p_b·n_a ≠ 0`); `E(ρ r) ≠ 0`. `G` and `H` give `a` one plane (`b⁰(N_H[a])` spans
+`H`'s, as a hub or by N3), and `b`. Given `r_H` with `E ≠ 0`, `Π⁰_a ∩ Π⁰_b` is 2-dimensional and
+meets `span(b⁰_a, b⁰_b)` in dimension at most one; put `b⁰_x` general in it and
+`Π⁰_x = span(b⁰_a, b⁰_x, b⁰_b)`: N3 and N1 at `x`, and `H[x] = {a, b}` asks `Π⁰_a ≠ Π⁰_b`.
+(3) A lift of `G` restricts to one of `H`, and `ζ_x = φ_a(b⁰_x) = φ_b(b⁰_x)` forces `μ = 0`.
+Conversely, given `λ ∈ ker μ`, `ζ_x := φ_a(b⁰_x)` and `φ_x` the functional on `Π⁰_x` with values
+`ζ_a, ζ_x, ζ_b` meet the conditions at `a`, `b` (`x ∈ N_G[a], N_G[b]`) and `x`. Injective, as `λ`
+fixes `ζ_x` and `φ_x`.
+(4) With `μ = 0`, (T2) holds, and S19 gives `R(r⁰, λ)|_H` rank `t_d(H)` at a general lift of a
+general `r⁰`. The restriction of motions `M(G) → M(H)` is injective, as `S_x` lies in
+`S_a + K·C(b_a, b_x)` and `S_b + K·C(b_b, b_x)`, two independent lines of directions (`b_a, b_x,
+b_b` are independent, their images are). So `rank G ≥ rank H + D = t_d(H) + D = t_d(G)` by (1).
+(5) Let `y, w` be common neighbours of `a, b` in `H`. `b⁰_x, b⁰_y, b⁰_w ∈ Π⁰_a ∩ Π⁰_b`, of dimension
+two. At a general `r⁰`, `b⁰_y, b⁰_w` are independent: `y ≁ w` (a non-hub `y` has `N(y) = {a, b}`, and
+a hub `y ~ w` makes `ayw` a triangle with two hubs), so `b⁰_w` does not read `y`'s steer parameters,
+while these (`y`'s auxiliaries if `H[y] = {a, b}`; `y`'s normal if `H[y] = {y, a, b}`) move `b⁰_y`
+over a dense subset of `Π⁰_a ∩ Π⁰_b`; the open set where they are independent meets `U(G)`. Then
+`b⁰_x = αb⁰_y + βb⁰_w` and `φ_a(b⁰_x) = αζ_y + βζ_w = φ_b(b⁰_x)`. ∎
+
+**What is left at a good ear.** When `μ ≠ 0` (E0, E1), `R(r⁰, λ)|_H` ranges over `(ker μ)^m`, a
+proper subspace of `L¹_H^m` of codimension `m`: the lifts of `H` in which `Π_a ∩ Π_b` contains a
+point over `b⁰_x`. `RL_d(H)` speaks of the general point of `L¹_H^m`, not of `(ker μ)^m`. This is
+ONE-EAR's motive (design doc §2.3), inside the C2-same family. S27 states it.
+
+## S25 — `RL_d` without a planar-rigid set, from the coverage
+
+**Statement.** Let `d ≥ 4` and `G` satisfy the standing hypotheses of `sec:main-component` (simple,
+connected, minimum degree at least two), be feasible, and have `def_2(G[Y]) ≠ 0` for every `Y` of
+at least two bodies. If the general configuration of `G` attains in dimension `d`
+(`def:pencil-d-x0-attains`), then `RL_d(G)`.
+
+**Proof.** Let `𝒯` be the configurations `(q, z¹)`, `q` admissible and `z¹ ∈ L(q)`; `𝒩_c ⊆ 𝒯` those
+in `𝒩(G)` (open in `𝒯`); `B ⊆ 𝒯` those with `dim L(q)` least, `3 + def_2(G)` (Jackson–Jordán,
+`thm:pencil-jj-equality`): open in `𝒯` by semicontinuity, and irreducible, a bundle of linear spaces
+of constant dimension over an open set of pictures. `thm:pencil-x0-base-generic`'s proof puts a
+configuration over a general picture in `𝒩_c`, so `B ∩ 𝒩_c` is nonempty and open in both, hence
+dense in both. A general change of coordinates of `K⁴` makes every `b⁰_v` meet `w ≠ 0` and every
+`Π⁰_v` miss `e_z`, keeping `𝒩(G)`, lifts and ranks; then `r⁰` is the configuration of its picture
+(`z¹` is affine on each `N[v]`, `Π⁰_v` being a graph over `(x, y, w)`). So a polynomial condition
+nonzero somewhere on `B ∩ 𝒩_c` holds at a general point of `𝒩(G)`. At `(q, z¹) ∈ B`,
+`L¹ = L(q)` (S18's remark) and the lifts are the configurations `(q, z¹, ζ¹, …, ζ^m)`,
+`ζ ∈ L(q)^m`. The pairs `(q, z)`, `z ∈ L(q)^{d−2}`, at rank `t_d(G)` are open in the bundle over `B`'s
+pictures and, by the coverage, nonempty over every picture off a nonzero polynomial; their
+projection forgetting `z², …, z^{d−2}` is a nonempty open subset of `B`, and at its points some lift
+attains. Such a point with `dim L̃` least is a witness for S18 (v). ∎
+
+**Remark.** This is S14's corollary in the motive's form; the coverage itself is the bare and
+distinct conjuncts' business (42d), not this track's.
+
+## S26 — the reduction: `RL_d` everywhere, given the coverage and the costly ears
+
+**Statement.** Let `K` be infinite and `d ≥ 4`. Suppose
+- **(A)** the general configuration attains in dimension `d` at every graph satisfying the
+  standing hypotheses with no planar-rigid set, on at least four bodies; and
+- **(B)** at every `(G, x)` as in S24 with `μ ≠ 0` at a general `r⁰` (E0, E1), `RL_d(G − x) ⟹
+  RL_d(G)`.
+
+Then `RL_d(G)`, hence `Generic_d(G)` under C2-same, at every simple feasible `G` with a body: the
+`Pᵈ` generic conjunct, with Phase 39's antecedent (S9).
+
+**Proof.** Strong induction on `|V(G)|`, following `pencilPair_of_IH`'s case split; every smaller
+graph used is simple and, by (T1) in each step, feasible. At most two bodies: S20 (α). Disconnected:
+S20 (β). Connected, not two-edge-connected, at least three bodies: a cut edge `uv`; both sides with
+at least two bodies, S21; else one side is a single body of degree one, S22. Two-edge-connected and
+simple: three bodies, a triangle (each body has degree two), S20 (τ); at least four bodies and no
+planar-rigid set, (A) and S25 (two-edge-connected gives the standing hypotheses, as in
+`thm:pencil-generic-step`); otherwise `lem:pencil-rigid-good-ear`, whose hub hypotheses are
+`lem:pencil-feasible-hub-conditions` (S9: `G` is `P³`-feasible), gives a pendant triangle (S23) or a
+good ear `x`: `μ = 0`, S24 (4), including every E2 ear (S24 (5)); `μ ≠ 0`, (B). ∎
+
+**What it settles.** O6b: every arm of the reduction lifts under C2-same at every `d`, once the
+motive is `RL_d` rather than `Generic_d` (S20–S23); `RL_d` is the strengthening S15 asked for, an
+irreducible carrier (S18 (i)) with the lifts as fibres. O6a: route B's case (ii) lifts except at
+the costly good ears (B); case (i) is the coverage (A). `RL_3` holds everywhere (S18 (iv)).
+
+## S27 — the outer step: `RL` rises with `d` where the deficiency does not drop
+
+**Statement.** Let `G` be simple, feasible and connected, `3 ≤ d′ ≤ d`, `def_{d′}(G) = def_d(G)`.
+Then `RL_{d′}(G) ⟹ RL_d(G)`. So `RL_d(G)` holds whenever `def_3(G) = def_d(G)` (S8 in the motive's
+form), and, by an outer induction on `d`, S26's (B) is needed only at `(G, d)` with
+`def_{d−1}(G) > def_d(G)` (call it **(B′)**).
+
+**Proof.** At a general `r⁰`, a general `λ′ ∈ L¹(r⁰)^{d′−3}` attains `t_{d′}(G)`. As `0 ∈ L¹(r⁰)`,
+`λ = (λ′, 0, …, 0)` is a lift in dimension `d`, and `R(r⁰, λ)` is the image of `R(r⁰, λ′)` under
+the embedding `ι` (zero coordinates appended). By `lem:pencil-d-embed-realization` (`G` connected)
+its rows span `t_{d′}(G) + (D − D′)(|V(G)| − 1) = D(|V(G)| − 1) − def_{d′}(G) = t_d(G)`. One lift of a
+general `r⁰` attains, so S18 (v) applies. In S26's induction at dimension `d`, a costly ear at `G`
+with `def_{d−1}(G) = def_d(G)` is then settled by `RL_{d−1}(G)`, the outer hypothesis. ∎
+
+## S29 — at the lemma's own ear, `μ` reads only `X`, and vanishes when `X` lifts trivially
+
+**Setting.** `(G, x, a, b)` as in S24, with `x, a, b` in a minimal planar-rigid set `W₀`
+(`s(W₀) ≤ 0`, `s(Z) ≥ 1` for `Z ⊊ W₀`, `|Z| ≥ 2`; `s = s_2`), as `lem:pencil-rigid-good-ear`'s proof
+chooses its ear (its `y` is our `x`); `X := W₀ ∖ {x}`. Call this a **`W₀`-ear**.
+
+**Statement.** (1) `a` and `b` each have at least two neighbours in `X`; `G[X]` has minimum degree at
+least two, `s(X) = 1` and `def_2(G[X]) = 1`. (2) At a general `r⁰ ∈ 𝒩(G)`, `span b⁰(N_{G[X]}[a]) =
+Π⁰_a` (and at `b`), so `μ(λ) = μ_X(λ|_X)` with `μ_X(λ′) := φ′_a(b⁰_x) − φ′_b(b⁰_x)` on
+`L¹_X := L¹_{G[X]}(r⁰|_X)`, `φ′_a` determined by `ζ′` on `N_{G[X]}[a]`. (3) `μ_X` vanishes on the
+trivial lifts, which have dimension 4 in `L¹_X`. Hence **if `dim L¹_X = 4` at a general `r⁰`, the
+ear is free** (`μ = 0`) and S24 (4) gives `RL_d(G − x) ⟹ RL_d(G)`. The condition is open on
+`𝒩(G)`, so one `r ∈ 𝒩(G)` with it suffices. Call it **(W)**: *at a general point of `𝒩(G)`, the
+restriction to `X` lifts to `P⁴` only trivially.* In picture form, `dim L_{G[X]}(q₀|_X) = 4 =
+3 + def_2(G[X])`: the picture of `X` is not special for `G[X]`.
+
+**Proof.** (1) Every body of `W₀` has at least two neighbours in `W₀` (the lemma's proof). If `a` had
+only `x` and one more, `a′`, then `x` and `a` would be adjacent bodies of `W₀` each with at most one
+neighbour in `W₀ ∖ {x, a}` (`b` and `a′`), and the lemma's triangle argument makes `W₀` the
+triangle `{x, a, b}`, against `a ≁ b`. So `a` has at least three neighbours in `W₀`, at least two in
+`X`; likewise `b`; the other bodies of `X` keep their `W₀`-neighbours, as `x`'s are `a, b`. Removing
+`x` and its two edges raises `s` by `−3 + 4`, so `s(X) = s(W₀) + 1 ≤ 1`, and `s(X) ≥ 1` by
+minimality. `def_2(G[X])`: the singletons give `s(X) = 1`; a partition with a part `Z`,
+`2 ≤ |Z| < |X|`, has value at most `s(X) − s(Z) ≤ 0` (`lem:deficiency-singleton-bound`); `{X}`
+gives `0`. (2) Let `y, y′` be neighbours of `a` in `X`. `y ≁ y′` or neither is a hub (a triangle
+`ayy′` has at most the hub `a`), so neither point reads the other's steer parameters, and these move
+`b⁰_y` (resp. `b⁰_{y′}`) over a dense subset of `S_y := Π⁰_a ∩ ⋂_{h ∈ H[y] ∖ {a, y}} Π⁰_h`, which
+is `Π⁰_a` or a 2-space missing `b⁰_a` (a hub `h ∈ H[y]` adjacent to `a` would close a triangle `ayh`
+with two hubs). A general `b⁰_y ∈ S_y` is independent of `b⁰_a`, and `S_{y′} ⊄ span(b⁰_a, b⁰_y)`
+(it is 3-dimensional, or a 2-space missing `b⁰_a`), so a general `b⁰_{y′}` completes an independent
+triple: an open condition meeting `U(G)`. Then `φ_a` on `Π⁰_a` is fixed by `ζ` on `N_{G[X]}[a] ⊆ N_H[a]`, and
+`λ|_X ∈ L¹_X` as `N_{G[X]}[v] ⊆ N_H[v]`. (3) A trivial lift has `φ_a = φ_b = ψ`. The points of `X`
+span `K⁴`: were they in one 3-space, it would be `Π⁰_a` and `Π⁰_b` (each spanned by points of
+`N_{G[X]}[·]`, by (2)), against C2 at `x`; so `ψ ↦ (ψ(b⁰_v))_{v ∈ X}` is injective. If
+`dim L¹_X = 4`, `L¹_X` is the trivial lifts and `μ_X = 0`. Openness: `dim L̃_{G[X]}` is upper
+semicontinuous in the points (S18 (v)), and `dim L¹_X ≥ 4` always. ∎
+
+**Remark.** The trivial lifts are, in picture form, the affine heights and `z¹|_X`; so (W) says
+`L_{G[X]}(q₀|_X) = Aff ⊕ ⟨z¹|_X⟩`, and `μ_X(z¹) = 0` is `q_x` on the line where `Π_a` and `Π_b` meet:
+in `P³`, the one constraint `W₀` puts on a nondegenerate picture. What could break (W) is the rest of
+`G` making `X`'s picture special, e.g. a hub outside `W₀` with four neighbours in `X`, which puts
+four points of `X` in one plane (a condition on `q|_X` through `z¹`); whether such a locus lies in
+`G[X]`'s jump locus is the open question.
+
+## S30 — (W) holds at every `W₀`-ear of the populations, certified; costly ears are never `W₀`-ears
+
+**Statement.** `oneear.py` (`notes/attacks/nondeg/drivers/`), each run with `PYTHONHASHSEED=0`:
+`--pop brief --seed 1`, `--pop d4 --seed 1`, `--pop geng --n 5 6 7 8 --seed 1`,
+`--pop geng --n 9 --seed 1`. The case-(ii) graphs (simple, two-edge-connected, at least four
+bodies, hub conditions, a planar-rigid set) are 8, 6, 46 and 128 (of `geng -c -d2`'s 8021
+graphs on 5–8 vertices and 197772 on 9, one per isomorphism class; `K_{2,3}` is in three of the
+four). At each, one steer draw `r⁰` is C2-same, checked exactly (no draw degenerate), so all 188
+are feasible. Then:
+- **(W) holds at every `W₀`-ear, for every minimal `W₀` through it: 24, 12, 102 and 340 ears.**
+  Each is `dim L_{G[X]}(q₀|_X) = 4` at the draw, the least value possible (S29 (3)); as (W) is open
+  and one point suffices (S29), **each is an exact certificate** that the ear is free at a general
+  `r⁰`, so `RL_d(G − x) ⟹ RL_d(G)` there at every `d ≥ 4`.
+- Good ears in all: 24, 12, 107, 375 (E0 1/0/2/49, E1 2/0/21/123, E2 21/12/84/203). **Costly at
+  the draw** (`dim L_G(q₀) < dim L_H(q₀|_H)`): 0, 0, 5, 35, **none a `W₀`-ear**; all have `κ` of
+  rank 1 (`κ(λ) := (φ_a − φ_b)|_{Π⁰_a ∩ Π⁰_b}`, whose value at `b⁰_x` is `μ`; trivial on E1's `b⁰_y`) except two E0 ears at `n = 9` (rank 2). Costly-at-a-draw is measured, not certified (each
+  dimension is read from above).
+- Every graph has a free choice (a pendant triangle or a certified-free `W₀`-ear), so no `(G, d)`
+  cell needed (B′), and the driver drew none.
+
+**Consequence.** With S26, S29 and the good-ear lemma (which always offers a `W₀`-ear or a pendant
+triangle): at every simple feasible graph on at most nine bodies, `RL_d`, hence `Generic_d` under
+C2-same, holds at every `d ≥ 4` given (A) on at most nine bodies. The induction meets only smaller
+graphs; those with a planar-rigid set that are two-edge-connected are in the enumeration, and the
+arms (S20–S23) are proved in general. Population and caps: as listed, one draw per graph, seed 1,
+`COORD = 1000`.
+
+## S31 — how the rest of `G` meets a minimal planar-rigid set
+
+**Statement.** Let `G` be feasible (hub conditions) and `W₀` a minimal planar-rigid set of `G` in
+which every body has at least two neighbours (as in the good-ear lemma's proof). Every body `u` of `G`
+outside `W₀` has at most two neighbours in `W₀`, and they are hubs; every body of `W₀` with a
+neighbour outside `W₀` is a hub. In particular no body outside `W₀` puts four points of `X` in one
+plane, S29's remark's danger.
+
+**Proof.** A neighbour `w ∈ W₀` of `u` has its two neighbours in `W₀` and `u`, so degree at least
+three. If `u` had three neighbours in `W₀`, all hubs: a hub `u` would have `|H[u]| ≥ 4`, and a
+non-hub has degree at most two. ∎
+
+**Remark.** So `G − W₀` meets `W₀` only through hub planes, at most two per outside body, and
+those incidences (`b⁰_u ∈ Π⁰_w ∩ Π⁰_{w′}`) are satisfiable at any realization of `W₀` with
+`Π⁰_w ≠ Π⁰_{w′}`. A proof of (W) would extend a realization of `G[W₀]` that is general for `G[X]`
+(with `x` on the line `Π⁰_a ∩ Π⁰_b`) to a nondegenerate realization of `G`; S31 removes the
+obvious closed obstruction, but the outside may hold planar-rigid sets of its own that share hubs
+with `W₀`, whose special pictures (S10) could pull `X`'s along. That extension is the open step.

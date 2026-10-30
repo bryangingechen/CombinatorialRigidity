@@ -1,65 +1,68 @@
 # Attack nondeg — state
 
-Sessions so far: 1 · last session: 2026-10-30 · baseline HEAD: 97a631ba
+Sessions so far: 2 · last session: 2026-10-30 · baseline HEAD: 5c9948e2
 
 ## Statement <!-- budget 10 -->
-The brief's §3 (cleared 2026-10-30): for each `d ≥ 3` a predicate `Nondeg_d(G, F, b, Π)` on
-`HasPencilPlaneRealization` data meeting (a) agreement at `d = 3` through the polarity with
-`IsNondegPencilRealization` (template: `hasGradedDistinctPencilRealization_two_iff`), (b) N1 on `b`
-(`HasGradedDistinctPencilRealization`'s link independence), (c) openness; per candidate the verdict on
-`G.Simple → Feasible_d(G) → Generic_d(G)`, the `Pᵈ` form of `PencilPair`'s first conjunct, `d = 3, 4, 5`.
-Consumer diff (S1): the brief's §1 matches the Lean at `97a631ba`. Unused: `X0Gen`'s `htec`, `hV`, `hIH`
-bear on the route (O6), not the definition; `n` is read at `k + 1`; `[Infinite K]` enters only through
-general choices (S9, S13, S14), and every figure is exact over `ℚ`.
+C2-same is the definition (the PI's word after session 1, brief header): N1, N3 on `b`, and
+`dim ⋂_{w∈S} Π_w ≤ 4 − |S|` for `S ⊆ H[v]`, `|S| ≥ 2`. Target: the `Pᵈ` form of `PencilPair`'s first
+conjunct, `G.Simple → PencilNondegFeasible K G → Generic_d(G)` (S9 makes the antecedent Phase 39's),
+via the motive `RL_d(G)` (S18 (iv)), which implies it; producer at `d = 3`: `hasGenericPencilRealization_of_IH`.
+Consumer diff re-run at `5c9948e2` (workbook, session-2 preamble): no mismatch. Unused: `X0Gen`'s
+`hV`, `htec` only select the reduction's case (S26); `[Infinite K]` enters through general choices.
 
 ## Current route and proof sketch <!-- budget 30 -->
-Leader **C2-same**: N1, N3 on `b`, and `dim ⋂_{w∈S} Π_w ≤ 4 − |S|` for `S ⊆ H[v]`, `|S| ≥ 2` (workbook
-preamble). Settled this session, each by an S-number:
-- Q0 (S2): only the conjunct's own induction and the headline statements consume it.
-- Q1 (S7): C2-same and C2-vac meet (a), (b), (c) and survive the embedding; C1 fails (a) at `K₄` (S4);
-  C2-gp and the direct transcription retired (`log.md`). §4's readings confirmed, refined (S3–S6).
-- Q2: under C2-same `Feasible_d = PencilNondegFeasible` in every `d` (S9, by projection); C2-vac's is
-  "loopless" from `d = 4` (S12). D's witness is feasible (S11).
-- Q3: C2-same's conjunct holds at every feasible graph of the brief's population and `GRAPHS4` at
-  `d = 3, 4, 5` (S11, S16: 27 graphs, exact certificates, no miss); C1/C2-vac's at all 12 drawn (S10);
-  Tier 0 transfers from `P³` (S8).
-- Q4: C2-same's conjunct follows from the coverage at graphs without a planar-rigid set (S14), and in
-  general from attaining over the picture of a nondegenerate `P³` realization (R-L, S13).
-Open obligations (O1–O5 closed this session: S2, S7, S9–S12, S16):
-- O6a (Q4, the new mathematics): R-L's hypothesis at a feasible graph with a planar-rigid set: at a
-  general nondegenerate `(q₀, z¹)`, `{q₀} × L(q₀)^{d−2}` attains in dimension `d`. Consumer: case (ii)
-  of `hasGenericPencilRealization_of_IH` (the `hrig` branch), which route B handles at `d = 3`.
-- O6b (Q4): the reduction's arms in `Pᵈ` under C2-same (few bodies, no-crossing cut, cut edge, pendant body) for the
-  generic conjunct. Consumer: `PencilPair`'s first conjunct at the non-main-component graphs
-  (`Pencil/Pair.lean`, `Pencil/Pair2.lean`). Two arms lift (S15 (α), (β)); the cut edge and the pendant
-  arm need an irreducible carrier, the crux O6a shares.
+The carrier is the lift family over `𝒩(G)`, the C2-same realizations in dimension 3, irreducible by
+the steer (S18 (i)); a lift `R(r⁰, λ)`, `λ ∈ L¹(r⁰)^{d−3}`, is always C2-same (S18 (ii)).
+`RL_d(G)`: a general lift of a general `r⁰` has rank `t_d(G)`. `RL_3` holds everywhere (S18 (iv));
+one witness at a point of least `dim L̃` suffices (S18 (v)). Transfer to a subgraph: S19.
+The reduction (S26), strong induction on `|V|`, `pencilPair_of_IH`'s case split:
+- ≤ 2 bodies, triangle, disconnected: S20. Cut edge: S21. Pendant body: S22. Pendant triangle: S23.
+- Good ear `x` (ends `a, b`): lifts of `G` = `ker μ` in `H = G − x`'s (S24 (3)); free when
+  `μ = 0`, then `RL_d(H) ⟹ RL_d(G)` (S24 (4)); every E2 ear is free (S24 (5)).
+- At the lemma's own ear (`x, a, b` in a minimal planar-rigid `W₀`, `X = W₀ − x`), `μ` reads only
+  `X`, and vanishes under (W): `X`'s restriction lifts only trivially (S29). Outside bodies meet
+  `W₀` in ≤ 2 hubs (S31).
+- No planar-rigid set: from (A), the coverage in dimension `d` (S25).
+- Outer step: `RL_{d′} ⟹ RL_d` where `def_{d′} = def_d` (S27), so a costly ear matters only at
+  `def_{d−1} > def_d` ((B′)).
+Certified (S30): (W) at every `W₀`-ear of every case-(ii) graph on ≤ 9 bodies (478 ears, 188 graphs,
+exact draws); so `Generic_d` holds on ≤ 9 bodies at every `d ≥ 4`, given (A) there.
+Open obligations (O6b closed: S20–S23, S26; O6a narrowed to O7):
+- **O7 — (W) in general.** At a general `r⁰ ∈ 𝒩(G)`, `dim L¹_{G[X]}(r⁰|_X) = 4` for the
+  good-ear lemma's `W₀`-ear. Consumer: case (ii) of `hasGenericPencilRealization_of_IH`, the
+  one-ear branch (`Graph.IsOpenEar.hasGenericPencilRealization_of_one`), in `Pᵈ`.
+Dependency, not this track's: (A), the coverage at graphs with no planar-rigid set (42d's bare and
+distinct main component), consumed by case (i) of the same producer.
 
 ## Where it breaks <!-- budget 10 -->
-No irreducible carrier of the C2-same realizations in `Pᵈ`. Route B's `P³` steps combine two open
-conditions on one irreducible family (the steer, `lem:pencil-generic-steer` (b)); the steer's free hub
-planes reach no point at `d ≥ 5` (S6). This blocks O6a (a feasible graph with a planar-rigid set: its
-nondegenerate realizations lie over special pictures, `dim L(q₀)` one above the general value, S10–S11,
-so the coverage at general pictures misses them) and O6b's pendant and cut-edge arms (S15). The
-candidate carrier is S13's: a general point of the `P³` steer family, lifted over its picture `q₀`; it
-needs the motive strengthened to R-L(G), "that family attains in dimension `d`", and R-L proved by an
-induction mirroring route B. Measured to hold at all 84 cells drawn (S11, S16).
+(W), O7: why the restriction of a general nondegenerate `P³` realization of `G` to `X = W₀ − x`
+should be general for `G[X]` (only trivial lifts; picture form `dim L_{G[X]}(q₀|_X) = 4 =
+3 + def_2(G[X])`). `G[X]` is planar-tight with one non-trivial lift `z*` at a general picture, and
+the one constraint `W₀` itself imposes (`q_x` on the line where `Π_a`, `Π_b` meet) is free of `X`.
+The step to prove: a realization of `G[W₀]` general for `G[X]`, `x` on that line, extends to a
+nondegenerate realization of `G`. S31 shows the outside meets `W₀` only at ≤ 2 hub planes per body,
+so each single nondegeneracy condition is local; the gap is that outside planar-rigid sets sharing
+hubs with `W₀` need special pictures (S10) that could drag `X`'s along. Attack: reduce to "each
+nondegeneracy condition of `G` holds somewhere on the relative steer family over the general
+`G[W₀]` realization" (irreducible, so they then hold together), condition by condition.
 
 ## Tried on this route, and what each rules out <!-- budget 10 -->
-- C2-gp, the direct transcription, C1 as the definition: retired (`log.md`, S7, S4).
-- R-C (the general configuration is nondegenerate) at graphs with two hubs sharing three neighbours:
-  fails in every `d` (S5), as at `d = 3`; R-L (S13) is the candidate there.
+- The bare `Generic_d` motive: too weak for the arms (`log.md`, S15); `RL_d` replaces it.
+- An arbitrary good ear: 40 costly at their draws, none a `W₀`-ear (`log.md`, S30).
+- C2-gp, the direct transcription, C1 as the definition: retired in session 1 (`log.md`).
 
 ## Next steps <!-- budget 5 -->
-1. The PI's choice of definition (the report's question). 2. If C2-same: state R-L(G) as the motive and
-try the one-ear step over `q₀` in `Pᵈ` (`b_x ∈ Π_a ∩ Π_b` is built into `L(q₀)`), then the pendant arm.
-3. A second reader for S9's `|S| = 3` step, S13, S14 (review 1 is due after session 3).
+1. The PI's answer to the report's question (who proves (W)). 2. If NONDEG: the condition-by-condition
+extension of "Where it breaks"; first the C2 conditions at hubs shared by `W₀` and an outside
+planar-rigid set. 3. A counterexample hunt beyond nine bodies, aimed at two minimal planar-rigid
+sets sharing hubs (`oneear.py` with a structured or seeded population). Review 1 is due after session 3.
 
 ## Worries <!-- budget 5 -->
-- S9's `|S| = 3` step (transversals sweep dimension ≤ 2) and S13–S14 have one reader (this session).
-- Intermediate `f_d` (between `4 − |S|` and 3 at some `S`) were not examined; S4 shows they can make a
-  conjunct false (`K₄`).
-- The brief counts four `[READING]` items in §4; there are five (S2 settles the fifth).
+- One reader for S9, S13–S14 (session 1) and S18–S31 (this session); S18 (i)'s steer reading at
+  non-hubs with `|N[v]| ≤ 2` and S21's reuse of the `P³` cut arm for every pair are readings.
+- S30's certificates are exact, but S26's consequence leans on the arms and on (A) at every size.
+- Intermediate `f_d` were not examined (session 1); moot under the PI's choice.
 
 ## Signals <!-- budget 2 -->
 - Sessions since "Where it breaks" last changed: 0
-- Open obligations: 2 (O6a, O6b; from 6 at the session's start)
+- Open obligations: 1 (O7; 2 at the session's start, 6 at session 1's; falling)
