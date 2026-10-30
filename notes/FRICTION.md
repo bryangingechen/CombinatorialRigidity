@@ -110,6 +110,20 @@ moment you resolve the entry) is what makes the sweep a pure
 to be re-derived by re-reading entries later.
 
 ## Open
+### [idiom] `LinearIndependent.map'` returns `f ∘ ![a, b]`, not `![f a, f b]`; `dotPerp` has no antitone lemma
+- **Where it bit:** Phase 42c, `lem:pencil-d-embed-realization`: `linearIndependent_gradeEmbed_pair`
+  (`Pencil/Grade/Embedding.lean`) and `exists_eq_panelSupportExtensor_of_ne_zero` (a basis of a
+  submodule, through `Submodule.subtype`; `Pencil/Grade/Realization.lean`).
+- **Friction:** both close by `convert h.map' f hker using 1; funext i; fin_cases i <;> rfl`, the
+  shape `exteriorPower_map_normalsJoin` already uses for `⋀²f`. Taking orthogonals of
+  `dotPerp P ≤ dotPerp Q` is `LinearMap.BilinForm.orthogonal_le` through the definition, accepted
+  only with the result's type ascribed (`have : dotPerp (dotPerp Q) ≤ dotPerp (dotPerp P) := …`).
+  The project's `span_range_eq_dotPerp_of_linearIndependent` is in `span (range ![n₁, n₂])` form, the
+  new lemmas in `span {n₁, n₂}`: `Matrix.range_cons_cons_empty` bridges them.
+- **Proposed fix:** none for two sites; a `dotPerp_le_dotPerp_iff` beside `dotPerp_dotPerp` if a
+  third orthogonal comparison appears.
+- **Status:** idiom.
+
 ### [idiom] `gradeEmbed`'s coordinate lemmas index by `Fin.castLE`; a configuration point's height by `i.castSucc.succ.succ`
 - **Where it bit:** Phase 42c, `pencilConfigPointGrade_padHeights` (`Pencil/Grade/ZeroHeights.lean`,
   `lem:pencil-d-embed-config-rank`), after `Fin.cases`, `Fin.cases`, `Fin.lastCases` on the index.

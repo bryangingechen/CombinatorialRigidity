@@ -2,51 +2,28 @@
 
 **Status:** in progress, opened 2026-10-30 by the PI (design doc §3's scope as written), a
 sub-phase of Phase 42 beside 42a. Forward mode, the Lean under `/coordinate-phase`: the dep-graph
-is `blueprint/src/chapter/pencil-d.tex` §`sec:pencil-d-stable`, 9 nodes, 8 green (`thm:pencil-d-deficiency-two-le-three`, `lem:deficiency-stable`, `def:pencil-d-embedding`,
-`lem:pencil-d-embedding-join`, `lem:pencil-d-x0-attains-distinct`, `lem:screw-embedding-rank`,
-`lem:pencil-d-embed-config-rank`, `lem:pencil-d-x0-attains-of-le`), 1 red (`lem:pencil-d-embed-realization`).
-The open corrected the deficiency lemma (it needs `G` connected) and found its proof gives a
-sharper range; the PI widened the theorem to `def_2 ≤ 3` (*Architectural choices*). Next concrete task: `lem:pencil-d-embed-realization`, the last red node.
+is `blueprint/src/chapter/pencil-d.tex` §`sec:pencil-d-stable`, 9 nodes, all green. The open
+corrected the deficiency lemma (it needs `G` connected) and found its proof gives a sharper range;
+the PI widened the theorem to `def_2 ≤ 3` (*Architectural choices*). Next concrete task: close 42c.
 
 ## Current state
 
-**Next:** `lem:pencil-d-embed-realization`, the last red node; its close fires the phase-close checklist.
+**Next:** close 42c, the phase-close checklist (`PHASE-BOUNDARIES.md` *When this commit closes a
+phase*). No red node is left and no Lean is planned.
 
-**Landed (latest):** `thm:pencil-d-deficiency-two-le-three` (green, one commit): new file
-`Pencil/Grade/Stable.lean` with `Graph.x0AttainsGrade_of_deficiency_two_le_three` (dimension three by
-`Graph.IsX0Graph.x0Attains`, `Graph.Connected.deficiency_eq_of_deficiency_two_add_three_le` at
-`n' = 3`, then `Graph.X0AttainsGrade.of_le`) and the realization form. Before it: `lem:pencil-d-x0-attains-of-le` (green, one commit): `Graph.X0AttainsGrade.of_le`
-in `Pencil/Grade/ZeroHeights.lean`, which now imports `Grade/Witness.lean`; `hloop` is `⟨fun e v hl =>
-hadm.1 e v v hl rfl⟩`, the arithmetic closes by `rw` then `ring`. Before it: `lem:pencil-d-embed-config-rank` (green, one commit), new file
-`Pencil/Grade/ZeroHeights.lean` (over `Grade/Carrier.lean` and `Grade/Embedding.lean`): `padHeights`
-(zero heights appended; no `m' ≤ m` argument, which the linter would flag unused),
-`pencilConfigPointGrade_padHeights` (`ι` of the point, by `Fin.cases` on the index), the rank in `ℤ`
-(the framework is `(q, z')`'s `.map (screwEmbed _)`, by `simp only` on the two fields), and
-`Graph.padHeights_mem_liftingSpaceGrade`.
+**Landed (latest):** `lem:pencil-d-embed-realization` (green, one commit), in
+`Pencil/Grade/Embedding.lean`, which now imports `Grade/Realization.lean`:
+`HasPencilPlaneRealization.map_gradeEmbed`, `hasGradedPencilRealization_of_le` and
+`hasGradedDistinctPencilRealization_of_le`, at a fixed deficiency parameter (*Decisions*), over the
+grade-general `exists_eq_panelSupportExtensor_of_ne_zero`, `extensorInPanel_panelSupportExtensor_iff`
+and `extensorThroughSubspace_panelSupportExtensor_iff` (`Grade/Realization.lean`).
 
-**Landed:** `lem:screw-embedding-rank` (green, one commit), in `Pencil/Grade/Embedding.lean`,
-which now also imports `GenericityDevice.lean`: `BodyHingeFramework.map` (any linear `φ`,
-grade-changing), the motion count `finrank_infinitesimalMotions_map_injective` (in `ℕ`) and the rank
-form above (in `ℤ`, as `HasGradedPencilRealization` states its rank), with two zero-hinge helpers
-(*Decisions*).
-
-**Landed:** `lem:pencil-d-x0-attains-distinct`, `Graph.X0AttainsGrade.hasGradedDistinctPencilRealization`
-(`Pencil/Grade/Configuration.lean`), the grade form of `Graph.X0Attains.hasDistinctPencilRealization`.
-
-**Landed:** `def:pencil-d-embedding` and `lem:pencil-d-embedding-join` (green), new file
-`Pencil/Grade/Embedding.lean`: `gradeEmbed` (`ι`), `screwEmbed` (`φ`), their injectivity, `ι`'s
-coordinates, `screwEmbed_apply` (*Decisions*), `exteriorPower_map_normalsJoin` (any linear `f`; its
-natural home is `PanelLayer.lean`, the move deferred, FRICTION) and `screwEmbed_panelSupportExtensor`.
-
-**Landed:** `lem:deficiency-stable` (green): `Graph.Connected.deficiency_eq_of_deficiency_two_add_three_le`
-(the sharp range, the scratch proof transcribed unchanged but for restoring `deficiency_nonneg n`,
-needed by the cyclic arm) and `Graph.Connected.deficiency_eq_of_two_add_deficiency_two_le`
-(§3's form, via `bodyBarDim n' ≥ n' + 1`, as `Nat.le_div_iff_mul_le` plus `nlinarith`).
-
-**Landed (the open):** the section `sec:pencil-d-stable`, its nodes red with planned names
-(*Lemma checklist*); the statement checks against the definition bodies (*Decisions*); the
-counterexample to §3's "every multigraph", witnessed in `lake lean` (scratch, not retained). No
-Lean.
+**Landed before (each green, one commit):** `thm:pencil-d-deficiency-two-le-three`
+(`Pencil/Grade/Stable.lean`); `lem:pencil-d-x0-attains-of-le` and `lem:pencil-d-embed-config-rank`
+(`Pencil/Grade/ZeroHeights.lean`, which imports `Grade/Witness.lean`); `lem:screw-embedding-rank`,
+`def:pencil-d-embedding` and `lem:pencil-d-embedding-join` (`Pencil/Grade/Embedding.lean`);
+`lem:pencil-d-x0-attains-distinct` (`Pencil/Grade/Configuration.lean`); `lem:deficiency-stable`
+(`Deficiency.lean`). The open laid down the section with its nodes red (no Lean).
 
 ## Architectural choices made up front
 
@@ -78,28 +55,8 @@ Lean.
 
 ## Lemma checklist
 
-Planned `\lean{...}` names (namespace `CombinatorialRigidity.Molecular` unless `Graph.`); a builder
-may refine a name, and the pin lands with the Lean.
-
-- [x] `lem:deficiency-stable` — `Graph.Connected.deficiency_eq_of_deficiency_two_add_three_le`,
-  `Graph.Connected.deficiency_eq_of_two_add_deficiency_two_le`
-- [x] `def:pencil-d-embedding` — `gradeEmbed` (`ι`, for `k' ≤ k`), `screwEmbed` (`φ`),
-  `gradeEmbed_injective`, `screwEmbed_injective` (`exteriorPower.map_injective_field`)
-- [x] `lem:pencil-d-embedding-join` — `exteriorPower_map_normalsJoin` (FRICTION; in `Embedding.lean`),
-  `screwEmbed_panelSupportExtensor`
-- [x] `lem:screw-embedding-rank` — `BodyHingeFramework.map` (hinges `φ C_e`, grade-changing),
-  `BodyHingeFramework.finrank_span_rigidityRows_map_injective` (`G` connected, `[Finite α]`),
-  `BodyHingeFramework.finrank_infinitesimalMotions_map_injective`
-- [ ] `lem:pencil-d-embed-realization` — `HasPencilPlaneRealization.map_gradeEmbed`,
-  `hasGradedPencilRealization_of_le`, `hasGradedDistinctPencilRealization_of_le`
-- [x] `lem:pencil-d-embed-config-rank` — `padHeights`, `pencilConfigPointGrade_padHeights` (`ι` of
-  the point), `Graph.finrank_span_rigidityRows_ofNormals_pencilConfigPointGrade_padHeights`
-  (`G` connected, `[Finite α]`), `Graph.padHeights_mem_liftingSpaceGrade`
-- [x] `lem:pencil-d-x0-attains-of-le` — `Graph.X0AttainsGrade.of_le` (`[Infinite K]`, `G` connected,
-  `G.deficiency (m' + 2) = G.deficiency (m + 2)`)
-- [x] `lem:pencil-d-x0-attains-distinct` — `Graph.X0AttainsGrade.hasGradedDistinctPencilRealization`
-- [x] `thm:pencil-d-deficiency-two-le-three` — `Graph.x0AttainsGrade_of_deficiency_two_le_three`,
-  `Graph.hasGradedDistinctPencilRealization_of_deficiency_two_le_three` (`G.IsX0Graph`, `1 ≤ m`)
+All nine nodes are green, each pinned in `sec:pencil-d-stable` with its Lean names and hypotheses;
+the chapter is the index (forward mode), so the per-node list is retired.
 
 ## Blockers / open questions
 
@@ -107,17 +64,15 @@ may refine a name, and the pin lands with the Lean.
 
 ## Hand-off / next phase
 
-The next commit is `lem:pencil-d-embed-realization` (*Current state*), the last red node; it closes
-the phase, so the phase-close checklist fires on it.
+The next commit closes 42c (*Current state*): every node of `sec:pencil-d-stable` is green, and the
+coordinator held the close checklist for its own dispatch, so it did not fire on the last node's
+commit.
 
 ## Decisions made during this phase
 
-- **The open (2026-10-30), checked against the bodies:** `partitionDef`/`deficiency`,
-  `HasPencilPlaneRealization` (with `HasCoplanarPanelRealization`, `ExtensorInPanel`,
-  `ExtensorThroughSubspace`), `HasGraded(Distinct)PencilRealization`, `X0AttainsGrade`,
-  `pencilConfigPointGrade`, `IsAdmissiblePicture`, `infinitesimalMotions`, `panelSupportExtensor`,
-  `complementIso`. Each node's statement and proof hold against them (the rank form counts the
-  bodies outside `V(G)` too); `exteriorPower.map_injective_field` gives `Λ²ι` injective.
+- **The open (2026-10-30), checked against the bodies** of every definition the nodes use
+  (`deficiency`, `HasPencilPlaneRealization` and its parts, the graded realizations, `X0AttainsGrade`,
+  `pencilConfigPointGrade`, `panelSupportExtensor`, `complementIso`): each statement and proof held.
 - **Statement corrections at the open** (transcriptions, for the pre-build guard): (1) item 2
   needs `G` connected: two bodies and no edge have `def_n = bodyBarDim n`, so `def[3] = 3`,
   `d′ = 5`, yet `def[15] = 15 ≠ 21 = def[21]` (the coordinator's, by hand; `lake lean` witness);
@@ -127,21 +82,18 @@ the phase, so the phase-close checklist fires on it.
   every-`d` form of `lem:pencil-x0-attains-distinct`) its own node, on `thm:pencil-x0-coverage`.
 - **All nine nodes in `pencil-d.tex`**, item 2 included: the red frontier stays in one section,
   and `deficiency.tex`, all green, stays so for `intro.tex`'s status sentence.
-- **`def:pencil-d-embedding`:** `ι` extends by zero (`Function.ExtendByZero.linearMap`) along
-  `gradeEmbedIndex` (last to last, `Fin.castLE` elsewhere), the coordinator's hypothesis, checked.
-  Its coordinates `gradeEmbed_apply_castLE`, `_eq_zero` (value bounds, for `omega`) and `_last` are
-  what `pencilConfigPointGrade_padHeights` will case on. `φ` is the `∘ₗ` composite through
-  `complementIso (j := 2)` at both grades, cast as `panelSupportExtensor` is; rewrite it by
-  `screwEmbed_apply` (`rfl`), never `comp_apply` (FRICTION). The Lean holds at every `k' ≤ k`: the
-  node's `2 ≤ d'` is the section's range, not a hypothesis.
-- **`lem:screw-embedding-rank`:** the route is `Z(φF) = φ ∘ Z(F) ⊔ Z₀`, `⊓ = φ ∘ Z₀′`, with `Z₀`,
-  `Z₀′` the motions of the zero-hinge frameworks (`finrank_sup_add_finrank_inf_eq`), not the
-  blueprint's complement `T`: the constant-on-`V(G)` count is then the existing
-  `finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet`. The carrier's bodies off
-  `V(G)` add `(D − D′)` each to the motion count and cancel in the rank; the blueprint proof now
-  counts them (`B ⊇ V(G)`). `map` and the zero-hinge helpers sit in `Embedding.lean`; their natural
-  home is upstream (FRICTION).
-- **`lem:pencil-d-embed-config-rank`:** home `Pencil/Grade/ZeroHeights.lean`, a sibling, as
-  `Embedding.lean`'s imports do not reach `Grade/Carrier.lean`; `padHeights` takes no `m' ≤ m` (the
-  lemmas do). The configuration's framework *equals* the mapped one (both fields agree everywhere),
-  so no transfer at links was needed. Friction: FRICTION's `gradeEmbed` index-form idiom.
+- **`def:pencil-d-embedding`:** `ι` extends by zero along `gradeEmbedIndex`; `φ` is the `∘ₗ`
+  composite through `complementIso (j := 2)`, rewritten by `screwEmbed_apply` (`rfl`), never
+  `comp_apply` (FRICTION). The Lean holds at every `k' ≤ k`.
+- **`lem:screw-embedding-rank`:** `Z(φF) = φ ∘ Z(F) ⊔ Z₀` with `⊓ = φ ∘ Z₀′` (the zero-hinge
+  frameworks' motions), not the blueprint's complement `T`; the bodies off `V(G)` cancel in the rank,
+  and the blueprint proof counts them. `map` and the zero-hinge helpers' upstream home: FRICTION.
+- **`lem:pencil-d-embed-config-rank`:** home `Pencil/Grade/ZeroHeights.lean`; the configuration's
+  framework *equals* the mapped one, so no transfer at links (FRICTION's `gradeEmbed` index idiom).
+- **`lem:pencil-d-embed-realization` at a fixed deficiency parameter** (the coordinator's hypothesis,
+  checked): `D′(|V|−1) − def_n + (D − D′)(|V|−1) = D(|V|−1) − def_n`, so the Lean needs no deficiency
+  equation. The node was restated to this form (every `d''`, `G` connected only for the rank); the
+  `def_{d′} = def_d` reading is a sentence after it, the consumer's rewrite. Route: a nonzero hinge is
+  `C(w₁, w₂)` (the blueprint's basis of `A^⊥`, the scale absorbed into `w₁`), and two `_iff` lemmas
+  read its panels and orthogonals off `span {w₁, w₂}` at both grades. Home `Embedding.lean`, which
+  now imports `Grade/Realization.lean` (no cycle: `ZeroHeights.lean` already reached both).

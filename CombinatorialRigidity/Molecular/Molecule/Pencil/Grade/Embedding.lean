@@ -7,6 +7,7 @@ module
 
 public import CombinatorialRigidity.Molecular.AlgebraicInduction.PanelLayer
 public import CombinatorialRigidity.Molecular.AlgebraicInduction.GenericityDevice
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Realization
 
 /-!
 # Embedding a lower dimension
@@ -35,6 +36,15 @@ are those of the framework with zero hinges; their intersection is `φ ∘ ·` o
 assignments at grade `k'`. Their dimensions, `D(|V(G)ᶜ| + 1)` and `D′(|V(G)ᶜ| + 1)`, count the
 bodies off `V(G)`, and rank–nullity at both grades cancels them.
 
+`lem:pencil-d-embed-realization`: for `1 ≤ k' ≤ k`, a pencil realization at grade `k'`
+(`HasPencilPlaneRealization`) maps to one at grade `k`, with the hinges `φ C_e`, the normals `ι b_v`
+and the subspaces `ι Π_v`. A nonzero hinge is `C(w₁, w₂)` for independent `w₁, w₂`
+(`exists_eq_panelSupportExtensor_of_ne_zero`), and the panels and orthogonals of `C(w₁, w₂)` are
+read off `span {w₁, w₂}` (`extensorInPanel_panelSupportExtensor_iff`,
+`extensorThroughSubspace_panelSupportExtensor_iff`, `Grade/Realization.lean`), which `ι` carries to
+`span {ι w₁, ι w₂}`. With the rank above, a realization at the deficiency rank, adjacent-distinct
+or not, goes up at a fixed deficiency parameter.
+
 ## Main definitions
 
 * `gradeEmbed`: the embedding `ι`, for `k' ≤ k`.
@@ -50,6 +60,10 @@ bodies off `V(G)`, and rank–nullity at both grades cancels them.
 * `screwEmbed_panelSupportExtensor`: `φ C(u, w) = C(ι u, ι w)` (`lem:pencil-d-embedding-join`).
 * `BodyHingeFramework.finrank_span_rigidityRows_map_injective`: for `φ` injective and `G` connected,
   `rank R(G, φp) = rank R(G, p) + (D − D′)(|V(G)| − 1)` (`lem:screw-embedding-rank`).
+* `HasPencilPlaneRealization.map_gradeEmbed`, `hasGradedPencilRealization_of_le`,
+  `hasGradedDistinctPencilRealization_of_le`: a pencil realization, at the deficiency rank or
+  adjacent-distinct, in a lower dimension gives one in a higher dimension
+  (`lem:pencil-d-embed-realization`).
 -/
 
 @[expose] public section
@@ -119,6 +133,16 @@ theorem gradeEmbed_apply_eq_zero (h : k' ≤ k) (x : Fin (k' + 2) → K) {j : Fi
 theorem gradeEmbed_injective (h : k' ≤ k) : Function.Injective (gradeEmbed (K := K) h) :=
   fun x y hxy => funext fun i => by
     simpa [gradeEmbed_apply_gradeEmbedIndex] using congr_fun hxy (gradeEmbedIndex h i)
+
+/-- **`ι` keeps two vectors independent** (a step of `lem:pencil-d-embed-realization`): if
+`n₁, n₂ ∈ K^(k'+2)` are linearly independent, so are `ι n₁, ι n₂`, as `ι` is injective
+(`LinearIndependent.map'`). -/
+theorem linearIndependent_gradeEmbed_pair (h : k' ≤ k) {n₁ n₂ : Fin (k' + 2) → K}
+    (hn : LinearIndependent K ![n₁, n₂]) :
+    LinearIndependent K ![gradeEmbed h n₁, gradeEmbed h n₂] := by
+  convert hn.map' (gradeEmbed h) (LinearMap.ker_eq_bot.2 (gradeEmbed_injective h)) using 1
+  funext i
+  fin_cases i <;> rfl
 
 /-! ## The screw embedding `φ` -/
 
@@ -330,5 +354,94 @@ theorem finrank_span_rigidityRows_map_injective [Finite α] (F : BodyHingeFramew
   linarith
 
 end BodyHingeFramework
+
+/-! ## A pencil realization in a lower dimension (`lem:pencil-d-embed-realization`) -/
+
+variable {α β : Type*}
+
+/-- **The screw embedding of a hinge in a panel and through an orthogonal** (a step of
+`lem:pencil-d-embed-realization`): for `1 ≤ k' ≤ k`, let `C ≠ 0` at grade `k'` lie in the panel of
+`n` and pass through the orthogonal of a subspace `P`. Then `φ C` lies in the panel of `ι n` and
+passes through the orthogonal of `ι P`. The hinge is `C(w₁, w₂)` for independent `w₁, w₂`
+(`exists_eq_panelSupportExtensor_of_ne_zero`), and then `n ∈ span {w₁, w₂}`
+(`extensorInPanel_panelSupportExtensor_iff`) and `w₁, w₂ ∈ P`
+(`extensorThroughSubspace_panelSupportExtensor_iff`). Its image is `C(ι w₁, ι w₂)`
+(`screwEmbed_panelSupportExtensor`), with `ι w₁, ι w₂` independent, `ι n` in their span and both in
+`ι P`, and the same two lemmas at grade `k` apply. -/
+theorem screwEmbed_extensorInPanel_and_extensorThroughSubspace [NeZero k'] (h : k' ≤ k)
+    {C : ScrewSpace K k'} (hC : C ≠ 0) {n : Fin (k' + 2) → K}
+    {P : Submodule K (Fin (k' + 2) → K)} (hn : ExtensorInPanel C n)
+    (hP : ExtensorThroughSubspace C (dotPerp P)) :
+    ExtensorInPanel (screwEmbed h C) (gradeEmbed h n) ∧
+      ExtensorThroughSubspace (screwEmbed h C) (dotPerp (P.map (gradeEmbed h))) := by
+  have : NeZero k := ⟨by have := NeZero.ne k'; omega⟩
+  obtain ⟨n₁, n₂, hli, rfl⟩ := exists_eq_panelSupportExtensor_of_ne_zero hC hn.choose_spec.1
+  have hliι := linearIndependent_gradeEmbed_pair h hli
+  rw [extensorInPanel_panelSupportExtensor_iff hli] at hn
+  rw [extensorThroughSubspace_panelSupportExtensor_iff hli] at hP
+  rw [screwEmbed_panelSupportExtensor, extensorInPanel_panelSupportExtensor_iff hliι,
+    extensorThroughSubspace_panelSupportExtensor_iff hliι]
+  refine ⟨?_, Submodule.mem_map_of_mem hP.1, Submodule.mem_map_of_mem hP.2⟩
+  simpa [Submodule.map_span, Set.image_pair] using Submodule.mem_map_of_mem (f := gradeEmbed h) hn
+
+/-- **A pencil realization in a lower dimension is one in every higher dimension**
+(`lem:pencil-d-embed-realization`, the realization): for `1 ≤ k' ≤ k`, a pencil realization of `G`
+at grade `k'` with hinges `C_e`, normals `b_v` and subspaces `Π_v` gives one at grade `k` with the
+hinges `φ C_e` (`F.map (screwEmbed h)`), the normals `ι b_v` and the subspaces `ι Π_v`. At each end
+of a link, `screwEmbed_extensorInPanel_and_extensorThroughSubspace`; the normals and hinges stay
+nonzero, as `ι` and `φ` are injective, and `ι Π_v` has dimension three and contains `ι b_v`. -/
+theorem HasPencilPlaneRealization.map_gradeEmbed [NeZero k'] (h : k' ≤ k) {G : Graph α β}
+    {F : BodyHingeFramework K k' α β} {normal : α → Fin (k' + 2) → K}
+    {plane : α → Submodule K (Fin (k' + 2) → K)}
+    (hreal : HasPencilPlaneRealization G F normal plane) :
+    HasPencilPlaneRealization G (F.map (screwEmbed h)) (fun v => gradeEmbed h (normal v))
+      (fun v => (plane v).map (gradeEmbed h)) := by
+  have hne : ∀ e, F.supportExtensor e ≠ 0 := hreal.1.2.2.1
+  -- At a link `e` from `u` to `v`, the conditions at `v`.
+  have hend : ∀ e u v, G.IsLink e u v →
+      ExtensorInPanel ((F.map (screwEmbed h)).supportExtensor e) (gradeEmbed h (normal v)) ∧
+      ExtensorThroughSubspace ((F.map (screwEmbed h)).supportExtensor e)
+        (dotPerp ((plane v).map (gradeEmbed h))) := fun e u v huv =>
+    screwEmbed_extensorInPanel_and_extensorThroughSubspace h (hne e)
+      (hreal.1.2.2.2 e u v huv).2 (hreal.2.2.2 e u v huv).2
+  refine ⟨⟨hreal.1.1, fun v hv => ?_, fun e => ?_, fun e u v huv =>
+      ⟨(hend e v u huv.symm).1, (hend e u v huv).1⟩⟩, fun v hv => ?_,
+    fun v hv => Submodule.mem_map_of_mem (hreal.2.2.1 v hv), fun e u v huv =>
+      ⟨(hend e v u huv.symm).2, (hend e u v huv).2⟩⟩
+  · exact (map_ne_zero_iff _ (gradeEmbed_injective h)).2 (hreal.1.2.1 v hv)
+  · exact (map_ne_zero_iff _ (screwEmbed_injective h)).2 (hne e)
+  · rw [← hreal.2.1 v hv]
+    exact (Submodule.equivMapOfInjective _ (gradeEmbed_injective h) _).finrank_eq.symm
+
+/-- **A pencil realization at the deficiency rank in a lower dimension gives one in every higher
+dimension** (`lem:pencil-d-embed-realization`, the rank): for `1 ≤ k' ≤ k` and `G` connected, a
+pencil realization at grade `k'` whose rows span `D′(|V(G)| − 1) − def_n(G)`
+(`HasGradedPencilRealization`) gives one at grade `k` whose rows span `D(|V(G)| − 1) − def_n(G)`, at
+the same deficiency parameter `n`. The realization is `HasPencilPlaneRealization.map_gradeEmbed`,
+and its rank grows by `(D − D′)(|V(G)| − 1)`
+(`BodyHingeFramework.finrank_span_rigidityRows_map_injective`). The deficiencies at the two
+dimensions are not compared here: a consumer with `def_(k'+1)(G) = def_(k+1)(G)` rewrites `n`. -/
+theorem hasGradedPencilRealization_of_le [Finite α] [NeZero k'] (h : k' ≤ k) {n : ℕ}
+    {G : Graph α β} (hG : G.Connected) (hreal : HasGradedPencilRealization K k' n G) :
+    HasGradedPencilRealization K k n G := by
+  obtain ⟨F, normal, plane, hF, hrank⟩ := hreal
+  have hFG : F.graph = G := hF.1.1
+  refine ⟨_, _, _, hF.map_gradeEmbed h, ?_⟩
+  rw [F.finrank_span_rigidityRows_map_injective (screwEmbed_injective h) (hFG ▸ hG), hrank, hFG]
+  ring
+
+/-- **An adjacent-distinct pencil realization in a lower dimension gives one in every higher
+dimension** (`lem:pencil-d-embed-realization`, the adjacent-distinct case): as
+`hasGradedPencilRealization_of_le`, for `HasGradedDistinctPencilRealization`; independent normals
+at a link stay independent under `ι` (`linearIndependent_gradeEmbed_pair`). -/
+theorem hasGradedDistinctPencilRealization_of_le [Finite α] [NeZero k'] (h : k' ≤ k) {n : ℕ}
+    {G : Graph α β} (hG : G.Connected) (hreal : HasGradedDistinctPencilRealization K k' n G) :
+    HasGradedDistinctPencilRealization K k n G := by
+  obtain ⟨F, normal, plane, hF, hind, hrank⟩ := hreal
+  have hFG : F.graph = G := hF.1.1
+  refine ⟨_, _, _, hF.map_gradeEmbed h,
+    fun e u v huv => linearIndependent_gradeEmbed_pair h (hind e u v huv), ?_⟩
+  rw [F.finrank_span_rigidityRows_map_injective (screwEmbed_injective h) (hFG ▸ hG), hrank, hFG]
+  ring
 
 end CombinatorialRigidity.Molecular

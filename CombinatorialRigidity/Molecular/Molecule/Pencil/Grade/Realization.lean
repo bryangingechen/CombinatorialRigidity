@@ -45,6 +45,9 @@ definition is hinge-coplanarity.
   `lem:pencil-d-agrees-three`.
 * `span_range_eq_of_extensor_eq_grade`: equal nonzero extensors span the same subspace, in every
   grade.
+* `extensorInPanel_panelSupportExtensor_iff`, `extensorThroughSubspace_panelSupportExtensor_iff`
+  and `exists_eq_panelSupportExtensor_of_ne_zero`: the panels and the orthogonals of a hinge of two
+  panels, and every nonzero extensor is one (steps of `lem:pencil-d-embed-realization`).
 * `PanelHingeFramework.hasPencilPlaneRealization_toPatchedBodyHinge`,
   `PanelHingeFramework.span_rigidityRows_toPatchedBodyHinge`,
   `HasPencilPlaneRealization.supportExtensor_eq_smul_panelSupportExtensor` and
@@ -254,7 +257,9 @@ A nonzero extensor of `j` vectors determines their span, in every grade, and `k`
 of `K^(k+2)` orthogonal to two independent vectors span their common orthogonal. So the panel
 support extensor of two independent normals, which `exists_extensor_eq_panelSupportExtensor_gen`
 writes as an extensor of such vectors, passes through the orthogonal of every subspace containing
-both normals, and a nonzero screw element in both panels is a multiple of it. -/
+both normals, and a nonzero screw element in both panels is a multiple of it. It lies in the panels
+of the vectors in the span of the two normals and in no other, and every nonzero extensor of `k`
+vectors is the panel support extensor of two independent normals. -/
 
 /-- **Equal nonzero extensors span the same subspace, in every grade** (the argument of
 `lem:decomposable-extensor-span-unique` with `j` vectors in place of two): if
@@ -345,6 +350,67 @@ theorem extensorThroughSubspace_panelSupportExtensor {k : ℕ} [NeZero k]
   intro j; fin_cases j
   exacts [h₁, h₂]
 
+/-- **The vectors of a panel support extensor span the common orthogonal of its normals** (a step
+of `lem:pencil-d-embed-realization`): for `k ≥ 1` and linearly independent `n₁ n₂ : K^(k+2)`, every
+family `p` of `k` vectors with extensor `C(n₁, n₂)` spans the orthogonal of `span {n₁, n₂}`. The
+witness of `exists_extensor_eq_panelSupportExtensor_gen` spans it
+(`span_range_eq_dotPerp_of_linearIndependent`), and as `C(n₁, n₂) ≠ 0`, `p` has the same span
+(`span_range_eq_of_extensor_eq_grade`). -/
+theorem span_range_eq_dotPerp_of_panelSupportExtensor_eq {k : ℕ} [NeZero k]
+    {n₁ n₂ : Fin (k + 2) → K} (h : LinearIndependent K ![n₁, n₂])
+    {p : Fin k → Fin (k + 2) → K}
+    (hp : (panelSupportExtensor (k := k) n₁ n₂).val = extensor p) :
+    Submodule.span K (Set.range p) = dotPerp (Submodule.span K {n₁, n₂}) := by
+  obtain ⟨q, hq, hperp⟩ := exists_extensor_eq_panelSupportExtensor_gen h
+  have hqne : extensor q ≠ 0 :=
+    hq ▸ ScrewSpace.val_injective.ne ((panelSupportExtensor_ne_zero_iff n₁ n₂).2 h)
+  rw [span_range_eq_of_extensor_eq_grade hqne (hq.symm.trans hp), ← Matrix.range_cons_cons_empty]
+  exact span_range_eq_dotPerp_of_linearIndependent
+    ((extensor_ne_zero_iff_linearIndependent q).1 hqne) h fun i j => by
+      fin_cases j
+      exacts [(hperp i).1, (hperp i).2]
+
+/-- **The panels containing the panel support extensor** (a step of
+`lem:pencil-d-embed-realization`): for `k ≥ 1` and linearly independent `n₁ n₂ : K^(k+2)`,
+`C(n₁, n₂)` lies in the panel of `x` (`ExtensorInPanel`) exactly when `x ∈ span {n₁, n₂}`. Every
+family with extensor `C(n₁, n₂)` spans the orthogonal of `span {n₁, n₂}`
+(`span_range_eq_dotPerp_of_panelSupportExtensor_eq`), and `x` is orthogonal to that orthogonal
+exactly when it lies in `span {n₁, n₂}` (`dotPerp_dotPerp`). It extends
+`extensorInPanel_panelSupportExtensor_gen`, the case `x = n₁` and `x = n₂`. -/
+theorem extensorInPanel_panelSupportExtensor_iff {k : ℕ} [NeZero k]
+    {n₁ n₂ : Fin (k + 2) → K} (h : LinearIndependent K ![n₁, n₂]) {x : Fin (k + 2) → K} :
+    ExtensorInPanel (panelSupportExtensor (k := k) n₁ n₂) x ↔
+      x ∈ Submodule.span K {n₁, n₂} := by
+  have key : ∀ p : Fin k → Fin (k + 2) → K,
+      (panelSupportExtensor (k := k) n₁ n₂).val = extensor p →
+        (x ∈ Submodule.span K {n₁, n₂} ↔ ∀ i, p i ⬝ᵥ x = 0) := by
+    intro p hp
+    rw [← dotPerp_dotPerp (Submodule.span K {n₁, n₂}),
+      ← span_range_eq_dotPerp_of_panelSupportExtensor_eq h hp, mem_dotPerp_span_range]
+    simp only [dotProduct_comm]
+  obtain ⟨q, hq, -⟩ := exists_extensor_eq_panelSupportExtensor_gen h
+  exact ⟨fun ⟨p, hp, hpx⟩ => (key p hp).2 hpx, fun hx => ⟨q, hq, (key q hq).1 hx⟩⟩
+
+/-- **The orthogonals the panel support extensor passes through** (a step of
+`lem:pencil-d-embed-realization`): for `k ≥ 1` and linearly independent `n₁ n₂ : K^(k+2)`,
+`C(n₁, n₂)` passes through the orthogonal of a subspace `P` (`ExtensorThroughSubspace`) exactly
+when `n₁ ∈ P` and `n₂ ∈ P`. If both lie in `P`, this is
+`extensorThroughSubspace_panelSupportExtensor`. Conversely, the family spans the orthogonal of
+`span {n₁, n₂}` (`span_range_eq_dotPerp_of_panelSupportExtensor_eq`), and when it contains `P^⊥`,
+taking orthogonals gives `span {n₁, n₂} ≤ P` (`LinearMap.BilinForm.orthogonal_le`,
+`dotPerp_dotPerp`). -/
+theorem extensorThroughSubspace_panelSupportExtensor_iff {k : ℕ} [NeZero k]
+    {n₁ n₂ : Fin (k + 2) → K} (h : LinearIndependent K ![n₁, n₂])
+    {P : Submodule K (Fin (k + 2) → K)} :
+    ExtensorThroughSubspace (panelSupportExtensor (k := k) n₁ n₂) (dotPerp P) ↔
+      n₁ ∈ P ∧ n₂ ∈ P := by
+  refine ⟨fun ⟨p, hp, hle⟩ => ?_,
+    fun ⟨h₁, h₂⟩ => extensorThroughSubspace_panelSupportExtensor h h₁ h₂⟩
+  rw [span_range_eq_dotPerp_of_panelSupportExtensor_eq h hp] at hle
+  have hle' : dotPerp (dotPerp (Submodule.span K {n₁, n₂})) ≤ dotPerp (dotPerp P) :=
+    LinearMap.BilinForm.orthogonal_le hle
+  rwa [dotPerp_dotPerp, dotPerp_dotPerp, Submodule.span_le, Set.pair_subset_iff] at hle'
+
 /-- **A nonzero screw element in two independent panels is a multiple of their panel support
 extensor** (a step of `lem:pencil-d-point-configuration`; the remark after
 `def:coplanar-panel-realization`): if `C ≠ 0` lies in the panels of the linearly
@@ -377,6 +443,37 @@ theorem exists_smul_panelSupportExtensor_eq_of_extensorInPanel {k : ℕ}
     exact hpne hcval.symm
   · rw [ScrewSpace.val_smul, panelSupportExtensor_eq_complementIso_extensor, hp]
     exact hcval.symm
+
+/-- **A nonzero extensor is the hinge of two panels** (a step of `lem:pencil-d-embed-realization`):
+if `C ≠ 0` is the extensor of `k` vectors `p` of `K^(k+2)`, then `C = C(n₁, n₂)` for some linearly
+independent `n₁, n₂`. The vectors `p` are independent, so their span has dimension `k` and its
+orthogonal dimension `2` (`finrank_dotPerp`); for a basis `w₁, w₂` of that orthogonal, `C` lies in
+the panels of both, so `C = c • C(w₁, w₂)` with `c ≠ 0`
+(`exists_smul_panelSupportExtensor_eq_of_extensorInPanel`), which is `C(c • w₁, w₂)`
+(`panelSupportExtensor_smul_left`), with independent normals as it is nonzero. -/
+theorem exists_eq_panelSupportExtensor_of_ne_zero {k : ℕ} {C : ScrewSpace K k} (hC : C ≠ 0)
+    {p : Fin k → Fin (k + 2) → K} (hp : C.val = extensor p) :
+    ∃ n₁ n₂ : Fin (k + 2) → K,
+      LinearIndependent K ![n₁, n₂] ∧ C = panelSupportExtensor n₁ n₂ := by
+  have hpli := (extensor_ne_zero_iff_linearIndependent p).1 (hp ▸ ScrewSpace.val_injective.ne hC)
+  set W := dotPerp (Submodule.span K (Set.range p))
+  have hW : Module.finrank K W = 2 := by
+    rw [finrank_dotPerp, finrank_span_eq_card hpli]
+    simp
+  let b := Module.finBasisOfFinrankEq K W hW
+  have hli : LinearIndependent K ![(b 0 : Fin (k + 2) → K), b 1] := by
+    convert b.linearIndependent.map' W.subtype (Submodule.ker_subtype W) using 1
+    funext i
+    fin_cases i <;> rfl
+  have hpanel : ∀ i, ExtensorInPanel C (b i) := fun i =>
+    ⟨p, hp, fun j => by rw [dotProduct_comm]; exact mem_dotPerp_span_range.1 (b i).2 j⟩
+  obtain ⟨c, -, hCeq⟩ :=
+    exists_smul_panelSupportExtensor_eq_of_extensorInPanel hC (hpanel 0) (hpanel 1) hli
+  have hCeq' : C = panelSupportExtensor (c • (b 0 : Fin (k + 2) → K)) (b 1) := by
+    rw [panelSupportExtensor_smul_left, hCeq]
+  refine ⟨_, _, ?_, hCeq'⟩
+  rw [← panelSupportExtensor_ne_zero_iff, ← hCeq']
+  exact hC
 
 /-! ## Pencil realizations with independent adjacent normals
 

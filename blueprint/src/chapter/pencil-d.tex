@@ -646,26 +646,32 @@ $\operatorname{def}_2(G) \le 3$.
 
 \begin{lemma}[A pencil realization in a lower dimension]
   \label{lem:pencil-d-embed-realization}
+  \lean{CombinatorialRigidity.Molecular.HasPencilPlaneRealization.map_gradeEmbed,
+        CombinatorialRigidity.Molecular.hasGradedPencilRealization_of_le,
+        CombinatorialRigidity.Molecular.hasGradedDistinctPencilRealization_of_le}
+  \leanok
   \uses{def:pencil-d-embedding, def:pencil-d-realization,
         def:pencil-d-rank-hypothesis, def:pencil-d-distinct-motive,
         def:D-deficiency}
-  Let $G$ be connected and $2 \le d' \le d$, with $D'$ and $D$ as in
+  Let $2 \le d' \le d$, with $D'$ and $D$ as in
   \cref{lem:screw-embedding-rank}. Let a pencil realization of $G$ in
   dimension $d'$ (\cref{def:pencil-d-realization}) have hinges $C_e$,
-  normals $b_v$ and subspaces $\Pi_v$, and let its rigidity rows span a
-  space of dimension $r$. Then the framework on $G$ with the hinges
-  $\varphi(C_e)$, the normals $\iota b_v$ and the subspaces
+  normals $b_v$ and subspaces $\Pi_v$. Then the framework on $G$ with the
+  hinges $\varphi(C_e)$, the normals $\iota b_v$ and the subspaces
   $\iota \Pi_v$ (\cref{def:pencil-d-embedding}) is a pencil realization
-  of $G$ in dimension $d$. Its rigidity rows span a space of dimension
-  $r + (D - D')(|V(G)| - 1)$, and its normals are independent at every
-  link where the given ones are. So if
-  $\operatorname{def}_{d'}(G) = \operatorname{def}_d(G)$ and $G$ has a
-  pencil realization at the deficiency rank in dimension $d'$
-  (\cref{def:pencil-d-rank-hypothesis}), or an adjacent-distinct one
-  (\cref{def:pencil-d-distinct-motive}), then it has one in dimension
-  $d$.
+  of $G$ in dimension $d$, and its normals are independent at every link
+  where the given ones are. If $G$ is connected and the given rigidity
+  rows span a space of dimension $r$, the new ones span a space of
+  dimension $r + (D - D')(|V(G)| - 1)$. So, for $G$ connected and every
+  $d''$, a pencil realization of $G$ in dimension $d'$ whose rigidity
+  rows span a space of dimension
+  $D'(|V(G)| - 1) - \operatorname{def}_{d''}(G)$ gives one in dimension
+  $d$ whose rows span a space of dimension
+  $D(|V(G)| - 1) - \operatorname{def}_{d''}(G)$, with independent
+  normals at every link if the given one has them.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:screw-embedding-rank, lem:pencil-d-embedding-join,
         lem:pencil-d-point-configuration, lem:panel-support-extensor-join}
   Let $e$ be a link $uv$. Its hinge $C_e$ is a nonzero extensor of
@@ -688,9 +694,15 @@ $\operatorname{def}_2(G) \le 3$.
   normals stay independent; as $\varphi$ is injective, every hinge
   $\varphi(C_e)$ is nonzero. The rows are
   \cref{lem:screw-embedding-rank}. For the last claim,
-  $D'(|V(G)| - 1) - \operatorname{def}_{d'}(G) + (D - D')(|V(G)| - 1)
-  = D(|V(G)| - 1) - \operatorname{def}_d(G)$.
+  $D'(|V(G)| - 1) - \operatorname{def}_{d''}(G) + (D - D')(|V(G)| - 1)
+  = D(|V(G)| - 1) - \operatorname{def}_{d''}(G)$.
 \end{proof}
+
+With $d'' = d'$: if $\operatorname{def}_{d'}(G) = \operatorname{def}_d(G)$
+and the connected multigraph $G$ has a pencil realization at the
+deficiency rank in dimension $d'$ (\cref{def:pencil-d-rank-hypothesis}),
+or an adjacent-distinct one (\cref{def:pencil-d-distinct-motive}), then
+it has one in dimension $d$.
 
 \begin{lemma}[Zero heights add to the rank]
   \label{lem:pencil-d-embed-config-rank}
