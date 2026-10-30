@@ -4,7 +4,8 @@
 blueprint. Landed: the step table and thresholds (design doc §2.1–§2.5); T1–T5 (`Strata.md`
 Results 20–26), with no shortfall: SHORT shrinks to SHORT-CORE, ONE-EAR's first option holds
 wherever M does, and at `D ≥ 10` the coverage needs ONE-EAR only on ONE-CLASS. Then, at the PI's
-call, ONE-CLASS's lemma (Result 27), which takes ONE-EAR out of the coverage. Next concrete task:
+call, ONE-CLASS's lemma (Result 27), which takes ONE-EAR out of the coverage; then the PI took the
+route (R2's steps, the embedding as the base row). Next concrete task:
 PD-STATE's open; the research next is SHORT-CORE's attack track, rows 9 and 12 having passed a
 second read. Plan and decisions: `notes/Phase42-design.md`; evidence: `notes/Strata.md`.
 
@@ -56,7 +57,7 @@ proved at `d ≤ 6`. Both need only CARRIER's restatements.
 - [x] **Phase 39's reduction in `Pᵈ`**: `d`-general for the bare and distinct conjuncts given
   CARRIER (row 19); route B's generic conjunct fails as written and is separable (row 22).
 - [x] **The route verdict** (§2.2): neither closes as written; R2's induction with R1's base row is
-  the recon's proposal, the PI's call.
+  the recon's proposal, taken by the PI (design doc §1), the induction on `d` left to Tier 2.
 - [x] **The thresholds and the content range** (§2.5).
 - [x] **T1, T2** (§2.4): the flat formulas at `d = 4, 5, 6`; CERT's certificates at `d = 3..6`,
   over every field (`Strata.md` Results 20–21).
@@ -78,8 +79,7 @@ proved at `d ≤ 6`. Both need only CARRIER's restatements.
 
 ## Blockers / open questions
 
-- None blocking. Still open for the PI (design doc §4): the route, where the defaults (§1) work
-  inside §2.2's proposal.
+- None. The route is settled (the PI, design doc §1 and §4).
 
 ## Hand-off / next phase
 
@@ -87,15 +87,16 @@ The next commit is PD-STATE's open as the next sub-phase (*Current state*). On t
 Result 27 leaves SHORT-CORE as the coverage's only new mathematics at `d ≥ 4`: `k = 3, 4, 5` at
 `d = 4`, its `d = 3` model the chapter's `k = 3` case split on `ρ`, needed by T5's Petersen cells.
 Rows 9 and 12, on which T5's cover rests, passed a second read, so its attack track (`/attack`)
-can open; it builds on (⋆) and the X3 range (design doc §2.3). PD-STABLE should state the
-embedding as the coverage consumes it, `def[6] = def[D]` (design doc §3). CERT's open ears at
+can open; it builds on (⋆) and the X3 range (design doc §2.3). PD-STABLE states the embedding
+at every `d′ ≤ d` (the route), its `d′ = 3` case as the coverage consumes it, `def[6] = def[D]`
+(design doc §3). CERT's open ears at
 `d ≥ 7` (§2.3) are PD-STEPS's, for the every-`d` tier. ONE-EAR (the motive, a `Pᵈ` insertion
 lemma, X2) is GENERIC's now, deferred with it.
 
 ## Decisions made during this phase
 
-- The open's decisions are the PI's, recorded verbatim in the design doc §1, as is the call of
-  ONE-CLASS over ONE-EAR (2026-10-29, after T5).
+- The open's decisions are the PI's, recorded verbatim in the design doc §1, as are the call of
+  ONE-CLASS over ONE-EAR (after T5) and the route (after the second reads), both 2026-10-29.
 - The step table's rows are the four recon passes' readings, cited by row; the coordinator's own
   checks are listed under §2.1.
 - **The PI's planning defaults** (design doc §1, 2026-10-29): content-range tests first; three

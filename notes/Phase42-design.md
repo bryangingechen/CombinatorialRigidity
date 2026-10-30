@@ -12,7 +12,8 @@ rows, and nondegeneracy's lift (row 21) is open. The thresholds are `d = 4, 5`, 
 So **the coverage at `d ≥ 4` needs SHORT-CORE and no ONE-EAR**; ONE-EAR waits for GENERIC. Next
 concrete task: PD-STATE's open as the next sub-phase (§1's defaults); the research next is
 SHORT-CORE's attack track, as a second read found rows 9 and 12 dimension-general (§2.1). The
-route stays open (§4). Evidence: `notes/Strata.md`, Results 12–27.
+route is the PI's (§1): R2's steps, Result 15's embedding as the base row, any induction on `d`
+left to Tier 2. Evidence: `notes/Strata.md`, Results 12–27.
 
 This file is the phase's entry point: the target (§0), the PI's decisions (§1), the recon (§2),
 the layers by stable code (§3) and the open questions (§4). Letters are minted when a sub-phase
@@ -77,6 +78,12 @@ fibre-intersection lemma and Jackson–Jordán's equality.
   work, where the options were this call, PD-STATE's open, or the second read of rows 9 and 12:
   "Let's do 1 but dispatch subagents for the second reads if that can be done safely in
   parallel."
+- **PI, 2026-10-29 (after the second reads), the route:** "OK, let's go with this
+  recommendation." The recommendation, as put: no separate route discussion before PD-STATE, since
+  R1 as a step is out (rows 9 and 14) and every test measured R2's steps. Record R2's step
+  structure with Result 15's embedding as the base row, and leave an outer induction on `d` to
+  Tier 2, where it may enter only through CERT's open ears at `d ≥ 7`. PD-STABLE states the
+  embedding at every `d′ ≤ d`, not only at `d′ = 3`, so that Tier 1 reaches every `d` by it.
 
 ## 2. PD-RECON (42a)
 
@@ -159,7 +166,8 @@ lies on the incidence locus, whatever the base (C). What R1 contributes is a **b
 attains at `G`, its base has rank `D_d(n−1) − def[D_{d−1}](G)` (row 5), so `G` attains in `Pᵈ`
 whenever `def[D_{d−1}](G) = def[D_d](G)`. That is Result 15 at `d′ = d − 1`; the class grows with
 `d` and contains R2's flat class `def[3] = def[D_d]`. The recon's proposal, for the PI: R2's
-induction with R1's base row, inside an outer induction on `d`.
+induction with R1's base row, inside an outer induction on `d`. The PI took R2's induction with
+R1's base row, the outer induction left to Tier 2 (§1).
 
 **The pattern behind the failures.** In `P³` the planes of two bodies always share a line; in `Pᵈ`
 two 3-spaces of `K^{d+1}` meet in dimension `5 − d`. A step that deletes a body `x` and keeps its
@@ -449,10 +457,12 @@ leaves out each graph's top cell, `d = 2 + def[3]`, which also carries content.
   closed neighbourhood span at most three dimensions. Check it against the carrier's definition
   bodies at open; docstrings are not evidence.
 - **PD-STABLE**: Results 15–17, formally: the embedding, the deficiency lemma, and `Pᵈ` for
-  `def_3 ≤ 1`. It needs PD-STATE and Phase 40, but not the recon. State the embedding at
-  `d′ = 3` in the form PD-COVERAGE consumes: `G` attains in `Pᵈ` wherever
-  `def[6](G) = def[D](G)`. That row settles ONE-CLASS (Result 27).
-- **PD-CARRIER**, **PD-STEPS**, **PD-COVERAGE**: Phase 40b–40m in `Pᵈ`, shaped by PD-RECON's route.
+  `def_3 ≤ 1`. It needs PD-STATE and Phase 40, but not the recon. State the embedding at every
+  `d′ ≤ d` (the route, §1): if `G` attains in `P^{d′}`, it attains in `Pᵈ` wherever
+  `def[D_{d′}](G) = def[D_d](G)`. Its `d′ = 3` case is the form PD-COVERAGE consumes,
+  `def[6](G) = def[D](G)`, and settles ONE-CLASS (Result 27); its `d′ = 4` case takes Tier 1 to
+  every `d`.
+- **PD-CARRIER**, **PD-STEPS**, **PD-COVERAGE**: Phase 40b–40m in `Pᵈ`, on R2's steps (§1).
 - **PD-REDUCTION**, **PD-HEAD**: Phase 39's reduction in `Pᵈ`; the headline `PencilPair`, and the
   flag strata as corollaries.
 
@@ -474,9 +484,9 @@ unless a finding argues otherwise:
 - The carrier in dual form (CARRIER); PD-STATE checks it against the definition bodies at open.
 - PD-STATE and PD-STABLE open beside the research once T1 and T2 land (they have).
 
-Still open, for the PI:
-- The route: §2.2's proposal, R2's induction with R1's base row inside an induction on `d`. The
-  defaults work inside it; it is not decided on its own.
+Settled by the PI (§1): the route. R2's steps with Result 15's embedding as the base row; an outer
+induction on `d` is Tier 2's question, entering if at all through CERT's open ears at `d ≥ 7`.
+Nothing is open for the PI at this stage.
 
 Settled by the table: Phase 39's reduction is `d`-general for the bare and distinct conjuncts,
 given CARRIER (row 19). Settled by the PI's call (§1) and Result 27: ONE-CLASS, not ONE-EAR. Its
