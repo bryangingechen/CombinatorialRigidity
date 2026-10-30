@@ -3934,3 +3934,181 @@ the point of a picture point and $d - 2$ heights.
   $D$ in place of $6$.
 \end{proof}
 
+
+\subsection{Open ears that do not lower the deficiency, in every dimension}
+\label{sec:pencil-d-ear-deficiency}
+
+This section proves the step of the induction in dimension $d$ at an
+open ear $a - x_1 - \cdots - x_k - b$ on $V_1$ with
+$2 \le k \le D - 2$ interior bodies, whose ends may be adjacent, when
+$\operatorname{def}_d(G[V_1]) \le \operatorname{def}_d(G)$
+(\cref{thm:pencil-d-open-ear-deficiency}). At $d = 3$ and $k = 2$ it is
+\cref{thm:pencil-x0-open-ear-two}, and we keep the scheme of its proof
+(\cref{sec:main-component-short}). Unlike the steps of
+\cref{sec:pencil-d-short}, it assumes the attainment at $G[V_1]$ alone.
+The hypothesis holds when the merged deficiency
+$\operatorname{def}_d(G[V_1]; a, b)$ equals
+$\operatorname{def}_d(G[V_1])$ (\cref{def:deficiency-merged}), by
+\cref{lem:deficiency-ear-merge} at $D$. From $D - 1$ interior bodies on,
+the step needs no hypothesis on the deficiencies
+(\cref{thm:pencil-d-open-ear-long}).
+
+Under the hypothesis, the condition $(\star)$ of
+\cref{sec:pencil-d-short} holds as soon as the $k + 1$ joins of the ear
+are linearly independent. As at a long ear (\cref{sec:pencil-d-long}),
+it suffices to place the bodies once with these joins independent, at
+heights that lie in the lifting space at every admissible picture. We
+put both ends of the ear at one vertex of a closed $(k + 1)$-gon with
+independent joins, and the interior bodies at the others, so that the
+joins of the ear are those of the polygon
+(\cref{lem:pencil-d-polygon-ear}).
+
+We keep the notation of \cref{sec:pencil-d-long}. So
+$e_1, \dots, e_{d+1}$ is the standard basis of $K^{d+1}$,
+$P_0 = e_{d+1}$ and $P_j = e_j + e_{d+1}$ for $1 \le j \le d$, and
+$P_0$, $P_1$ and $P_2$ are the points with pictures $(0, 0)$, $(1, 0)$
+and $(0, 1)$ and all heights zero. A closed $m$-gon $Y$ has the joins
+$J_i = Y_i \vee Y_{i+1}$, indices read modulo $m$.
+
+% Source: CERT workbook (notes/attacks/cert/workbook.md), S3 with affine input, and S6:
+% (C3) at 3 <= k <= D - 2, (C2) at k = D - 1, and the flat ear at k = 2.
+\begin{lemma}[An open ear on a closed polygon]
+  \label{lem:pencil-d-polygon-ear}
+  \uses{def:join}
+  Let $K$ have at least four elements, $d \ge 3$ and
+  $D = \binom{d+1}{2}$, and let $2 \le k \le D - 1$. There are vectors
+  $p_1, \dots, p_k$ of $K^{d+1}$ with last coordinate $1$, with
+  $p_1 = P_2$ and $p_k = P_1$, such that the $k + 1$ joins
+  \[
+    P_0 \vee p_1,\quad p_1 \vee p_2,\quad \dots,\quad
+    p_{k-1} \vee p_k,\quad p_k \vee P_0
+  \]
+  are linearly independent.
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-d-polygons}
+  As $3 \le k + 1 \le D$, there is a closed $(k + 1)$-gon $Y$ in
+  $K^{d+1}$ with independent joins, each of whose vertices has last
+  coordinate $1$, with $Y_k = P_1$, $Y_0 = P_0$ and $Y_1 = P_2$
+  (\cref{lem:pencil-d-polygons}, at $m = k + 1$). Put $p_j = Y_j$ for
+  $1 \le j \le k$. As the indices of $Y$ are read modulo $k + 1$, its
+  joins are $J_0 = P_0 \vee p_1$, $J_j = p_j \vee p_{j+1}$ for
+  $1 \le j \le k - 1$, and $J_k = Y_k \vee Y_0 = p_k \vee P_0$. These
+  are the $k + 1$ joins of the statement, and they are linearly
+  independent. At $k = 2$ the polygon is the triangle $(P_0, P_2, P_1)$,
+  whose vertices have all heights zero.
+
+  At $d = 3$ the step with two interior bodies takes its three joins from
+  the closed hexagon of \cref{lem:pencil-chain-span-certificates}
+  instead, with the two ends at different vertices
+  (\cref{thm:pencil-x0-open-ear-two}). The dimension enters only through
+  \cref{lem:pencil-d-polygons}, which needs $k + 1 \le D$.
+\end{proof}
+
+% Source: CERT workbook, S3's consumer reading (the bodies of V_1 at P_0, every height
+% zero on V_1, x_1 and x_k) and S6 (C3); the k + 1 independent joins give (star) when
+% def_d(G[V_1]) <= def_d(G).
+\begin{theorem}[An open ear with two to $D - 2$ interior bodies, in every dimension]
+  \label{thm:pencil-d-open-ear-deficiency}
+  \uses{def:pencil-d-x0-attains, def:pencil-x0-standing, def:open-ear,
+        def:D-deficiency}
+  Let $K$ be infinite, $d \ge 3$ and $D = \binom{d+1}{2}$, and let $G$
+  satisfy the standing hypotheses (\cref{def:pencil-x0-standing}), with
+  an open ear $a - x_1 - \cdots - x_k - b$ on $V_1$ (\cref{def:open-ear})
+  with $2 \le k \le D - 2$, whose ends $a$ and $b$ may be adjacent.
+  Suppose that
+  $\operatorname{def}_d(G[V_1]) \le \operatorname{def}_d(G)$
+  (\cref{def:D-deficiency}, at $D$). If the general configuration of
+  $G[V_1]$ attains in dimension $d$ (\cref{def:pencil-d-x0-attains}),
+  then the general configuration of $G$ attains in dimension $d$.
+\end{theorem}
+\begin{proof}
+  \uses{lem:pencil-d-polygon-ear, lem:pencil-d-join-independence-open,
+        lem:pencil-x0-main-picture-open, lem:pencil-ear-fibre,
+        lem:pencil-d-lifting-restrict, lem:pencil-x0-fibre-intersection,
+        lem:pencil-d-config-realization, def:panel-support-extensor,
+        lem:block-rank-ear, lem:pencil-d-x0-one-witness}
+  \emph{The placement.} As $K$ is infinite, it has at least four
+  elements. As $k \le D - 1$, there are vectors $p_1, \dots, p_k$ with
+  last coordinate $1$, $p_1 = P_2$ and $p_k = P_1$, such that the joins
+  $P_0 \vee p_1$, $p_j \vee p_{j+1}$ for $1 \le j \le k - 1$, and
+  $p_k \vee P_0$ are linearly independent
+  (\cref{lem:pencil-d-polygon-ear}). Put every body of $V_1$ at $P_0$,
+  and $x_j$ at $p_j$ for $1 \le j \le k$. Then $a$ and $b$ are at $P_0$,
+  and the joins at the $k + 1$ edges $a x_1$, $x_j x_{j+1}$ and $x_k b$
+  of the ear are these independent joins. Each body is at a vector with
+  last coordinate $1$. Let $q^*$ be the picture and $z^*$ the $d - 2$
+  heights of this placement. The bodies of $V_1$ are at $P_0$, $x_1$ at
+  $P_2$ and $x_k$ at $P_1$, so every height of $z^*$ vanishes on
+  $V_1 \cup \{x_1, x_k\}$. At $k = 2$ these are all the bodies, and
+  $z^* = 0$. Let $P$ be the polynomial in the picture that
+  \cref{lem:pencil-d-join-independence-open} gives for the $k + 1$ joins
+  at the heights $z^*$; it is nonzero at $q^*$. The picture $q^*$ need
+  not be admissible.
+
+  \emph{The picture and the heights.} We find them as in the proof of
+  \cref{thm:pencil-d-open-ear-long}, with these $k + 1$ joins in place of
+  its $D$ joins. That argument uses of the placement only that the joins
+  are independent at $(q^*, z^*)$ and that every height of $z^*$ vanishes
+  on $V_1 \cup \{x_1, x_k\}$, and of the ear only that $k \ge 2$. In
+  outline: a common non-root $q$ of $P$, of the polynomial of the
+  attainment at $G[V_1]$ and of the main-picture polynomial of $G$
+  (\cref{lem:pencil-x0-main-picture-open}) is a main picture of $G$. At
+  it $z^* \in L_G(q)^{d-2}$ (part~(1) of \cref{lem:pencil-ear-fibre}),
+  and the joins are independent at $(q, z^*)$. Each of the $d - 2$
+  heights of $G[V_1]$ extends to $G$ (part~(2) of
+  \cref{lem:pencil-ear-fibre}, \cref{lem:pencil-d-lifting-restrict}). So the attainment at $G[V_1]$
+  and the independence of the joins are two polynomial conditions on
+  $L_G(q)^{d-2}$, each met somewhere on it, and some $z$ meets both
+  (\cref{lem:pencil-x0-fibre-intersection}). Then $q$ is a main picture
+  of $G$, $z \in L_G(q)^{d-2}$, $G[V_1]$ has its target at $(q, z)$,
+  and the $k + 1$ joins are linearly independent there.
+
+  \emph{The count.} As $q$ is admissible and $z \in L_G(q)^{d-2}$, the
+  points of adjacent bodies are linearly independent
+  (\cref{lem:pencil-d-config-realization}), and every hinge is nonzero
+  (\cref{def:panel-support-extensor}). In the notation of
+  \cref{sec:pencil-d-short}, the span $\Lambda$ of the joins of the ear
+  has dimension $k + 1$, so $\dim(\rho + \Lambda) \ge k + 1$. Write
+  $f = \operatorname{def}_d(G[V_1])$. By the ear rank formula
+  (\cref{lem:block-rank-ear}, read with joins as in
+  \cref{sec:pencil-d-short}), the rank of $G$ at $(q, z)$ is at least
+  \[
+    \operatorname{tgt}_d(G[V_1]) + (D - 1)(k + 1) + (k + 1) - D
+    \;=\; \operatorname{tgt}_d(G[V_1]) + Dk.
+  \]
+  As $|V(G)| = |V_1| + k$ and $f \le \operatorname{def}_d(G)$,
+  \[
+    \operatorname{tgt}_d(G) \;=\; \operatorname{tgt}_d(G[V_1]) + Dk
+    + f - \operatorname{def}_d(G) \;\le\; \operatorname{tgt}_d(G[V_1])
+    + Dk.
+  \]
+  So $(\star)$ holds, and $(q, z)$ has rank at least
+  $\operatorname{tgt}_d(G)$, with $q$ a main picture of $G$ and
+  $z \in L_G(q)^{d-2}$. As $G$ has a body,
+  \cref{lem:pencil-d-x0-one-witness} applies, and the general
+  configuration of $G$ attains in dimension $d$.
+
+  At $d = 3$ and $k = 2$ this is \cref{thm:pencil-x0-open-ear-two}.
+  There the dimension enters in four places. First, the three joins of
+  the ear are three consecutive joins of the closed hexagon of
+  \cref{lem:pencil-chain-span-certificates}, with $a$, $x_1$, $x_2$ and
+  $b$ at $Y_4$, $Y_5$, $Y_0$ and $Y_1$, all of height zero. In dimension
+  $d$ the joins of the ear are those of a closed $(k + 1)$-gon, with $a$
+  and $b$ at $P_0$ (\cref{lem:pencil-d-polygon-ear}). At $k = 2$ it is
+  the triangle $(P_0, P_2, P_1)$, again of height zero. Second, three
+  independent joins give three independent hinges
+  (\cref{lem:pencil-ear-hinge-span}). In dimension $d$ the hinge at an
+  edge is the image of its join under the complement isomorphism, which
+  is linear and invertible, so the rank is read with joins. Third, the
+  height is one vector. In dimension $d$ each of the $d - 2$ heights
+  extends from $G[V_1]$ to $G$ on its own, and the two open conditions
+  are polynomials on the one linear space $L_G(q)^{d-2}$. Fourth, the
+  count reads $D = 6$. The ear rank formula holds at every $D$, so the
+  count closes with $D$ in place of $6$. At $d = 3$ and $k = 3, 4$ the
+  ears have their own steps, which assume no bound on the deficiencies
+  (\cref{thm:pencil-x0-open-ear-three},
+  \cref{thm:pencil-x0-open-ear-four}). In dimension $d$ the argument
+  above uses $k$ only through $k \ge 2$ and the closed $(k + 1)$-gon of
+  \cref{lem:pencil-d-polygons}, which exists for $k + 1 \le D$.
+\end{proof}
