@@ -9,10 +9,10 @@ Tier 2. SHORT-CORE's attack track is running, on branch `attack-short-core`. **4
 `notes/Phase42b.md`) ran beside it and **closed 2026-10-30**: the statement layer in `Pᵈ`, its
 chapter `blueprint/src/chapter/pencil-d.tex` formalized (17 nodes), on the carrier the PI took
 (§1, option (a); §2.3 CARRIER). **42c** (PD-STABLE, `notes/Phase42c.md`) opened the same day at
-the PI's word (§1): the embedding, the deficiency lemma and `Pᵈ` at `def[3] ≤ 3`, a new section of
-`pencil-d.tex`, red. Its open found a sharper deficiency range, and the PI widened Tier 0 to
-`def[3] ≤ 3` (§1). SHORT-CORE's attack
-track is running on branch `attack-short-core`. Evidence: `notes/Strata.md`, Results 12–27.
+the PI's word (§1) and **closed 2026-10-30**: the embedding, the sharp deficiency lemma and `Pᵈ` at
+`def[3] ≤ 3` (Tier 0, which the PI widened from `≤ 1`, §1), the last section of `pencil-d.tex`,
+formalized (9 nodes; verdict §3). Which sub-phase opens next (§3) goes to the PI. Evidence:
+`notes/Strata.md`, Results 12–27.
 
 This file is the phase's entry point: the target (§0), the PI's decisions (§1), the recon (§2),
 the layers by stable code (§3) and the open questions (§4). Letters are minted when a sub-phase
@@ -28,8 +28,8 @@ heights `z¹, …, z^{d−2} ∈ L(q)`. Then the hinges `b_u ∧ b_v`, with
 through Phase 39's reduction.
 
 Status: `d = 2, 3` are proved and formalized (Phases 40a, 40). Every `d` with `def_3 ≤ 1` is
-`Strata.md` Result 17, and every `d` at `def_3 ≤ 3` follows from Result 17's proof with 42c's sharp
-deficiency lemma. `d = 4, 5, 6` are measured (Results 11, 19), not found below target under
+`Strata.md` Result 17, and every `d` at `def_3 ≤ 3` follows from Result 17's proof with the sharp
+deficiency lemma, proved and formalized (42c, `thm:pencil-d-deficiency-two-le-three`). `d = 4, 5, 6` are measured (Results 11, 19), not found below target under
 the `--d4` population's cap (`n ≤ 12`, 36 simple graphs) and 8 graphs past it. Where the
 conjecture has content, that is 47 cells on 18 graphs, six of them cycles (§2.5).
 
@@ -498,50 +498,29 @@ leaves out each graph's top cell, `d = 2 + def[3]`, which also carries content.
   realizations), and CARRIER's restatements (configurations, attaining, the collineation, the
   scale-shift, one witness, the magnified rank, join independence). Nondegeneracy's lift is
   GENERIC's (§4).
-- **PD-STABLE** (**42c**, opened 2026-10-30 at the PI's word, §1; `notes/Phase42c.md`, its
-  dep-graph `pencil-d.tex` §`sec:pencil-d-stable`, 9 nodes): Results 15–17, formally. It needs
-  PD-STATE and Phase 40, not the recon. `G` satisfies
-  `def:pencil-x0-standing`; `def[D_d]` is Lean's `G.deficiency d` (`bodyBarDim d = D_d`), so
-  `def[3]` is `G.deficiency 2` and `def[6]` is `G.deficiency 3`. Planned names are tentative.
-  1. *The embedding, at every `d′ ≤ d`* (Result 15; the route, §1). Let `ι : K^{d′+1} → K^{d+1}`
-     insert zeros before the last coordinate, and `φ` the injective map of screw spaces it induces
-     on the polar lines (`complementIso` of `Λ²ι`). **Rank:** for a framework on a connected `G`,
-     `rank(φF) = rank F + (D_d − D_{d′})(|V| − 1)`; split the screw space as `im φ ⊕ T`, so a
-     motion of `φF` is a motion of `F` plus one constant in `T` (planned
-     `BodyHingeFramework.finrank_span_rigidityRows_map_injective`). **Statement
-     form** (PD-HEAD): a pencil realization in dimension `d′` of rank
-     `D_{d′}(|V| − 1) − def[D_{d′}]` gives one in dimension `d` of rank `D_d(|V| − 1) − def[D_{d′}]`
-     (`b ↦ ιb`, `Π ↦ ιΠ`), at the deficiency rank where `def[D_{d′}] = def[D_d]` (planned
-     `hasGradedPencilRealization_of_le`). **Configuration form** (PD-COVERAGE; `3 ≤ d′ ≤ d`): the
-     configuration `(q, (z′, 0, …, 0))` has the rank of `(q, z′)` plus `(D_d − D_{d′})(|V| − 1)`, so
-     if the general configuration attains in dimension `d′` and `def[D_{d′}](G) = def[D_d](G)`, it
-     attains in dimension `d` (one main picture and `lem:pencil-d-x0-one-witness`; planned
-     `Graph.X0AttainsGrade.of_le`). Its `d′ = 3` case is the form PD-COVERAGE consumes,
-     `def[6](G) = def[D](G)`, and settles ONE-CLASS (Result 27); its `d′ = 4` case takes Tier 1
-     to every `d`.
-  2. *The deficiency lemma* (Result 16, sharp form; first posed as `2 + def[3](G) ≤ d′`): if `def[3](G) + 3 ≤ D_{d′}` and `d′ ≤ d`, then
-     `def[D_{d′}](G) = def[D_d](G)`. Proof: a partition with cycle rank `c ≥ 1` positive at
-     `D′ = D_{d′}` has `|P| − 1 > (D′ − 1)c`, so `def[3] ≥ |P| − 1 − 2c > (D′ − 3)c ≥ D′ − 3`,
-     against `D′ ≥ C(def[3] + 3, 2)`; so above `D′` only tree quotients count, at a value free of
-     `D`. **Needs `G` connected** (corrected at 42c's open): two bodies and no edge have
-     `def[D] = D`, so `def[3] = 3` and `d′ = 5`, yet `def[15] ≠ def[21]`. The proof's own chain
-     stops at `D′ − 3 < def[3]`, so `def[3] + 3 ≤ D′` suffices, and the node states that range,
-     this one its "in particular" (`notes/Phase42c.md` *Decisions*, §4).
-  3. *`Pᵈ` at `def[3] ≤ 3`* (Result 17 widened; Tier 0): if `def[3](G) ≤ 3` and `d ≥ 3`, the general
-     configuration of `G` attains in dimension `d`, so `G` has an adjacent-distinct pencil
-     realization at the deficiency rank in dimension `d` (`lem:pencil-d-config-realization`).
-     Proof: Phase 40 (`thm:pencil-x0-generic-attains`) at `d′ = 3`, item 2 (`def[3] + 3 ≤ 6 =
-     C(4, 2)`, main form) and item 1. Result 17 embeds the planar witness at `def[3] = 0`; `d′ = 3` covers that case
-     too, as there `def[6] = def[D] = 0`. Planned `Graph.x0AttainsGrade_of_deficiency_two_le_three`.
-
-  As opened (42c): the chapter section is authoritative for the statements, and
-  `notes/Phase42c.md` holds the planned names and the open's corrections (item 2 connected and in
-  its sharp range; the configuration form from `d′ = 2`; item 3's realization step its own node).
-
-  From 42b: the Lean encoding (grade `k = d − 1`, `m = d − 2` heights, the deficiency's `n` a
-  parameter) is `notes/Phase42b.md` *Architectural choices*. Item 1's join map,
-  `Λ²ι (b_u ∨ b_v) = ιb_u ∨ ιb_v`, is FRICTION's open `exteriorPower.map 2` lemma for
-  `normalsJoin`, which lands with it.
+- **PD-STABLE** (**42c**, opened and **closed 2026-10-30** at the PI's word, §1;
+  `notes/Phase42c.md`): Results 15–17, formally, as `pencil-d.tex` §`sec:pencil-d-stable` (9
+  nodes, all green), which is authoritative for the statements. `def[D_d]` is Lean's
+  `G.deficiency d`, so `def[3]` is `G.deficiency 2` and `def[6]` is `G.deficiency 3`; the Lean
+  encoding (grade `k = d − 1`, `m = d − 2` heights, the deficiency's `n` a parameter) is
+  `notes/Phase42b.md` *Architectural choices*. Verdicts:
+  1. *The embedding, at every `d′ ≤ d`* (Result 15; the route, §1). `ι` inserts zeros before the
+     last coordinate and `φ` is the screw map it induces. On a connected `G` any injective `φ`
+     adds `(D_d − D_{d′})(|V| − 1)` to the rank (`lem:screw-embedding-rank`, through the constant
+     motions rather than a complement). The statement form holds at a fixed deficiency parameter
+     (`lem:pencil-d-embed-realization`), and the configuration form from `d′ = 2`
+     (`Graph.X0AttainsGrade.of_le`). Its `d′ = 3` case is the form PD-COVERAGE consumes,
+     `def[6](G) = def[D](G)`, and settles ONE-CLASS (Result 27); its `d′ = 4` case takes Tier 1 to
+     every `d`. FRICTION's `normalsJoin` map lemma landed with it (`exteriorPower_map_normalsJoin`).
+  2. *The deficiency lemma* (Result 16, sharp form; `lem:deficiency-stable`): on a **connected**
+     `G` (corrected at the open: two bodies and no edge have `def[D] = D`), `def[3](G) + 3 ≤ D_{d′}`
+     and `d′ ≤ d` give `def[D_{d′}](G) = def[D_d](G)`; the first form, `2 + def[3](G) ≤ d′`, is
+     its "in particular".
+  3. *`Pᵈ` at `def[3] ≤ 3`* (Result 17 widened; Tier 0; `thm:pencil-d-deficiency-two-le-three`):
+     Phase 40 at `d′ = 3` with items 1–2 (`def[3] + 3 ≤ 6 = C(4, 2)`), which covers `def[3] = 0`
+     too. `Graph.x0AttainsGrade_of_deficiency_two_le_three` and
+     `Graph.hasGradedDistinctPencilRealization_of_deficiency_two_le_three` use the three standard
+     axioms.
 - **PD-CARRIER**, **PD-STEPS**, **PD-COVERAGE**: Phase 40b–40m in `Pᵈ`, on R2's steps (§1).
   **Deferred to them from PD-STATE**, each optional until a consumer needs it: Phase 40's `k = 2`
   collineation (`PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv`) re-proved
@@ -551,12 +530,20 @@ leaves out each graph's top cell, `d = 2 + def[3]`, which also carries content.
   case at every `m` (not a one-line add, for the same bridge); and the hinge form of join
   independence (the hinges `C(b_u, b_w)` rather than the joins, through the complement
   isomorphism), for the cycle and long-ear steps (rows 10–11). Each makes a `P³` file import
-  `Pencil/Grade/`, which 42b's additive commits avoided.
+  `Pencil/Grade/`, which 42b's additive commits avoided. **Deferred to them from PD-STABLE**, each
+  with the next commit that edits the file it names (a new declaration there rebuilds most of
+  `Molecular/`): FRICTION's moves of `exteriorPower_map_normalsJoin` to `PanelLayer.lean`, beside
+  `normalsJoin`, and of `BodyHingeFramework.map` and the zero-hinge motion lemmas to
+  `RigidityMatrix/Basic.lean` and `GenericityDevice.lean`; and FRICTION's open `contragredientEquiv`
+  in `Meet.lean`, which `Grade/Collineation.lean`'s inline contragredient would then call.
 - **PD-REDUCTION**, **PD-HEAD**: Phase 39's reduction in `Pᵈ`; the headline `PencilPair`, and the
-  flag strata as corollaries.
+  flag strata as corollaries. **At Phase 42's close**, Tier 0 joins `formalization.yaml`'s
+  `main_results` and `alignment` unless the headline subsumes it, with a closed non-vacuity witness
+  in `CombinatorialRigidity/Nonvacuity.lean` (`PHASE-BOUNDARIES.md`); 42c's intermediate close
+  added no row, as Phase 40's sub-phases did not.
 
-PD-STATE and PD-STABLE do not depend on the route, so they run beside PD-RECON (§1's defaults).
-PD-STATE opened and closed as 42b on 2026-10-30; PD-STABLE opened as 42c the same day.
+PD-STATE and PD-STABLE do not depend on the route, so they ran beside PD-RECON (§1's defaults).
+PD-STATE opened and closed as 42b on 2026-10-30, and PD-STABLE as 42c the same day.
 
 ## 4. Open questions
 
@@ -573,8 +560,8 @@ unless a finding argues otherwise:
   its `Pᵈ` lift is deferred with it.
 - The carrier in dual form (CARRIER). Checked at 42b's open: it agrees with Phase 39's
   definitions once each body's 3-space is data (§2.3), the reading the PI took (§1).
-- PD-STATE and PD-STABLE open beside the research once T1 and T2 land: PD-STATE did, as 42b
-  (closed 2026-10-30), and PD-STABLE as 42c (open).
+- PD-STATE and PD-STABLE open beside the research once T1 and T2 land: they did, as 42b and 42c,
+  both closed 2026-10-30.
 
 Settled by the PI (§1): the route. R2's steps with Result 15's embedding as the base row; an outer
 induction on `d` is Tier 2's question, entering if at all through CERT's open ears at `d ≥ 7`.

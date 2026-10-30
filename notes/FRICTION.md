@@ -153,7 +153,7 @@ to be re-derived by re-reading entries later.
   scratch under `open scoped Graph`, `linear_combination h1 - h2 - h3` hit TACTICS-QUIRKS § 48.
 - **Proposed fix:** move the three with the next commit that edits `Basic.lean` or
   `GenericityDevice.lean` for another reason.
-- **Status:** open.
+- **Status:** open (tracked under PD-CARRIER / PD-STEPS / PD-COVERAGE, `notes/Phase42-design.md` §3).
 
 ### [open] No linear-equivalence form of `contragredient`; the `normalsJoin` map lemma sits outside `PanelLayer.lean`
 - **Where it bit:** Phase 42b, `lem:pencil-d-rank-collineation` (`Pencil/Grade/Collineation.lean`,
@@ -176,7 +176,8 @@ to be re-derived by re-reading entries later.
   declaration there rebuilds most of `Molecular/`. The `k + 2 - 2` cast to `ScrewSpace K k` was no
   friction: `rfl` closes `det g • ⋀^(k+2-2) h (complementIso _ X) = det g • screwEquivOfLinearEquiv h (…)`.
 - **Status:** open (`contragredientEquiv`; and the move of `exteriorPower_map_normalsJoin` to
-  `PanelLayer.lean`, with the next commit that edits that file).
+  `PanelLayer.lean`, with the next commit that edits that file; both tracked under PD-CARRIER /
+  PD-STEPS / PD-COVERAGE, `notes/Phase42-design.md` §3).
 
 ### [resolved] A `∘ₗ` composite into `ScrewSpace K k` through `complementIso` elaborates, but `rw [LinearMap.comp_apply]` cannot match it
 - **Where it bit:** Phase 42c, `def:pencil-d-embedding` (`Pencil/Grade/Embedding.lean`,

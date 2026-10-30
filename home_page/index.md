@@ -175,9 +175,10 @@ proof dimension-general, with one step needing new mathematics from
 dimension four; beside that research, a new blueprint chapter states
 pencil realizations in every dimension, their agreement with the
 three-dimensional ones, and the tools a proof in every dimension would
-use, all formalized. Its last section, now being formalized, embeds a
-lower dimension in a higher one, and so derives the theorem in every
-dimension from dimension three for graphs of small deficiency. In general
+use, all formalized. Its last section embeds a lower dimension in a
+higher one, and so proves, in every dimension, that a simple connected
+graph of minimum degree at least two whose deficiency in the plane is at
+most three has a pencil realization at the deficiency rank. In general
 the theorem is open from dimension four.
 
 ### How the pencil realization theorem is proved

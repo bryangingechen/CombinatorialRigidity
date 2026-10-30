@@ -49,8 +49,6 @@ keeps only what git cannot show.
 
 | Date | Task (short + sha) | Rung | Exception | Notes |
 |---|---|---|---|---|
-| 2026-10-30 | 42c `lem:deficiency-stable` `4be9b34f` | sonnet | gate-invisible defect (a citation), coordinator-seeded | The coordinator's prompt said "docstrings cite Result 16 as the chapter does"; the chapter cites nothing (Result 16 is the project's own, `notes/Strata.md`). The builder filled the gap with a real but unrelated Katoh–Tanigawa title. Caught on the full-diff docstring read (F44), fixed in the coordinator's follow-up. Lesson (F19): a prompt's "as X does" is a claim about X; open X before writing it. Also 1 gate in a shell `timeout`, disclosed, harmless (F6 family). |
-| 2026-10-30 | 42c restatement (`33008c0b` + `88154066`, squashed pre-push) | sonnet | stale commit message, a misreported cause, an off-by-one | The builder ran `git commit -F` on the shared temp path `$TMPDIR/msg.txt`, which still held a 42b builder's message from 00:47. It did this twice, amended the second, and reported that "a concurrent session" had committed its edits. The reflog and the stale file showed otherwise. Squashed by the coordinator (rescue §1). The full-diff read also caught `3 ≤ d < d*` for `≤ d*` twice. Lesson: a message file needs a per-dispatch path. |
 
 **Phases 29–34 rows, 2026-07-09 → 07-18: 17 pruned at the 41a grooming
 (2026-10-24); the full rows are in git history at `3a627b3d`.** Those phases
@@ -158,6 +156,18 @@ full-diff read, a note calling a case "a one-line corollary" that its
 builder's own return said was not (F44); 1 gate build wrapped in a shell
 `timeout`, disclosed, harmless (F6 family).
 
+**Phase 42c (PD-STABLE) rows, 2026-10-30: 2 pruned at 42c's close
+(2026-10-30); the full rows are in git history at `e455db5a`.** None BLOCKED,
+escalated or killed. The two: 1 gate-invisible defect the coordinator's own
+prompt seeded, a docstring told to cite "as the chapter does" a result the
+chapter does not cite, which the builder filled with a real but unrelated
+Katoh–Tanigawa title (caught on the full-diff docstring read, F44; the
+lesson is F19's), with 1 gate build in a shell `timeout`, disclosed, harmless
+(F6 family); and 1 builder that committed twice with a stale message from a
+shared temp file and reported a concurrent session as the cause, squashed by
+the coordinator before the push (rescue §1; F56), the same diff read catching
+an off-by-one in a range.
+
 ## Findings
 
 (Distill recurring lessons here — one entry per lesson, rows cite it.
@@ -200,6 +210,13 @@ playbook's pre-dispatch derivation guard (derive the leaf's statement against
 the definition body; a chapter open's own statements count as transcriptions)
 and root `CLAUDE.md` *Docstrings are not evidence*; the guard fired as written,
 before any Lean consumed the pin, so nothing is promoted.
+
+**42c grooming (2026-10-30, at the 42c close).** Its 2 rows are pruned to git
+history (profile under *Log*). New finding: F56, kept open, since its fix is
+the builder core's commit bullet, a harness change (`HARNESS.md`): it is a
+candidate for the next `/harness-review` (`notes/harness/incidents.md`,
+2026-10-30). The other row is F19 and F44 again, both promoted, and the F6
+family.
 
 - **F1 — re-derive inventories at build time.** Promoted to
   `notes/CLAUDE.md` *One canonical home* (count again in the compressing
@@ -728,3 +745,13 @@ before any Lean consumed the pin, so nothing is promoted.
   dispatch. This log's header already said so for `check-log-rows.py`, and
   41e's later prompts carried the rule. Promoted: step 4's docs gates and the
   builder core's commit bullet.
+- **F56 — a commit message file needs a per-dispatch path (42c, the
+  restatement dispatch).** A builder committed with `git commit -F` on the
+  shared `$TMPDIR/msg.txt`, which still held an earlier 42b builder's message,
+  did it twice (amending the second), and reported that a concurrent session
+  had committed its edits. The reflog and the stale file showed otherwise; the
+  coordinator squashed the two commits before the push (`dd55bd38`). No gate
+  reads a message against its diff. Open: the candidate rule, a heredoc or a
+  fresh file under `scratch/<phase>/` and never a shared temp path, belongs in
+  the builder core, which changes only at `/harness-review`; until then the
+  coordinator's `hygiene` line carries it.

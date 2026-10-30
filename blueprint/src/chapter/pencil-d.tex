@@ -23,8 +23,10 @@ objects of \cref{sec:main-component-carrier} that a proof in dimension
 $d$ along the lines of \cref{sec:main-component} would use. At $d = 3$ each of
 them is the object of \cref{sec:pencil} or \cref{sec:main-component}
 that it restates. The last section embeds a lower dimension in a higher
-one, and derives the theorem in every dimension from the theorem in
-dimension three at the graphs of small deficiency
+one. At the graphs of small deficiency it carries the attaining of the
+general configuration (\cref{thm:pencil-x0-coverage}) from dimension
+three to every dimension, and so gives them adjacent-distinct pencil
+realizations at the deficiency rank in every dimension
 (\cref{sec:pencil-d-stable}).
 
 We describe a pencil realization by its polar. The polarity of
@@ -512,9 +514,11 @@ at $D$ (\cref{def:D-deficiency}), as before
 rank in dimension $d'$ gives one in dimension $d$ when
 $\operatorname{def}_{d'}(G) = \operatorname{def}_d(G)$, and on a
 connected multigraph the deficiency stops changing once $D$ is large
-compared with $\operatorname{def}_2(G)$. So the theorem in dimension
-three gives the theorem in every dimension at the graphs with
-$\operatorname{def}_2(G) \le 3$.
+compared with $\operatorname{def}_2(G)$. So the general configuration,
+which attains in dimension three at every graph satisfying the standing
+hypotheses (\cref{thm:pencil-x0-coverage}), attains in every dimension
+at those with $\operatorname{def}_2(G) \le 3$
+(\cref{thm:pencil-d-deficiency-two-le-three}).
 
 \begin{lemma}[The deficiency stops changing]
   \label{lem:deficiency-stable}
@@ -806,8 +810,8 @@ it has one in dimension $d$.
   (\cref{thm:pencil-x0-coverage}, \cref{lem:pencil-d-x0-attains-three}).
   As $G$ is connected and
   $\operatorname{def}_2(G) + 3 \le 6 = \binom{4}{2}$,
-  $\operatorname{def}_3(G) = \operatorname{def}_d(G)$
-  (\cref{lem:deficiency-stable}, its main form). So it attains in dimension $d$
+  \cref{lem:deficiency-stable} with $d' = 3$ gives
+  $\operatorname{def}_3(G) = \operatorname{def}_d(G)$. So it attains in dimension $d$
   (\cref{lem:pencil-d-x0-attains-of-le}), and
   \cref{lem:pencil-d-x0-attains-distinct} gives the realization.
 \end{proof}

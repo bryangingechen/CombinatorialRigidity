@@ -174,7 +174,9 @@ in every `Pᵈ` (Results 12–19), which PENCIL-D sets out to prove.
     holds when `def_3(G) + 3 ≤ D_{d′}`. So for each `G` only `3 ≤ d ≤ d*` needs a proof, where `d*`
     is the least `d′` with `D_{d′} ≥ def_3(G) + 3`, and the case `d*` implies every `d` above it
     (the old threshold `2 + def_3` was the special case of Result 16's old form). Jackson–Jordán's
-    equality is not used.
+    equality is not used. Formalized in Phase 42c as `hasGradedPencilRealization_of_le` (the
+    realization) and `Graph.X0AttainsGrade.of_le` (the configuration), over
+    `BodyHingeFramework.finrank_span_rigidityRows_map_injective`.
 16. `[PROVED]` **The deficiency lemma (sharp form).** For a **connected** `G` with `t = def_3(G)`,
     `def_{D′}(G) = def_D(G)` whenever `t + 3 ≤ D′ ≤ D`. A partition `P` whose quotient has cycle
     rank `c ≥ 1` has value at `D` at most `t − (D − 3)c ≤ t − (D′ − 3) ≤ 0`, so it never beats
@@ -189,7 +191,9 @@ in every `Pᵈ` (Results 12–19), which PENCIL-D sets out to prove.
     `def_3(G) ≤ 3`.** For `G` under the main component's standing hypotheses
     (`def:pencil-x0-standing`): at `def_3 = 0` embed the planar theorem's witness (`d′ = 2`,
     Phase 40a); at `1 ≤ def_3 ≤ 3` embed Phase 40's (`d′ = 3`, `D′ = 6 ≥ def_3 + 3`; the first widening of the old `def_3 ≤ 1`, by the sharp Result 16). Then Results 15–16 apply. The content range at `d` (graphs not settled from `P^{d−1}`) is `def_3 ≥ C(d,2) − 2` (`≥ 4` at `d = 4`, `≥ 8` at `d = 5`), and a `P⁴` theorem gives every `d` at `def_3 ≤ 7`. This is the
-    first `Pᵈ` statement in reach of the existing formal proofs (PD-STABLE).
+    first `Pᵈ` statement in reach of the existing formal proofs (PD-STABLE). Formalized in Phase
+    42c, at `d′ = 3` throughout, as `Graph.x0AttainsGrade_of_deficiency_two_le_three` and
+    `Graph.hasGradedDistinctPencilRealization_of_deficiency_two_le_three`.
 18. `[PROVED-MOD Jackson–Jordán's equality]` **The universal configuration: stabilization in
     `d`.** Every coordinate of a configuration of Result 13 lies in `L(q)`, of dimension
     `ℓ = 3 + def_3` at a general picture (`thm:pencil-jj-equality`). So every such `Pᵈ`
