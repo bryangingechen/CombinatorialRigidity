@@ -6,20 +6,21 @@ Results 20–26), with no shortfall: SHORT shrinks to SHORT-CORE, ONE-EAR's firs
 wherever M does, and at `D ≥ 10` the coverage needs ONE-EAR only on ONE-CLASS. Then, at the PI's
 call, ONE-CLASS's lemma (Result 27), which takes ONE-EAR out of the coverage; then the PI took the
 route (R2's steps, the embedding as the base row). PD-STATE ran beside it as 42b
-(`notes/Phase42b.md`, closed 2026-10-30), and PD-STABLE opened as 42c (`notes/Phase42c.md`). Next
-concrete task here: SHORT-CORE's attack track, once the PI has read its
-DRAFT brief. Plan and decisions: `notes/Phase42-design.md`; evidence: `notes/Strata.md`.
+(`notes/Phase42b.md`, closed 2026-10-30), and PD-STABLE as 42c (`notes/Phase42c.md`, closed
+2026-10-30, every `d` at `def_3 ≤ 3`). Next concrete task here: SHORT-CORE's attack track, running
+on branch `attack-short-core`. Plan and decisions: `notes/Phase42-design.md`; evidence: `notes/Strata.md`.
 
 ## Current state
 
 **Next** (the PI's defaults, design doc §1):
 - **PD-STATE** ran beside the research as **42b** (`notes/Phase42b.md`) and closed 2026-10-30,
-  its chapter formalized; PD-STABLE then opened as **42c** (`notes/Phase42c.md`).
+  its chapter formalized; PD-STABLE then ran as **42c** (`notes/Phase42c.md`) and closed
+  2026-10-30: every `d` at `def_3 ≤ 3`, by the sharp deficiency lemma.
 - **SHORT-CORE's attack track** (`/attack`, design doc §2.3), the coverage's only new mathematics
   at `d ≥ 4` since Result 27. Rows 9 and 12, which T5's cover rests on, passed a second read.
-  Its brief is `notes/attacks/short-core/brief.md`, a DRAFT: once the PI has read it,
-  `/attack short-core` runs in its own worktree (branch `attack-short-core`), with no Lean build
-  there, beside PD-STATE's Lean in the main checkout.
+  Its brief is `notes/attacks/short-core/brief.md`; `/attack short-core` runs in its own worktree
+  (branch `attack-short-core`), with no Lean build there. Its review 2 found its scope unchanged
+  by 42c's sharp range: every danger cell has `def_3 ≥ 2d − 3` (design doc §4).
 
 **Landed:** the step table, its route verdict (§2.2: R2's step structure, R1's base row) and
 §2.5; then T1, T2 and the content-range graphs as one mode, `strata.py --content`. Row 5's
@@ -86,12 +87,12 @@ proved at `d ≤ 6`. Both need only CARRIER's restatements.
 
 ## Hand-off / next phase
 
-PD-STATE runs as 42b (`notes/Phase42b.md`, its own hand-off). Here the next step is SHORT-CORE's
-attack track, once the PI has read its DRAFT brief (`notes/attacks/short-core/brief.md`). Result
+PD-STATE ran as 42b and PD-STABLE as 42c (both closed 2026-10-30). Here the next step is
+SHORT-CORE's attack track, running on branch `attack-short-core` (`notes/attacks/short-core/brief.md`). Result
 27 leaves SHORT-CORE as the coverage's only new mathematics at `d ≥ 4`: `k = 3, 4, 5` at `d = 4`,
 its `d = 3` model the chapter's `k = 3` case split on `ρ`, needed by T5's Petersen cells. Rows 9
 and 12, on which T5's cover rests, passed a second read; the track builds on (⋆) and the X3 range
-(design doc §2.3). PD-STABLE (42c, `notes/Phase42c.md`) states the embedding at every
+(design doc §2.3). PD-STABLE (42c, `notes/Phase42c.md`, closed) proved the embedding at every
 `d′ ≤ d` (the route), its `d′ = 3` case as the coverage consumes it, `def[6] = def[D]`. CERT's open
 ears at `d ≥ 7` (§2.3) are PD-STEPS's, for the every-`d` tier. ONE-EAR (the motive, a `Pᵈ`
 insertion lemma, X2) is GENERIC's now, deferred with it.

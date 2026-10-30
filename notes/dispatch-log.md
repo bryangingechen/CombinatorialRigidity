@@ -754,4 +754,7 @@ family.
   reads a message against its diff. Open: the candidate rule, a heredoc or a
   fresh file under `scratch/<phase>/` and never a shared temp path, belongs in
   the builder core, which changes only at `/harness-review`; until then the
-  coordinator's `hygiene` line carries it.
+  coordinator's `hygiene` line carries it. The incident line belongs in
+  `notes/harness/incidents.md` once `attack-short-core` merges: that branch
+  appends at the same place, and a master append conflicts there (`git
+  merge-tree` at 42c's close), so the close's line was taken back off master.
