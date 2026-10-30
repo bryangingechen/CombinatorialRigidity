@@ -3,28 +3,20 @@
 **Status:** in progress (opened 2026-10-30 with the PI), a research sub-phase of Phase 42. Its
 target is an informal proof, at every `d`, of the conditioned pair's three conjuncts (bare,
 adjacent-distinct and a generic one), written as red nodes of `pencil-d.tex` before any more
-formalization. Three tracks, CERT, NONDEG and WRITE-UP, run in parallel from one central session,
-`/coordinate-tracks 42d`, with a Lean track, COUNT, for the coverage's counting at every `D`
-(COUNT-A and COUNT-B landed: 11 green nodes; W1–W5 written). CERT is closed; NONDEG, under
-the PI's C2-same, claims (W) (session 3). **Next:** W6 and NONDEG's review 2. Plan and the PI's
-decisions:
-`notes/Phase42-design.md` (§1, §3 PD-ALL).
+formalization. Its research tracks are closed: CERT (the certificates at every `d`) and NONDEG
+(C2-same, the PI's choice, with (W) proved). COUNT's Lean landed (11 green nodes). What remains
+is the write-up: W1–W5 written, W6 in flight, W7–W10 to go. **Next:** W7, after W6 merges. Plan
+and the PI's decisions: `notes/Phase42-design.md` (§1, §3 PD-ALL).
 
 ## Current state
 
-Opened 2026-10-30. The first `/coordinate-tracks 42d` round dispatched CERT session 1 and NONDEG
-session 1, each in its own isolated worktree, and COUNT-A as the `pencil-d.tex` writer (one writer
-of that chapter in flight at a time). **COUNT-A has landed**: `pencil-d.tex`'s new section
-`sec:pencil-d-deficiency`, five green nodes (*Lean now*). **CERT is closed** after one session and
-a review. NONDEG: the PI chose C2-same after session 1; session 2 left one obligation, (W), and
-the PI called review 1 early, before session 3 attacks (W).
-Slice W1 has landed (`sec:pencil-d-induction`, `sec:pencil-d-flat`: four red nodes and a remark).
-**COUNT-B has landed**: six more green nodes in `sec:pencil-d-deficiency` (*Lean now*), which
-closes the COUNT track. Slices W2 (`sec:pencil-d-cut`) and W3 (`sec:pencil-d-contract`) have
-landed, three red nodes each, and W4 (`sec:pencil-d-splitoff`), one. NONDEG's review 1 said
-"continue" with two findings (F1, F2), which session 3 records first (the PI). The next concrete
-step is the hub's: NONDEG session 3 claims (W) (S34–S36), and the PI called review 2 now. W5 (`sec:pencil-d-chains`, two red nodes)
-has landed; dispatch W6.
+Opened 2026-10-30; the first `/coordinate-tracks 42d` sitting ran every track. **COUNT** is
+done: COUNT-A and COUNT-B, 11 green nodes in `sec:pencil-d-deficiency` (*Lean now*). **CERT**
+closed at review 1, **NONDEG** at review 2 (*Tracks*). **WRITE-UP**: W1–W5 have landed, one section
+of `pencil-d.tex` each (`sec:pencil-d-induction` and `-flat`, `-cut`, `-contract`, `-splitoff`,
+`-chains`); W6 (short ears) is in flight. The next concrete step is the hub's: merge W6, then
+dispatch W7 (cycles and long ears, with CERT's S6 and S7). W10 takes NONDEG's pieces in the
+form the PI set (*Write-up*).
 
 In place at the open: the hub command (`.claude/commands/coordinate-tracks.md`), the write-up
 agent (`.claude/agents/writeup-opus.md`), `worktree.baseRef: head` in `.claude/settings.json`
@@ -39,7 +31,7 @@ The hub's registry. Count-free: each attack's status is its `state.md` (`HARNESS
 | Track | Kind | Home | Agent | Status |
 |---|---|---|---|---|
 | CERT | attack | `notes/attacks/cert/` | `attack-opus` | closed at review 1: R1 proved by hand at every `d` (workbook S1–S9) |
-| NONDEG | attack (a question) | `notes/attacks/nondeg/` | `attack-opus` | review due: review 2 on S32–S38 (the PI); if it passes, the track stops |
+| NONDEG | attack (a question) | `notes/attacks/nondeg/` | `attack-opus` | closed at review 2: C2-same, (W) proved (workbook S32–S38) |
 | WRITE-UP | write-up | `blueprint/src/chapter/pencil-d.tex`, new sections | `writeup-opus` | ready: slice W6 |
 | COUNT | lean | *Lean now* below; nodes in `pencil-d.tex` | `phase-builder-opus` | done: A and B landed; C waits for formalization |
 
@@ -57,8 +49,9 @@ alternate.
   of the reduction lifts, and one obligation is open, (W) (O7; certified on every graph with at most
   nine bodies, S30). Review 1: continue, after F1 (O8, the good-ear lemma returning `W₀`) and F2
   (S21's cut-edge glue) are recorded. Session 3: S32 repairs S21, S33 states O8 (W10's node), and
-  S34–S36 claim (W) at every `W₀`-ear (one reader; S37 certifies 6,217 ears on 6–16 bodies). Left:
-  O8's write-up and the coverage (A). The PI called review 2 now.
+  S34–S36 prove (W) at every `W₀`-ear (S37 certifies 6,217 ears on 6–16 bodies). **Closed** at
+  review 2, 2026-10-30, which confirmed S32–S36 and S25 by hand. Left outside the track: the
+  coverage (A), slice W9's, and W10's write-up.
 
 ## Write-up
 
@@ -93,13 +86,16 @@ Slices, leaf-first, one session each (a slice's nodes may `\uses` only nodes alr
 - [ ] **W8** open ears, `k = 2` and `3 ≤ k ≤ D − 2` (row 12), with CERT's open ears.
 - [ ] **W9** the main-component statements at every `d` for the bare and distinct conjuncts, and
   Phase 39's reduction in `Pᵈ` (row 19).
-- [ ] **W10** the generic conjunct, in the form NONDEG's verdict and the PI give it.
+- [ ] **W10** the generic conjunct under C2-same: S38's pieces, O8 (S33, the good-ear lemma
+  returning `W₀`), and S7 (a), S9 and S14, each a red node or cited by one; (W) by review 2's
+  shorter route (S36's base-generic witness placed in `S_L(Y)`, without S34's count or S35 (c)).
+  The PI, 2026-10-30, after review 2: "(b) Shorter route"; "Add S7 (a), S9, S14".
 
 ## Lemma checklist
 
 - [x] **CERT** closed (review 1, 2026-10-30; workbook S1–S9): (C1)–(C3) at every `d`, by hand,
   with a committed driver.
-- [ ] **NONDEG** closed: Q0–Q4 answered; the PI has chosen the `Pᵈ` nondegeneracy (or dropped
+- [x] **NONDEG** closed (review 2, 2026-10-30): Q0–Q4 answered; the PI has chosen the `Pᵈ` nondegeneracy (or dropped
   the conjunct at `d ≥ 4`).
 - [ ] **WRITE-UP** W1–W10.
 - [x] **COUNT-A** and **COUNT-B** (landed; *Lean now*), the PI's call: A and B now, C at
@@ -156,10 +152,11 @@ landing them.
 
 ## Hand-off / next phase
 
-Next concrete step: the `/coordinate-tracks 42d` hub dispatches slice W6 (short ears) as the next
-`pencil-d.tex` writer, and runs NONDEG's review 2 (S32–S38; if it passes, NONDEG stops and S38 goes to the write-up) (CERT is
-closed; COUNT is done). 42d closes when the new sections give an informal proof at every `d` of the conjuncts the PI keeps, with CERT and NONDEG closed. Formalization (PD-CARRIER, PD-STEPS, PD-COVERAGE, PD-REDUCTION, PD-HEAD; design doc
-§3) follows at the PI's word.
+Next concrete step: the `/coordinate-tracks 42d` hub merges slice W6 (short ears, in flight) and
+dispatches W7 (CERT, NONDEG and COUNT are done). 42d
+closes when the new sections give an informal proof at every `d` of the conjuncts the PI keeps.
+Formalization (PD-CARRIER, PD-STEPS, PD-COVERAGE, PD-REDUCTION, PD-HEAD; design doc §3) follows
+at the PI's word.
 
 ## Decisions made during this phase
 

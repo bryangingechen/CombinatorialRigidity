@@ -148,6 +148,9 @@ fibre-intersection lemma and Jackson–Jordán's equality.
   on the points, and the hub planes around each body meet as in `P³`
   (`dim ⋂_{w∈S} Π_w ≤ 4 − |S|`), with Phase 39's feasibility word for word in every `d`
   (`notes/attacks/nondeg/` S9). The other options were C2-vac and dropping the conjunct.
+- **PI, 2026-10-30 (42d, after NONDEG review 2), the generic conjunct's write-up:** NONDEG closes;
+  slice W10 proves (W) by "(b) Shorter route" (S36's base-generic witness placed in `S_L(Y)`) and
+  carries S38's pieces, O8 and the route's other results ("Add S7 (a), S9, S14").
 
 ## 2. PD-RECON (42a)
 
@@ -351,7 +354,8 @@ Result 17's `def[3] ≤ 1` one step further.
   feasibility settled by 42d's NONDEG S11: it is feasible). It has `def[3] = 0` (Result 22), so
   its rank is Result 17's; the question it raises is GENERIC's alone. **42d:** under C2-same, the
   carrier is the lifts of a `P³` realization (motive `RL_d`), every arm of the reduction lifts, and
-  the one-ear step reduces to one open obligation, (W) (`notes/attacks/nondeg/state.md`, S18–S31).
+  the one-ear step reduces to one obligation, (W), proved at every `W₀`-ear (S34–S36); NONDEG
+  closed at review 2, 2026-10-30 (`notes/attacks/nondeg/`). Left: the coverage (A) and the write-up.
 
 ### 2.4 Proposed tests (T1–T5 run)
 

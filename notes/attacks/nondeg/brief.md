@@ -29,6 +29,10 @@
 > only (A) and O8's write-up (S38). What next?", answered "(a) Review 2 now", whose option read
 > "Review 2 now on S32–S38 (/review-attack nondeg). If it passes, stop the track and hand S38's five
 > pieces to the write-up as red nodes, with O8 as W10's node.").
+> Closed at review 2, 2026-10-30, on the PI's word: the review's verdict was "stop" (S32–S36 and S25
+> confirmed by hand). The PI's answers to its two questions: (W)'s write-up takes "(b) Shorter route"
+> (S36's base-generic witness placed in `S_L(Y)`, without S34's count or S35 (c)), and W10 also
+> carries the route's other results ("Add S7 (a), S9, S14").
 > Written 2026-10-30 by an agent (Claude
 > Opus 5.5) against the tree at `947fa75d`, from the owning sections: `notes/Phase42-design.md`
 > §2.1 rows 19–22, §2.2, §2.3 ONE-EAR, CARRIER and GENERIC, §2.4 T4 and §2.5; `pencil.tex`'s
