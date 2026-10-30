@@ -1792,6 +1792,20 @@ to the attaining of the general configuration that the section proves. 42b's clo
 chapter's first two sections, with no entry.
 **Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
 
+### `pencil-d.tex` — Phase 42d (PD-ALL: an informal proof in every dimension)
+
+**No new entries — judged at the sub-phase close (2026-10-30).** The source is the project's own
+(the SHORT-CORE, CERT and NONDEG workbooks, cited in TeX comments); the criterion transfers as in
+the `pencil.tex` section. The 66 nodes from `sec:pencil-d-induction` to `sec:pencil-d-generic` are
+red, and each already carries its full argument in its proof, with a closing paragraph naming
+where the `d = 3` proof used its dimension (the write-up's convention, `notes/Phase42d.md`
+*Write-up*). Nothing is compressed against a source, and the arguments are not final until they
+are formalized (design doc §3), which may reroute nodes; an entry is captured then if one does.
+The close's end-to-end re-read found no step that fails and made three wording repairs (a
+paragraph break after `def:pencil-d-nondegenerate`, a reason clause in `lem:pencil-d-lift-ear`,
+a clearer count in `lem:pencil-d-nonsimple-case`'s remark).
+**Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
+
 ## Retroactive coverage
 
 - **Molecular program (Phases 17–22a): scanned 2026-06-04** — candidates folded

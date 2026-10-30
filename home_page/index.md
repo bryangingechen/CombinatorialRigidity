@@ -172,17 +172,16 @@ dimension: in projective $d$-space the hinges at a body form a pencil when
 they contain a common $(d-3)$-flat and lie in a hyperplane. The theorem is
 formalized at $d = 2$ and $d = 3$. A paper check found most of the $d = 3$
 proof dimension-general, with one step needing new mathematics from
-dimension four, which now has a proof on paper there, not yet formalized;
-beside that research, a new blueprint chapter states
+dimension four; beside that research, a new blueprint chapter states
 pencil realizations in every dimension, their agreement with the
 three-dimensional ones, and the tools a proof in every dimension would
 use, all formalized. One of its sections embeds a lower dimension in a
 higher one, and so proves, in every dimension, that a simple connected
 graph of minimum degree at least two whose deficiency in the plane is at
-most three has a pencil realization at the deficiency rank. In general
-the theorem is open from dimension four. The phase is now writing a proof
-on paper in every dimension into that chapter, the theorem's strongest form
-included, before formalizing more of it.
+most three has a pencil realization at the deficiency rank. The chapter
+now also carries a proof on paper of the theorem in every dimension, its
+strongest form included, not yet formalized; formalizing it is the
+phase's next step.
 
 ### How the pencil realization theorem is proved
 
@@ -241,7 +240,7 @@ The table below and `ROADMAP.md` carry the fine-grained status.
 |    39 | the pencil realization theorem: reduction to two main-component statements | `Molecular/Molecule/Pencil/` | ✓ |
 |    40 | the pencil realization theorem: the main-component proof of the two statements (and the plane case of Theorems 5.5/5.6) | `Molecular/` | ✓ |
 |    41 | each hinge at the ends of its own edge, built into the panel-hinge framework; the generic rank theorems at every graph; a Lean declaration for each claim the blueprint made without one | `Molecular/` | ✓ |
-|    42 | the pencil realization theorem in every dimension | research first; the statement in every dimension and the step up from a lower one, `pencil-d.tex` | in progress |
+|    42 | the pencil realization theorem in every dimension | research first; the statement in every dimension, the step up from a lower one and a proof on paper in every dimension, `pencil-d.tex` | in progress |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
 for the full mathematical and engineering plan,

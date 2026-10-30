@@ -360,9 +360,9 @@ the objects of \cref{sec:main-component} that a proof in dimension $d$
 would use. One of its sections embeds a lower dimension in a higher one, and
 so proves, in every dimension, that a graph satisfying the standing
 hypotheses of \cref{sec:main-component} whose deficiency in the plane is
-at most three has a pencil realization at the deficiency rank. The phase is
-now writing in that chapter a proof in every dimension, the theorem's
-strongest form included, as statements not yet formalized.
+at most three has a pencil realization at the deficiency rank. Its later
+sections prove the theorem in every dimension, its strongest form
+included, as statements not yet formalized.
 
 \subsection*{Reading this blueprint}
 
@@ -372,19 +372,17 @@ Lean declarations. The \emph{dependency graph}, linked from the
 navigation bar, shows how the statements depend on each other. A node has
 a green border when its statement is formalized, and a green interior
 when its proof is; the graph's legend explains the other markings.
-Every node of the graph is green, from Laman's theorem to the pencil
-realization theorem (\cref{sec:pencil}, \cref{sec:main-component}):
-each definition and result those chapters state as a node is
-formalized.
+Every node of the graph from Laman's theorem to the pencil realization
+theorem (\cref{sec:pencil}, \cref{sec:main-component}) is green: each
+definition and result those chapters state as a node is formalized.
 Phase~41 ended a review of the chapters against the Lean, which corrected
 the statements that claimed more or less than their Lean declarations
 and gave a Lean declaration to each claim the chapters made without one.
 Phase~42, in progress, has added the last chapter, on the pencil in
-every dimension (\cref{sec:pencil-d}), formalized too: it states the
-definitions and the tools a proof would use, and proves the case of
-small deficiency stated above, while in general the theorem is open from
-dimension four; the proof in every dimension now being written there
-enters the graph as nodes not yet formalized.
+every dimension (\cref{sec:pencil-d}). Its definitions, the tools a
+proof would use and the case of small deficiency stated above are
+formalized; its proof in every dimension enters the graph as nodes not
+yet formalized.
 From phase~6 on, the graph is written forward: a chapter's nodes and
 their edges come first, and the statement and proof sketch of a node not
 yet formalized are the plan for its Lean declaration. So the graph is

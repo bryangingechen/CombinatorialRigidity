@@ -296,9 +296,9 @@ status:
     dimension in a higher one and so proves, over any infinite field and in every dimension, that a
     simple connected graph of minimum degree at least two whose deficiency in the plane is at most
     three has a pencil realization at the deficiency rank
-    (Graph.hasGradedDistinctPencilRealization_of_deficiency_two_le_three). In general the theorem
-    is open from dimension four; the phase is now writing a proof on paper in every dimension into
-    that chapter, the theorem's strongest form included, before formalizing more of it.
+    (Graph.hasGradedDistinctPencilRealization_of_deficiency_two_le_three). The chapter now also
+    carries a proof on paper of the theorem in every dimension, its strongest form included, not
+    yet formalized; formalizing it is the phase's next step.
   sorry_count: 0
   sorry_in_definitions: 0
   axioms: ["propext", "Classical.choice", "Quot.sound"]          # only Lean/mathlib standard axioms; no project-specific axioms

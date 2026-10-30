@@ -218,17 +218,16 @@ pencil when they contain a common `(d−3)`-flat and lie in a hyperplane;
 the theorem is formalized at `d = 2` and `d = 3`, and the general case
 would imply Katoh–Tanigawa's panel theorem in every dimension. A paper
 check found most of the `d = 3` proof dimension-general, with one step
-needing new mathematics from dimension four; that step now has a proof on
-paper in dimension four, not yet formalized. Beside that research, a new
+needing new mathematics from dimension four. Beside that research, a new
 blueprint chapter states pencil realizations in every dimension, their
 agreement with the three-dimensional ones, and the tools a proof in every
 dimension would use, all formalized. One of its sections embeds a lower
 dimension in a higher one, and so proves, in every dimension, that a
 simple connected graph of minimum degree at least two whose deficiency in
 the plane is at most three has a pencil realization at the deficiency
-rank. In general the theorem is open from dimension four. The phase is now
-writing a proof on paper in every dimension into that chapter, the
-theorem's strongest form included, before formalizing more of it.
+rank. The chapter now also carries a proof on paper of the theorem in
+every dimension, its strongest form included, not yet formalized;
+formalizing it is the phase's next step.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries

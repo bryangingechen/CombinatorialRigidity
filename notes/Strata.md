@@ -4,7 +4,8 @@
 `notes/Phase42-design.md`). Three sessions with the PI after Phase 40: the first found
 Results 1–10; the second checked the literature (*Literature*) and ran Results 9–11's tests; the
 third set the `Pᵈ` picture, Results 12–19. Phase 42a's tests added Results 20–27. Next concrete
-task: Phase 42d's (`notes/Phase42d.md`). No Lean, no blueprint here. Evidence drivers:
+task: formalizing Phase 42d's proof in every dimension (`notes/Phase42d.md`, design doc §3), at
+the PI's word. No Lean, no blueprint here. Evidence drivers:
 `notes/scripts/strata/strata.py` (exact ℚ, seeded) and `oneclass.py` beside it. Editing
 discipline as for phase notes (≤ 8-line entries). `HARNESS.md` *Evidence* and *Reproducibility*
 bind this work; it is not an attack track.

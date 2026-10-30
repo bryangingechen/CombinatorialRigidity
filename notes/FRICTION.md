@@ -110,6 +110,19 @@ moment you resolve the entry) is what makes the sweep a pure
 to be re-derived by re-reading entries later.
 
 ## Open
+### [open] `check-phase-note.py --selftest` fails when no phase note is in progress
+- **Where it bit:** Phase 42d's close (project-organization review). `notes/Phase23d.md`'s
+  `**Status:**` header still read "in progress" two phases after Phase 23 closed, so `--all`
+  marked it ACTIVE; the close fixed the header. With 42d closed too, no note is ACTIVE, and
+  `--selftest` reports "no ACTIVE note found; the active/closed split is broken" (exit 1). It had
+  passed between phases only because the stale Phase 23d note counted as active.
+- **Friction:** a self-test that is red whenever the program sits between (sub-)phases; no gate or
+  CI step runs it, so nothing broke.
+- **Proposed fix:** in `selftest()`, require an ACTIVE note only when one is expected (e.g. when
+  ROADMAP's Status table names an open sub-phase), or report zero ACTIVE notes as a note rather
+  than a failure. A tooling change, so not made inside the close.
+- **Status:** open.
+
 ### [open] `bodyBarDim` has no monotonicity or lower-bound lemma; each consumer unfolds it
 - **Where it bit:** Phase 42d, COUNT-A: `Graph.deficiencyMerged_two_add_two_le_of_three_le`
   (`Molecular/Induction/SparseDeficiency.lean`, `lem:deficiency-two-body-chain-d`) gets

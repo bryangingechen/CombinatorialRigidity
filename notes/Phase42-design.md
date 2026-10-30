@@ -1,21 +1,24 @@
 # Phase 42 — PENCIL-D: design (cross-phase plan and recon)
 
-**Status:** opened 2026-10-29 with the PI, sub-lettered, research first; **42d (PD-ALL) is open**.
+**Status:** opened 2026-10-29 with the PI, sub-lettered, research first; **no sub-phase is open**:
+42d (PD-ALL) closed 2026-10-30, and formalizing its proof (§3: PD-CARRIER, PD-STEPS, PD-COVERAGE,
+PD-REDUCTION, PD-HEAD) opens at the PI's word.
 **42a** (PD-RECON, `notes/Phase42a.md`) **closed 2026-10-30**: the step table (§2.1), the thresholds
 and the content `def[3] ≥ C(d,2) − 2` (§2.5), T1–T5 (§2.4), ONE-CLASS (§2.3, Result 27) and
 SHORT-CORE's attack track (§2.3; closed 2026-10-30, `notes/attacks/short-core/state.md`): the
 coverage's only new mathematics, the short ears at `d = 4`, is proved by hand, and from `d = 5` on
-the coverage never needs the 3-body short ear, given CERT's open ears. The route is the PI's (§1):
+the coverage never needs the 3-body short ear, given CERT's open ears (proved at every `d`, 42d).
+The route is the PI's (§1):
 R2's steps, Result 15's embedding as the base row, any induction on `d` left to Tier 2. **42b**
 (PD-STATE, `notes/Phase42b.md`) **closed 2026-10-30**: the statement layer in `Pᵈ`, its chapter
 `blueprint/src/chapter/pencil-d.tex` formalized (17 nodes), on the carrier the PI took (§1, option
 (a); §2.3 CARRIER). **42c** (PD-STABLE, `notes/Phase42c.md`) **closed 2026-10-30**: the embedding,
 the sharp deficiency lemma and `Pᵈ` at `def[3] ≤ 3` (Tier 0, which the PI widened from `≤ 1`, §1),
 `pencil-d.tex`'s section `sec:pencil-d-stable`, formalized (9 nodes; verdict §3). **42d** (PD-ALL,
-`notes/Phase42d.md`) **opened 2026-10-30** at the PI's word (§1): research toward an informal proof
-at every `d` of all three conjuncts, the generic one included, as red nodes of `pencil-d.tex`, from
-three tracks (CERT, NONDEG, WRITE-UP) run by `/coordinate-tracks 42d`; Tier 1's formalization
-waits (§3). Evidence: `notes/Strata.md`, Results 12–27.
+`notes/Phase42d.md`) **opened and closed 2026-10-30** at the PI's word (§1): an informal proof at
+every `d` of the conditioned pair's three conjuncts, the generic one included, as red nodes of
+`pencil-d.tex` (verdict §3), from three tracks (CERT, NONDEG, WRITE-UP) run by `/coordinate-tracks
+42d`. Evidence: `notes/Strata.md`, Results 12–27.
 
 This file is the phase's entry point: the target (§0), the PI's decisions (§1), the recon (§2),
 the layers by stable code (§3) and the open questions (§4). Letters are minted when a sub-phase
@@ -32,7 +35,9 @@ through Phase 39's reduction.
 
 Status: `d = 2, 3` are proved and formalized (Phases 40a, 40). Every `d` with `def_3 ≤ 1` is
 `Strata.md` Result 17, and every `d` at `def_3 ≤ 3` follows from Result 17's proof with the sharp
-deficiency lemma, proved and formalized (42c, `thm:pencil-d-deficiency-two-le-three`). `d = 4, 5, 6` are measured (Results 11, 19), not found below target under
+deficiency lemma, proved and formalized (42c, `thm:pencil-d-deficiency-two-le-three`). Every `d` is
+proved on paper (42d, `cor:pencil-d-conditioned-pair`), not yet formalized. `d = 4, 5, 6` are
+measured (Results 11, 19), not found below target under
 the `--d4` population's cap (`n ≤ 12`, 36 simple graphs) and 8 graphs past it. Where the
 conjecture has content, that is 47 cells on 18 graphs, six of them cycles (§2.5).
 
@@ -151,6 +156,12 @@ fibre-intersection lemma and Jackson–Jordán's equality.
 - **PI, 2026-10-30 (42d, after NONDEG review 2), the generic conjunct's write-up:** NONDEG closes;
   slice W10 proves (W) by "(b) Shorter route" (S36's base-generic witness placed in `S_L(Y)`) and
   carries S38's pieces, O8 and the route's other results ("Add S7 (a), S9, S14").
+- **PI, 2026-10-30 (42d's close):** asked "For the 42d close after the fix-up, is this the plan you
+  want? It is an intermediate sub-phase close: the Phase 42 row stays in progress, 42d is marked
+  done, and formalization (PD-CARRIER through PD-HEAD) is named as the next step but not opened,
+  since it waits on your word. The close runs PHASE-BOUNDARIES' checklist, including the chapter's
+  end-to-end re-read. Nothing gets pushed without asking you.", the PI answered "Sanctioned as
+  described (Recommended)".
 
 ## 2. PD-RECON (42a)
 
@@ -573,15 +584,23 @@ leaves out each graph's top cell, `d = 2 + def[3]`, which also carries content.
      too. `Graph.x0AttainsGrade_of_deficiency_two_le_three` and
      `Graph.hasGradedDistinctPencilRealization_of_deficiency_two_le_three` use the three standard
      axioms.
-- **PD-ALL** (**42d**, opened 2026-10-30 at the PI's word, §1; `notes/Phase42d.md`): an informal
-  proof at every `d` of the bare, distinct and a generic conjunct, written as red nodes in new
-  sections of `pencil-d.tex` (the write-up, slices W1–W10 in the work log), with two research
-  tracks: **CERT** (§2.3 CERT, at every `d`; `notes/attacks/cert/`) and **NONDEG** (a `Pᵈ`
-  nondegeneracy and the generic conjunct's route, rows 21–22, §2.3 GENERIC and ONE-EAR;
-  `notes/attacks/nondeg/`). One central session runs all three (`/coordinate-tracks 42d`), and a
-  Lean track, COUNT: the coverage's deficiency counting at every `D` (COUNT-A, the sparse
-  estimates; COUNT-B, Theorem S and ONE-CLASS), the PI's call after a sizing (work log, *Lean
-  now*).
+- **PD-ALL** (**42d**, opened and **closed 2026-10-30** at the PI's word, §1; `notes/Phase42d.md`):
+  an informal proof at every `d ≥ 3` of the conditioned pair's three conjuncts, as red nodes in the
+  sections of `pencil-d.tex` from `sec:pencil-d-induction` to `sec:pencil-d-generic`, which are
+  authoritative; headline `cor:pencil-d-conditioned-pair`. Verdicts:
+  1. *The coverage* (`thm:pencil-d-coverage`): R2's steps at every `d`, the embedding from `d = 3`
+     where `def[6] = def[D]`, and otherwise a long chain or a core by the chain count
+     (`lem:pencil-d-chain-count`, `thm:pencil-d-chain-or-core`). Its ear steps: SHORT-CORE's
+     (`k ≥ 4` at every `d`; `k = 3` at `4 ≤ d ≤ 6`, needed only at `d = 4`) and CERT's (cycles and
+     `k ≥ D − 1`; closed at review 1, `notes/attacks/cert/`).
+  2. *The reduction* (`thm:pencil-d-realization-theorem`): Phase 39's in `Pᵈ`; a hinge in two
+     pencils needs `dim(Π_u ∩ Π_v) ≥ 2`, so a cut edge moves one side (`lem:pencil-d-cut-reposition`).
+  3. *The generic conjunct* (`thm:pencil-d-generic`): NONDEG's C2-same (the PI's, §1; closed at
+     review 2, `notes/attacks/nondeg/`), feasible in `Pᵈ` exactly when in `P³`; proved through the
+     lifts of `P³` realizations, with (W) at a minimal planar-rigid set (`lem:pencil-d-ear-free`).
+  COUNT-A and COUNT-B formalized the counting at every `D` (11 green nodes, `sec:pencil-d-deficiency`).
+  `thm:pencil-d-splitoff` and `thm:pencil-d-open-ear-deficiency` stay standalone (the PI). Two fresh
+  reads checked the coverage and W10's generic conjunct; the close's end-to-end re-read found no gap.
 - **PD-CARRIER**, **PD-STEPS**, **PD-COVERAGE**: Phase 40b–40m in `Pᵈ`, on R2's steps (§1),
   formalizing PD-ALL's write-up after 42d.
   **Handed on from PD-RECON** (42a's close; SHORT-CORE's workbook S56 has the detail):
@@ -621,7 +640,8 @@ leaves out each graph's top cell, `d = 2 + def[3]`, which also carries content.
   `RigidityMatrix/Basic.lean` and `GenericityDevice.lean`; and FRICTION's open `contragredientEquiv`
   in `Meet.lean`, which `Grade/Collineation.lean`'s inline contragredient would then call.
 - **PD-REDUCTION**, **PD-HEAD**: Phase 39's reduction in `Pᵈ`; the headline `PencilPair`, and the
-  flag strata as corollaries. **At Phase 42's close**, Tier 0 joins `formalization.yaml`'s
+  flag strata as corollaries. Their informal proofs are 42d's `sec:pencil-d-reduction` and, for
+  the generic conjunct, `sec:pencil-d-nondegenerate` to `sec:pencil-d-generic`. **At Phase 42's close**, Tier 0 joins `formalization.yaml`'s
   `main_results` and `alignment` unless the headline subsumes it, with a closed non-vacuity witness
   in `CombinatorialRigidity/Nonvacuity.lean` (`PHASE-BOUNDARIES.md`); 42c's intermediate close
   added no row, as Phase 40's sub-phases did not.
@@ -646,12 +666,12 @@ unless a finding argues otherwise:
   definitions once each body's 3-space is data (§2.3), the reading the PI took (§1).
 - PD-STATE and PD-STABLE open beside the research once T1 and T2 land: they did, as 42b and 42c,
   both closed 2026-10-30.
-- The generic conjunct at every `d` (rows 21–22): NONDEG's questions (§3 PD-ALL), the definition
-  the PI's choice.
+- The generic conjunct at every `d` (rows 21–22): settled at 42d, C2-same (the PI's, §1), proved
+  on paper (§3 PD-ALL).
 
 Settled by the PI (§1): the route. R2's steps with Result 15's embedding as the base row; an outer
 induction on `d` is Tier 2's question, entering if at all through CERT's open ears at `d ≥ 7`.
-The carrier: each body's 3-space as data (§2.3 CARRIER, option (a)). 42d's open: PD-ALL (§1, §3). SHORT-CORE closed 2026-10-30 (§2.3), and the sharp deficiency range
+The carrier: each body's 3-space as data (§2.3 CARRIER, option (a)). 42d: PD-ALL, opened and closed (§1, §3). SHORT-CORE closed 2026-10-30 (§2.3), and the sharp deficiency range
 `def[3] + 3 ≤ D′` (tight on cycles) is settled: Tier 0 widened to `def[3] ≤ 3` (§1), §2.5's content range
 restated `def[3] ≥ C(d,2) − 2` and Tier 1's reach `def[3] ≤ 7` (the dated note under §1's planning entry).
 

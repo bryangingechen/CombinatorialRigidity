@@ -2246,8 +2246,9 @@ part~(1) of \cref{lem:deficiency-one-body-chain}, which is planar.
   the ear, and the target, through $6(|V(G)| - 1)$. In dimension $d$
   these are $D - 1$, $D - 1$, $D - 2$ and $D(|V(G)| - 1)$.
   \Cref{lem:splitoff-deficiency-merged} and \cref{lem:deficiency-ear}
-  hold at every $D$, and the count closes as at $d = 3$. Second, the height is one vector. In dimension $d$ each of
-  the $d - 2$ heights has its own solution $y_0^i$, its own line
+  hold at every $D$, and the count closes as at $d = 3$. Second, the
+  height is one vector. In dimension $d$ each of the $d - 2$ heights has
+  its own solution $y_0^i$, its own line
   $y^i(t)$ and its own value at $x$. The alternative that fixes $s$, and
   the functionals $\varphi_0$ and $\psi$, read only the lifting system of
   $G[V_1]$ at $q$, which is planar. So one special position serves every
@@ -4721,8 +4722,8 @@ $K^{d+1}$ chosen to meet it (\cref{lem:pencil-d-cut-reposition}).
   \]
 
   At $d = 3$ this is \cref{lem:pencil-nonsimple-case}. There the
-  dimension enters in three places. First, $2(D - 1) \ge D$ copies of
-  $e$ and $f$ make $H$ rigid. In dimension $d$ this holds as $D \ge 2$.
+  dimension enters in three places. First, $H$ is rigid because
+  $2(D - 1) \ge D$. In dimension $d$ this holds as $D \ge 2$.
   Second, $e$ and $f$ get two independent lines through the point of the
   contracted body in its panel
   (\cref{lem:extensor-pair-through-given-point}). In dimension $d$ they
@@ -4823,9 +4824,8 @@ dimension three (\cref{lem:pencil-d-nondegenerate-feasible}).
   ends of every link, a loop included, are linearly independent; when,
   at every body $v$ that is not a pencil hub, the normals of the closed
   neighbourhood of $v$ are linearly independent; and when, at every body
-  $v$ and every
-  set $S$ of at least two members of the closed hub-neighbourhood of $v$
-  (\cref{def:pencil-nondegenerate}),
+  $v$ and every set $S$ of at least two members of the closed
+  hub-neighbourhood of $v$ (\cref{def:pencil-nondegenerate}),
   \[
     \dim \bigcap_{w \in S} \Pi_w \;\le\; 4 - |S|.
   \]
@@ -4841,6 +4841,7 @@ A loop at $v$ is a link whose two ends are both $v$, so the normals of
 its two ends are equal, and not linearly independent. So a multigraph
 with a loop has no nondegenerate realization in dimension $d$, as at
 $d = 3$.
+
 By \cref{lem:pencil-d-point-configuration}, the hinge of every link of a
 nondegenerate realization is a nonzero multiple of $C(b_u, b_v)$. These
 scalars change neither the three conditions nor the rank, so we describe
@@ -6007,7 +6008,8 @@ the rest of $G$, and extending them to realizations of $G$
   $\Pi^0_a \ne \Pi^0_b$, the condition at $x$. Let $r_H$ be a nondegenerate
   realization of $H$ with $E(r_H) \ne 0$. Then $\Pi^0_a \cap \Pi^0_b$ is
   two-dimensional, and $b^0_a$ and $b^0_b$ are linearly independent and
-  not both in it, so it meets their span in dimension at most one. Put
+  not both in it, as one of the two products is nonzero. So it meets
+  their span in dimension at most one. Put
   $b^0_x$ in $\Pi^0_a \cap \Pi^0_b$ outside that span, and let $\Pi^0_x$
   be the span of $b^0_a$, $b^0_x$ and $b^0_b$, which are linearly
   independent. The incidences hold, the normals at $ax$ and $xb$ and on
@@ -6075,14 +6077,13 @@ after the points of $X$ (\cref{lem:pencil-d-ear-extend}).
   $W_0$ and $x$ be as in \cref{lem:pencil-d-good-ear}, let
   $X = W_0 \setminus \{x\}$ and $Y = G[X]$, and let $L$ be the set of
   pencil hubs of $G$ in $X$. For $v \in X$ let $H_L[v]$ be the members
-  of $L$ in the closed
-  neighbourhood of $v$ in $Y$. Let $\Gamma_L$ be the space of tuples $t$
-  of vectors of $K^4$: a vector $m_h$ at every $h \in L$ and three
-  auxiliary vectors at every $v \in X$. At $t$ let
+  of $L$ in the closed neighbourhood of $v$ in $Y$. Let $\Gamma_L$ be the
+  space of tuples $t$ of vectors of $K^4$: a vector $m_h$ at every
+  $h \in L$ and three auxiliary vectors at every $v \in X$. At $t$ let
   $b_v(t) = y_1 \times y_2 \times y_3$, where $y_1, y_2, y_3$ are the
   vectors $m_h$, $h \in H_L[v]$, in a fixed order, followed by as many
-  auxiliary vectors of $v$ as are needed. There is a nonzero polynomial $E_L$ on
-  $\Gamma_L$ such that for every $t$ with $E_L(t) \ne 0$ there is
+  auxiliary vectors of $v$ as are needed. There is a nonzero polynomial
+  $E_L$ on $\Gamma_L$ such that for every $t$ with $E_L(t) \ne 0$ there is
   $s \in \Gamma(G)$ (\cref{lem:pencil-d-steer}) at which the normal
   $b^0_v(s)$ of every $v \in X$ is a nonzero multiple of $b_v(t)$.
 \end{lemma}

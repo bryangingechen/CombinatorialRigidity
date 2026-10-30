@@ -1,7 +1,7 @@
 # Phase 23d — Case III general `d`: the CHAIN rank-certification reconsideration (work log)
 
-**Status:** in progress (opened 2026-06-24 at a user-adjudicated clean-break close of 23c, at the
-member-mapping-wall STOP). **Phase 23 stays in progress**; 23d is the third CHAIN-layer sub-phase
+**Status:** ✓ closed 2026-06-26 (opened 2026-06-24 at a user-adjudicated clean-break close of 23c,
+at the member-mapping-wall STOP). At its close Phase 23 stayed in progress; 23d is the third CHAIN-layer sub-phase
 (CHAIN spans 23b + 23c + 23d, design §3). ENTRY + ASSEMBLY are later sub-phases (codes). The full
 23d route history — every wall + verdict — lives in `notes/Phase23-design.md` §I.8.24(4.18)–(4.43);
 program map `notes/MolecularConjecture.md`; the 23c landed-leaf inventory is `notes/Phase23c.md`.

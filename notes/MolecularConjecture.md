@@ -799,9 +799,9 @@ the coverage's new mathematics proved by hand at `d = 4` by the SHORT-CORE attac
 statement layer beside it (42b, PD-STATE,
 closed 2026-10-30 with its chapter `pencil-d.tex` formalized, `notes/Phase42b.md`); PD-STABLE
 ran the same day (42c, closed 2026-10-30, `notes/Phase42c.md`): every `d` from Phase 40 at
-`def_3 ≤ 3`, Tier 0. PD-ALL opened as 42d on 2026-10-30 (`notes/Phase42d.md`): research toward
-an informal proof in every dimension, all three conjuncts, before more formalization.
-Summary: ROADMAP §42. Still queued,
+`def_3 ≤ 3`, Tier 0. PD-ALL ran as 42d (opened and closed 2026-10-30, `notes/Phase42d.md`): an
+informal proof in every dimension of all three conjuncts, as red nodes of `pencil-d.tex`;
+formalizing it opens next, at the PI's word. Summary: ROADMAP §42. Still queued,
 codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
 conjecture, `notes/Origami.md` — the next phase to open after PENCIL-D, with the PI), **PIN** (a second,
 independent proof of the 2-d molecular conjecture by Jackson–Jordán 2008's

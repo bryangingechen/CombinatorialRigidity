@@ -1,30 +1,38 @@
 # Phase 42d — PD-ALL: an informal proof in every `Pᵈ`, all three conjuncts (work log)
 
-**Status:** in progress (opened 2026-10-30 with the PI), a research sub-phase of Phase 42. Its
-target is an informal proof, at every `d`, of the conditioned pair's three conjuncts (bare,
-adjacent-distinct and a generic one), written as red nodes of `pencil-d.tex` before any more
-formalization. Its research tracks are closed: CERT (the certificates at every `d`) and NONDEG
-(C2-same, the PI's choice, with (W) proved). COUNT's Lean landed (11 green nodes). The write-up,
-W1–W10, has landed: an informal proof of all three conjuncts at every `d`, checked by two fresh
-reads, with W10's three wording repairs made. **Next:** 42d's close. Plan and the PI's
-decisions: `notes/Phase42-design.md` (§1, §3 PD-ALL).
+**Status:** ✓ closed 2026-10-30 (opened the same day with the PI), a research sub-phase of Phase
+42, which stays in progress with no sub-phase open. Its target is met: the sections of
+`blueprint/src/chapter/pencil-d.tex` from `sec:pencil-d-induction` to `sec:pencil-d-generic`, 66
+red nodes, give an informal proof at every `d ≥ 3` of the conditioned pair's three conjuncts (bare,
+adjacent-distinct and generic; headline `cor:pencil-d-conditioned-pair`), checked by two fresh
+reads and the close's end-to-end re-read. CERT and NONDEG closed; COUNT's Lean landed (11 green
+nodes). 38 commits with the open and the close. **Next** (*Hand-off*): formalizing the proof
+(design doc §3), at the PI's word. Plan and the PI's decisions: `notes/Phase42-design.md` (§1, §3
+PD-ALL).
 
 ## Current state
 
-Opened 2026-10-30; the first `/coordinate-tracks 42d` sitting ran every track. **COUNT** is
-done: COUNT-A and COUNT-B, 11 green nodes in `sec:pencil-d-deficiency` (*Lean now*). **CERT**
-closed at review 1, **NONDEG** at review 2 (*Tracks*). **WRITE-UP**: W1–W10 have landed (*Write-up*).
-Two read-only fresh reads (the PI's calls) found `thm:pencil-d-coverage` holds as stated (NONDEG's
-(A) is a special case), and W10's new parts hold (the S9 quadric step, the (W) proof by the
-shorter route, S25's restructuring, the assembly, the one-ear step), with three wording repairs.
-The repairs landed as one `phase-builder-opus` commit in the main checkout (*Lemma checklist*).
-The next concrete step: 42d's close (`PHASE-BOUNDARIES.md` *When this commit closes a phase*).
+**Closed.** The write-up, one slice per session, leaf-first (each slice's step-table rows are in
+its commit message):
+- W1 `sec:pencil-d-induction`, `-flat`: the setting, the flat rank, equal deficiencies.
+- W2–W4 `-cut`, `-contract`, `-splitoff`: a cut vertex and bridges; contraction at an additive
+  core; the split-off.
+- W5–W6 `-chains`, `-short`: the chain count and a long chain or a core; open ears with four or
+  more interior bodies in every `d`, three at `4 ≤ d ≤ 6`.
+- W7–W8 `-long`, `-ear-deficiency`: cycles and long ears on closed polygons; ears with
+  `def_d(G[V₁]) ≤ def_d(G)`.
+- W9 `-coverage`, `-reduction`: the coverage; the bare and distinct conjuncts on all multigraphs.
+- W10 `-nondegenerate`, `-lift`, `-generic`: C2-same; lifts of `P³` realizations; the generic
+  conjunct and the conditioned pair.
 
-In place at the open: the hub command (`.claude/commands/coordinate-tracks.md`), the write-up
-agent (`.claude/agents/writeup-opus.md`), `worktree.baseRef: head` in `.claude/settings.json`
-(isolated worktrees otherwise start at `origin/master`), the two briefs, cleared by the PI, and
-the COUNT sizing (*Lean now*). The two briefs were drafted in isolated worktrees and merged by
-the hub's procedure, which worked as written.
+The close re-read W1–W10 end to end as a domain mathematician and found no step that fails, and no
+slice narration or changelog prose in reader text (track S-numbers are in TeX comments only). It
+made three wording repairs and reflowed three passages, no statement or `\uses` changed: a
+paragraph break after `def:pencil-d-nondegenerate`, a reason clause in `lem:pencil-d-lift-ear`'s
+(T1) (one of the two products is nonzero), and "copies" reworded in
+`lem:pencil-d-nonsimple-case`'s `d = 3` remark. `notes/BlueprintExposition.md` has a 42d section, no new entry. The
+dispatch log has no 42d rows: the hub ran under `/coordinate-tracks`, and the two
+`/coordinate-phase` dispatches (W10's fix-up and the close) had no exceptions.
 
 ## Tracks
 
@@ -34,32 +42,20 @@ The hub's registry. Count-free: each attack's status is its `state.md` (`HARNESS
 |---|---|---|---|---|
 | CERT | attack | `notes/attacks/cert/` | `attack-opus` | closed at review 1: R1 proved by hand at every `d` (workbook S1–S9) |
 | NONDEG | attack (a question) | `notes/attacks/nondeg/` | `attack-opus` | closed at review 2: C2-same, (W) proved (workbook S32–S38) |
-| WRITE-UP | write-up | `blueprint/src/chapter/pencil-d.tex`, new sections | `writeup-opus` | done: W1–W10, and W10's wording fix-up (`phase-builder-opus`); the close next |
+| WRITE-UP | write-up | `blueprint/src/chapter/pencil-d.tex`, new sections | `writeup-opus` | done: W1–W10, W10's wording fix-up (`phase-builder-opus`) and the close's re-read |
 | COUNT | lean | *Lean now* below; nodes in `pencil-d.tex` | `phase-builder-opus` | done: A and B landed; C waits for formalization |
 
-`pencil-d.tex` has one writer in flight at a time: COUNT's commits and the write-up's slices
-alternate.
-
-- **CERT**: the certificates behind the cycle, long-ear and open-ear steps (rows 10–12) at every
-  `d`. **Closed** (review 1, 2026-10-30): R1 proves (C1)–(C3) by hand at every `d ≥ 3` over
-  every field with `|K| ≥ 4` (workbook S1–S8, driver at `d = 3..9`); SHORT-CORE's S53 rests on
-  it, and G1 is retired on the PI's word (S9). Slices W7 and W8 take S6 and S7 as red nodes.
-- **NONDEG**: a `Pᵈ` nondegeneracy for the generic conjunct (Q0–Q4 of its brief), and the route
-  to proving that conjunct. **The PI chose C2-same** after session 1 (every feasible graph of its
-  population at the deficiency rank in `d = 3, 4, 5`, S11, S16; feasibility Phase 39's in every
-  `d`, S9). Session 2: the carrier is the lifts of a `P³` realization (motive `RL_d`), every arm
-  of the reduction lifts, and one obligation is open, (W) (O7; certified on every graph with at most
-  nine bodies, S30). Review 1: continue, after F1 (O8, the good-ear lemma returning `W₀`) and F2
-  (S21's cut-edge glue) are recorded. Session 3: S32 repairs S21, S33 states O8 (W10's node), and
-  S34–S36 prove (W) at every `W₀`-ear (S37 certifies 6,217 ears on 6–16 bodies). **Closed** at
-  review 2, 2026-10-30, which confirmed S32–S36 and S25 by hand. Left outside the track: the
-  coverage (A), slice W9's, and W10's write-up.
+- **CERT**: the certificates behind the cycle, long-ear and open-ear steps at every `d`. R1 proves
+  (C1)–(C3) by hand at every `d ≥ 3` over every field with `|K| ≥ 4` (driver at `d = 3..9`);
+  SHORT-CORE's S53 rests on it, and G1 is retired on the PI's word (S9). In W7 and W8.
+- **NONDEG**: the PI chose C2-same after session 1 (feasibility Phase 39's in every `d`, S9). The
+  carrier is the lifts of a `P³` realization; review 1's F1 (O8, the good-ear lemma returning
+  `W₀`) and F2 (S21's cut-edge glue) were recorded, and session 3 proved (W) at every `W₀`-ear,
+  confirmed by hand at review 2. In W10.
 
 ## Write-up
 
-New sections of `blueprint/src/chapter/pencil-d.tex`, after `sec:pencil-d-stable` and COUNT's
-section: the induction in every dimension, as red nodes (statements, `\uses`, full prose proofs; no `\lean`).
-Conventions, binding on `writeup-opus`:
+Conventions, binding on `writeup-opus` and on later edits of these sections:
 - Statements at every `d ≥ 3`, `D = C(d+1, 2)`, `def[D]`; `d = 3` is Phase 40's, cited.
 - Each node names the `main-component.tex` node it generalizes, re-derives every step against
   `pencil-d.tex`'s carrier, and names each place the `d = 3` proof used its dimension (the step
@@ -71,54 +67,49 @@ Conventions, binding on `writeup-opus`:
   2026-10-30, after W5: "(a) TeX comments").
 - A step that fails stops the slice; the gap goes to the coordinator, and to the PI.
 
-Slices, leaf-first, one session each (a slice's nodes may `\uses` only nodes already written):
-- [x] **W1–W10** written, one section each (`sec:pencil-d-induction` and `-flat`, `-cut`,
-  `-contract`, `-splitoff`, `-chains`, `-short`, `-long`, `-ear-deficiency`, `-coverage`,
-  `-reduction`, `-nondegenerate`, `-lift`, `-generic`); their rows are in their commit messages. W4's `thm:pencil-d-splitoff` and W8's
-  `thm:pencil-d-open-ear-deficiency` have no consumer in the coverage and stay as standalone
-  results (the PI, 2026-10-30, after W9: "(a) Keep standalone").
-  W10 follows the PI's form after NONDEG's review 2 ("(b) Shorter route"; "Add S7 (a), S9,
-  S14"), and keeps `cor:pencil-d-conditioned-pair`, the three conjuncts at `d`, as the headline
-  node (the PI, after W10: "(a) Keep it").
+W4's `thm:pencil-d-splitoff` and W8's `thm:pencil-d-open-ear-deficiency` have no consumer in the
+coverage and stay as standalone results (the PI, 2026-10-30, after W9: "(a) Keep standalone").
+W10 follows the PI's form after NONDEG's review 2 ("(b) Shorter route"; "Add S7 (a), S9, S14"),
+and keeps `cor:pencil-d-conditioned-pair`, the three conjuncts at `d`, as the headline node (the
+PI, after W10: "(a) Keep it").
 
 ## Lemma checklist
 
 - [x] **CERT** closed (review 1); **NONDEG** closed (review 2; C2-same, the PI's).
 - [x] **WRITE-UP** W1–W10.
 - [x] **Fresh reads**: the coverage holds; W10 holds, with three wording repairs.
-- [x] **W10 fix-up** (the PI, 2026-10-30: "(a) Fix-up before close"), one commit: add "Let K be
-  infinite" to `lem:pencil-d-ear-extend`'s statement (its proof uses it); state
-  `lem:pencil-d-ear-free`'s condition (a) as rank at least 3, with the sentence that the upper
-  bound holds wherever (a) is read (on Γ_L, and at a realization); and say in
-  `def:pencil-d-nondegenerate` that a link includes loops, as the Lean `IsLink` does.
-  Landed as one `phase-builder-opus` commit in the main checkout (the PI, asked how to dispatch
-  it: "phase-builder-opus, main checkout"). (a) is also read on Γ(G) and at a configuration's
-  points, where the upper bound holds too; the sentence names all four places.
-- [ ] **Close** 42d: `PHASE-BOUNDARIES.md`'s close checklist, with the chapter's end-to-end
-  re-read; formalization (design doc §3) then waits on the PI's word.
+- [x] **W10 fix-up** (the PI, 2026-10-30: "(a) Fix-up before close"): `lem:pencil-d-ear-extend`
+  assumes `K` infinite; `lem:pencil-d-ear-free`'s (a) is rank at least 3, with the upper bound
+  wherever (a) is read; a link includes loops in `def:pencil-d-nondegenerate`. One
+  `phase-builder-opus` commit in the main checkout (the PI, asked how to dispatch it:
+  "phase-builder-opus, main checkout").
+- [x] **Close** 42d, with the chapter's end-to-end re-read (*Current state*).
 - [x] **COUNT-A** and **COUNT-B** landed (*Lean now*); COUNT-C waits for formalization.
 
 ## Lean now
 
-**Done** (COUNT, the PI's call in design doc §1: A and B now, C at formalization). Eleven green
-nodes in `sec:pencil-d-deficiency`: COUNT-A's sparse estimates at every `n` and two glue lemmas
-(`SparseDeficiency.lean`; the `deficiency 3` lemmas are their `n = 3` cases), and COUNT-B's
-`ChainUsableAt`, Theorem S at `D`, ONE-CLASS and S52 (`Pencil/Grade/TheoremS.lean`). COUNT-C, the
-chain count behind S53 (a), is W5's red `lem:pencil-d-chain-count` until formalization.
-`bodyBarDim_mono` is not added (it rebuilds nearly everything; FRICTION's entry).
+COUNT, the PI's call in design doc §1 (A and B now, C at formalization): eleven green nodes in
+`sec:pencil-d-deficiency`, COUNT-A's sparse estimates at every `n` and two glue lemmas
+(`SparseDeficiency.lean`) and COUNT-B's `ChainUsableAt`, Theorem S at `D`, ONE-CLASS and S52
+(`Pencil/Grade/TheoremS.lean`). COUNT-C, the chain count behind S53 (a), is the red
+`lem:pencil-d-chain-count`. `bodyBarDim_mono` is not added (it rebuilds nearly everything;
+FRICTION's entry).
 
 ## Blockers / open questions
 
-- None. The generic conjunct (C2-same) rests on the coverage (A), which slice W9 wrote.
+- None. Formalization opens at the PI's word (*Hand-off*).
 
 ## Hand-off / next phase
 
-Next concrete step: a session closes 42d, a sub-phase close of Phase 42, by `PHASE-BOUNDARIES.md`
-*When this commit closes a phase* (its sub-phase adaptation), with the chapter's end-to-end
-re-read (*Lemma checklist*). Every track is done, and W10's wording fix-up has landed. 42d closes
-when the new sections give an informal proof at every `d` of the conjuncts the PI keeps.
-Formalization (PD-CARRIER, PD-STEPS, PD-COVERAGE, PD-REDUCTION, PD-HEAD; design doc §3) follows
-at the PI's word.
+Phase 42 has no open sub-phase. The next concrete step is putting the open of 42d's formalization
+to the PI, with no letter minted until it opens: PD-CARRIER, PD-STEPS, PD-COVERAGE, PD-REDUCTION, PD-HEAD (design doc
+§3, which also carries what PD-RECON, PD-STATE and PD-STABLE handed on). What 42d leaves them: the
+red nodes of `pencil-d.tex` from `sec:pencil-d-induction` on are the dep-graph, leaf-first, each
+naming the `main-component.tex` node it generalizes and where the `d = 3` proof used its
+dimension; COUNT-C is `lem:pencil-d-chain-count`; the coverage's Lean needs data-returning forms
+of `lem:pencil-x0-cut-reduces`, `-cycle-reduces` and `-planar-rigid-reduces` (design doc §3
+PD-COVERAGE); `def:pencil-d-nondegenerate` counts a loop as a link, as `IsNondegPencilRealization`
+does at `d = 3`. Tier 0's `formalization.yaml` row waits for Phase 42's close (PD-HEAD).
 
 ## Decisions made during this phase
 
@@ -130,3 +121,9 @@ at the PI's word.
   2026-10-30; accepted as is): `/coordinate-tracks` (with a *lean* kind for COUNT), `writeup-opus`,
   `worktree.baseRef: head`; `attack.md`, `attack-opus.md`, `harness-review.md` and
   `notes/attacks/README.md` point at it.
+- **The close** (the PI, 2026-10-30): asked "For the 42d close after the fix-up, is this the plan
+  you want? It is an intermediate sub-phase close: the Phase 42 row stays in progress, 42d is
+  marked done, and formalization (PD-CARRIER through PD-HEAD) is named as the next step but not
+  opened, since it waits on your word. The close runs PHASE-BOUNDARIES' checklist, including the
+  chapter's end-to-end re-read. Nothing gets pushed without asking you.", the PI answered
+  "Sanctioned as described (Recommended)".
