@@ -125,6 +125,79 @@ theorem PanelHingeFramework.finrank_span_rigidityRows_ofNormals_pencilConfigPoin
     funext fun p => congrFun (pencilConfigPointGrade_eq_pencilConfigPoint q z p.1) p.2
   rw [h]
 
+/-! ## The blocks of a vector of `K^(m+3)` -/
+
+/-- The vector of `K^(m+3)` built from its blocks `(x, y, u, w)`, as `pencilConfigPointGrade` is. -/
+def gradeMk (x y : K) (u : Fin m → K) (w : K) : Fin (m + 1 + 2) → K :=
+  Matrix.vecCons x (Matrix.vecCons y (Fin.snoc u w))
+
+/-- The height block of a vector of `K^(m+3)`: its coordinates `2` to `m + 1`. -/
+def gradeHeights (b : Fin (m + 1 + 2) → K) : Fin m → K := fun j => b j.castSucc.succ.succ
+
+omit [Field K] in
+theorem gradeMk_ext {x y x' y' : K} {u u' : Fin m → K} {w w' : K}
+    (h1 : x = x') (h2 : y = y') (h3 : u = u') (h4 : w = w') :
+    gradeMk x y u w = gradeMk x' y' u' w' := by
+  subst h1 h2 h3 h4
+  rfl
+
+omit [Field K] in
+theorem gradeMk_eta (b : Fin (m + 1 + 2) → K) :
+    b = gradeMk (b 0) (b 1) (gradeHeights b) (b (Fin.last (m + 2))) := by
+  funext i
+  refine Fin.cases ?_ (Fin.cases ?_ (Fin.lastCases ?_ fun j => ?_)) i
+  · rfl
+  · rfl
+  · simp [gradeMk, ← Fin.succ_last]
+  · simp [gradeMk, gradeHeights]
+
+theorem gradeMk_add (x y x' y' : K) (u u' : Fin m → K) (w w' : K) :
+    gradeMk x y u w + gradeMk x' y' u' w' = gradeMk (x + x') (y + y') (u + u') (w + w') := by
+  funext i
+  refine Fin.cases ?_ (Fin.cases ?_ (Fin.lastCases ?_ fun j => ?_)) i
+  · rfl
+  · rfl
+  · simp [gradeMk, -Fin.succ_last]
+  · simp [gradeMk]
+
+theorem gradeMk_smul (r x y : K) (u : Fin m → K) (w : K) :
+    r • gradeMk x y u w = gradeMk (r * x) (r * y) (r • u) (r * w) := by
+  funext i
+  refine Fin.cases ?_ (Fin.cases ?_ (Fin.lastCases ?_ fun j => ?_)) i
+  · rfl
+  · rfl
+  · simp [gradeMk, -Fin.succ_last]
+  · simp [gradeMk]
+
+omit [Field K] in
+@[simp]
+theorem gradeMk_apply_zero (x y : K) (u : Fin m → K) (w : K) : gradeMk x y u w 0 = x := rfl
+
+omit [Field K] in
+@[simp]
+theorem gradeMk_apply_one (x y : K) (u : Fin m → K) (w : K) : gradeMk x y u w 1 = y := rfl
+
+omit [Field K] in
+@[simp]
+theorem gradeMk_apply_last (x y : K) (u : Fin m → K) (w : K) :
+    gradeMk x y u w (Fin.last (m + 2)) = w := by
+  simp [gradeMk, ← Fin.succ_last]
+
+omit [Field K] in
+@[simp]
+theorem gradeHeights_gradeMk (x y : K) (u : Fin m → K) (w : K) :
+    gradeHeights (gradeMk x y u w) = u := by
+  funext j; simp [gradeHeights, gradeMk]
+
+theorem gradeHeights_add (b b' : Fin (m + 1 + 2) → K) :
+    gradeHeights (b + b') = gradeHeights b + gradeHeights b' := rfl
+
+theorem gradeHeights_smul (r : K) (b : Fin (m + 1 + 2) → K) :
+    gradeHeights (r • b) = r • gradeHeights b := rfl
+
+theorem pencilConfigPointGrade_eq_gradeMk (q : α × Fin 2 → K) (z : α × Fin m → K) (w : α) :
+    pencilConfigPointGrade q z w = gradeMk (q (w, 0)) (q (w, 1)) (fun i => z (w, i)) 1 := rfl
+
 /-! ## Linear changes and affine shifts of the heights -/
 
 /-- **A linear change and an affine shift of the heights keep the rank**
@@ -148,46 +221,20 @@ theorem _root_.Graph.finrank_span_rigidityRows_ofNormals_heights_linearEquiv_add
       = Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := m + 1) G ends
         (fun p => pencilConfigPointGrade q z p.1 p.2)).toBodyHinge.rigidityRows) := by
   choose c hc using fun i => ha i
-  -- the blocks of a vector of `K^(m+3)` and the vector built from them
-  let ζ : (Fin (m + 1 + 2) → K) → Fin m → K := fun b j => b j.castSucc.succ.succ
-  let mk : K → K → (Fin m → K) → K → Fin (m + 1 + 2) → K := fun x y u w =>
-    Matrix.vecCons x (Matrix.vecCons y (Fin.snoc u w))
+  let mk : K → K → (Fin m → K) → K → Fin (m + 1 + 2) → K := gradeMk
+  let ζ : (Fin (m + 1 + 2) → K) → Fin m → K := gradeHeights
   have mk_ext : ∀ {x y x' y' : K} {u u' : Fin m → K} {w w' : K},
-      x = x' → y = y' → u = u' → w = w' → mk x y u w = mk x' y' u' w' := by
-    intro _ _ _ _ _ _ _ _ h1 h2 h3 h4
-    subst h1 h2 h3 h4
-    rfl
-  have mk_eta : ∀ b : Fin (m + 1 + 2) → K, b = mk (b 0) (b 1) (ζ b) (b (Fin.last (m + 2))) := by
-    intro b
-    funext i
-    refine Fin.cases ?_ (Fin.cases ?_ (Fin.lastCases ?_ fun j => ?_)) i
-    · rfl
-    · rfl
-    · simp [mk, ← Fin.succ_last]
-    · simp [mk, ζ]
+      x = x' → y = y' → u = u' → w = w' → mk x y u w = mk x' y' u' w' := gradeMk_ext
+  have mk_eta : ∀ b : Fin (m + 1 + 2) → K, b = mk (b 0) (b 1) (ζ b) (b (Fin.last (m + 2))) :=
+    gradeMk_eta
   have mk_add : ∀ x y x' y' u u' w w', mk x y u w + mk x' y' u' w' =
-      mk (x + x') (y + y') (u + u') (w + w') := by
-    intro x y x' y' u u' w w'
-    funext i
-    refine Fin.cases ?_ (Fin.cases ?_ (Fin.lastCases ?_ fun j => ?_)) i
-    · rfl
-    · rfl
-    · simp [mk, -Fin.succ_last]
-    · simp [mk]
-  have mk_smul : ∀ (r : K) x y u w, r • mk x y u w = mk (r * x) (r * y) (r • u) (r * w) := by
-    intro r x y u w
-    funext i
-    refine Fin.cases ?_ (Fin.cases ?_ (Fin.lastCases ?_ fun j => ?_)) i
-    · rfl
-    · rfl
-    · simp [mk, -Fin.succ_last]
-    · simp [mk]
+      mk (x + x') (y + y') (u + u') (w + w') := gradeMk_add
+  have mk_smul : ∀ (r : K) x y u w, r • mk x y u w = mk (r * x) (r * y) (r • u) (r * w) :=
+    gradeMk_smul
   have mk_zero : ∀ x y u w, mk x y u w 0 = x := fun _ _ _ _ => rfl
   have mk_one : ∀ x y u w, mk x y u w 1 = y := fun _ _ _ _ => rfl
-  have mk_last : ∀ x y u w, mk x y u w (Fin.last (m + 2)) = w := by
-    intro x y u w; simp [mk, ← Fin.succ_last]
-  have hζ : ∀ x y u w, ζ (mk x y u w) = u := by
-    intro x y u w; funext j; simp [ζ, mk]
+  have mk_last : ∀ x y u w, mk x y u w (Fin.last (m + 2)) = w := gradeMk_apply_last
+  have hζ : ∀ x y u w, ζ (mk x y u w) = u := gradeHeights_gradeMk
   let s : (Fin (m + 1 + 2) → K) → Fin m → K := fun b i =>
     c i 0 * b 0 + c i 1 * b 1 + c i 2 * b (Fin.last (m + 2))
   have s_add : ∀ b b', s (b + b') = s b + s b' := by

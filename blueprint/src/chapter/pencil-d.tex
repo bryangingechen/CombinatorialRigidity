@@ -373,6 +373,8 @@ each closed neighbourhood lie in a plane.
 
 \begin{lemma}[The rank of the core along the curve, in every dimension]
   \label{lem:pencil-d-contract-magnified-rank}
+  \lean{Graph.finrank_span_rigidityRows_induce_contractHeightGrade_eq}
+  \leanok
   \uses{def:pencil-contract-lifting-system, def:pencil-d-configuration}
   Let $r \in W$ and $H = G[W]$, let $q$ be a picture and $t \in K$
   nonzero, and for each height $i$ let $(z^i, h^i)$ be a vector of
@@ -383,6 +385,7 @@ each closed neighbourhood lie in a plane.
 \end{lemma}
 \begin{proof}
   \uses{lem:pencil-d-rank-collineation}
+  \leanok
   At a body $c$ of $W$ the point of $(q(t), z(t))$ is
   $((1 - t)\,x_r + t\,x_c,\ (1 - t)\,y_r + t\,y_c,\
   t\,z^1_c, \dots, t\,z^{d-2}_c,\ 1)$, the image of the point of
