@@ -1,0 +1,398 @@
+\section{The pencil in every dimension}
+\label{sec:pencil-d}
+
+In projective $d$-space the hinges of a body-hinge framework are
+$(d-2)$-flats, and the screw space has dimension $D = \binom{d+1}{2}$.
+The hinges at a body form a \emph{pencil} when they lie in a hyperplane,
+the panel of the body, and contain a common $(d-3)$-flat of it. At
+$d = 3$ this is the pencil of lines through a point in a plane of
+\cref{sec:pencil}. At $d = 2$ the $(d-3)$-flat is empty, and a pencil
+realization is a hinge-coplanar realization: the body-and-pin frameworks
+with collinear pins of Jackson and Jord\'an~\cite{jacksonJordan2008pin}.
+A pencil realization satisfies every weaker condition of this kind, the
+hinges at each body lying in a hyperplane or containing a common
+$j$-flat for some $j \le d - 3$. In particular it is a hinge-coplanar
+realization. So a theorem that every multigraph has a pencil realization
+at the deficiency rank in dimension $d$ would strengthen Katoh and
+Tanigawa's theorem in dimension $d$ (KT
+Theorem~5.6~\cite{katohTanigawa2011}), which gives a hinge-coplanar
+realization at that rank.
+
+This chapter states pencil realizations in every dimension, and the
+objects of \cref{sec:main-component-carrier} that a proof in dimension
+$d$ along the lines of \cref{sec:main-component} uses. At $d = 3$ each of
+them is the object of \cref{sec:pencil} or \cref{sec:main-component}
+that it restates.
+
+We describe a pencil realization by its polar. The polarity of
+\cref{def:meet-complement-iso} takes the panel with normal $b_v$ to the
+point $b_v$, and a hinge in the panels of $u$ and $v$ to a line through
+$b_u$ and $b_v$. It takes a $(d-3)$-flat of the panel of $v$ to a plane
+through $b_v$, that is, to a three-dimensional subspace $\Pi_v$ of
+$K^{d+1}$ containing $b_v$. So the hinges at $v$ form a pencil exactly
+when their polar lines pass through $b_v$ and lie in $\Pi_v$: a pencil of
+lines through a point in a plane, in every dimension. When the points of
+adjacent bodies are independent, the polar of the hinge of an edge $uv$
+is the line $b_u \vee b_v$, and the condition says that the points of
+each closed neighbourhood lie in a plane
+(\cref{lem:pencil-d-point-configuration}).
+
+\subsection{Pencil realizations in every dimension}
+\label{sec:pencil-d-realization}
+
+Throughout, $d \ge 2$, and the screw space is $\bigwedge^{d-1} K^{d+1}$.
+For a subspace $\Pi$ of $K^{d+1}$ we write $\Pi^{\perp}$ for the vectors
+$x$ with $x \cdot y = 0$ for every $y \in \Pi$.
+
+\begin{definition}[Extensor through a subspace]
+  \label{def:extensor-through-flat}
+  \uses{def:screw-space, def:extensor}
+  A screw element $C \in \bigwedge^{k} K^{k+2}$ \emph{passes through} a
+  subspace $A$ of $K^{k+2}$ when $C$ is the extensor of $k$ vectors of
+  $K^{k+2}$ whose span contains $A$.
+\end{definition}
+
+\begin{lemma}[Through the span of one vector]
+  \label{lem:extensor-through-flat-point}
+  \uses{def:extensor-through-flat, def:extensor-through-point}
+  A screw element passes through the span of a vector $q$
+  (\cref{def:extensor-through-flat}) exactly when it passes through the
+  point $q$ (\cref{def:extensor-through-point}).
+\end{lemma}
+\begin{proof}
+  A subspace contains the span of $q$ exactly when it contains $q$.
+\end{proof}
+
+\begin{definition}[Pencil realization in every dimension]
+  \label{def:pencil-d-realization}
+  \uses{def:coplanar-panel-realization, def:extensor-through-flat}
+  A \emph{pencil realization} of a multigraph $G$ in dimension $d$ is a
+  hinge-coplanar panel realization of $G$ in $\bigwedge^{d-1} K^{d+1}$
+  (\cref{def:coplanar-panel-realization}), with normal $b_v$ at each
+  body $v$, together with a three-dimensional subspace $\Pi_v$ of
+  $K^{d+1}$ containing $b_v$ at each body $v$, such that the supporting
+  extensor of every link $uv$ passes through $\Pi_u^{\perp}$ and through
+  $\Pi_v^{\perp}$ (\cref{def:extensor-through-flat}).
+\end{definition}
+
+The subspace $\Pi_v^{\perp}$ has dimension $d - 2$ and lies in the
+hyperplane $b_v^{\perp}$: it is a $(d-3)$-flat of the panel of $v$, and
+every hinge at $v$ contains it. At $d = 3$ it is spanned by one point,
+through which the hinges at $v$ pass.
+
+The subspaces $\Pi_v$ are part of the data. At a link whose two normals
+are independent, the hinge is determined by them up to scale, and the
+condition at the link says that each normal lies in the subspace of the
+other end (\cref{lem:pencil-d-point-configuration}). At a link whose two
+normals are dependent the panels coincide, and the hinge can be any
+$(d-2)$-flat of the common panel. The condition then asks it to contain
+the $(d-3)$-flats of both ends. Two bodies joined by two edges reach the
+deficiency rank $D$ only at such a link: in two distinct panels both
+hinges are multiples of one extensor
+(\cref{lem:pencil-d-point-configuration}), and the rank is at most
+$D - 1$. If the definition asked only that the normals of each closed
+neighbourhood lie in a three-dimensional subspace, then at $d = 3$ two
+bodies with one panel, joined by three edges whose hinges are three
+lines of that panel with no common point, would form a pencil
+realization, though their hinges do not form a pencil.
+
+\begin{remark}[Hinges through a point]
+  \label{rem:pencil-d-point-type}
+  A pencil realization in the sense of
+  \cref{def:pencil-panel-realization} makes sense at every grade: the
+  hinges at each body lie in its panel and pass through one point of
+  it. For $d \ge 4$ this is weaker than a pencil. In $K^5$ the
+  three-dimensional subspaces spanned by $e_1, e_2, e_3$, by
+  $e_1, e_2, e_4$ and by $e_1, e_3, e_4$ are planes of projective
+  $4$-space that lie in the hyperplane $e_0^{\perp}$ and pass through
+  the point $e_1$, but no line lies in all three.
+\end{remark}
+
+\begin{lemma}[Pencil realizations in dimension three]
+  \label{lem:pencil-d-agrees-three}
+  \uses{def:pencil-d-realization, def:pencil-panel-realization,
+        lem:extensor-through-flat-point}
+  Let $d = 3$, and let $q_v \in K^4$ be nonzero with
+  $\Pi_v = q_v^{\perp}$ at each body $v$. A hinge-coplanar panel
+  realization of $G$ with normals $b$ is a pencil realization in
+  dimension three with the subspaces $\Pi_v$
+  (\cref{def:pencil-d-realization}) exactly when it is a pencil
+  realization with normals $b$ and points $q$
+  (\cref{def:pencil-panel-realization}).
+\end{lemma}
+\begin{proof}
+  As the dot product of $K^4$ is nondegenerate, $\Pi_v^{\perp}$ is the
+  span of $q_v$. So passing through $\Pi_v^{\perp}$ is passing through
+  $q_v$ (\cref{lem:extensor-through-flat-point}), and $b_v \in \Pi_v$ is
+  the incidence $q_v \cdot b_v = 0$. Every three-dimensional subspace of
+  $K^4$ is $q^{\perp}$ for some nonzero $q$.
+\end{proof}
+
+\begin{lemma}[Pencil realizations with independent adjacent normals]
+  \label{lem:pencil-d-point-configuration}
+  \uses{def:pencil-d-realization, def:panel-support-extensor}
+  Let $b_v \in K^{d+1}$ and a three-dimensional subspace $\Pi_v$
+  containing $b_v$ be given at each body $v$ of $G$, with $b_u$ and $b_v$
+  linearly independent at every edge $uv$.
+  \begin{enumerate}
+    \item If $b_w \in \Pi_v$ for every body $v$ and every $w$ in the
+          closed neighbourhood of $v$, the framework on $G$ whose hinge
+          at each edge $uv$ is the panel-support extensor $C(b_u, b_v)$
+          (\cref{def:panel-support-extensor}) is, with the normals $b$
+          and the subspaces $\Pi$, a pencil realization of $G$ in
+          dimension $d$.
+    \item Conversely, in a pencil realization of $G$ in dimension $d$
+          with normals $b$ and subspaces $\Pi$, the hinge of every edge
+          $uv$ is a nonzero multiple of $C(b_u, b_v)$, and $b_w \in \Pi_v$
+          for every $w$ in the closed neighbourhood of every body $v$.
+  \end{enumerate}
+\end{lemma}
+\begin{proof}
+  \uses{lem:panel-support-extensor-join}
+  As $b_u$ and $b_v$ are independent, $C(b_u, b_v)$ is a nonzero extensor
+  of a basis of $b_u^{\perp} \cap b_v^{\perp}$
+  (\cref{lem:panel-support-extensor-join}), and every nonzero extensor of
+  $d - 1$ vectors of both panels is a multiple of it. Its span contains
+  $\Pi_v^{\perp}$ exactly when $b_u$ and $b_v$ lie in
+  $(\Pi_v^{\perp})^{\perp} = \Pi_v$. Both statements follow, as the
+  closed neighbourhood of $v$ consists of $v$ and the other ends of its
+  links.
+\end{proof}
+
+\begin{definition}[Pencil realization at the deficiency rank, in every dimension]
+  \label{def:pencil-d-rank-hypothesis}
+  \uses{def:pencil-d-realization, def:D-deficiency, def:rigidity-matrix}
+  Let $D = \binom{d+1}{2}$. A multigraph $G$ has a \emph{pencil
+  realization at the deficiency rank} in dimension $d$ when it has a
+  pencil realization in dimension $d$ (\cref{def:pencil-d-realization})
+  whose rigidity rows span a space of dimension
+  $D(|V(G)| - 1) - \operatorname{def}(\tilde G)$, the deficiency taken
+  at $D$ (\cref{def:D-deficiency}).
+\end{definition}
+
+\begin{definition}[Adjacent-distinct pencil realization, in every dimension]
+  \label{def:pencil-d-distinct-motive}
+  \uses{def:pencil-d-rank-hypothesis}
+  A multigraph $G$ has an \emph{adjacent-distinct} pencil realization
+  in dimension $d$ when it has a pencil realization at the deficiency
+  rank in dimension $d$ (\cref{def:pencil-d-rank-hypothesis}) whose
+  normals $b_u$ and $b_v$ are linearly independent at every link $uv$.
+\end{definition}
+
+In the polar form the points of adjacent bodies are distinct, as in
+\cref{def:pencil-distinct-motive}. By
+\cref{lem:pencil-d-point-configuration}, an adjacent-distinct pencil
+realization in dimension $d$ is determined by its normals up to the
+scale of each hinge, which does not change the rank.
+
+\begin{lemma}[At the deficiency rank in dimension three]
+  \label{lem:pencil-d-rank-agrees-three}
+  \uses{def:pencil-d-rank-hypothesis, def:pencil-d-distinct-motive,
+        def:pencil-rank-hypothesis, def:pencil-distinct-motive}
+  A multigraph has a pencil realization at the deficiency rank in
+  dimension three (\cref{def:pencil-d-rank-hypothesis}) exactly when it
+  has a pencil realization at the deficiency rank
+  (\cref{def:pencil-rank-hypothesis}). It has an adjacent-distinct one
+  in dimension three (\cref{def:pencil-d-distinct-motive}) exactly when
+  it has an adjacent-distinct pencil realization
+  (\cref{def:pencil-distinct-motive}).
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-d-agrees-three, lem:pencil-self-dual, lem:screw-map-rows}
+  The first equivalence is \cref{lem:pencil-d-agrees-three}, applied to
+  one framework, so at one rank. For the second, the adjacent-distinct
+  realizations in dimension three have independent normals at the ends
+  of every link, and those of \cref{def:pencil-distinct-motive} have
+  independent points there. The polarity exchanges the normals and the
+  points of a pencil realization (\cref{lem:pencil-self-dual}), and it
+  keeps the rank (\cref{lem:screw-map-rows}).
+\end{proof}
+
+\subsection{Configurations in every dimension}
+\label{sec:pencil-d-carrier}
+
+A configuration in dimension $d$ lifts a planar picture by $d - 2$
+heights, each of them in the lifting space $L(q)$ of
+\cref{def:pencil-lifting-space}. The rank of a configuration is read at
+the panel-hinge framework whose normals are its points, as at $d = 3$
+(\cref{def:pencil-x0-attains}).
+
+\begin{definition}[Configurations in every dimension]
+  \label{def:pencil-d-configuration}
+  \uses{def:pencil-lifting-space, def:panel-hinge-framework,
+        def:rigidity-matrix}
+  A planar picture $q$ of $G$ and heights
+  $z^1, \dots, z^{d-2} \colon V(G) \to K$ give the
+  \emph{configuration} $b = (q, z)$ of the points
+  $b_v = (x_v, y_v, z^1_v, \dots, z^{d-2}_v, 1) \in K^{d+1}$. Its
+  \emph{rank} is the rank of the rigidity matrix
+  (\cref{def:rigidity-matrix}) of the panel-hinge framework on $G$ in
+  $\bigwedge^{d-1} K^{d+1}$ whose panel normal at each body $v$ is $b_v$
+  (\cref{def:panel-hinge-framework}).
+\end{definition}
+
+At $d = 3$ these are the configurations of \cref{def:pencil-configuration}
+and their rank. If every $z^i$ lies in $L(q)$, each height is affine on
+each closed neighbourhood, so the points of each closed neighbourhood
+lie in a plane.
+
+\begin{lemma}[A configuration over an admissible picture is a pencil realization]
+  \label{lem:pencil-d-config-realization}
+  \uses{def:pencil-d-configuration, def:pencil-admissible-picture,
+        def:pencil-d-distinct-motive, lem:pencil-d-point-configuration}
+  Let $q$ be an admissible picture of $G$, let $z^1, \dots, z^{d-2}$ lie
+  in $L(q)$, and let $\Pi_v$ be the span of the points of the closed
+  neighbourhood of $v$ in the configuration $b = (q, z)$. Then the
+  panel-hinge framework of \cref{def:pencil-d-configuration}, with the
+  subspaces $\Pi_v$, is a pencil realization of $G$ in dimension $d$
+  with independent normals at the ends of every link. If $(q, z)$ has
+  rank $D(|V(G)| - 1) - \operatorname{def}(\tilde G)$, the deficiency
+  taken at $D = \binom{d+1}{2}$, then $G$ has an adjacent-distinct pencil
+  realization in dimension $d$.
+\end{lemma}
+\begin{proof}
+  On the closed neighbourhood of $v$ each $z^i$ agrees with an affine
+  function $a^i x + c^i y + e^i$ of the picture. So the points $b_w$ there
+  are the images of the homogeneous picture points $(x_w, y_w, 1)$ under
+  one linear map $K^3 \to K^{d+1}$, injective as the first, second and
+  last coordinates are kept. The picture points of the closed
+  neighbourhood are not collinear, so $\Pi_v$ has dimension three.
+  Adjacent picture points differ, so adjacent points $b_u$ and $b_v$ are
+  independent, as in \cref{lem:pencil-config-point-join-rank}. Then
+  \cref{lem:pencil-d-point-configuration} applies.
+\end{proof}
+
+\begin{definition}[The general configuration attains, in every dimension]
+  \label{def:pencil-d-x0-attains}
+  \uses{def:pencil-d-configuration, def:pencil-admissible-picture,
+        def:pencil-lifting-space, def:D-deficiency}
+  Let $D = \binom{d+1}{2}$. The \emph{general configuration of $G$
+  attains} in dimension $d$ if there is a nonzero polynomial $P$ in the
+  picture coordinates such that every picture $q$ with $P(q) \neq 0$ is
+  admissible and the heights $z \in L(q)^{d-2}$ at which $(q, z)$ has
+  rank $D(|V(G)| - 1) - \operatorname{def}(\tilde G)$, the deficiency
+  taken at $D$, contain a nonempty Zariski-open subset of $L(q)^{d-2}$.
+\end{definition}
+
+\begin{lemma}[Attaining in dimension three]
+  \label{lem:pencil-d-x0-attains-three}
+  \uses{def:pencil-d-x0-attains, def:pencil-x0-attains}
+  The general configuration of $G$ attains in dimension three
+  (\cref{def:pencil-d-x0-attains}) exactly when it attains in the sense
+  of \cref{def:pencil-x0-attains}.
+\end{lemma}
+\begin{proof}
+  At $d = 3$ there is one height, and the two definitions read the same
+  rank of the same framework.
+\end{proof}
+
+\begin{lemma}[A collineation of the normals preserves the rank, in every dimension]
+  \label{lem:pencil-d-rank-collineation}
+  \uses{def:panel-hinge-framework, def:rigidity-matrix}
+  Let $g$ be an invertible linear map of $K^{d+1}$. If panel normals $b$
+  and $b'$ satisfy $b'_w = g(b_w)$ at every body $w$ of $G$, the
+  rigidity matrices of the panel-hinge frameworks on $G$ in
+  $\bigwedge^{d-1} K^{d+1}$ with normals $b$ and with normals $b'$ have
+  the same rank.
+\end{lemma}
+\begin{proof}
+  \uses{def:panel-support-extensor, lem:complement-iso-toDual,
+        lem:screw-map-rows}
+  The hinge $C(b_u, b_v)$ is the image of the join $b_u \vee b_v$ under
+  the complement isomorphism (\cref{def:panel-support-extensor}). By its
+  defining property (\cref{lem:complement-iso-toDual}), that isomorphism
+  takes the map induced by $g$ on $\bigwedge^2 K^{d+1}$ to $\det g$ times
+  the map induced on $\bigwedge^{d-1} K^{d+1}$ by the inverse transpose
+  of $g$, as in the proof of \cref{lem:meet-two-hyperplanes}. So
+  $C(g b_u, g b_v)$ is the
+  image of $C(b_u, b_v)$ under one invertible linear map of the screw
+  space, the same at every edge, and the two ranks agree
+  (\cref{lem:screw-map-rows}).
+\end{proof}
+
+\begin{lemma}[Linear changes and affine shifts of the heights preserve the rank]
+  \label{lem:pencil-d-rank-scale-shift}
+  \uses{def:pencil-d-configuration, def:pencil-lifting-space}
+  Let $q$ be a picture of $G$ and $z = (z^1, \dots, z^{d-2})$ heights.
+  Let $T$ be an invertible $(d-2) \times (d-2)$ matrix over $K$ and
+  $a^1, \dots, a^{d-2} \in \mathrm{Aff}(q)$. Then the configurations
+  $(q, z)$ and $(q, Tz + a)$ have the same rank, where
+  $(Tz + a)^i = \sum_j T_{ij} z^j + a^i$.
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-d-rank-collineation}
+  Write $a^i_w = \alpha_i x_w + \beta_i y_w + \gamma_i$, and split
+  $K^{d+1} = K^2 \times K^{d-2} \times K$. The linear map
+  $(\xi, \eta, \zeta, \omega) \mapsto
+  (\xi, \eta, T\zeta + \xi\alpha + \eta\beta + \omega\gamma, \omega)$ is
+  invertible, since $T$ is. It maps the point of $(q, z)$ at each body to
+  the point of $(q, Tz + a)$ there. So
+  \cref{lem:pencil-d-rank-collineation} applies.
+\end{proof}
+
+\begin{lemma}[One attaining configuration forces the general one, in every dimension]
+  \label{lem:pencil-d-x0-one-witness}
+  \uses{def:pencil-main-picture, def:pencil-d-x0-attains,
+        lem:rank-polynomial-of-le-finrank,
+        lem:relative-deficiency-rank-bound}
+  Let $G$ have at least one body, let $q_0$ be a main picture of $G$
+  (\cref{def:pencil-main-picture}) and $z_0 \in L(q_0)^{d-2}$, and
+  suppose the configuration $(q_0, z_0)$ has rank at least
+  $D(|V(G)| - 1) - \operatorname{def}(\tilde G)$, the deficiency taken
+  at $D = \binom{d+1}{2}$. Then the general configuration of $G$ attains
+  in dimension $d$.
+\end{lemma}
+\begin{proof}
+  \uses{def:pencil-lifting-system, lem:pencil-polynomial-section}
+  The proof of \cref{lem:pencil-x0-one-witness} applies, with the
+  polynomial section of the lifting system
+  (\cref{lem:pencil-polynomial-section}) taken once for each height: it
+  gives heights $Z^i(q) \in L(q)$, polynomial in the picture $q$, with
+  $Z^i(q_0) = z^i_0$. Over an admissible picture adjacent points are
+  independent, so every hinge is nonzero, and the rank polynomial of
+  \cref{lem:rank-polynomial-of-le-finrank} is taken in the coordinates of
+  the points of $K^{d+1}$. The rank never exceeds the target
+  (\cref{lem:relative-deficiency-rank-bound}).
+\end{proof}
+
+\begin{lemma}[The rank of the core along the curve, in every dimension]
+  \label{lem:pencil-d-contract-magnified-rank}
+  \uses{def:pencil-contract-lifting-system, def:pencil-d-configuration}
+  Let $r \in W$ and $H = G[W]$, let $q$ be a picture and $t \in K$
+  nonzero, and for each height $i$ let $(z^i, h^i)$ be a vector of
+  unknowns of the rescaled lifting system
+  (\cref{def:pencil-contract-lifting-system}). Then the rank of $H$ at
+  the configuration $(q(t), z(t))$ in dimension $d$, where
+  $z(t) = (z^1(t), \dots, z^{d-2}(t))$, equals its rank at $(q, z)$.
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-d-rank-collineation}
+  At a body $c$ of $W$ the point of $(q(t), z(t))$ is
+  $((1 - t)\,x_r + t\,x_c,\ (1 - t)\,y_r + t\,y_c,\
+  t\,z^1_c, \dots, t\,z^{d-2}_c,\ 1)$, the image of the point of
+  $(q, z)$ under the linear map
+  $(\xi, \eta, \zeta, \omega) \mapsto
+  (t\,\xi + (1 - t)\,x_r\,\omega,\ t\,\eta + (1 - t)\,y_r\,\omega,\
+  t\,\zeta,\ \omega)$ of $K^{d+1}$, which is invertible as $t \neq 0$. So
+  \cref{lem:pencil-d-rank-collineation} applies.
+\end{proof}
+
+\begin{lemma}[Independence of joins is an open condition, in every dimension]
+  \label{lem:pencil-d-join-independence-open}
+  \uses{def:pencil-d-configuration, def:extensor}
+  Let $(u_i, w_i)_{i \in I}$ be a finite family of pairs of bodies, and
+  write $b$ for the points of a configuration $(q, z)$ in dimension $d$.
+  If the joins $b_{u_i} \vee b_{w_i} \in \bigwedge^2 K^{d+1}$ are
+  linearly independent at $(q_0, z)$, there is a polynomial $P$ in the
+  picture, nonzero at $q_0$, such that they are linearly independent at
+  $(q, z)$ whenever $P(q) \neq 0$. Likewise, if they are independent at
+  $(q, z_0)$, there is a polynomial $R$ in the heights, nonzero at $z_0$,
+  such that they are independent at $(q, z)$ whenever $R(z) \neq 0$.
+\end{lemma}
+\begin{proof}
+  The coordinates of $b_u \vee b_w$ are the $2 \times 2$ minors of the
+  two points, polynomials in the picture at fixed heights and in the
+  heights at a fixed picture. A finite family of vectors is linearly
+  independent exactly when some maximal minor of its coordinate matrix
+  is nonzero; take for $P$, or $R$, one such minor.
+\end{proof}

@@ -215,9 +215,12 @@ Lean declaration was given one.
 Phase 42, in progress, asks whether the pencil realization theorem holds
 in every dimension. In projective `d`-space the hinges at a body form a
 pencil when they contain a common `(d−3)`-flat and lie in a hyperplane;
-the theorem is formalized at `d = 2` and `d = 3`, and the general case,
-which would imply Katoh–Tanigawa's panel theorem in every dimension,
-starts with a paper check of whether the `d = 3` proof generalizes.
+the theorem is formalized at `d = 2` and `d = 3`, and the general case
+would imply Katoh–Tanigawa's panel theorem in every dimension. A paper
+check found most of the `d = 3` proof dimension-general, with one step
+needing new mathematics from dimension four. Beside that research, a new
+blueprint chapter states pencil realizations in every dimension, the
+start of their formalization.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries

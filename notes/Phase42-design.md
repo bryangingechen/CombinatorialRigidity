@@ -1,19 +1,16 @@
 # Phase 42 — PENCIL-D: design (cross-phase plan and recon)
 
 **Status:** opened 2026-10-29 with the PI, sub-lettered, research first. **42a** (PD-RECON,
-`notes/Phase42a.md`) is open: no Lean, no blueprint. The step table (§2.1): of 22 rows, 10
-generalize as they stand and 6 given routine or formal work (CERT, CARRIER); 4 fail as written
-(the short ears, the one-body and orbit ears, route B); the coverage (row 18) waits on the ear
-rows, and nondegeneracy's lift (row 21) is open. The thresholds are `d = 4, 5`, the content
-`def[3] ≥ d − 2` (§2.5). T1–T5 have landed (§2.4): the flat formulas hold, CERT holds at
-`d ≤ 6`, every content cell measured attains, X3 leaves SHORT only SHORT-CORE (`k = 3–5` at
-`d = 4`), and Theorem S holds at every `D ≥ 6`. At the PI's call ONE-CLASS's lemma is proved (§2.3, Result
-27): a graph whose chains are all one-body has a core or `def[6] = 0`, and then Phase 40 embeds.
-So **the coverage at `d ≥ 4` needs SHORT-CORE and no ONE-EAR**; ONE-EAR waits for GENERIC. Next
-concrete task: PD-STATE's open as the next sub-phase (§1's defaults); the research next is
-SHORT-CORE's attack track, as a second read found rows 9 and 12 dimension-general (§2.1). The
-route is the PI's (§1): R2's steps, Result 15's embedding as the base row, any induction on `d`
-left to Tier 2. Evidence: `notes/Strata.md`, Results 12–27.
+`notes/Phase42a.md`) is open: the step table (§2.1), the thresholds `d = 4, 5` and the content
+`def[3] ≥ d − 2` (§2.5), T1–T5 (§2.4) and ONE-CLASS's lemma (§2.3, Result 27) have landed, so
+**the coverage at `d ≥ 4` needs SHORT-CORE and no ONE-EAR**; ONE-EAR waits for GENERIC. The route
+is the PI's (§1): R2's steps, Result 15's embedding as the base row, any induction on `d` left to
+Tier 2. SHORT-CORE's attack brief awaits the PI's reading. **42b** (PD-STATE,
+`notes/Phase42b.md`) opened beside it, the statement layer in `Pᵈ`: its chapter
+`blueprint/src/chapter/pencil-d.tex`, all red. The carrier check (§2.3 CARRIER) found the dual form
+right once each body's plane is data; that reading is for the PI's confirmation, and the first leaf
+does not depend on it. PD-STABLE is laid out in §3. Next concrete task: 42b's first leaf, the
+collineation lemma in every `d`. Evidence: `notes/Strata.md`, Results 12–27.
 
 This file is the phase's entry point: the target (§0), the PI's decisions (§1), the recon (§2),
 the layers by stable code (§3) and the open questions (§4). Letters are minted when a sub-phase
@@ -265,7 +262,36 @@ Result 17's `def[3] ≤ 1` one step further.
   the `P³` route's. Their `P³` pins to restate: `def:pencil-x0-attains`, the one-witness lemma,
   the magnified rank, the scale-shift and the join-independence lemmas (`Fin 4`, one height).
   Also name `bodyBarDim (k+1) = screwDim k`, now inline in `PanelLayer.lean`. Rows 19–21 were
-  not re-read.
+  not re-read. The PI's default is the dual form (§1, item 4). **Checked against the definition
+  bodies at 42b's open** (2026-10-30, this session, Claude Opus 5.5; the two surprises by a
+  `lake lean` witness, scratch, not retained):
+  - *`HasPencilPanelRealization` at grade `k`* (`Statement.lean`) is point-based, as read: at
+    `k ≥ 3` the hinges at a body pass through one point of the panel and need share no line
+    (`rem:pencil-d-point-type`'s three planes of `P⁴`). `HasPencilRealization`,
+    `HasDistinctPencilRealization`, `IsNondegPencilRealization` and `PencilPair` fix grade 2 and
+    `Fin 4`; `X0Attains` reads the rank at `ofNormals (k := 2)` of the configuration points.
+  - *Read literally, the dual form fails both ways.* (W1) On the containment carrier
+    `HasCoplanarPanelRealization` the one-line encoding of §3 ("normals on each closed
+    neighbourhood span ≤ 3") is strictly weaker than Phase 39's at `d = 3`: at dependent adjacent
+    normals `ExtensorInPanel` admits any line of the shared plane. Witness: two bodies, three
+    parallel edges, normal `e₀` at both, hinges `e₁e₂`, `e₁e₃`, `e₂e₃`; the encoding holds, and
+    no nonzero point lies on all three, so no `HasPencilPanelRealization` exists (`K₁,₃` with one
+    panel is the simple-graph form). (W2) On the meet carrier (`ofNormals`, hinges
+    `complementIso` of the joins, Result 13's form) parallel edges get one hinge, so the double
+    edge cannot reach rank `D` (the target, `def = 0`), while Phase 39's bare conjunct holds there.
+    The meet form does agree with the distinct conjunct (`lem:pencil-d-point-configuration`).
+  - *What agrees:* the dual form with each body's 3-space `Π_v ∋ b_v` as data and every hinge at
+    `v` through `Π_v^⊥` (dually, a line through `b_v` in `Π_v`), i.e. §2.3's own "dual (a point
+    in a 3-space)". At `k = 2`, `Π_v = q_v^⊥` makes it Phase 39's definition on the nose; the
+    distinct conjunct agrees through `lem:pencil-self-dual`. Stated as `def:pencil-d-realization`
+    (red), pending the PI.
+  - *Options, for the PI's confirmation* (not blocking: 42b's first leaf is the same under each).
+    (a) The reading above, **recommended**, and what the chapter's red nodes state (restated if
+    the PI picks otherwise): the predicate, its `d = 3` agreement and the distinct bridge, about
+    three commits. (b) Primal data `(b_v, A_v = Π_v^⊥)`: the same mathematics and
+    cost, the data named the other way; the PI's default is dual. (c) The meet form alone: the
+    cheapest (no predicate beyond a span condition), but the `Pᵈ` headline loses the bare
+    multigraph conjunct, against §0. (d) The normals-only encoding: fails W1, not viable.
 - **GENERIC** (row 22): route B in `Pᵈ`, an irreducible parametrization of the nondegenerate
   realizations, and the one-ear step at `d ≥ 5`. D's candidate witness against the good-ear lemma
   supplying a common neighbour: `C₆` with the chord `14` and `y` joined to `2, 5` (by hand,
@@ -453,23 +479,53 @@ leaves out each graph's top cell, `d = 2 + def[3]`, which also carries content.
 ## 3. Layers (stable codes)
 
 - **PD-RECON** (42a, open): settle R1 or R2 on paper, or refute with a certificate (§2).
-- **PD-STATE**: the `Pᵈ` statement layer on the general-`d` panel carrier, agreeing with Phase 39's
-  `P³` definitions. The candidate encoding (Result 13) is a panel realization whose normals on each
-  closed neighbourhood span at most three dimensions. Check it against the carrier's definition
-  bodies at open; docstrings are not evidence.
-- **PD-STABLE**: Results 15–17, formally: the embedding, the deficiency lemma, and `Pᵈ` for
-  `def_3 ≤ 1`. It needs PD-STATE and Phase 40, but not the recon. State the embedding at every
-  `d′ ≤ d` (the route, §1): if `G` attains in `P^{d′}`, it attains in `Pᵈ` wherever
-  `def[D_{d′}](G) = def[D_d](G)`. Its `d′ = 3` case is the form PD-COVERAGE consumes,
-  `def[6](G) = def[D](G)`, and settles ONE-CLASS (Result 27); its `d′ = 4` case takes Tier 1 to
-  every `d`.
+- **PD-STATE** (42b, open, `notes/Phase42b.md`): the `Pᵈ` statement layer on the general-`d`
+  panel carrier, agreeing with Phase 39's `P³` definitions. Its dep-graph is
+  `blueprint/src/chapter/pencil-d.tex`: the carrier definitions (an extensor through a subspace,
+  pencil realizations in dimension `d` with each body's 3-space as data, their rank and
+  adjacent-distinct forms), the `d = 3` agreement, the dual form's bridge (independent adjacent
+  normals give the meet form, and configurations over admissible pictures are pencil
+  realizations), and CARRIER's restatements (configurations, attaining, the collineation, the
+  scale-shift, one witness, the magnified rank, join independence). The encoding's check and the
+  options put to the PI: §2.3 CARRIER. Nondegeneracy's lift is GENERIC's (§4), not PD-STATE's.
+- **PD-STABLE** (stable code; it states over PD-STATE's definitions, so it opens once they land):
+  Results 15–17, formally. It needs PD-STATE and Phase 40, not the recon. `G` satisfies
+  `def:pencil-x0-standing`; `def[D_d]` is Lean's `G.deficiency d` (`bodyBarDim d = D_d`), so
+  `def[3]` is `G.deficiency 2` and `def[6]` is `G.deficiency 3`. Planned names are tentative.
+  1. *The embedding, at every `d′ ≤ d`* (Result 15; the route, §1). Let `ι : K^{d′+1} → K^{d+1}`
+     insert zeros before the last coordinate, and `φ` the injective map of screw spaces it induces
+     on the polar lines (`complementIso` of `Λ²ι`). **Rank:** for a framework on a connected `G`,
+     `rank(φF) = rank F + (D_d − D_{d′})(|V| − 1)`; split the screw space as `im φ ⊕ T`, so a
+     motion of `φF` is a motion of `F` plus one constant in `T` (planned
+     `BodyHingeFramework.finrank_span_rigidityRows_map_injective`). **Statement
+     form** (PD-HEAD): a pencil realization in dimension `d′` of rank
+     `D_{d′}(|V| − 1) − def[D_{d′}]` gives one in dimension `d` of rank `D_d(|V| − 1) − def[D_{d′}]`
+     (`b ↦ ιb`, `Π ↦ ιΠ`), at the deficiency rank where `def[D_{d′}] = def[D_d]` (planned
+     `hasGradedPencilRealization_of_le`). **Configuration form** (PD-COVERAGE; `3 ≤ d′ ≤ d`): the
+     configuration `(q, (z′, 0, …, 0))` has the rank of `(q, z′)` plus `(D_d − D_{d′})(|V| − 1)`, so
+     if the general configuration attains in dimension `d′` and `def[D_{d′}](G) = def[D_d](G)`, it
+     attains in dimension `d` (one main picture and `lem:pencil-d-x0-one-witness`; planned
+     `Graph.X0AttainsGrade.of_le`). Its `d′ = 3` case is the form PD-COVERAGE consumes,
+     `def[6](G) = def[D](G)`, and settles ONE-CLASS (Result 27); its `d′ = 4` case takes Tier 1
+     to every `d`.
+  2. *The deficiency lemma* (Result 16): if `2 + def[3](G) ≤ d′ ≤ d`, then
+     `def[D_{d′}](G) = def[D_d](G)`. Proof: a partition with cycle rank `c ≥ 1` positive at
+     `D′ = D_{d′}` has `|P| − 1 > (D′ − 1)c`, so `def[3] ≥ |P| − 1 − 2c > (D′ − 3)c ≥ D′ − 3`,
+     against `D′ ≥ C(def[3] + 3, 2)`; so above `D′` only tree quotients count, at a value free of
+     `D`. Holds for every multigraph. Planned `Graph.deficiency_eq_of_two_add_deficiency_two_le`,
+     beside `lem:deficiency-antitone`.
+  3. *`Pᵈ` at `def[3] ≤ 1`* (Result 17; Tier 0): if `def[3](G) ≤ 1` and `d ≥ 3`, the general
+     configuration of `G` attains in dimension `d`, so `G` has an adjacent-distinct pencil
+     realization at the deficiency rank in dimension `d` (`lem:pencil-d-config-realization`).
+     Proof: Phase 40 (`thm:pencil-x0-generic-attains`) at `d′ = 3`, item 2 (`def[3] ≤ 1 = d′ − 2`)
+     and item 1. Result 17 embeds the planar witness at `def[3] = 0`; `d′ = 3` covers that case
+     too, as there `def[6] = def[D] = 0`. Planned `Graph.x0AttainsGrade_of_deficiency_two_le_one`.
 - **PD-CARRIER**, **PD-STEPS**, **PD-COVERAGE**: Phase 40b–40m in `Pᵈ`, on R2's steps (§1).
 - **PD-REDUCTION**, **PD-HEAD**: Phase 39's reduction in `Pᵈ`; the headline `PencilPair`, and the
   flag strata as corollaries.
 
-PD-STATE and PD-STABLE do not depend on the route, so they can run beside PD-RECON. The PI kept
-them out of the open; by the planning defaults (§1) they open beside it now that T1 and T2 have
-landed.
+PD-STATE and PD-STABLE do not depend on the route, so they run beside PD-RECON (§1's defaults).
+PD-STATE opened as 42b on 2026-10-30; PD-STABLE opens once PD-STATE's definitions have landed.
 
 ## 4. Open questions
 
@@ -482,12 +538,14 @@ unless a finding argues otherwise:
 - The headline ships the bare and distinct conjuncts first, GENERIC after (row 22). Nondegeneracy
   enters `PencilPair` only in the generic conjunct (`Pencil/Motive.lean`), so with row 22's reading
   its `Pᵈ` lift is deferred with it.
-- The carrier in dual form (CARRIER); PD-STATE checks it against the definition bodies at open.
-- PD-STATE and PD-STABLE open beside the research once T1 and T2 land (they have).
+- The carrier in dual form (CARRIER). Checked at 42b's open: it agrees with Phase 39's
+  definitions once each body's 3-space is data (§2.3), the reading put to the PI for confirmation.
+- PD-STATE and PD-STABLE open beside the research once T1 and T2 land: PD-STATE has, as 42b.
 
 Settled by the PI (§1): the route. R2's steps with Result 15's embedding as the base row; an outer
 induction on `d` is Tier 2's question, entering if at all through CERT's open ears at `d ≥ 7`.
-Nothing is open for the PI at this stage.
+Open for the PI: the reading of SHORT-CORE's DRAFT brief, and confirming the carrier's reading
+(§2.3 CARRIER, options (a)–(d)); neither blocks 42b's first leaf.
 
 Settled by the table: Phase 39's reduction is `d`-general for the bare and distinct conjuncts,
 given CARRIER (row 19). Settled by the PI's call (§1) and Result 27: ONE-CLASS, not ONE-EAR. Its

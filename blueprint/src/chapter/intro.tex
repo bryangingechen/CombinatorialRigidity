@@ -349,6 +349,16 @@ that equality from the planar case of the non-spanning form of
 Theorem~5.6, so that it too holds over every infinite field
 (\cref{sec:main-component-jj}).
 
+A sixth continuation (phase~42), in progress, asks whether the pencil
+realization theorem holds in projective $d$-space for every $d$. There
+the hinges at a body form a pencil when they lie in a hyperplane and
+contain a common $(d-3)$-flat of it. A pencil realization at the
+deficiency rank is in particular a hinge-coplanar one, so the theorem
+would strengthen KT Theorem~5.6 in every dimension. Its chapter
+(\cref{sec:pencil-d}) states pencil realizations in every dimension, and
+the objects of \cref{sec:main-component} that a proof in dimension $d$
+would use.
+
 \subsection*{Reading this blueprint}
 
 In the web version, a statement that is formalized in Lean is marked with
@@ -359,12 +369,14 @@ a green border when its statement is formalized, and a green interior
 when its proof is; the graph's legend explains the other markings.
 Every node of the graph is green, from Laman's theorem to the pencil
 realization theorem (\cref{sec:pencil}, \cref{sec:main-component}):
-each definition and result the chapters state as a node is formalized.
+each definition and result those chapters state as a node is
+formalized.
 Phase~41 ended a review of the chapters against the Lean, which corrected
 the statements that claimed more or less than their Lean declarations
 and gave a Lean declaration to each claim the chapters made without one.
-Phase~42, in progress, asks whether the pencil realization theorem holds
-in every dimension; it has not yet added to the chapters.
+Phase~42, in progress, has added the last chapter, on the pencil in
+every dimension (\cref{sec:pencil-d}), whose nodes are not yet
+formalized.
 From phase~6 on, the graph is written forward: a chapter's nodes and
 their edges come first, and the statement and proof sketch of a node not
 yet formalized are the plan for its Lean declaration. So the graph is
