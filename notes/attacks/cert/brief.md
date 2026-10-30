@@ -1,4 +1,8 @@
-> **DRAFT: awaits the PI's reading before session 1.** Written 2026-10-30 by an agent (Claude
+> **Cleared for session 1 on the PI's word, 2026-10-30** (the question put: how CERT proceeds
+> given R1; the answer: "Clear it; session 1 checks R1", whose option read "Session 1 verifies R1's
+> four steps and lands them with a driver at d <= 9; if R1 holds, CERT closes, possibly in one
+> session"). Session 1 therefore reads and lands §5's R1 (i)–(iv) first, then §6's driver.
+> Written 2026-10-30 by an agent (Claude
 > Opus 5.5) against the tree at `947fa75d`, from the owning sections: `notes/Phase42-design.md`
 > §2.1 rows 10–12 and its second read of row 12, §2.3 CERT; `notes/Strata.md` Result 21;
 > `notes/attacks/short-core/state.md` with workbook S35 and S52–S56; the subsections of

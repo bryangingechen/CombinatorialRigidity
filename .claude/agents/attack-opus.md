@@ -6,7 +6,7 @@ description: >
   under notes/attacks/<name>/ and follows .claude/commands/attack.md with
   that name as its argument; HARNESS.md binds. Prefer running an attack as
   a main session in its own worktree; use this variant only when a
-  scheduler must drive it.
+  scheduler must drive it (the scheduler is /coordinate-tracks).
 model: opus
 ---
 

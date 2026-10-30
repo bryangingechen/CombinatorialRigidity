@@ -180,7 +180,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (RECONCILE 3/3: the Lean outside the phase's footprint) | the Lean's dead code, signatures, docstrings and the pebble game's search, a non-vacuity witness per main result, and the blueprint pins they move (no main result's statement changes) | ✓ Complete — dead code deleted, unneeded hypotheses dropped and the blueprint statements they reached restated, the search re-proved, the docstrings checked and a non-vacuity witness per main result outside the next phase's rows, no main result's statement changed (see `notes/Reconcile-lean-cleanup.md`; plan `notes/Reconcile.md`; round manual: `CLEANUP.md`) |
 | ⋮ Toolchain bump to Lean v4.36.0-rc1 (maintenance, cross-phase) | `lean-toolchain`, `lake-manifest.json`, `lakefile.toml` (+ renames, imports and one-line fixes in 39 Lean files) | ✓ Complete — v4.34.0-rc2 → v4.36.0-rc1, mathlib → `930ae14`, `Matroid` → `8ece630`; every gate green, all 19 main results' axioms unchanged; pushed 2026-10-25, CI green at `4c892cb6` (see `notes/Bump-v4.36.0-rc1.md`; record `notes/ToolchainBumps.md`) |
 | 41. The panel-hinge carrier and its graph (post-program) — RECONCILE-FORMAL | `Molecular/` (structural edit; sub-lettered, 41a–41e) | ✓ Complete — each hinge at its own edge's ends, and the RECONCILE program closed (see `notes/Phase41e.md`; plan `notes/Phase41-design.md`) |
-| 42. The pencil realization theorem in every dimension (post-program) — PENCIL-D | research first, then `Molecular/`, `pencil-d.tex` (sub-lettered, 42a–42c) | In progress — 42a ✓ PD-RECON, 42b ✓ PD-STATE, 42c ✓ PD-STABLE; 42d is the PI's call (see `notes/Phase42-design.md` §3; work logs `notes/Phase42a.md`–`notes/Phase42c.md`) |
+| 42. The pencil realization theorem in every dimension (post-program) — PENCIL-D | research first, then `Molecular/`, `pencil-d.tex` (sub-lettered, 42a–42d) | In progress — 42a ✓ PD-RECON, 42b ✓ PD-STATE, 42c ✓ PD-STABLE; 42d PD-ALL open, research toward an informal proof in every dimension (see `notes/Phase42d.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1290,12 +1290,17 @@ closed 2026-10-30, `notes/Phase42b.md`): the chapter `pencil-d.tex`, all 17 node
 plane as data (the PI's reading, after the open found the plain polar form disagreeing with Phase
 39's), their agreement with Phases 39–40 at `d = 3`, and Phase 40's carrier in dimension `d`. The
 `def_3 ≤ 3` corollary then ran at the PI's word as **PD-STABLE** (42c, opened and closed
-2026-10-30, `notes/Phase42c.md`): the last section of `pencil-d.tex`, all 9 nodes formalized, embeds
+2026-10-30, `notes/Phase42c.md`): a section of `pencil-d.tex`, all 9 nodes formalized, embeds
 a pencil realization of a lower dimension with the rank it gains, and proves that a connected
 graph's deficiency stops changing once `def_3 + 3 ≤ D`, a sharper range than planned, which the PI
 took to widen the corollary from `def_3 ≤ 1`. So Phase 40 gives every `Pᵈ` at `def_3 ≤ 3`
-(`Graph.x0AttainsGrade_of_deficiency_two_le_three`). No sub-phase is open: which of Phase 40's
-carrier, steps and coverage in `Pᵈ` opens next as 42d goes to the PI (design doc §3).
+(`Graph.x0AttainsGrade_of_deficiency_two_le_three`). The PI then put formalizing Tier 1 aside for
+an informal proof first: **PD-ALL** (42d, opened 2026-10-30, `notes/Phase42d.md`) writes the
+induction at every `d`, for all three conjuncts, the generic one included, as red nodes of
+`pencil-d.tex`, beside two research tracks, CERT (the cycle and ear certificates, measured only at
+`d ≤ 6`) and NONDEG (a `Pᵈ` nondegeneracy for the generic conjunct, and its route), all three run
+from one central session (`/coordinate-tracks`), with two Lean commits beside them (COUNT) for the
+coverage's deficiency counting at every `D`.
 The targets are three tiers: every `d` at `def_3 ≤ 3` (proved, 42c), a `P⁴` theorem (every `d` at
 `def_3 ≤ 7`, by the sharp lemma), and every `d`.
 

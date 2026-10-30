@@ -5,7 +5,7 @@ or attack work. Its job is to keep `HARNESS.md` small and true.
 - `HARNESS.md`, and `python3 notes/harness/check.py` (budget, tags, the last
   review's date, and each trial rule's age in research sessions).
 - `notes/harness/incidents.md` since the last `## review` line.
-- `git log --since=<last review> -- HARNESS.md .claude/commands/{attack,review-attack,harness-review}.md .claude/agents/attack-*.md`
+- `git log --since=<last review> -- HARNESS.md .claude/commands/{attack,review-attack,harness-review,coordinate-tracks}.md .claude/agents/{attack-*,writeup-opus}.md`
   — any edit made outside a harness-review session is itself an incident;
   log it. (`/coordinate-phase` and its agents change by their own
   phase-close promotions.)

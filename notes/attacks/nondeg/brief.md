@@ -1,4 +1,13 @@
-> **DRAFT: awaits the PI's reading before session 1.** Written 2026-10-30 by an agent (Claude
+> **Cleared for session 1 on the PI's word, 2026-10-30, with the coordinator's defaults for the
+> draft's seven choices** (answer: "Clear with these defaults"; the defaults as put, verbatim:
+> "Q1(a) means agreement at d = 3 realization by realization, through the polarity, with the
+> minimal candidate (N1 + N3) kept in the table as the 'what N2 buys' baseline even though it
+> fails (a); whether a conjunct that reduces to distinct + N3 is acceptable waits for the table;
+> survival under the lower-dimension embedding is a reported column, not a requirement; a
+> configuration-space family may be a candidate, with its misses (e.g. K_{2,3} at d = 3)
+> recorded; d = 3, 4, 5; workbook at notes/attacks/nondeg/workbook.md; reviews every three
+> sessions; keep 229 lines."). Session 1 starts by settling §4's four `[READING]` items.
+> Written 2026-10-30 by an agent (Claude
 > Opus 5.5) against the tree at `947fa75d`, from the owning sections: `notes/Phase42-design.md`
 > §2.1 rows 19–22, §2.2, §2.3 ONE-EAR, CARRIER and GENERIC, §2.4 T4 and §2.5; `pencil.tex`'s
 > duality and nondegeneracy subsections, `pencil-d.tex`'s introduction and first two subsections,

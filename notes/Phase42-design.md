@@ -1,6 +1,6 @@
 # Phase 42 — PENCIL-D: design (cross-phase plan and recon)
 
-**Status:** opened 2026-10-29 with the PI, sub-lettered, research first; **no sub-phase is open**.
+**Status:** opened 2026-10-29 with the PI, sub-lettered, research first; **42d (PD-ALL) is open**.
 **42a** (PD-RECON, `notes/Phase42a.md`) **closed 2026-10-30**: the step table (§2.1), the thresholds
 and the content `def[3] ≥ C(d,2) − 2` (§2.5), T1–T5 (§2.4), ONE-CLASS (§2.3, Result 27) and
 SHORT-CORE's attack track (§2.3; closed 2026-10-30, `notes/attacks/short-core/state.md`): the
@@ -11,9 +11,11 @@ R2's steps, Result 15's embedding as the base row, any induction on `d` left to 
 `blueprint/src/chapter/pencil-d.tex` formalized (17 nodes), on the carrier the PI took (§1, option
 (a); §2.3 CARRIER). **42c** (PD-STABLE, `notes/Phase42c.md`) **closed 2026-10-30**: the embedding,
 the sharp deficiency lemma and `Pᵈ` at `def[3] ≤ 3` (Tier 0, which the PI widened from `≤ 1`, §1),
-the last section of `pencil-d.tex`, formalized (9 nodes; verdict §3). **Next: 42d's open goes to
-the PI**, which of PD-CARRIER, PD-STEPS and PD-COVERAGE (§3) first, toward Tier 1's `P⁴` theorem;
-§3 lists what each inherits. Evidence: `notes/Strata.md`, Results 12–27.
+`pencil-d.tex`'s section `sec:pencil-d-stable`, formalized (9 nodes; verdict §3). **42d** (PD-ALL,
+`notes/Phase42d.md`) **opened 2026-10-30** at the PI's word (§1): research toward an informal proof
+at every `d` of all three conjuncts, the generic one included, as red nodes of `pencil-d.tex`, from
+three tracks (CERT, NONDEG, WRITE-UP) run by `/coordinate-tracks 42d`; Tier 1's formalization
+waits (§3). Evidence: `notes/Strata.md`, Results 12–27.
 
 This file is the phase's entry point: the target (§0), the PI's decisions (§1), the recon (§2),
 the layers by stable code (§3) and the open questions (§4). Letters are minted when a sub-phase
@@ -115,6 +117,32 @@ fibre-intersection lemma and Jackson–Jordán's equality.
   the status surfaces says ≤ 3." (Notation: `def_2` = `def[3]`, `def_3` = `def[6]`.) The
   range's second consequence (§3 item 1's Tier 1 reach, §2.5's content range) the PI relays to
   the SHORT-CORE attack track.
+- **PI, 2026-10-30 (after 42a's close), the plan after Tier 0:** asked whether a generic conjunct
+  could be stated at every `d`, and offered a recon on it, the PI answered: "Yes, let's scope out
+  a recon. This could run alongside work on CERT, right? Basically, I'm leaning towards not
+  formalizing the results on d=4 yet and seeing if we can get an informal proof at all d,
+  including some form of a generic conjunct. However, perhaps if it would be useful to formalize
+  some of the ingredients now (e.g. to help keep future research sessions on track) then I'd be
+  willing to consider that as part of the plan."
+- **PI, 2026-10-30 (42d's open):** "Yes, let's open 42d with these three strands. It was a bit of
+  a hassle to open and close the worktree manually for short-core; I wonder if we could
+  coordinate all three tracks from a single central session? Let's go with your recommendations
+  for where to place the work and for sizing things. The aim for the rest of this session will be
+  to get a solid harness in place for continuing the work in future sessions until it's done."
+  The strands as put: CERT as an attack track; NONDEG, the recon on a `Pᵈ` nondegeneracy (its
+  questions Q0–Q4 now its brief's); and writing out at general `d` the steps judged to carry
+  over. The recommendations taken: the write-up as red nodes in `pencil-d.tex`; the coverage's
+  deficiency counting in Lean sized before any is built.
+- **PI, 2026-10-30 (42d's open, after the sizing and the two briefs):** four answers to four
+  questions. The harness (`/coordinate-tracks`, `writeup-opus`, `worktree.baseRef: head`, the
+  pointers, two incident lines): "Accept as is (Recommended)". The coverage counting's Lean, put
+  as COUNT-A (sparse estimates at every `D`, one commit, low risk), COUNT-B (Theorem S at `D` and
+  ONE-CLASS, one or two commits, low risk) and COUNT-C (the chain count behind S53, two or three
+  commits, moderate risk): "A and B now (Recommended)", whose option read "Run them as a
+  lean-kind track under /coordinate-tracks, one at a time in the main checkout; they write their
+  own green nodes in pencil-d.tex. C waits for formalization." CERT's brief: "Clear it; session 1
+  checks R1 (Recommended)". NONDEG's brief: "Clear with these defaults" (the defaults verbatim in
+  its header).
 
 ## 2. PD-RECON (42a)
 
@@ -530,7 +558,17 @@ leaves out each graph's top cell, `d = 2 + def[3]`, which also carries content.
      too. `Graph.x0AttainsGrade_of_deficiency_two_le_three` and
      `Graph.hasGradedDistinctPencilRealization_of_deficiency_two_le_three` use the three standard
      axioms.
-- **PD-CARRIER**, **PD-STEPS**, **PD-COVERAGE**: Phase 40b–40m in `Pᵈ`, on R2's steps (§1).
+- **PD-ALL** (**42d**, opened 2026-10-30 at the PI's word, §1; `notes/Phase42d.md`): an informal
+  proof at every `d` of the bare, distinct and a generic conjunct, written as red nodes in new
+  sections of `pencil-d.tex` (the write-up, slices W1–W10 in the work log), with two research
+  tracks: **CERT** (§2.3 CERT, at every `d`; `notes/attacks/cert/`) and **NONDEG** (a `Pᵈ`
+  nondegeneracy and the generic conjunct's route, rows 21–22, §2.3 GENERIC and ONE-EAR;
+  `notes/attacks/nondeg/`). One central session runs all three (`/coordinate-tracks 42d`), and a
+  Lean track, COUNT: the coverage's deficiency counting at every `D` (COUNT-A, the sparse
+  estimates; COUNT-B, Theorem S and ONE-CLASS), the PI's call after a sizing (work log, *Lean
+  now*).
+- **PD-CARRIER**, **PD-STEPS**, **PD-COVERAGE**: Phase 40b–40m in `Pᵈ`, on R2's steps (§1),
+  formalizing PD-ALL's write-up after 42d.
   **Handed on from PD-RECON** (42a's close; SHORT-CORE's workbook S56 has the detail):
   - *PD-STEPS, the short-ear step (row 13).* At `d = 4`, `k = 3, 4, 5`: the `P³` factoring
     (`Graph.X0Attains.of_openEar_splitOff`) with `D = 10`, its insertion hypothesis taken at base
@@ -583,10 +621,12 @@ unless a finding argues otherwise:
   definitions once each body's 3-space is data (§2.3), the reading the PI took (§1).
 - PD-STATE and PD-STABLE open beside the research once T1 and T2 land: they did, as 42b and 42c,
   both closed 2026-10-30.
+- The generic conjunct at every `d` (rows 21–22): NONDEG's questions (§3 PD-ALL), the definition
+  the PI's choice.
 
 Settled by the PI (§1): the route. R2's steps with Result 15's embedding as the base row; an outer
 induction on `d` is Tier 2's question, entering if at all through CERT's open ears at `d ≥ 7`.
-The carrier: each body's 3-space as data (§2.3 CARRIER, option (a)). Open for the PI: 42d's open (§3). SHORT-CORE closed 2026-10-30 (§2.3), and the sharp deficiency range
+The carrier: each body's 3-space as data (§2.3 CARRIER, option (a)). 42d's open: PD-ALL (§1, §3). SHORT-CORE closed 2026-10-30 (§2.3), and the sharp deficiency range
 `def[3] + 3 ≤ D′` (tight on cycles) is settled: Tier 0 widened to `def[3] ≤ 3` (§1), §2.5's content range
 restated `def[3] ≥ C(d,2) − 2` and Tier 1's reach `def[3] ≤ 7` (the dated note under §1's planning entry).
 

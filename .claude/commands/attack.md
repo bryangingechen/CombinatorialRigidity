@@ -5,6 +5,9 @@ is one working day on it. Rules: `HARNESS.md` (*Evidence*,
 **Start.** Work in the attack's own worktree on branch `attack-$ARGUMENTS`
 (`git worktree list`; if none exists, `git worktree add` one from `HEAD`),
 never in the main checkout, where another attack may be running.
+Dispatched by `/coordinate-tracks`, you are already in an isolated worktree:
+the preamble in your prompt replaces this step, and also the helper,
+pointer and incident clauses below.
 Read `HARNESS.md`, then `notes/attacks/$ARGUMENTS/brief.md` and
 `notes/attacks/$ARGUMENTS/state.md`. Then run the consumer diff of
 `HARNESS.md` *Evidence* on the brief, in the Lean; a mismatch is reported

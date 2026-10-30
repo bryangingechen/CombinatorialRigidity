@@ -12,9 +12,12 @@ Layout for `notes/attacks/<name>/`:
 Rules are `HARNESS.md` *Attack track*; the session ritual is
 `.claude/commands/attack.md`; the milestone review is
 `.claude/commands/review-attack.md`. Proved lemmas with full statements go to
-the attack's own workbook file under `notes/pencil/workbook/`, which is the one
-place appending is right. Parallel attacks run one worktree each (`attack.md`
-*Start*), merged at milestones.
+the attack's own workbook file, which is the one place appending is right:
+under `notes/pencil/workbook/` for Phase 39's corpus, else
+`notes/attacks/<name>/workbook.md`. Parallel attacks run one worktree each:
+by hand (`attack.md` *Start*), merged at milestones, or under
+`/coordinate-tracks`, a fresh isolated worktree per session, merged by the hub
+after each session.
 
 Briefs marked **DRAFT** were written by an agent from owning sections and
 await the PI's reading before an attack starts on them.
