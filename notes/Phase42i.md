@@ -68,7 +68,8 @@ index (forward mode), and the file map is under *Current state*.
 
 Phase 42 stays in progress with no sub-phase open, and PD-STEPS is complete (25 nodes, all green).
 The next step is **putting PD-COVERAGE's open to the PI** (design doc §3), no letter minted until
-it opens: the four red nodes of `pencil-d.tex`'s `sec:pencil-d-chains`
+it opens (answered at 42j's open: all four as written, design doc §1; `notes/Phase42j.md`): the
+four red nodes of `pencil-d.tex`'s `sec:pencil-d-chains`
 (`lem:pencil-d-chain-count`, COUNT-C, and `thm:pencil-d-chain-or-core`) and
 `sec:pencil-d-coverage` (`thm:pencil-d-coverage`, `lem:pencil-d-distinct-statement`); then
 PD-REDUCTION (8 nodes) and PD-HEAD (21), each at the PI's word. What 42i hands on:

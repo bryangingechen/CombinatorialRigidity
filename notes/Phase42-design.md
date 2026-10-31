@@ -1,13 +1,17 @@
 # Phase 42 — PENCIL-D: design (cross-phase plan and recon)
 
-**Status:** opened 2026-10-29 with the PI, sub-lettered, research first; no sub-phase open;
-PD-STEPS complete.
+**Status:** opened 2026-10-29 with the PI, sub-lettered, research first; **42j open**.
+**42j** (PD-COVERAGE, `notes/Phase42j.md`) **opened 2026-10-31** at the PI's word (§1): the four
+nodes of `pencil-d.tex`'s `-chains` and `-coverage` (the chain count, a long chain or a core, the
+coverage in every dimension and the distinct statement) as the chapter states them (§3). Its next
+step is the pre-build recon, which spikes the coverage's assembly on the landed steps and pins
+the reductions that return their data. PD-REDUCTION and PD-HEAD (§3, which maps the remaining red
+nodes to them by section) then open, each at the PI's word.
 **42i** (the fourth and last sub-phase of PD-STEPS, `notes/Phase42i.md`) **opened and closed
 2026-10-31** at the PI's word (§1): the four nodes of `pencil-d.tex`'s `-short-three`, the open ear
 with three interior bodies, all green, the theorem at `d = 4` to `6` as the chapter states it, on
 a variant of 42h's factoring its recon pinned (verdict §3; at the PI's word, §1, stars-three's
-statement and proof follow its Lean). PD-COVERAGE, PD-REDUCTION and PD-HEAD (§3, which maps the
-remaining red nodes to them by section) are next, each at the PI's word.
+statement and proof follow its Lean).
 **42h** (the third sub-phase of PD-STEPS, `notes/Phase42h.md`) **opened and closed 2026-10-31** at
 the PI's word (§1): the eight nodes of `pencil-d.tex`'s `-short-four`, Phase 40's short-ear step in
 `Pᵈ` at four or more interior bodies, all green, their Lean in every `d` (verdict §3; at the PI's
@@ -57,7 +61,8 @@ deficiency lemma, proved and formalized (42c, `thm:pencil-d-deficiency-two-le-th
 proved on paper (42d, `cor:pencil-d-conditioned-pair`); formalizing it began with the setting and
 the flat rank (42e), then the induction's cut-vertex, bridge and contraction steps (42f), its
 cycle and long-ear steps (42g), its short-ear step at four or more interior bodies (42h) and at
-three, at `d = 4` to `6` (42i), which completes its steps.
+three, at `d = 4` to `6` (42i), which completes its steps; the coverage, which puts them together,
+is open (42j).
 `d = 4, 5, 6` are measured (Results 11, 19), not found below target under the `--d4`
 population's cap (`n ≤ 12`, 36 simple graphs) and 8 graphs past it. Where the
 conjecture has content, that is 47 cells on 18 graphs, six of them cycles (§2.5).
@@ -368,6 +373,36 @@ fibre-intersection lemma and Jackson–Jordán's equality.
   stars-three's statement and proof, and the theorem's first stage without the first coordinate of
   `q_a − q_b`, land in the theorem's build commit (`notes/Phase42i.md` *Hand-off*), which turns
   `notes/Cleanup42.md` R-13 aligned.
+- **PI, 2026-10-31 (42j's open):** asked "Phase 42j isn't open yet. 42i closed PD-STEPS, and the
+  next layer is PD-COVERAGE: the 4 red nodes of pencil-d.tex. Two count chains
+  (lem:pencil-d-chain-count, a new edge count, and thm:pencil-d-chain-or-core). The other two are
+  the coverage in every dimension (thm:pencil-d-coverage, which puts all of PD-STEPS together) and
+  the distinct statement (lem:pencil-d-distinct-statement, a short corollary). The design doc says
+  the coverage's Lean needs forms of Phase 40's cut, cycle and planar-rigid reductions that return
+  their bridge, cut-vertex or cycle data. What should 42j open as?", the PI answered "All 4 nodes
+  as written (Recommended)", whose option read: "Close PD-COVERAGE. An Opus open commit, then a
+  pre-build recon that spikes the coverage assembly against the landed steps and pins the
+  data-returning reductions, then roughly 4–7 builds (my estimate). PD-REDUCTION would come next,
+  at your word." The other options put were "Recon first, scope after" ("Open on all 4, but the
+  recon sizes the coverage assembly and the reduction forms, then comes back to you before any
+  build.") and "The counting nodes only" ("Open on chain-count and chain-or-core only (pure
+  combinatorics, about 2–3 builds). The coverage and the distinct statement would wait for a later
+  sub-phase.").
+  *Note (not the PI's text):* the question and the option text are the coordinator's words, so
+  "roughly 4–7 builds" and "about 2–3 builds" are the coordinator's estimates, and "a short
+  corollary" is the coordinator's reading. "Two count chains" means that two of the four nodes
+  count chains. 42j's open checked the question against the chapter. Only chain-count counts:
+  chain-or-core applies its bound, with COUNT-B's two core lemmas (`lem:pencil-d-chain-core`,
+  `lem:pencil-d-core-positive-deficiency`), to find a long chain, a core, or deficiency zero in
+  dimension three. "A new edge count" holds for its Lean (COUNT-C, not yet formalized): at `d = 3`
+  only its `ℓ = 1` case exists, inside the proof of part (2) of `lem:pencil-x0-sparse-count`, under
+  another hypothesis. "Puts all of PD-STEPS together" holds: the coverage's proof uses all eight of
+  PD-STEPS's steps (the cut vertex, the chain of bridges, both contractions, the cycle and the
+  three ear steps), and beside them PD-CARRIER's flat corollary and, through the embedding, Phase
+  40's coverage. "A short corollary" holds: its proof cites two nodes, and its `d = 3` Lean,
+  `x0Dist`, is one line. The design doc's phrase (§3, *Handed on from PD-RECON*) names the three
+  lemmas, but the planar-rigid reduction's data is a maximal planar-rigid set, not a bridge, cut
+  vertex or cycle; the coverage's proof re-derives that set's properties inline.
 
 ## 2. PD-RECON (42a)
 
@@ -881,6 +916,14 @@ marked `no departure` (R-6). The post-Phase-42 cleanup acts on the ledger (that 
   when `r ≤ 2` the theorem's Lean bounds `dim ρ` by a common member of the closed neighbourhoods
   of `a` and `b`, or by glued-ends, with no component or path step. Of the files a deferral below
   names it edited only `Grade/Stars.lean`, which took `starGrade_smul`. PD-STEPS is complete.
+  **PD-COVERAGE, as 42j, opened 2026-10-31** at the PI's word (§1; `notes/Phase42j.md`): `-chains`
+  and `-coverage`, the four nodes as the chapter states them, its recon spiking the coverage's
+  assembly on PD-STEPS's Lean. Its open's consistency read passed all four, their 36 outside
+  dependencies green, and re-derived the chain count's algebra. The recon starts from
+  *Handed on from PD-RECON*, PD-COVERAGE, below. The open added three findings (that note's
+  *Blockers*): the planar-rigid reduction returns a set, not a bridge, cut vertex or cycle; Theorem
+  S at `D` has no consumer among the four; and the ear steps take the ear unpacked, where
+  chain-or-core yields a `Graph.IsChain`.
   **Handed on from PD-RECON** (42a's close; SHORT-CORE's workbook S56 has the detail):
   - *PD-STEPS, the short-ear step (row 13).* At `d = 4`, `k = 3, 4, 5`: the `P³` factoring
     (`Graph.X0Attains.of_openEar_splitOff`) with `D = 10`, its insertion hypothesis taken at base
@@ -965,11 +1008,11 @@ marked `no departure` (R-6). The post-Phase-42 cleanup acts on the ledger (that 
 
 **The red nodes by layer** (42e's open, by section of `pencil-d.tex`; a letter is minted only as
 a sub-phase opens). From `sec:pencil-d-induction` on the chapter has 62 dep-graph nodes, 33 of them
-red (recounted at 42i's close): 65 at 42e's open, all red, 4 green at its close, 3 cut at 42f's
-open (the PI, §1), 6 green at 42f's close, 7 at 42g's, 8 at 42h's and 4 at 42i's. The
-count of 66 put to the PI at 42e's open (§1) included `rem:pencil-d-flat-class`, a remark, which the
-dependency graph does not draw (it draws definitions, lemmas, propositions, theorems and
-corollaries).
+red (recounted at 42i's close and again at 42j's open): 65 at 42e's open, all red, 4 green at its
+close, 3 cut at 42f's open (the PI, §1), 6 green at 42f's close, 7 at 42g's, 8 at 42h's and 4 at
+42i's. The count of 66 put to the PI at 42e's open (§1) included `rem:pencil-d-flat-class`, a
+remark, which the dependency graph does not draw (it draws definitions, lemmas, propositions,
+theorems and corollaries).
 - PD-CARRIER (42e, closed, all green): `-induction` (1) and `-flat` (3); 4.
 - PD-STEPS: `-cut` (3) and `-contract` (3), 42f, closed, all green; `-long` (7), 42g, closed, all
   green; `-short` (12), as `-short-four` (8), 42h, closed, all green, and `-short-three` (4), 42i,
@@ -978,7 +1021,7 @@ corollaries).
   their sections `-splitoff` and `-ear-deficiency`, had no consumer in the coverage and were cut at
   42f's open (the PI, §1).
 - PD-COVERAGE: `-chains` (2; `lem:pencil-d-chain-count` is COUNT-C) and `-coverage` (2, with
-  `lem:pencil-d-distinct-statement`, the coverage read as a realization); 4.
+  `lem:pencil-d-distinct-statement`, the coverage read as a realization); 4, as 42j, open.
 - PD-REDUCTION: `-reduction` (8), Phase 39's reduction.
 - PD-HEAD: `-nondegenerate` (4), `-lift` (6) and `-generic` (11, ending in the headline
   `cor:pencil-d-conditioned-pair`); 21, the generic conjunct and the headline, the largest layer.

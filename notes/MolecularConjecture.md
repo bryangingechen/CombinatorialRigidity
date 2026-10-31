@@ -808,8 +808,8 @@ setting and the flat rank, formalized; PD-STEPS began as 42f (opened and closed 
 formalized; the short ears, the rest of PD-STEPS, continued as 42h (opened and closed 2026-10-31,
 `notes/Phase42h.md`): those with four or more interior bodies, formalized; and the three-body case,
 the last of PD-STEPS, as 42i (opened and closed 2026-10-31, `notes/Phase42i.md`): formalized at
-`d = 4` to `6`, which completes PD-STEPS; PD-COVERAGE opens next, at the PI's word. Summary: ROADMAP
-§42.
+`d = 4` to `6`, which completes PD-STEPS; and the coverage, PD-COVERAGE, as 42j (opened 2026-10-31,
+`notes/Phase42j.md`). Summary: ROADMAP §42.
 Still queued, codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
 conjecture, `notes/Origami.md` — the next phase to open after PENCIL-D, with the PI), **PIN** (a second,
 independent proof of the 2-d molecular conjecture by Jackson–Jordán 2008's

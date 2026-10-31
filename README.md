@@ -233,7 +233,7 @@ induction at a cut vertex, along a chain of bridges, contracting a rigid
 part of the graph, at a cycle, along an ear with four or more interior
 bodies and, in dimensions four to six, along one with three; the
 argument that these steps reach every graph, completing the induction,
-is next.
+is in progress.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries
