@@ -108,24 +108,28 @@ valid. The cleanup chooses one per `open` row, with the PI.
 - **R-6** · `thm:pencil-d-cycle`, the heights (`Graph.X0AttainsGrade.of_cycle_of_certificate`) ·
   **no departure** (42g's close): the Lean restricts `z` to `V(G)`, where the chapter's `z` lives.
 - **R-7** · `lem:pencil-d-two-stars`, parts (2) and (3) (`dualAnnihilator_starGrade_sup_starGrade`,
-  `finrank_add_two_le_of_forall_ιMulti_eq_zero`, 42h recon, `scratch/42h/Stars.lean`) · **open**.
-  *Chapter:* the annihilator in `⋀^{d−1}` is `y ∧ y' ∧ ⋀^{d−3}`; (3) for every `p ≥ 0`, through
-  bases `e_I` of `⋀^p Q`.
+  `finrank_add_two_le_of_forall_ιMulti_eq_zero`, `Pencil/Grade/Stars.lean`) · **aligned, this
+  commit** (42h).
+  *Chapter (until then):* the annihilator in `⋀^{d−1}` is `y ∧ y' ∧ ⋀^{d−3}`; (3) for every
+  `p ≥ 0`, through bases `e_I` of `⋀^p Q`.
   *Lean:* the annihilator is the forms on `⋀²` (the chapter's pairing), (2) the forms through
   `⋀²(K^{d+1}/⟨y, y'⟩)`, (3) at `p = d − 3` only: a nonzero form whose radical holds `A` has
   `dim A + 2 ≤ dim V`. No exterior power past `⋀²`.
-  *Remedies:* the prose to the Lean (state `U°` as forms), or a Lean bridge to `⋀^{d−1}`
-  (`wedgeProd`, bases of `⋀^p`), so that the Lean follows the chapter. Settled before the node's
-  `\leanok` (`notes/Phase42h.md` *Blockers* item 1).
+  *Remedies:* the prose to the Lean, taken at the PI's word (`notes/Phase42-design.md` §1,
+  2026-10-31): parts (2) and (3) and the section's annihilator on forms, the `⋀^{d−1}` reading
+  kept in one sentence; the `⋀^{d−1}` bridge declined. `lem:pencil-d-stars-three`'s proof cites
+  the restated parts through the pairing.
 - **R-8** · `lem:pencil-d-stars-four` (`exists_mvPolynomial_starsFour`,
-  `eq_zero_of_starsFour_firstOrder`, 42h recon) · **open**.
-  *Chapter:* `M(y)` on `⋀^{d−3}`, `ζ ↦ y₁ ∧ y₃ ∧ ζ` modulo `ρ°` and paired with `J₂`; the
-  first-order `δ_w`, then two-stars (3) in `Q` to reach `d − 1 ≤ d − 3`.
+  `eq_zero_of_starsFour_firstOrder`) · **aligned, this commit** (42h).
+  *Chapter (until then):* `M(y)` on `⋀^{d−3}`, `ζ ↦ y₁ ∧ y₃ ∧ ζ` modulo `ρ°` and paired with
+  `J₂`; the first-order `δ_w`, then two-stars (3) in `Q` to reach `d − 1 ≤ d − 3`.
   *Lean:* the kernel curve on the family `ρ`'s basis, the path joins, `y₁ ∨ e_l`, `y₃ ∨ e_l`, whose
   annihilator is `W° ∩ Σ°`; a nonzero `φ₀` in it extends to `φ₁` along `y₃ + t w`; `φ₁` kills `W`
   (at `w = y₄`, then every `w`), so `φ₀ (w ∨ ·) = 0` for every `w`, and `φ₀ = 0`. The independence
   of `y₁`, `y₃` is not used.
-  *Remedies:* the prose to the Lean (shorter), or keep both.
+  *Remedies:* the prose to the Lean, taken at the PI's word (`notes/Phase42-design.md` §1,
+  2026-10-31); its `\uses` are now two-stars, the kernel curve and
+  `lem:pencil-x0-fibre-intersection`, what the Lean calls.
 - **R-9** · `lem:pencil-d-kernel-curve` (`exists_mvPolynomial_kernel_curve`,
   `exists_mulVec_add_mulVec_eq_zero`, 42h recon) · **open**.
   *Chapter:* Cramer's rule over `K(t)`: `ξ(t) = (−A(t)⁻¹B(t)ξ₀|_{C'}, ξ₀|_{C'})`, a power series,
@@ -142,6 +146,16 @@ valid. The cleanup chooses one per `open` row, with the PI.
   coordinates, rescaled to an ear datum by part (2)); `g` is a nonzero coefficient of `h` as a
   polynomial in `λ` (`MvPolynomial.sumAlgEquiv`). Same coefficient argument, no `f_α`.
   *Remedies:* the prose to the Lean, or keep both (a toss-up).
+- **R-11** · `lem:pencil-d-two-stars`, part (1) (`starGrade_sup_starGrade_eq_ker`,
+  `finrank_starGrade_sup_starGrade`, 42h build) · **open**.
+  *Chapter:* `e₁ = y`, `e₂ = y'` extended to a basis; the sum of the stars is spanned by the
+  `e_i ∧ e_j` with `i ≤ 2`, and the `e_i ∧ e_j` with `3 ≤ i < j` go to a basis of `⋀²Q`.
+  *Lean:* a linear section `s` of the quotient map, `P = s ∘ mkQ`:
+  `a ∨ b − P a ∨ P b = (a − P a) ∨ b − (b − P b) ∨ P a` lies in the sum of the stars, so every
+  `ω` is `⋀²P ω` modulo it, and `⋀²P` vanishes on the kernel; the dimension by rank–nullity.
+  *Remedies:* keep both (the basis also carries the `⋀^{d−1}` reading of part (2) in the chapter);
+  a Lean helper, mathlib's `Basis.exteriorPower`, so that the Lean follows the chapter; or the
+  prose to the Lean.
 
 ## 3. The cleanup (not yet planned)
 

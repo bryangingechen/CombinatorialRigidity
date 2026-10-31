@@ -4,7 +4,9 @@
 **42h** (the third sub-phase of PD-STEPS, `notes/Phase42h.md`) **opened 2026-10-31** at the PI's
 word (§1): the eight nodes of `pencil-d.tex`'s `-short-four`, Phase 40's short-ear step in `Pᵈ` at
 four or more interior bodies, in every `d` (§3). Its pre-build recon pinned the eight, seven checked
-complete; next, the builds (`notes/Phase42h.md`). The other
+complete; the first build made four green (`Grade/Stars.lean`; at the PI's word, §1, two-stars
+is restated on forms and stars-four's proof follows its Lean); next, the ear data
+(`notes/Phase42h.md`). The other
 half of `-short`, the three-body ear at `d = 4` to `6` (`-short-three`, 4 nodes; codes in §3),
 stays mapped by section; it and then PD-COVERAGE, PD-REDUCTION and PD-HEAD (§3, which maps the
 remaining red nodes to them by section) open each at the PI's word.
@@ -281,6 +283,42 @@ fibre-intersection lemma and Jackson–Jordán's equality.
   (S28–S33; at `d = 4` also the track's first proof, S1–S21), where the every-`ρ` form fails once
   `κ ≥ 7 − d` (S26), so the step uses `G[V₁]`'s own `ρ`; the coverage needs that step only at
   `d = 4` (S53, `thm:pencil-d-chain-or-core`).
+- **PI, 2026-10-31 (42h, after the recon):** two questions on the chapter's wording of 42h's
+  nodes. First asked "42h's recon proved lem:pencil-d-two-stars (the lines through two points y,
+  y' in P^d) with its parts (2) and (3) on the *forms on ⋀²K^{d+1}*, where the chapter states them
+  in ⋀^{d−1}K^{d+1}. The chapter's own perfect pairing ⋀² × ⋀^{d−1} → K identifies the two. Part
+  (2) in the Lean reads: the forms killing both stars are exactly the forms pulled back from
+  ⋀²(K^{d+1}/⟨y,y'⟩). The chapter instead says the annihilator is y ∧ y' ∧ ⋀^{d−3}. Part (3) is
+  proved only at the degree p = d − 3, as "a nonzero form whose radical contains A has dim A + 2
+  ≤ dim V"; the chapter states it for every p ≥ 0. Both proofs that cite the lemma (stars-four,
+  and the not-yet-open stars-three) use only that degree. Nothing is false. How should the node
+  and its Lean be made to agree?", the PI answered "Restate in forms (Recommended)", whose option
+  read: "Edit the node's parts (2) and (3) to what the Lean proves (forms on ⋀², part (3) at the
+  degree used), with one sentence keeping the ⋀^{d−1} reading through the section's pairing.
+  Lands in the Stars.lean build commit; no extra Lean or commits. The citing proofs get matching
+  wording." The other option put was "Build the ⋀^{d−1} bridge" (keep the chapter, add 300+ lines
+  of Lean, one or two extra commits).
+  Then asked "The recon's Lean takes a different route from the chapter in three more 42h proofs,
+  each logged for the post-Phase-42 cleanup (notes/Cleanup42.md). R-8, stars-four: the Lean works
+  on forms throughout, with no ⋀^{d−3}, no quotient and no independence of y₁, y₃, and is
+  shorter; its chapter proof also cites two-stars (2)/(3) in the ⋀^{d−1} wording. R-9, the kernel
+  curve: the Lean uses rank on a curve where the chapter uses Cramer's rule over K(t) and power
+  series. R-10, part (3) of the ear-data lemma: a coefficient in the scaling variables instead of
+  a multihomogeneous component, a toss-up. In 42g you had the star and insertion proofs follow
+  their Lean. Which, if any, should the chapter align to the Lean now, in the build commits?", the
+  PI answered "Stars-four only (Recommended)", whose option read: "Rewrite stars-four's chapter
+  proof to the Lean's shorter forms route in the Stars.lean build, which keeps it consistent with
+  a forms-worded two-stars. R-9 and R-10 stay in the ledger for the cleanup." The other options put
+  were "Stars-four and kernel curve", "All three" and "None now".
+  *Note (not the PI's text):* the questions and the option wording are the coordinator's. One
+  phrase of the first needs a correction: in the `⋀^{d−1}` wording both citing proofs also used
+  part (3)'s injectivity at `p = d − 2` (from `y₁ ∧ y₃ ∧ w ∧ ζ = 0` to `w̄ ∧ ζ̄ = 0`); the forms
+  wording needs no such step. The `Grade/Stars.lean` build carried both answers out: two-stars'
+  parts (2) and (3) and the section's annihilator are on the forms on `⋀²`, the `⋀^{d−1}` reading
+  kept in one sentence of the proof and in the section's notation; stars-four's proof follows its
+  Lean and cites part (2) only (`notes/Cleanup42.md` R-7 and R-8 aligned); stars-three's proof
+  cites the restated parts through the pairing, its last step reading the radical in `K^{d+1}`,
+  its argument otherwise unchanged.
 
 ## 2. PD-RECON (42a)
 
@@ -804,7 +842,8 @@ marked `no departure` (R-6). The post-Phase-42 cleanup acts on the ledger (that 
   `Pencil/Grade/`, which 42b's additive commits avoided. **Deferred to them from PD-STABLE**, each
   with the next commit that edits the file it names (a new declaration there rebuilds most of
   `Molecular/`): FRICTION's moves of `exteriorPower_map_normalsJoin` to `PanelLayer.lean`, beside
-  `normalsJoin` (and with it, from 42g, the four `normalsJoin` lemmas of `Grade/Polygon.lean`),
+  `normalsJoin` (and with it, from 42g, the four `normalsJoin` lemmas of `Grade/Polygon.lean`, and
+  from 42h the four of `Grade/Stars.lean`),
   and of `BodyHingeFramework.map` and the zero-hinge motion lemmas to
   `RigidityMatrix/Basic.lean` and `GenericityDevice.lean`; and FRICTION's open `contragredientEquiv`
   in `Meet.lean`, which `Grade/Collineation.lean`'s inline contragredient would then call.
@@ -825,7 +864,10 @@ marked `no departure` (R-6). The post-Phase-42 cleanup acts on the ledger (that 
   into `MainComponent/ContractAdditive.lean` before the `d = 3` theorem, which then calls it, and
   `Grade/ContractAdditive.lean` imports `MainComponent.ContractAdditive`; no `P³` file imports
   `Grade/`. Every dependency of the lemma is already in that file's imports: a scratch copy
-  compiled against it alone at 42f's close.
+  compiled against it alone at 42f's close. **Deferred to them from PD-STEPS (42h)**, with the next
+  commit that edits `MainComponent/Cut.lean`: FRICTION's move of the four `pathVertex` lemmas of
+  `Grade/Stars.lean` (`pathVertex_add_smul`, `pathVertex_succ_castSucc`, `pathVertex_eq_of_val_eq`,
+  `pathVertex_zero_single`) beside `pathVertex`.
 - **PD-REDUCTION**, **PD-HEAD**: Phase 39's reduction in `Pᵈ`; the headline `PencilPair`, and the
   flag strata as corollaries. Their informal proofs are 42d's `sec:pencil-d-reduction` and, for
   the generic conjunct, `sec:pencil-d-nondegenerate` to `sec:pencil-d-generic`. **At Phase 42's close**, Tier 0 joins `formalization.yaml`'s
@@ -835,14 +877,14 @@ marked `no departure` (R-6). The post-Phase-42 cleanup acts on the ledger (that 
 
 **The red nodes by layer** (42e's open, by section of `pencil-d.tex`; a letter is minted only as
 a sub-phase opens). From `sec:pencil-d-induction` on the chapter has 62 dep-graph nodes, 45 of them
-red (recounted at 42g's close and at 42h's open): 65 at 42e's open, all red, 4 green at its
+red (recounted at 42g's close and at 42h's open; 41 after 42h's first build): 65 at 42e's open, all red, 4 green at its
 close, 3 cut at 42f's open (the PI, §1), 6 green at 42f's close and 7 at 42g's. The count of 66 put
 to the PI at 42e's open (§1) included `rem:pencil-d-flat-class`, a remark, which the dependency
 graph does not draw (it draws definitions, lemmas, propositions, theorems and corollaries).
 - PD-CARRIER (42e, closed, all green): `-induction` (1) and `-flat` (3); 4.
 - PD-STEPS: `-cut` (3) and `-contract` (3), 42f, closed, all green; `-long` (7), 42g, closed, all
-  green; `-short` (12, red), as `-short-four` (8), 42h, open, and `-short-three` (4), no letter
-  minted; 25.
+  green; `-short` (12), as `-short-four` (8), 42h, open, 4 green at its first build, and
+  `-short-three` (4, red), no letter minted; 25.
   `thm:pencil-d-splitoff`, `thm:pencil-d-open-ear-deficiency` and `lem:pencil-d-polygon-ear`, with
   their sections `-splitoff` and `-ear-deficiency`, had no consumer in the coverage and were cut at
   42f's open (the PI, §1).

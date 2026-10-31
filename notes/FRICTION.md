@@ -124,11 +124,25 @@ to be re-derived by re-reading entries later.
 ### [open] The `normalsJoin` linearity and minor lemmas sit in `Pencil/Grade/Polygon.lean`, not `PanelLayer.lean`
 - **Where it bit:** Phase 42g, `Pencil/Grade/Polygon.lean`: `normalsJoin_add_right`, `normalsJoin_smul_right`,
   `normalsJoin_zero_left` and `exists_linearMap_normalsJoin_eq` (a `2 × 2` minor as a functional on `⋀²`)
-  are about `normalsJoin`, whose home is `AlgebraicInduction/PanelLayer.lean`.
+  are about `normalsJoin`, whose home is `AlgebraicInduction/PanelLayer.lean`. Phase 42h,
+  `Pencil/Grade/Stars.lean`, added four more: `normalsJoin_sub_left`, `normalsJoin_zero_right`,
+  `normalsJoinLin` (`w ∨ ·` as a linear map) and `normalsJoin_add_smul_add_smul` (the join along
+  two lines, expanded in `t`). There is also no fold lemma `ιMulti K 2 ![a, b] = normalsJoin a b`:
+  `starGrade_sup_starGrade_eq_ker` folds an `exteriorPower.map_apply_ιMulti` result by `change`.
 - **Proposed fix:** move them beside `normalsJoin` (with `exteriorPower_map_normalsJoin`, above) with the
   next commit that edits `PanelLayer.lean` for another reason: a new declaration there rebuilds most of
   `Molecular/`.
 - **Status:** open (42c's deferral, extended; tracked under PD-STEPS, `notes/Phase42-design.md` §3).
+
+### [open] The `pathVertex` lemmas of 42h sit in `Pencil/Grade/Stars.lean`, not `MainComponent/Cut.lean`
+- **Where it bit:** Phase 42h, `Pencil/Grade/Stars.lean`: `pathVertex_add_smul` (the path sequence
+  is affine in its interior bodies), `pathVertex_succ_castSucc`, `pathVertex_eq_of_val_eq` and
+  `pathVertex_zero_single` are about `pathVertex`, whose home is `MainComponent/Cut.lean`, beside
+  `pathVertex_cases`.
+- **Proposed fix:** move them there, unchanged, with the next commit that edits `Cut.lean` for
+  another reason (a declaration added there rebuilds the `MainComponent/` and `Grade/` files after
+  it); `pathVertex_zero_single`, stars-four's one direction at `K^(k+2)`, may stay.
+- **Status:** open (42h's deferral; tracked under PD-STEPS, `notes/Phase42-design.md` §3).
 
 ### [open] The kernel argument at an additive core is proved twice, inline at `d = 3` and in `Pencil/Grade/`
 - **Where it bit:** Phase 42f, `lem:pencil-contract-additive-kernel`
