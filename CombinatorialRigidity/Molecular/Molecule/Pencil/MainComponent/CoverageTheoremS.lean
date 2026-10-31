@@ -109,16 +109,16 @@ theorem _root_.Graph.IsX0Graph.x0Reduces_of_rigidCore {G : Graph α β} (hG : G.
     ⟨Graph.isX0Graph_rigidContract_induce hG htec hr hWss hatt,
       Graph.rigidContract_vertexSet_ncard_lt hWss.subset hW2⟩
 
-/-- **Contraction at a maximal planar-rigid set** (`lem:pencil-x0-planar-rigid-reduces`): let `G`
-satisfy the standing hypotheses and be 2-edge-connected, with `def₂(G) > 0` and a planar-rigid set
-`Y`. Then `G` reduces to the graphs smaller than it, by the contraction clause at a maximal
-planar-rigid set `W ⊇ Y` (`Graph.exists_maximal_deficiency_induce_eq_zero`). It is proper, as
-`def₂(G) > 0`, and no body outside `W` is adjacent to two bodies of `W`, as such a body would
-enlarge it (`Graph.deficiency_induce_insert_eq_zero`, `lem:deficiency-add-body` at `d = 2`). -/
-theorem _root_.Graph.IsX0Graph.x0Reduces_of_deficiency_two_rigid {G : Graph α β}
-    (hG : G.IsX0Graph) (htec : G.TwoEdgeConnected) (hpos : 0 < G.deficiency 2) {Y : Set α}
-    (hY : Y ⊆ V(G)) (hY2 : 2 ≤ Y.ncard) (hYd : (G.induce Y).deficiency 2 = 0) :
-    G.X0Reduces G.X0Below := by
+/-- **A maximal planar-rigid set** (a step of `lem:pencil-x0-planar-rigid-reduces`): with
+`def₂(G) > 0` and a planar-rigid set `Y`, a maximal planar-rigid set `W ⊇ Y`
+(`Graph.exists_maximal_deficiency_induce_eq_zero`) is proper, as `def₂(G) > 0`, and no body outside
+`W` is adjacent to two bodies of `W`, as such a body would enlarge it
+(`Graph.deficiency_induce_insert_eq_zero`, `lem:deficiency-add-body` at `d = 2`). -/
+theorem _root_.Graph.exists_rigidCore_of_deficiency_two_pos {G : Graph α β}
+    (hpos : 0 < G.deficiency 2) {Y : Set α} (hY : Y ⊆ V(G)) (hY2 : 2 ≤ Y.ncard)
+    (hYd : (G.induce Y).deficiency 2 = 0) :
+    ∃ W, ∃ r ∈ W, W ⊂ V(G) ∧ 2 ≤ W.ncard ∧ (G.induce W).deficiency 2 = 0 ∧
+      ∀ u ∉ W, ∀ c₁ ∈ W, ∀ c₂ ∈ W, G.Adj u c₁ → G.Adj u c₂ → c₁ = c₂ := by
   obtain ⟨W, hYW, hWV, hWd, hmax⟩ := G.exists_maximal_deficiency_induce_eq_zero 2 hY hYd
   have hW2 : 2 ≤ W.ncard := hY2.trans (Set.ncard_le_ncard hYW (Set.toFinite _))
   have hWne : W ≠ V(G) := by
@@ -126,13 +126,25 @@ theorem _root_.Graph.IsX0Graph.x0Reduces_of_deficiency_two_rigid {G : Graph α �
     rw [Graph.induce_vertexSet] at hWd
     omega
   obtain ⟨r, hr⟩ : W.Nonempty := Set.nonempty_of_ncard_ne_zero (by omega)
-  refine hG.x0Reduces_of_rigidCore htec hr (hWV.ssubset_of_ne hWne) hW2 hWd ?_
+  refine ⟨W, r, hr, hWV.ssubset_of_ne hWne, hW2, hWd, ?_⟩
   intro u hu c₁ hc₁ c₂ hc₂ h₁ h₂
   by_contra hne
   have huV : u ∈ V(G) := h₁.left_mem
   have hins := Graph.deficiency_induce_insert_eq_zero (by decide) hWd hu hc₁ hc₂ hne h₁ h₂
   have := hmax (insert u W) (Set.subset_insert _ _) (Set.insert_subset huV hWV) hins
   exact hu (this ▸ Set.mem_insert u W)
+
+/-- **Contraction at a maximal planar-rigid set** (`lem:pencil-x0-planar-rigid-reduces`): let `G`
+satisfy the standing hypotheses and be 2-edge-connected, with `def₂(G) > 0` and a planar-rigid set
+`Y`. Then `G` reduces to the graphs smaller than it, by the contraction clause at a maximal
+planar-rigid set `W ⊇ Y` (`Graph.exists_rigidCore_of_deficiency_two_pos`). -/
+theorem _root_.Graph.IsX0Graph.x0Reduces_of_deficiency_two_rigid {G : Graph α β}
+    (hG : G.IsX0Graph) (htec : G.TwoEdgeConnected) (hpos : 0 < G.deficiency 2) {Y : Set α}
+    (hY : Y ⊆ V(G)) (hY2 : 2 ≤ Y.ncard) (hYd : (G.induce Y).deficiency 2 = 0) :
+    G.X0Reduces G.X0Below := by
+  obtain ⟨W, r, hr, hWss, hW2, hWd, hatt⟩ :=
+    G.exists_rigidCore_of_deficiency_two_pos hpos hY hY2 hYd
+  exact hG.x0Reduces_of_rigidCore htec hr hWss hW2 hWd hatt
 
 omit [Finite β] in
 /-- If the merged deficiency `defₙ(G[V₁]; a, b)` at the ends of an open ear equals `defₙ(G[V₁])`,

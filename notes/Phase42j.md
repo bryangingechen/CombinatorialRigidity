@@ -7,17 +7,25 @@ Forward mode, the Lean under `/coordinate-phase`: the four red nodes of
 and `thm:pencil-d-chain-or-core`) and `sec:pencil-d-coverage` (`thm:pencil-d-coverage`,
 `lem:pencil-d-distinct-statement`), on the `Pencil/Grade/` carrier and PD-STEPS's Lean. The
 pre-build recon spiked all four complete, with no `sorry`, and pinned three builds (*Hand-off*).
-Next: build 1, the reductions that return their data.
+Build 1 (the data-returning reductions and the chain lemmas, no red node) has landed. Next: build 2,
+`Grade/Chains.lean` (COUNT-C and chain-or-core).
 
 ## Current state
 
-**Next: build 1, the data-returning reductions** (*Hand-off*). No Lean has landed yet. The
-pre-build recon (design pass, 2026-10-31) spiked the whole layer on the landed carrier, with no
+**Next: build 2, `Grade/Chains.lean`** (*Hand-off*). **Build 1 has landed** (no red node): the
+data-returning reductions in `MainComponent/CoverageChain.lean`, `CoverageCut.lean` and
+`CoverageTheoremS.lean`, each `d = 3` lemma now a short corollary of its data form with its name and
+signature unchanged (downstream builds unchanged), the four chain lemmas, and
+`isX0Graph_splitOff_succ` (`isX0Graph_splitOff_three` and `_four` are its one-line cases `n = 0, 1`;
+`Coverage.lean`'s spike no longer needs its copy). The coordinator's call: no blueprint edit, the
+data forms stay unpinned helpers (the recon's optional `\lean{}` pins on `lem:pencil-x0-cut-reduces`,
+`-cycle-reduces` and `-planar-rigid-reduces` are not taken). No `Cleanup42.md` row: build 1 departs
+from no chapter proof. The pre-build recon (design pass, 2026-10-31) spiked the whole layer on the landed carrier, with no
 `sorry`: `scratch/42j/All.lean` (gitignored; `lake lean` clean, no warning, the three standard
 axioms, the `unusedArguments` and `docBlame` lints clean) is the concatenation of three spikes, each
 the transplant of the builds below:
-- `scratch/42j/Reductions.lean`, **complete**: the four data-returning reductions, each `d = 3`
-  reduction re-proved as a two-line corollary of its data form (build 1).
+- `scratch/42j/Reductions.lean`, **landed as build 1**: the four data-returning reductions, each
+  `d = 3` reduction re-proved as a two-line corollary of its data form.
 - `scratch/42j/Chains.lean`, **complete**: COUNT-C and chain-or-core, with the four chain lemmas
   that build 1 lands in `MainComponent/CoverageChain.lean` (build 2).
 - `scratch/42j/Coverage.lean`, **complete but for its five inputs**, `sorry`'d there with the
@@ -45,8 +53,9 @@ are under *Hand-off*; the recon's verdicts under *Decisions made*.
 ## Lemma checklist
 
 - [x] **Pre-build recon** (design pass): all four nodes spiked complete; *Decisions made*.
-- [ ] **Build 1**, the data-returning reductions and the chain lemmas, in `MainComponent/` (no red
-  node; serves builds 2 and 3).
+- [x] **Build 1**, the data-returning reductions and the chain lemmas, in `MainComponent/` (no red
+  node; serves builds 2 and 3). Gates: root `lake build` warning-clean, `lake lint`,
+  `blueprint/lint.sh`, `notes/check-phase-note.py`, sorry-grep.
 - [ ] `lem:pencil-d-chain-count` (COUNT-C), build 2, `Grade/Chains.lean`.
 - [ ] `thm:pencil-d-chain-or-core`, build 2, same file.
 - [ ] `thm:pencil-d-coverage`, build 3, `Grade/Coverage.lean`.
@@ -60,11 +69,11 @@ are under *Hand-off*; the recon's verdicts under *Decisions made*.
 
 ## Hand-off / next phase
 
-Three builds, one commit each, then the close. Every declaration they land is spiked complete
-(`All.lean`), so each build transplants its spike (the coordinator may resume the recon to land
+Builds 2 and 3, one commit each, then the close (build 1 has landed). Every declaration they land
+is spiked complete (`All.lean`), so each build transplants its spike (the coordinator may resume the recon to land
 them). The encoding: the chains at `n = d`
 with `D = bodyBarDim n` and no field (COUNT-B's), the coverage at `m = d − 2` with `n = m + 2`.
-- **Build 1** (no red node): the data-returning reductions, each `d = 3` lemma kept as a two-line
+- **Build 1 (LANDED; next is build 2)** (no red node): the data-returning reductions, each `d = 3` lemma kept as a two-line
   corollary of its data form, and the four chain lemmas build 2 calls. Edits three files:
   - `MainComponent/CoverageChain.lean`: `Graph.IsX0Graph.exists_cycle_of_forall_degree_eq_two`
     (the body of `x0Reduces_of_forall_degree_eq_two`, returning the `cycle` clause's fields);
@@ -97,7 +106,8 @@ with `D = bodyBarDim n` and no field (COUNT-B's), the coverage at `m = d − 2` 
     k = 1) ∧ G.deficiency 3 = 0 ∧ G.deficiency n = 0)`. No `ℓ ≥ 1`; `hSv` is
     `Graph.one_le_partitionDef_induce_id hS`, `hhubs` comes from `exists_isChain` and
     `IsChain.two_le_of_adj`.
-- **Build 3**, new `Grade/Coverage.lean` (imports `Grade/ShortThree.lean`,
+- **Build 3** (`isX0Graph_splitOff_succ` already landed in build 1, in `CoverageCut.lean`), new
+  `Grade/Coverage.lean` (imports `Grade/ShortThree.lean`,
   `Grade/ContractAdditive.lean`, `Grade/Chains.lean`), both nodes of `-coverage`:
   - `thm:pencil-d-coverage`: `Graph.IsX0Graph.x0AttainsGrade [Infinite K] (hG : G.IsX0Graph)
     (hm : 1 ≤ m) : G.X0AttainsGrade K m` and, for the last claim,

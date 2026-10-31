@@ -239,14 +239,16 @@ theorem _root_.Graph.IsX0Graph.exists_isChain [Finite α] [Finite β] {G : Graph
       exact hy.symm.false_of_adj_of_degree_eq_two hG h2c hhub hm hd.symm
         (by have := hG.two_le_degree d (hV hy.right_mem); omega)
 
-/-- **A graph of degree two everywhere is a cycle** (`lem:pencil-x0-cycle-reduces`): if `G`
-satisfies the standing hypotheses and every body has degree two, `G` reduces to the graphs smaller
-than it, by the cycle clause (`Graph.X0Reduces.cycle`). The maximal ear through one body
-(`Graph.IsOpenEar.exists_maximal`) has adjacent ends, as both have degree two, and the path with the
-edge of its ends is closed under adjacency, so it is all of `G`, as `G` is connected. -/
-theorem _root_.Graph.IsX0Graph.x0Reduces_of_forall_degree_eq_two [Finite α] [Finite β]
+/-- **A graph of degree two everywhere is a cycle**, the data (a step of
+`lem:pencil-x0-cycle-reduces`): the fields of its cycle clause (`Graph.X0Reduces.cycle`), the
+maximal ear through one body with its one non-path edge. -/
+theorem _root_.Graph.IsX0Graph.exists_cycle_of_forall_degree_eq_two [Finite α] [Finite β]
     {G : Graph α β} (hG : G.IsX0Graph) (h2 : ∀ v ∈ V(G), G.degree v = 2) :
-    G.X0Reduces G.X0Below := by
+    ∃ (k : ℕ) (x : Fin k → α) (a b : α) (e : Fin (k + 1) → β) (f : β),
+      1 ≤ k ∧ V(G) = {a, b} ∪ Set.range x ∧ Function.Injective x ∧ (∀ i, x i ≠ a) ∧
+      (∀ i, x i ≠ b) ∧ a ≠ b ∧ G.IsLink f a b ∧
+      (∀ i : Fin (k + 1), G.IsLink (e i) (pathVertex a x b i.castSucc) (pathVertex a x b i.succ)) ∧
+      ∀ g u w, G.IsLink g u w → (∀ i, g ≠ e i) → g = f := by
   have := hG.simple
   obtain ⟨v, hv⟩ := hG.connected.nonempty
   obtain ⟨c₁, c₂, e₁, e₂, h₁, h₂, hne⟩ := hG.exists_isLink_pair (h2 v hv)
@@ -278,7 +280,7 @@ theorem _root_.Graph.IsX0Graph.x0Reduces_of_forall_degree_eq_two [Finite α] [Fi
       · exact hcl u hu z hz
   have hxa : ∀ i, y i ≠ c := fun i hi => hy.notMem i (hi ▸ hy.left_mem)
   have hxb : ∀ i, y i ≠ d := fun i hi => hy.notMem i (hi ▸ hy.right_mem)
-  refine .cycle hm ?_ hy.inj hxa hxb hy.ne hg hy.isLink ?_
+  refine ⟨m, y, c, d, f, g, hm, ?_, hy.inj, hxa, hxb, hy.ne, hg, hy.isLink, ?_⟩
   · refine le_antisymm (fun u hu => ?_) (fun u hu => ?_)
     · rcases hT hu with rfl | rfl | hu'
       · exact Or.inl (Or.inr rfl)
@@ -312,6 +314,18 @@ theorem _root_.Graph.IsX0Graph.x0Reduces_of_forall_degree_eq_two [Finite α] [Fi
       · exact absurd h' (hne' _)
       · exact h'
     · exact absurd hu (hy.notMem i)
+
+/-- **A graph of degree two everywhere is a cycle** (`lem:pencil-x0-cycle-reduces`): if `G`
+satisfies the standing hypotheses and every body has degree two, `G` reduces to the graphs smaller
+than it, by the cycle clause (`Graph.X0Reduces.cycle`). The maximal ear through one body
+(`Graph.IsOpenEar.exists_maximal`) has adjacent ends, as both have degree two, and the path with the
+edge of its ends is closed under adjacency, so it is all of `G`, as `G` is connected. -/
+theorem _root_.Graph.IsX0Graph.x0Reduces_of_forall_degree_eq_two [Finite α] [Finite β]
+    {G : Graph α β} (hG : G.IsX0Graph) (h2 : ∀ v ∈ V(G), G.degree v = 2) :
+    G.X0Reduces G.X0Below := by
+  obtain ⟨k, x, a, b, e, f, hk, hcover, hinj, hxa, hxb, hab, hf, hpath, honly⟩ :=
+    hG.exists_cycle_of_forall_degree_eq_two h2
+  exact .cycle hk hcover hinj hxa hxb hab hf hpath honly
 
 /-! ## Counting bodies, degrees and edges -/
 
@@ -391,5 +405,81 @@ theorem _root_.Graph.ncard_setOf_isLink_le_one [Finite β] {G : Graph α β} (hG
   refine Set.ncard_le_one_iff_subsingleton.mpr fun e ⟨y, hy, he⟩ f ⟨z, hz, hf⟩ => ?_
   obtain rfl := hatt y hy z hz ⟨e, he⟩ ⟨f, hf⟩
   exact hG.eq_of_isLink he hf
+
+/-! ## Chains through a body of degree two are unique -/
+
+/-- Consecutive interior bodies of an open ear are adjacent. -/
+theorem _root_.Graph.IsOpenEar.adj_of_val_eq_succ {G : Graph α β} {V₁ : Set α} {k : ℕ}
+    {x : Fin k → α} {a b : α} {e : Fin (k + 1) → β} (h : G.IsOpenEar V₁ x a b e) {i j : Fin k}
+    (hij : (j : ℕ) = i + 1) : G.Adj (x i) (x j) := by
+  have hl := h.isLink ⟨j, by omega⟩
+  rw [pathVertex_eq_of_val_eq_succ a x b (m := Fin.castSucc _) (i := i) (by simp [hij]),
+    pathVertex_eq_of_val_eq_succ a x b (m := Fin.succ _) (i := j) (by simp)] at hl
+  exact ⟨_, hl⟩
+
+/-- A neighbour of degree two of an interior body of a chain is an interior body. -/
+theorem _root_.Graph.IsChain.mem_range_of_adj {G : Graph α β} {V₁ : Set α} {k : ℕ}
+    {x : Fin k → α} {a b : α} {e : Fin (k + 1) → β} (hC : G.IsChain V₁ x a b e) {z w : α}
+    (hz : z ∈ Set.range x) (hzw : G.Adj z w) (hw : G.degree w = 2) : w ∈ Set.range x := by
+  obtain ⟨i, rfl⟩ := hz
+  obtain ⟨f, hf⟩ := hzw
+  have hmem : w ∈ insert b (insert a (Set.range x)) := by
+    rcases hC.toIsOpenEar.isLink_interior i hf with rfl | rfl
+    · rcases hf.eq_and_eq_or_eq_and_eq (hC.isLink i.castSucc) with ⟨-, rfl⟩ | ⟨-, rfl⟩ <;>
+        exact pathVertex_mem_insert_insert_range _ _ _ _
+    · rcases hf.eq_and_eq_or_eq_and_eq (hC.isLink i.succ) with ⟨-, rfl⟩ | ⟨-, rfl⟩ <;>
+        exact pathVertex_mem_insert_insert_range _ _ _ _
+  rcases hmem with rfl | rfl | hw'
+  · have := hC.three_le_degree_right; omega
+  · have := hC.three_le_degree_left; omega
+  · exact hw'
+
+/-- **A chain through a body of degree two is unique up to reversal**: two chains sharing an
+interior body have the same interior bodies (one inclusion). -/
+theorem _root_.Graph.IsChain.range_subset_of_mem {G : Graph α β} {V₁ V₁' : Set α} {k k' : ℕ}
+    {x : Fin k → α} {x' : Fin k' → α} {a b a' b' : α} {e : Fin (k + 1) → β}
+    {e' : Fin (k' + 1) → β} (hC : G.IsChain V₁ x a b e) (hC' : G.IsChain V₁' x' a' b' e')
+    {y : α} (hy : y ∈ Set.range x) (hy' : y ∈ Set.range x') : Set.range x ⊆ Set.range x' := by
+  obtain ⟨⟨i₀, hi₀⟩, rfl⟩ := hy
+  have up : ∀ d (hd : i₀ + d < k), x ⟨i₀ + d, hd⟩ ∈ Set.range x' := by
+    intro d
+    induction d with
+    | zero => intro _; exact hy'
+    | succ d ih =>
+      intro hd
+      exact hC'.mem_range_of_adj (ih (by omega))
+        (hC.toIsOpenEar.adj_of_val_eq_succ (i := ⟨i₀ + d, by omega⟩) (by simp; omega))
+        (hC.degree_eq_two _)
+  have down : ∀ d (hd : d ≤ i₀), x ⟨i₀ - d, by omega⟩ ∈ Set.range x' := by
+    intro d
+    induction d with
+    | zero => intro _; exact hy'
+    | succ d ih =>
+      intro hd
+      exact hC'.mem_range_of_adj (ih (by omega))
+        (hC.toIsOpenEar.adj_of_val_eq_succ (i := ⟨i₀ - (d + 1), by omega⟩)
+          (j := ⟨i₀ - d, by omega⟩) (by simp; omega)).symm
+        (hC.degree_eq_two _)
+  rintro _ ⟨⟨i, hi⟩, rfl⟩
+  by_cases h : i₀ ≤ i
+  · have := up (i - i₀) (by omega)
+    rwa [show (⟨i₀ + (i - i₀), by omega⟩ : Fin k) = ⟨i, hi⟩ from Fin.ext (by simp only; omega)]
+      at this
+  · have := down (i₀ - i) (by omega)
+    rwa [show (⟨i₀ - (i₀ - i), by omega⟩ : Fin k) = ⟨i, hi⟩ from Fin.ext (by simp only; omega)]
+      at this
+
+/-- Every path edge of an open ear with an interior body is at an interior body. -/
+theorem _root_.Graph.IsOpenEar.range_subset_inc {G : Graph α β} {V₁ : Set α} {k : ℕ}
+    {x : Fin k → α} {a b : α} {e : Fin (k + 1) → β} (h : G.IsOpenEar V₁ x a b e) (hk : 1 ≤ k) :
+    Set.range e ⊆ {f | ∃ y ∈ Set.range x, G.Inc f y} := by
+  rintro _ ⟨⟨j, hj⟩, rfl⟩
+  have hl := h.isLink ⟨j, hj⟩
+  rcases Nat.eq_zero_or_pos j with rfl | hj0
+  · rw [pathVertex_eq_of_val_eq_succ a x b (m := Fin.succ _) (i := ⟨0, hk⟩) (by simp)] at hl
+    exact ⟨_, ⟨_, rfl⟩, _, hl.symm⟩
+  · rw [pathVertex_eq_of_val_eq_succ a x b (m := Fin.castSucc _) (i := ⟨j - 1, by omega⟩)
+      (by simp; omega)] at hl
+    exact ⟨_, ⟨_, rfl⟩, _, hl⟩
 
 end CombinatorialRigidity.Molecular

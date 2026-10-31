@@ -344,38 +344,42 @@ theorem _root_.Graph.IsX0Graph.splitOff [Finite α] {G : Graph α β} (hG : G.Is
       rw [this]
       exact hdG
 
-/-- The standing hypotheses at `G` with `x 1` suppressed, for an open ear with four interior bodies
-(a step of `lem:pencil-x0-chain-reduces`, for `Graph.X0Reduces.openEarFour`): `x 0` and `x 2` are
-not adjacent, as the only links at `x 0` are `e 0`, to `a`, and `e 1`, to `x 1`. -/
-theorem _root_.Graph.IsOpenEar.isX0Graph_splitOff_four [Finite α] {G : Graph α β} (hG : G.IsX0Graph)
-    {V₁ : Set α} {x : Fin 4 → α} {a b : α} {e : Fin 5 → β}
-    (hear : G.IsOpenEar V₁ x a b e) : (G.splitOff (x 1) (x 0) (x 2) (e 1)).IsX0Graph := by
+/-- The standing hypotheses at `G` with `x 1` suppressed, for an open ear with at least three
+interior bodies (a step of `lem:pencil-x0-chain-reduces`, for `Graph.X0Reduces.openEarFour` and
+`openEarThree`, the cases `n = 1` and `n = 0`): `x 0` and `x 2` are not adjacent, as the only links
+at `x 0` are `e 0`, to `a`, and `e 1`, to `x 1`. -/
+theorem _root_.Graph.IsOpenEar.isX0Graph_splitOff_succ [Finite α] {G : Graph α β}
+    (hG : G.IsX0Graph) {V₁ : Set α} {n : ℕ} {x : Fin (n + 3) → α} {a b : α}
+    {e : Fin (n + 4) → β} (hear : G.IsOpenEar V₁ x a b e) :
+    (G.splitOff (x 1) (x 0) (x 2) (e 1)).IsX0Graph := by
   have l0 : G.IsLink (e 0) a (x 0) := hear.isLink 0
   have l1 : G.IsLink (e 1) (x 0) (x 1) := hear.isLink 1
   have l2 : G.IsLink (e 2) (x 1) (x 2) := hear.isLink 2
   refine hG.splitOff l1.symm l2 (fun f y hf => hear.isLink_interior 1 hf)
-    (fun h => absurd (hear.inj h) (by decide)) ?_
+    (fun h => absurd (hear.inj h)
+      (by simp [Fin.ext_iff, Nat.mod_eq_of_lt (show 2 < n + 3 by omega)])) ?_
   rintro ⟨f, hf⟩
   rcases hear.isLink_interior 0 hf with rfl | rfl
   · exact hear.notMem 2 ((l0.symm.right_unique hf) ▸ hear.left_mem)
-  · exact absurd (hear.inj (l1.right_unique hf)) (by decide)
+  · exact absurd (hear.inj (l1.right_unique hf))
+      (by simp [Fin.ext_iff, Nat.mod_eq_of_lt (show 2 < n + 3 by omega)])
+
+/-- The standing hypotheses at `G` with `x 1` suppressed, for an open ear with four interior bodies
+(a step of `lem:pencil-x0-chain-reduces`, for `Graph.X0Reduces.openEarFour`): the case `n = 1` of
+`Graph.IsOpenEar.isX0Graph_splitOff_succ`. -/
+theorem _root_.Graph.IsOpenEar.isX0Graph_splitOff_four [Finite α] {G : Graph α β} (hG : G.IsX0Graph)
+    {V₁ : Set α} {x : Fin 4 → α} {a b : α} {e : Fin 5 → β}
+    (hear : G.IsOpenEar V₁ x a b e) : (G.splitOff (x 1) (x 0) (x 2) (e 1)).IsX0Graph :=
+  hear.isX0Graph_splitOff_succ (n := 1) hG
 
 /-- The standing hypotheses at `G` with `x 1` suppressed, for an open ear with three interior bodies
-(a step of `lem:pencil-x0-chain-reduces`, for `Graph.X0Reduces.openEarThree`): `x 0` and `x 2` are
-not adjacent, as the only links at `x 0` are `e 0`, to `a`, and `e 1`, to `x 1`. -/
+(a step of `lem:pencil-x0-chain-reduces`, for `Graph.X0Reduces.openEarThree`): the case `n = 0` of
+`Graph.IsOpenEar.isX0Graph_splitOff_succ`. -/
 theorem _root_.Graph.IsOpenEar.isX0Graph_splitOff_three [Finite α] {G : Graph α β}
     (hG : G.IsX0Graph)
     {V₁ : Set α} {x : Fin 3 → α} {a b : α} {e : Fin 4 → β}
-    (hear : G.IsOpenEar V₁ x a b e) : (G.splitOff (x 1) (x 0) (x 2) (e 1)).IsX0Graph := by
-  have l0 : G.IsLink (e 0) a (x 0) := hear.isLink 0
-  have l1 : G.IsLink (e 1) (x 0) (x 1) := hear.isLink 1
-  have l2 : G.IsLink (e 2) (x 1) (x 2) := hear.isLink 2
-  refine hG.splitOff l1.symm l2 (fun f y hf => hear.isLink_interior 1 hf)
-    (fun h => absurd (hear.inj h) (by decide)) ?_
-  rintro ⟨f, hf⟩
-  rcases hear.isLink_interior 0 hf with rfl | rfl
-  · exact hear.notMem 2 ((l0.symm.right_unique hf) ▸ hear.left_mem)
-  · exact absurd (hear.inj (l1.right_unique hf)) (by decide)
+    (hear : G.IsOpenEar V₁ x a b e) : (G.splitOff (x 1) (x 0) (x 2) (e 1)).IsX0Graph :=
+  hear.isX0Graph_splitOff_succ (n := 0) hG
 
 /-- The standing hypotheses at `G` with `x 1` suppressed, for an open ear with two interior bodies
 (a step of `lem:pencil-x0-chain-reduces`, for `Graph.X0Reduces.openEarTwoSplitOff`): `x 0` and `b`
@@ -513,18 +517,25 @@ private theorem bridge_cons [Finite β] {G : Graph α β} [G.Simple] {V₁ V₂ 
       · exact hfg h'
   · exact Or.inr h'
 
-/-- **The maximal chain of bridges** (a step of `lem:pencil-x0-cut-reduces`(1)): if `G` satisfies
-the standing hypotheses and has a chain of bridges from `a ∈ V₁` to `b ∈ V₂`, given as an open ear
-on `V₁ ∪ V₂` every other link of which lies inside `V₁` or inside `V₂`, then `G` reduces to the
-graphs smaller than it. By strong induction on `|V₁| + |V₂|`: an end of degree two extends the chain
-into its side, and once both ends have degree at least three, both sides are smaller than `G` and
-the clause `Graph.X0Reduces.bridgePath` applies. -/
-private theorem x0Reduces_of_bridgeEar [Finite α] [Finite β] {G : Graph α β} (hG : G.IsX0Graph) :
+/-- **The maximal chain of bridges**, returning its data (a step of `lem:pencil-x0-cut-reduces`(1)):
+if `G` satisfies the standing hypotheses and has a chain of bridges from `a ∈ V₁` to `b ∈ V₂`, given
+as an open ear on `V₁ ∪ V₂` every other link of which lies inside `V₁` or inside `V₂`, then `G` has
+a maximal one, with both sides smaller than `G` (the fields of `Graph.X0Reduces.bridgePath`). By
+strong induction on `|V₁| + |V₂|`: an end of degree two extends the chain into its side, and once
+both ends have degree at least three, both sides are smaller than `G`. -/
+theorem exists_bridgePath_of_bridgeEar [Finite α] [Finite β] {G : Graph α β}
+    (hG : G.IsX0Graph) :
     ∀ (n : ℕ) {V₁ V₂ : Set α} {k : ℕ} {x : Fin k → α} {a b : α} {e : Fin (k + 1) → β},
     V₁.ncard + V₂.ncard = n → G.IsOpenEar (V₁ ∪ V₂) x a b e → Disjoint V₁ V₂ → a ∈ V₁ →
     b ∈ V₂ →
     (∀ f u w, G.IsLink f u w → (∀ i, f ≠ e i) → (u ∈ V₁ ∧ w ∈ V₁) ∨ (u ∈ V₂ ∧ w ∈ V₂)) →
-    G.X0Reduces G.X0Below := by
+    ∃ (V₁ V₂ : Set α) (k : ℕ) (x : Fin k → α) (a b : α) (e : Fin (k + 1) → β),
+        V(G) = V₁ ∪ Set.range x ∪ V₂ ∧ Disjoint V₁ V₂ ∧ (∀ i, x i ∉ V₁) ∧ (∀ i, x i ∉ V₂) ∧
+        Function.Injective x ∧ a ∈ V₁ ∧ b ∈ V₂ ∧
+        (∀ i : Fin (k + 1),
+          G.IsLink (e i) (pathVertex a x b i.castSucc) (pathVertex a x b i.succ)) ∧
+        (∀ f u v, G.IsLink f u v → (∀ i, f ≠ e i) → (u ∈ V₁ ∧ v ∈ V₁) ∨ (u ∈ V₂ ∧ v ∈ V₂)) ∧
+        G.X0Below (G.induce V₁) ∧ G.X0Below (G.induce V₂) := by
   have := hG.simple
   intro n
   induction n using Nat.strong_induction_on with
@@ -534,10 +545,10 @@ private theorem x0Reduces_of_bridgeEar [Finite α] [Finite β] {G : Graph α β}
   obtain ⟨h', hd', hs'⟩ := bridge_symm h hd hs
   by_cases ha3 : 3 ≤ G.degree a
   · by_cases hb3 : 3 ≤ G.degree b
-    · refine .bridgePath (V₁ := V₁) (V₂ := V₂) ?_ hd (fun i hi => h.notMem i (Or.inl hi))
-        (fun i hi => h.notMem i (Or.inr hi)) h.inj ha hb h.isLink hs
-        (x0Below_induce_bridge_left hG h hd ha hb hs ha3)
-        (x0Below_induce_bridge_left hG h' hd' hb ha hs' hb3)
+    · refine ⟨V₁, V₂, k, x, a, b, e, ?_, hd, fun i hi => h.notMem i (Or.inl hi),
+        fun i hi => h.notMem i (Or.inr hi), h.inj, ha, hb, h.isLink, hs,
+        x0Below_induce_bridge_left hG h hd ha hb hs ha3,
+        x0Below_induce_bridge_left hG h' hd' hb ha hs' hb3⟩
       rw [h.cover]
       ext y
       simp only [Set.mem_union]
@@ -553,14 +564,20 @@ private theorem x0Reduces_of_bridgeEar [Finite α] [Finite β] {G : Graph α β}
     have hlt := Set.ncard_sdiff_singleton_lt_of_mem ha (Set.toFinite _)
     exact ih ((V₁ \ {a}).ncard + V₂.ncard) (by omega) rfl h'' hd'' ha'' hb hs''
 
-/-- **A graph that is not 2-edge-connected** (`lem:pencil-x0-cut-reduces`(1)): if `G` satisfies the
-standing hypotheses and is not 2-edge-connected, then `G` reduces to the graphs smaller than it, by
-the clause of a chain of bridges. As `G` is connected, some nonempty proper set `V'` of bodies is
-left by exactly one link `e₀`, from `u ∈ V'` to `v ∉ V'`. That link is a chain of bridges with no
-path body between the sides `V'` and `V(G) \ V'`, and it grows into a maximal one. -/
-theorem _root_.Graph.IsX0Graph.x0Reduces_of_not_twoEdgeConnected [Finite α] [Finite β]
+/-- **A graph that is not 2-edge-connected**, the data (`lem:pencil-x0-cut-reduces`(1)): if `G`
+satisfies the standing hypotheses and is not 2-edge-connected, a chain of bridges between two sides,
+each smaller than `G`. As `G` is connected, some nonempty proper set `V'` of bodies is left by
+exactly one link `e₀`, from `u ∈ V'` to `v ∉ V'`. That link is a chain of bridges with no path body
+between the sides `V'` and `V(G) \ V'`, and it grows into a maximal one
+(`exists_bridgePath_of_bridgeEar`). -/
+theorem _root_.Graph.IsX0Graph.exists_bridgePath_of_not_twoEdgeConnected [Finite α] [Finite β]
     {G : Graph α β} (hG : G.IsX0Graph) (htec : ¬ G.TwoEdgeConnected) :
-    G.X0Reduces G.X0Below := by
+    ∃ (V₁ V₂ : Set α) (k : ℕ) (x : Fin k → α) (a b : α) (e : Fin (k + 1) → β),
+      V(G) = V₁ ∪ Set.range x ∪ V₂ ∧ Disjoint V₁ V₂ ∧ (∀ i, x i ∉ V₁) ∧ (∀ i, x i ∉ V₂) ∧
+      Function.Injective x ∧ a ∈ V₁ ∧ b ∈ V₂ ∧
+      (∀ i : Fin (k + 1), G.IsLink (e i) (pathVertex a x b i.castSucc) (pathVertex a x b i.succ)) ∧
+      (∀ f u v, G.IsLink f u v → (∀ i, f ≠ e i) → (u ∈ V₁ ∧ v ∈ V₁) ∨ (u ∈ V₂ ∧ v ∈ V₂)) ∧
+      G.X0Below (G.induce V₁) ∧ G.X0Below (G.induce V₂) := by
   simp only [Graph.TwoEdgeConnected, not_forall, not_le] at htec
   obtain ⟨V', hne, hss, hlt⟩ := htec
   obtain ⟨u, hu, v, hv, e₀, he₀⟩ :=
@@ -570,7 +587,7 @@ theorem _root_.Graph.IsX0Graph.x0Reduces_of_not_twoEdgeConnected [Finite α] [Fi
     (Set.ncard_le_one (s := G.cutEdges V') (Set.toFinite _)).mp (by omega) f hf e₀ he₀c
   have hVV : V' ∪ (V(G) \ V') = V(G) := Set.union_sdiff_cancel hss.subset
   have huv : u ≠ v := fun h => hv.2 (h ▸ hu)
-  refine x0Reduces_of_bridgeEar hG _ (V₁ := V') (V₂ := V(G) \ V') (x := Fin.elim0) (a := u)
+  refine exists_bridgePath_of_bridgeEar hG _ (V₁ := V') (V₂ := V(G) \ V') (x := Fin.elim0) (a := u)
     (b := v) (e := ![e₀]) rfl ⟨?_, fun i => i.elim0, fun i => i.elim0, Or.inl hu, Or.inr hv, huv,
       ?_, fun f p q hf _ => by rw [hVV]; exact ⟨hf.left_mem, hf.right_mem⟩⟩
       Set.disjoint_sdiff_right hu hv ?_
@@ -586,19 +603,34 @@ theorem _root_.Graph.IsX0Graph.x0Reduces_of_not_twoEdgeConnected [Finite α] [Fi
     · exact absurd (hcut f ⟨hf.edge_mem, q, p, hf.symm, hq, hp⟩) hfe₀
     · exact Or.inr ⟨⟨hf.left_mem, hp⟩, ⟨hf.right_mem, hq⟩⟩
 
+/-- **A graph that is not 2-edge-connected** (`lem:pencil-x0-cut-reduces`(1)): if `G` satisfies the
+standing hypotheses and is not 2-edge-connected, then `G` reduces to the graphs smaller than it, by
+the clause of a chain of bridges (`Graph.IsX0Graph.exists_bridgePath_of_not_twoEdgeConnected` has
+its data). -/
+theorem _root_.Graph.IsX0Graph.x0Reduces_of_not_twoEdgeConnected [Finite α] [Finite β]
+    {G : Graph α β} (hG : G.IsX0Graph) (htec : ¬ G.TwoEdgeConnected) :
+    G.X0Reduces G.X0Below := by
+  obtain ⟨V₁, V₂, k, x, a, b, e, hcover, hdisj, hxV₁, hxV₂, hinj, ha, hb, hpath, hsep, h₁, h₂⟩ :=
+    hG.exists_bridgePath_of_not_twoEdgeConnected htec
+  exact .bridgePath hcover hdisj hxV₁ hxV₂ hinj ha hb hpath hsep h₁ h₂
+
 /-! ## A cut vertex (`lem:pencil-x0-cut-reduces`(2)) -/
 
 /-- **A cut vertex** (`lem:pencil-x0-cut-reduces`(2)): if `G` satisfies the standing hypotheses and
-is 2-edge-connected, and `G − v` is disconnected for a body `v`, then `G` reduces to the graphs
-smaller than it, by the cut-vertex clause at `v` (`Graph.X0Reduces.cutVertex`). A nonempty set `X`
-of bodies of `G − v`, closed under adjacency there and not all of its bodies, gives the sides
-`X ∪ {v}` and `V(G) \ X`, which meet in `v`. The body `v` sends at least two links into each side,
-as `G` is 2-edge-connected, and every other body keeps all its neighbours. Each side is connected,
-as `v` is its only body with a neighbour outside it (`Graph.IsX0Graph.induce_of_gate`), and has
-fewer bodies than `G`. -/
-theorem _root_.Graph.IsX0Graph.x0Reduces_of_not_connected [Finite α] [Finite β] {G : Graph α β}
+is 2-edge-connected, and `G − v` is disconnected for a body `v`, then `G` has two sides smaller
+than it, the fields of the cut-vertex clause at `v` (`Graph.X0Reduces.cutVertex`). A nonempty
+set `X` of bodies of `G − v`, closed under adjacency there and not all of its bodies, gives the
+sides `X ∪ {v}` and `V(G) \ X`, which meet in `v`. The body `v` sends at least two links into
+each side, as `G` is 2-edge-connected, and every other body keeps all its neighbours. Each side is
+connected, as `v` is its only body with a neighbour outside it (`Graph.IsX0Graph.induce_of_gate`),
+and has fewer bodies than `G`. -/
+theorem _root_.Graph.IsX0Graph.exists_cutVertex_of_not_connected [Finite α] [Finite β]
+    {G : Graph α β}
     (hG : G.IsX0Graph) (htec : G.TwoEdgeConnected) {v : α}
-    (hdisc : ¬ (G.induce (V(G) \ {v})).Connected) : G.X0Reduces G.X0Below := by
+    (hdisc : ¬ (G.induce (V(G) \ {v})).Connected) :
+    ∃ V₁ V₂ : Set α, V₁ ∪ V₂ = V(G) ∧ V₁ ∩ V₂ = {v} ∧
+      (∀ e x y, G.IsLink e x y → (x ∈ V₁ ∧ y ∈ V₁) ∨ (x ∈ V₂ ∧ y ∈ V₂)) ∧
+      G.X0Below (G.induce V₁) ∧ G.X0Below (G.induce V₂) := by
   have := hG.simple
   -- off `V(G)`, `G − v` is `G`, which is connected
   have hv : v ∈ V(G) := by
@@ -630,7 +662,7 @@ theorem _root_.Graph.IsX0Graph.x0Reduces_of_not_connected [Finite α] [Finite β
     obtain ⟨-, p, q, hl, hp, hq⟩ := hf
     obtain ⟨rfl, hpW⟩ := hY f p q hl hp hq
     exact ⟨p, by rw [Graph.induce_isLink]; exact ⟨hl.symm, hvW, hpW⟩⟩
-  refine .cutVertex (V₁ := insert v X) (V₂ := V(G) \ X) (v := v) ?_ ?_ ?_ ⟨?_, ?_⟩ ⟨?_, ?_⟩
+  refine ⟨insert v X, V(G) \ X, ?_, ?_, ?_, ⟨?_, ?_⟩, ⟨?_, ?_⟩⟩
   · ext y
     simp only [Set.mem_union, Set.mem_insert_iff, Set.mem_sdiff]
     constructor
@@ -688,5 +720,15 @@ theorem _root_.Graph.IsX0Graph.x0Reduces_of_not_connected [Finite α] [Finite β
       obtain ⟨y, hy⟩ := hXne
       have hy' : y ∈ V(G) \ X := by rw [h]; exact hXG hy
       exact hy'.2 hy)
+
+/-- **A cut vertex** (`lem:pencil-x0-cut-reduces`(2)): if `G` satisfies the standing hypotheses and
+is 2-edge-connected, and `G − v` is disconnected for a body `v`, then `G` reduces to the graphs
+smaller than it, by the cut-vertex clause at `v` (`Graph.X0Reduces.cutVertex`;
+`Graph.IsX0Graph.exists_cutVertex_of_not_connected` has its data). -/
+theorem _root_.Graph.IsX0Graph.x0Reduces_of_not_connected [Finite α] [Finite β] {G : Graph α β}
+    (hG : G.IsX0Graph) (htec : G.TwoEdgeConnected) {v : α}
+    (hdisc : ¬ (G.induce (V(G) \ {v})).Connected) : G.X0Reduces G.X0Below := by
+  obtain ⟨V₁, V₂, hcover, hoverlap, hsep, h₁, h₂⟩ := hG.exists_cutVertex_of_not_connected htec hdisc
+  exact .cutVertex hcover hoverlap hsep h₁ h₂
 
 end CombinatorialRigidity.Molecular
