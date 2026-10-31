@@ -1,25 +1,23 @@
 # Phase 42e — PD-CARRIER: the setting and the flat rank in every dimension (work log)
 
-**Status:** in progress, opened 2026-10-30 at the PI's word ("PD-CARRIER only (Recommended)",
-design doc §1), a sub-phase of Phase 42 and the first layer formalizing 42d's proof. Forward mode,
-the Lean under `/coordinate-phase`: the four red nodes of `blueprint/src/chapter/pencil-d.tex` in
-`sec:pencil-d-induction` and `sec:pencil-d-flat` (Phase 40b–40d in `Pᵈ`), on 42b's carrier in
-`Pencil/Grade/`. The pre-build recon pinned all four Lean signatures and spiked each with no
-`sorry` (*Lemma checklist*). Next (*Hand-off*): land `Pencil/Grade/Flat.lean`, the flat rank and
-its two corollaries.
+**Status:** all four nodes green, opened 2026-10-30 at the PI's word ("PD-CARRIER only
+(Recommended)", design doc §1), a sub-phase of Phase 42 and the first layer formalizing 42d's
+proof. Forward mode, the Lean under `/coordinate-phase`: the four nodes of
+`blueprint/src/chapter/pencil-d.tex` in `sec:pencil-d-induction` and `sec:pencil-d-flat`, on 42b's
+carrier, landed as `Pencil/Grade/Flat.lean` (three nodes) and `Pencil/Grade/ConditionLinear.lean`
+(one), at every `m`. Next (*Hand-off*): the 42e close, an intermediate sub-phase close.
 
 ## Current state
 
-**Next: land `Pencil/Grade/Flat.lean`** (*Hand-off*). The pre-build recon pinned the Lean of all
-four nodes and checked it under `lake lean`: no `sorry`, no warning, `#lint` clean (15 linters),
-and `scripts/check-docstring-labels.py` at 0 findings on a copy of the tree carrying the pins
-below. The two spikes are land-ready, with header and docstrings, in the gitignored
-`scratch/42e/`: `FlatRank.lean` (three nodes, to become `Grade/Flat.lean`) and
-`ConditionLinear.lean` (one node, to become `Grade/ConditionLinear.lean`). If they are gone, the
-signatures and routes under *Lemma checklist* rebuild them. Both are new files: no landed Lean
-file changes. The chapter is the lemma index (forward mode). The other red nodes of the chapter
-map to PD-STEPS, PD-COVERAGE, PD-REDUCTION and PD-HEAD by section in design doc §3 (*The red
-nodes by layer*), with no letter minted.
+**Next: the 42e close** (*Hand-off*). `Pencil/Grade/Flat.lean` and `Pencil/Grade/ConditionLinear.lean`
+landed together, copied as the recon spiked them: both build warning-clean, `lake lint` passes,
+`blueprint/lint.sh` and `blueprint/verify.sh` pass (checkdecls sees the new pins), and the four
+nodes carry `\lean{}` and `\leanok` on statement and proof. The `ConditionLinear` proof gained
+`\uses{lem:pencil-d-config-realization}` (its Lean calls
+`linearIndependent_pencilConfigPointGrade_of_linearIndependent_pencilPicturePoint`); no statement
+text changed, no landed Lean file was edited. The other red nodes of the chapter map to PD-STEPS,
+PD-COVERAGE, PD-REDUCTION and PD-HEAD by section in design doc §3 (*The red nodes by layer*), with
+no letter minted.
 
 ## Architectural choices made up front
 
@@ -92,7 +90,7 @@ declaration is in `namespace CombinatorialRigidity.Molecular`, with `variable {K
 
 - [x] **Pre-build recon** (this commit): the signatures below, all spiked; the three bridges hold
   (*Decisions made*).
-- [ ] `thm:pencil-d-flat-rank`, in the new `Pencil/Grade/Flat.lean` (imports `Grade.ZeroHeights`
+- [x] `thm:pencil-d-flat-rank`, in the new `Pencil/Grade/Flat.lean` (imports `Grade.ZeroHeights`
   and `MainComponent.Bridge`; nothing of `Grade/` imports `Flat.lean` or `Bridge.lean` today).
   Pin `Graph.finrank_span_rigidityRows_ofNormals_flat_grade`, `…_flat_le_grade`,
   `…_flat_eq_iff_grade`. With `[Finite α] (hG : G.Connected) {q} (hq : G.IsAdmissiblePicture q)
@@ -106,7 +104,7 @@ declaration is in `namespace CombinatorialRigidity.Molecular`, with `variable {K
   lemma does); then `rw [Graph.finrank_span_rigidityRows_ofNormals_pencilPicturePoint hq hends]`
   matches the `k := 0 + 1` term with no cast; `simp only [zero_add, screwDim_one]`, `push_cast`,
   `ring`. The bound and the iff: `Graph.three_add_deficiency_le_finrank_liftingSpace`, `linarith`.
-- [ ] `cor:pencil-d-flat-attains`, in `Grade/Flat.lean`. Pin `…_flat_eq_iff_grade` (its first
+- [x] `cor:pencil-d-flat-attains`, in `Grade/Flat.lean`. Pin `…_flat_eq_iff_grade` (its first
   equivalence, at `n = m + 2`), `Graph.finrank_liftingSpace_eq_three_add_deficiency_iff`,
   `Graph.x0AttainsGrade_of_finrank_liftingSpace_le`. The iff, with `[Finite α] [Finite β] hG hq
   {n : ℕ} (hn : 2 ≤ n)`: `finrank L(q) = 3 + G.deficiency n ↔ finrank L(q) = 3 + G.deficiency 2 ∧
@@ -115,12 +113,12 @@ declaration is in `namespace CombinatorialRigidity.Molecular`, with `variable {K
   proofs (`MainComponent/Flat.lean`) with `Graph.Connected.deficiency_le_deficiency_of_le` at
   `2 ≤ m + 2`, then `Graph.x0AttainsGrade_of_exists hV G.endsOf hends hmain
   (G.liftingSpaceGrade q m).zero_mem` and `_flat_grade`.
-- [ ] `cor:pencil-d-jj-flat`, in `Grade/Flat.lean`. Pin `Graph.x0AttainsGrade_of_deficiency_two_eq`:
+- [x] `cor:pencil-d-jj-flat`, in `Grade/Flat.lean`. Pin `Graph.x0AttainsGrade_of_deficiency_two_eq`:
   `[Infinite K] [Finite α] [Finite β] hG (hSimple : G.Simple)
   (h3 : ∀ v ∈ V(G), 3 ≤ (G.closedNbhd v).ncard) (hdef : G.deficiency 2 = G.deficiency (m + 2)) :
   G.X0AttainsGrade K m`. Route: `Graph.exists_isMainPicture_finrank_liftingSpace_eq`, then the
   attaining corollary.
-- [ ] `lem:pencil-d-condition-linear`, in the new `Pencil/Grade/ConditionLinear.lean` (imports
+- [x] `lem:pencil-d-condition-linear`, in the new `Pencil/Grade/ConditionLinear.lean` (imports
   `Grade.Configuration`; `pictureProj` stays private there). Pin `gradeSigma`, `gradeSigmaPerp`,
   `dotPerp_range_gradeSigma` (all `CombinatorialRigidity.Molecular.`),
   `Graph.IsAdmissiblePicture.finrank_span_pencilConfigPointGrade_closedNbhd_le_iff`,
@@ -158,16 +156,13 @@ declaration is in `namespace CombinatorialRigidity.Molecular`, with `variable {K
 
 ## Hand-off / next phase
 
-The next concrete commit lands **`CombinatorialRigidity/Molecular/Molecule/Pencil/Grade/Flat.lean`**
-from `scratch/42e/FlatRank.lean` as it stands (or rebuilt from *Lemma checklist*), adds its
-`public import` to `CombinatorialRigidity.lean`, and flips `thm:pencil-d-flat-rank`,
-`cor:pencil-d-flat-attains` and `cor:pencil-d-jj-flat` with the pins listed there (`\lean{}` and
-`\leanok` on statement and proof). One session's work, a transcription: no landed Lean file
-changes, so nothing rebuilds but the new module and the root. It touches neither the ScrewSpace
-carrier nor `Molecular/RigidityMatrix/`, nor any file whose PD-STABLE deferral fires on an edit
-(design doc §3). The honesty gate finds no laundered hypothesis: each one is the node's own. Then
-`Grade/ConditionLinear.lean` the same way (one node), then the close; the two lands are
-independent, and may go in either order or together.
+The next concrete commit is the **42e close**, an intermediate sub-phase close
+(`PHASE-BOUNDARIES.md` *When this commit closes a phase*): flip and re-thin the ROADMAP row, compress
+the §42 planning prose, sync the status surfaces, and weigh the organization review's one
+duplication, `gradeSigma` against the inline map of
+`finrank_span_pencilConfigPointGrade_closedNbhd_le` and `pictureProj` in `Grade/Configuration.lean`
+(*Lemma checklist*, last item). Folding them rebuilds the `Grade/` stack, so it is a separate
+decision. The next layer (PD-STEPS) opens at the PI's word.
 
 ## Decisions made during this phase
 

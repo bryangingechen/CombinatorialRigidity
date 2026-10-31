@@ -1290,6 +1290,12 @@ for each of the $d - 2$ heights.
 
 \begin{lemma}[Coplanarity is linear in the heights, in every dimension]
   \label{lem:pencil-d-condition-linear}
+  \lean{CombinatorialRigidity.Molecular.gradeSigma, CombinatorialRigidity.Molecular.gradeSigmaPerp,
+        CombinatorialRigidity.Molecular.dotPerp_range_gradeSigma,
+        Graph.IsAdmissiblePicture.finrank_span_pencilConfigPointGrade_closedNbhd_le_iff,
+        Graph.IsAdmissiblePicture.span_pencilConfigPointGrade_closedNbhd_eq_range,
+        Graph.IsAdmissiblePicture.mem_liftingSpaceGrade_iff_finrank_span_closedNbhd_le}
+  \leanok
   \uses{def:pencil-d-configuration, def:pencil-lifting-space,
         def:pencil-admissible-picture}
   Let $d \ge 3$, let $q$ be an admissible picture of $G$ and
@@ -1313,6 +1319,8 @@ for each of the $d - 2$ heights.
   (\cref{def:pencil-lifting-space}).
 \end{lemma}
 \begin{proof}
+  \leanok
+  \uses{lem:pencil-d-config-realization}
   Write $b$ for the points of $(q, z)$, and let
   $\pi \colon K^{d+1} \to K^3$ keep the first, the second and the last
   coordinate. Then $\pi(b_w) = (x_w, y_w, 1)$ is the homogeneous picture
@@ -1382,6 +1390,10 @@ $\dim L(q)$ alone.
 
 \begin{theorem}[The flat rank, in every dimension]
   \label{thm:pencil-d-flat-rank}
+  \lean{Graph.finrank_span_rigidityRows_ofNormals_flat_grade,
+        Graph.finrank_span_rigidityRows_ofNormals_flat_le_grade,
+        Graph.finrank_span_rigidityRows_ofNormals_flat_eq_iff_grade}
+  \leanok
   \uses{def:pencil-d-configuration, def:pencil-lifting-space,
         def:D-deficiency}
   Let $d \ge 3$ and $D = \binom{d+1}{2}$, let $G$ be connected, and let
@@ -1395,6 +1407,7 @@ $\dim L(q)$ alone.
   with equality if and only if $\dim L(q) = 3 + \operatorname{def}_2(G)$.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-d-embed-config-rank, lem:pencil-lifting-planes-motions,
         lem:pencil-lifting-space-deficiency}
   The configuration of $q$ in dimension two has no heights, and its point
@@ -1433,6 +1446,10 @@ $\dim L(q)$ alone.
 
 \begin{corollary}[When the flat configuration has the target, in every dimension]
   \label{cor:pencil-d-flat-attains}
+  \lean{Graph.finrank_span_rigidityRows_ofNormals_flat_eq_iff_grade,
+        Graph.finrank_liftingSpace_eq_three_add_deficiency_iff,
+        Graph.x0AttainsGrade_of_finrank_liftingSpace_le}
+  \leanok
   \uses{def:pencil-d-configuration, def:pencil-d-x0-attains,
         def:D-deficiency}
   Let $d \ge 3$ and $D = \binom{d+1}{2}$, let $G$ be connected, and let
@@ -1448,6 +1465,7 @@ $\dim L(q)$ alone.
   (\cref{def:pencil-d-x0-attains}).
 \end{corollary}
 \begin{proof}
+  \leanok
   \uses{thm:pencil-d-flat-rank, lem:pencil-lifting-space-deficiency,
         lem:deficiency-antitone, def:pencil-main-picture,
         lem:pencil-d-x0-one-witness}
@@ -1480,6 +1498,8 @@ $\dim L(q)$ alone.
 
 \begin{corollary}[The general configuration attains when the two deficiencies agree, in every dimension]
   \label{cor:pencil-d-jj-flat}
+  \lean{Graph.x0AttainsGrade_of_deficiency_two_eq}
+  \leanok
   \uses{def:pencil-d-x0-attains, def:D-deficiency}
   Let $K$ be infinite and $d \ge 3$, and let $G$ be connected and simple,
   with at least three members in every closed neighbourhood. If
@@ -1488,6 +1508,7 @@ $\dim L(q)$ alone.
   (\cref{def:pencil-d-x0-attains}).
 \end{corollary}
 \begin{proof}
+  \leanok
   \uses{thm:pencil-jj-equality, cor:pencil-d-flat-attains}
   As $G$ is connected, it has a body. By Jackson and Jord\'an's equality
   (\cref{thm:pencil-jj-equality}), some main picture $q$ of $G$ has
