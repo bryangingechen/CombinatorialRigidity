@@ -7,23 +7,25 @@ design doc §1), a sub-phase of Phase 42 and the third of PD-STEPS. Forward mode
 `Pencil/Grade/` carrier. The `-short-three` half (4 nodes) stays mapped by section in design doc
 §3. Seven of the eight are green (`Pencil/Grade/Stars.lean`, `Pencil/Grade/EarData.lean`); the recon
 pinned the last, at every `m`, a composition over three transcription leaves and two residual goals
-(*Lemma checklist*); the first leaf, `splitOff_ear_succAbove`, is green in `Pencil/Grade/Short.lean`.
-Next (*Hand-off*): `Graph.exists_earBase_splitOff_grade`.
+(*Lemma checklist*); the first two leaves, `splitOff_ear_succAbove` and
+`Graph.exists_earBase_splitOff_grade`, are green in `Pencil/Grade/Short.lean`.
+Next (*Hand-off*): `Graph.X0AttainsGrade.of_openEar_splitOff`.
 
 ## Current state
 
-**Next: `Graph.exists_earBase_splitOff_grade`** (*Hand-off*). `Pencil/Grade/Short.lean` is
-started: `splitOff_ear_succAbove` (the graph-combinatorics leaf, no blueprint pin; a `sorry`-free
-transcription of `splitOff_ear_four` at every length, its six conjuncts as `ShortBody.lean`
-states them) and three `Fin` / `pathVertex` helpers: `coe_succAbove_two`, `coe_succAbove_one` (the
-values of `Fin.succAbove 2` and `Fin.succAbove 1`, `if`-forms that send index arithmetic to
-`omega`) and `pathVertex_comp_succAbove_one`
-(`pathVertex a (x ∘ succAbove 1) b j = pathVertex a x b (succAbove 2 j)`, which the insertion's
-path form will reuse). The file imports `Grade.Stars` and `MainComponent.Short` (the leaf needs
-neither `EarData` nor more; the later leaves add what they need). `ShortBody.lean` (171 lines, in
-the gitignored `scratch/42h/`) has the theorem's composition type-checking over the two remaining
-`sorry`'d leaves and two residual goals (*Lemma checklist*, last item). The chapter is the lemma
-index.
+**Next: `Graph.X0AttainsGrade.of_openEar_splitOff`** (*Hand-off*). `Pencil/Grade/Short.lean` has
+two leaves green. `splitOff_ear_succAbove` (the graph-combinatorics leaf, no blueprint pin; a
+`sorry`-free transcription of `splitOff_ear_four` at every length) with three `Fin` / `pathVertex`
+helpers (`coe_succAbove_two`, `coe_succAbove_one`, `pathVertex_comp_succAbove_one`, the last
+`pathVertex a (x ∘ succAbove 1) b j = pathVertex a x b (succAbove 2 j)`, which the insertion's path
+form will reuse). And `Graph.exists_earBase_splitOff_grade` (no blueprint pin; a step-for-step
+transcription of `Graph.exists_earBase_splitOff` at grade `m + 1`, 180 lines): the heights come
+from `Graph.exists_liftingRestrict_preimage_fst_eq` over `Graph.earExtend_mem_liftingSpace`
+(column by column), the planes `la`, `lb` by `choose` on the columns of `zs`, the rank congruences
+are the `P³` ones at `k := m + 1`; no helper of its own was needed. The file imports `Grade.Cut`,
+`Grade.EarData`, `Grade.Stars` and `MainComponent.Short`. `ShortBody.lean` (in the gitignored
+`scratch/42h/`) has the theorem's composition type-checking over the one remaining `sorry`'d leaf
+and two residual goals (*Lemma checklist*, last item). The chapter is the lemma index.
 
 ## Architectural choices made up front
 
@@ -78,9 +80,9 @@ Shorthand: every declaration is in `namespace CombinatorialRigidity.Molecular`, 
   - [x] `splitOff_ear_succAbove` (`x : Fin (k + 3) → α`: `G″` has the ear `a − x ∘ succAbove 1 − b`
     with labels `e ∘ succAbove 2`, and `x 1` has degree two): `splitOff_ear_four` at every length;
     `k = 0` serves `-short-three`.
-  - `Graph.exists_earBase_splitOff_grade`: `Graph.exists_earBase_splitOff` with `m` heights
+  - [x] `Graph.exists_earBase_splitOff_grade`: `Graph.exists_earBase_splitOff` with `m` heights
     (`ρ : Submodule K (ScrewSpace K (m + 1))`); heights by
-    `Graph.exists_liftingRestrict_preimage_fst_eq`.
+    `Graph.exists_liftingRestrict_preimage_fst_eq`; verbatim pin, no departure.
   - `Graph.X0AttainsGrade.of_openEar_splitOff`: `Graph.X0Attains.of_openEar_splitOff` at grade
     `m + 1`, `D` for `6`, `hins`'s `ρ` in `⋀²`; needs a grade form of
     `span_supportExtensor_comp_eq_map_pointJoin` (through `complementIso`) and of
@@ -122,12 +124,13 @@ Shorthand: every declaration is in `namespace CombinatorialRigidity.Molecular`, 
 
 ## Hand-off / next phase
 
-The next concrete commit is **`Graph.exists_earBase_splitOff_grade`** in `Pencil/Grade/Short.lean`
-(`scratch/42h/ShortBody.lean` lines 26 to 85, a transcription of `Graph.exists_earBase_splitOff` in
-`MainComponent/Short.lean` at grade `m + 1`; the file will need the grade imports that leaf uses).
-The file goes leaf-first: that leaf, then `Graph.X0AttainsGrade.of_openEar_splitOff` (one or two
-commits, a transcription of `Short.lean`'s `P³` proof at `D`), then the insertion's path form and
-the theorem; the theorem's commit may need two. Three to four builds remain.
+The next concrete commit is **`Graph.X0AttainsGrade.of_openEar_splitOff`** in
+`Pencil/Grade/Short.lean` (`scratch/42h/ShortBody.lean`, the statement after the base-data leaf, a
+transcription of `Graph.X0Attains.of_openEar_splitOff` in `MainComponent/Short.lean` at grade
+`m + 1`; it needs the grade forms of `span_supportExtensor_comp_eq_map_pointJoin` and
+`finrank_sup_map_screwComplementIso` named in the checklist, and may take two commits: if the proof
+will not fit one, land the grade forms first and say so). Then the insertion's path form and the
+theorem; the theorem's commit may need two. Two to three builds remain.
 - **The standing rule** (design doc §3): each build adds a row to `notes/Cleanup42.md` §2 where its
   Lean departs from the chapter's proof; R-7 to R-10 are this recon's, R-11 the Stars build's.
 - **Deferred from 42g, where it lands** (design doc §3; two `[open]` FRICTION entries): the four
