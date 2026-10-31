@@ -1,14 +1,14 @@
 # Phase 42 — PENCIL-D: design (cross-phase plan and recon)
 
-**Status:** opened 2026-10-29 with the PI, sub-lettered, research first; **42g** open.
-**42g** (the second sub-phase of PD-STEPS, `notes/Phase42g.md`) **opened 2026-10-30** at the PI's
-word (§1): the seven nodes of `pencil-d.tex`'s `-long`, Phase 40's cycle and long-ear steps in `Pᵈ`
-on CERT's closed polygons; `-short` stays mapped by section (§3).
+**Status:** opened 2026-10-29 with the PI, sub-lettered, research first; no sub-phase open.
+**42g** (the second sub-phase of PD-STEPS, `notes/Phase42g.md`) **opened 2026-10-30 and closed
+2026-10-31** at the PI's word (§1): the seven nodes of `pencil-d.tex`'s `-long`, Phase 40's cycle
+and long-ear steps in `Pᵈ` on CERT's closed polygons, all green (verdict §3). The rest of PD-STEPS
+(`-short`) is next, then PD-COVERAGE, PD-REDUCTION and PD-HEAD (§3, which maps the remaining red
+nodes to them by section), each at the PI's word.
 **42f** (the first sub-phase of PD-STEPS, `notes/Phase42f.md`) **opened and closed 2026-10-30** at
 the PI's word (§1): the six nodes of `pencil-d.tex`'s `-cut` and `-contract`, Phase 40e/40f/40k in
 `Pᵈ`, all green (verdict §3); its open also cut three step nodes no coverage step uses (§1, §3).
-The rest of PD-STEPS (`-short`), PD-COVERAGE, PD-REDUCTION and PD-HEAD follow (§3, which maps the
-remaining red nodes to them by section), each at the PI's word.
 **42e** (PD-CARRIER, `notes/Phase42e.md`) **opened and closed 2026-10-30** at the PI's word (§1):
 formalizing 42d's proof began with its setting and the flat rank, four nodes of `pencil-d.tex`,
 all green (verdict §3).
@@ -46,8 +46,8 @@ Status: `d = 2, 3` are proved and formalized (Phases 40a, 40). Every `d` with `d
 `Strata.md` Result 17, and every `d` at `def_3 ≤ 3` follows from Result 17's proof with the sharp
 deficiency lemma, proved and formalized (42c, `thm:pencil-d-deficiency-two-le-three`). Every `d` is
 proved on paper (42d, `cor:pencil-d-conditioned-pair`); formalizing it began with the setting and
-the flat rank (42e), then the induction's cut-vertex, bridge and contraction steps (42f), and it
-continues with the cycle and long-ear steps (42g, open).
+the flat rank (42e), then the induction's cut-vertex, bridge and contraction steps (42f) and its
+cycle and long-ear steps (42g).
 `d = 4, 5, 6` are measured (Results 11, 19), not found below target under the `--d4`
 population's cap (`n ≤ 12`, 36 simple graphs) and 8 graphs past it. Where the
 conjecture has content, that is 47 cells on 18 graphs, six of them cycles (§2.5).
@@ -636,11 +636,12 @@ leaves out each graph's top cell, `d = 2 + def[3]`, which also carries content.
 
 ## 3. Layers (stable codes)
 
-**Standing rule for every remaining layer** (42g's `-long` and `-short`, the rest of PD-STEPS,
-PD-COVERAGE, PD-REDUCTION, PD-HEAD; from the PI's 42g answer, §1): a recon or build whose Lean
-departs from the chapter's proof adds a row to the proof-route ledger of `notes/Cleanup42.md` (§2)
-in the same commit, and a commit that aligns a row sets its status there. The post-Phase-42
-cleanup acts on the ledger (that note, §3).
+**Standing rule for every remaining layer** (`-short`, PD-COVERAGE, PD-REDUCTION, PD-HEAD; in
+force since 42g's `-long`, from the PI's 42g answer, §1): a recon or build whose Lean departs from
+the chapter's proof adds a row to the proof-route ledger of `notes/Cleanup42.md` (§2) in the same
+commit, and a commit that aligns a row sets its status there. A carrier encoding of the chapter's
+own object (an indexing, a restriction to `V(G)`) is not a departure: such a row, once raised, is
+marked `no departure` (R-6). The post-Phase-42 cleanup acts on the ledger (that note, §3).
 
 - **PD-RECON** (42a, **closed 2026-10-30**, `notes/Phase42a.md`): settle R1 or R2 on paper, or
   refute with a certificate (§2). Verdict: R2's steps with the embedding as base row (§1, §2.2);
@@ -715,11 +716,17 @@ cleanup acts on the ledger (that note, §3).
   the restriction of `m` heights is `Graph.liftingRestrict` at `α × Fin m`, no new definition; the
   kernel lemma's lower bound needs only admissibility, so it holds at any admissible `q`. It edited
   no file a deferral below names. The open cut `-splitoff` and `-ear-deficiency` (the PI, §1).
-  **PD-STEPS's second sub-phase, 42g, opened 2026-10-30** at the PI's word (§1;
-  `notes/Phase42g.md`): `-long`, seven nodes (Phase 40's cycle and long-ear steps in `Pᵈ`, on
-  CERT's closed polygons with independent joins). Its open read all seven sound on the carrier, and
-  found that no `-long` node uses a `-short` one. `-short` stays mapped by section, no letter
-  minted.
+  **PD-STEPS's second sub-phase, 42g, opened 2026-10-30 and closed 2026-10-31** at the PI's word
+  (§1; `notes/Phase42g.md`): `-long`, seven nodes (Phase 40's cycle and long-ear steps in `Pᵈ`, on
+  CERT's closed polygons with independent joins), all green: `lem:pencil-d-polygon-normal`,
+  `-polygon-star`, `-polygon-insert`, `lem:pencil-d-polygons` and `-polygon-collapse`
+  (`Pencil/Grade/Polygon.lean`), `thm:pencil-d-cycle` and `thm:pencil-d-open-ear-long`
+  (`Grade/Chain.lean`). Verdicts: the Lean holds at every `m`; a closed polygon is a function
+  `Fin n → K^{d+1}`, with no definition and no basis of `⋀²` (2 × 2-minor functionals); the
+  collapse is index-level; `|K| ≥ 4` is `4 ≤ ENat.card K`. At the PI's word the star's and the
+  insertion's proofs follow their Lean (§1); the other route differences are `notes/Cleanup42.md`'s
+  ledger (R-3 to R-5 open, R-6 no departure). Its open found that no `-long` node uses a `-short`
+  one. It edited no file a deferral below names. `-short` stays mapped by section, no letter minted.
   **Handed on from PD-RECON** (42a's close; SHORT-CORE's workbook S56 has the detail):
   - *PD-STEPS, the short-ear step (row 13).* At `d = 4`, `k = 3, 4, 5`: the `P³` factoring
     (`Graph.X0Attains.of_openEar_splitOff`) with `D = 10`, its insertion hypothesis taken at base
@@ -754,7 +761,8 @@ cleanup acts on the ledger (that note, §3).
   `Pencil/Grade/`, which 42b's additive commits avoided. **Deferred to them from PD-STABLE**, each
   with the next commit that edits the file it names (a new declaration there rebuilds most of
   `Molecular/`): FRICTION's moves of `exteriorPower_map_normalsJoin` to `PanelLayer.lean`, beside
-  `normalsJoin`, and of `BodyHingeFramework.map` and the zero-hinge motion lemmas to
+  `normalsJoin` (and with it, from 42g, the four `normalsJoin` lemmas of `Grade/Polygon.lean`),
+  and of `BodyHingeFramework.map` and the zero-hinge motion lemmas to
   `RigidityMatrix/Basic.lean` and `GenericityDevice.lean`; and FRICTION's open `contragredientEquiv`
   in `Meet.lean`, which `Grade/Collineation.lean`'s inline contragredient would then call.
   **Deferred to them from PD-CARRIER**, with the next commit that edits `Grade/Configuration.lean`
@@ -763,7 +771,8 @@ cleanup acts on the ledger (that note, §3).
   `finrank_span_pencilConfigPointGrade_closedNbhd_le` builds inline in `Configuration.lean`, and of
   that file's private `pictureProj`, which ConditionLinear's "only if" rebuilds as a local
   `LinearMap.funLeft`. The fold: `gradeSigma` beside `gradeMk` in `Carrier.lean`, the inline map
-  restated as it, `pictureProj` public.
+  restated as it, `pictureProj` public; and, from 42g, `pencilConfigPointGrade_ofPoints`
+  (`Grade/Chain.lean`) beside `pencilConfigPointGrade_eq_gradeMk` in `Carrier.lean` (FRICTION).
   **Deferred to them from PD-STEPS (42f)**, with the next commit that edits
   `MainComponent/ContractAdditive.lean` (alone, the fold rebuilds that file's 12 importers):
   FRICTION's duplication of the kernel argument at an additive core.
@@ -782,14 +791,14 @@ cleanup acts on the ledger (that note, §3).
   added no row, as Phase 40's sub-phases did not.
 
 **The red nodes by layer** (42e's open, by section of `pencil-d.tex`; a letter is minted only as
-a sub-phase opens). From `sec:pencil-d-induction` on the chapter has 62 dep-graph nodes, 52 of them
-red (recounted at 42f's close and at 42g's open): 65 at 42e's open, all red, 4 green at its
-close, 3 cut at 42f's open (the PI, §1), and 6 green at its close. The count of 66 put to the PI
-at 42e's open (§1) included `rem:pencil-d-flat-class`, a remark, which the dependency graph does
-not draw (it draws definitions, lemmas, propositions, theorems and corollaries).
+a sub-phase opens). From `sec:pencil-d-induction` on the chapter has 62 dep-graph nodes, 45 of them
+red (recounted at 42g's close): 65 at 42e's open, all red, 4 green at its close, 3 cut at 42f's
+open (the PI, §1), 6 green at 42f's close and 7 at 42g's. The count of 66 put to the PI at 42e's
+open (§1) included `rem:pencil-d-flat-class`, a remark, which the dependency graph does not draw
+(it draws definitions, lemmas, propositions, theorems and corollaries).
 - PD-CARRIER (42e, closed, all green): `-induction` (1) and `-flat` (3); 4.
-- PD-STEPS: `-cut` (3) and `-contract` (3), 42f, closed, all green; `-long` (7), 42g, open, red;
-  `-short` (12), red, no letter minted; 25.
+- PD-STEPS: `-cut` (3) and `-contract` (3), 42f, closed, all green; `-long` (7), 42g, closed, all
+  green; `-short` (12), red, no letter minted; 25.
   `thm:pencil-d-splitoff`, `thm:pencil-d-open-ear-deficiency` and `lem:pencil-d-polygon-ear`, with
   their sections `-splitoff` and `-ear-deficiency`, had no consumer in the coverage and were cut at
   42f's open (the PI, §1).

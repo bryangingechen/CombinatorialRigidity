@@ -53,9 +53,11 @@ What follows from it:
 
 One row per node of `pencil-d.tex` whose Lean proof departs from the chapter's, in the chapter's
 notation. *Status* is `open`, or `aligned` with the commit that made the chapter and the Lean follow
-one route (`this commit` in that commit; a later edit may replace it with the sha). *Remedies* are
-the options: the prose to the Lean, a Lean helper so that the Lean can follow the chapter, or keep
-both routes, each valid. The cleanup chooses one per `open` row, with the PI.
+one route (`this commit` in that commit; a later edit may replace it with the sha), or `no
+departure` for a row raised and then judged a carrier encoding of the chapter's own object, kept as
+a short row so that the cleanup's recon does not raise it again. *Remedies* are the options: the
+prose to the Lean, a Lean helper so that the Lean can follow the chapter, or keep both routes, each
+valid. The cleanup chooses one per `open` row, with the PI.
 
 - **R-1** · `lem:pencil-d-polygon-star` (`exists_normalsJoin_notMem_span_polygon`,
   `Pencil/Grade/Polygon.lean`) · **aligned, this commit** (42g).
@@ -104,13 +106,7 @@ both routes, each valid. The cleanup chooses one per `open` row, with the PI.
   identity when `N = m`.
   *Remedies:* a toss-up (the coordinator): the prose to the one path, or keep both.
 - **R-6** · `thm:pencil-d-cycle`, the heights (`Graph.X0AttainsGrade.of_cycle_of_certificate`) ·
-  **open** (added at the Chain build).
-  *Chapter:* `z` is the heights of the placement, and `z ∈ L_G(q)^{d-2}` at an admissible `q`
-  because each closed neighbourhood has three members.
-  *Lean:* the placement's heights `zs` are arbitrary (the certificate lemma takes any picture and
-  heights); the heights used are `z = Graph.liftingRestrict (Prod.fst ⁻¹' V(G)) zs`, in
-  `L_G(q)^m` by the three-member criterion and with the same points on `V(G)`, so the same joins.
-  *Remedies:* the prose to the Lean (one clause: restrict the heights to `V(G)`), or keep both.
+  **no departure** (42g's close): the Lean restricts `z` to `V(G)`, where the chapter's `z` lives.
 
 ## 3. The cleanup (not yet planned)
 

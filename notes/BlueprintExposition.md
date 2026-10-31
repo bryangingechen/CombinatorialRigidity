@@ -1836,6 +1836,22 @@ interior bodies now says *in dimension `d`*, since the `d = 3` steps there still
 embedding (and so does its sibling in `sec:pencil-d-chains`).
 **Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
 
+### `pencil-d.tex` — Phase 42g (PD-STEPS: cycles and long open ears in every dimension)
+
+**No new entries — judged at the sub-phase close (2026-10-31).** The source is the project's own
+(42d's write-up of the CERT workbook, cited in TeX comments); the criterion transfers as in the
+`pencil.tex` section. The seven nodes of `sec:pencil-d-long` are green, in two build commits from
+the recon's spikes, and no node decomposed. Two proofs were rerouted, but not for difficulty: at
+the PI's word the star (`lem:pencil-d-polygon-star`) and the insertion
+(`lem:pencil-d-polygon-insert`) now follow their Lean, which read more naturally (linearity of the
+join in its first point and a 2 × 2 minor; a line off a subspace meets it once at most), and each
+is written out in full. The route differences left between the chapter and the Lean (the affine
+normalization, the base triangle, the cycle's placement) are a matter of presentation, tracked for
+the cleanup after Phase 42 (`notes/Cleanup42.md`), not a compressed step. The close's end-to-end
+re-read against the landed statements found no wording false and changed none (the Lean also
+holds at `d = 2`; the nodes keep the chapter's `d ≥ 3`).
+**Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
+
 ## Retroactive coverage
 
 - **Molecular program (Phases 17–22a): scanned 2026-06-04** — candidates folded

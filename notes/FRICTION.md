@@ -110,6 +110,17 @@ moment you resolve the entry) is what makes the sweep a pure
 to be re-derived by re-reading entries later.
 
 ## Open
+### [open] `pencilConfigPointGrade_ofPoints` sits in `Pencil/Grade/Chain.lean`, not `Grade/Carrier.lean`
+- **Where it bit:** Phase 42g, `Pencil/Grade/Chain.lean`: `pencilConfigPointGrade_ofPoints` (a vector
+  with last coordinate `1` is the configuration point of its own picture and heights, by
+  `gradeMk_eta`) is about `pencilConfigPointGrade` and `gradeMk`, whose home is
+  `Grade/Carrier.lean`, beside `pencilConfigPointGrade_eq_gradeMk`.
+- **Proposed fix:** move it there, unchanged, with 42e's fold (the `gradeSigma` entry below), i.e.
+  with the next commit that edits `Grade/Configuration.lean` or `Grade/Carrier.lean`: a declaration
+  added to `Carrier.lean` rebuilds every `Grade/` file after it.
+- **Status:** open (42e's deferral, extended; tracked under PD-CARRIER's, `notes/Phase42-design.md`
+  §3).
+
 ### [open] The `normalsJoin` linearity and minor lemmas sit in `Pencil/Grade/Polygon.lean`, not `PanelLayer.lean`
 - **Where it bit:** Phase 42g, `Pencil/Grade/Polygon.lean`: `normalsJoin_add_right`, `normalsJoin_smul_right`,
   `normalsJoin_zero_left` and `exists_linearMap_normalsJoin_eq` (a `2 × 2` minor as a functional on `⋀²`)

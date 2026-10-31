@@ -803,8 +803,10 @@ ran the same day (42c, closed 2026-10-30, `notes/Phase42c.md`): every `d` from P
 informal proof in every dimension of all three conjuncts, as red nodes of `pencil-d.tex`;
 formalizing it began as 42e (PD-CARRIER, opened and closed 2026-10-30, `notes/Phase42e.md`): the
 setting and the flat rank, formalized; PD-STEPS began as 42f (opened and closed 2026-10-30,
-`notes/Phase42f.md`): its cut-vertex, bridge and contraction steps, formalized; it continues as 42g
-(opened 2026-10-30, `notes/Phase42g.md`): its cycle and long-ear steps. Summary: ROADMAP §42.
+`notes/Phase42f.md`): its cut-vertex, bridge and contraction steps, formalized; and continued as 42g
+(opened 2026-10-30, closed 2026-10-31, `notes/Phase42g.md`): its cycle and long-ear steps,
+formalized; the rest of PD-STEPS, the short ears, opens next, at the PI's word. Summary: ROADMAP
+§42.
 Still queued, codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
 conjecture, `notes/Origami.md` — the next phase to open after PENCIL-D, with the PI), **PIN** (a second,
 independent proof of the 2-d molecular conjecture by Jackson–Jordán 2008's

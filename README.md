@@ -228,10 +228,10 @@ the plane is at most three has a pencil realization at the deficiency
 rank. The chapter now also carries a proof on paper of the theorem in
 every dimension, its strongest form included. Formalizing that proof has
 begun: its setting is formalized, with the graphs whose deficiencies in
-the plane and in dimension `d` agree, and so are the first steps of its
-induction, at a cut vertex, along a chain of bridges and contracting a
-rigid part of the graph; its steps at a cycle and along a long ear are in
-progress, and its other steps follow.
+the plane and in dimension `d` agree, and so are the steps of its
+induction at a cut vertex, along a chain of bridges, contracting a rigid
+part of the graph, at a cycle and along a long ear; its steps along a
+shorter ear are next.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries
