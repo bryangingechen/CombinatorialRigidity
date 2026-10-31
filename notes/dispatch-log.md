@@ -168,6 +168,18 @@ shared temp file and reported a concurrent session as the cause, squashed by
 the coordinator before the push (rescue §1; F56), the same diff read catching
 an off-by-one in a range.
 
+**Phase 42f (PD-STEPS: cut, bridges, contraction) rows, 2026-10-30: 1, written
+at 42f's close.** None BLOCKED, escalated or killed; five dispatches (open,
+recon, two sonnet transcriptions of the recon's complete spikes, handed to
+fresh builders past the recon's ~400k context, F46; close). The one: a
+gate-invisible prose defect the coordinator's own option text seeded. The PI
+chose a cut whose option said the coverage keeps "one sentence saying the
+d = 3 split-off and two-body ear steps aren't needed for d ≥ 4", which the open
+transcribed; read literally it is false, since both still enter through the
+embedding inside the d = 3 coverage. The close's end-to-end chapter re-read
+caught it ("no step in dimension d"), not a gate (F19's lesson: option text is
+a coordinator artifact).
+
 ## Findings
 
 (Distill recurring lessons here — one entry per lesson, rows cite it.
