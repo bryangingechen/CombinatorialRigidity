@@ -180,8 +180,9 @@ higher one, and so proves, in every dimension, that a simple connected
 graph of minimum degree at least two whose deficiency in the plane is at
 most three has a pencil realization at the deficiency rank. The chapter
 now also carries a proof on paper of the theorem in every dimension, its
-strongest form included, not yet formalized; formalizing it is the
-phase's next step.
+strongest form included, not yet formalized. Its formalization has
+begun, with the setting of the proof and the graphs whose deficiencies in
+the plane and in dimension $d$ agree.
 
 ### How the pencil realization theorem is proved
 
@@ -240,7 +241,7 @@ The table below and `ROADMAP.md` carry the fine-grained status.
 |    39 | the pencil realization theorem: reduction to two main-component statements | `Molecular/Molecule/Pencil/` | ✓ |
 |    40 | the pencil realization theorem: the main-component proof of the two statements (and the plane case of Theorems 5.5/5.6) | `Molecular/` | ✓ |
 |    41 | each hinge at the ends of its own edge, built into the panel-hinge framework; the generic rank theorems at every graph; a Lean declaration for each claim the blueprint made without one | `Molecular/` | ✓ |
-|    42 | the pencil realization theorem in every dimension | research first; the statement in every dimension, the step up from a lower one and a proof on paper in every dimension, `pencil-d.tex` | in progress |
+|    42 | the pencil realization theorem in every dimension | research first; the statement in every dimension, the step up from a lower one and a proof on paper in every dimension, now being formalized, `pencil-d.tex` | in progress |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
 for the full mathematical and engineering plan,

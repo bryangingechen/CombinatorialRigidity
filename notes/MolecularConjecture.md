@@ -801,7 +801,8 @@ closed 2026-10-30 with its chapter `pencil-d.tex` formalized, `notes/Phase42b.md
 ran the same day (42c, closed 2026-10-30, `notes/Phase42c.md`): every `d` from Phase 40 at
 `def_3 ≤ 3`, Tier 0. PD-ALL ran as 42d (opened and closed 2026-10-30, `notes/Phase42d.md`): an
 informal proof in every dimension of all three conjuncts, as red nodes of `pencil-d.tex`;
-formalizing it opens next, at the PI's word. Summary: ROADMAP §42. Still queued,
+formalizing it began as 42e (PD-CARRIER, opened 2026-10-30, `notes/Phase42e.md`): the setting and
+the flat rank. Summary: ROADMAP §42. Still queued,
 codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
 conjecture, `notes/Origami.md` — the next phase to open after PENCIL-D, with the PI), **PIN** (a second,
 independent proof of the 2-d molecular conjecture by Jackson–Jordán 2008's

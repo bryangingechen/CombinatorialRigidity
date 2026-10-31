@@ -226,8 +226,9 @@ dimension in a higher one, and so proves, in every dimension, that a
 simple connected graph of minimum degree at least two whose deficiency in
 the plane is at most three has a pencil realization at the deficiency
 rank. The chapter now also carries a proof on paper of the theorem in
-every dimension, its strongest form included, not yet formalized;
-formalizing it is the phase's next step.
+every dimension, its strongest form included, not yet formalized. Its
+formalization has begun, with the setting of the proof and the graphs
+whose deficiencies in the plane and in dimension `d` agree.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries

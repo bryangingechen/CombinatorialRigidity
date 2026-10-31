@@ -1,14 +1,14 @@
 # Phase 42d — PD-ALL: an informal proof in every `Pᵈ`, all three conjuncts (work log)
 
 **Status:** ✓ closed 2026-10-30 (opened the same day with the PI), a research sub-phase of Phase
-42, which stays in progress with no sub-phase open. Its target is met: the sections of
-`blueprint/src/chapter/pencil-d.tex` from `sec:pencil-d-induction` to `sec:pencil-d-generic`, 66
-red nodes, give an informal proof at every `d ≥ 3` of the conditioned pair's three conjuncts (bare,
+42, which stays in progress with 42e. Its target is met: the sections of
+`blueprint/src/chapter/pencil-d.tex` from `sec:pencil-d-induction` to `sec:pencil-d-generic`, 65
+red nodes and a remark, give an informal proof at every `d ≥ 3` of the conditioned pair's three conjuncts (bare,
 adjacent-distinct and generic; headline `cor:pencil-d-conditioned-pair`), checked by two fresh
 reads and the close's end-to-end re-read. CERT and NONDEG closed; COUNT's Lean landed (11 green
-nodes). 38 commits with the open and the close. **Next** (*Hand-off*): formalizing the proof
-(design doc §3), at the PI's word. Plan and the PI's decisions: `notes/Phase42-design.md` (§1, §3
-PD-ALL).
+nodes). 38 commits with the open and the close. **Next** (*Hand-off*): formalizing the proof,
+begun as 42e (PD-CARRIER, `notes/Phase42e.md`). Plan and the PI's decisions:
+`notes/Phase42-design.md` (§1, §3 PD-ALL).
 
 ## Current state
 
@@ -97,13 +97,16 @@ FRICTION's entry).
 
 ## Blockers / open questions
 
-- None. Formalization opens at the PI's word (*Hand-off*).
+- None. Formalization opened as 42e (*Hand-off*).
 
 ## Hand-off / next phase
 
-Phase 42 has no open sub-phase. The next concrete step is putting the open of 42d's formalization
-to the PI, with no letter minted until it opens: PD-CARRIER, PD-STEPS, PD-COVERAGE, PD-REDUCTION, PD-HEAD (design doc
-§3, which also carries what PD-RECON, PD-STATE and PD-STABLE handed on). What 42d leaves them: the
+Phase 42 continues with **42e** (PD-CARRIER, `notes/Phase42e.md`), opened 2026-10-30 at the PI's
+word: formalizing 42d's proof begins with its setting and the flat rank, the four red nodes of
+`sec:pencil-d-induction` and `sec:pencil-d-flat`. PD-STEPS, PD-COVERAGE, PD-REDUCTION and PD-HEAD
+follow, each at the PI's word, with no letter minted until it opens (design doc §3, which maps the
+other red nodes to them by section and carries what PD-RECON, PD-STATE and PD-STABLE handed
+on). What 42d leaves them: the
 red nodes of `pencil-d.tex` from `sec:pencil-d-induction` on are the dep-graph, leaf-first, each
 naming the `main-component.tex` node it generalizes and where the `d = 3` proof used its
 dimension; COUNT-C is `lem:pencil-d-chain-count`; the coverage's Lean needs data-returning forms

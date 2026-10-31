@@ -298,7 +298,8 @@ status:
     three has a pencil realization at the deficiency rank
     (Graph.hasGradedDistinctPencilRealization_of_deficiency_two_le_three). The chapter now also
     carries a proof on paper of the theorem in every dimension, its strongest form included, not
-    yet formalized; formalizing it is the phase's next step.
+    yet formalized; its formalization has begun, with the setting of the proof and the graphs whose
+    deficiencies in the plane and in dimension d agree.
   sorry_count: 0
   sorry_in_definitions: 0
   axioms: ["propext", "Classical.choice", "Quot.sound"]          # only Lean/mathlib standard axioms; no project-specific axioms
