@@ -1,11 +1,15 @@
 # Phase 42 — PENCIL-D: design (cross-phase plan and recon)
 
-**Status:** opened 2026-10-29 with the PI, sub-lettered, research first; no sub-phase open.
+**Status:** opened 2026-10-29 with the PI, sub-lettered, research first; **42h open**.
+**42h** (the third sub-phase of PD-STEPS, `notes/Phase42h.md`) **opened 2026-10-31** at the PI's
+word (§1): the eight nodes of `pencil-d.tex`'s `-short-four`, Phase 40's short-ear step in `Pᵈ` at
+four or more interior bodies, in every `d` (§3). Its next step is the pre-build recon. The other
+half of `-short`, the three-body ear at `d = 4` to `6` (`-short-three`, 4 nodes; codes in §3),
+stays mapped by section; it and then PD-COVERAGE, PD-REDUCTION and PD-HEAD (§3, which maps the
+remaining red nodes to them by section) open each at the PI's word.
 **42g** (the second sub-phase of PD-STEPS, `notes/Phase42g.md`) **opened 2026-10-30 and closed
 2026-10-31** at the PI's word (§1): the seven nodes of `pencil-d.tex`'s `-long`, Phase 40's cycle
-and long-ear steps in `Pᵈ` on CERT's closed polygons, all green (verdict §3). The rest of PD-STEPS
-(`-short`) is next, then PD-COVERAGE, PD-REDUCTION and PD-HEAD (§3, which maps the remaining red
-nodes to them by section), each at the PI's word.
+and long-ear steps in `Pᵈ` on CERT's closed polygons, all green (verdict §3).
 **42f** (the first sub-phase of PD-STEPS, `notes/Phase42f.md`) **opened and closed 2026-10-30** at
 the PI's word (§1): the six nodes of `pencil-d.tex`'s `-cut` and `-contract`, Phase 40e/40f/40k in
 `Pᵈ`, all green (verdict §3); its open also cut three step nodes no coverage step uses (§1, §3).
@@ -47,7 +51,7 @@ Status: `d = 2, 3` are proved and formalized (Phases 40a, 40). Every `d` with `d
 deficiency lemma, proved and formalized (42c, `thm:pencil-d-deficiency-two-le-three`). Every `d` is
 proved on paper (42d, `cor:pencil-d-conditioned-pair`); formalizing it began with the setting and
 the flat rank (42e), then the induction's cut-vertex, bridge and contraction steps (42f) and its
-cycle and long-ear steps (42g).
+cycle and long-ear steps (42g); its short-ear step at four or more interior bodies is open (42h).
 `d = 4, 5, 6` are measured (Results 11, 19), not found below target under the `--d4`
 population's cap (`n ≤ 12`, 36 simple graphs) and 8 graphs past it. Where the
 conjecture has content, that is 47 cells on 18 graphs, six of them cycles (§2.5).
@@ -249,6 +253,33 @@ fibre-intersection lemma and Jackson–Jordán's equality.
   *Note (not the PI's text):* 42g aligned the two chapter proofs the same day; the tracker is
   `notes/Cleanup42.md` (its proof-route ledger, §2), queued as `CLEANUP-42` between PENCIL-D and
   ORIGAMI as the coordinator's proposal, and the standing rule is in §3 below.
+- **PI, 2026-10-31 (42h's open):** asked "Phase 42h isn't open yet. 42g closed with the rest of
+  PD-STEPS waiting on your go-ahead: the 12 red nodes of pencil-d.tex's -short section (open ears
+  with three or more interior bodies). They split cleanly in two: 8 nodes for ears with four or more
+  interior bodies at every d (two-stars, insertion, kernel-curve, stars-four, the ear-data
+  definition and lemma, ear-data-open, thm:pencil-d-open-ear-four), and 4 nodes for the three-body
+  ear at d = 4–6 (stars-three, glued-ends, planes-meet, thm:pencil-d-open-ear-three). The three-body
+  theorem uses the four-body one, and it's SHORT-CORE's hand proof, the coverage's only new
+  mathematics. What should 42h open as?", the PI answered "k ≥ 4 half first (Recommended)", whose
+  option read: "8 nodes, Phase 40's open-ear factoring in Pᵈ at four or more interior bodies. Opus
+  open commit, a pre-build recon against the carrier, then roughly 4–8 builds. The three-body case
+  (4 nodes) stays mapped by section for its own sub-phase, which lets its recon build on the landed
+  k ≥ 4 Lean." The other options put were "All of -short (12 nodes)" (one sub-phase, roughly 7–12
+  builds) and "Three-body path scoped by recon" (open on all 12, the recon sizing the three-body half
+  before any build, with the option to split it off then).
+  *Note (not the PI's text):* the question and the option text are the coordinator's words, so the
+  estimate of roughly 4–8 builds is the coordinator's. "They split cleanly in two" holds: 42h's open
+  parsed every `\uses` list of the section whole, and none of the eight uses one of the four
+  (`notes/Phase42h.md` *Consistency read at the open*). One phrase needs a correction. "SHORT-CORE's
+  hand proof, the coverage's only new mathematics" describes SHORT-CORE's whole step (§2.3 SHORT,
+  §3 *Handed on from PD-RECON*), not the three-body theorem alone, and each half carries part of it.
+  The eight carry S35, the every-`ρ` step at `k ≥ 4` in every `d` (`lem:pencil-d-stars-four`), with
+  S20's factoring transcribed at `D` (`thm:pencil-d-open-ear-four`) and the tools both halves use
+  (S1 and S22's two stars, S6's tangent lemma, S19's insertion, S20 and S38's ear data); the `k = 4,
+  5` part of the track's `d = 4` deliverable is theirs. The four carry `k = 3` at `d = 4, 5, 6`
+  (S28–S33; at `d = 4` also the track's first proof, S1–S21), where the every-`ρ` form fails once
+  `κ ≥ 7 − d` (S26), so the step uses `G[V₁]`'s own `ρ`; the coverage needs that step only at
+  `d = 4` (S53, `thm:pencil-d-chain-or-core`).
 
 ## 2. PD-RECON (42a)
 
@@ -726,7 +757,18 @@ marked `no departure` (R-6). The post-Phase-42 cleanup acts on the ledger (that 
   collapse is index-level; `|K| ≥ 4` is `4 ≤ ENat.card K`. At the PI's word the star's and the
   insertion's proofs follow their Lean (§1); the other route differences are `notes/Cleanup42.md`'s
   ledger (R-3 to R-5 open, R-6 no departure). Its open found that no `-long` node uses a `-short`
-  one. It edited no file a deferral below names. `-short` stays mapped by section, no letter minted.
+  one. It edited no file a deferral below names.
+  **PD-STEPS's third sub-phase, 42h, opened 2026-10-31** at the PI's word (§1; `notes/Phase42h.md`):
+  the half of `sec:pencil-d-short` for open ears with four or more interior bodies, in every `d`.
+  Codes: `-short` stays the section's, and its halves are **`-short-four`**, eight nodes
+  (`lem:pencil-d-two-stars`, `lem:pencil-d-insertion`, `lem:pencil-d-kernel-curve`,
+  `lem:pencil-d-stars-four`, `def:pencil-d-ear-data`, `lem:pencil-d-ear-data`,
+  `lem:pencil-d-ear-data-open`, `thm:pencil-d-open-ear-four`; 42h), and **`-short-three`**, four
+  nodes (`lem:pencil-d-stars-three`, `lem:pencil-d-glued-ends`, `lem:pencil-d-planes-meet`,
+  `thm:pencil-d-open-ear-three`; the three-body ear at `d = 4` to `6`, red, no letter minted),
+  named after their theorems. `-short-three`'s proofs use `-short-four`'s theorem and five of its
+  lemmas; no `-short-four` node uses a `-short-three` one, so `-short-three` opens after 42h, at the
+  PI's word, its recon building on 42h's Lean.
   **Handed on from PD-RECON** (42a's close; SHORT-CORE's workbook S56 has the detail):
   - *PD-STEPS, the short-ear step (row 13).* At `d = 4`, `k = 3, 4, 5`: the `P³` factoring
     (`Graph.X0Attains.of_openEar_splitOff`) with `D = 10`, its insertion hypothesis taken at base
@@ -792,13 +834,14 @@ marked `no departure` (R-6). The post-Phase-42 cleanup acts on the ledger (that 
 
 **The red nodes by layer** (42e's open, by section of `pencil-d.tex`; a letter is minted only as
 a sub-phase opens). From `sec:pencil-d-induction` on the chapter has 62 dep-graph nodes, 45 of them
-red (recounted at 42g's close): 65 at 42e's open, all red, 4 green at its close, 3 cut at 42f's
-open (the PI, §1), 6 green at 42f's close and 7 at 42g's. The count of 66 put to the PI at 42e's
-open (§1) included `rem:pencil-d-flat-class`, a remark, which the dependency graph does not draw
-(it draws definitions, lemmas, propositions, theorems and corollaries).
+red (recounted at 42g's close and at 42h's open): 65 at 42e's open, all red, 4 green at its
+close, 3 cut at 42f's open (the PI, §1), 6 green at 42f's close and 7 at 42g's. The count of 66 put
+to the PI at 42e's open (§1) included `rem:pencil-d-flat-class`, a remark, which the dependency
+graph does not draw (it draws definitions, lemmas, propositions, theorems and corollaries).
 - PD-CARRIER (42e, closed, all green): `-induction` (1) and `-flat` (3); 4.
 - PD-STEPS: `-cut` (3) and `-contract` (3), 42f, closed, all green; `-long` (7), 42g, closed, all
-  green; `-short` (12), red, no letter minted; 25.
+  green; `-short` (12, red), as `-short-four` (8), 42h, open, and `-short-three` (4), no letter
+  minted; 25.
   `thm:pencil-d-splitoff`, `thm:pencil-d-open-ear-deficiency` and `lem:pencil-d-polygon-ear`, with
   their sections `-splitoff` and `-ear-deficiency`, had no consumer in the coverage and were cut at
   42f's open (the PI, §1).

@@ -60,7 +60,8 @@ index (forward mode), and the file map is under *Current state*.
 Phase 42 stays in progress with no sub-phase open. The next step is **putting `-short`'s open to
 the PI** (design doc §3): the 12 red nodes of `sec:pencil-d-short`, open ears with three or more
 interior bodies (SHORT-CORE's step, the ear data and the three-body case at `d = 4` to `6`), the
-last of PD-STEPS, no letter minted until it opens. What 42g hands it and PD-COVERAGE, at every `m`:
+last of PD-STEPS, no letter minted until it opens (answered at 42h's open: the half with four or
+more interior bodies first, design doc §1). What 42g hands it and PD-COVERAGE, at every `m`:
 - `thm:pencil-d-cycle` and `thm:pencil-d-open-ear-long`, the steps `thm:pencil-d-coverage` takes
   at a cycle and at an open ear with `k ≥ D − 1`; their certificate lemmas take any edges with
   independent joins at any picture and heights.
