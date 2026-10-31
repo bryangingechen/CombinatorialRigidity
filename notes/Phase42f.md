@@ -9,7 +9,8 @@ claims (*Consistency read at the open*). At the PI's word the open also cut thre
 coverage step uses, leaving PD-STEPS 25 nodes. The pre-build recon pinned all six Lean signatures
 and spiked each complete, with no `sorry` (*Lemma checklist*). The first build landed
 `Pencil/Grade/Cut.lean` (the restriction, the cut vertex and the chain of bridges, three nodes
-green). Next (*Hand-off*): the contraction build, `Pencil/Grade/ContractAdditive.lean`.
+green), then `Pencil/Grade/ContractAdditive.lean` (the three contraction nodes green; all six
+green). Next (*Hand-off*): the 42f close, an intermediate sub-phase close.
 
 ## Current state
 
@@ -20,12 +21,14 @@ Transcribed from the recon's spike with the statements unchanged and full docstr
 `Graph.liftingRestrict_preimage_fst_apply`. Warning-clean, `#print axioms` `[propext,
 Classical.choice, Quot.sound]` on every pinned name.
 
-**Next: land `Pencil/Grade/ContractAdditive.lean`** (*Hand-off*), from the gitignored
-`scratch/42f/ContractAdditive.lean` (three nodes; it repeats three lemmas of `Cut.lean` verbatim, to
-drop for `import …Grade.Cut`, now landed). Its docstrings are short; the build writes the full ones.
-If the spike is gone, the signatures and routes under *Lemma checklist* rebuild it. It is a new
-file: no landed Lean file changes but the root import list. The chapter is the lemma index (forward
-mode). The rest of PD-STEPS, `-short` (12) and `-long` (7), stays mapped by section in design doc
+**Landed: `Pencil/Grade/ContractAdditive.lean`** (build 2 of 2): `lem:pencil-contract-additive-kernel`,
+`thm:pencil-d-contract-additive` and `cor:pencil-d-contract-rigid` green, with the root import. A
+transcription of the recon's spike, statements unchanged, its three repeated `Cut.lean` lemmas
+dropped for `import …Grade.Cut` (and the then-redundant `Witness` import). The `d = 3` proof keeps
+its inline copy of the kernel argument (folding it would rebuild 12 modules; optional, untracked).
+
+**Next: the 42f close**, an intermediate sub-phase close (`PHASE-BOUNDARIES.md`); all six nodes are
+green. The rest of PD-STEPS, `-short` (12) and `-long` (7), stays mapped by section in design doc
 §3, with no letter minted.
 
 ## Architectural choices made up front
@@ -134,41 +137,9 @@ of `m` heights (*Blockers*, 1). `G/H` is `G.rigidContract (G.induce W) r`; `ker 
   `Graph.IsAdmissiblePicture.supportExtensor_ne_zero_grade`, `(n := m + 2)` throughout,
   `(Graph.bodyBarDim (m + 2) : ℤ) = screwDim (m + 1)` (`Graph.bodyBarDim_add_one_eq_screwDim`)
   and `push_cast [Nat.cast_sub one_le_screwDim]` for the `D − 1` terms.
-- [ ] `lem:pencil-contract-additive-kernel`, in the new `Pencil/Grade/ContractAdditive.lean`
-  (imports `Grade.Cut`, `Grade.Contract`, `Grade.Flat`, `Molecular.Induction.SparseDeficiency`).
-  Pin `Graph.finrank_ker_contractLiftingMatrix_zero_eq_and_map_eq`: `[Infinite K] [Fintype α]
-  [Finite β] {G W r} (hr : r ∈ W) (hW : W ⊆ V(G)) (hadd : (G.induce W).deficiency 2 +
-  (G/H).deficiency 2 ≤ G.deficiency 2) {q} (hqG : G.IsAdmissiblePicture q)
-  (hqH : (G.induce W).IsAdmissiblePicture q) (hqc : (G/H).IsAdmissiblePicture q)
-  (hdimH : (Module.finrank K ((G.induce W).liftingSpace q) : ℤ) = 3 + (G.induce W).deficiency 2)
-  (hdimc : (Module.finrank K ((G/H).liftingSpace q) : ℤ) = 3 + (G/H).deficiency 2) :
-  (Module.finrank K (ker M(0)) : ℤ) = 3 + G.deficiency 2 ∧
-  (ker M(0)).map (contractCoreRestrict W) = (G.induce W).liftingSpace q`. `[Fintype α]`, as the
-  statement's `mulVecLin` needs one. Route: `hlow0`, `hup0` and `honto` of
-  `Graph.X0Attains.of_additiveContract`, with `A := hqG.exists_mvPolynomial` read along the curve.
-- [ ] `thm:pencil-d-contract-additive`, in `Grade/ContractAdditive.lean`. Pin
-  `Graph.X0AttainsGrade.of_additiveContract`: the hypotheses of `Graph.X0Attains.of_additiveContract`
-  verbatim but `hdefd : (G.induce W).deficiency (m + 2) = 0` for `hdef3`, with `hH`, `hc` and the
-  conclusion at `X0AttainsGrade K m`. The tuple machinery: unknowns uncurried,
-  `(α ⊕ (α × Fin 3)) × Fin m → K`, for the fibre lemma, and curried, `Fin m → α ⊕ (α × Fin 3) → K`,
-  for the curve (`Graph.finrank_span_rigidityRows_induce_contractHeightGrade_eq` takes that form);
-  `ker M(0)^m` a local `set Lm := ⨅ i : Fin m, L.comap (LinearMap.funLeft K K fun c => (c, i))`;
-  `PA := MvPolynomial.rename (fun p => (Sum.inl p.1, p.2)) (restrictPoly (Prod.fst ⁻¹' W) RH)`;
-  `PB` is `Qc` at the configuration at `t = 0`, a `bind₁` through `map_vecCons_vecCons_snoc`; one
-  section per height by `choose` over `Matrix.exists_mvPolynomial_section_mulVec_eq_zero`, with
-  `∏ i, D i`; and a new `contractConfigPolyGrade W r q (Z : Fin m → α ⊕ (α × Fin 3) →
-  MvPolynomial Unit K) : α × Fin (m + 1 + 2) → MvPolynomial Unit K` (`open Classical in`; blocks
-  as `pencilConfigPointGrade`) with `eval_contractConfigPolyGrade`. The shift is
-  `Graph.finrank_span_rigidityRows_ofNormals_heights_linearEquiv_add_affineLifts` at
-  `LinearEquiv.refl`, `a i := (G/H).affineLiftMap q ![0, 0, -z₁ (r, i)]`;
-  `NeZero (Graph.bodyHingeMult (m + 2))` from `two_le_screwDim`.
-- [ ] `cor:pencil-d-contract-rigid`, in `Grade/ContractAdditive.lean`. Pin
-  `Graph.X0AttainsGrade.of_rigidContract`: the hypotheses of `Graph.X0Attains.of_rigidContract`
-  verbatim, with `hc` and the conclusion at `X0AttainsGrade K m`. Route:
-  `Graph.isX0Graph_induce_of_deficiency_eq_zero (n := 2)` (the pin of
-  `lem:pencil-contract-standing-rigid`), `Graph.deficiency_eq_zero_of_deficiency_eq_zero_of_le
-  (n := 2)` (hence the `SparseDeficiency` import), `Graph.rigidContract_deficiency_eq` at `n = 2`,
-  `Graph.x0AttainsGrade_of_deficiency_two_eq`.
+- [x] `lem:pencil-contract-additive-kernel`: `Graph.finrank_ker_contractLiftingMatrix_zero_eq_and_map_eq`, in the new `Grade/ContractAdditive.lean`; `[Fintype α]` as `mulVecLin` needs one.
+- [x] `thm:pencil-d-contract-additive`: `Graph.X0AttainsGrade.of_additiveContract` with `contractConfigPolyGrade` and `eval_contractConfigPolyGrade`; `hdefd : (G.induce W).deficiency (m + 2) = 0` for `hdef3`.
+- [x] `cor:pencil-d-contract-rigid`: `Graph.X0AttainsGrade.of_rigidContract`, via `Graph.isX0Graph_induce_of_deficiency_eq_zero (n := 2)` and `Graph.deficiency_eq_zero_of_deficiency_eq_zero_of_le`.
 - [ ] **Close** 42f, an intermediate sub-phase close (`PHASE-BOUNDARIES.md`).
 
 ## Blockers / open questions
@@ -191,13 +162,10 @@ of `m` heights (*Blockers*, 1). `G/H` is `G.rigidContract (G.induce W) r`; `ker 
 
 ## Hand-off / next phase
 
-The next concrete commit is the **contraction build**: `Pencil/Grade/ContractAdditive.lean` from
-`scratch/42f/ContractAdditive.lean`, its three copied lemmas dropped for `import …Grade.Cut`
-(landed), greening `lem:pencil-contract-additive-kernel`, `thm:pencil-d-contract-additive` and
-`cor:pencil-d-contract-rigid` with their `\lean{}` and `\leanok`. Then the close. So two builds,
-one landed, where the option the PI chose estimated about 4–8 (the coordinator's estimate, design
-doc §1). Each build runs the per-commit gates, among them `scripts/check-docstring-labels.py`
-against its parent's report.
+The next concrete commit is the **42f close**, an intermediate sub-phase close
+(`PHASE-BOUNDARIES.md`): all six nodes are green (`Grade/Cut.lean`, `Grade/ContractAdditive.lean`).
+Two builds landed, where the option the PI chose estimated about 4-8 (the coordinator's estimate,
+design doc §1).
 
 ## Decisions made during this phase
 

@@ -1825,6 +1825,8 @@ $M(0)$.
 
 \begin{lemma}[The kernel at the end of the curve, at an additive core]
   \label{lem:pencil-contract-additive-kernel}
+  \lean{Graph.finrank_ker_contractLiftingMatrix_zero_eq_and_map_eq}
+  \leanok
   \uses{def:pencil-contract-lifting-system, def:pencil-lifting-space,
         def:pencil-admissible-picture, def:rigid-contraction,
         def:D-deficiency}
@@ -1843,6 +1845,7 @@ $M(0)$.
   $\ker M(0)$ onto $L_H(q)$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-polynomial-section, lem:pencil-contract-lifting-kernel,
         lem:pencil-lifting-space-deficiency,
         lem:pencil-contract-kernel-bound}
@@ -1901,6 +1904,8 @@ as in \cref{lem:pencil-contract-additive-kernel}.
 
 \begin{theorem}[Contraction at an additive core, in every dimension]
   \label{thm:pencil-d-contract-additive}
+  \lean{Graph.X0AttainsGrade.of_additiveContract}
+  \leanok
   \uses{def:pencil-d-x0-attains, def:pencil-x0-standing, def:cut-edges-2ec,
         def:rigid-contraction, def:D-deficiency}
   Let $K$ be infinite and $d \ge 3$, and let $G$ satisfy the standing
@@ -1915,6 +1920,7 @@ as in \cref{lem:pencil-contract-additive-kernel}.
   the general configuration of $G$ attains in dimension $d$.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-contract-standing-rigid, lem:pencil-contract-standing,
         lem:pencil-contraction-deficiency, thm:pencil-jj-equality,
         lem:pencil-x0-main-picture-open, lem:pencil-lifting-space-affine,
@@ -2065,6 +2071,8 @@ as in \cref{lem:pencil-contract-additive-kernel}.
 
 \begin{corollary}[Contraction at a core of planar deficiency zero, in every dimension]
   \label{cor:pencil-d-contract-rigid}
+  \lean{Graph.X0AttainsGrade.of_rigidContract}
+  \leanok
   \uses{def:pencil-d-x0-attains, def:pencil-x0-standing, def:cut-edges-2ec,
         def:rigid-contraction, def:D-deficiency}
   Let $K$ be infinite and $d \ge 3$, and let $G$ satisfy the standing
@@ -2076,6 +2084,7 @@ as in \cref{lem:pencil-contract-additive-kernel}.
   configuration of $G$ attains in dimension $d$.
 \end{corollary}
 \begin{proof}
+  \leanok
   \uses{thm:pencil-d-contract-additive, lem:pencil-contract-standing-rigid,
         lem:deficiency-rigid-higher, cor:pencil-d-jj-flat,
         lem:pencil-contraction-deficiency}
