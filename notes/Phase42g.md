@@ -7,8 +7,10 @@ doc §1), a sub-phase of Phase 42 and the second of PD-STEPS. Forward mode, the 
 independent joins), on the `Pencil/Grade/` carrier. The pre-build recon pinned all seven Lean
 statements and spiked each complete, with no `sorry`, for two new files (*Lemma checklist*); no
 statement changes. **The first build landed `Pencil/Grade/Polygon.lean`: the five polygon nodes are
-green (5 of 7).** Next (*Hand-off*): land `Pencil/Grade/Chain.lean` from `scratch/42g/ChainBody.lean`,
-the cycle and the long ear.
+green (5 of 7).** At the PI's word the chapter's star and insertion proofs now follow their Lean,
+and a cleanup after Phase 42 tracks the other route differences (`notes/Cleanup42.md`). Next
+(*Hand-off*): land `Pencil/Grade/Chain.lean` from `scratch/42g/ChainBody.lean`, the cycle and the
+long ear.
 
 ## Current state
 
@@ -17,8 +19,10 @@ the cycle and the long ear.
 proof; the collapse at its index-level names), transcribed from the recon's spike with full
 docstrings, and the five `Fin` index lemmas in the new mirror `Mathlib/Data/Fin/Basic.lean`. Both
 modules are in the root `CombinatorialRigidity.lean`; `lake build` of both is warning-clean and the
-file lints (spike: `#print axioms` within `[propext, Classical.choice, Quot.sound]`). No chapter
-proof or `\uses` edit (*Decisions made*). **Next: land `Pencil/Grade/Chain.lean`** (*Hand-off*) from
+file lints (spike: `#print axioms` within `[propext, Classical.choice, Quot.sound]`). Then, at the
+PI's word, the chapter's proofs of `-star` and `-insert` were rewritten to follow the Lean, and the
+three other route differences are open rows of `notes/Cleanup42.md`'s ledger (*Decisions made*).
+**Next: land `Pencil/Grade/Chain.lean`** (*Hand-off*) from
 `scratch/42g/ChainBody.lean` (gitignored; `Chain.lean` there repeats the polygon file, to drop for
 `import …Grade.Polygon`; `gen.py` builds it). If the spikes are gone, the signatures and routes under
 *Lemma checklist* rebuild them. The chapter is the lemma index (forward mode). `-short` (12 nodes)
@@ -42,7 +46,7 @@ the landed carrier, the `main-component.tex` node it generalizes and the CERT wo
 (`notes/attacks/cert/workbook.md`, S1–S8); every dependency outside the seven is green, and the
 `-long` and `-short` sections share no node (`\uses` parsed across line breaks, both ways). The
 recon's pins (*Lemma checklist*) supersede the per-node read; its proof-route differences from the
-chapter's prose are under *Blockers*, item 2.
+chapter's prose are rows of the ledger in `notes/Cleanup42.md` (*Blockers*, item 2).
 
 ## Lemma checklist
 
@@ -135,11 +139,10 @@ Helpers (no node): in `Grade/Polygon.lean`, `normalsJoin_add_right`, `normalsJoi
      `Fin.insertNth i.succ y Y`. No definition. **No basis of `⋀²`** is needed: the star and the
      base case use `exteriorPower.ιMulti_span` and 2 × 2-minor functionals
      (`exteriorPower.alternatingMapLinearEquiv`), the count `exteriorPower.finrank_eq`.
-  2. **No statement changes; five proof routes differ from the chapter's prose**, the chapter's
-     proofs standing as written (*Decisions made*): part (2)'s `g` (an extension and a transvection),
-     the star (a span argument and a minor functional, so its `\uses{lem:pencil-d-polygon-normal}`
-     has no Lean edge beyond `J_0 ≠ 0`), the insertion's root (a line meets a subspace once), the base
-     triangle (minors) and the cycle's one placement path (`π` at `N = min(m, D)`).
+  2. **No statement changes; the proof routes are ledger rows**: `notes/Cleanup42.md` §2, R-1 to
+     R-5 (the star and the insertion aligned; part (2) of `-normal`, the base triangle and the
+     cycle's placement open). The Chain build adds a row, or updates R-5, wherever its Lean departs
+     from the chapter's proof (design doc §3, the standing rule).
   3. **The insertion keeps `|K| ≥ 4`**, as `4 ≤ ENat.card K` (the node's hypothesis exactly); the
      cycle and the ear derive it from `[Infinite K]` (`ENat.card_eq_top_of_infinite`).
      `-short`'s twin `lem:pencil-d-insertion` (a dimension gain at `[Infinite K]`) is a different
@@ -162,14 +165,16 @@ Helpers (no node): in `Grade/Polygon.lean`, `normalsJoin_add_right`, `normalsJoi
 
 The next concrete commit is the **second build**: `Pencil/Grade/Chain.lean` from
 `scratch/42g/ChainBody.lean` under `import …Grade.Polygon` (also `Grade.Cut`,
-`Grade.JoinIndependence`, `MainComponent.Chain`; the recon's pins are under *Lemma checklist*),
-with full docstrings, the file in the root `CombinatorialRigidity.lean`, pinning and greening
+`Grade.JoinIndependence`, `MainComponent.Chain`; the recon's pins are under *Lemma checklist*), with
+full docstrings, the file in the root `CombinatorialRigidity.lean`, pinning and greening
 `thm:pencil-d-cycle` and `thm:pencil-d-open-ear-long` (`\lean{…}` and `\leanok` on statement and
 proof), and striking PD-STATE's hinge-form deferral in design doc §3 (the hinge form is
 `card_le_finrank_of_linearIndependent_normalsJoin`, in `Chain.lean`). Add the FRICTION home-debt
-line for `pencilConfigPointGrade_ofPoints` (out of `Grade/Carrier.lean`, 42e's fold). Then the
-close. Each build runs the per-commit gates, among them `scripts/check-docstring-labels.py` against
-its parent's report.
+line for `pencilConfigPointGrade_ofPoints` (out of `Grade/Carrier.lean`, 42e's fold), and check the
+ledger row R-5 of `notes/Cleanup42.md` (the cycle's placement) against the landed proof, adding a
+row for any other departure from the chapter's proof (design doc §3). Then the close. Each build
+runs the per-commit gates, among them `scripts/check-docstring-labels.py` against its parent's
+report.
 
 ## Decisions made during this phase
 
@@ -178,10 +183,11 @@ its parent's report.
 - **The open's consistency read:** all seven proofs route through the argument their statements
   claim, on the `Grade/` carrier; the sections share no node, the coordinator's hypothesis now
   checked; no chapter edit.
-- **The prose stays** (the coordinator, at the recon's acceptance; no statement changes, so not the
-  PI's call): the chapter's proofs and `\uses` lists for the polygon nodes and the two theorems stay
-  as written, each valid, though five Lean routes differ (*Blockers*, 2). The Lean docstrings say
-  where each route differs.
+- **The star and the insertion follow the Lean** (the PI, 2026-10-30; verbatim in design doc §1 and
+  `notes/Cleanup42.md` §1): their chapter proofs were rewritten to the Lean's routes, statements
+  unchanged; the star's proof `\uses` `def:extensor`, not `lem:pencil-d-polygon-normal`. The other
+  three route differences stay as written for the post-Phase-42 cleanup, in that note's ledger,
+  which every later recon or build extends (design doc §3).
 - **The first build** (`Grade/Polygon.lean`): the spike transcribed, no proof changed. The five `Fin`
   lemmas moved to the mirror `Mathlib/Data/Fin/Basic.lean`. The collapse is index-level, so the
   docstring of `polygonCollapse_polygonCollapseEdge` carries "their joins are `J_0, …, J_{D−1}`" (each
@@ -192,4 +198,4 @@ its parent's report.
   `Grade/Polygon.lean` (five nodes) and `Grade/Chain.lean` (two), no landed file edited, no
   deferral triggered; no polygon definition and no basis of `⋀²`; `|K| ≥ 4` kept as
   `4 ≤ ENat.card K`; the collapse index-level; the long ear through a grade
-  `…of_openEar_of_cert`. No statement changes; five prose routes differ (*Blockers*, 2).
+  `…of_openEar_of_cert`. No statement changes; five prose routes differed (`notes/Cleanup42.md`).

@@ -3440,7 +3440,8 @@ the point of a picture point and $d - 2$ heights.
 \end{proof}
 
 % Source: CERT workbook, S4, stated without its choice of u among the vertices and the
-% standard basis vectors.
+% standard basis vectors. The proof follows the Lean (exists_normalsJoin_notMem_span_polygon):
+% linearity in the first point, and a 2 x 2 minor, where S4 extends bases of the exterior square.
 \begin{lemma}[A line through a vertex off the span of the joins]
   \label{lem:pencil-d-polygon-star}
   \lean{CombinatorialRigidity.Molecular.exists_normalsJoin_notMem_span_polygon}
@@ -3452,32 +3453,40 @@ the point of a picture point and $d - 2$ heights.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:pencil-d-polygon-normal}
+  \uses{def:extensor}
   As the joins are independent, $\dim W(Y) = m$. Let $S$ be the span of
   the vertices.
 
-  Suppose first that $S = K^{d+1}$. Then some $d + 1$ vertices
-  $b_1, \dots, b_{d+1}$ form a basis of $K^{d+1}$, and the joins
-  $b_\alpha \vee b_\beta$ with $\alpha < \beta$ form a basis of
-  $\bigwedge^2 K^{d+1}$ (the remark after \cref{def:extensor}). They do
-  not all lie in $W(Y)$, whose dimension $m$ is less than $D$. So some
-  $b_\alpha \vee b_\beta$ lies outside $W(Y)$, and we take
-  $Y_i = b_\alpha$ and $u = b_\beta$.
+  Suppose first that $S = K^{d+1}$, and suppose, for a contradiction,
+  that $Y_i \vee u \in W(Y)$ for every vertex $Y_i$ and every
+  $u \in K^{d+1}$. The join $a \vee u$ is linear in $a$ (the remark after
+  \cref{def:extensor}), and every $a \in K^{d+1}$ is a linear combination
+  of vertices, so $a \vee u \in W(Y)$ for all $a, u \in K^{d+1}$. These
+  joins span $\bigwedge^2 K^{d+1}$, so $W(Y) = \bigwedge^2 K^{d+1}$ and
+  $m = D$, against $m < D$.
 
-  Otherwise $S$ is a proper subspace. Let $\bigwedge^2 S$ be the span of
-  the joins of two vectors of $S$. Every join of $Y$ lies in it, so
-  $W(Y) \subseteq \bigwedge^2 S$. Take any vertex $Y_i$, which is nonzero
-  by part~(1) of \cref{lem:pencil-d-polygon-normal}, and any
-  $u \notin S$. Extend $s_1 = Y_i$ to a basis $s_1, \dots, s_r$ of $S$,
-  and this by $s_{r+1} = u$ to a basis $s_1, \dots, s_{d+1}$ of
-  $K^{d+1}$. The joins $s_\alpha \vee s_\beta$ with $\alpha < \beta$ form
-  a basis of $\bigwedge^2 K^{d+1}$, and those with $\beta \le r$ span
-  $\bigwedge^2 S$. The join $Y_i \vee u = s_1 \vee s_{r+1}$ is another
-  member of this basis, so it lies neither in $\bigwedge^2 S$ nor in
-  $W(Y)$.
+  Otherwise $S$ is a proper subspace. Take $u \notin S$, and a linear
+  functional $\psi_2$ on $K^{d+1}$ that vanishes on $S$ with
+  $\psi_2(u) \neq 0$. The join $J_0 = Y_0 \vee Y_1$ is nonzero, as a
+  member of an independent family, so $Y_0 \neq 0$, and some linear
+  functional $\psi_1$ has $\psi_1(Y_0) \neq 0$. The expression
+  $\psi_1(a)\, \psi_2(b) - \psi_2(a)\, \psi_1(b)$, a $2 \times 2$ minor,
+  is bilinear and alternating in $a$ and $b$, so there is a linear
+  functional $\varphi$ on $\bigwedge^2 K^{d+1}$ with
+  \[
+    \varphi(a \vee b) = \psi_1(a)\, \psi_2(b) - \psi_2(a)\, \psi_1(b)
+    \qquad (a, b \in K^{d+1}).
+  \]
+  It vanishes at every join $J_j = Y_j \vee Y_{j+1}$, as $\psi_2$
+  vanishes at both vertices, and so on $W(Y)$. But
+  $\varphi(Y_0 \vee u) = \psi_1(Y_0)\, \psi_2(u) \neq 0$, so
+  $Y_0 \vee u \notin W(Y)$.
 \end{proof}
 
-% Source: CERT workbook, S5.
+% Source: CERT workbook, S5: the vertex y(t) and the three excluded values. The proof that one
+% value at most is bad follows the Lean (exists_insertNth_linearIndependent_join with
+% eq_of_add_smul_mem_of_add_smul_mem): a line off a subspace meets it once at most, where S5
+% bounds the roots of a minor of the coordinate matrix.
 \begin{lemma}[Inserting a vertex into a closed polygon]
   \label{lem:pencil-d-polygon-insert}
   \lean{CombinatorialRigidity.Molecular.exists_insertNth_linearIndependent_join}
@@ -3510,25 +3519,27 @@ the point of a picture point and $d - 2$ heights.
     J_i + t\, u \vee Y_{i+1}\bigr),
   \]
   and $Y(t)$ has independent joins exactly when $F(t)$ is linearly
-  independent. The family $F(0)$ consists of the joins of $Y$ and
-  $Y_i \vee u$. It is independent, as the joins of $Y$ are and
-  $Y_i \vee u \notin W(Y)$.
+  independent.
 
-  In coordinates, $F(t)$ is a matrix with $m + 1$ rows and $D$ columns,
-  whose last row is affine in $t$ and whose other rows do not depend on
-  $t$. As $F(0)$ is independent, some minor $\delta(t)$ of size $m + 1$
-  has $\delta(0) \neq 0$. The determinant is linear in the last row, so
-  $\delta(t) = \delta(0) + t\, \delta_1$ for a constant $\delta_1$, and
-  $\delta$ has at most one root. The value $0$, the value $-1/\omega$
-  when $\omega \neq 0$, and this root are at most three elements of $K$.
-  Take $t$ outside them. Then $\delta(t) \neq 0$, so $F(t)$ is
-  independent, and $y = y(t)$ will do.
+  The first $m$ members of $F(t)$ do not depend on $t$. They are
+  linearly independent, as the $J_j$ are and $Y_i \vee u \notin W(Y)$;
+  let $A$ be their span. So $F(t)$ is independent exactly when its last
+  member $J_i + t\, u \vee Y_{i+1}$ lies outside $A$. The join $J_i$ lies
+  outside $A$. Otherwise $J_i = r + \lambda\, Y_i \vee u$ with $r$ in the
+  span of the $J_j$ with $j \neq i$, and $\lambda \neq 0$ as the joins of
+  $Y$ are independent, so $Y_i \vee u = (J_i - r)/\lambda$ would lie in
+  $W(Y)$. Hence the line $J_i + t\, u \vee Y_{i+1}$ meets $A$ for at most
+  one value of $t$: two values $t_1 \neq t_2$ would put
+  $(t_1 - t_2)\, u \vee Y_{i+1}$ in $A$, so $u \vee Y_{i+1}$, and then
+  $J_i$ too. The value $0$, the value $-1/\omega$ when $\omega \neq 0$,
+  and this value are at most three elements of $K$. Take $t$ outside
+  them. Then $F(t)$ is independent, and $y = y(t)$ will do.
 
   At $d = 3$ no vertex is inserted, as the closed polygons are written
   down (\cref{lem:pencil-chain-span-certificates}). The new vertex is
   the one of \cref{lem:pencil-insertion} at $\rho = 0$, rescaled to last
-  coordinate $1$. The dimension enters only through the number $D$ of
-  columns, and the independence of $F(0)$ gives $m + 1 \le D$.
+  coordinate $1$. The dimension does not enter the argument, and the
+  $m + 1$ independent members of $F(t)$ give $m + 1 \le D$.
 \end{proof}
 
 % Source: CERT workbook, S6 (C1), with S2 (a) at i = 0. S8 checks the construction

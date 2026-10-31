@@ -1316,8 +1316,10 @@ leaving PD-STEPS 25 nodes. Its second sub-phase, **42g** (opened 2026-10-30 at t
 seven nodes of `pencil-d.tex` on CERT's closed polygons with independent joins, whose proofs a read
 at the open found sound on the carrier. A recon then pinned the seven Lean statements, each
 checked in a complete scratch proof, for two new files. The first build landed (`Grade/Polygon.lean`,
-the five polygon nodes green); the second (the cycle and the long ear) and the close remain. The short
-ears open later at the PI's word, as each later layer does. The targets are three tiers:
+the five polygon nodes green); the second (the cycle and the long ear) and the close remain. At the
+PI's word two of the chapter's polygon proofs now follow their Lean, and the proofs whose Lean
+departs from the chapter's are tracked for a cleanup after Phase 42 (`notes/Cleanup42.md`). The
+short ears open later at the PI's word, as each later layer does. The targets are three tiers:
 every `d` at `def_3 ≤ 3` (proved and formalized, 42c), a `P⁴` theorem (every `d` at `def_3 ≤ 7`,
 by the sharp lemma), and every `d` (proved on paper, 42d).
 
@@ -1344,7 +1346,9 @@ initiative and closed 2026-09-29, proving the pencil realization theorem (§40 a
 queued five post-Phase-40 cleanup rounds ahead of ORIGAMI (2026-09-29), to run under
 autopilot, on 2026-10-07 **PROSE**'s five rounds after them, and on 2026-10-15 **RECONCILE**
 after PROSE, so **ORIGAMI opens after RECONCILE**; on 2026-10-29 the PI queued **PENCIL-D**
-ahead of ORIGAMI, and it opened the same day as Phase 42, §42 above.) A longer **unqueued**
+ahead of ORIGAMI, and it opened the same day as Phase 42, §42 above; on 2026-10-30 the PI asked
+for a cleanup after Phase 42, **CLEANUP-42**, which the coordinator proposed ahead of ORIGAMI.)
+A longer **unqueued**
 idea backlog from the same survey (KT-template subvariety questions,
 e.g. Tanigawa's identified-panel-hinge Problem 1, plus known-math
 formalization targets) lives in `notes/IdeaBacklog.md`. Its STRATA entry (2026-10-29) grew a
@@ -1402,9 +1406,16 @@ research note of its own, `notes/Strata.md`, which holds PENCIL-D's evidence.
   restating twenty-two blueprint statements and no main result's. The phase, `RECONCILE-FORMAL`, ran
   as **Phase 41** (§41 above). The findings ledger `notes/Prose-findings.md` closed with 332
   entries, 307 `done` and 25 `left`, none `reported` (its header). **PENCIL-D**
-  opened next, as Phase 42; **ORIGAMI** follows, opening with the PI.
+  opened next, as Phase 42; **CLEANUP-42** and then **ORIGAMI** follow, each opening with the PI
+  (CLEANUP-42's place ahead of ORIGAMI is the coordinator's proposal, below).
 - **PENCIL-D** — the pencil realization theorem in every dimension: opened 2026-10-29 with the PI
   as Phase 42 (§42 above; plan `notes/Phase42-design.md`).
+- **CLEANUP-42** — a cleanup of Phase 42's informal proofs that were difficult to formalize as
+  written: the nodes of `pencil-d.tex` whose Lean proof departs from the chapter's, aligned one way
+  or the other, or kept both ways. The PI asked for it on 2026-10-30 (42g); its place, right after
+  Phase 42 and ahead of ORIGAMI, is the coordinator's proposal, not yet answered. Queued, not open,
+  its rounds not yet planned; its opening recon compares every green node of `pencil-d.tex` with its
+  Lean. Plan, the PI's words and the proof-route ledger: `notes/Cleanup42.md`.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

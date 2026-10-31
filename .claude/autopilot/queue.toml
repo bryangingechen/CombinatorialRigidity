@@ -128,6 +128,16 @@ note = "notes/Phase42-design.md"
 attended = true
 done = false
 
+# Attended: the cleanup after Phase 42 the PI asked for on 2026-10-30 (42g), of the pencil-d.tex
+# proofs whose Lean departs from the chapter's. Its place ahead of ORIGAMI is the coordinator's
+# proposal, not yet answered; its rounds are planned at its open. Plan, ledger: notes/Cleanup42.md.
+[[item]]
+id = "CLEANUP-42"
+title = "CLEANUP-42: the pencil-d.tex proofs against their Lean (post-Phase-42 cleanup)"
+note = "notes/Cleanup42.md"
+attended = true
+done = false
+
 # Attended, so the driver stops before it. ORIGAMI opens with the PI, and takes its phase number
 # then; afterwards the PI may replace this row with the opened phase's id and set attended = false.
 [[item]]

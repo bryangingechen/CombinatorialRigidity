@@ -223,6 +223,32 @@ fibre-intersection lemma and Jackson–Jordán's equality.
   line breaks; 42g's open checked it with every list parsed whole: no `-long` node uses a `-short`
   node or the reverse, and `-long`'s four pointers to `sec:pencil-d-short` are notation
   (`notes/Phase42g.md` *Consistency read at the open*).
+- **PI, 2026-10-30 (42g, after the recon's acceptance and the Grade/Polygon.lean build).** The
+  coordinator had answered the PI's question "Which proofs are more natural, the formalized ones or
+  the ones currently written?" with: the Lean routes read better for the star
+  (lem:pencil-d-polygon-star: by contradiction through linearity in the first point when the
+  vertices span, else a 2×2-minor functional vanishing on the span of the vertices; Y_0 ≠ 0 from
+  J_0 ≠ 0) and for the insertion's one bad value (lem:pencil-d-polygon-insert: the first n members
+  of F(t) are independent with span A, so F(t) is independent iff J_i + t·w ∉ A, and J_i ∉ A makes
+  that line meet A at most once); the chapter reads better for part (2) of
+  lem:pencil-d-polygon-normal (the explicit affine map) and for the base triangle of
+  lem:pencil-d-polygons (P_0,…,P_d a basis); the cycle's placement (two cases vs one path with N =
+  min(m, D)) a toss-up. It offered to bring the star and insertion proofs in line with the Lean at
+  the close.
+  The PI answered, verbatim: "Yes, we should definitely align the star and insertion proofs with
+  the Lean. For the other informal proofs that were difficult to formalize in Lean, are those
+  tracked somewhere? I think we'll need a cleanup phase after Phase 42 to address them."
+  The coordinator then answered that they are tracked only in notes/Phase42g.md *Blockers* item 2,
+  which the close compresses, and proposed: a tracking note notes/Cleanup42.md for a
+  post-Phase-42 cleanup, queued right after Phase 42 and ahead of ORIGAMI "unless you want it
+  elsewhere"; a standing rule that any recon or build whose Lean departs from the chapter's proof
+  adds a row in the same commit; and that the cleanup's opening recon compare every green node of
+  pencil-d.tex (42b–42f were never checked for this) with its Lean, not only the logged rows. The
+  PI has not replied on the placement: record "ahead of ORIGAMI" as the coordinator's proposal,
+  not the PI's decision.
+  *Note (not the PI's text):* 42g aligned the two chapter proofs the same day; the tracker is
+  `notes/Cleanup42.md` (its proof-route ledger, §2), queued as `CLEANUP-42` between PENCIL-D and
+  ORIGAMI as the coordinator's proposal, and the standing rule is in §3 below.
 
 ## 2. PD-RECON (42a)
 
@@ -609,6 +635,12 @@ leaves out each graph's top cell, `d = 2 + def[3]`, which also carries content.
   §2.3; it stays GENERIC's.)
 
 ## 3. Layers (stable codes)
+
+**Standing rule for every remaining layer** (42g's `-long` and `-short`, the rest of PD-STEPS,
+PD-COVERAGE, PD-REDUCTION, PD-HEAD; from the PI's 42g answer, §1): a recon or build whose Lean
+departs from the chapter's proof adds a row to the proof-route ledger of `notes/Cleanup42.md` (§2)
+in the same commit, and a commit that aligns a row sets its status there. The post-Phase-42
+cleanup acts on the ledger (that note, §3).
 
 - **PD-RECON** (42a, **closed 2026-10-30**, `notes/Phase42a.md`): settle R1 or R2 on paper, or
   refute with a certificate (§2). Verdict: R2's steps with the embedding as base row (§1, §2.2);

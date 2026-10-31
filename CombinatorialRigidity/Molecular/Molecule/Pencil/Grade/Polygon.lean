@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Bryan Gin-ge Chen
+-/
 module
 
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Embedding
@@ -231,8 +236,8 @@ its joins. If the vertices span the space, every join lies in `W(Y)` by linearit
 point, and the joins span `⋀²` (`exteriorPower.ιMulti_span`), against `dim W(Y) = n < D`.
 Otherwise take `u` outside the span `S` of the vertices, a functional `ψ₂` vanishing on `S` but
 not at `u`, and `ψ₁` with `ψ₁ (Y 0) ≠ 0` (`Y 0 ≠ 0` as `J 0 ≠ 0`); the minor `ψ₁ a * ψ₂ b - ψ₂ a
-* ψ₁ b` kills `W(Y)` but not `Y 0 ∨ u`. This replaces the chapter's two basis arguments; the
-only input from `lem:pencil-d-polygon-normal` is the nonvanishing of `J 0`. -/
+* ψ₁ b` kills `W(Y)` but not `Y 0 ∨ u`. The chapter's proof is this one; S4 argues instead with
+bases of `⋀²`. -/
 theorem exists_normalsJoin_notMem_span_polygon {n : ℕ} [NeZero n]
     {Y : Fin n → Fin (k + 2) → K}
     (hY : LinearIndependent K fun j => normalsJoin (Y j) (Y (j + 1))) (hnD : n < screwDim k) :
@@ -308,8 +313,8 @@ i.succ y Y`) have independent joins. Take `y = (Y i + t u) / (1 + t ω)`, `ω` t
 of `u`, for `t` outside `{0, -ω⁻¹}` and the one bad value. The new joins are multiples of the
 family `(J j)_{j ≠ i}, Y i ∨ u, J i + t (u ∨ Y (i + 1))`, which is independent unless `J i + t
 (u ∨ Y (i + 1))` lies in the span `A` of the other `n` members; since `J i ∉ A`, that happens
-for at most one `t` (`eq_of_add_smul_mem_of_add_smul_mem`), in place of the chapter's minor
-`δ(t)`. -/
+for at most one `t` (`eq_of_add_smul_mem_of_add_smul_mem`). The chapter's proof is this one; S5
+instead bounds the roots of a minor `δ(t)`, affine in `t`. -/
 theorem exists_insertNth_linearIndependent_join (hK : 4 ≤ ENat.card K) {n : ℕ} [NeZero n]
     {Y : Fin n → Fin (k + 2) → K} (hY1 : ∀ j, Y j (Fin.last (k + 1)) = 1)
     (hY : LinearIndependent K fun j => normalsJoin (Y j) (Y (j + 1)))
