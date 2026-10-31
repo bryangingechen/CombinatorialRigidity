@@ -2796,6 +2796,10 @@ image of a map of the kind in \cref{lem:pencil-d-condition-linear}.
 % data) and S38 (rescaling a point changes neither W nor the stars).
 \begin{definition}[The ear data over fixed base data, in every dimension]
   \label{def:pencil-d-ear-data}
+  \lean{CombinatorialRigidity.Molecular.earPictureGrade,
+        CombinatorialRigidity.Molecular.earHeightGrade,
+        CombinatorialRigidity.Molecular.earConfigGrade}
+  \leanok
   \uses{def:open-ear, def:pencil-d-configuration, def:pencil-lifting-space}
   Let $d \ge 3$, and let $a - x_1 - \cdots - x_k - b$ be an open ear of
   $G$ on $V_1$ with $k \ge 2$ (\cref{def:open-ear}). Fix \emph{base
@@ -2821,8 +2825,21 @@ $a$ and $b$. At $d = 3$ the map $\sigma_a$ is
 $(\xi, \eta, \omega) \mapsto (\xi, \eta, h_a \cdot (\xi, \eta, \omega),
 \omega)$, and these are the ear data of \cref{def:pencil-ear-data}.
 
+% Source: SHORT-CORE workbook, S20 and S38. Part (3)'s proof here takes a multihomogeneous
+% component; the Lean (exists_mvPolynomial_earDataGrade_of_smul) takes a coefficient in the
+% scaling variables instead, with MvPolynomial.sumAlgEquiv (notes/Cleanup42.md, R-10).
 \begin{lemma}[An open ear over fixed base data, in every dimension]
   \label{lem:pencil-d-ear-data}
+  \lean{Graph.earHeightGrade_mem_liftingSpaceGrade,
+        CombinatorialRigidity.Molecular.eval_earPointPolyGrade,
+        CombinatorialRigidity.Molecular.earConfigGrade_of_mem,
+        CombinatorialRigidity.Molecular.eval_bind₁_earPicturePolyGrade,
+        CombinatorialRigidity.Molecular.earConfigGrade_first,
+        CombinatorialRigidity.Molecular.earConfigGrade_last,
+        CombinatorialRigidity.Molecular.earConfigGrade_of_mem_X,
+        CombinatorialRigidity.Molecular.exists_earConfigGrade_eq,
+        CombinatorialRigidity.Molecular.exists_mvPolynomial_earDataGrade_of_smul}
+  \leanok
   \uses{def:pencil-d-ear-data, def:pencil-lifting-space,
         def:pencil-admissible-picture}
   Let $K$ be infinite, and let base data and ear data be as in
@@ -2846,6 +2863,7 @@ $(\xi, \eta, \omega) \mapsto (\xi, \eta, h_a \cdot (\xi, \eta, \omega),
   \end{enumerate}
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-ear-data, lem:pencil-ear-data-picture,
         lem:pencil-ear-fibre, lem:pencil-picture-local}
   (1) At $d = 3$ this is \cref{lem:pencil-ear-data} with
@@ -2896,6 +2914,9 @@ $(\xi, \eta, \omega) \mapsto (\xi, \eta, h_a \cdot (\xi, \eta, \omega),
 
 \begin{lemma}[Openness along a polynomial parametrization, in every dimension]
   \label{lem:pencil-d-ear-data-open}
+  \lean{CombinatorialRigidity.Molecular.exists_mvPolynomial_le_finrank_ofNormals_bind_grade,
+        CombinatorialRigidity.Molecular.exists_mvPolynomial_le_finrank_sup_span_normalsJoin}
+  \leanok
   \uses{def:pencil-d-configuration, def:join}
   Let the points of a configuration in dimension $d$ be polynomial in a
   parameter $s$.
@@ -2912,6 +2933,7 @@ $(\xi, \eta, \omega) \mapsto (\xi, \eta, h_a \cdot (\xi, \eta, \omega),
   \end{enumerate}
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-ear-data-open, lem:rank-polynomial-of-le-finrank,
         lem:pencil-d-join-independence-open}
   At $d = 3$ this is \cref{lem:pencil-ear-data-open}, and its proof holds

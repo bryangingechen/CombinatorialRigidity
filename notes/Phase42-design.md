@@ -877,13 +877,13 @@ marked `no departure` (R-6). The post-Phase-42 cleanup acts on the ledger (that 
 
 **The red nodes by layer** (42e's open, by section of `pencil-d.tex`; a letter is minted only as
 a sub-phase opens). From `sec:pencil-d-induction` on the chapter has 62 dep-graph nodes, 45 of them
-red (recounted at 42g's close and at 42h's open; 41 after 42h's first build): 65 at 42e's open, all red, 4 green at its
+red (recounted at 42g's close and at 42h's open; 41 after 42h's first build, 38 after its second): 65 at 42e's open, all red, 4 green at its
 close, 3 cut at 42f's open (the PI, §1), 6 green at 42f's close and 7 at 42g's. The count of 66 put
 to the PI at 42e's open (§1) included `rem:pencil-d-flat-class`, a remark, which the dependency
 graph does not draw (it draws definitions, lemmas, propositions, theorems and corollaries).
 - PD-CARRIER (42e, closed, all green): `-induction` (1) and `-flat` (3); 4.
 - PD-STEPS: `-cut` (3) and `-contract` (3), 42f, closed, all green; `-long` (7), 42g, closed, all
-  green; `-short` (12), as `-short-four` (8), 42h, open, 4 green at its first build, and
+  green; `-short` (12), as `-short-four` (8), 42h, open, 4 green at its first build and 7 at its second, and
   `-short-three` (4, red), no letter minted; 25.
   `thm:pencil-d-splitoff`, `thm:pencil-d-open-ear-deficiency` and `lem:pencil-d-polygon-ear`, with
   their sections `-splitoff` and `-ear-deficiency`, had no consumer in the coverage and were cut at
