@@ -180,6 +180,21 @@ embedding inside the d = 3 coverage. The close's end-to-end chapter re-read
 caught it ("no step in dimension d"), not a gate (F19's lesson: option text is
 a coordinator artifact).
 
+**Phase 42g (PD-STEPS: cycles and long open ears) rows, 2026-10-31: 3, written
+at 42g's close.** None BLOCKED, escalated or killed; six dispatches (open,
+recon, two sonnet transcriptions of its complete spikes handed to fresh
+builders past the recon's ~530k context, F46; one opus prose commit at the PI's
+word mid-phase; close). (1) The recon checked a throwaway file twice with
+`lake env lean` against TACTICS-QUIRKS §55; self-reported, its final witnesses
+ran under `lake lean`, and the coordinator re-ran them so. (2) The Polygon build
+dropped the copyright header every `Grade/` file carries; no gate checks it;
+the coordinator's comment-stripped diff of landed file vs spike caught it, fixed
+at 199429d1. (3) The Chain build over-applied the new route-ledger rule,
+logging a carrier encoding (heights restricted to `V(G)`) as a departure; the
+coordinator judged it none, and the rule now says so. Tool:
+`phasenote.py --surfaces` misses a sub-lettered `| 42.` ROADMAP row (open and
+close, as at 42f).
+
 ## Findings
 
 (Distill recurring lessons here — one entry per lesson, rows cite it.
