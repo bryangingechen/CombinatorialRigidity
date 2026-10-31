@@ -1305,7 +1305,7 @@ for the coverage's deficiency counting at every `D`. Two fresh reads checked the
 it (design doc §3: PD-CARRIER, PD-STEPS, PD-COVERAGE, PD-REDUCTION, PD-HEAD) began at the PI's word
 with **PD-CARRIER** (42e, opened 2026-10-30, `notes/Phase42e.md`): Phase 40's setting and flat rank
 in `Pᵈ`, four nodes of `pencil-d.tex`, whose proofs a read at the open found sound on the carrier;
-a recon of their Lean signatures comes first, and each later layer opens at the PI's word. The targets are three tiers: every `d` at `def_3 ≤ 3` (proved and formalized, 42c), a
+a recon pinned their Lean signatures, each checked with no `sorry`, and each later layer opens at the PI's word. The targets are three tiers: every `d` at `def_3 ≤ 3` (proved and formalized, 42c), a
 `P⁴` theorem (every `d` at `def_3 ≤ 7`, by the sharp lemma), and every `d` (proved on paper, 42d).
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
