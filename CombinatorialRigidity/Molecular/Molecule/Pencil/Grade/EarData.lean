@@ -343,11 +343,10 @@ variable {V₁ : Set α} {q₁ : α × Fin 2 → K} {z₁ : α × Fin m → K} {
 /-- `lem:pencil-d-ear-data` (3): a condition on the points of interior bodies `v i`, unchanged when
 the points are multiplied by nonzero scalars, that holds off the zero set of a polynomial nonzero on
 `Π_a` at `xf`, `Π_b` at `xl` and `K^(m+3)` elsewhere, holds at the points of the ear data off the
-zero set of a nonzero polynomial in the ear data
-The proof scales the points by variables `λ`, takes `f` of the scaled points as a polynomial in
-`λ` and `s`, and a nonzero coefficient in `λ` is the polynomial in `s`: at its non-roots some `λ`
-with all entries nonzero keeps `f` nonzero, so `C` holds there and, by scale invariance, at the
-points themselves. -/
+zero set of a nonzero polynomial in the ear data. The proof scales the points by variables `λ`,
+takes `f` of the scaled points as a polynomial in `λ` and `s`, and a nonzero coefficient in `λ` is
+the polynomial in `s`: at its non-roots some `λ` with all entries nonzero keeps `f` nonzero, so `C`
+holds there and, by scale invariance, at the points themselves. -/
 theorem exists_mvPolynomial_earDataGrade_of_smul [Infinite K] {ι : Type*} [Finite ι]
     (v : ι → α) (hv : Function.Injective v) (hvV₁ : ∀ i, v i ∉ V₁)
     (hvX : ∀ i, v i = xf ∨ v i = xl ∨ v i ∈ X) (hfl : xl ≠ xf)

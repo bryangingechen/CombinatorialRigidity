@@ -1,15 +1,13 @@
 # Phase 42 — PENCIL-D: design (cross-phase plan and recon)
 
-**Status:** opened 2026-10-29 with the PI, sub-lettered, research first; **42h open**.
-**42h** (the third sub-phase of PD-STEPS, `notes/Phase42h.md`) **opened 2026-10-31** at the PI's
-word (§1): the eight nodes of `pencil-d.tex`'s `-short-four`, Phase 40's short-ear step in `Pᵈ` at
-four or more interior bodies, in every `d` (§3). Its pre-build recon pinned the eight, seven checked
-complete; the first build made four green (`Grade/Stars.lean`; at the PI's word, §1, two-stars
-is restated on forms and stars-four's proof follows its Lean); next, the ear data
-(`notes/Phase42h.md`). The other
-half of `-short`, the three-body ear at `d = 4` to `6` (`-short-three`, 4 nodes; codes in §3),
-stays mapped by section; it and then PD-COVERAGE, PD-REDUCTION and PD-HEAD (§3, which maps the
-remaining red nodes to them by section) open each at the PI's word.
+**Status:** opened 2026-10-29 with the PI, sub-lettered, research first; no sub-phase open.
+**42h** (the third sub-phase of PD-STEPS, `notes/Phase42h.md`) **opened and closed 2026-10-31** at
+the PI's word (§1): the eight nodes of `pencil-d.tex`'s `-short-four`, Phase 40's short-ear step in
+`Pᵈ` at four or more interior bodies, all green, their Lean in every `d` (verdict §3; at the PI's
+word, §1, two-stars is stated on forms and stars-four's proof follows its Lean). The other half of
+`-short`, the three-body ear at `d = 4` to `6` (`-short-three`, 4 nodes; codes in §3), is next,
+then PD-COVERAGE, PD-REDUCTION and PD-HEAD (§3, which maps the remaining red nodes to them by
+section), each at the PI's word.
 **42g** (the second sub-phase of PD-STEPS, `notes/Phase42g.md`) **opened 2026-10-30 and closed
 2026-10-31** at the PI's word (§1): the seven nodes of `pencil-d.tex`'s `-long`, Phase 40's cycle
 and long-ear steps in `Pᵈ` on CERT's closed polygons, all green (verdict §3).
@@ -53,8 +51,8 @@ Status: `d = 2, 3` are proved and formalized (Phases 40a, 40). Every `d` with `d
 `Strata.md` Result 17, and every `d` at `def_3 ≤ 3` follows from Result 17's proof with the sharp
 deficiency lemma, proved and formalized (42c, `thm:pencil-d-deficiency-two-le-three`). Every `d` is
 proved on paper (42d, `cor:pencil-d-conditioned-pair`); formalizing it began with the setting and
-the flat rank (42e), then the induction's cut-vertex, bridge and contraction steps (42f) and its
-cycle and long-ear steps (42g); its short-ear step at four or more interior bodies is open (42h).
+the flat rank (42e), then the induction's cut-vertex, bridge and contraction steps (42f), its
+cycle and long-ear steps (42g) and its short-ear step at four or more interior bodies (42h).
 `d = 4, 5, 6` are measured (Results 11, 19), not found below target under the `--d4`
 population's cap (`n ≤ 12`, 36 simple graphs) and 8 graphs past it. Where the
 conjecture has content, that is 47 cells on 18 graphs, six of them cycles (§2.5).
@@ -797,17 +795,26 @@ marked `no departure` (R-6). The post-Phase-42 cleanup acts on the ledger (that 
   insertion's proofs follow their Lean (§1); the other route differences are `notes/Cleanup42.md`'s
   ledger (R-3 to R-5 open, R-6 no departure). Its open found that no `-long` node uses a `-short`
   one. It edited no file a deferral below names.
-  **PD-STEPS's third sub-phase, 42h, opened 2026-10-31** at the PI's word (§1; `notes/Phase42h.md`):
-  the half of `sec:pencil-d-short` for open ears with four or more interior bodies, in every `d`.
-  Codes: `-short` stays the section's, and its halves are **`-short-four`**, eight nodes
-  (`lem:pencil-d-two-stars`, `lem:pencil-d-insertion`, `lem:pencil-d-kernel-curve`,
+  **PD-STEPS's third sub-phase, 42h, opened and closed 2026-10-31** at the PI's word (§1;
+  `notes/Phase42h.md`): the half of `sec:pencil-d-short` for open ears with four or more interior
+  bodies, in every `d`. Codes: `-short` stays the section's, and its halves are **`-short-four`**,
+  eight nodes (`lem:pencil-d-two-stars`, `lem:pencil-d-insertion`, `lem:pencil-d-kernel-curve`,
   `lem:pencil-d-stars-four`, `def:pencil-d-ear-data`, `lem:pencil-d-ear-data`,
-  `lem:pencil-d-ear-data-open`, `thm:pencil-d-open-ear-four`; 42h), and **`-short-three`**, four
-  nodes (`lem:pencil-d-stars-three`, `lem:pencil-d-glued-ends`, `lem:pencil-d-planes-meet`,
-  `thm:pencil-d-open-ear-three`; the three-body ear at `d = 4` to `6`, red, no letter minted),
-  named after their theorems. `-short-three`'s proofs use `-short-four`'s theorem and five of its
-  lemmas; no `-short-four` node uses a `-short-three` one, so `-short-three` opens after 42h, at the
-  PI's word, its recon building on 42h's Lean.
+  `lem:pencil-d-ear-data-open`, `thm:pencil-d-open-ear-four`; 42h, all green), and
+  **`-short-three`**, four nodes (`lem:pencil-d-stars-three`, `lem:pencil-d-glued-ends`,
+  `lem:pencil-d-planes-meet`, `thm:pencil-d-open-ear-three`; the three-body ear at `d = 4` to `6`,
+  red, no letter minted), named after their theorems. 42h's Lean is three new files:
+  `Pencil/Grade/Stars.lean` (the linear algebra), `Grade/EarData.lean` (the ear data) and
+  `Grade/Short.lean` (the factoring through `G″`, `Graph.X0AttainsGrade.of_openEar_splitOff`, and
+  the theorem). Verdicts: the Lean holds at every `m`; annihilators are read on the forms on `⋀²`
+  (the chapter's pairing), so no exterior power past `⋀²` is used; at the PI's word two-stars is
+  stated so and stars-four's proof follows its Lean (§1); the other route differences are
+  `notes/Cleanup42.md`'s ledger (R-9 to R-12 open). It edited no file a deferral below names.
+  `-short-three`'s proofs use `-short-four`'s theorem and five of its lemmas, and no `-short-four`
+  node uses a `-short-three` one, so `-short-three` opens next, at the PI's word, its recon building
+  on 42h's Lean: the factoring applies at three interior bodies with `splitOff_ear_succAbove` at
+  `k = 0`, leaving only its insertion hypothesis (checked at 42h's close, `notes/Phase42h.md`
+  *Hand-off*).
   **Handed on from PD-RECON** (42a's close; SHORT-CORE's workbook S56 has the detail):
   - *PD-STEPS, the short-ear step (row 13).* At `d = 4`, `k = 3, 4, 5`: the `P³` factoring
     (`Graph.X0Attains.of_openEar_splitOff`) with `D = 10`, its insertion hypothesis taken at base
@@ -843,7 +850,8 @@ marked `no departure` (R-6). The post-Phase-42 cleanup acts on the ledger (that 
   with the next commit that edits the file it names (a new declaration there rebuilds most of
   `Molecular/`): FRICTION's moves of `exteriorPower_map_normalsJoin` to `PanelLayer.lean`, beside
   `normalsJoin` (and with it, from 42g, the four `normalsJoin` lemmas of `Grade/Polygon.lean`, and
-  from 42h the four of `Grade/Stars.lean`),
+  from 42h the four of `Grade/Stars.lean` and `Grade/Short.lean`'s `complementScrew`, beside
+  `panelSupportExtensor`),
   and of `BodyHingeFramework.map` and the zero-hinge motion lemmas to
   `RigidityMatrix/Basic.lean` and `GenericityDevice.lean`; and FRICTION's open `contragredientEquiv`
   in `Meet.lean`, which `Grade/Collineation.lean`'s inline contragredient would then call.
@@ -867,7 +875,13 @@ marked `no departure` (R-6). The post-Phase-42 cleanup acts on the ledger (that 
   compiled against it alone at 42f's close. **Deferred to them from PD-STEPS (42h)**, with the next
   commit that edits `MainComponent/Cut.lean`: FRICTION's move of the four `pathVertex` lemmas of
   `Grade/Stars.lean` (`pathVertex_add_smul`, `pathVertex_succ_castSucc`, `pathVertex_eq_of_val_eq`,
-  `pathVertex_zero_single`) beside `pathVertex`.
+  `pathVertex_zero_single`) beside `pathVertex`, and of the three of `Grade/Short.lean`
+  (`pathVertex_comp_succAbove_one`, `pathVertex_smul_comp`, `pathVertex_map`), the first with or
+  after the `Fin.succAbove` values it uses. With the next commit that edits the file each names,
+  FRICTION's other 42h home debts: `starGrade_smul` to `Grade/Stars.lean`; `coe_succAbove_one` and
+  `coe_succAbove_two`, as one `Fin.val_succAbove`, to the mirror `Mathlib/Data/Fin/Basic.lean`
+  (whose edit rebuilds `Grade/Polygon.lean` and the files after it); and `span_range_smul_eq`, a
+  mirror candidate, at a cleanup round.
 - **PD-REDUCTION**, **PD-HEAD**: Phase 39's reduction in `Pᵈ`; the headline `PencilPair`, and the
   flag strata as corollaries. Their informal proofs are 42d's `sec:pencil-d-reduction` and, for
   the generic conjunct, `sec:pencil-d-nondegenerate` to `sec:pencil-d-generic`. **At Phase 42's close**, Tier 0 joins `formalization.yaml`'s
@@ -876,15 +890,15 @@ marked `no departure` (R-6). The post-Phase-42 cleanup acts on the ledger (that 
   added no row, as Phase 40's sub-phases did not.
 
 **The red nodes by layer** (42e's open, by section of `pencil-d.tex`; a letter is minted only as
-a sub-phase opens). From `sec:pencil-d-induction` on the chapter has 62 dep-graph nodes, 45 of them
-red (recounted at 42g's close and at 42h's open; 41 after 42h's first build, 38 after its second): 65 at 42e's open, all red, 4 green at its
-close, 3 cut at 42f's open (the PI, §1), 6 green at 42f's close and 7 at 42g's. The count of 66 put
-to the PI at 42e's open (§1) included `rem:pencil-d-flat-class`, a remark, which the dependency
-graph does not draw (it draws definitions, lemmas, propositions, theorems and corollaries).
+a sub-phase opens). From `sec:pencil-d-induction` on the chapter has 62 dep-graph nodes, 37 of them
+red (recounted at 42h's close): 65 at 42e's open, all red, 4 green at its close, 3 cut at 42f's
+open (the PI, §1), 6 green at 42f's close, 7 at 42g's and 8 at 42h's. The count of 66 put to the PI
+at 42e's open (§1) included `rem:pencil-d-flat-class`, a remark, which the dependency graph does not
+draw (it draws definitions, lemmas, propositions, theorems and corollaries).
 - PD-CARRIER (42e, closed, all green): `-induction` (1) and `-flat` (3); 4.
 - PD-STEPS: `-cut` (3) and `-contract` (3), 42f, closed, all green; `-long` (7), 42g, closed, all
-  green; `-short` (12), as `-short-four` (8), 42h, open, 4 green at its first build and 7 at its second, and
-  `-short-three` (4, red), no letter minted; 25.
+  green; `-short` (12), as `-short-four` (8), 42h, closed, all green, and `-short-three` (4, red),
+  no letter minted, next; 25.
   `thm:pencil-d-splitoff`, `thm:pencil-d-open-ear-deficiency` and `lem:pencil-d-polygon-ear`, with
   their sections `-splitoff` and `-ear-deficiency`, had no consumer in the coverage and were cut at
   42f's open (the PI, §1).

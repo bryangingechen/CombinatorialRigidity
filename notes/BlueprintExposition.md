@@ -1852,6 +1852,24 @@ re-read against the landed statements found no wording false and changed none (t
 holds at `d = 2`; the nodes keep the chapter's `d ≥ 3`).
 **Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
 
+### `pencil-d.tex` — Phase 42h (PD-STEPS: open ears with four or more interior bodies in every dimension)
+
+**No new entries — judged at the sub-phase close (2026-10-31).** The source is the project's own
+(42d's write-up of the SHORT-CORE workbook, cited in TeX comments); the criterion transfers as in
+the `pencil.tex` section. The eight `-short-four` nodes of `sec:pencil-d-short` are green, in five
+build commits from the recon's pins, and no node decomposed. Two nodes changed at the PI's word,
+not for difficulty: two-stars' parts (2) and (3) are stated on the linear forms on `⋀²`, the
+`⋀^{d−1}` reading kept through the section's pairing, and stars-four's proof follows its Lean's
+shorter route on forms; each is written out in full. The route differences left (the kernel
+curve's rank along a curve for Cramer's rule, the ear data's coefficient for a multihomogeneous
+component, a section of the quotient for two-stars (1)'s basis, the theorem's factored order) are
+a matter of presentation, tracked for the cleanup after Phase 42 (`notes/Cleanup42.md`), not a
+compressed step. The close's end-to-end re-read against the landed statements changed no
+statement and repaired one sentence of the section's overview, which said that `W` is everything
+at general points of the ear where stars-four gives "whenever it contains both stars" (the Lean
+also holds at `d = 2`; the nodes keep the chapter's `d ≥ 3`).
+**Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
+
 ## Retroactive coverage
 
 - **Molecular program (Phases 17–22a): scanned 2026-06-04** — candidates folded

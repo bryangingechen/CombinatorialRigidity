@@ -805,9 +805,9 @@ formalizing it began as 42e (PD-CARRIER, opened and closed 2026-10-30, `notes/Ph
 setting and the flat rank, formalized; PD-STEPS began as 42f (opened and closed 2026-10-30,
 `notes/Phase42f.md`): its cut-vertex, bridge and contraction steps, formalized; and continued as 42g
 (opened 2026-10-30, closed 2026-10-31, `notes/Phase42g.md`): its cycle and long-ear steps,
-formalized; the short ears, the rest of PD-STEPS, continue as 42h (opened 2026-10-31,
-`notes/Phase42h.md`): those with four or more interior bodies, the three-body case after it at the
-PI's word. Summary: ROADMAP §42.
+formalized; the short ears, the rest of PD-STEPS, continued as 42h (opened and closed 2026-10-31,
+`notes/Phase42h.md`): those with four or more interior bodies, formalized; the three-body case
+opens next, at the PI's word. Summary: ROADMAP §42.
 Still queued, codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
 conjecture, `notes/Origami.md` — the next phase to open after PENCIL-D, with the PI), **PIN** (a second,
 independent proof of the 2-d molecular conjecture by Jackson–Jordán 2008's

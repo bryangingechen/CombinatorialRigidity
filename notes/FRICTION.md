@@ -134,15 +134,55 @@ to be re-derived by re-reading entries later.
   `Molecular/`.
 - **Status:** open (42c's deferral, extended; tracked under PD-STEPS, `notes/Phase42-design.md` §3).
 
-### [open] The `pathVertex` lemmas of 42h sit in `Pencil/Grade/Stars.lean`, not `MainComponent/Cut.lean`
+### [open] The `pathVertex` lemmas of 42h sit in `Pencil/Grade/Stars.lean` and `Grade/Short.lean`, not `MainComponent/Cut.lean`
 - **Where it bit:** Phase 42h, `Pencil/Grade/Stars.lean`: `pathVertex_add_smul` (the path sequence
   is affine in its interior bodies), `pathVertex_succ_castSucc`, `pathVertex_eq_of_val_eq` and
   `pathVertex_zero_single` are about `pathVertex`, whose home is `MainComponent/Cut.lean`, beside
-  `pathVertex_cases`.
+  `pathVertex_cases`. `Grade/Short.lean` added three more: `pathVertex_comp_succAbove_one` (the
+  sequence without the second interior body), `pathVertex_smul_comp` (rescaled interior bodies) and
+  `pathVertex_map` (a function of the bodies commutes with the sequence).
 - **Proposed fix:** move them there, unchanged, with the next commit that edits `Cut.lean` for
   another reason (a declaration added there rebuilds the `MainComponent/` and `Grade/` files after
   it); `pathVertex_zero_single`, stars-four's one direction at `K^(k+2)`, may stay.
+  `pathVertex_comp_succAbove_one` needs the `Fin.succAbove` values of `Grade/Short.lean` (the
+  `Fin.val_succAbove` entry below): it moves with them, or after them.
 - **Status:** open (42h's deferral; tracked under PD-STEPS, `notes/Phase42-design.md` §3).
+
+### [open] `complementScrew` sits in `Pencil/Grade/Short.lean`, not `PanelLayer.lean`
+- **Where it bit:** Phase 42h, `Pencil/Grade/Short.lean`: `complementScrew K k`, the complement
+  isomorphism `complementIso (j := 2)` of `⋀² K^(k+2)` onto `ScrewSpace K k` as a named
+  equivalence. `Graph.X0AttainsGrade.of_openEar_splitOff` moves the hinge span to the join span
+  through it, with `span_supportExtensor_comp_eq_map_normalsJoin` and
+  `finrank_sup_map_complementScrew` (the grade forms of `MainComponent/Ear.lean`'s
+  `screwComplementIso` lemmas). `panelSupportExtensor n₁ n₂` (`AlgebraicInduction/PanelLayer.lean`)
+  is `complementScrew K k (normalsJoin n₁ n₂)` by definition, so that file is its home.
+- **Friction:** none at the build, which kept the new file additive; the cost is the map built
+  twice, inline in `panelSupportExtensor`.
+- **Proposed fix:** move `complementScrew` beside `panelSupportExtensor`, which can then be stated
+  through it, with the `normalsJoin` moves above: the next commit that edits `PanelLayer.lean` for
+  another reason (a new declaration there rebuilds most of `Molecular/`). Its two companions stay
+  in `Grade/Short.lean`, their one consumer.
+- **Status:** open (42h's deferral; tracked under PD-STABLE's, `notes/Phase42-design.md` §3).
+
+### [mirror-candidate] No `Fin.val_succAbove` or per-member `Submodule.span_range_smul_eq`; three general helpers sit in `Pencil/Grade/Short.lean`
+- **Where it bit:** Phase 42h, `Pencil/Grade/Short.lean`: `coe_succAbove_one` and
+  `coe_succAbove_two` (the value of `(1 : Fin (n + 3)).succAbove j` and of
+  `(2 : Fin (n + 4)).succAbove j`: `j` below the pivot, else `j + 1`), for the index bookkeeping of
+  `pathVertex_comp_succAbove_one` and `span_joins_succAbove_two`; and `span_range_smul_eq`
+  (rescaling each member of a family by a nonzero scalar keeps its span), for `starGrade_smul` and
+  `starsCond_of_smul`.
+- **Friction:** mathlib has no value lemma for `Fin.succAbove` at a general pivot (the mirror's
+  `Fin.val_succ_succAbove` takes a pivot `i.succ`; the two are its cases `i = 0, 1`), and only the
+  one-scalar `Submodule.span_smul_eq_of_isUnit` for spans (`lean_loogle` and a grep of mathlib).
+- **Proposed fix:** `Fin.val_succAbove (p : Fin (n + 1)) (j : Fin n) : (p.succAbove j : ℕ) =
+  if (j : ℕ) < p then j else j + 1` in the mirror `Mathlib/Data/Fin/Basic.lean`, the two lemmas
+  its instances, with the next commit that edits the mirror (a declaration there rebuilds
+  `Grade/Polygon.lean` and the `Grade/` files after it). `Submodule.span_range_smul_eq (x : ι → M)
+  (d : ι → R) (hd : ∀ i, IsUnit (d i)) : span R (range fun i => d i • x i) = span R (range x)` in
+  a new mirror `Mathlib/LinearAlgebra/Span/Basic.lean`, beside `span_smul_eq_of_isUnit`, at a
+  cleanup round or with a consumer outside `Grade/Short.lean`. And `starGrade_smul` (Short's) goes
+  beside `starGrade` in `Grade/Stars.lean`, with the next commit that edits that file.
+- **Status:** open (mirror-candidate; 42h's deferral, `notes/Phase42-design.md` §3).
 
 ### [open] The kernel argument at an additive core is proved twice, inline at `d = 3` and in `Pencil/Grade/`
 - **Where it bit:** Phase 42f, `lem:pencil-contract-additive-kernel`

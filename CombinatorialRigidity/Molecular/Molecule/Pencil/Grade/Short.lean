@@ -13,15 +13,30 @@ public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Shor
 /-!
 # The step at four or more interior bodies of an open ear, in every dimension
 
-The graph-combinatorics and rank leaves of the steps `thm:pencil-d-open-ear-four` and its relatives
-(`blueprint/src/chapter/pencil-d.tex`, `sec:pencil-d-short`).
+The step `thm:pencil-d-open-ear-four` (`blueprint/src/chapter/pencil-d.tex`,
+`sec:pencil-d-short`), with the leaves it shares with the step at three interior bodies.
 
-* `Graph.exists_earBase_splitOff_grade`: the base data of the steps at three and four or more
-  interior bodies, `Graph.exists_earBase_splitOff` with `m` heights (the grade forms of the
-  ear data, of lifting an ear's heights column by column, and of the rank congruences).
 * `splitOff_ear_succAbove`: suppressing the second interior body `x 1` of an ear with `k + 3`
   interior bodies and relinking `e 1` to `x 0 − x 2` leaves an ear on `V₁` with `k + 2` interior
   bodies; `splitOff_ear_four` and `splitOff_ear_three` at every length.
+* `Graph.exists_earBase_splitOff_grade`: the base data of the steps at three and four or more
+  interior bodies, `Graph.exists_earBase_splitOff` with `m` heights (the grade forms of the
+  ear data, of lifting an ear's heights column by column, and of the rank congruences).
+* `Graph.X0AttainsGrade.of_openEar_splitOff`: those steps factored through `G″`,
+  `Graph.X0Attains.of_openEar_splitOff` at grade `m + 1`, given that the suppressed body can be
+  put back (`hins`); the hinges become joins through `complementScrew`.
+* `starsCond_of_smul` and `span_joins_succAbove_two`: the stars condition is scale invariant, and
+  the joins of the ear of `G` are those of the ear of `G″` but one, with the two at the body put
+  back.
+* `Graph.X0AttainsGrade.of_openEar_four` (`thm:pencil-d-open-ear-four`): the factoring, its `hins`
+  discharged by `lem:pencil-d-stars-four`, `lem:pencil-d-ear-data` (3) and `lem:pencil-d-insertion`.
+
+Helpers whose homes are other files, moved with the next commit that edits those files
+(`notes/Phase42h.md` *Hand-off*): `complementScrew` belongs beside `panelSupportExtensor` in
+`AlgebraicInduction/PanelLayer.lean`; `pathVertex_comp_succAbove_one`, `pathVertex_smul_comp` and
+`pathVertex_map` in `MainComponent/Cut.lean`; `starGrade_smul` in `Grade/Stars.lean`; and the
+upstream candidates `coe_succAbove_one` and `coe_succAbove_two`, as one `Fin.val_succAbove`, in the
+mirror `Mathlib/Data/Fin/Basic.lean`, and `span_range_smul_eq` (`notes/FRICTION.md`).
 -/
 
 @[expose] public section
@@ -406,8 +421,9 @@ noncomputable def complementScrew (K : Type*) [Field K] (k : ℕ) :
 /-- **The hinges of `ofNormals` along a family of links are the polar images of the joins**
 (`span_supportExtensor_comp_eq_map_pointJoin` at every grade): the span of the hinges at the labels
 `g i`, linking `u i` to `w i`, is the image under `complementScrew` of the span of the joins
-`c (u i, ·) ∧ c (w i, ·)`. Each hinge is `±` the polar image of the join at its recorded ends
-(`panelSupportExtensor`, `panelSupportExtensor_swap`). -/
+`c (u i, ·) ∧ c (w i, ·)`. Each hinge is the polar image of the join at its recorded ends
+(`panelSupportExtensor`), which is `±` that at `u i, w i` (`span_supportExtensor_ofNormals_eq`,
+`panelSupportExtensor_swap`). -/
 theorem span_supportExtensor_comp_eq_map_normalsJoin {k : ℕ} {H : Graph α β} {ends : β → α × α}
     (hends : ∀ f u w, H.IsLink f u w → H.IsLink f (ends f).1 (ends f).2)
     (c : α × Fin (k + 2) → K) {ι : Type*} (g : ι → β) (u w : ι → α)
@@ -671,7 +687,8 @@ theorem pathVertex_smul_comp {V : Type*} [AddCommGroup V] [Module K V] {n : ℕ}
     | zero => simp [pathVertex]
     | succ i => simp only [pathVertex, Fin.snoc_castSucc, Fin.cons_succ]
 
-/-- A linear map carries the path sequence to the path sequence of the images. -/
+/-- A function carries the path sequence to the path sequence of the images:
+`f (pathVertex a x b j) = pathVertex (f a) (f ∘ x) (f b) j`. -/
 theorem pathVertex_map {V W : Type*} {n : ℕ} (f : V → W) (a b : V) (x : Fin n → V)
     (j : Fin (n + 2)) : f (pathVertex a x b j) = pathVertex (f a) (f ∘ x) (f b) j := by
   induction j using Fin.lastCases with
@@ -702,8 +719,9 @@ theorem starGrade_smul {k : ℕ} {c : K} (hc : c ≠ 0) (y : Fin (k + 2) → K) 
   rw [starGrade, starGrade, h]
   exact span_range_smul_eq (normalsJoin y) (fun _ => c) (fun _ => hc)
 
-/-- The stars condition of `lem:pencil-d-stars-four` is invariant under rescaling the interior
-points by nonzero scalars (the `hC` of `lem:pencil-d-ear-data` (3)). -/
+/-- The stars condition of `lem:pencil-d-stars-four` holds at the interior points `Y` if it holds at
+their nonzero multiples `c i • Y i`, as rescaling changes neither the span of the joins nor the
+stars (the `hC` of `lem:pencil-d-ear-data` (3)). -/
 theorem starsCond_of_smul {k n : ℕ} (ρ : Submodule K (⋀[K]^2 (Fin (k + 2) → K)))
     (pa pb : Fin (k + 2) → K) (Y : Fin (n + 3) → Fin (k + 2) → K) (c : Fin (n + 3) → K)
     (hc : ∀ i, c i ≠ 0)
@@ -742,7 +760,8 @@ theorem starsCond_of_smul {k n : ℕ} (ρ : Submodule K (⋀[K]^2 (Fin (k + 2) �
   exact h
 
 /-- The joins of the path through the extra point `P 2`: if `Q` is `P` without its index `2`, the
-joins of `P` are those of `Q` but the one at `1` (`P 1 ∨ P 3`), and `P 1 ∨ P 2`, `P 2 ∨ P 3`. -/
+joins of `P` span what the joins of `Q` but the one at `1` (`Q 1 ∨ Q 2`, which is `P 1 ∨ P 3`)
+span with `P 1 ∨ P 2` and `P 2 ∨ P 3`. -/
 theorem span_joins_succAbove_two {k n : ℕ} (P : Fin (n + 6) → Fin (k + 2) → K)
     (Q : Fin (n + 5) → Fin (k + 2) → K) (h : ∀ j, P (Fin.succAbove 2 j) = Q j) :
     Submodule.span K (Set.range fun i : Fin (n + 5) => normalsJoin (P i.castSucc) (P i.succ)) =
@@ -806,8 +825,14 @@ theorem span_joins_succAbove_two {k n : ℕ} (P : Fin (n + 6) → Fin (k + 2) �
 /-! ## The open ear with four or more interior bodies (`thm:pencil-d-open-ear-four`) -/
 
 
-/-- `thm:pencil-d-open-ear-four`: an open ear `a − x 0 − ⋯ − x (n + 3) − b` with `n + 4 ≥ 4`
-interior bodies, its ends possibly adjacent; `G″ = G.splitOff (x 1) (x 0) (x 2) (e 1)`. -/
+/-- `thm:pencil-d-open-ear-four`: let `G` satisfy the standing hypotheses, with an open ear
+`a − x 0 − ⋯ − x (n + 3) − b` on `V₁` of `n + 4 ≥ 4` interior bodies, its ends possibly adjacent,
+and let `G″ = G.splitOff (x 1) (x 0) (x 2) (e 1)` be `G` with `x 1` suppressed. If the general
+configurations of `G[V₁]` and `G″` attain with `m` heights, so does that of `G`. The proof is
+`Graph.X0AttainsGrade.of_openEar_splitOff` at `G″` (`splitOff_ear_succAbove`), its `hins`
+discharged by `exists_mvPolynomial_starsFour`, moved to the ear data by
+`exists_mvPolynomial_earDataGrade_of_smul` (`starsCond_of_smul`), and
+`exists_insertion_of_starGrade_sup` (`span_joins_succAbove_two`). -/
 theorem _root_.Graph.X0AttainsGrade.of_openEar_four [Infinite K] [Finite α] [Finite β]
     {G : Graph α β} (hG : G.IsX0Graph) {V₁ : Set α} {n : ℕ} {x : Fin (n + 4) → α} {a b : α}
     {e : Fin (n + 5) → β} (hcover : V(G) = V₁ ∪ Set.range x) (hinj : Function.Injective x)
