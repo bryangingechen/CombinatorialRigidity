@@ -226,6 +226,19 @@ bullet. The coordinator's full-diff read caught both, fixed in `9a19579e` (F44).
 stage's polynomial drops). The theorem dispatch marked it a hypothesis, and it
 held (F14).
 
+**Phase 42j (PD-COVERAGE: the coverage in every dimension) rows, 2026-10-31:
+2, written at 42j's close.** None BLOCKED, escalated or killed; six dispatches
+(open; recon, all four nodes spiked complete; three sonnet builds; close). The
+recon returned at ~440k tokens, so per F46 its spike went to fresh builders
+rather than a resume; each landed body diffed identical to the spike. (1) The
+open's question to the PI repeated design doc §3's "bridge, cut-vertex or cycle
+data", which omits the fourth reduction's data, a maximal planar-rigid set. The
+open's check caught it and noted it beside the verbatim PI entry (F19). The
+estimate of 4–7 builds was 3. (2) Build 2's note gave the landed names' axioms
+from the coordinator's spike run, not a run on the landed tree (its return said
+so). The coordinator's `lake lean` on the landed names confirmed them before the
+next dispatch.
+
 ## Findings
 
 (Distill recurring lessons here — one entry per lesson, rows cite it.
