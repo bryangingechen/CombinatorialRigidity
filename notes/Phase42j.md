@@ -7,12 +7,23 @@ Forward mode, the Lean under `/coordinate-phase`: the four red nodes of
 and `thm:pencil-d-chain-or-core`) and `sec:pencil-d-coverage` (`thm:pencil-d-coverage`,
 `lem:pencil-d-distinct-statement`), on the `Pencil/Grade/` carrier and PD-STEPS's Lean. The
 pre-build recon spiked all four complete, with no `sorry`, and pinned three builds (*Hand-off*).
-Build 1 (the data-returning reductions and the chain lemmas, no red node) has landed. Next: build 2,
-`Grade/Chains.lean` (COUNT-C and chain-or-core).
+Builds 1 (the data-returning reductions and the chain lemmas, no red node) and 2 (`Grade/Chains.lean`:
+COUNT-C and chain-or-core, both green) have landed. Next: build 3, `Grade/Coverage.lean` (the
+coverage and the distinct statement).
 
 ## Current state
 
-**Next: build 2, `Grade/Chains.lean`** (*Hand-off*). **Build 1 has landed** (no red node): the
+**Next: build 3, `Grade/Coverage.lean`** (*Hand-off*). **Build 2 has landed**: new
+`Grade/Chains.lean` (in the root import) holds `Graph.IsChain.partitionDef_induce_le`
+(`lem:pencil-d-chain-count`) and `Graph.IsX0Graph.exists_chain_or_core`
+(`thm:pencil-d-chain-or-core`), the spike's transplant; both nodes `\lean{}` and `\leanok`
+(statement and proof) and on the three standard axioms; 31 red nodes remain from
+`sec:pencil-d-induction` on. The honesty gate, by eye: chain-count's chapter hypotheses `d ≥ 3` and
+`ℓ ≥ 1` are dropped (the pin is more general), and every other one is a hypothesis of the Lean
+(standing, `G - v` connected, a body of degree not two, `hshort`, `3(ℓ+1) ≤ D`); chain-or-core's
+`hS` is the chapter's "no planar-rigid set", `hn` is `d ≥ 3`, and sparsity is discharged in the proof
+by `one_le_partitionDef_induce_id`. Chain-count's Lean keeps its departure from the chapter proof
+(R-17, still open in `notes/Cleanup42.md`; the blueprint proofs are not rewritten). **Build 1 has landed** (no red node): the
 data-returning reductions in `MainComponent/CoverageChain.lean`, `CoverageCut.lean` and
 `CoverageTheoremS.lean`, each `d = 3` lemma now a short corollary of its data form with its name and
 signature unchanged (downstream builds unchanged), the four chain lemmas, and
@@ -56,8 +67,8 @@ are under *Hand-off*; the recon's verdicts under *Decisions made*.
 - [x] **Build 1**, the data-returning reductions and the chain lemmas, in `MainComponent/` (no red
   node; serves builds 2 and 3). Gates: root `lake build` warning-clean, `lake lint`,
   `blueprint/lint.sh`, `notes/check-phase-note.py`, sorry-grep.
-- [ ] `lem:pencil-d-chain-count` (COUNT-C), build 2, `Grade/Chains.lean`.
-- [ ] `thm:pencil-d-chain-or-core`, build 2, same file.
+- [x] `lem:pencil-d-chain-count` (COUNT-C), build 2, `Grade/Chains.lean`.
+- [x] `thm:pencil-d-chain-or-core`, build 2, same file.
 - [ ] `thm:pencil-d-coverage`, build 3, `Grade/Coverage.lean`.
 - [ ] `lem:pencil-d-distinct-statement`, build 3, same file.
 - [ ] **Close** 42j, an intermediate sub-phase close that ends PD-COVERAGE (`PHASE-BOUNDARIES.md`).
@@ -69,11 +80,11 @@ are under *Hand-off*; the recon's verdicts under *Decisions made*.
 
 ## Hand-off / next phase
 
-Builds 2 and 3, one commit each, then the close (build 1 has landed). Every declaration they land
+Build 3, one commit, then the close (builds 1 and 2 have landed). Every declaration they land
 is spiked complete (`All.lean`), so each build transplants its spike (the coordinator may resume the recon to land
 them). The encoding: the chains at `n = d`
 with `D = bodyBarDim n` and no field (COUNT-B's), the coverage at `m = d − 2` with `n = m + 2`.
-- **Build 1 (LANDED; next is build 2)** (no red node): the data-returning reductions, each `d = 3` lemma kept as a two-line
+- **Build 1 (LANDED)** (no red node): the data-returning reductions, each `d = 3` lemma kept as a two-line
   corollary of its data form, and the four chain lemmas build 2 calls. Edits three files:
   - `MainComponent/CoverageChain.lean`: `Graph.IsX0Graph.exists_cycle_of_forall_degree_eq_two`
     (the body of `x0Reduces_of_forall_degree_eq_two`, returning the `cycle` clause's fields);
@@ -93,7 +104,7 @@ with `D = bodyBarDim n` and no field (COUNT-B's), the coverage at `m = d − 2` 
   root). No design doc §3 deferral names these files. The data forms may join the `\lean{}` pins
   of `lem:pencil-x0-cut-reduces`, `-cycle-reduces` and `-planar-rigid-reduces`
   (`main-component.tex`) with a clause naming the data, the additive-successor gate's way.
-- **Build 2**, new `Grade/Chains.lean` (imports `Grade/TheoremS.lean`), both nodes of `-chains`:
+- **Build 2 (LANDED; next is build 3)**, new `Grade/Chains.lean` (imports `Grade/TheoremS.lean`), both nodes of `-chains`:
   - `lem:pencil-d-chain-count`: `Graph.IsChain.partitionDef_induce_le (hG : G.IsX0Graph) (h2c)
     (hhub) (hℓ : 3 * (ℓ + 1) ≤ Graph.bodyBarDim n) (hshort : ∀ V₁ k x a b e, G.IsChain V₁ x a b e
     → k ≤ ℓ) (hC : G.IsChain V₁ x a b e) : (G.induce V₁).partitionDef n id ≤ -((ℓ : ℤ) + 1)`.
@@ -164,4 +175,4 @@ with `D = bodyBarDim n` and no field (COUNT-B's), the coverage at `m = d − 2` 
   lemmas). Chain-count's algebra, re-derived: `|V₁| − 1 = |B| − e + Σ_{j≠i} L_j` and
   `e(V₁) = Σ_{j≠i} L_j`, so `s_D(V₁) = Σ_{j≠i} L_j − D(e − |B|) ≤ (ℓ+1)(e−1) − De/3 ≤ −(ℓ+1)`,
   by `3|B| ≤ 2e` and `3(ℓ+1) ≤ D`. Chain-or-core splits at `k ≥ 2`, `lem:pencil-d-chain-core`'s.
-  From `sec:pencil-d-induction` on, 62 nodes, 33 red (recounted).
+  From `sec:pencil-d-induction` on, 62 nodes, 33 red (recounted), 31 after build 2.

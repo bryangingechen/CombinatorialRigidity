@@ -2152,6 +2152,8 @@ in dimension $d$ (\cref{lem:pencil-d-x0-attains-of-le}).
 % Source: SHORT-CORE workbook (notes/attacks/short-core/workbook.md), S53 (a).
 \begin{lemma}[Counting edges when every chain has few interior bodies]
   \label{lem:pencil-d-chain-count}
+  \lean{Graph.IsChain.partitionDef_induce_le}
+  \leanok
   \uses{def:pencil-x0-chain, def:pencil-x0-standing}
   Let $d \ge 3$ and $D = \binom{d+1}{2}$, and let $\ell \ge 1$ with
   $3(\ell + 1) \le D$. Let $G$ satisfy the standing hypotheses
@@ -2166,6 +2168,7 @@ in dimension $d$ (\cref{lem:pencil-d-x0-attains-of-le}).
   value of $V_1$ (\cref{sec:main-component-sparse}).
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-x0-chain-exists, def:open-ear}
   Call a body of degree at least three a \emph{branch body}, and let $B$
   be the set of branch bodies. It is nonempty, as $G$ has minimum degree
@@ -2237,6 +2240,8 @@ in dimension $d$ (\cref{lem:pencil-d-x0-attains-of-le}).
 % with S52 and the ONE-CLASS lemma, both formalized in sec:pencil-d-deficiency.
 \begin{theorem}[A chain with many interior bodies, a core, or rigidity in dimension three]
   \label{thm:pencil-d-chain-or-core}
+  \lean{Graph.IsX0Graph.exists_chain_or_core}
+  \leanok
   \uses{def:pencil-x0-chain, def:pencil-x0-standing,
         def:rigid-contraction, def:D-deficiency}
   Let $d \ge 3$ and $D = \binom{d+1}{2}$, and let $\ell \ge 1$ with
@@ -2250,6 +2255,7 @@ in dimension $d$ (\cref{lem:pencil-d-x0-attains-of-le}).
   $\operatorname{def}_3(G) = \operatorname{def}_d(G) = 0$.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{lem:deficiency-sparse, lem:pencil-d-chain-count,
         lem:pencil-d-chain-core, lem:pencil-x0-chain-exists,
         lem:pencil-d-core-positive-deficiency,

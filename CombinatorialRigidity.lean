@@ -42,6 +42,7 @@ public import CombinatorialRigidity.Molecular.Molecule.GeneralPosition4
 public import CombinatorialRigidity.Molecular.Molecule.Modelling
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Carrier
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Chain
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Chains
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Collineation
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.ConditionLinear
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Configuration

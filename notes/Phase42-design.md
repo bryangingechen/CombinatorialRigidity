@@ -1014,7 +1014,7 @@ marked `no departure` (R-6). The post-Phase-42 cleanup acts on the ledger (that 
 
 **The red nodes by layer** (42e's open, by section of `pencil-d.tex`; a letter is minted only as
 a sub-phase opens). From `sec:pencil-d-induction` on the chapter has 62 dep-graph nodes, 33 of them
-red (recounted at 42i's close and again at 42j's open): 65 at 42e's open, all red, 4 green at its
+red (recounted at 42i's close and again at 42j's open; 31 after 42j's build 2): 65 at 42e's open, all red, 4 green at its
 close, 3 cut at 42f's open (the PI, §1), 6 green at 42f's close, 7 at 42g's, 8 at 42h's and 4 at
 42i's. The count of 66 put to the PI at 42e's open (§1) included `rem:pencil-d-flat-class`, a
 remark, which the dependency graph does not draw (it draws definitions, lemmas, propositions,
