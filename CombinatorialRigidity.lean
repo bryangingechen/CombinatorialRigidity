@@ -48,6 +48,7 @@ public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.ConditionLin
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Configuration
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Contract
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.ContractAdditive
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Coverage
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Cut
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.EarData
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Embedding

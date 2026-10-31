@@ -3969,6 +3969,8 @@ multigraphs.
 % in S25, S26 and S38.
 \begin{theorem}[The coverage, in every dimension]
   \label{thm:pencil-d-coverage}
+  \lean{Graph.IsX0Graph.x0AttainsGrade, Graph.X0AttainsGrade.of_twoEdgeConnected}
+  \leanok
   \uses{def:pencil-d-x0-attains, def:pencil-x0-standing,
         def:cut-edges-2ec}
   Let $K$ be infinite and $d \ge 3$. The general configuration of every
@@ -3978,6 +3980,7 @@ multigraphs.
   simple $2$-edge-connected graph on at least three bodies.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{thm:pencil-x0-coverage, lem:pencil-d-x0-attains-three,
         lem:pencil-x0-cut-reduces, thm:pencil-d-bridge, thm:pencil-d-cut,
         lem:pencil-x0-cycle-reduces, thm:pencil-d-cycle,
@@ -4110,12 +4113,15 @@ multigraphs.
 
 \begin{lemma}[The distinct main-component statement, in every dimension]
   \label{lem:pencil-d-distinct-statement}
+  \lean{Graph.hasGradedDistinctPencilRealization_of_twoEdgeConnected}
+  \leanok
   \uses{def:pencil-d-distinct-motive, def:cut-edges-2ec}
   Let $K$ be infinite and $d \ge 3$. Every simple $2$-edge-connected
   multigraph on at least three bodies has an adjacent-distinct pencil
   realization in dimension $d$ (\cref{def:pencil-d-distinct-motive}).
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{thm:pencil-d-coverage, lem:pencil-d-x0-attains-distinct}
   The general configuration of such a multigraph attains in dimension
   $d$ (\cref{thm:pencil-d-coverage}). So it has an adjacent-distinct

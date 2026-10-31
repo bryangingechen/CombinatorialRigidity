@@ -7,13 +7,24 @@ Forward mode, the Lean under `/coordinate-phase`: the four red nodes of
 and `thm:pencil-d-chain-or-core`) and `sec:pencil-d-coverage` (`thm:pencil-d-coverage`,
 `lem:pencil-d-distinct-statement`), on the `Pencil/Grade/` carrier and PD-STEPS's Lean. The
 pre-build recon spiked all four complete, with no `sorry`, and pinned three builds (*Hand-off*).
-Builds 1 (the data-returning reductions and the chain lemmas, no red node) and 2 (`Grade/Chains.lean`:
-COUNT-C and chain-or-core, both green) have landed. Next: build 3, `Grade/Coverage.lean` (the
-coverage and the distinct statement).
+Builds 1 (the data-returning reductions and the chain lemmas, no red node), 2 (`Grade/Chains.lean`:
+COUNT-C and chain-or-core, both green) and 3 (`Grade/Coverage.lean`: the coverage and the distinct
+statement, both green) have landed. All four nodes are green. Next: the close (an intermediate
+sub-phase close that ends PD-COVERAGE, `PHASE-BOUNDARIES.md`).
 
 ## Current state
 
-**Next: build 3, `Grade/Coverage.lean`** (*Hand-off*). **Build 2 has landed**: new
+**Next: the close** (*Hand-off*). **Build 3 has landed**: new `Grade/Coverage.lean` (in the root
+import) holds `Graph.IsX0Graph.x0AttainsGrade` and `Graph.X0AttainsGrade.of_twoEdgeConnected`
+(`thm:pencil-d-coverage`) and `Graph.hasGradedDistinctPencilRealization_of_twoEdgeConnected`
+(`lem:pencil-d-distinct-statement`), the spike's transplant (the private `exists_chainBound`
+included); both nodes `\lean{}` and `\leanok` (statement and proof), on the three standard axioms;
+29 red nodes remain, from `sec:pencil-d-reduction` on. The honesty gate, by eye: the chapter's
+`d ≥ 3` is `1 ≤ m` (`m = d - 2`), `K` infinite is `[Infinite K]`, "simple", "3 bodies" and
+"2-edge-connected" are `hS`, `hV`, `htec`, and the finiteness of `α` and `β` is ambient (as in every
+node since 42e); the standing hypotheses of the first claim are `hG`; the distinct statement's pin is
+the coverage's last claim composed with `hasGradedDistinctPencilRealization`. No `Cleanup42.md` row:
+the Lean follows the chapter's cases in order. **Build 2 has landed**: new
 `Grade/Chains.lean` (in the root import) holds `Graph.IsChain.partitionDef_induce_le`
 (`lem:pencil-d-chain-count`) and `Graph.IsX0Graph.exists_chain_or_core`
 (`thm:pencil-d-chain-or-core`), the spike's transplant; both nodes `\lean{}` and `\leanok`
@@ -69,8 +80,8 @@ are under *Hand-off*; the recon's verdicts under *Decisions made*.
   `blueprint/lint.sh`, `notes/check-phase-note.py`, sorry-grep.
 - [x] `lem:pencil-d-chain-count` (COUNT-C), build 2, `Grade/Chains.lean`.
 - [x] `thm:pencil-d-chain-or-core`, build 2, same file.
-- [ ] `thm:pencil-d-coverage`, build 3, `Grade/Coverage.lean`.
-- [ ] `lem:pencil-d-distinct-statement`, build 3, same file.
+- [x] `thm:pencil-d-coverage`, build 3, `Grade/Coverage.lean`.
+- [x] `lem:pencil-d-distinct-statement`, build 3, same file.
 - [ ] **Close** 42j, an intermediate sub-phase close that ends PD-COVERAGE (`PHASE-BOUNDARIES.md`).
 
 ## Blockers / open questions
@@ -80,7 +91,7 @@ are under *Hand-off*; the recon's verdicts under *Decisions made*.
 
 ## Hand-off / next phase
 
-Build 3, one commit, then the close (builds 1 and 2 have landed). Every declaration they land
+The close, one commit (builds 1, 2 and 3 have landed). Every declaration they land
 is spiked complete (`All.lean`), so each build transplants its spike (the coordinator may resume the recon to land
 them). The encoding: the chains at `n = d`
 with `D = bodyBarDim n` and no field (COUNT-B's), the coverage at `m = d − 2` with `n = m + 2`.
@@ -104,7 +115,7 @@ with `D = bodyBarDim n` and no field (COUNT-B's), the coverage at `m = d − 2` 
   root). No design doc §3 deferral names these files. The data forms may join the `\lean{}` pins
   of `lem:pencil-x0-cut-reduces`, `-cycle-reduces` and `-planar-rigid-reduces`
   (`main-component.tex`) with a clause naming the data, the additive-successor gate's way.
-- **Build 2 (LANDED; next is build 3)**, new `Grade/Chains.lean` (imports `Grade/TheoremS.lean`), both nodes of `-chains`:
+- **Build 2 (LANDED)**, new `Grade/Chains.lean` (imports `Grade/TheoremS.lean`), both nodes of `-chains`:
   - `lem:pencil-d-chain-count`: `Graph.IsChain.partitionDef_induce_le (hG : G.IsX0Graph) (h2c)
     (hhub) (hℓ : 3 * (ℓ + 1) ≤ Graph.bodyBarDim n) (hshort : ∀ V₁ k x a b e, G.IsChain V₁ x a b e
     → k ≤ ℓ) (hC : G.IsChain V₁ x a b e) : (G.induce V₁).partitionDef n id ≤ -((ℓ : ℤ) + 1)`.
@@ -117,7 +128,7 @@ with `D = bodyBarDim n` and no field (COUNT-B's), the coverage at `m = d − 2` 
     k = 1) ∧ G.deficiency 3 = 0 ∧ G.deficiency n = 0)`. No `ℓ ≥ 1`; `hSv` is
     `Graph.one_le_partitionDef_induce_id hS`, `hhubs` comes from `exists_isChain` and
     `IsChain.two_le_of_adj`.
-- **Build 3** (`isX0Graph_splitOff_succ` already landed in build 1, in `CoverageCut.lean`), new
+- **Build 3 (LANDED)** (`isX0Graph_splitOff_succ` already landed in build 1, in `CoverageCut.lean`), new
   `Grade/Coverage.lean` (imports `Grade/ShortThree.lean`,
   `Grade/ContractAdditive.lean`, `Grade/Chains.lean`), both nodes of `-coverage`:
   - `thm:pencil-d-coverage`: `Graph.IsX0Graph.x0AttainsGrade [Infinite K] (hG : G.IsX0Graph)
@@ -127,7 +138,9 @@ with `D = bodyBarDim n` and no field (COUNT-B's), the coverage at `m = d − 2` 
     `V(G).ncard` with the chapter's cases in its order; a private `exists_chainBound` gives `ℓ`.
   - `lem:pencil-d-distinct-statement`: `Graph.hasGradedDistinctPencilRealization_of_twoEdgeConnected
     (hS) (hV) (htec) (hm) : HasGradedDistinctPencilRealization K (m + 1) (m + 2) G`, one line.
-- **Then the close** (`PHASE-BOUNDARIES.md`), an intermediate one that ends PD-COVERAGE.
+- **Next: the close** (`PHASE-BOUNDARIES.md`), an intermediate one that ends PD-COVERAGE: flip the
+  ROADMAP row and status surfaces, the chapter re-read, the exposition-ledger write-up, the
+  project-organization review. It is a separate commit; nothing is flipped to closed here.
 - **The standing rule** (*Architectural choices*): R-17 (chain-count's route) is open in
   `notes/Cleanup42.md` §2; builds 1 and 3 depart from no chapter proof.
 - **Deferred, where it lands** (design doc §3; FRICTION's `[open]` entries): the home debts of
