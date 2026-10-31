@@ -230,11 +230,34 @@ valid. The cleanup chooses one per `open` row, with the PI.
   with `lem:pencil-lifting-planes-dim`). The Lean takes every number of heights, not only `d ≥ 3`.
   *Remedies:* keep both, or the prose to the Lean (the proof's `\uses` then drops
   `def:deficiency-merged`).
+- **R-17** · `lem:pencil-d-chain-count` (`Graph.IsChain.partitionDef_induce_le`, 42j recon, to land
+  in `Grade/Chains.lean`) · **open**.
+  *Chapter:* the segments (the chains and the edges joining two branch bodies) partition `E(G)`,
+  each body of degree two interior to exactly one, so `|E(G)| = Σ L_j` and
+  `|V(G)| = |B| + Σ (L_j − 1)`; the branch bodies' degrees sum to `2e`, so `3|B| ≤ 2e`; then
+  `s_D(V₁) = Σ_{j≠i} L_j − D(e − |B|) ≤ −(ℓ + 1)`.
+  *Lean (spiked complete, `scratch/42j/Chains.lean`):* no edge segments. The interior bodies of the
+  chains are the classes: two chains sharing an interior body have the same interior bodies
+  (`Graph.IsChain.range_subset_of_mem`, walking along bodies of degree two), and every body of
+  degree two lies on one (`lem:pencil-x0-chain-exists`). The edges at the interior bodies of a chain
+  number one more than those bodies, and are disjoint between chains. With `T` the bodies of degree
+  two and `c` the classes: `T + c ≤ |E(G)|` and `T + ℓ ≤ k + ℓc`; the handshake bound
+  `3|V(G)| − T ≤ 2|E(G)|` (`Graph.IsX0Graph.three_mul_sub_le_two_mul_ncard`, from the proof of
+  `lem:pencil-x0-sparse-count`) replaces the branch degrees; `|E(G[V₁])| ≥ |E(G)| − (k + 1)` is
+  used as an inequality. The same final count (`e − |B|` is `|E(G)| − |V(G)|`).
+  *Remedies:* the prose to the Lean (classes of bodies, the handshake bound; the proof's `\uses`
+  then adds `lem:pencil-x0-sparse-count`), or keep both.
 
 ## 3. The cleanup (not yet planned)
 
 - **Until it opens:** the standing rule (§1) keeps §2 current through PD-STEPS's rest,
   PD-COVERAGE, PD-REDUCTION and PD-HEAD (`notes/Phase42-design.md` §3).
+- **Also left to it** (not a route row): Theorem S's fold, `Graph.IsX0Graph.exists_additiveCore`
+  (`MainComponent/CoverageTheoremS.lean`) as the `n = 3` case of
+  `Graph.IsX0Graph.exists_additiveCoreAt` (`Grade/TheoremS.lean`, which imports that file), with a
+  bridge `Graph.ChainUsable ↔ Graph.ChainUsableAt 3`. It reverses the import, so COUNT-B's
+  lemmas move upstream of the `d = 3` coverage; no node of PD-COVERAGE uses Theorem S at `D` (42j's
+  recon, `notes/Phase42j.md`).
 - **At its open**, with the PI: the placement (§1), then the opening recon, which compares every
   green node of `pencil-d.tex` with its Lean and adds a row for each departure; then the rounds,
   and a remedy per `open` row, are planned with the PI.

@@ -5,22 +5,28 @@
 Forward mode, the Lean under `/coordinate-phase`: the four red nodes of
 `blueprint/src/chapter/pencil-d.tex`'s `sec:pencil-d-chains` (`lem:pencil-d-chain-count`, COUNT-C,
 and `thm:pencil-d-chain-or-core`) and `sec:pencil-d-coverage` (`thm:pencil-d-coverage`,
-`lem:pencil-d-distinct-statement`), on the `Pencil/Grade/` carrier and PD-STEPS's Lean. The open's
-consistency read found every proof routing through the argument its statement claims and every
-outside dependency green (*Decisions made*); its questions for the recon are under *Blockers*.
-Next (*Hand-off*): the pre-build recon of the four nodes.
+`lem:pencil-d-distinct-statement`), on the `Pencil/Grade/` carrier and PD-STEPS's Lean. The
+pre-build recon spiked all four complete, with no `sorry`, and pinned three builds (*Hand-off*).
+Next: build 1, the reductions that return their data.
 
 ## Current state
 
-**Next: the pre-build recon** (*Hand-off*). Opened; no Lean yet. The four targets, leaf-first:
-`lem:pencil-d-chain-count` rests on Phase 40's chains alone (`def:pencil-x0-chain`,
-`lem:pencil-x0-chain-exists`); `thm:pencil-d-chain-or-core` on it, COUNT-B's two cores
-(`lem:pencil-d-chain-core`, `lem:pencil-d-core-positive-deficiency`), `lem:deficiency-sparse` and
-`lem:deficiency-rigid-higher`; `thm:pencil-d-coverage` on it, the eight steps of PD-STEPS,
-PD-CARRIER's `cor:pencil-d-jj-flat`, the embedding (`lem:pencil-d-x0-attains-of-le`) and Phase 40's
-coverage with its reductions; `lem:pencil-d-distinct-statement` on the coverage and
-`lem:pencil-d-x0-attains-distinct`. Every dependency outside the four is green. The chapter is the
-lemma index (forward mode).
+**Next: build 1, the data-returning reductions** (*Hand-off*). No Lean has landed yet. The
+pre-build recon (design pass, 2026-10-31) spiked the whole layer on the landed carrier, with no
+`sorry`: `scratch/42j/All.lean` (gitignored; `lake lean` clean, no warning, the three standard
+axioms, the `unusedArguments` and `docBlame` lints clean) is the concatenation of three spikes, each
+the transplant of the builds below:
+- `scratch/42j/Reductions.lean`, **complete**: the four data-returning reductions, each `d = 3`
+  reduction re-proved as a two-line corollary of its data form (build 1).
+- `scratch/42j/Chains.lean`, **complete**: COUNT-C and chain-or-core, with the four chain lemmas
+  that build 1 lands in `MainComponent/CoverageChain.lean` (build 2).
+- `scratch/42j/Coverage.lean`, **complete but for its five inputs**, `sorry`'d there with the
+  exact signatures that the other two spikes prove (and `All.lean` checks together): the
+  coverage, its last claim and the distinct statement, with the splitting-off lemma that build 1
+  lands (build 3).
+
+The chapter is the lemma index (forward mode). The pinned signatures, the files and the build order
+are under *Hand-off*; the recon's verdicts under *Decisions made*.
 
 ## Architectural choices made up front
 
@@ -34,86 +40,98 @@ lemma index (forward mode).
   long ear (`of_openEar`) at every `m`.
 - **The standing rule** (design doc §3): the recon and every build add a row to
   `notes/Cleanup42.md` §2 where their Lean departs from the chapter's proof, in the same commit
-  (R-9 to R-12 and R-14 to R-16 open; R-7, R-8 and R-13 aligned).
+  (R-9 to R-12 and R-14 to R-17 open; R-7, R-8 and R-13 aligned; R-17 is 42j's recon's).
 
 ## Lemma checklist
 
-- [ ] **Pre-build recon**: the coverage's assembly spiked on the landed steps, the
-  data-returning reductions, exact Lean signatures for the four nodes, their files, and the
-  questions under *Blockers*.
-- [ ] `lem:pencil-d-chain-count` (COUNT-C), new combinatorics.
-- [ ] `thm:pencil-d-chain-or-core`, on the count and COUNT-B's two cores.
-- [ ] `thm:pencil-d-coverage`, on chain-or-core, PD-STEPS's steps and the data-returning reductions.
-- [ ] `lem:pencil-d-distinct-statement`, on the coverage.
+- [x] **Pre-build recon** (design pass): all four nodes spiked complete; *Decisions made*.
+- [ ] **Build 1**, the data-returning reductions and the chain lemmas, in `MainComponent/` (no red
+  node; serves builds 2 and 3).
+- [ ] `lem:pencil-d-chain-count` (COUNT-C), build 2, `Grade/Chains.lean`.
+- [ ] `thm:pencil-d-chain-or-core`, build 2, same file.
+- [ ] `thm:pencil-d-coverage`, build 3, `Grade/Coverage.lean`.
+- [ ] `lem:pencil-d-distinct-statement`, build 3, same file.
 - [ ] **Close** 42j, an intermediate sub-phase close that ends PD-COVERAGE (`PHASE-BOUNDARIES.md`).
 
 ## Blockers / open questions
 
-- None blocking the recon. Its questions, from the open's consistency read:
-  - **The data-returning reductions.** The coverage's proof reads data out of the *proofs* of
-    Phase 40's reductions: the chain of bridges of `lem:pencil-x0-cut-reduces` (1)
-    (`Graph.IsX0Graph.x0Reduces_of_not_twoEdgeConnected`, through the private
-    `x0Reduces_of_bridgeEar`, `MainComponent/CoverageCut.lean`), the two sides of a cut vertex of
-    its part (2) (`x0Reduces_of_not_connected`, same file), the cycle
-    (`x0Reduces_of_forall_degree_eq_two`, `MainComponent/CoverageChain.lean`) and a maximal
-    planar-rigid set (`x0Reduces_of_deficiency_two_rigid`, `MainComponent/CoverageTheoremS.lean`).
-    Each returns only `G.X0Reduces G.X0Below`, whose clauses carry the `d = 3` deficiencies. Pin
-    public forms that return the data and the smaller graphs' standing hypotheses, the `d = 3`
-    lemmas then their corollaries, or another route. The design doc's "bridge, cut-vertex or cycle
-    data" leaves out the fourth: its data is a set `W`, whose properties the coverage's proof
-    re-derives inline.
-  - **Chain-count (COUNT-C)**, new Lean with no precedent at general `ℓ`: the segments (the chains
-    and the edges joining two branch bodies) partition `E(G)`, each body of degree two interior to
-    exactly one, and the branch bodies' degrees sum to twice the number of segments. The proof
-    needs the chain through a body of degree two unique up to reversal, where
-    `Graph.IsX0Graph.exists_isChain` gives existence only; a count that avoids segments (a degree
-    sum) is the alternative. At `d = 3` only `ℓ = 1` has Lean,
-    `Graph.IsX0Graph.partitionDef_three_induce_diff_nonpos`, under another hypothesis and stated
-    `≤ 0`. The bound's form: `(G.induce V₁).partitionDef n id ≤ -(ℓ + 1)`, the singleton value as
-    `Graph.IsOpenEar.exists_additiveCoreAt_of_partitionDef_nonpos`'s `hs` reads it; whether the
-    Lean keeps `d ≥ 3`, which `ℓ ≥ 1` and `3(ℓ + 1) ≤ D` imply.
-  - **Chain-or-core.** Its three-way disjunction in Lean, and the hypotheses COUNT-B's two lemmas
-    take: sparsity as `hSv` (from "no planar-rigid set", `Graph.one_le_partitionDef_induce_id`)
-    and "no two bodies of degree two adjacent" as `hhubs`.
-  - **The coverage's assembly.** Strong induction on `V(G).ncard` at fixed `m`, "smaller" read as
-    `sec:pencil-d-induction` defines it (the standing hypotheses and fewer bodies, as
-    `Graph.X0Below`); `m = 1` by `Graph.IsX0Graph.x0Attains` and `Graph.x0AttainsGrade_one_iff`.
-    Chain-or-core yields a `Graph.IsChain`, while the three ear steps take the ear unpacked
-    (`hcover`, `hinj`, `hxV₁`, `hpath`, `hsep`), `of_openEar_four` at `x : Fin (n + 4)` and
-    `of_openEar` at `screwDim (m + 1) − 1 ≤ k`: the glue, and `G″`'s standing hypotheses
-    (`Graph.IsX0Graph.splitOff`).
-  - **The distinct statement.** At `d = 3` its Lean is one line (`x0Dist`, for the predicate
-    `X0Dist`); no such predicate exists in dimension `d`. Its form, as PD-REDUCTION's
-    `thm:pencil-d-realization-theorem` will consume it.
-  - **Theorem S's fold** (optional, design doc §3). `thm:pencil-d-theorem-s` has no consumer among
-    the four: the coverage reaches its cores through chain-or-core. `Grade/TheoremS.lean` imports
-    `MainComponent/CoverageTheoremS.lean`, so making `Graph.IsX0Graph.exists_additiveCore` its
-    `n = 3` case reverses that import. Fold it here or leave it to CLEANUP-42.
-  - **Files.** New `Grade/` file(s), at the recon's choice. An edit to a `MainComponent/` file
-    rebuilds its importers, and carries any deferral that names that file (design doc §3).
+- None. The open's seven questions for the recon are settled (*Decisions made*, *The recon's
+  verdicts*); no node's statement is false against the carrier, and no choice waits on the PI.
 
 ## Hand-off / next phase
 
-The next concrete commit is the **pre-build recon** (a `recon-opus` dispatch, read-only or a
-design-pass commit at the coordinator's choice), as `fe5baf0f` (42h) and `3ab48a47` (42i) were. It
-spikes the coverage's assembly against the landed PD-STEPS Lean (`Pencil/Grade/`: `Cut.lean`,
-`ContractAdditive.lean`, `Chain.lean`, `Short.lean`, `ShortThree.lean`, with `Flat.lean`,
-`ZeroHeights.lean` and `TheoremS.lean`) and Phase 40's coverage (`MainComponent/Coverage.lean`,
-`CoverageChain.lean`, `CoverageCut.lean`, `CoverageTheoremS.lean`; `thm:pencil-x0-coverage` pins
-`Graph.IsX0Graph.x0Reduces`, `Graph.IsX0Graph.x0Attains`, `Graph.X0Attains.of_twoEdgeConnected`). It
-pins the four nodes' Lean signatures, the data-returning reductions and the file plan, each spiked
-under `lake lean`, settles *Blockers*, and records the signatures here. Then build leaf-first,
-roughly 4–7 commits by the coordinator's estimate in the option the PI chose. Each build adds its
-node's `\lean{}` and `\leanok`.
-- **The standing rule** (*Architectural choices*): a row in `notes/Cleanup42.md` §2 per departure.
+Three builds, one commit each, then the close. Every declaration they land is spiked complete
+(`All.lean`), so each build transplants its spike (the coordinator may resume the recon to land
+them). The encoding: the chains at `n = d`
+with `D = bodyBarDim n` and no field (COUNT-B's), the coverage at `m = d − 2` with `n = m + 2`.
+- **Build 1** (no red node): the data-returning reductions, each `d = 3` lemma kept as a two-line
+  corollary of its data form, and the four chain lemmas build 2 calls. Edits three files:
+  - `MainComponent/CoverageChain.lean`: `Graph.IsX0Graph.exists_cycle_of_forall_degree_eq_two`
+    (the body of `x0Reduces_of_forall_degree_eq_two`, returning the `cycle` clause's fields);
+    `Graph.IsOpenEar.adj_of_val_eq_succ`, `Graph.IsOpenEar.range_subset_inc`,
+    `Graph.IsChain.mem_range_of_adj` and `Graph.IsChain.range_subset_of_mem` (two chains sharing an
+    interior body have the same interior bodies).
+  - `MainComponent/CoverageCut.lean`: the private `x0Reduces_of_bridgeEar` becomes
+    `exists_bridgePath_of_bridgeEar` (same induction);
+    `Graph.IsX0Graph.exists_bridgePath_of_not_twoEdgeConnected` and
+    `Graph.IsX0Graph.exists_cutVertex_of_not_connected` return the `bridgePath` and `cutVertex`
+    clauses' fields with `G.X0Below` at both sides; `Graph.IsOpenEar.isX0Graph_splitOff_succ` at
+    `x : Fin (n + 3)`, of which `isX0Graph_splitOff_three` and `_four` may become one-line cases.
+  - `MainComponent/CoverageTheoremS.lean`: `Graph.exists_rigidCore_of_deficiency_two_pos` (a
+    maximal planar-rigid `W ⊇ Y`, proper, `r ∈ W`, `hatt`; no `hG`).
+  It rebuilds `CoverageChain.lean` and its 9 downstream modules (`CoverageCut`, `CoverageTheoremS`,
+  `GenericBase`, `GoodEar`, `Statements`, `Grade/Stable`, `Grade/TheoremS`, `Nonvacuity`, the
+  root). No design doc §3 deferral names these files. The data forms may join the `\lean{}` pins
+  of `lem:pencil-x0-cut-reduces`, `-cycle-reduces` and `-planar-rigid-reduces`
+  (`main-component.tex`) with a clause naming the data, the additive-successor gate's way.
+- **Build 2**, new `Grade/Chains.lean` (imports `Grade/TheoremS.lean`), both nodes of `-chains`:
+  - `lem:pencil-d-chain-count`: `Graph.IsChain.partitionDef_induce_le (hG : G.IsX0Graph) (h2c)
+    (hhub) (hℓ : 3 * (ℓ + 1) ≤ Graph.bodyBarDim n) (hshort : ∀ V₁ k x a b e, G.IsChain V₁ x a b e
+    → k ≤ ℓ) (hC : G.IsChain V₁ x a b e) : (G.induce V₁).partitionDef n id ≤ -((ℓ : ℤ) + 1)`.
+    It takes neither `d ≥ 3` nor `ℓ ≥ 1`: the proof uses neither, and `unusedArguments` rejects
+    them.
+  - `thm:pencil-d-chain-or-core`: `Graph.IsX0Graph.exists_chain_or_core (hG) (h2c) (hhub) (hS : ∀ X
+    ⊆ V(G), 2 ≤ X.ncard → (G.induce X).deficiency 2 ≠ 0) (hn : 3 ≤ n) (hℓ)`, concluding
+    `(∃ V₁ k x a b e, G.IsChain V₁ x a b e ∧ ℓ < k) ∨ (∃ W, ∃ r ∈ W, …)` (the core at `n`, as
+    `exists_core_of_deficiency_three_pos` returns it) `∨ ((∀ V₁ k x a b e, G.IsChain V₁ x a b e →
+    k = 1) ∧ G.deficiency 3 = 0 ∧ G.deficiency n = 0)`. No `ℓ ≥ 1`; `hSv` is
+    `Graph.one_le_partitionDef_induce_id hS`, `hhubs` comes from `exists_isChain` and
+    `IsChain.two_le_of_adj`.
+- **Build 3**, new `Grade/Coverage.lean` (imports `Grade/ShortThree.lean`,
+  `Grade/ContractAdditive.lean`, `Grade/Chains.lean`), both nodes of `-coverage`:
+  - `thm:pencil-d-coverage`: `Graph.IsX0Graph.x0AttainsGrade [Infinite K] (hG : G.IsX0Graph)
+    (hm : 1 ≤ m) : G.X0AttainsGrade K m` and, for the last claim,
+    `Graph.X0AttainsGrade.of_twoEdgeConnected (hS : G.Simple) (hV : 3 ≤ V(G).ncard) (htec) (hm)`.
+    `m = 1` by `x0AttainsGrade_one_iff` and `x0Attains`; otherwise strong induction on
+    `V(G).ncard` with the chapter's cases in its order; a private `exists_chainBound` gives `ℓ`.
+  - `lem:pencil-d-distinct-statement`: `Graph.hasGradedDistinctPencilRealization_of_twoEdgeConnected
+    (hS) (hV) (htec) (hm) : HasGradedDistinctPencilRealization K (m + 1) (m + 2) G`, one line.
+- **Then the close** (`PHASE-BOUNDARIES.md`), an intermediate one that ends PD-COVERAGE.
+- **The standing rule** (*Architectural choices*): R-17 (chain-count's route) is open in
+  `notes/Cleanup42.md` §2; builds 1 and 3 depart from no chapter proof.
 - **Deferred, where it lands** (design doc §3; FRICTION's `[open]` entries): the home debts of
   42b–42i are unchanged, each riding with the next commit that edits its target file
-  (`notes/Phase42i.md` *Hand-off* lists 42i's).
+  (`notes/Phase42i.md` *Hand-off* lists 42i's); none names a file these builds edit. Theorem S's
+  fold goes to CLEANUP-42 (`notes/Cleanup42.md` §3).
 - **After 42j:** PD-REDUCTION (`-reduction`, 8 red nodes) and PD-HEAD (21) open at the PI's word
   (design doc §3).
 
 ## Decisions made during this phase
 
+- **The recon's verdicts** (design pass, 2026-10-31): all four nodes spiked complete (*Current
+  state*). The reductions: public data forms in `MainComponent/`, the `d = 3` lemmas their
+  corollaries, for one rebuild; re-deriving them in `Grade/` would copy about 350 lines.
+  The ear steps take what a chain gives, field by field; `G″`'s standing hypotheses by
+  `Graph.IsX0Graph.splitOff`; no ear step takes a deficiency, so chain-or-core suffices. The
+  distinct statement: a plain theorem, no dimension-`d` `X0Dist`, as the realization theorem uses
+  it at one graph. Theorem S's fold: CLEANUP-42 (it reverses an import; no node here uses it).
+- **COUNT-C's route** (R-17): the interior bodies of the chains partition the bodies of degree two
+  (uniqueness by walking), not edge segments; no degree sum alone can count them (the bound `ℓ` is
+  per chain). `T + c ≤ |E(G)|`, `T + ℓ ≤ k + ℓc` and the landed `3|V(G)| − T ≤ 2|E(G)|` give it.
+- **The open's four unchecked claims, against the Lean:** all hold. The ear steps take the ear
+  unpacked; `of_openEar_four` takes `x : Fin (n + 4)` (a chain with `4 ≤ k` is reindexed by
+  `k = n + 4`); COUNT-C needs uniqueness, of the interior bodies only; and `Grade/TheoremS.lean`
+  imports `MainComponent/CoverageTheoremS.lean`.
 - **PI, 2026-10-31 (42j's open):** the PI answered "All 4 nodes as written (Recommended)", whose
   option read: "Close PD-COVERAGE. An Opus open commit, then a pre-build recon that spikes the
   coverage assembly against the landed steps and pins the data-returning reductions, then roughly

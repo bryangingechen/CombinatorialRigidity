@@ -1333,10 +1333,11 @@ four statements was restated to its Lean. PD-STEPS is complete. At the PI's word
 2026-10-31, `notes/Phase42j.md`) takes the next layer, PD-COVERAGE: four nodes of `pencil-d.tex`
 that count the edges along short chains, find a long chain or a core, and put the steps together
 into the coverage in every dimension and its distinct statement, as the chapter states them. A
-read at the open found their proofs sound, and a recon of the coverage's Lean on the landed steps
-comes first. PD-REDUCTION and PD-HEAD open after it at the PI's word, as each layer before them
-did. The targets are three tiers: every `d` at `def_3 ≤ 3` (proved and formalized, 42c), a `P⁴`
-theorem (every `d` at `def_3 ≤ 7`, by the sharp lemma), and every `d` (proved on paper, 42d).
+read at the open found their proofs sound, and a recon then wrote all four in Lean on the landed
+steps, in draft, leaving three builds to land them. PD-REDUCTION and PD-HEAD open after it at the
+PI's word, as each layer before them did. The targets are three tiers: every `d` at
+`def_3 ≤ 3` (proved and formalized, 42c), a `P⁴` theorem (every `d` at `def_3 ≤ 7`, by the sharp
+lemma), and every `d` (proved on paper, 42d).
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 
