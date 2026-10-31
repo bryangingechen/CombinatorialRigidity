@@ -1819,6 +1819,23 @@ found no wording false and changed none (the Lean also holds at `d = 2`; the nod
 chapter's `d ≥ 3`).
 **Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
 
+### `pencil-d.tex` — Phase 42f (PD-STEPS: cut vertices, bridges and contraction in every dimension)
+
+**No new entries — judged at the sub-phase close (2026-10-30).** The source is the project's own
+(42d's write-up); the criterion transfers as in the `pencil.tex` section. The six nodes of
+`sec:pencil-d-cut` and `sec:pencil-d-contract` are green and landed as written, in two build
+commits from the recon's spikes: nothing rerouted or decomposed during the sub-phase. The one
+split, the planar kernel bounds at an additive core drawn out of the `d = 3` contraction as
+`lem:pencil-contract-additive-kernel`, was made in the write-up, and each proof already closes with
+a paragraph naming where the dimension enters (heights restricted and extended one at a time; `D`
+for `6` in the counts; the two open conditions meeting in `ker M(0)^{d−2}`). The close's
+end-to-end re-read against the landed statements changed no statement and repaired three wordings:
+the rank of `G/H` at `b′` follows from `z′` attaining, not from its nonzero hinges
+(`thm:pencil-d-contract-additive`); and the coverage section's sentence on chains with one or two
+interior bodies now says *in dimension `d`*, since the `d = 3` steps there still enter through the
+embedding (and so does its sibling in `sec:pencil-d-chains`).
+**Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
+
 ## Retroactive coverage
 
 - **Molecular program (Phases 17–22a): scanned 2026-06-04** — candidates folded

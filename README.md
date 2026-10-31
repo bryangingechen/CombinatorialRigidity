@@ -228,9 +228,9 @@ the plane is at most three has a pencil realization at the deficiency
 rank. The chapter now also carries a proof on paper of the theorem in
 every dimension, its strongest form included. Formalizing that proof has
 begun: its setting is formalized, with the graphs whose deficiencies in
-the plane and in dimension `d` agree, and the first steps of its
-induction are in progress: at a cut vertex, along a chain of bridges, and
-contracting a rigid part of the graph.
+the plane and in dimension `d` agree, and so are the first steps of its
+induction, at a cut vertex, along a chain of bridges and contracting a
+rigid part of the graph; its other steps are next.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries

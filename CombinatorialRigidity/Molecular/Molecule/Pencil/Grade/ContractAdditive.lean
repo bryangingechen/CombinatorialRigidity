@@ -47,13 +47,14 @@ variable {K : Type*} [Field K] {α β : Type*} {m : ℕ}
 /-! ## The kernel at the end of the curve (`lem:pencil-contract-additive-kernel`) -/
 
 /-- **The kernel at the end of the curve, at an additive core**
-(`lem:pencil-contract-additive-kernel`): one height, planar. If `H = G.induce W` and `G/H` are
-admissible and attain their dimension at `q` (`3 + deficiency 2`), and the planar deficiencies add
-up (`hadd`), then the kernel of `M(0)` has dimension `3 + deficiency 2 G`, and its restriction to
-the core is onto `H`'s lifting space. The lower bound is the semicontinuity of the kernel along
-`t`; the upper bound is `Graph.finrank_ker_contractLiftingMatrix_zero_add_three_le`. The `d = 3`
-proof (`MainComponent/ContractAdditive.lean`) keeps its inline copy of this argument; folding it
-into this lemma is an optional cleanup. -/
+(`lem:pencil-contract-additive-kernel`): one height, planar. If `q` is admissible for `G`, for
+`H = G.induce W` and for `G/H` (`hqG`, `hqH`, `hqc`), the lifting spaces of `H` and of `G/H` at `q`
+have dimension `3 + deficiency 2` (`hdimH`, `hdimc`), and the planar deficiencies add up (`hadd`),
+then the kernel of `M(0)` has dimension `3 + deficiency 2 G`, and its restriction to the core is
+onto `H`'s lifting space. The lower bound is the semicontinuity of the kernel along `t`; the upper
+bound is `Graph.finrank_ker_contractLiftingMatrix_zero_add_three_le`. The `d = 3` proof
+(`MainComponent/ContractAdditive.lean`) keeps its inline copy of this argument; folding it into
+this lemma is an optional cleanup. -/
 theorem _root_.Graph.finrank_ker_contractLiftingMatrix_zero_eq_and_map_eq [Infinite K]
     [Fintype α] [Finite β] {G : Graph α β} {W : Set α} {r : α} (hr : r ∈ W) (hW : W ⊆ V(G))
     (hadd : (G.induce W).deficiency 2 + (G.rigidContract (G.induce W) r).deficiency 2 ≤

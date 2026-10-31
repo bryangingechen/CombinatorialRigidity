@@ -1,35 +1,39 @@
 # Phase 42f — PD-STEPS: cut vertices, bridges and contraction in every dimension (work log)
 
-**Status:** in progress, opened 2026-10-30 at the PI's word ("-cut + -contract (Recommended)",
-design doc §1), a sub-phase of Phase 42 and the first of PD-STEPS. Forward mode, the Lean under
-`/coordinate-phase`: the six red nodes of `blueprint/src/chapter/pencil-d.tex` in
-`sec:pencil-d-cut` and `sec:pencil-d-contract` (Phase 40e/40f/40k in `Pᵈ`), on the `Pencil/Grade/`
-carrier. The open's consistency read found every proof routing through the argument its statement
-claims (*Consistency read at the open*). At the PI's word the open also cut three step nodes no
-coverage step uses, leaving PD-STEPS 25 nodes. The pre-build recon pinned all six Lean signatures
-and spiked each complete, with no `sorry` (*Lemma checklist*). The first build landed
-`Pencil/Grade/Cut.lean` (the restriction, the cut vertex and the chain of bridges, three nodes
-green), then `Pencil/Grade/ContractAdditive.lean` (the three contraction nodes green; all six
-green). Next (*Hand-off*): the 42f close, an intermediate sub-phase close.
+**Status:** ✓ closed 2026-10-30 (opened the same day at the PI's word, "-cut + -contract
+(Recommended)", design doc §1), a sub-phase of Phase 42, which stays in progress with no sub-phase
+open. Forward mode, the Lean under `/coordinate-phase`: the six nodes of
+`blueprint/src/chapter/pencil-d.tex` in `sec:pencil-d-cut` and `sec:pencil-d-contract` are green,
+formalized as written, their Lean at every `m` (every `d ≥ 2`), in five commits with the open, the
+recon and the close. Next (*Hand-off*): the rest of PD-STEPS goes to the PI.
 
 ## Current state
 
-**Landed: `Pencil/Grade/Cut.lean`** (build 1 of 2): `lem:pencil-d-lifting-restrict`,
-`thm:pencil-d-cut` and `thm:pencil-d-bridge` green, with the root import in `CombinatorialRigidity.lean`.
-Transcribed from the recon's spike with the statements unchanged and full docstrings; the spike's
-`example` for `eval_restrictPoly` became a sentence in the docstring of
-`Graph.liftingRestrict_preimage_fst_apply`. Warning-clean, `#print axioms` `[propext,
-Classical.choice, Quot.sound]` on every pinned name.
+**Closed.** The first sub-phase of PD-STEPS: Phase 40e/40f/40k in `Pᵈ`, the induction's steps at
+a cut vertex, along a chain of bridges and at an additive core. File map, one line each:
+- `Grade/Cut.lean` (imports `Grade.Witness`, `MainComponent.Cut`):
+  `Graph.liftingRestrict_preimage_fst_apply`, `Graph.liftingRestrict_mem_liftingSpaceGrade`,
+  `pencilConfigPointGrade_liftingRestrict` and
+  `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_liftingRestrict_grade`, with the landed
+  `eval_restrictPoly` (`lem:pencil-d-lifting-restrict`); the helper
+  `Graph.exists_liftingRestrict_preimage_fst_eq`; `Graph.X0AttainsGrade.of_cutVertex`
+  (`thm:pencil-d-cut`) and `Graph.X0AttainsGrade.of_bridgePath` (`thm:pencil-d-bridge`).
+- `Grade/ContractAdditive.lean` (imports `Grade.Contract`, `Grade.Cut`, `Grade.Flat`,
+  `Induction.SparseDeficiency`): `Graph.finrank_ker_contractLiftingMatrix_zero_eq_and_map_eq`
+  (`lem:pencil-contract-additive-kernel`); `contractConfigPolyGrade` and
+  `eval_contractConfigPolyGrade`; `Graph.X0AttainsGrade.of_additiveContract`
+  (`thm:pencil-d-contract-additive`) and `Graph.X0AttainsGrade.of_rigidContract`
+  (`cor:pencil-d-contract-rigid`).
 
-**Landed: `Pencil/Grade/ContractAdditive.lean`** (build 2 of 2): `lem:pencil-contract-additive-kernel`,
-`thm:pencil-d-contract-additive` and `cor:pencil-d-contract-rigid` green, with the root import. A
-transcription of the recon's spike, statements unchanged, its three repeated `Cut.lean` lemmas
-dropped for `import …Grade.Cut` (and the then-redundant `Witness` import). The `d = 3` proof keeps
-its inline copy of the kernel argument (folding it would rebuild 12 modules; optional, untracked).
-
-**Next: the 42f close**, an intermediate sub-phase close (`PHASE-BOUNDARIES.md`); all six nodes are
-green. The rest of PD-STEPS, `-short` (12) and `-long` (7), stays mapped by section in design doc
-§3, with no letter minted.
+`#print axioms` at the close (`lake lean`, a scratch file) on the ten pinned names:
+`[propext, Classical.choice, Quot.sound]`. The close re-read both sections end to end against the
+landed statements: every hypothesis and conclusion matches its pin, and the Lean is stronger only
+in holding at `d = 2` too (no `1 ≤ m`); no statement changed. Three wordings were repaired. In
+`thm:pencil-d-contract-additive`'s proof, the rank of `G/H` at `b′` follows from `z′` attaining,
+not from the nonzero hinges (the open's flag). The coverage section's sentence now says the
+coverage needs no step *in dimension `d`* at a chain with one or two interior bodies: the `d = 3`
+split-off and two-body ear still enter through the embedding, within `thm:pencil-x0-coverage`.
+The `-chains` section's sentence of the same claim gained the same three words.
 
 ## Architectural choices made up front
 
@@ -41,131 +45,37 @@ green. The rest of PD-STEPS, `-short` (12) and `-long` (7), stays mapped by sect
   chain with one or two interior bodies (`thm:pencil-x0-splitoff`, `thm:pencil-x0-open-ear-two`).
 - **Encoding** as 42b, 42c and 42e: `m = d − 2` heights at grade `k = m + 1`,
   `D = screwDim (m + 1)`, `def_d` is `G.deficiency (m + 2)` and `def_2` is `G.deficiency 2`.
-  Attaining is `Graph.X0AttainsGrade K m`, its witness lemma `Graph.x0AttainsGrade_of_exists` (rank
-  at least the target). As in 42e the Lean may hold at every `m` while the nodes keep `d ≥ 3`.
-
-## Consistency read at the open
-
-The red-node consistency gate (`PHASE-BOUNDARIES.md`): each node read in full against the landed
-carrier (`Pencil/Grade/`, 42b–42e) and the `main-component.tex` node it generalizes, with every Lean
-name below opened at its declaration. **All six PASS**; no proof fails against the carrier, and no
-`\uses` reaches a superseded node (`blueprint/lint.sh`, check 3). Every dependency outside the six
-is green.
-- **`lem:pencil-d-lifting-restrict`** generalizes `lem:pencil-lifting-restrict` (`MainComponent/Cut.lean`:
-  `Graph.liftingRestrict_mem_liftingSpace`, `pencilConfigPoint_liftingRestrict`,
-  `eval_restrictPoly`). Each part holds height by height. (1): `L(q)^m` is the per-column `⨅`
-  (`Graph.mem_liftingSpaceGrade`); Lean's `L(q)` holds heights vanishing off `V(G)`, and `z'`
-  vanishes off `V(G')` by construction, as at `d = 3`. (2): `pencilConfigPointGrade` reads only `w`'s
-  picture point and heights, and `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr` is
-  `k`-general, as the proof claims. (3): `restrictPoly`'s substitution on `MvPolynomial (α × Fin m)`.
-  No grade Lean yet.
-- **`thm:pencil-d-cut`** generalizes `thm:pencil-x0-cut` (`Graph.X0Attains.of_cutVertex`). The
-  heights lift per column by `Graph.exists_liftingRestrict_eq_of_cutVertex` (planar, any picture);
-  the two `R`s meet on `G.liftingSpaceGrade q m` (`MvPolynomial.exists_mem_eval_ne_zero₂` takes any
-  submodule); the count uses `BodyHingeFramework.finrank_span_rigidityRows_cutVertex_eq` (any `k`)
-  and `Graph.deficiency_eq_add_of_cutVertex` (any `n`; the `d = 3` Lean's `…_add_le_…` also closes,
-  as the witness lemma takes rank ≥ target).
-- **`thm:pencil-d-bridge`** generalizes `thm:pencil-x0-bridge` (`Graph.X0Attains.of_bridgePath`).
-  Heights as at a cut vertex, by `Graph.exists_liftingRestrict_eq_of_bridgePath` (from `b` by
-  `pathVertex_rev`); hinges nonzero by `Graph.IsAdmissiblePicture.supportExtensor_ne_zero_grade`
-  (admissibility alone; the proof's "and `z ∈ L_G(q)^{d−2}`" is true, unused); the counts by
-  `BodyHingeFramework.le_finrank_span_rigidityRows_of_cut`,
-  `…add_le_finrank_span_rigidityRows_induce_union_range_of_bridgePath` (any `d`) and
-  `Graph.deficiency_eq_of_cutEdges_ncard_le_one`, `Graph.deficiency_induce_union_range_of_bridgePath`
-  (any `n`).
-- **`lem:pencil-contract-additive-kernel`** extracts the two kernel bounds that
-  `Graph.X0Attains.of_additiveContract` (`MainComponent/ContractAdditive.lean`, `hlow0`, `hup0`,
-  `honto`) proves inline. One height, planar: no grade. The lower bound needs only admissibility at
-  `q(t)` (`Graph.three_add_deficiency_le_finrank_liftingSpace`), so the node's `A` is
-  `Graph.IsAdmissiblePicture.exists_mvPolynomial` (unpinned; the prose after
-  `def:pencil-admissible-picture`) where the `d = 3` proof used the main-picture polynomial. The
-  upper bound is `Graph.finrank_ker_contractLiftingMatrix_zero_add_three_le` with
-  `Graph.liftingRestrict_mem_liftingSpace_induce_of_contract`; additivity closes the chain.
-- **`thm:pencil-d-contract-additive`** transcribes `Graph.X0Attains.of_additiveContract` with `m`
-  heights. The pieces hold at `n = m + 2` (`Graph.isX0Graph_induce_of_deficiency_eq_zero`,
-  `Graph.rigidContract_deficiency_eq`); the shift is the landed scale-shift with `T` the identity;
-  `ρ` maps `ker M(0)^m` onto `L_H(q)^m` columnwise; `Graph.exists_mem_ker_contractLiftingMatrix_zero`
-  per height gives the collapsed placement; `PanelHingeFramework.exists_rankPolynomial_rigidContract_induce_proj`
-  and `…induce_add_map_extProj_le` are `k`-general; the core's rank along the curve is the landed
-  `Graph.finrank_span_rigidityRows_induce_contractHeightGrade_eq`. Wording only: "So every hinge …
-  is nonzero, and the rank of `G/H` at `b′` is `tgt_d(G/H)`": the second clause is `z′` attaining
-  (the paragraph before), not the hinges; true as written.
-- **`cor:pencil-d-contract-rigid`** generalizes `cor:pencil-x0-contract-rigid`
-  (`Graph.X0Attains.of_rigidContract`) through landed Lean only:
-  `Graph.isX0Graph_induce_of_deficiency_two_eq_zero`, `Graph.deficiency_eq_zero_of_deficiency_eq_zero_of_le`
-  at `n = 2`, `Graph.x0AttainsGrade_of_deficiency_two_eq` (42e) and `Graph.rigidContract_deficiency_eq`
-  at `n = 2`.
+  Attaining is `Graph.X0AttainsGrade K m`. The restriction of `m` heights to `X` is
+  `Graph.liftingRestrict (Prod.fst ⁻¹' X)`, the one-height form at `α × Fin m`.
 
 ## Lemma checklist
 
-Shorthand, exact by substitution. Every declaration is in
-`namespace CombinatorialRigidity.Molecular`, with `variable {K : Type*} [Field K] {α β : Type*}
-{m : ℕ}`, under `@[expose] public section`; `Graph.` names are `_root_.Graph.…`. `hends` is `∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1
-(ends e).2` (at the graph named); `rk(H, ends, q, z)` is `Module.finrank K (Submodule.span K
-(PanelHingeFramework.ofNormals (k := m + 1) H ends (fun p => pencilConfigPointGrade q z p.1 p.2)
-).toBodyHinge.rigidityRows)`. `z|X` is `Graph.liftingRestrict (Prod.fst ⁻¹' X) z`, the restriction
-of `m` heights (*Blockers*, 1). `G/H` is `G.rigidContract (G.induce W) r`; `ker M(0)` is
-`LinearMap.ker ((G.contractLiftingMatrix K W r q).map (MvPolynomial.eval fun _ => (0 : K)))
-.mulVecLin`; `hatt` is `∀ u ∉ W, ∀ c₁ ∈ W, ∀ c₂ ∈ W, G.Adj u c₁ → G.Adj u c₂ → c₁ = c₂`.
-
-- [x] **Pre-build recon** (this commit): the signatures below, every spike complete.
-- [x] `lem:pencil-d-lifting-restrict`, in the new `Pencil/Grade/Cut.lean` (imports
-  `Grade.Witness`, `MainComponent.Cut`). Pin `Graph.liftingRestrict_mem_liftingSpaceGrade`
-  (`{G G'} (hle : G' ≤ G) {q} {z : α × Fin m → K} (hz : z ∈ G.liftingSpaceGrade q m) :
-  z|V(G') ∈ G'.liftingSpaceGrade q m`), `pencilConfigPointGrade_liftingRestrict`
-  (`(X q z) {x} (hx : x ∈ X) : pencilConfigPointGrade q (z|X) x = pencilConfigPointGrade q z x`),
-  `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_liftingRestrict_grade`
-  (`[Finite α] {G' X} (hX : V(G') ⊆ X) {ends ends'} hends hends' (q z) :
-  rk(G', ends, q, z|X) = rk(G', ends', q, z)`) and the landed `eval_restrictPoly` (part (3) as
-  it stands, at `α × Fin m`), the last three pinned with the `CombinatorialRigidity.Molecular.`
-  prefix. Two helpers: `Graph.liftingRestrict_preimage_fst_apply` (`rfl`: column
-  `i` of `z|X` is `Graph.liftingRestrict X` of column `i`) and
-  `Graph.exists_liftingRestrict_preimage_fst_eq` (`(hlift : ∀ y ∈ G'.liftingSpace q, ∃ z ∈
-  G.liftingSpace q, Graph.liftingRestrict X z = y) (hy : y ∈ G'.liftingSpaceGrade q m) :
-  ∃ z ∈ G.liftingSpaceGrade q m, z|X = y`), the "height by height" of the cut and the bridge.
-- [x] `thm:pencil-d-cut`, in `Grade/Cut.lean`. Pin `Graph.X0AttainsGrade.of_cutVertex`: the
-  hypotheses of `Graph.X0Attains.of_cutVertex` verbatim (`[Infinite K] [Finite α] [Finite β]`,
-  `hG`, `hcover`, `hoverlap`, `hsep`), with `h₁ : (G.induce V₁).X0AttainsGrade K m`,
-  `h₂ : (G.induce V₂).X0AttainsGrade K m`, concluding `G.X0AttainsGrade K m`. Route: the `d = 3`
-  proof, with the helper over `Graph.exists_liftingRestrict_eq_of_cutVertex`,
-  `restrictPoly (Prod.fst ⁻¹' V₁)`, the rank lemma above at `(X := V(G.induce V₁))` (`rw` needs
-  that form, not `V₁`), `Graph.deficiency_add_le_of_cutVertex … (m + 2)`, and
-  `screwDim (m + 1) * (|V₁| + |V₂|) = screwDim (m + 1) * (|V(G)| + 1)` given to `linarith`.
-- [x] `thm:pencil-d-bridge`, in `Grade/Cut.lean`. Pin `Graph.X0AttainsGrade.of_bridgePath`: the
-  hypotheses of `Graph.X0Attains.of_bridgePath` verbatim, with `X0AttainsGrade K m` at both sides
-  and in the conclusion. Route: the `d = 3` proof, with
-  `Graph.IsAdmissiblePicture.supportExtensor_ne_zero_grade`, `(n := m + 2)` throughout,
-  `(Graph.bodyBarDim (m + 2) : ℤ) = screwDim (m + 1)` (`Graph.bodyBarDim_add_one_eq_screwDim`)
-  and `push_cast [Nat.cast_sub one_le_screwDim]` for the `D − 1` terms.
-- [x] `lem:pencil-contract-additive-kernel`: `Graph.finrank_ker_contractLiftingMatrix_zero_eq_and_map_eq`, in the new `Grade/ContractAdditive.lean`; `[Fintype α]` as `mulVecLin` needs one.
-- [x] `thm:pencil-d-contract-additive`: `Graph.X0AttainsGrade.of_additiveContract` with `contractConfigPolyGrade` and `eval_contractConfigPolyGrade`; `hdefd : (G.induce W).deficiency (m + 2) = 0` for `hdef3`.
-- [x] `cor:pencil-d-contract-rigid`: `Graph.X0AttainsGrade.of_rigidContract`, via `Graph.isX0Graph_induce_of_deficiency_eq_zero (n := 2)` and `Graph.deficiency_eq_zero_of_deficiency_eq_zero_of_le`.
-- [ ] **Close** 42f, an intermediate sub-phase close (`PHASE-BOUNDARIES.md`).
+All six nodes are green, each pinned in its section with its Lean names; the chapter is the
+index (forward mode), and the file map is under *Current state*.
 
 ## Blockers / open questions
 
-- None. The open's four questions, resolved by the recon:
-  1. **The tuple restriction needs no definition.** `Graph.liftingRestrict` and `restrictPoly` are
-     generic in the type of bodies, so at `α × Fin m` with `Prod.fst ⁻¹' X` they are the tuple
-     forms, and `eval_restrictPoly` is part (3) as it stands. Home: the new `Grade/Cut.lean`, with
-     the cut and the bridge.
-  2. **The kernel lemma goes in a new file**, `Grade/ContractAdditive.lean`, not beside
-     `Graph.X0Attains.of_additiveContract`: a new declaration there rebuilds that file's 12
-     importers (`MainComponent/Contract.lean`, the coverage files, `Grade/Stable.lean`,
-     `Grade/TheoremS.lean`, `Nonvacuity.lean`), the 42e precedent for deferring a fold. The
-     `d = 3` proof keeps its inline copy.
-  3. **The contraction is one build commit**: its spike is complete, the theorem with its
-     corollary and the kernel lemma.
-  4. **No 42f build edits `Grade/Configuration.lean` or `Grade/Carrier.lean`**: both builds are
-     new files, and `contractConfigPolyGrade` lives in the new one. The `gradeSigma` /
-     `pictureProj` fold stays deferred (design doc §3) to the first commit that edits either.
+- None. The rest of PD-STEPS opens at the PI's word (*Hand-off*).
 
 ## Hand-off / next phase
 
-The next concrete commit is the **42f close**, an intermediate sub-phase close
-(`PHASE-BOUNDARIES.md`): all six nodes are green (`Grade/Cut.lean`, `Grade/ContractAdditive.lean`).
-Two builds landed, where the option the PI chose estimated about 4-8 (the coordinator's estimate,
-design doc §1).
+Phase 42 stays in progress with no sub-phase open. The next step is **putting the rest of
+PD-STEPS's open to the PI** (design doc §3): the 19 red nodes of `sec:pencil-d-short` (12, open
+ears with three or more interior bodies) and `sec:pencil-d-long` (7, cycles and long open ears),
+no letter minted until it opens. What 42f hands it and PD-COVERAGE, all at every `m`:
+- The restriction of `m` heights and its three claims (`lem:pencil-d-lifting-restrict`), which
+  `thm:pencil-d-open-ear-four` (`-short`) and `thm:pencil-d-open-ear-long` (`-long`) use, with
+  `Graph.exists_liftingRestrict_preimage_fst_eq` lifting a restriction height by height.
+- `thm:pencil-d-cut`, `thm:pencil-d-bridge`, `thm:pencil-d-contract-additive` and
+  `cor:pencil-d-contract-rigid`, the steps `thm:pencil-d-coverage` (PD-COVERAGE) takes at a cut
+  vertex, a chain of bridges, a core and a planar-rigid set.
+
+**Deferred from 42f, where it lands** (design doc §3, *Deferred to them from PD-STEPS (42f)*;
+FRICTION): `Graph.X0Attains.of_additiveContract` proves inline (`hlow0`, `hup0`, `honto`) what
+`Graph.finrank_ker_contractLiftingMatrix_zero_eq_and_map_eq` states. The fold moves that lemma,
+unchanged, into `MainComponent/ContractAdditive.lean` (its dependencies are all there; checked by
+a scratch copy at the close), with the next commit that edits that file. The deferrals from 42b,
+42c and 42e (design doc §3) are unchanged: 42f's Lean is two new files and the root import.
 
 ## Decisions made during this phase
 
@@ -175,10 +85,14 @@ design doc §1).
   standalone", `notes/Phase42d.md`): the `Pᵈ` split-off and the open-ear step that assumes
   `def_d(G[V₁]) ≤ def_d(G)`, with `lem:pencil-d-polygon-ear`, deleted with their sections; PD-STEPS
   goes from 28 nodes to 25.
-- **The pre-build recon** (spikes in `scratch/42f/`, all complete): no tuple restriction defined
-  (the generic `Graph.liftingRestrict` at `α × Fin m`); two new files, so no landed file edited
-  and the 42e fold stays deferred; the kernel lemma not extracted into the `d = 3` file (12
-  importers); the contraction one build. The open's read held; two of its names route otherwise:
-  the corollary takes `Graph.isX0Graph_induce_of_deficiency_eq_zero (n := 2)`, as
-  `…_two_eq_zero` sits in `MainComponent/Contract.lean`, outside the imports, and the cut takes
-  `Graph.deficiency_add_le_of_cutVertex`, as the open allowed.
+- **The open's consistency read:** all six proofs route through the argument their statements
+  claim, on the `Grade/` carrier; the kernel lemma's lower bound needs only admissibility, so its
+  polynomial is `Graph.IsAdmissiblePicture.exists_mvPolynomial`.
+- **The pre-build recon** (spikes in `scratch/42f/`, all complete): no tuple restriction defined;
+  two new files, so no landed file edited; the kernel lemma kept out of the `d = 3` file (12
+  importers); the corollary through `Graph.isX0Graph_induce_of_deficiency_eq_zero (n := 2)`, the
+  cut through `Graph.deficiency_add_le_of_cutVertex`.
+- **The builds** (two commits, the spikes transcribed, statements unchanged).
+- **The close:** three wording repairs (*Current state*); the kernel lemma's docstring states its
+  hypotheses exactly; the fold deferred. No `main_results` row: an intermediate close adds none
+  (design doc §3, PD-HEAD).

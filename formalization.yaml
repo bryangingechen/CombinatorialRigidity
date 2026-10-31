@@ -299,8 +299,9 @@ status:
     (Graph.hasGradedDistinctPencilRealization_of_deficiency_two_le_three). The chapter now also
     carries a proof on paper of the theorem in every dimension, its strongest form included;
     formalizing that proof has begun: its setting is formalized, with the graphs whose deficiencies
-    in the plane and in dimension d agree, and the first steps of its induction are in progress: at
-    a cut vertex, along a chain of bridges, and contracting a rigid part of the graph.
+    in the plane and in dimension d agree, and so are the first steps of its induction, at a cut
+    vertex, along a chain of bridges and contracting a rigid part of the graph; its other steps are
+    next.
   sorry_count: 0
   sorry_in_definitions: 0
   axioms: ["propext", "Classical.choice", "Quot.sound"]          # only Lean/mathlib standard axioms; no project-specific axioms

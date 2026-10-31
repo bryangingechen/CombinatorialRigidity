@@ -1981,9 +1981,9 @@ as in \cref{lem:pencil-contract-additive-kernel}.
   $G/H$ and $z' \in L_{G/H}(q)^{d-2}$, the points $b'_u$ and $b'_v$ at the
   ends of each edge of $G/H$ are linearly independent
   (\cref{lem:pencil-d-config-realization}). So every hinge
-  $C(b'_u, b'_v)$ of $G/H$ is nonzero (\cref{def:panel-support-extensor}),
-  and the rank of $G/H$ at the normals $b'$ is
-  $\operatorname{tgt}_d(G/H)$. Let $Q$ be the polynomial of
+  $C(b'_u, b'_v)$ of $G/H$ is nonzero (\cref{def:panel-support-extensor}).
+  As $z'$ is an attaining height of $G/H$, the rank of $G/H$ at the
+  normals $b'$ is $\operatorname{tgt}_d(G/H)$. Let $Q$ be the polynomial of
   \cref{lem:pencil-contract-degenerate-rank} for the normals $b'$ and
   $N = \operatorname{tgt}_d(G/H)$. Read at the configuration of $x$ at
   $t = 0$, it is a polynomial in $x$. For each $i$ there is a solution
@@ -2135,8 +2135,9 @@ none of the first five cases settles $G$, then $G$ has a core in
 dimension $d$ unless every chain has one interior body and
 $\operatorname{def}_3(G) = 0$ (\cref{thm:pencil-d-chain-or-core}). We
 may take $\ell = 2$ at $d = 4$, and $\ell = 3$ at every $d \ge 5$. So
-the coverage needs no step at a chain with at most two interior bodies
-at $d = 4$, nor at one with at most three from $d = 5$ on.
+the coverage needs no step in dimension $d$ at a chain with at most two
+interior bodies at $d = 4$, nor at one with at most three from $d = 5$
+on.
 
 In the coverage in dimension $d$, a chain with more than $\ell$
 interior bodies is settled by an ear step with at least three interior
@@ -3821,10 +3822,11 @@ interior bodies or a core in dimension $d$, where $\ell = 2$ at $d = 4$
 and $\ell = 3$ from $d = 5$ on. An open ear step settles the first
 (\cref{sec:pencil-d-short}, \cref{sec:pencil-d-long}), and the
 contraction the second (\cref{thm:pencil-d-contract-additive}). So the
-coverage in dimension $d \ge 4$ needs no step at a chain with one or two
-interior bodies, such as the steps at $d = 3$ that split off a body of
-degree two (\cref{thm:pencil-x0-splitoff}) and settle an open ear with
-two interior bodies (\cref{thm:pencil-x0-open-ear-two}).
+coverage in dimension $d \ge 4$ needs no step in dimension $d$ at a chain
+with one or two interior bodies. The steps at $d = 3$ that split off a
+body of degree two (\cref{thm:pencil-x0-splitoff}) and settle an open ear
+with two interior bodies (\cref{thm:pencil-x0-open-ear-two}) enter only
+through the embedding, within \cref{thm:pencil-x0-coverage}.
 
 When the general configuration of a graph attains, the graph has an
 adjacent-distinct pencil realization

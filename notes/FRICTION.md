@@ -110,6 +110,27 @@ moment you resolve the entry) is what makes the sweep a pure
 to be re-derived by re-reading entries later.
 
 ## Open
+### [open] The kernel argument at an additive core is proved twice, inline at `d = 3` and in `Pencil/Grade/`
+- **Where it bit:** Phase 42f, `lem:pencil-contract-additive-kernel`
+  (`Graph.finrank_ker_contractLiftingMatrix_zero_eq_and_map_eq`,
+  `Pencil/Grade/ContractAdditive.lean`).
+  It states the two kernel bounds that `Graph.X0Attains.of_additiveContract`
+  (`MainComponent/ContractAdditive.lean`, 40k) proves inline as `hlow0`, `hup0` and `honto`, with
+  the lower bound's polynomial taken from admissibility
+  (`Graph.IsAdmissiblePicture.exists_mvPolynomial`) where the `d = 3` proof uses the main-picture
+  one.
+- **Friction:** none at the build: the 42f recon kept the lemma out of the `P³` file, as a
+  declaration added there rebuilds its 12 importers. The cost is the argument written twice.
+- **Proposed fix:** move the lemma, unchanged, into `MainComponent/ContractAdditive.lean` before
+  `Graph.X0Attains.of_additiveContract`, replace `hlow0`/`hup0`/`honto` by one call (admissibility
+  for `G` from the main picture), and give `Grade/ContractAdditive.lean` a `public import` of
+  `MainComponent.ContractAdditive`. Moving the lemma, not importing `Grade/` into the `P³` file,
+  which 42b's additive commits avoided: its every dependency is planar and already imported there
+  (a scratch copy compiled against that file alone at 42f's close). With the next commit that edits
+  `MainComponent/ContractAdditive.lean` (design doc `notes/Phase42-design.md` §3, *Deferred to them
+  from PD-STEPS (42f)*), not alone.
+- **Status:** open.
+
 ### [open] `gradeSigma` and the picture projection are each defined twice in `Pencil/Grade/`
 - **Where it bit:** Phase 42e, `lem:pencil-d-condition-linear`
   (`Pencil/Grade/ConditionLinear.lean`). Its map `σ_h`, `gradeSigma h : (Fin 3 → K) →ₗ[K]
