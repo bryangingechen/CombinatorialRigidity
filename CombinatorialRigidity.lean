@@ -54,6 +54,7 @@ public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Flat
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.JoinIndependence
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Polygon
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Realization
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Short
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Stable
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Stars
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.TheoremS
