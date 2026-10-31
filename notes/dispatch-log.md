@@ -195,6 +195,21 @@ coordinator judged it none, and the rule now says so. Tool:
 `phasenote.py --surfaces` misses a sub-lettered `| 42.` ROADMAP row (open and
 close, as at 42f).
 
+**Phase 42h (PD-STEPS: open ears with four or more interior bodies) rows,
+2026-10-31: 4, written at 42h's close.** None BLOCKED, escalated or killed;
+eight dispatches (open; recon, seven of eight nodes spiked complete; one opus
+build carrying a PI-adjudicated restatement; four sonnet builds, the last the
+theorem's unspiked `hins` discharge on a coordinator slot trace, which held;
+close). (1)–(2) Two coordinator question texts put to the PI overclaimed: the
+open's "SHORT-CORE's hand proof" (the whole step, not the three-body half) and
+the post-recon "use only that degree" (the citing proofs also used part (3)'s
+injectivity at `p = d − 2`); the open and the Stars build each caught one and
+noted it beside the verbatim PI entry (F19). (3) `pathVertex_map`'s docstring
+said "a linear map" over any function: the coordinator's sonnet-tier docstring
+read caught it; the close found four more (F44). (4) A 42d sentence of the
+section overview overstated stars-four; the close's end-to-end re-read caught
+it. Tool: `phasenote.py --surfaces` still misses the sub-lettered row.
+
 ## Findings
 
 (Distill recurring lessons here — one entry per lesson, rows cite it.
