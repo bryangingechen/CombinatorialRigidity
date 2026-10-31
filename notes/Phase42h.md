@@ -1,39 +1,36 @@
 # Phase 42h — PD-STEPS: open ears with four or more interior bodies in every dimension (work log)
 
-**Status:** in progress, opened 2026-10-31 at the PI's word ("k ≥ 4 half first (Recommended)",
-design doc §1), a sub-phase of Phase 42 and the third of PD-STEPS. Forward mode, the Lean under
-`/coordinate-phase`: the eight red nodes of `blueprint/src/chapter/pencil-d.tex`'s
+**Status:** all eight nodes green, close pending. Opened 2026-10-31 at the PI's word ("k ≥ 4 half
+first (Recommended)", design doc §1), a sub-phase of Phase 42 and the third of PD-STEPS. Forward
+mode, the Lean under `/coordinate-phase`: the eight nodes of `blueprint/src/chapter/pencil-d.tex`'s
 `sec:pencil-d-short` for open ears with four or more interior bodies (`-short-four`), on the
-`Pencil/Grade/` carrier. The `-short-three` half (4 nodes) stays mapped by section in design doc
-§3. Seven of the eight are green (`Pencil/Grade/Stars.lean`, `Pencil/Grade/EarData.lean`); the recon
-pinned the last, at every `m`, a composition over three transcription leaves and two residual goals
-(*Lemma checklist*); the three leaves, `splitOff_ear_succAbove`,
-`Graph.exists_earBase_splitOff_grade` and `Graph.X0AttainsGrade.of_openEar_splitOff`, are green in
-`Pencil/Grade/Short.lean`. Next (*Hand-off*): the theorem `Graph.X0AttainsGrade.of_openEar_four`
-with the `hins` discharge.
+`Pencil/Grade/` carrier (`Grade/Stars.lean`, `Grade/EarData.lean`, `Grade/Short.lean`). The last,
+`thm:pencil-d-open-ear-four` (`Graph.X0AttainsGrade.of_openEar_four`), landed with its `hins`
+discharge. The `-short-three` half (4 nodes) stays mapped by section in design doc §3. Next
+(*Hand-off*): the sub-phase's close (`PHASE-BOUNDARIES.md`), dispatched by the coordinator.
 
 ## Current state
 
-**Next: `Graph.X0AttainsGrade.of_openEar_four` with the `hins` discharge** (*Hand-off*).
-`Pencil/Grade/Short.lean` has three leaves green. The third, `Graph.X0AttainsGrade.of_openEar_splitOff`
-(about 150 lines, no `sorry`): a step-for-step transcription of the `P³` proof at grade `m + 1`,
-verbatim pin, no departure. Two helpers written beside it: `complementScrew K k`, the complement
-isomorphism `⋀² ≃ₗ ScrewSpace K k` (a local `def` because `complementIso`'s target
-`⋀^(k+2-2)` does not unify with `ScrewSpace K k` under `Submodule.map`), with
-`span_supportExtensor_comp_eq_map_normalsJoin` and `finrank_sup_map_complementScrew`; `ρJ` is the
-base `ρ` mapped by `complementScrew.symm`. The insertion's `p v = x₂` is met by an explicit `st`
-(`Sum.elim`, `gradeMk_eta`). Earlier: `splitOff_ear_succAbove` (the graph-combinatorics leaf, no blueprint pin; a
-`sorry`-free transcription of `splitOff_ear_four` at every length) with three `Fin` / `pathVertex`
-helpers (`coe_succAbove_two`, `coe_succAbove_one`, `pathVertex_comp_succAbove_one`, the last
-`pathVertex a (x ∘ succAbove 1) b j = pathVertex a x b (succAbove 2 j)`, which the insertion's path
-form will reuse). And `Graph.exists_earBase_splitOff_grade` (no blueprint pin; a step-for-step
-transcription of `Graph.exists_earBase_splitOff` at grade `m + 1`, 180 lines): the heights come
-from `Graph.exists_liftingRestrict_preimage_fst_eq` over `Graph.earExtend_mem_liftingSpace`
-(column by column), the planes `la`, `lb` by `choose` on the columns of `zs`, the rank congruences
-are the `P³` ones at `k := m + 1`; no helper of its own was needed. The file imports `Grade.Cut`,
-`Grade.EarData`, `Grade.Stars` and `MainComponent.Short`. `ShortBody.lean` (in the gitignored
-`scratch/42h/`) has the theorem's composition type-checking over the one remaining `sorry`'d leaf
-and two residual goals (*Lemma checklist*, last item). The chapter is the lemma index.
+**Next: the close of 42h** (*Hand-off*). All eight nodes are green; `Pencil/Grade/Short.lean` has
+the theorem `Graph.X0AttainsGrade.of_openEar_four`, no `sorry`. Its proof applies, in order,
+`splitOff_ear_succAbove`, then `Graph.X0AttainsGrade.of_openEar_splitOff` with `hins` discharged by
+`exists_mvPolynomial_starsFour` (at `Sa`, `Sb` the ranges of `gradeSigma la`, `gradeSigma lb`, `pa`,
+`pb` the base points of `a`, `b`), `exists_mvPolynomial_earDataGrade_of_smul` (at
+`v = x ∘ succAbove 1`, the stars condition as `C`), and `exists_insertion_of_starGrade_sup` at
+`R = ρ ⊔` the `G″` joins but the one at `1`. Four new leaves in the file, unpinned:
+`pathVertex_smul_comp` and `starsCond_of_smul` (the condition is scale invariant: the path scaled by
+`1` at the ends and `c i` at body `i`, each join a nonzero multiple), `pathVertex_map` (a function
+of the bodies commutes with the path sequence; it carries the `G″` joins at `s` to
+`pathVertex pa Y pb`), and `span_joins_succAbove_two` (the joins of the path of `G` are those of
+`G″` but the one at `1`, plus `P 1 ∨ P 2` and `P 2 ∨ P 3`), with `starGrade_smul` and
+`span_range_smul_eq` beside them. The first residual, `G″`'s `IsLink (e 1) (x 0) (x 2)`, is
+`hpath''` at `1`. `hza`, `hzb`, the admissibility hypothesis and the base-compatibility binders of
+`hins` go unused, as the trace predicted. The theorem is pinned with `\lean` and `\leanok` on
+statement and proof; its `\uses` already listed everything the Lean calls. Honesty gate: every
+hypothesis of the Lean (`hG`, the cover and path data `hcover`, `hinj`, `hxV₁`, `hab`, `hpath`,
+`hsep`, `h₁`, `h₂`) is the chapter's standing hypotheses, open ear and attaining assumptions; none
+is added. The Lean's route differs from the chapter's order (stars-four through ear data (3)),
+ledger R-12. `ShortBody.lean` in the gitignored `scratch/42h/` is spent.
 
 ## Architectural choices made up front
 
@@ -79,12 +76,11 @@ Shorthand: every declaration is in `namespace CombinatorialRigidity.Molecular`, 
 - [x] `lem:pencil-d-ear-data-open`, `Grade/EarData.lean` (this commit). Pins
   `exists_mvPolynomial_le_finrank_ofNormals_bind_grade` ((1), every `k`) and
   `exists_mvPolynomial_le_finrank_sup_span_normalsJoin` ((2)).
-- [ ] `thm:pencil-d-open-ear-four`, new `Pencil/Grade/Short.lean` (imports `Grade.EarData`,
-  `MainComponent.Short`). Pin `Graph.X0AttainsGrade.of_openEar_four`:
+- [x] `thm:pencil-d-open-ear-four`, new `Pencil/Grade/Short.lean` (imports `Grade.EarData`,
+  `MainComponent.Short`), green, both residuals discharged (R-12). Pin `Graph.X0AttainsGrade.of_openEar_four`:
   `Graph.X0Attains.of_openEar_four` verbatim with `{n} {x : Fin (n + 4) → α}`
   `{e : Fin (n + 5) → β}` (`k = n + 4`), `h₁` and `h₂` at `X0AttainsGrade K m`,
-  `G″ = G.splitOff (x 1) (x 0) (x 2) (e 1)`. **Partial**: its proof applies the leaves below and
-  type-checks. Leaves, in build order (signatures in `ShortBody.lean`):
+  `G″ = G.splitOff (x 1) (x 0) (x 2) (e 1)`. Leaves, in build order:
   - [x] `splitOff_ear_succAbove` (`x : Fin (k + 3) → α`: `G″` has the ear `a − x ∘ succAbove 1 − b`
     with labels `e ∘ succAbove 2`, and `x 1` has degree two): `splitOff_ear_four` at every length;
     `k = 0` serves `-short-three`.
@@ -94,9 +90,9 @@ Shorthand: every declaration is in `namespace CombinatorialRigidity.Molecular`, 
   - [x] `Graph.X0AttainsGrade.of_openEar_splitOff`: `Graph.X0Attains.of_openEar_splitOff` at grade
     `m + 1`, `D` for `6`, `hins`'s `ρ` in `⋀²`; with `complementScrew`,
     `span_supportExtensor_comp_eq_map_normalsJoin` and `finrank_sup_map_complementScrew`.
-  - Residual 1 (kernel-checked): `(G.splitOff (x 1) (x 0) (x 2) (e 1)).IsLink (e 1) (x 0) (x 2)`,
+  - [x] Residual 1 (kernel-checked, discharged): `(G.splitOff (x 1) (x 0) (x 2) (e 1)).IsLink (e 1) (x 0) (x 2)`,
     from `hpath''` at `1`.
-  - Residual 2 (kernel-checked), `hins`: for base data `q z la lb ρ` with `hza`, `hzb`,
+  - [x] Residual 2 (kernel-checked, discharged), `hins`: for base data `q z la lb ρ` with `hza`, `hzb`,
     `∃ Q ≠ 0, ∀ s, eval s Q ≠ 0 → G″.IsAdmissiblePicture (earPictureGrade V₁ q s) → ∃ x₂, x₂ last
     = 1 ∧ ∀ p, p (x 1) = x₂ → (∀ t ≠ x 1, p t = point of s at t) → min (finrank (ρ ⊔ span (G″'s
     ear joins at s)) + 1) D ≤ finrank (ρ ⊔ span (G's ear joins at p))`. Discharge:
@@ -131,16 +127,13 @@ Shorthand: every declaration is in `namespace CombinatorialRigidity.Molecular`, 
 
 ## Hand-off / next phase
 
-The next concrete commit is the theorem **`Graph.X0AttainsGrade.of_openEar_four`** in
-`Pencil/Grade/Short.lean` (`scratch/42h/ShortBody.lean`), with the `hins` discharge; it may take
-two commits. Plan (the recon's): `exists_mvPolynomial_starsFour`, then
-`exists_mvPolynomial_earDataGrade_of_smul` (needs the condition's scale invariance, a new leaf),
-then the insertion in path-join form (a new leaf: the index bookkeeping of `exists_insertion_four`,
-`exists_insertion_of_starGrade_sup` at `R = ρ ⊔` the other joins), with a `pathVertex` composition
-lemma (a third small leaf). The residual `(G.splitOff (x 1) (x 0) (x 2) (e 1)).IsLink (e 1) (x 0)
-(x 2)` comes from `hpath''` at `1`. Two to three builds remain.
+The next concrete commit is **the close of 42h** (an intermediate sub-phase close,
+`PHASE-BOUNDARIES.md` *When this commit closes a phase*): all eight nodes are green. The close
+re-thins the ROADMAP row and compresses its planning section, syncs the user-facing status
+surfaces, re-reads the chapter's `sec:pencil-d-short` end to end for the `-short-four` nodes, and
+writes the exposition ledger entry; the coordinator dispatches it, not this build.
 - **The standing rule** (design doc §3): each build adds a row to `notes/Cleanup42.md` §2 where its
-  Lean departs from the chapter's proof; R-7 to R-10 are this recon's, R-11 the Stars build's.
+  Lean departs from the chapter's proof; R-7 to R-10 are this recon's, R-11 the Stars build's, R-12 the theorem's.
 - **Deferred from 42g, where it lands** (design doc §3; two `[open]` FRICTION entries): the four
   `normalsJoin` lemmas of `Grade/Polygon.lean` join 42c's move to `PanelLayer.lean`, and
   `pencilConfigPointGrade_ofPoints` (`Grade/Chain.lean`) joins 42e's fold into
@@ -149,8 +142,8 @@ lemma (a third small leaf). The residual `(G.splitOff (x 1) (x 0) (x 2) (e 1)).I
   `normalsJoin_add_smul_add_smul` go with them, and its four `pathVertex` lemmas
   (`pathVertex_add_smul`, `pathVertex_succ_castSucc`, `pathVertex_eq_of_val_eq`,
   `pathVertex_zero_single`) to `MainComponent/Cut.lean`, which defines `pathVertex` (FRICTION, two
-  `[open]` entries; design doc §3); `Grade/Short.lean`'s `pathVertex_comp_succAbove_one` goes with
-  them, and its two `Fin.succAbove` value lemmas (`coe_succAbove_one`, `coe_succAbove_two`) are
+  `[open]` entries; design doc §3); `Grade/Short.lean`'s `pathVertex_comp_succAbove_one`, `pathVertex_smul_comp` and
+  `pathVertex_map` go with them, and its two `Fin.succAbove` value lemmas (`coe_succAbove_one`, `coe_succAbove_two`) are
   the Mathlib-eligible ones beside them (not yet in a FRICTION entry).
 - **After 42h:** `-short-three` (4 nodes) opens at the PI's word, its recon building on 42h's Lean:
   the dual route carries `lem:pencil-d-stars-three` (the radical then holds `Π_a + Π_b`, and

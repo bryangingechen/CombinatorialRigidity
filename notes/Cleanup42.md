@@ -156,6 +156,17 @@ valid. The cleanup chooses one per `open` row, with the PI.
   *Remedies:* keep both (the basis also carries the `⋀^{d−1}` reading of part (2) in the chapter);
   a Lean helper, mathlib's `Basis.exteriorPower`, so that the Lean follows the chapter; or the
   prose to the Lean.
+- **R-12** · `thm:pencil-d-open-ear-four` (`Graph.X0AttainsGrade.of_openEar_four`, 42h build) ·
+  **open**.
+  *Chapter:* the ear datum is chosen twice (for `G″`, then for `G` after `x₂` is put back), the
+  stars-four condition is shown at a general point by the third condition on the ear data, and the
+  insertion is applied to the joins of the ear.
+  *Lean:* `Graph.X0AttainsGrade.of_openEar_splitOff` takes the put-back as a hypothesis `hins`;
+  `hins` is discharged by stars-four (as the condition `C`, with `pa`, `pb` the base points), then
+  `exists_mvPolynomial_earDataGrade_of_smul` (its `hC` is `starsCond_of_smul`, the condition's
+  scale invariance), then `exists_insertion_of_starGrade_sup` at `R = ρ ⊔` the joins of `G″` but the
+  one at `1` (`span_joins_succAbove_two`). The order is the factored one, not the chapter's.
+  *Remedies:* the prose to the Lean (state the factoring), or keep both.
 
 ## 3. The cleanup (not yet planned)
 

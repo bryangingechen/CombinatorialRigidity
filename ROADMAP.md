@@ -180,7 +180,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (RECONCILE 3/3: the Lean outside the phase's footprint) | the Lean's dead code, signatures, docstrings and the pebble game's search, a non-vacuity witness per main result, and the blueprint pins they move (no main result's statement changes) | ✓ Complete — dead code deleted, unneeded hypotheses dropped and the blueprint statements they reached restated, the search re-proved, the docstrings checked and a non-vacuity witness per main result outside the next phase's rows, no main result's statement changed (see `notes/Reconcile-lean-cleanup.md`; plan `notes/Reconcile.md`; round manual: `CLEANUP.md`) |
 | ⋮ Toolchain bump to Lean v4.36.0-rc1 (maintenance, cross-phase) | `lean-toolchain`, `lake-manifest.json`, `lakefile.toml` (+ renames, imports and one-line fixes in 39 Lean files) | ✓ Complete — v4.34.0-rc2 → v4.36.0-rc1, mathlib → `930ae14`, `Matroid` → `8ece630`; every gate green, all 19 main results' axioms unchanged; pushed 2026-10-25, CI green at `4c892cb6` (see `notes/Bump-v4.36.0-rc1.md`; record `notes/ToolchainBumps.md`) |
 | 41. The panel-hinge carrier and its graph (post-program) — RECONCILE-FORMAL | `Molecular/` (structural edit; sub-lettered, 41a–41e) | ✓ Complete — each hinge at its own edge's ends, and the RECONCILE program closed (see `notes/Phase41e.md`; plan `notes/Phase41-design.md`) |
-| 42. The pencil realization theorem in every dimension (post-program) — PENCIL-D | research first, then `Molecular/`, `pencil-d.tex` (sub-lettered, 42a–42h) | In progress — 42a ✓ PD-RECON, 42b ✓ PD-STATE, 42c ✓ PD-STABLE, 42d ✓ PD-ALL, 42e ✓ PD-CARRIER, 42f ✓ PD-STEPS's cut, bridges and contraction, 42g ✓ PD-STEPS's cycles and long ears; 42h PD-STEPS's short ears with four or more interior bodies open, 7 of 8 nodes green (see `notes/Phase42h.md`; plan `notes/Phase42-design.md`) |
+| 42. The pencil realization theorem in every dimension (post-program) — PENCIL-D | research first, then `Molecular/`, `pencil-d.tex` (sub-lettered, 42a–42h) | In progress — 42a ✓ PD-RECON, 42b ✓ PD-STATE, 42c ✓ PD-STABLE, 42d ✓ PD-ALL, 42e ✓ PD-CARRIER, 42f ✓ PD-STEPS's cut, bridges and contraction, 42g ✓ PD-STEPS's cycles and long ears; 42h PD-STEPS's short ears with four or more interior bodies: all 8 nodes green, close pending (see `notes/Phase42h.md`; plan `notes/Phase42-design.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1321,9 +1321,10 @@ cleanup after Phase 42 (`notes/Cleanup42.md`). The short ears, the rest of PD-ST
 halves. At the PI's word **42h** (opened 2026-10-31, `notes/Phase42h.md`) takes the open ears with
 four or more interior bodies, eight nodes of `pencil-d.tex` in every `d` (SHORT-CORE's step
 there, with the tools both halves share), whose proofs a read at the open found sound on the
-carrier; a recon has pinned their Lean signatures, seven of the eight checked complete, and the
-first build has formalized four of them, the step's linear algebra (at the PI's word one of their
-statements is now worded on linear forms, and one proof follows its Lean). The three-body ear at
+carrier; a recon pinned their Lean signatures, and all eight are now formalized and green, the step's
+linear algebra first and the step `thm:pencil-d-open-ear-four` last (at the PI's word one of their
+statements is worded on linear forms, and one proof follows its Lean); the sub-phase's close is
+next. The three-body ear at
 `d = 4` to `6`, four nodes that build on these, opens later at the PI's word, as each later layer
 does. The targets are three tiers:
 every `d` at `def_3 ≤ 3` (proved and formalized, 42c), a `P⁴` theorem (every `d` at `def_3 ≤ 7`,

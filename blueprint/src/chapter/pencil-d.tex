@@ -2953,6 +2953,8 @@ $(\xi, \eta, \omega) \mapsto (\xi, \eta, h_a \cdot (\xi, \eta, \omega),
 % S35 for the third condition at every d >= 3 and k >= 4.
 \begin{theorem}[An open ear with four or more interior bodies, in every dimension]
   \label{thm:pencil-d-open-ear-four}
+  \lean{Graph.X0AttainsGrade.of_openEar_four}
+  \leanok
   \uses{def:pencil-d-x0-attains, def:pencil-x0-standing, def:open-ear,
         def:graph-operations}
   Let $K$ be infinite and $d \ge 3$, and let $G$ satisfy the standing
@@ -2967,6 +2969,7 @@ $(\xi, \eta, \omega) \mapsto (\xi, \eta, h_a \cdot (\xi, \eta, \omega),
   attains in dimension $d$.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-x0-main-picture-open, lem:pencil-ear-fibre,
         lem:pencil-d-lifting-restrict, lem:pencil-x0-fibre-intersection,
         lem:pencil-d-condition-linear, def:pencil-d-ear-data,
