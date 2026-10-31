@@ -44,6 +44,7 @@ public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Collineation
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.ConditionLinear
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Configuration
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Contract
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Cut
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Embedding
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Flat
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.JoinIndependence

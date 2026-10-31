@@ -1577,6 +1577,12 @@ restriction of $z$ to $V(G')$.
 
 \begin{lemma}[Heights restrict to a subgraph, in every dimension]
   \label{lem:pencil-d-lifting-restrict}
+  \lean{Graph.liftingRestrict_preimage_fst_apply,
+        Graph.liftingRestrict_mem_liftingSpaceGrade,
+        CombinatorialRigidity.Molecular.pencilConfigPointGrade_liftingRestrict,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.finrank_span_rigidityRows_ofNormals_liftingRestrict_grade,
+        CombinatorialRigidity.Molecular.eval_restrictPoly}
+  \leanok
   \uses{def:pencil-d-configuration, def:pencil-lifting-space,
         def:panel-hinge-framework}
   Let $d \ge 3$, let $G' \le G$, let $q$ be a picture of $G$, and let
@@ -1593,6 +1599,7 @@ restriction of $z$ to $V(G')$.
   \end{enumerate}
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-lifting-restrict, lem:pencil-rank-congr}
   At $d = 3$ this is \cref{lem:pencil-lifting-restrict}, and in dimension
   $d$ each claim holds height by height.
@@ -1624,6 +1631,8 @@ restriction of $z$ to $V(G')$.
 
 \begin{theorem}[A cut vertex, in every dimension]
   \label{thm:pencil-d-cut}
+  \lean{Graph.X0AttainsGrade.of_cutVertex}
+  \leanok
   \uses{def:pencil-d-x0-attains, def:pencil-x0-standing}
   Let $K$ be infinite and $d \ge 3$, and let $G$ satisfy the standing
   hypotheses (\cref{def:pencil-x0-standing}), with
@@ -1634,6 +1643,7 @@ restriction of $z$ to $V(G')$.
   attains in dimension $d$.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-d-lifting-restrict, lem:pencil-cut-fibre,
         lem:block-rank-cut-vertex, lem:deficiency-cut-vertex,
         lem:pencil-x0-fibre-intersection, lem:pencil-x0-main-picture-open,
@@ -1696,6 +1706,8 @@ restriction of $z$ to $V(G')$.
 
 \begin{theorem}[A chain of bridges, in every dimension]
   \label{thm:pencil-d-bridge}
+  \lean{Graph.X0AttainsGrade.of_bridgePath}
+  \leanok
   \uses{def:pencil-d-x0-attains, def:pencil-x0-standing}
   Let $K$ be infinite and $d \ge 3$, and let $G$ satisfy the standing
   hypotheses. Let $V(G)$ be the disjoint union of $V_1$, $V_2$ and path
@@ -1706,6 +1718,7 @@ restriction of $z$ to $V(G')$.
   the general configuration of $G$ attains in dimension $d$.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-d-lifting-restrict, lem:pencil-bridge-fibre,
         lem:block-rank-cut, lem:cut-edge-decomposition,
         lem:pencil-d-config-realization, def:panel-support-extensor,

@@ -7,21 +7,26 @@ design doc §1), a sub-phase of Phase 42 and the first of PD-STEPS. Forward mode
 carrier. The open's consistency read found every proof routing through the argument its statement
 claims (*Consistency read at the open*). At the PI's word the open also cut three step nodes no
 coverage step uses, leaving PD-STEPS 25 nodes. The pre-build recon pinned all six Lean signatures
-and spiked each complete, with no `sorry` (*Lemma checklist*). Next (*Hand-off*): land
-`Pencil/Grade/Cut.lean`, the restriction, the cut vertex and the chain of bridges.
+and spiked each complete, with no `sorry` (*Lemma checklist*). The first build landed
+`Pencil/Grade/Cut.lean` (the restriction, the cut vertex and the chain of bridges, three nodes
+green). Next (*Hand-off*): the contraction build, `Pencil/Grade/ContractAdditive.lean`.
 
 ## Current state
 
-**Next: land `Pencil/Grade/Cut.lean`** (*Hand-off*). The pre-build recon pinned the Lean of all
-six nodes and checked it under `lake lean`: no `sorry`, no warning, `#lint` clean (15 linters),
-`#print axioms` `[propext, Classical.choice, Quot.sound]` on every pinned name. The two spikes are
-complete in the gitignored `scratch/42f/`: `Cut.lean` (three nodes, to become `Grade/Cut.lean`)
-and `ContractAdditive.lean` (three nodes, to become `Grade/ContractAdditive.lean`; it repeats three
-lemmas of `Cut.lean` verbatim, to drop for `import …Grade.Cut`). Their docstrings are short; the
-builds write the full ones. If the spikes are gone, the signatures and routes under *Lemma
-checklist* rebuild them. Both are new files: no landed Lean file changes but the root import
-list. The chapter is the lemma index (forward mode). The rest of PD-STEPS, `-short` (12) and `-long` (7), stays mapped by section
-in design doc §3, with no letter minted.
+**Landed: `Pencil/Grade/Cut.lean`** (build 1 of 2): `lem:pencil-d-lifting-restrict`,
+`thm:pencil-d-cut` and `thm:pencil-d-bridge` green, with the root import in `CombinatorialRigidity.lean`.
+Transcribed from the recon's spike with the statements unchanged and full docstrings; the spike's
+`example` for `eval_restrictPoly` became a sentence in the docstring of
+`Graph.liftingRestrict_preimage_fst_apply`. Warning-clean, `#print axioms` `[propext,
+Classical.choice, Quot.sound]` on every pinned name.
+
+**Next: land `Pencil/Grade/ContractAdditive.lean`** (*Hand-off*), from the gitignored
+`scratch/42f/ContractAdditive.lean` (three nodes; it repeats three lemmas of `Cut.lean` verbatim, to
+drop for `import …Grade.Cut`, now landed). Its docstrings are short; the build writes the full ones.
+If the spike is gone, the signatures and routes under *Lemma checklist* rebuild it. It is a new
+file: no landed Lean file changes but the root import list. The chapter is the lemma index (forward
+mode). The rest of PD-STEPS, `-short` (12) and `-long` (7), stays mapped by section in design doc
+§3, with no letter minted.
 
 ## Architectural choices made up front
 
@@ -101,7 +106,7 @@ of `m` heights (*Blockers*, 1). `G/H` is `G.rigidContract (G.induce W) r`; `ker 
 .mulVecLin`; `hatt` is `∀ u ∉ W, ∀ c₁ ∈ W, ∀ c₂ ∈ W, G.Adj u c₁ → G.Adj u c₂ → c₁ = c₂`.
 
 - [x] **Pre-build recon** (this commit): the signatures below, every spike complete.
-- [ ] `lem:pencil-d-lifting-restrict`, in the new `Pencil/Grade/Cut.lean` (imports
+- [x] `lem:pencil-d-lifting-restrict`, in the new `Pencil/Grade/Cut.lean` (imports
   `Grade.Witness`, `MainComponent.Cut`). Pin `Graph.liftingRestrict_mem_liftingSpaceGrade`
   (`{G G'} (hle : G' ≤ G) {q} {z : α × Fin m → K} (hz : z ∈ G.liftingSpaceGrade q m) :
   z|V(G') ∈ G'.liftingSpaceGrade q m`), `pencilConfigPointGrade_liftingRestrict`
@@ -115,7 +120,7 @@ of `m` heights (*Blockers*, 1). `G/H` is `G.rigidContract (G.induce W) r`; `ker 
   `Graph.exists_liftingRestrict_preimage_fst_eq` (`(hlift : ∀ y ∈ G'.liftingSpace q, ∃ z ∈
   G.liftingSpace q, Graph.liftingRestrict X z = y) (hy : y ∈ G'.liftingSpaceGrade q m) :
   ∃ z ∈ G.liftingSpaceGrade q m, z|X = y`), the "height by height" of the cut and the bridge.
-- [ ] `thm:pencil-d-cut`, in `Grade/Cut.lean`. Pin `Graph.X0AttainsGrade.of_cutVertex`: the
+- [x] `thm:pencil-d-cut`, in `Grade/Cut.lean`. Pin `Graph.X0AttainsGrade.of_cutVertex`: the
   hypotheses of `Graph.X0Attains.of_cutVertex` verbatim (`[Infinite K] [Finite α] [Finite β]`,
   `hG`, `hcover`, `hoverlap`, `hsep`), with `h₁ : (G.induce V₁).X0AttainsGrade K m`,
   `h₂ : (G.induce V₂).X0AttainsGrade K m`, concluding `G.X0AttainsGrade K m`. Route: the `d = 3`
@@ -123,7 +128,7 @@ of `m` heights (*Blockers*, 1). `G/H` is `G.rigidContract (G.induce W) r`; `ker 
   `restrictPoly (Prod.fst ⁻¹' V₁)`, the rank lemma above at `(X := V(G.induce V₁))` (`rw` needs
   that form, not `V₁`), `Graph.deficiency_add_le_of_cutVertex … (m + 2)`, and
   `screwDim (m + 1) * (|V₁| + |V₂|) = screwDim (m + 1) * (|V(G)| + 1)` given to `linarith`.
-- [ ] `thm:pencil-d-bridge`, in `Grade/Cut.lean`. Pin `Graph.X0AttainsGrade.of_bridgePath`: the
+- [x] `thm:pencil-d-bridge`, in `Grade/Cut.lean`. Pin `Graph.X0AttainsGrade.of_bridgePath`: the
   hypotheses of `Graph.X0Attains.of_bridgePath` verbatim, with `X0AttainsGrade K m` at both sides
   and in the conclusion. Route: the `d = 3` proof, with
   `Graph.IsAdmissiblePicture.supportExtensor_ne_zero_grade`, `(n := m + 2)` throughout,
@@ -186,15 +191,13 @@ of `m` heights (*Blockers*, 1). `G/H` is `G.rigidContract (G.induce W) r`; `ker 
 
 ## Hand-off / next phase
 
-The next concrete commit is the **first build**: `Pencil/Grade/Cut.lean` from
-`scratch/42f/Cut.lean` (full docstrings, the root import in `CombinatorialRigidity.lean`), pinning
-and greening `lem:pencil-d-lifting-restrict`, `thm:pencil-d-cut` and `thm:pencil-d-bridge`. Then
-`Pencil/Grade/ContractAdditive.lean` from `scratch/42f/ContractAdditive.lean`, its three copied
-lemmas dropped for `import …Grade.Cut`, greening `lem:pencil-contract-additive-kernel`,
-`thm:pencil-d-contract-additive` and `cor:pencil-d-contract-rigid`. Then the close. So two builds,
-where the option the PI chose estimated about 4–8 (the coordinator's estimate, design doc §1).
-Each build adds its nodes' `\lean{}` and `\leanok` and runs the per-commit gates, among them
-`scripts/check-docstring-labels.py` against its parent's report.
+The next concrete commit is the **contraction build**: `Pencil/Grade/ContractAdditive.lean` from
+`scratch/42f/ContractAdditive.lean`, its three copied lemmas dropped for `import …Grade.Cut`
+(landed), greening `lem:pencil-contract-additive-kernel`, `thm:pencil-d-contract-additive` and
+`cor:pencil-d-contract-rigid` with their `\lean{}` and `\leanok`. Then the close. So two builds,
+one landed, where the option the PI chose estimated about 4–8 (the coordinator's estimate, design
+doc §1). Each build runs the per-commit gates, among them `scripts/check-docstring-labels.py`
+against its parent's report.
 
 ## Decisions made during this phase
 
