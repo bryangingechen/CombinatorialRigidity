@@ -1,10 +1,14 @@
 # Phase 42 — PENCIL-D: design (cross-phase plan and recon)
 
-**Status:** opened 2026-10-29 with the PI, sub-lettered, research first; no sub-phase open.
+**Status:** opened 2026-10-29 with the PI, sub-lettered, research first. **42f** (the first
+sub-phase of PD-STEPS, `notes/Phase42f.md`) **opened 2026-10-30** at the PI's word (§1): the six
+nodes of `pencil-d.tex`'s `-cut` and `-contract`, Phase 40e/40f/40k in `Pᵈ`; its open also cut
+three step nodes no coverage step uses (§1, §3). The rest of PD-STEPS, then PD-COVERAGE,
+PD-REDUCTION and PD-HEAD (§3, which maps the remaining red nodes to them by section), each open at
+the PI's word.
 **42e** (PD-CARRIER, `notes/Phase42e.md`) **opened and closed 2026-10-30** at the PI's word (§1):
 formalizing 42d's proof began with its setting and the flat rank, four nodes of `pencil-d.tex`,
-all green (verdict §3). PD-STEPS is next, then PD-COVERAGE, PD-REDUCTION and PD-HEAD (§3, which
-maps the remaining red nodes to them by section), each at the PI's word.
+all green (verdict §3).
 **42a** (PD-RECON, `notes/Phase42a.md`) **closed 2026-10-30**: the step table (§2.1), the thresholds
 and the content `def[3] ≥ C(d,2) − 2` (§2.5), T1–T5 (§2.4), ONE-CLASS (§2.3, Result 27) and
 SHORT-CORE's attack track (§2.3; closed 2026-10-30, `notes/attacks/short-core/state.md`): the
@@ -39,7 +43,7 @@ Status: `d = 2, 3` are proved and formalized (Phases 40a, 40). Every `d` with `d
 `Strata.md` Result 17, and every `d` at `def_3 ≤ 3` follows from Result 17's proof with the sharp
 deficiency lemma, proved and formalized (42c, `thm:pencil-d-deficiency-two-le-three`). Every `d` is
 proved on paper (42d, `cor:pencil-d-conditioned-pair`); formalizing it began with the setting and
-the flat rank (42e). `d = 4, 5, 6` are
+the flat rank (42e), and continues with the induction's steps (42f open). `d = 4, 5, 6` are
 measured (Results 11, 19), not found below target under
 the `--d4` population's cap (`n ≤ 12`, 36 simple graphs) and 8 graphs past it. Where the
 conjecture has content, that is 47 cells on 18 graphs, six of them cycles (§2.5).
@@ -173,6 +177,32 @@ fibre-intersection lemma and Jackson–Jordán's equality.
   cor:pencil-d-flat-attains, cor:pencil-d-jj-flat), much of the carrier already green from 42b.
   Opus open commit, a pre-build recon of those nodes against the carrier, then about 3–6 build
   commits. The open also maps the other red nodes to layers, no letters minted."
+- **PI, 2026-10-30 (42f's open):** asked "Phase 42f isn't open yet. 42e (PD-CARRIER) closed with
+  the next layer, PD-STEPS, waiting on your go-ahead. PD-STEPS is 28 red nodes in pencil-d.tex:
+  -cut (3), -contract (3), -splitoff (1), -short (12), -long (7), -ear-deficiency (2). For
+  comparison, Phase 40 took about 64 commits over 7 sub-phases (40e–40k) to formalize the same
+  steps in P³. What should 42f open as?", the PI answered "-cut + -contract (Recommended)", whose
+  option read: "6 nodes, Phase 40e/40f/40k in Pᵈ (cut vertex, bridges, contraction at an additive
+  core or a def₂ = 0 core). Opus open commit, a pre-build recon against the carrier, then about
+  4–8 builds. The rest of PD-STEPS stays mapped by section, with no letters minted."
+- **PI, 2026-10-30 (42f's open),** on the question design doc §3 left to PD-STEPS's open
+  (whether thm:pencil-d-splitoff and thm:pencil-d-open-ear-deficiency, with
+  lem:pencil-d-polygon-ear, are formalized), the PI first asked: "Do these results have any
+  independent value? If not, we could probably also cut them from the blueprint at some point
+  too." The coordinator answered: little — in P³ both are load-bearing (Phase 40's coverage uses
+  thm:pencil-x0-splitoff and thm:pencil-x0-open-ear-two), but in Pᵈ the coverage routes around
+  them (chains with one or two interior bodies by the d = 3 embedding or the chain-or-core count,
+  three or more by the deficiency-free ear steps); they show two more d = 3 steps carry over, the
+  ear step assumes attainment at G[V₁] alone, and neither is a credible fallback since the chain
+  count is proved on paper. Then asked "thm:pencil-d-splitoff, thm:pencil-d-open-ear-deficiency
+  and lem:pencil-d-polygon-ear have no consumer and little independent value; they are referenced
+  only within pencil-d.tex, with no Lean. What should happen to them?", the PI answered "Cut in
+  42f's open (Recommended)", whose option read: "42f's open commit deletes the three nodes and the
+  -splitoff / -ear-deficiency sections (about 370 lines of TeX), and keeps one sentence in the
+  coverage section saying the d = 3 split-off and two-body ear steps aren't needed for d ≥ 4.
+  PD-STEPS goes from 28 nodes to 25. git keeps the text."
+  *Note (not the PI's text):* this supersedes, going forward, the PI's 42d answer "(a) Keep
+  standalone" (`notes/Phase42d.md`), which stays as recorded.
 
 ## 2. PD-RECON (42a)
 
@@ -610,7 +640,8 @@ leaves out each graph's top cell, `d = 2 + def[3]`, which also carries content.
      review 2, `notes/attacks/nondeg/`), feasible in `Pᵈ` exactly when in `P³`; proved through the
      lifts of `P³` realizations, with (W) at a minimal planar-rigid set (`lem:pencil-d-ear-free`).
   COUNT-A and COUNT-B formalized the counting at every `D` (11 green nodes, `sec:pencil-d-deficiency`).
-  `thm:pencil-d-splitoff` and `thm:pencil-d-open-ear-deficiency` stay standalone (the PI). Two fresh
+  The split-off and the ear step that assumes `def_d(G[V₁]) ≤ def_d(G)`, which no coverage step
+  uses, were cut at 42f's open (the PI, §1). Two fresh
   reads checked the coverage and W10's generic conjunct; the close's end-to-end re-read found no gap.
 - **PD-CARRIER** (**42e**, opened and **closed 2026-10-30** at the PI's word, §1;
   `notes/Phase42e.md`): Phase 40b–40d in `Pᵈ`, the first layer formalizing PD-ALL's write-up. The
@@ -623,7 +654,10 @@ leaves out each graph's top cell, `d = 2 + def[3]`, which also carries content.
   is the plane rank plus the zero heights' (`padHeights` at no height). It edited no file a deferral
   below names. `rem:pencil-d-flat-class` is a remark, not a dep-graph node, so it was no target.
 - **PD-STEPS**, **PD-COVERAGE**: Phase 40e–40m in `Pᵈ`, on R2's steps (§1), formalizing PD-ALL's
-  write-up after PD-CARRIER.
+  write-up after PD-CARRIER. **PD-STEPS's first sub-phase, 42f, opened 2026-10-30** at the PI's
+  word (§1; `notes/Phase42f.md`): `-cut` and `-contract`, six nodes (Phase 40e/40f/40k in `Pᵈ`),
+  each read at the open against the carrier and found sound; `-short` and `-long` stay mapped by
+  section, no letter minted. The open cut `-splitoff` and `-ear-deficiency` (the PI, §1).
   **Handed on from PD-RECON** (42a's close; SHORT-CORE's workbook S56 has the detail):
   - *PD-STEPS, the short-ear step (row 13).* At `d = 4`, `k = 3, 4, 5`: the `P³` factoring
     (`Graph.X0Attains.of_openEar_splitOff`) with `D = 10`, its insertion hypothesis taken at base
@@ -674,16 +708,17 @@ leaves out each graph's top cell, `d = 2 + def[3]`, which also carries content.
   in `CombinatorialRigidity/Nonvacuity.lean` (`PHASE-BOUNDARIES.md`); 42c's intermediate close
   added no row, as Phase 40's sub-phases did not.
 
-**The red nodes by layer** (42e's open, by section of `pencil-d.tex`; no letters minted). From
-`sec:pencil-d-induction` on the chapter has 65 dep-graph nodes, all red at the open and 61 since
-42e's close; the count of 66 put to the PI at 42e's open (§1) included `rem:pencil-d-flat-class`,
-a remark, which the dependency graph does not draw (it draws definitions, lemmas, propositions,
-theorems and corollaries).
+**The red nodes by layer** (42e's open, by section of `pencil-d.tex`; a letter is minted only as
+a sub-phase opens). From `sec:pencil-d-induction` on the chapter has 62 dep-graph nodes, 58 of them
+red: 65 at 42e's open, all red, 4 green at its close, and 3 cut at 42f's open (the PI, §1). The
+count of 66 put to the PI at 42e's open (§1) included `rem:pencil-d-flat-class`, a remark, which
+the dependency graph does not draw (it draws definitions, lemmas, propositions, theorems and
+corollaries).
 - PD-CARRIER (42e, closed, all green): `-induction` (1) and `-flat` (3); 4.
-- PD-STEPS: `-cut` (3), `-contract` (3), `-splitoff` (1), `-short` (12), `-long` (7) and
-  `-ear-deficiency` (2); 28. `thm:pencil-d-splitoff` and `thm:pencil-d-open-ear-deficiency`, with
-  `lem:pencil-d-polygon-ear` (used only by the latter), have no consumer in the coverage (the PI
-  kept them standalone, `notes/Phase42d.md`); whether they are formalized is for PD-STEPS's open.
+- PD-STEPS: `-cut` (3) and `-contract` (3), open as 42f; `-short` (12) and `-long` (7); 25.
+  `thm:pencil-d-splitoff`, `thm:pencil-d-open-ear-deficiency` and `lem:pencil-d-polygon-ear`, with
+  their sections `-splitoff` and `-ear-deficiency`, had no consumer in the coverage and were cut at
+  42f's open (the PI, §1).
 - PD-COVERAGE: `-chains` (2; `lem:pencil-d-chain-count` is COUNT-C) and `-coverage` (2, with
   `lem:pencil-d-distinct-statement`, the coverage read as a realization); 4.
 - PD-REDUCTION: `-reduction` (8), Phase 39's reduction.

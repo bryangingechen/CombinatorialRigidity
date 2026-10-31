@@ -55,8 +55,9 @@ Phase 42 stays in progress with no sub-phase open. The next step is **putting PD
 the PI** (design doc §3): Phase 40e–40m's steps in `Pᵈ`, the 28 red nodes of `-cut`, `-contract`,
 `-splitoff`, `-short`, `-long` and `-ear-deficiency`, with the question §3 leaves to that open:
 whether `thm:pencil-d-splitoff` and `thm:pencil-d-open-ear-deficiency` (with
-`lem:pencil-d-polygon-ear`), which no coverage step consumes, are formalized. What 42e hands it,
-all at every `m`, so no `1 ≤ m` side condition reaches a consumer:
+`lem:pencil-d-polygon-ear`), which no coverage step consumes, are formalized (answered at 42f's
+open: cut, design doc §1). What 42e hands it, all at every `m`, so no `1 ≤ m` side condition
+reaches a consumer:
 - `σ_v` and `Π_v` exposed: `gradeSigma h` and its range, which `def:pencil-d-ear-data` and
   `lem:pencil-d-planes-meet` read, with `pencilConfigPointGrade_eq_gradeSigma_iff` and
   `…span_pencilConfigPointGrade_closedNbhd_eq_range` reading a closed neighbourhood through them.

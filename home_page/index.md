@@ -182,7 +182,9 @@ most three has a pencil realization at the deficiency rank. The chapter
 now also carries a proof on paper of the theorem in every dimension, its
 strongest form included. Formalizing that proof has begun: its setting is
 formalized, with the graphs whose deficiencies in the plane and in
-dimension $d$ agree, and the steps of its induction are next.
+dimension $d$ agree, and the first steps of its induction are in
+progress: at a cut vertex, along a chain of bridges, and contracting a
+rigid part of the graph.
 
 ### How the pencil realization theorem is proved
 
