@@ -7,14 +7,22 @@ design doc §1), a sub-phase of Phase 42 and the third of PD-STEPS. Forward mode
 `Pencil/Grade/` carrier. The `-short-three` half (4 nodes) stays mapped by section in design doc
 §3. Seven of the eight are green (`Pencil/Grade/Stars.lean`, `Pencil/Grade/EarData.lean`); the recon
 pinned the last, at every `m`, a composition over three transcription leaves and two residual goals
-(*Lemma checklist*); the first two leaves, `splitOff_ear_succAbove` and
-`Graph.exists_earBase_splitOff_grade`, are green in `Pencil/Grade/Short.lean`.
-Next (*Hand-off*): `Graph.X0AttainsGrade.of_openEar_splitOff`.
+(*Lemma checklist*); the three leaves, `splitOff_ear_succAbove`,
+`Graph.exists_earBase_splitOff_grade` and `Graph.X0AttainsGrade.of_openEar_splitOff`, are green in
+`Pencil/Grade/Short.lean`. Next (*Hand-off*): the theorem `Graph.X0AttainsGrade.of_openEar_four`
+with the `hins` discharge.
 
 ## Current state
 
-**Next: `Graph.X0AttainsGrade.of_openEar_splitOff`** (*Hand-off*). `Pencil/Grade/Short.lean` has
-two leaves green. `splitOff_ear_succAbove` (the graph-combinatorics leaf, no blueprint pin; a
+**Next: `Graph.X0AttainsGrade.of_openEar_four` with the `hins` discharge** (*Hand-off*).
+`Pencil/Grade/Short.lean` has three leaves green. The third, `Graph.X0AttainsGrade.of_openEar_splitOff`
+(about 150 lines, no `sorry`): a step-for-step transcription of the `P³` proof at grade `m + 1`,
+verbatim pin, no departure. Two helpers written beside it: `complementScrew K k`, the complement
+isomorphism `⋀² ≃ₗ ScrewSpace K k` (a local `def` because `complementIso`'s target
+`⋀^(k+2-2)` does not unify with `ScrewSpace K k` under `Submodule.map`), with
+`span_supportExtensor_comp_eq_map_normalsJoin` and `finrank_sup_map_complementScrew`; `ρJ` is the
+base `ρ` mapped by `complementScrew.symm`. The insertion's `p v = x₂` is met by an explicit `st`
+(`Sum.elim`, `gradeMk_eta`). Earlier: `splitOff_ear_succAbove` (the graph-combinatorics leaf, no blueprint pin; a
 `sorry`-free transcription of `splitOff_ear_four` at every length) with three `Fin` / `pathVertex`
 helpers (`coe_succAbove_two`, `coe_succAbove_one`, `pathVertex_comp_succAbove_one`, the last
 `pathVertex a (x ∘ succAbove 1) b j = pathVertex a x b (succAbove 2 j)`, which the insertion's path
@@ -83,10 +91,9 @@ Shorthand: every declaration is in `namespace CombinatorialRigidity.Molecular`, 
   - [x] `Graph.exists_earBase_splitOff_grade`: `Graph.exists_earBase_splitOff` with `m` heights
     (`ρ : Submodule K (ScrewSpace K (m + 1))`); heights by
     `Graph.exists_liftingRestrict_preimage_fst_eq`; verbatim pin, no departure.
-  - `Graph.X0AttainsGrade.of_openEar_splitOff`: `Graph.X0Attains.of_openEar_splitOff` at grade
-    `m + 1`, `D` for `6`, `hins`'s `ρ` in `⋀²`; needs a grade form of
-    `span_supportExtensor_comp_eq_map_pointJoin` (through `complementIso`) and of
-    `finrank_sup_map_screwComplementIso` (any linear equivalence).
+  - [x] `Graph.X0AttainsGrade.of_openEar_splitOff`: `Graph.X0Attains.of_openEar_splitOff` at grade
+    `m + 1`, `D` for `6`, `hins`'s `ρ` in `⋀²`; with `complementScrew`,
+    `span_supportExtensor_comp_eq_map_normalsJoin` and `finrank_sup_map_complementScrew`.
   - Residual 1 (kernel-checked): `(G.splitOff (x 1) (x 0) (x 2) (e 1)).IsLink (e 1) (x 0) (x 2)`,
     from `hpath''` at `1`.
   - Residual 2 (kernel-checked), `hins`: for base data `q z la lb ρ` with `hza`, `hzb`,
@@ -124,13 +131,14 @@ Shorthand: every declaration is in `namespace CombinatorialRigidity.Molecular`, 
 
 ## Hand-off / next phase
 
-The next concrete commit is **`Graph.X0AttainsGrade.of_openEar_splitOff`** in
-`Pencil/Grade/Short.lean` (`scratch/42h/ShortBody.lean`, the statement after the base-data leaf, a
-transcription of `Graph.X0Attains.of_openEar_splitOff` in `MainComponent/Short.lean` at grade
-`m + 1`; it needs the grade forms of `span_supportExtensor_comp_eq_map_pointJoin` and
-`finrank_sup_map_screwComplementIso` named in the checklist, and may take two commits: if the proof
-will not fit one, land the grade forms first and say so). Then the insertion's path form and the
-theorem; the theorem's commit may need two. Two to three builds remain.
+The next concrete commit is the theorem **`Graph.X0AttainsGrade.of_openEar_four`** in
+`Pencil/Grade/Short.lean` (`scratch/42h/ShortBody.lean`), with the `hins` discharge; it may take
+two commits. Plan (the recon's): `exists_mvPolynomial_starsFour`, then
+`exists_mvPolynomial_earDataGrade_of_smul` (needs the condition's scale invariance, a new leaf),
+then the insertion in path-join form (a new leaf: the index bookkeeping of `exists_insertion_four`,
+`exists_insertion_of_starGrade_sup` at `R = ρ ⊔` the other joins), with a `pathVertex` composition
+lemma (a third small leaf). The residual `(G.splitOff (x 1) (x 0) (x 2) (e 1)).IsLink (e 1) (x 0)
+(x 2)` comes from `hpath''` at `1`. Two to three builds remain.
 - **The standing rule** (design doc §3): each build adds a row to `notes/Cleanup42.md` §2 where its
   Lean departs from the chapter's proof; R-7 to R-10 are this recon's, R-11 the Stars build's.
 - **Deferred from 42g, where it lands** (design doc §3; two `[open]` FRICTION entries): the four
