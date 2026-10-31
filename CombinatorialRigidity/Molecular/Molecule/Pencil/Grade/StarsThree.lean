@@ -17,10 +17,11 @@ Its proof is that of `lem:pencil-d-stars-four` (`exists_mvPolynomial_starsFour`,
 on the forms on `⋀²`: the dual kernel curve for the family `starsFamily` at two interior points,
 the first-order steps `forall_normalsJoin_eq_zero_of_firstOrder` and
 `forall_mem_normalsJoin_eq_zero_of_pivot`, and the bound
-`finrank_add_two_le_of_forall_ιMulti_eq_zero` of `lem:pencil-d-two-stars` (3). The chapter's proof
-(SHORT-CORE workbook, S32) reads the annihilators in `⋀^(d-1)`, and first finds four independent
-points, which uses `κ ≤ 1` and `p_a`, `p_b` independent; here a coordinate of `y₁ ∨ y₃` takes that
-step's place. The Lean drops those two hypotheses and `d ≥ 4` (`notes/Cleanup42.md`, R-13).
+`finrank_add_two_le_of_forall_ιMulti_eq_zero` of `lem:pencil-d-two-stars` (3). The chapter's
+statement and proof follow it (`notes/Cleanup42.md`, R-13, aligned). The source (SHORT-CORE
+workbook, S32) reads the annihilators in `⋀^(d-1)` and first finds four independent points, which
+takes `κ ≤ 1` and `p_a`, `p_b` independent; here a coordinate of `y₁ ∨ y₃` takes that step's
+place, and neither is assumed, nor `d ≥ 4`.
 -/
 
 @[expose] public section
@@ -42,8 +43,8 @@ kills `W` once `φ₀ (pa ∨ u) = 0`, and then `u` lies in the radical
 (`forall_normalsJoin_eq_zero_of_firstOrder`): `pa` first, then all of `Π_a`
 (`forall_mem_normalsJoin_eq_zero_of_pivot`). Moving `y₃` along `Π_b` does the same for `Π_b`. So
 `Π_a + Π_b`, of dimension `6 - κ`, lies in the radical of `φ₀ ≠ 0`, and `6 - κ + 2 ≤ d + 1`
-(`finrank_add_two_le_of_forall_ιMulti_eq_zero`), against `d + κ ≤ 6`. The statement's `κ ≤ 1`,
-`p_a`, `p_b` independent and `d ≥ 4` are not used (`notes/Cleanup42.md`, R-13). -/
+(`finrank_add_two_le_of_forall_ιMulti_eq_zero`), against `d + κ ≤ 6`. The source's `κ ≤ 1`,
+`p_a`, `p_b` independent and `d ≥ 4` are not assumed (`notes/Cleanup42.md`, R-13). -/
 theorem exists_mvPolynomial_starsThree [Infinite K]
     (ρ : Submodule K (⋀[K]^2 (Fin (k + 2) → K))) {Sa Sb : Submodule K (Fin (k + 2) → K)}
     (hSa : Module.finrank K Sa = 3) (hSb : Module.finrank K Sb = 3)

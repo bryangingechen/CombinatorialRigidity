@@ -1,35 +1,29 @@
 # Phase 42i — PD-STEPS: open ears with three interior bodies in dimensions four to six (work log)
 
-**Status:** in progress, opened 2026-10-31 at the PI's word ("All 4 nodes as written
-(Recommended)", design doc §1), a sub-phase of Phase 42 and the fourth and last of PD-STEPS. Forward
-mode, the Lean under `/coordinate-phase`: the four red nodes of `pencil-d.tex`'s `-short-three`, the
-theorem at `4 ≤ d ≤ 6`. The pre-build recon has landed: 42h's factoring cannot take the three-body
-condition (a kernel-checked counterexample), so a variant is pinned, with the four signatures and a
-build order of five or six commits (*Lemma checklist*). The variant factoring, stars-three,
-planes-meet and glued-ends have landed: 3 of 4 nodes green. Next (*Hand-off*): the theorem, a new
-`Grade/ShortThree.lean`, with stars-three's chapter text restated to its Lean at the PI's word.
+**Status:** in progress, opened 2026-10-31 at the PI's word ("All 4 nodes as written (Recommended)",
+design doc §1), a sub-phase of Phase 42 and the fourth and last of PD-STEPS. Forward mode, the
+Lean under `/coordinate-phase`: the four nodes of `pencil-d.tex`'s `-short-three`, the theorem at
+`4 ≤ d ≤ 6`. The recon pinned a variant of 42h's factoring (*Decisions made*); the variant,
+stars-three, planes-meet, glued-ends and the theorem have landed: all 4 nodes green, and
+stars-three's chapter text restated to its Lean at the PI's word. Next (*Hand-off*): the close.
 
 ## Current state
 
-**Landed, fourth build: glued-ends.** `Graph.exists_mvPolynomial_gluedEnds` (new
-`Grade/GluedEnds.lean`, in the root import file) pins `lem:pencil-d-glued-ends`, green, its
-statement as pinned. The file also holds `Z⁰(q)` (`Graph.liftingPlanesZero`, with
-`dim F(q) = dim Z⁰(q) + r`) and its matrix polynomial in `q` (`Graph.liftingPlanesZeroMatrix`); the
-ends glued, `G.rigidContract (G.induce {a, b}) a`, simple with every closed neighbourhood of at
-least three members; the bound `Graph.exists_mvPolynomial_finrank_liftingPlanesZero_le`; the two
-partition steps; and `⋀²π` (`gradePi`). The proof is the chapter's but for R-16 (no merged
-deficiency, the part split in two pieces, `g` from Jackson–Jordán's polynomial for `G`). `lake build`
-is warning-clean, `lake lint` passes, `#print axioms` is `[propext, Classical.choice, Quot.sound]`.
-**Landed before it:** planes-meet (`Graph.exists_mvPolynomial_planesMeet`,
-`Graph.liftingPlanesDiff`, `Grade/PlanesMeet.lean`, R-15), stars-three
-(`exists_mvPolynomial_starsThree`, `Grade/StarsThree.lean`, R-13; the family declarations one index
-down in `Grade/Stars.lean`) and the variant factoring (`Grade/Short.lean`, *Lemma checklist*).
-**Next: the theorem** (*Hand-off*). The recon's spikes, on HEAD `64f0fe75` under `lake lean`, are in
-the gitignored `scratch/42i/`: `Three.lean` (the four signatures and the theorem composed on the
-variant; its one residual is the insertion hypothesis at the base data), `Helpers.lean` (the
-four-body helpers one index down, for the theorem) and `HinsFails.lean` (the recon's
-counterexample); `GluedEnds.lean` is this build's spike. The chapter is the lemma index (forward
-mode).
+**Landed, fifth build: the theorem.** `Graph.X0AttainsGrade.of_openEar_three` (new
+`Grade/ShortThree.lean`, in the root import file) pins `thm:pencil-d-open-ear-three`, green, its
+statement as pinned. It is the variant at the base data with `Pq = g` (glued-ends' polynomial for
+`G[V₁]`, or `1`) and `Rz` planes-meet's, its insertion hypothesis discharged by two lemmas of the
+file, `exists_mvPolynomial_earDataGrade_starsCond_three` (the third condition: `dim ρ ≤ 2` when
+`r ≤ 2`, by `not_starGrade_sup_le_of_finrank_le_two` in `Grade/Stars.lean`, or stars-three when
+`r = 3`) and `exists_insertion_earDataGrade_three` (the insertion). `Grade/Short.lean` gained
+`joinRelScrews_le_span_of_mem_closedNbhd`, and `starsCond_of_smul` and `span_joins_succAbove_two`
+now start one index down (`of_openEar_four` unchanged). Stars-three's statement and proof follow
+its Lean (R-13 aligned); the theorem's proof keeps the chapter's route (R-14 open). `lake build` is
+warning-clean, `lake lint` passes, `#print axioms` is `[propext, Classical.choice, Quot.sound]`.
+**Landed before it:** glued-ends (`Grade/GluedEnds.lean`, R-16), planes-meet
+(`Grade/PlanesMeet.lean`, R-15), stars-three (`Grade/StarsThree.lean`) and the variant factoring
+(`Grade/Short.lean`). The recon's spikes are in the gitignored `scratch/42i/`. The chapter is the
+lemma index (forward mode).
 
 ## Architectural choices made up front
 
@@ -47,125 +41,54 @@ mode).
   landed), with the kernel curve on forms `exists_mvPolynomial_dual_kernel_curve`.
 - **The standing rule** (design doc §3): the recon and every build add a row to
   `notes/Cleanup42.md` §2 where their Lean departs from the chapter's proof, in the same commit
-  (R-9 to R-16 open; R-13, R-15 and R-16 landed with their nodes, R-14 planned at the recon; R-7
-  and R-8 aligned).
+  (R-9 to R-12 and R-14 to R-16 open, R-14 to R-16 landed with their nodes; R-7, R-8 and R-13
+  aligned).
 
 ## Lemma checklist
 
-Build order, leaf first: the variant, stars-three, planes-meet, glued-ends (one or two commits),
-the theorem. Import order: `Grade/Stars` → `Grade/StarsThree`; `Grade/ConditionLinear` and
-`MainComponent/Flat` → `Grade/PlanesMeet` (also `Grade/Stars`); `Grade/Short` and `Grade/PlanesMeet` →
-`Grade/GluedEnds`; `Grade/StarsThree` and `Grade/GluedEnds` → `Grade/ShortThree`. Each new file
-goes in the root import file. Every statement below type-checks in `scratch/42i/Three.lean`.
+Build order as landed: the variant, stars-three, planes-meet, glued-ends, the theorem; each new file
+is in the root import file. The signatures are the Lean's, and the chapter is the lemma index.
 
-- [x] **Pre-build recon** (this commit): verdict in *Decisions made*, signatures here.
-- [x] **The variant factoring** (`Grade/Short.lean`; not a node: the theorem's factoring, tracked
-  here). Copy `scratch/42i/Variant.lean`, which is complete:
-  - `joinMotions H c` (`⨅` over links of `comap (proj u − proj w) (K ∙ c u ∨ c w)`),
-    `mem_joinMotions`, `joinRelScrews H c a b := (joinMotions H c).map (proj b − proj a)`: the
-    section's motions and `ρ`, in `⋀²`. Instances: on a graph with no links `joinRelScrews = ⊤`
-    for `a ≠ b` (`S = Pi.single b ω`); on the one link `a b` it is `K ∙ (c a ∨ c b)`.
-  - `map_relScrews_ofNormals_eq_joinRelScrews` (`hends` for `G`, `H`'s links `G`'s): the relative
-    screws of `⟨H, ofNormals G ends c⟩`, pulled back by `complementScrew`, are `joinRelScrews`.
-  - `Graph.exists_earBase_splitOff_grade`, generalized in place, its one caller the factoring:
-    `+ {Rz : (α × Fin 2 → K) → MvPolynomial (α × Fin m) K}`
-    `(hRz : ∀ q, G″.IsAdmissiblePicture q → ∃ z ∈ G″.liftingSpaceGrade q m, eval z (Rz q) ≠ 0)`;
-    it also returns `zs` (after `z₁`) with `zs ∈ L_{G″}(q)^m`, `eval zs (Rz q) ≠ 0`,
-    `∀ t ∈ V₁, ∀ i, z₁ (t, i) = zs (t, i)`, and `la`, `lb` the planes of `zs` on `G″`'s closed
-    neighbourhoods of `a`, `b`. `z*` avoids `Rz q*` by two fibre intersections.
-  - `Graph.X0AttainsGrade.of_openEar_splitOff_of_base`: the landed factoring with
-    `{Pq} (hPq : Pq ≠ 0) {Rz} hRz` before `hins`, and `hins` replaced by
-    `∀ q z zs la lb, eval q Pq ≠ 0 → G″.IsAdmissiblePicture q → zs ∈ L_{G″}(q)^m →`
-    `eval zs (Rz q) ≠ 0 → (∀ t ∈ V₁, ∀ i, z (t, i) = zs (t, i)) → (planes la at a) →`
-    `(planes lb at b) → ∃ Q, …` (the landed body, with
-    `ρ := joinRelScrews (G.induce V₁) (pencilConfigPointGrade q z) a b` for the quantified `ρ`).
-  - `Graph.X0AttainsGrade.of_openEar_splitOff`, statement unchanged, becomes a corollary
-    (`Pq = 1`, `Rz = fun _ => 1`, ten lines). `of_openEar_four` is untouched.
-- [x] `lem:pencil-d-stars-three` → `exists_mvPolynomial_starsThree`, new `Grade/StarsThree.lean`,
-  green. At `V = Fin (k + 2) → K`, `d = k + 1`, every `k`:
-  `(ρ) {Sa Sb} (hSa : finrank Sa = 3) (hSb : finrank Sb = 3) (hdκ : k + finrank (Sa ⊓ Sb) ≤ 5)`
-  `{pa pb} (hpa : pa ∈ Sa) (hpb : pb ∈ Sb) : ∃ f : MvPolynomial (Fin 2 × Fin (k + 2)) K, …`,
-  the conclusion `exists_mvPolynomial_starsFour`'s at two interior points (`Y : Fin 2 → V`, the
-  three joins of `pathVertex pa Y pb`). The proof is stars-four's on forms: the dual kernel curve
-  for `starsFamily` at `n = 0` (the seven family declarations generalized to `Fin (n + 2)` points;
-  stars-four calls them at `n + 1`), `ν` a coordinate of `Y 0 ∨ Y 1`; moving `Y 0` along `pa`, then
-  any `u ∈ Sa` (`forall_mem_normalsJoin_eq_zero_of_pivot`), `φ₁` kills `W`, so `u` joins the
-  radical of `φ₀` (`forall_normalsJoin_eq_zero_of_firstOrder`), and likewise `Y 1` along `Sb`; then
-  `finrank_add_two_le_of_forall_ιMulti_eq_zero` on `Sa ⊔ Sb`, of dimension `6 − κ`, contradicts
-  `hdκ`. The statement's `κ ≤ 1`, `p_a`, `p_b` independent and `d ≥ 4` are not taken (*Blockers*;
-  `notes/Cleanup42.md` R-13).
-- [x] `lem:pencil-d-planes-meet` → `Graph.liftingPlanesDiff` and
-  `Graph.exists_mvPolynomial_planesMeet`, new `Grade/PlanesMeet.lean`, every `m`:
-  `liftingPlanesDiff G q a b := (G.liftingPlanes q).map (proj b − proj a)` (instance: no links,
-  `a ≠ b`: all of `K³`). Hypotheses: the ear `a − y 0 − y 1 − b` in the landed form
-  (`hcover hinj hyV₁ ha hb hab hpath hsep`, `y : Fin 2 → α`, `e : Fin 3 → β`) and
-  `hq : G.IsAdmissiblePicture q`. Conclusion: `∃ R : MvPolynomial (α × Fin m) K,`
-  `(∃ z ∈ G.liftingSpaceGrade q m, eval z R ≠ 0) ∧ ∀ z ∈ …, eval z R ≠ 0 → ∀ la lb,`
-  `(planes la at a) → (planes lb at b) →`
-  `finrank (range (gradeSigma la) ⊓ range (gradeSigma lb)) =`
-  `3 − min m (finrank ((G.induce V₁).liftingPlanesDiff q a b))`. The planes are taken as the
-  base data give them (R-15).
-- [x] `lem:pencil-d-glued-ends` → `Graph.exists_mvPolynomial_gluedEnds`, new
-  `Grade/GluedEnds.lean`, green, every `m`:
-  `(hS : G.Simple) (h3 : ∀ v ∈ V(G), 3 ≤ (G.closedNbhd v).ncard) (ha : a ∈ V(G)) (hb : b ∈ V(G))`
-  `(hab : Disjoint (G.closedNbhd a) (G.closedNbhd b)) : ∃ g, g ≠ 0 ∧ ∀ q, eval q g ≠ 0 →`
-  `finrank (G.liftingPlanesDiff q a b) ≤ 2 → ∀ (m) (z : α × Fin m → K),`
-  `finrank (joinRelScrews G (pencilConfigPointGrade q z) a b) ≤`
-  `finrank (G.liftingPlanesDiff q a b)`.
-  `g` comes before `m` and `z`. `h3` is the Jackson–Jordán Lean's form of "degree at least two",
-  and `Disjoint` packs `a ≠ b`, not adjacent, no common neighbour. Landed as pinned, in one commit
-  (R-16).
-- [ ] `thm:pencil-d-open-ear-three` → `Graph.X0AttainsGrade.of_openEar_three`, new
-  `Grade/ShortThree.lean`: `of_openEar_four`'s hypotheses at `x : Fin 3 → α`, `e : Fin 4 → β`,
-  plus `(hm : 2 ≤ m) (hm4 : m ≤ 4)`, both used. The spike builds it from the variant
-  (`k = 2`, `splitOff_ear_succAbove (k := 0)`, the relinked edge discharged), with
-  `Pq = (X (a, 0) − X (b, 0)) * g` (`g` glued-ends' polynomial for `G[V₁]`, or `1` when the closed
-  neighbourhoods meet) and `Rz` planes-meet's `R` for `G″` (`choose!`). Its residual, which the
-  kernel checked, is the variant's `hins` at those data:
-  - (r ≤ 2) `Q = X (inl (x 0, 0)) − X (inl (x 2, 0))`. If both stars lie in `W`, then
-    `finrank ρ ≥ 2m ≥ 4`. A common member `t` of the closed neighbourhoods of `a` and `b` in
-    `G[V₁]` would put `ρ` in `span (b_a ∨ b_t, b_t ∨ b_b)` (a short new helper, from the
-    motions). Otherwise glued-ends gives `finrank ρ ≤ r ≤ 2`.
-  - (r = 3) `κ = 3 − min(m, 3)` by `hRz`'s conclusion (`G″[V₁] = G[V₁]`); stars-three at
-    `Sa = range (gradeSigma la)` and `pa ∈ Sa` (`pencilConfigPointGrade_eq_gradeSigma_iff`); then
-    `exists_mvPolynomial_earDataGrade_of_smul`.
-  - The insertion, `of_openEar_four`'s tail at three bodies, needs `starsCond_of_smul` and
-    `span_joins_succAbove_two` one index down: generalize them in place (checked in `Helpers.lean`,
-    which also checks that the four-body call shapes still unify).
-  At the PI's word (design doc §1, *42i, stars-three*) stars-three's statement drops `κ ≤ 1`,
-  `p_a`, `p_b` independent and `d ≥ 4`, and its proof takes the forms route, as stars-four's; the
-  theorem's first stage drops the first coordinate of `q_a − q_b` (in the Lean, `Pq = g`). The
-  chapter edit lands in this build (R-13 aligned), with the theorem's own row (R-14).
+- [x] **Pre-build recon**: verdict in *Decisions made*.
+- [x] **The variant factoring** (`Grade/Short.lean`; not a node): `joinMotions`, `joinRelScrews`,
+  `map_relScrews_ofNormals_eq_joinRelScrews`, `Graph.exists_earBase_splitOff_grade` with a height
+  polynomial `Rz`, and `Graph.X0AttainsGrade.of_openEar_splitOff_of_base` (the insertion
+  hypothesis at the base data only), of which `of_openEar_splitOff` is a ten-line corollary.
+- [x] `lem:pencil-d-stars-three` → `exists_mvPolynomial_starsThree` (`Grade/StarsThree.lean`), on
+  forms as stars-four's; its chapter statement and proof restated to it in the theorem's build, at
+  the PI's word (R-13 aligned).
+- [x] `lem:pencil-d-planes-meet` → `Graph.exists_mvPolynomial_planesMeet` and
+  `Graph.liftingPlanesDiff` (`Grade/PlanesMeet.lean`, R-15).
+- [x] `lem:pencil-d-glued-ends` → `Graph.exists_mvPolynomial_gluedEnds` (`Grade/GluedEnds.lean`,
+  R-16).
+- [x] `thm:pencil-d-open-ear-three` → `Graph.X0AttainsGrade.of_openEar_three`
+  (`Grade/ShortThree.lean`): `of_openEar_four`'s hypotheses at `x : Fin 3 → α`, `e : Fin 4 → β`,
+  plus `(hm : 2 ≤ m) (hm4 : m ≤ 4)`, both used. The variant at `k = 2` with `Pq = g` (the spike's
+  `(X (a, 0) − X (b, 0)) * g` without its first factor, at the PI's word: nothing else uses it) and
+  `Rz` planes-meet's. The third condition is `exists_mvPolynomial_earDataGrade_starsCond_three`
+  (`r ≤ 2`: `dim ρ ≤ 2` by `joinRelScrews_le_span_of_mem_closedNbhd` or glued-ends, then
+  `not_starGrade_sup_le_of_finrank_le_two`; `r = 3`: stars-three), the insertion
+  `exists_insertion_earDataGrade_three`, with `starsCond_of_smul` and `span_joins_succAbove_two`
+  generalized one index down. The chapter's first stage drops the first coordinate of `q_a − q_b`;
+  its route stays (R-14 open).
 - [ ] **Close** 42i, an intermediate sub-phase close that completes PD-STEPS
   (`PHASE-BOUNDARIES.md`).
 
 ## Blockers / open questions
 
-- **Nothing blocks the theorem.** The PI answered stars-three's question on 2026-10-31: "Restate
-  to the Lean (Recommended)" (verbatim in design doc §1, *PI, 2026-10-31 (42i, stars-three)*). It
-  is recorded, not yet carried out: the chapter edit is the theorem's build's (*Hand-off*).
-- **Risks the theorem carries:** its residual is the variant's `hins` at the base data
-  (*Lemma checklist*): the `r ≤ 2` case needs a short new helper (a common member `t` of the closed
-  neighbourhoods of `a`, `b` in `G[V₁]` puts `ρ` in `span(b_a ∨ b_t, b_t ∨ b_b)`), and the
-  insertion needs `starsCond_of_smul` and `span_joins_succAbove_two` one index down (spiked in
-  `scratch/42i/Helpers.lean`, not built).
+- **Nothing blocks the close.** All four nodes are green; the PI's answer on stars-three
+  (design doc §1, *42i, stars-three*) is carried out (R-13 aligned).
 
 ## Hand-off / next phase
 
-The next concrete commit is **the theorem**: `thm:pencil-d-open-ear-three` →
-`Graph.X0AttainsGrade.of_openEar_three`, a new `Grade/ShortThree.lean` (root import file too), with
-its `\lean{}` and `\leanok`, as the *Lemma checklist* pins it and `scratch/42i/Three.lean` composes
-it (glued-ends' `g` now from `Grade/GluedEnds.lean`). The same commit carries out the PI's answer
-on stars-three (design doc §1, *42i, stars-three*): `lem:pencil-d-stars-three`'s statement drops
-`κ ≤ 1`, `p_a`, `p_b` independent and `d ≥ 4`, its proof takes the forms route as stars-four's,
-and the theorem's first stage drops the polynomial keeping `q_a − q_b` off zero; R-13 turns aligned.
-If the theorem will not fit one commit, land first the helpers one index down
-(`starsCond_of_smul`, `span_joins_succAbove_two`, generalized in place) and the common-neighbour
-helper, then the theorem. Then the close.
+The next concrete commit is **the close** of 42i (`PHASE-BOUNDARIES.md` *When this commit closes
+a phase*), an intermediate sub-phase close that completes PD-STEPS: all four `-short-three` nodes
+are green. It flips 42i's ROADMAP row and §42 prose, compresses this note, writes 42i's entry in
+`notes/BlueprintExposition.md` (stars-three's proof rerouted to forms at the PI's word), and runs
+the chapter re-read.
 
 - **The standing rule** (*Architectural choices*): a row in `notes/Cleanup42.md` §2 per departure;
-  the recon added R-13 to R-15 (`open`); R-13, R-15 and glued-ends' R-16 have landed, R-14 is
-  planned.
+  42i's are R-13 (aligned) and R-14 to R-16 (open, each landed with its node).
 - **Deferred, where it lands** (design doc §3; FRICTION's `[open]` entries): the home debts of
   42b–42h are unchanged, each riding with the next commit that edits its target file
   (`notes/Phase42h.md` *Hand-off* lists 42h's), except `starGrade_smul`, which moved to
@@ -173,7 +96,8 @@ helper, then the theorem. Then the close.
   no deferral's target; a lemma a build adds to an existing file takes along that file's debts.
   Glued-ends files new home debts (FRICTION): its contraction and closed-neighbourhood helpers and
   `liftingPlanesDiff_eq_top_of_notMem`, and `gradePlanarProj`, a third copy of the picture
-  projection.
+  projection. The theorem's build adds no home debt; its insertion lemma repeats
+  `of_openEar_four`'s inline tail at three bodies, a cleanup-round fold (FRICTION).
 - **After 42i:** PD-STEPS is complete. PD-COVERAGE (`-chains`, `-coverage`, 4 red nodes),
   PD-REDUCTION and PD-HEAD open at the PI's word (design doc §3).
 
@@ -182,36 +106,23 @@ helper, then the theorem. Then the close.
 - **PI, 2026-10-31 (42i, stars-three):** "Restate to the Lean (Recommended)": stars-three's
   statement and proof follow its Lean, in the theorem's build. Verbatim, with the question and the
   other options: design doc §1.
-- **Glued-ends' route (2026-10-31, fourth build):** the chapter's, with `def₂(G')` in place of the
-  merged deficiency (an optimal partition of `G'` pulls back), the part split in two pieces and
-  counted by `lem:pencil-lifting-space-deficiency`, and `g` the product of Jackson–Jordán's
-  polynomial for `G` and the kernel-dimension polynomial of `Z⁰`'s matrix
-  (`notes/Cleanup42.md` R-16). Its helpers stay in `Grade/GluedEnds.lean`; home debts in FRICTION.
-- **Stars-three's helpers live in `Grade/Stars.lean`** (2026-10-31, second build), beside
-  `starGrade` and `normalsJoinLin`, whose file is their home, so the build adds no home debt;
-  `Grade/StarsThree.lean` holds the node's lemma only. `starGrade_smul` moved there too, re-proved
-  by mathlib's one-scalar `Submodule.span_smul_eq_of_isUnit`, so `span_range_smul_eq` stays in
-  `Grade/Short.lean` with its one consumer, `starsCond_of_smul`.
-- **The recon's verdict (2026-10-31, design pass).** 42h's factoring cannot carry three bodies.
-  Kernel-checked (`scratch/42i/HinsFails.lean`, `hins_three_false`, axioms `propext`,
-  `Classical.choice`, `Quot.sound`): at `k = 2`, `m ≥ 2`, whenever `G″` has an admissible picture
-  (which `h₂` supplies), `hins` fails at `z = 0`, `la = lb = 0`, `ρ = ker ⋀²π` (`π` the heights,
-  codimension `binom(m, 2) ≥ 1`). Every ear point but `x₂` has zero heights, so every join lies in
-  `ρ`. The variant takes `hins` only at the first stage's base data, for `G[V₁]`'s `joinRelScrews`.
-  It is a generalization whose old form is a ten-line corollary, which leaves `of_openEar_four` as
-  it is (an added sibling would copy 200 lines).
+- **The theorem's build (2026-10-31, fifth):** composed inline as `of_openEar_four` is, the step
+  ran out of heartbeats, so the third condition and the insertion are lemmas of
+  `Grade/ShortThree.lean`. The coordinator's hypothesis held: the first coordinate of `q_a − q_b`
+  served only stars-three's dropped independence, so `Pq = g`. The theorem's proof keeps the
+  chapter's component and path route (R-14 open; the PI's answer covered stars-three only).
+- **Glued-ends' route (fourth build):** the chapter's, with `def₂(G')` for the merged deficiency
+  and `g` Jackson–Jordán's polynomial times `Z⁰`'s kernel-dimension polynomial (R-16).
+- **Stars-three's helpers live in `Grade/Stars.lean`** (second build), their home, as does
+  `starGrade_smul`; `Grade/StarsThree.lean` holds the node's lemma only.
+- **The recon's verdict (design pass):** 42h's factoring cannot carry three bodies (kernel-checked,
+  `scratch/42i/HinsFails.lean`: `hins` fails at `z = 0`, `la = lb = 0`, `ρ = ker ⋀²π`). The variant
+  takes `hins` only at the first stage's base data, for `G[V₁]`'s `joinRelScrews`; the old
+  factoring is its corollary, so `of_openEar_four` is unchanged.
 - **PI, 2026-10-31 (42i's open):** the PI answered "All 4 nodes as written (Recommended)", whose
   option read: "The theorem at 4 ≤ d ≤ 6, as the chapter states it. An Opus open commit, a
   pre-build recon that spikes the four against the carrier on 42h's Lean, then roughly 3–6 builds.
   Closes PD-STEPS." The question as put, the other options and a note on them: design doc §1.
-- **The question's wording, checked** (not the PI's text; design doc §1): stars-three's
-  environment is 98 lines (2682–2779 at `59ceecee`), not about 430; the range 2683–3111 ran on to
-  glued-ends' label, through 42h's green ear-data nodes and four-body theorem. "Leaving only the
-  insertion condition" holds at the type level; whether that condition can be met at three bodies
-  was the recon's first question (answered above: it cannot).
-- **Consistency read at the open:** all four PASS. Each was read in full against the nodes it
-  cites: every proof routes through the argument its statement claims, and no wording needs a
-  repair. With every `\uses` list parsed whole, the 30 dependencies outside the four (13
-  definitions, 15 lemmas, 2 theorems) are green, proofs too, none superseded. Within the four only
-  the theorem uses the other three; outside the section only `thm:pencil-d-coverage` uses the
-  theorem; no `-short-four` node uses or cites any of the four.
+- **The open's question, checked** (not the PI's text; design doc §1): stars-three's environment
+  is 98 lines, not about 430; "leaving only the insertion condition" held only as a type-check.
+- **Consistency read at the open:** all four PASS, their 30 outside dependencies green.

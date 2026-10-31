@@ -1328,7 +1328,8 @@ nodes that build on these, as the chapter states them; the last of PD-STEPS. A r
 found their proofs sound. The recon of their Lean on 42h's found that 42h's step cannot take the
 three-body condition, which the chapter proves only at general base data and for the relative
 screws of `G[V₁]`. It pinned a generalization of the step that takes the condition only there, and
-five or six builds. The layers after PD-STEPS open at the PI's word, as each
+five or six builds. All four nodes are now formalized, one of them restated to its Lean at the PI's
+word; 42i's close is next. The layers after PD-STEPS open at the PI's word, as each
 before them did. The targets are three tiers:
 every `d` at `def_3 ≤ 3` (proved and formalized, 42c), a `P⁴` theorem (every `d` at `def_3 ≤ 7`,
 by the sharp lemma), and every `d` (proved on paper, 42d).

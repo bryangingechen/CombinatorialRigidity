@@ -40,6 +40,9 @@ exterior power past `⋀²` is used. The *radical* of a form `φ` on `⋀² V` i
 * `exists_mvPolynomial_starsFour`: `lem:pencil-d-stars-four`, on the family `starsFamily`, with the
   first-order argument `eq_zero_of_starsFour_firstOrder`. The family, at two interior points, also
   serves `lem:pencil-d-stars-three` (`Grade/StarsThree.lean`).
+* `not_starGrade_sup_le_of_finrank_le_two`: a step of `thm:pencil-d-open-ear-three`
+  (`Grade/ShortThree.lean`). At independent points, `ρ` of dimension at most `2` and the three
+  joins of the ear do not span both stars once `d ≥ 4`.
 
 Helpers whose homes are other files, moved with the next commit that edits those files
 (`notes/Phase42h.md` *Hand-off*): the `normalsJoin` lemmas `normalsJoin_sub_left`,
@@ -920,5 +923,31 @@ theorem exists_mvPolynomial_starsFour [Infinite K] {n : ℕ}
     have hlin : φ₁ ∘ₗ normalsJoinLin (Y 1) + φ₀ ∘ₗ normalsJoinLin w = 0 :=
       (Pi.basisFun K (Fin (k + 2))).ext fun l => by simpa [normalsJoinLin] using hl l
     simpa [normalsJoinLin] using LinearMap.congr_fun hlin v
+
+/-! ## The stars condition when `ρ` is small (a step of `thm:pencil-d-open-ear-three`) -/
+
+/-- **The stars condition when `ρ` is small** (a step of `thm:pencil-d-open-ear-three`, at
+`r ≤ 2`): in dimension `d = k + 1 ≥ 4`, at linearly independent `y₁ = Y 0`, `y₃ = Y 1`, the span
+`W` of `ρ` and the joins `pa ∨ y₁`, `y₁ ∨ y₃` and `y₃ ∨ pb` does not hold both stars when
+`dim ρ ≤ 2`: the stars span `2d − 1 = 2k + 1` dimensions (`finrank_starGrade_sup_starGrade`), and
+`W` at most `dim ρ + 3 ≤ 5`. -/
+theorem not_starGrade_sup_le_of_finrank_le_two (hk : 3 ≤ k)
+    {ρ : Submodule K (⋀[K]^2 (Fin (k + 2) → K))} (hρ : Module.finrank K ρ ≤ 2)
+    (pa pb : Fin (k + 2) → K) {Y : Fin 2 → Fin (k + 2) → K}
+    (hY : LinearIndependent K ![Y 0, Y 1]) :
+    ¬ starGrade (Y 0) ⊔ starGrade (Y 1) ≤ ρ ⊔ Submodule.span K
+        (Set.range fun i : Fin 3 =>
+          normalsJoin (pathVertex pa Y pb i.castSucc) (pathVertex pa Y pb i.succ)) := by
+  intro hle
+  have h1 := (finrank_starGrade_sup_starGrade hY).1
+  have h2 := Submodule.finrank_mono hle
+  have h3 := Submodule.finrank_add_le_finrank_add_finrank ρ (Submodule.span K
+    (Set.range fun i : Fin 3 =>
+      normalsJoin (pathVertex pa Y pb i.castSucc) (pathVertex pa Y pb i.succ)))
+  have h4 := finrank_range_le_card (R := K) fun i : Fin 3 =>
+    normalsJoin (pathVertex pa Y pb i.castSucc) (pathVertex pa Y pb i.succ)
+  rw [Fintype.card_fin] at h4
+  change Module.finrank K _ ≤ 3 at h4
+  omega
 
 end CombinatorialRigidity.Molecular

@@ -2677,21 +2677,22 @@ $x \wedge \omega = 0$.
   $y_1 \vee y_3$ and $y_3 \vee y_4$ do not involve it.
 \end{proof}
 
-% Source: SHORT-CORE workbook, S32 (with S22 and the curves of S6; the existence step
-% as corrected in S12, read at kappa <= 1 as in S32).
-% The Lean (exists_mvPolynomial_starsThree) proves it on forms, as stars-four's, without
-% kappa <= 1, p_a, p_b independent and d >= 4; the proof below is the chapter's
-% (notes/Cleanup42.md, R-13).
+% Source: SHORT-CORE workbook, S32 (with S22 and the curves of S6): the bound d + kappa <= 6
+% and the radical of Pi_a + Pi_b. The statement and the proof follow the Lean
+% (exists_mvPolynomial_starsThree, with forall_normalsJoin_eq_zero_of_firstOrder and
+% forall_mem_normalsJoin_eq_zero_of_pivot): forms on the exterior square, as in
+% lem:pencil-d-stars-four, where S32 reads the annihilators in the (d-1)-st exterior power and
+% first finds four independent points, which takes kappa <= 1 and p_a, p_b independent
+% (notes/Cleanup42.md, R-13; the PI's choice, notes/Phase42-design.md section 1).
 \begin{lemma}[A span containing two stars, at three interior bodies]
   \label{lem:pencil-d-stars-three}
   \lean{CombinatorialRigidity.Molecular.exists_mvPolynomial_starsThree}
   \leanok
   \uses{def:join}
-  Let $K$ be infinite and $d \ge 4$. Let
-  $\rho \subseteq \bigwedge^2 K^{d+1}$ be a subspace, and let
-  $\Pi_a, \Pi_b \subseteq K^{d+1}$ be three-dimensional subspaces whose
-  intersection has dimension $\kappa \le 1$, with $d + \kappa \le 6$. Let
-  $p_a \in \Pi_a$ and $p_b \in \Pi_b$ be linearly independent. For
+  Let $K$ be infinite. Let $\rho \subseteq \bigwedge^2 K^{d+1}$ be a
+  subspace, and let $\Pi_a, \Pi_b \subseteq K^{d+1}$ be three-dimensional
+  subspaces whose intersection has dimension $\kappa$, with
+  $d + \kappa \le 6$. Let $p_a \in \Pi_a$ and $p_b \in \Pi_b$. For
   $y_1 \in \Pi_a$ and $y_3 \in \Pi_b$ let
   \[
     W(y_1, y_3) \;=\; \rho + \operatorname{span}(p_a \vee y_1,\
@@ -2704,84 +2705,68 @@ $x \wedge \omega = 0$.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:pencil-d-two-stars, lem:pencil-d-kernel-curve}
-  \emph{Four independent points.} We first find $y_1 \in \Pi_a$ and
-  $y_3 \in \Pi_b$ with $p_a, y_1, y_3, p_b$ linearly independent. Let
-  $L = \Pi_a \cap \Pi_b$. As $\dim(K p_a + L) \le 2$, some
-  $y_1 \in \Pi_a$ lies outside $K p_a + L$. If
-  $c\, p_a + e\, y_1 \in \Pi_b$, it lies in $L$, so $e = 0$ by the choice
-  of $y_1$. Hence $\langle p_a, y_1 \rangle \cap \Pi_b \subseteq
-  K p_a \cap \Pi_b$. Pick $y_3 \in \Pi_b$ outside
-  $K p_b + (K p_a \cap \Pi_b)$, a subspace of dimension at most two. Then
-  $\langle y_3, p_b \rangle \cap \langle p_a, y_1 \rangle \subseteq
-  K p_a \cap \Pi_b$. A nonzero multiple of $p_a$ in
-  $\langle y_3, p_b \rangle$ would be $\alpha\, y_3 + \beta\, p_b$ with
-  $\alpha \neq 0$, as $p_a$ and $p_b$ are independent. It would lie in
-  $\Pi_b$ and put $y_3$ in $K p_b + (K p_a \cap \Pi_b)$. So the planes
-  $\langle p_a, y_1 \rangle$ and $\langle y_3, p_b \rangle$, each of
-  dimension two, meet only in $0$, and the four points are independent.
-  This is the non-vanishing of a $4 \times 4$ minor of their coordinates,
-  a polynomial in $(y_1, y_3)$ that is nonzero at this pair.
+  \uses{lem:pencil-d-two-stars, lem:pencil-d-kernel-curve,
+        lem:pencil-x0-fibre-intersection}
+  We follow the proof of \cref{lem:pencil-d-stars-four}, at the pairs
+  $y = (y_1, y_3)$ of $Y = \Pi_a \times \Pi_b$. Write
+  $\Sigma(y) = \operatorname{star}(y_1) + \operatorname{star}(y_3)$ and
+  $J(y) = \operatorname{span}(p_a \vee y_1, y_1 \vee y_3, y_3 \vee p_b)$,
+  so that $W(y) = \rho + J(y)$. Fix a basis of $\rho$, the standard basis
+  $e_1, \dots, e_{d+1}$ of $K^{d+1}$ and a basis of
+  $\bigwedge^2 K^{d+1}$. Let $F(y)$ be the family of the basis vectors of
+  $\rho$, the three joins that span $J(y)$, and the joins
+  $y_1 \vee e_l$ and $y_3 \vee e_l$, and let $M(y)$ be the matrix whose
+  rows are the coordinates of its members. A form $\varphi$ on
+  $\bigwedge^2 K^{d+1}$ is the vector $\xi$ of its values on the basis,
+  and it kills $F(y)$ exactly when $M(y)\, \xi = 0$.
 
-  \emph{The argument.} In this proof we read annihilators in
-  $\bigwedge^{d-1} K^{d+1}$, through the pairing of this section. Let
-  $M(y_1, y_3)$ be the linear map on
-  $\bigwedge^{d-3} K^{d+1}$ that sends $\zeta$ to the class of
-  $y_1 \wedge y_3 \wedge \zeta$ in
-  $\bigwedge^{d-1} K^{d+1} / \rho^{\circ}$. Let $\mu$ be its polynomial
-  from \cref{lem:pencil-d-kernel-curve}, on $\Pi_a \times \Pi_b$, and
-  take the product of $\mu$ with the minor above. Let $(y_1, y_3)$ be a
-  pair where this product does not vanish. Write
-  $J = \operatorname{span}(p_a \vee y_1, y_1 \vee y_3, y_3 \vee p_b)$,
-  $\Sigma = \operatorname{star}(y_1) + \operatorname{star}(y_3)$ and
-  $T = y_1 \wedge y_3 \wedge \bigwedge^{d-3} K^{d+1}$. Suppose that
-  $W \supseteq \Sigma$ and $W \neq \bigwedge^2 K^{d+1}$. Each of the three
-  joins contains $y_1$ or $y_3$, so $J \subseteq \Sigma$ and
-  $T = \Sigma^{\circ} \subseteq J^{\circ}$
-  (\cref{lem:pencil-d-two-stars} (2), read through the pairing). Passing
-  to annihilators,
-  $0 \neq W^{\circ} = \rho^{\circ} \cap J^{\circ} \subseteq
-  \Sigma^{\circ} = T$, so $\rho^{\circ} \cap T \neq 0$. Pick
-  $\zeta \in \ker M(y_1, y_3)$ with $y_1 \wedge y_3 \wedge \zeta \neq 0$.
+  Let $\mu$ be the polynomial of \cref{lem:pencil-d-kernel-curve} for $M$
+  on $Y$. Take $c \neq 0$ in $\Pi_a$, and $c' \in \Pi_b$ outside $K c$,
+  which exists as $\dim \Pi_b = 3$. At $(c, c') \in Y$ the join
+  $y_1 \vee y_3$ is nonzero, so one of its coordinates, a polynomial
+  $\nu$ in $y$, is nonzero there. As $\mu$ and $\nu$ are each nonzero at
+  a point of $Y$, so is $\mu \nu$
+  (\cref{lem:pencil-x0-fibre-intersection}). Let $y \in Y$ have
+  $\mu(y)\, \nu(y) \neq 0$. Then $y_1 \vee y_3 \neq 0$, so $y_1$ and $y_3$
+  are linearly independent.
 
-  We move $y_1$ along the lines $y_1 + tu$ with $u \in \Pi_a$, and $y_3$
-  along the lines $y_3 + tw$ with $w \in \Pi_b$, which stay in
-  $\Pi_a \times \Pi_b$. By \cref{lem:pencil-d-kernel-curve} the first
-  gives $\zeta'$ with
-  $\delta_u = u \wedge y_3 \wedge \zeta + y_1 \wedge y_3 \wedge \zeta'
-  \in \rho^{\circ}$, and the second gives $\zeta''$ with
-  $\delta'_w = y_1 \wedge w \wedge \zeta + y_1 \wedge y_3 \wedge \zeta''
-  \in \rho^{\circ}$. The second term of each lies in $T \subseteq
-  J^{\circ}$.
-  \begin{itemize}
-    \item $u = p_a$. The first term of $\delta_{p_a}$ repeats $p_a$
-      against $p_a \vee y_1$, and $y_3$ against the other two joins. So
-      $\delta_{p_a} \in \rho^{\circ} \cap J^{\circ} \subseteq T$, and
-      $\delta_{p_a} \wedge y_1 = 0$. That is,
-      $y_1 \wedge y_3 \wedge p_a \wedge \zeta = 0$.
-    \item $w = p_b$. The first term of $\delta'_{p_b}$ repeats $y_1$
-      against $p_a \vee y_1$ and $y_1 \vee y_3$, and $p_b$ against
-      $y_3 \vee p_b$. So $\delta'_{p_b} \in T$, and
-      $\delta'_{p_b} \wedge y_3 = 0$: $y_1 \wedge y_3 \wedge p_b \wedge
-      \zeta = 0$.
-    \item Any $u \in \Pi_a$. The first term of $\delta_u$ repeats $y_3$
-      against $y_1 \vee y_3$ and $y_3 \vee p_b$, and its product with
-      $p_a \vee y_1$ is $\pm\, u \wedge (y_1 \wedge y_3 \wedge p_a \wedge
-      \zeta) = 0$. So $\delta_u \in T$, and
-      $\delta_u \wedge y_1 = \pm\, y_1 \wedge y_3 \wedge u \wedge \zeta =
-      0$.
-    \item Any $w \in \Pi_b$. Symmetrically, with
-      $y_1 \wedge y_3 \wedge p_b \wedge \zeta = 0$, $\delta'_w \in T$ and
-      $y_1 \wedge y_3 \wedge w \wedge \zeta = 0$.
-  \end{itemize}
-  By linearity $y_1 \wedge y_3 \wedge x \wedge \zeta = 0$ for every
-  $x \in \Pi_a + \Pi_b$. Through the pairing of this section, this says
-  that $\Pi_a + \Pi_b$ lies in the radical of the nonzero form
-  $c \mapsto c \wedge y_1 \wedge y_3 \wedge \zeta$ on
-  $\bigwedge^2 K^{d+1}$. The subspace $\Pi_a + \Pi_b$ has dimension
-  $6 - \kappa$, so $6 - \kappa + 2 \le d + 1$ by
-  \cref{lem:pencil-d-two-stars} (3), that is, $d + \kappa \ge 7$, against
-  the hypothesis.
+  Suppose that $W(y) \supseteq \Sigma(y)$ and
+  $W(y) \neq \bigwedge^2 K^{d+1}$, and let $\varphi_0$ be a nonzero form
+  in $W(y)^{\circ}$. It kills both stars, so $y_1$ and $y_3$ lie in its
+  radical, and it kills $F(y)$.
+
+  For $u \in \Pi_a$, move $y_1$ along the line $y_1 + tu$ and keep $y_3$,
+  so that the pair stays in $Y$. As the join is bilinear, each member $f$
+  of $F(y)$ becomes $f + t f_u + t^2 f'_u$, where $f_u = 0$ for the basis
+  vectors of $\rho$ and for the joins that do not involve $y_1$, and
+  $f_u$ is $p_a \vee u$ for $p_a \vee y_1$, $u \vee y_3$ for
+  $y_1 \vee y_3$, and $u \vee e_l$ for $y_1 \vee e_l$. The vector of
+  $\varphi_0$ lies in $\ker M(y)$, and \cref{lem:pencil-d-kernel-curve}
+  gives a form $\varphi_1$ with $\varphi_1(f) + \varphi_0(f_u) = 0$ for
+  every member $f$ of $F(y)$. So $\varphi_1$ kills $\rho$, and
+  $\varphi_1(y_1 \vee v) + \varphi_0(u \vee v) = 0$ for every
+  $v \in K^{d+1}$, by linearity from the $v = e_l$.
+
+  Suppose now that $\varphi_0(p_a \vee u) = 0$. Then $\varphi_1$ kills
+  the three joins of $J(y)$: $y_3 \vee p_b$ does not involve $y_1$,
+  $\varphi_0(p_a \vee u) = 0$, and $\varphi_0(u \vee y_3) = 0$ as $y_3$
+  lies in the radical of $\varphi_0$. So $\varphi_1$ kills $W(y)$, which
+  contains $\operatorname{star}(y_1)$, and
+  $\varphi_0(u \vee v) = -\varphi_1(y_1 \vee v) = 0$ for every $v$: $u$
+  lies in the radical of $\varphi_0$.
+
+  At $u = p_a$ this applies, as $p_a \vee p_a = 0$, so $p_a$ lies in the
+  radical of $\varphi_0$. Then $\varphi_0(p_a \vee u) = 0$ for every
+  $u \in \Pi_a$, and all of $\Pi_a$ lies in the radical. Symmetrically,
+  move $y_3$ along $y_3 + tw$ with $w \in \Pi_b$. Then $f_w$ is
+  $y_1 \vee w$ for $y_1 \vee y_3$, $w \vee p_b$ for $y_3 \vee p_b$ and
+  $w \vee e_l$ for $y_3 \vee e_l$, and $w$ lies in the radical whenever
+  $\varphi_0(w \vee p_b) = 0$: first $p_b$, and then all of $\Pi_b$.
+
+  So $\Pi_a + \Pi_b$, a subspace of dimension $6 - \kappa$, lies in the
+  radical of the nonzero form $\varphi_0$, and
+  $6 - \kappa + 2 \le d + 1$ by \cref{lem:pencil-d-two-stars} (3). That
+  is, $d + \kappa \ge 7$, against the hypothesis.
 \end{proof}
 
 The bound $d + \kappa \le 6$ cannot be dropped. Let
@@ -3304,10 +3289,16 @@ $(\xi, \eta, \omega) \mapsto (\xi, \eta, h_a \cdot (\xi, \eta, \omega),
 \end{proof}
 
 % Source: SHORT-CORE workbook, S31, S33 and S32 (the proof at d = 4, 5, 6); S20 and S21
-% (the base data, with (P)); S26 (i) for the bound d + kappa <= 6. The workbook's first
-% proof at d = 4 is S1-S21 (S6 with S12, S16, S21).
+% (the base data, without (P), which lem:pencil-d-stars-three no longer asks); S26 (i) for the
+% bound d + kappa <= 6. The workbook's first proof at d = 4 is S1-S21 (S6 with S12, S16, S21).
+% The Lean (Graph.X0AttainsGrade.of_openEar_three) factors through G'' with the insertion
+% hypothesis at the first stage's base data (of_openEar_splitOff_of_base), and bounds dim rho
+% by a common member of the closed neighbourhoods of a and b, without the component and path
+% steps below (notes/Cleanup42.md, R-14).
 \begin{theorem}[An open ear with three interior bodies, in dimensions four to six]
   \label{thm:pencil-d-open-ear-three}
+  \lean{Graph.X0AttainsGrade.of_openEar_three}
+  \leanok
   \uses{def:pencil-d-x0-attains, def:pencil-x0-standing, def:open-ear,
         def:graph-operations}
   Let $K$ be infinite and $4 \le d \le 6$, and let $G$ satisfy the
@@ -3321,6 +3312,7 @@ $(\xi, \eta, \omega) \mapsto (\xi, \eta, h_a \cdot (\xi, \eta, \omega),
   $G$ attains in dimension $d$.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{thm:pencil-d-open-ear-four, def:pencil-admissible-picture,
         def:pencil-lifting-planes, lem:pencil-d-glued-ends,
         lem:pencil-d-planes-meet, lem:pencil-x0-fibre-intersection,
@@ -3339,22 +3331,21 @@ $(\xi, \eta, \omega) \mapsto (\xi, \eta, h_a \cdot (\xi, \eta, \omega),
   (\cref{def:pencil-admissible-picture}), and every body of $G[V_1]$ has
   degree at least two there.
 
-  \emph{The first stage.} Take $q^*$ as there, and also off the zero set
-  of the first coordinate of $q_a - q_b$. If $a$ and $b$ are not adjacent
-  and have no common neighbour, take $q^*$ also off the zero set of the
-  polynomial of \cref{lem:pencil-d-glued-ends} for $G[V_1]$. Let $r$ be
-  the dimension of the space of differences $h_b - h_a$ over the lifting
-  planes $h$ of $G[V_1]$ at $q^*$ (\cref{def:pencil-lifting-planes}). In
-  $L_{G''}(q^*)^{d-2}$, take $z^*$ as there and also off the zero set of
-  the polynomial of \cref{lem:pencil-d-planes-meet} for $G''$ and its ear
+  \emph{The first stage.} Take $q^*$ as there. If $a$ and $b$ are not
+  adjacent and have no common neighbour, take $q^*$ also off the zero set
+  of the polynomial of \cref{lem:pencil-d-glued-ends} for $G[V_1]$. Let
+  $r$ be the dimension of the space of differences $h_b - h_a$ over the
+  lifting planes $h$ of $G[V_1]$ at $q^*$
+  (\cref{def:pencil-lifting-planes}). In $L_{G''}(q^*)^{d-2}$, take $z^*$
+  as there and also off the zero set of the polynomial of
+  \cref{lem:pencil-d-planes-meet} for $G''$ and its ear
   $a - x_1 - x_3 - b$. Each of the three polynomials is nonzero somewhere
   on this linear space, so they have a common non-root
   (\cref{lem:pencil-x0-fibre-intersection}, applied twice). The base data
-  are as there, with two more properties. The points $p_a$ and $p_b$ are
-  linearly independent, as their pictures differ and their last
-  coordinates are $1$. And the planes $\Pi_a$ and $\Pi_b$, spanned by the
-  points of the closed neighbourhoods of $a$ and $b$ in $G''$, meet in a
-  subspace of dimension $\kappa = 3 - \min(d - 2, r)$.
+  are as there, with one more property: the planes $\Pi_a$ and $\Pi_b$,
+  spanned by the points of the closed neighbourhoods of $a$ and $b$ in
+  $G''$, meet in a subspace of dimension $\kappa = 3 - \min(d - 2, r)$.
+  They contain the points $p_a$ and $p_b$ of $a$ and $b$.
 
   \emph{The third condition.} We show that, off the zero set of a nonzero
   polynomial in the ear data, the points $y_1 \in \Pi_a$ and
@@ -3388,9 +3379,10 @@ $(\xi, \eta, \omega) \mapsto (\xi, \eta, h_a \cdot (\xi, \eta, \omega),
   first coordinates of the pictures of $x_1$ and $x_3$ differ, which is
   the non-vanishing of a nonzero polynomial in the ear data. If $r = 3$,
   then $\kappa = 3 - \min(d - 2, 3)$ is $1$ at $d = 4$ and $0$ at
-  $d = 5, 6$. So $\kappa \le 1$ and $d + \kappa \le 6$, and
-  \cref{lem:pencil-d-stars-three} gives the condition off the zero set of
-  a nonzero polynomial in $(y_1, y_3) \in \Pi_a \times \Pi_b$. The
+  $d = 5, 6$. So $d + \kappa \le 6$, and as $p_a \in \Pi_a$ and
+  $p_b \in \Pi_b$, \cref{lem:pencil-d-stars-three} gives the condition off
+  the zero set of a nonzero polynomial in
+  $(y_1, y_3) \in \Pi_a \times \Pi_b$. The
   condition is unchanged when $y_1$ or $y_3$ is multiplied by a nonzero
   scalar, so it holds off the zero set of a nonzero polynomial in the ear
   data (\cref{lem:pencil-d-ear-data} (3)).

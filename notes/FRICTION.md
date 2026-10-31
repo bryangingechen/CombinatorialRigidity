@@ -161,6 +161,23 @@ to be re-derived by re-reading entries later.
   a `normalsJoin` form of the bound is worth adding at a second caller.)
 - **Status:** resolved in-proof (usage note).
 
+### [open] The insertion at three bodies repeats `of_openEar_four`'s inline tail
+- **Where it bit:** Phase 42i, `Pencil/Grade/ShortThree.lean`: `Graph.X0AttainsGrade.of_openEar_three`,
+  first written as one declaration like `of_openEar_four` (`Grade/Short.lean`), ran out of
+  heartbeats (200000, for the whole declaration; the error landed at a `by decide` deep in its third
+  condition). Split into `exists_mvPolynomial_earDataGrade_starsCond_three` (the third condition)
+  and `exists_insertion_earDataGrade_three` (the insertion), the theorem then well inside the budget.
+- **Friction:** `exists_insertion_earDataGrade_three` is `of_openEar_four`'s inline tail (`hcfa` to
+  `hL`, about 80 lines) at `n = 0`, as the four-body proof states nothing reusable. Smaller ones on
+  the way: `induce_splitOff_ear`'s implicit `w` is fixed by no explicit argument, so
+  `obtain ⟨-, hind⟩ := …` left a metavariable in `hind` until a later `rw` assigned it (pass
+  `(w := x 2)`); `finrank_range_le_card` states `Set.finrank`, which needs a `change` to
+  `finrank (span …)`; mathlib has no `finrank (span {u, v}) ≤ 2` (`finrank_span_le_card`, then
+  `simpa using Finset.card_le_two`).
+- **Proposed fix:** state the insertion once, for the ear of `G″` with `n + 2` interior bodies, and
+  call it from both steps, at a cleanup round; only `of_openEar_four`'s proof changes.
+- **Status:** open (42i; a cleanup-round fold, `notes/Phase42i.md` *Hand-off*).
+
 ### [open] `complementScrew` sits in `Pencil/Grade/Short.lean`, not `PanelLayer.lean`
 - **Where it bit:** Phase 42h, `Pencil/Grade/Short.lean`: `complementScrew K k`, the complement
   isomorphism `complementIso (j := 2)` of `⋀² K^(k+2)` onto `ScrewSpace K k` as a named

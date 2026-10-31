@@ -57,6 +57,7 @@ public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.PlanesMeet
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Polygon
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Realization
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Short
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.ShortThree
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Stable
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Stars
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.StarsThree

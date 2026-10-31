@@ -26,7 +26,9 @@ bodies (which uses the variant `_of_base`).
   height polynomial `Rz q` threaded into the choice of the base.
 * `joinMotions`, `mem_joinMotions`, `joinRelScrews` and `map_relScrews_ofNormals_eq_joinRelScrews`:
   the motions of a graph at points, in `⋀²`, the relative screws of two vertices (the chapter's
-  `ρ`), and their bridge to the hinge framework `ofNormals` through `complementScrew`.
+  `ρ`), and their bridge to the hinge framework `ofNormals` through `complementScrew`;
+  `joinRelScrews_le_span_of_mem_closedNbhd`: when the closed neighbourhoods of the two vertices
+  meet, their relative screws lie in the span of two joins.
 * `Graph.X0AttainsGrade.of_openEar_splitOff_of_base`: the step factored through `G″`,
   `Graph.X0Attains.of_openEar_splitOff` at grade `m + 1`, given that the suppressed body can be
   put back (`hins`), asked only at the base data of the first stage and for `G[V₁]`'s own
@@ -36,7 +38,7 @@ bodies (which uses the variant `_of_base`).
   become joins through `complementScrew`.
 * `starsCond_of_smul` and `span_joins_succAbove_two`: the stars condition is scale invariant, and
   the joins of the ear of `G` are those of the ear of `G″` but one, with the two at the body put
-  back.
+  back, from three interior bodies on (the step at three uses them too).
 * `Graph.X0AttainsGrade.of_openEar_four` (`thm:pencil-d-open-ear-four`): the factoring, its `hins`
   discharged by `lem:pencil-d-stars-four`, `lem:pencil-d-ear-data` (3) and `lem:pencil-d-insertion`.
 
@@ -523,6 +525,29 @@ noncomputable def joinRelScrews {k : ℕ} (H : Graph α β) (c : α → Fin (k +
   (joinMotions H c).map ((LinearMap.proj b : (α → ⋀[K]^2 (Fin (k + 2) → K)) →ₗ[K] _) -
     LinearMap.proj a)
 
+/-- **The relative screws when the closed neighbourhoods meet** (a step of
+`thm:pencil-d-open-ear-three`): if `t` lies in the closed neighbourhoods of both `a` and `b` in `H`
+(it is `a`, `b`, or a common neighbour), every motion has `S b − S a = (S b − S t) + (S t − S a)`,
+a combination of the joins `c a ∨ c t` and `c t ∨ c b`, so the relative screws lie in their
+span. -/
+theorem joinRelScrews_le_span_of_mem_closedNbhd {k : ℕ} {H : Graph α β}
+    (c : α → Fin (k + 2) → K) {a b t : α} (hta : t ∈ H.closedNbhd a) (htb : t ∈ H.closedNbhd b) :
+    joinRelScrews H c a b ≤
+      Submodule.span K {normalsJoin (c a) (c t), normalsJoin (c t) (c b)} := by
+  rintro _ ⟨S, hS, rfl⟩
+  rw [SetLike.mem_coe, mem_joinMotions] at hS
+  have h1 : S t - S a ∈ Submodule.span K {normalsJoin (c a) (c t), normalsJoin (c t) (c b)} := by
+    rcases hta with rfl | ⟨f, hf⟩
+    · simp
+    · rw [← neg_sub]
+      exact Submodule.neg_mem _ (Submodule.span_mono (by simp) (hS f a t hf))
+  have h2 : S b - S t ∈ Submodule.span K {normalsJoin (c a) (c t), normalsJoin (c t) (c b)} := by
+    rcases htb with rfl | ⟨f, hf⟩
+    · simp
+    · rw [← neg_sub]
+      exact Submodule.neg_mem _ (Submodule.span_mono (by simp) (hS f t b hf.symm))
+  simpa using add_mem h2 h1
+
 /-- **The bridge to the hinge framework**: take `ofNormals G ends c` (whose ends `ends` record
 links of `G`) and restrict its hinges to the links of a subgraph `H ≤ G`. The relative screws of
 `a, b` of the resulting body-hinge framework, pulled back along `complementScrew`, are
@@ -894,26 +919,26 @@ theorem span_range_smul_eq {ι V : Type*} [AddCommGroup V] [Module K V] (x : ι 
     rw [this]
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
 
-/-- The stars condition of `lem:pencil-d-stars-four` holds at the interior points `Y` if it holds at
-their nonzero multiples `c i • Y i`, as rescaling changes neither the span of the joins nor the
-stars (the `hC` of `lem:pencil-d-ear-data` (3)). -/
+/-- The stars condition of `lem:pencil-d-stars-four` and `lem:pencil-d-stars-three` holds at the
+interior points `Y` if it holds at their nonzero multiples `c i • Y i`, as rescaling changes neither
+the span of the joins nor the stars (the `hC` of `lem:pencil-d-ear-data` (3)). -/
 theorem starsCond_of_smul {k n : ℕ} (ρ : Submodule K (⋀[K]^2 (Fin (k + 2) → K)))
-    (pa pb : Fin (k + 2) → K) (Y : Fin (n + 3) → Fin (k + 2) → K) (c : Fin (n + 3) → K)
+    (pa pb : Fin (k + 2) → K) (Y : Fin (n + 2) → Fin (k + 2) → K) (c : Fin (n + 2) → K)
     (hc : ∀ i, c i ≠ 0)
     (h : starGrade (c 0 • Y 0) ⊔ starGrade (c 1 • Y 1) ≤ ρ ⊔ Submodule.span K
-        (Set.range fun i : Fin (n + 4) =>
+        (Set.range fun i : Fin (n + 3) =>
           normalsJoin (pathVertex pa (fun i => c i • Y i) pb i.castSucc)
             (pathVertex pa (fun i => c i • Y i) pb i.succ)) →
-      ρ ⊔ Submodule.span K (Set.range fun i : Fin (n + 4) =>
+      ρ ⊔ Submodule.span K (Set.range fun i : Fin (n + 3) =>
           normalsJoin (pathVertex pa (fun i => c i • Y i) pb i.castSucc)
             (pathVertex pa (fun i => c i • Y i) pb i.succ)) = ⊤) :
     starGrade (Y 0) ⊔ starGrade (Y 1) ≤ ρ ⊔ Submodule.span K
-        (Set.range fun i : Fin (n + 4) =>
+        (Set.range fun i : Fin (n + 3) =>
           normalsJoin (pathVertex pa Y pb i.castSucc) (pathVertex pa Y pb i.succ)) →
-      ρ ⊔ Submodule.span K (Set.range fun i : Fin (n + 4) =>
+      ρ ⊔ Submodule.span K (Set.range fun i : Fin (n + 3) =>
           normalsJoin (pathVertex pa Y pb i.castSucc) (pathVertex pa Y pb i.succ)) = ⊤ := by
-  set sc : Fin (n + 5) → K := Fin.snoc (Fin.cons 1 c : Fin (n + 4) → K) 1 with hsc
-  have hsc0 : ∀ i : Fin (n + 5), sc i ≠ 0 := by
+  set sc : Fin (n + 4) → K := Fin.snoc (Fin.cons 1 c : Fin (n + 3) → K) 1 with hsc
+  have hsc0 : ∀ i : Fin (n + 4), sc i ≠ 0 := by
     intro i
     induction i using Fin.lastCases with
     | last => simp [hsc]
@@ -921,14 +946,14 @@ theorem starsCond_of_smul {k n : ℕ} (ρ : Submodule K (⋀[K]^2 (Fin (k + 2) �
       induction i using Fin.cases with
       | zero => simp [hsc]
       | succ i => simpa only [hsc, Fin.snoc_castSucc, Fin.cons_succ] using hc i
-  have hspan : Submodule.span K (Set.range fun i : Fin (n + 4) =>
+  have hspan : Submodule.span K (Set.range fun i : Fin (n + 3) =>
       normalsJoin (pathVertex pa (fun i => c i • Y i) pb i.castSucc)
         (pathVertex pa (fun i => c i • Y i) pb i.succ)) =
-      Submodule.span K (Set.range fun i : Fin (n + 4) =>
+      Submodule.span K (Set.range fun i : Fin (n + 3) =>
         normalsJoin (pathVertex pa Y pb i.castSucc) (pathVertex pa Y pb i.succ)) := by
     simp only [pathVertex_smul_comp, normalsJoin_smul_left, normalsJoin_smul_right, ← hsc]
     simp only [smul_smul]
-    exact span_range_smul_eq (fun i : Fin (n + 4) =>
+    exact span_range_smul_eq (fun i : Fin (n + 3) =>
       normalsJoin (pathVertex pa Y pb i.castSucc) (pathVertex pa Y pb i.succ))
       (fun i => sc i.succ * sc i.castSucc) (fun i => mul_ne_zero (hsc0 _) (hsc0 _))
   rw [hspan, starGrade_smul (hc 0), starGrade_smul (hc 1)] at h
@@ -937,18 +962,18 @@ theorem starsCond_of_smul {k n : ℕ} (ρ : Submodule K (⋀[K]^2 (Fin (k + 2) �
 /-- The joins of the path through the extra point `P 2`: if `Q` is `P` without its index `2`, the
 joins of `P` span what the joins of `Q` but the one at `1` (`Q 1 ∨ Q 2`, which is `P 1 ∨ P 3`)
 span with `P 1 ∨ P 2` and `P 2 ∨ P 3`. -/
-theorem span_joins_succAbove_two {k n : ℕ} (P : Fin (n + 6) → Fin (k + 2) → K)
-    (Q : Fin (n + 5) → Fin (k + 2) → K) (h : ∀ j, P (Fin.succAbove 2 j) = Q j) :
-    Submodule.span K (Set.range fun i : Fin (n + 5) => normalsJoin (P i.castSucc) (P i.succ)) =
-      Submodule.span K (Set.range fun j : Fin (n + 4) =>
+theorem span_joins_succAbove_two {k n : ℕ} (P : Fin (n + 5) → Fin (k + 2) → K)
+    (Q : Fin (n + 4) → Fin (k + 2) → K) (h : ∀ j, P (Fin.succAbove 2 j) = Q j) :
+    Submodule.span K (Set.range fun i : Fin (n + 4) => normalsJoin (P i.castSucc) (P i.succ)) =
+      Submodule.span K (Set.range fun j : Fin (n + 3) =>
         if j = 1 then 0 else normalsJoin (Q j.castSucc) (Q j.succ)) ⊔
       Submodule.span K {normalsJoin (P 1) (P 2), normalsJoin (P 2) (P 3)} := by
-  have hQ : ∀ (j : Fin (n + 5)) (t : Fin (n + 6)),
+  have hQ : ∀ (j : Fin (n + 4)) (t : Fin (n + 5)),
       (t : ℕ) = (if (j : ℕ) < 2 then (j : ℕ) else (j : ℕ) + 1) → P t = Q j := fun j t ht => by
     rw [← h j]
     congr 1
     exact Fin.ext (by rw [coe_succAbove_two]; exact ht)
-  have key : ∀ (j : Fin (n + 4)) (i : Fin (n + 5)),
+  have key : ∀ (j : Fin (n + 3)) (i : Fin (n + 4)),
       ((j : ℕ) = 0 → (i : ℕ) = 0) → (2 ≤ (j : ℕ) → (i : ℕ) = j + 1) → (j : ℕ) ≠ 1 →
       normalsJoin (Q j.castSucc) (Q j.succ) = normalsJoin (P i.castSucc) (P i.succ) := by
     intro j i h0 h2 h1

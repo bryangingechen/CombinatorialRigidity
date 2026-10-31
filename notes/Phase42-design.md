@@ -4,8 +4,9 @@
 **42i** (the fourth and last sub-phase of PD-STEPS, `notes/Phase42i.md`) **opened 2026-10-31** at
 the PI's word (§1): the four nodes of `pencil-d.tex`'s `-short-three`, the open ear with three
 interior bodies, the theorem at `d = 4` to `6` as the chapter states it (§3). Its pre-build recon
-found that 42h's factoring cannot take the three-body condition and pinned a variant (§3). The
-variant, stars-three, planes-meet and glued-ends have landed; the theorem comes next.
+found that 42h's factoring cannot take the three-body condition and pinned a variant (§3). All
+four nodes have landed, the theorem last, with stars-three restated to its Lean at the PI's word
+(§1); 42i's close comes next.
 PD-COVERAGE, PD-REDUCTION and PD-HEAD (§3, which maps the remaining red nodes to them by section)
 then open, each at the PI's word.
 **42h** (the third sub-phase of PD-STEPS, `notes/Phase42h.md`) **opened and closed 2026-10-31** at
@@ -877,7 +878,9 @@ marked `no departure` (R-6). The post-Phase-42 cleanup acts on the ledger (that 
   `of_openEar_splitOff_of_base`, of which 42h's factoring is a corollary (spike complete). It
   also pinned the four signatures (stars-three on forms, without three of its statement's
   hypotheses, a question for the PI) and five or six builds (that note's *Lemma checklist*; ledger
-  R-13 to R-15).
+  R-13 to R-15). The four landed in five builds, all green: the variant, stars-three, planes-meet,
+  glued-ends and the theorem, whose commit restated stars-three to its Lean at the PI's word (§1;
+  R-13 aligned, R-14 to R-16 open).
   **Handed on from PD-RECON** (42a's close; SHORT-CORE's workbook S56 has the detail):
   - *PD-STEPS, the short-ear step (row 13).* At `d = 4`, `k = 3, 4, 5`: the `P³` factoring
     (`Graph.X0Attains.of_openEar_splitOff`) with `D = 10`, its insertion hypothesis taken at base
