@@ -300,8 +300,8 @@ status:
     carries a proof on paper of the theorem in every dimension, its strongest form included;
     formalizing that proof has begun: its setting is formalized, with the graphs whose deficiencies
     in the plane and in dimension d agree, and so are the first steps of its induction, at a cut
-    vertex, along a chain of bridges and contracting a rigid part of the graph; its other steps are
-    next.
+    vertex, along a chain of bridges and contracting a rigid part of the graph; its steps at a cycle
+    and along a long ear are in progress, and its other steps follow.
   sorry_count: 0
   sorry_in_definitions: 0
   axioms: ["propext", "Classical.choice", "Quot.sound"]          # only Lean/mathlib standard axioms; no project-specific axioms

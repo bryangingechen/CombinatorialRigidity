@@ -62,7 +62,8 @@ index (forward mode), and the file map is under *Current state*.
 Phase 42 stays in progress with no sub-phase open. The next step is **putting the rest of
 PD-STEPS's open to the PI** (design doc §3): the 19 red nodes of `sec:pencil-d-short` (12, open
 ears with three or more interior bodies) and `sec:pencil-d-long` (7, cycles and long open ears),
-no letter minted until it opens. What 42f hands it and PD-COVERAGE, all at every `m`:
+no letter minted until it opens (answered at 42g's open: `-long` first, design doc §1). What 42f
+hands it and PD-COVERAGE, all at every `m`:
 - The restriction of `m` heights and its three claims (`lem:pencil-d-lifting-restrict`), which
   `thm:pencil-d-open-ear-four` (`-short`) and `thm:pencil-d-open-ear-long` (`-long`) use, with
   `Graph.exists_liftingRestrict_preimage_fst_eq` lifting a restriction height by height.

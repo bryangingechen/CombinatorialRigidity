@@ -184,7 +184,8 @@ strongest form included. Formalizing that proof has begun: its setting is
 formalized, with the graphs whose deficiencies in the plane and in
 dimension $d$ agree, and so are the first steps of its induction, at a
 cut vertex, along a chain of bridges and contracting a rigid part of the
-graph; its other steps are next.
+graph; its steps at a cycle and along a long ear are in progress, and its
+other steps follow.
 
 ### How the pencil realization theorem is proved
 
