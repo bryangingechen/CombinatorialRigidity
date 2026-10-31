@@ -107,6 +107,41 @@ valid. The cleanup chooses one per `open` row, with the PI.
   *Remedies:* a toss-up (the coordinator): the prose to the one path, or keep both.
 - **R-6** · `thm:pencil-d-cycle`, the heights (`Graph.X0AttainsGrade.of_cycle_of_certificate`) ·
   **no departure** (42g's close): the Lean restricts `z` to `V(G)`, where the chapter's `z` lives.
+- **R-7** · `lem:pencil-d-two-stars`, parts (2) and (3) (`dualAnnihilator_starGrade_sup_starGrade`,
+  `finrank_add_two_le_of_forall_ιMulti_eq_zero`, 42h recon, `scratch/42h/Stars.lean`) · **open**.
+  *Chapter:* the annihilator in `⋀^{d−1}` is `y ∧ y' ∧ ⋀^{d−3}`; (3) for every `p ≥ 0`, through
+  bases `e_I` of `⋀^p Q`.
+  *Lean:* the annihilator is the forms on `⋀²` (the chapter's pairing), (2) the forms through
+  `⋀²(K^{d+1}/⟨y, y'⟩)`, (3) at `p = d − 3` only: a nonzero form whose radical holds `A` has
+  `dim A + 2 ≤ dim V`. No exterior power past `⋀²`.
+  *Remedies:* the prose to the Lean (state `U°` as forms), or a Lean bridge to `⋀^{d−1}`
+  (`wedgeProd`, bases of `⋀^p`), so that the Lean follows the chapter. Settled before the node's
+  `\leanok` (`notes/Phase42h.md` *Blockers* item 1).
+- **R-8** · `lem:pencil-d-stars-four` (`exists_mvPolynomial_starsFour`,
+  `eq_zero_of_starsFour_firstOrder`, 42h recon) · **open**.
+  *Chapter:* `M(y)` on `⋀^{d−3}`, `ζ ↦ y₁ ∧ y₃ ∧ ζ` modulo `ρ°` and paired with `J₂`; the
+  first-order `δ_w`, then two-stars (3) in `Q` to reach `d − 1 ≤ d − 3`.
+  *Lean:* the kernel curve on the family `ρ`'s basis, the path joins, `y₁ ∨ e_l`, `y₃ ∨ e_l`, whose
+  annihilator is `W° ∩ Σ°`; a nonzero `φ₀` in it extends to `φ₁` along `y₃ + t w`; `φ₁` kills `W`
+  (at `w = y₄`, then every `w`), so `φ₀ (w ∨ ·) = 0` for every `w`, and `φ₀ = 0`. The independence
+  of `y₁`, `y₃` is not used.
+  *Remedies:* the prose to the Lean (shorter), or keep both.
+- **R-9** · `lem:pencil-d-kernel-curve` (`exists_mvPolynomial_kernel_curve`,
+  `exists_mulVec_add_mulVec_eq_zero`, 42h recon) · **open**.
+  *Chapter:* Cramer's rule over `K(t)`: `ξ(t) = (−A(t)⁻¹B(t)ξ₀|_{C'}, ξ₀|_{C'})`, a power series,
+  whose coefficient of `t` is `ξ₁`.
+  *Lean:* if no `ξ₁` exists, `M_wξ₀ ∉ range A`; `r` columns spanning `range A` with `M_wξ₀` are
+  independent at `t = 0`, hence at some `t ≠ 0`, and with `M(y₀ + tw)ξ₀ = t(M_wξ₀ + tM₂(t)ξ₀)`
+  give `M(y₀ + tw)` rank `r + 1`, against the generic rank. The generic minor is the same.
+  *Remedies:* the prose to the Lean (no power series), or keep both.
+- **R-10** · `lem:pencil-d-ear-data`, part (3) (`exists_mvPolynomial_earDataGrade_of_smul`, 42h
+  recon) · **open**.
+  *Chapter:* a nonzero multihomogeneous component `f_α`; `g(s) = f_α(y(s))`, and at `g(s) ≠ 0` the
+  polynomial `λ ↦ f((λ_x y_x)_x)` has coefficient `f_α(y) ≠ 0` at `λ^α`.
+  *Lean:* `h(λ, s) = f((λ_x y_x(s))_x)` is nonzero (a point of the planes with nonzero last
+  coordinates, rescaled to an ear datum by part (2)); `g` is a nonzero coefficient of `h` as a
+  polynomial in `λ` (`MvPolynomial.sumAlgEquiv`). Same coefficient argument, no `f_α`.
+  *Remedies:* the prose to the Lean, or keep both (a toss-up).
 
 ## 3. The cleanup (not yet planned)
 

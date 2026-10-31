@@ -3,7 +3,8 @@
 **Status:** opened 2026-10-29 with the PI, sub-lettered, research first; **42h open**.
 **42h** (the third sub-phase of PD-STEPS, `notes/Phase42h.md`) **opened 2026-10-31** at the PI's
 word (§1): the eight nodes of `pencil-d.tex`'s `-short-four`, Phase 40's short-ear step in `Pᵈ` at
-four or more interior bodies, in every `d` (§3). Its next step is the pre-build recon. The other
+four or more interior bodies, in every `d` (§3). Its pre-build recon pinned the eight, seven checked
+complete; next, the builds (`notes/Phase42h.md`). The other
 half of `-short`, the three-body ear at `d = 4` to `6` (`-short-three`, 4 nodes; codes in §3),
 stays mapped by section; it and then PD-COVERAGE, PD-REDUCTION and PD-HEAD (§3, which maps the
 remaining red nodes to them by section) open each at the PI's word.

@@ -1321,7 +1321,8 @@ cleanup after Phase 42 (`notes/Cleanup42.md`). The short ears, the rest of PD-ST
 halves. At the PI's word **42h** (opened 2026-10-31, `notes/Phase42h.md`) takes the open ears with
 four or more interior bodies, eight nodes of `pencil-d.tex` in every `d` (SHORT-CORE's step
 there, with the tools both halves share), whose proofs a read at the open found sound on the
-carrier; a recon of their Lean signatures comes first. The three-body ear at `d = 4` to `6`, four nodes that build
+carrier; a recon has pinned their Lean signatures, seven of the eight checked complete, and the
+builds come next. The three-body ear at `d = 4` to `6`, four nodes that build
 on these, opens later at the PI's word, as each later layer does. The targets are three tiers:
 every `d` at `def_3 ≤ 3` (proved and formalized, 42c), a `P⁴` theorem (every `d` at `def_3 ≤ 7`,
 by the sharp lemma), and every `d` (proved on paper, 42d).
