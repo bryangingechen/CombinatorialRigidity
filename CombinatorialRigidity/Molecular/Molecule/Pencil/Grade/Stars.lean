@@ -31,13 +31,15 @@ exterior power past `⋀²` is used. The *radical* of a form `φ` on `⋀² V` i
   `lem:pencil-d-two-stars`. (1) Two stars sum to the kernel of `⋀²` of the quotient map by
   `⟨y, y'⟩`, of dimension `2d - 1`; (2) their annihilator is the forms through that map, those with
   `y` and `y'` in their radical; (3) the pullback is injective, and a nonzero form on `⋀² V` whose
-  radical holds `A` has `dim A + 2 ≤ dim V`.
+  radical holds `A` has `dim A + 2 ≤ dim V`. `starGrade_smul`: the star of a nonzero multiple is the
+  same, for the scale invariance of the stars condition (`Grade/Short.lean`).
 * `exists_insertion_of_starGrade_sup`: `lem:pencil-d-insertion`, `MainComponent/Lines.lean`'s
   `exists_insertion_gain` and `exists_insertion_of_star_sup_star` at every grade.
 * `exists_mvPolynomial_kernel_curve`: `lem:pencil-d-kernel-curve`, its parameters a subspace `L` of
   `σ → K`. `exists_mvPolynomial_dual_kernel_curve` reads it on the forms killing a family.
 * `exists_mvPolynomial_starsFour`: `lem:pencil-d-stars-four`, on the family `starsFamily`, with the
-  first-order argument `eq_zero_of_starsFour_firstOrder`.
+  first-order argument `eq_zero_of_starsFour_firstOrder`. The family, at two interior points, also
+  serves `lem:pencil-d-stars-three` (`Grade/StarsThree.lean`).
 
 Helpers whose homes are other files, moved with the next commit that edits those files
 (`notes/Phase42h.md` *Hand-off*): the `normalsJoin` lemmas `normalsJoin_sub_left`,
@@ -65,6 +67,15 @@ noncomputable def starGrade (y : Fin (k + 2) → K) : Submodule K (⋀[K]^2 (Fin
 /-- A join `y ∨ u` lies in the star of `y`. -/
 theorem normalsJoin_mem_starGrade (y u : Fin (k + 2) → K) : normalsJoin y u ∈ starGrade y :=
   Submodule.subset_span ⟨u, rfl⟩
+
+/-- The star of a point is that of any nonzero multiple: `c • y ∨ u = c • (y ∨ u)`, and a span is
+unchanged by a unit scalar (`Submodule.span_smul_eq_of_isUnit`). -/
+theorem starGrade_smul {c : K} (hc : c ≠ 0) (y : Fin (k + 2) → K) :
+    starGrade (c • y) = starGrade y := by
+  have h : normalsJoin (c • y) = fun u => c • normalsJoin y u :=
+    funext fun u => normalsJoin_smul_left c y u
+  rw [starGrade, starGrade, h, ← Set.smul_set_range]
+  exact Submodule.span_smul_eq_of_isUnit _ _ hc.isUnit
 
 /-- The join is subtractive in its first argument, from `normalsJoin_add_left` and
 `normalsJoin_smul_left`. -/
@@ -540,6 +551,35 @@ theorem eq_zero_of_forall_normalsJoin_eq_zero {φ : Module.Dual K (⋀[K]^2 (Fin
     (h : ∀ u w, φ (normalsJoin u w) = 0) : φ = 0 :=
   eq_zero_of_forall_ιMulti_two_eq_zero h
 
+/-- A step of the first-order argument of `lem:pencil-d-stars-three`
+(`eq_zero_of_starsFour_firstOrder` makes it inline for `lem:pencil-d-stars-four`). Let the form `φ₁`
+kill a subspace `W` that holds the star of `y`, with `φ₁ (y ∨ e_l) + φ₀ (u ∨ e_l) = 0` for each
+standard basis vector `e_l`. Then `u` lies in the radical of `φ₀`: by linearity
+`φ₁ (y ∨ v) + φ₀ (u ∨ v) = 0` for every `v`, and `y ∨ v ∈ W`. -/
+theorem forall_normalsJoin_eq_zero_of_firstOrder {y u : Fin (k + 2) → K}
+    {W : Submodule K (⋀[K]^2 (Fin (k + 2) → K))} (hle : starGrade y ≤ W)
+    {φ₀ φ₁ : Module.Dual K (⋀[K]^2 (Fin (k + 2) → K))} (hW : ∀ x ∈ W, φ₁ x = 0)
+    (hl : ∀ l, φ₁ (normalsJoin y (Pi.single l 1)) + φ₀ (normalsJoin u (Pi.single l 1)) = 0) :
+    ∀ v, φ₀ (normalsJoin u v) = 0 := by
+  have hlin : φ₁ ∘ₗ normalsJoinLin y + φ₀ ∘ₗ normalsJoinLin u = 0 :=
+    (Pi.basisFun K (Fin (k + 2))).ext fun l => by simpa [normalsJoinLin] using hl l
+  intro v
+  have h := LinearMap.congr_fun hlin v
+  simp only [LinearMap.add_apply, LinearMap.comp_apply, normalsJoinLin, LinearMap.coe_mk,
+    AddHom.coe_mk, LinearMap.zero_apply] at h
+  rwa [hW _ (hle (normalsJoin_mem_starGrade y v)), zero_add] at h
+
+/-- The pivot of the first-order argument of `lem:pencil-d-stars-three` (as at `Y 2` in
+`eq_zero_of_starsFour_firstOrder`). Let `p ∈ S`, and let each `u ∈ S` with `φ₀ (p ∨ u) = 0` lie in
+the radical of `φ₀`. Then all of `S` does: `p` does, as `p ∨ p = 0`, and then `φ₀ (p ∨ u) = 0` for
+every `u`. -/
+theorem forall_mem_normalsJoin_eq_zero_of_pivot {S : Submodule K (Fin (k + 2) → K)}
+    {p : Fin (k + 2) → K} (hp : p ∈ S) {φ₀ : Module.Dual K (⋀[K]^2 (Fin (k + 2) → K))}
+    (h : ∀ u ∈ S, φ₀ (normalsJoin p u) = 0 → ∀ v, φ₀ (normalsJoin u v) = 0) :
+    ∀ u ∈ S, ∀ v, φ₀ (normalsJoin u v) = 0 := by
+  have hp' := h p hp (by rw [normalsJoin_self, map_zero])
+  exact fun u hu => h u hu (hp' u)
+
 /-- The join of two points moving along lines, expanded in `t`:
 `(a + t a') ∨ (b + t b') = a ∨ b + t (a' ∨ b + a ∨ b') + t² (a' ∨ b')`. -/
 theorem normalsJoin_add_smul_add_smul (a a' b b' : Fin (k + 2) → K) (t : K) :
@@ -568,49 +608,50 @@ theorem pathVertex_succ_castSucc {α : Type*} {n : ℕ} (a b : α) (x : Fin n �
     pathVertex a x b i.succ.castSucc = x i := by
   rw [pathVertex, Fin.snoc_castSucc, Fin.cons_succ]
 
-/-- The points of the stars-four family (a step of `lem:pencil-d-stars-four`): the path
-`pa, Y 0, …, Y (n + 2), pb`, then the standard basis vectors `e_l`. -/
-noncomputable def starsPoint {n : ℕ} (pa pb : Fin (k + 2) → K) (Y : Fin (n + 3) → Fin (k + 2) → K) :
-    Fin (n + 5) ⊕ Fin (k + 2) → Fin (k + 2) → K :=
+/-- The points of the stars family (a step of `lem:pencil-d-stars-four` and
+`lem:pencil-d-stars-three`): the path `pa, Y 0, …, Y (n + 1), pb`, then the standard basis
+vectors `e_l`. -/
+noncomputable def starsPoint {n : ℕ} (pa pb : Fin (k + 2) → K) (Y : Fin (n + 2) → Fin (k + 2) → K) :
+    Fin (n + 4) ⊕ Fin (k + 2) → Fin (k + 2) → K :=
   Sum.elim (pathVertex pa Y pb) (fun l => Pi.single l 1)
 
 /-- The direction of `starsPoint` when the chain moves along `Y + t Y'`: `pathVertex 0 Y' 0` on the
 path, `0` on the basis vectors. -/
-noncomputable def starsDir {n : ℕ} (Y' : Fin (n + 3) → Fin (k + 2) → K) :
-    Fin (n + 5) ⊕ Fin (k + 2) → Fin (k + 2) → K :=
+noncomputable def starsDir {n : ℕ} (Y' : Fin (n + 2) → Fin (k + 2) → K) :
+    Fin (n + 4) ⊕ Fin (k + 2) → Fin (k + 2) → K :=
   Sum.elim (pathVertex 0 Y' 0) 0
 
-/-- The ends of the joins of the stars-four family, as indices of `starsPoint`: the `n + 4` joins of
+/-- The ends of the joins of the stars family, as indices of `starsPoint`: the `n + 3` joins of
 consecutive points of the path, then `Y 0 ∨ e_l` and `Y 1 ∨ e_l` for each `l`. -/
 def starsEnds {n : ℕ} :
-    Fin (n + 4) ⊕ Fin (k + 2) ⊕ Fin (k + 2) →
-      (Fin (n + 5) ⊕ Fin (k + 2)) × (Fin (n + 5) ⊕ Fin (k + 2)) :=
+    Fin (n + 3) ⊕ Fin (k + 2) ⊕ Fin (k + 2) →
+      (Fin (n + 4) ⊕ Fin (k + 2)) × (Fin (n + 4) ⊕ Fin (k + 2)) :=
   Sum.elim (fun j => (Sum.inl j.castSucc, Sum.inl j.succ))
-    (Sum.elim (fun l => (Sum.inl (0 : Fin (n + 3)).succ.castSucc, Sum.inr l))
-      (fun l => (Sum.inl (1 : Fin (n + 3)).succ.castSucc, Sum.inr l)))
+    (Sum.elim (fun l => (Sum.inl (0 : Fin (n + 2)).succ.castSucc, Sum.inr l))
+      (fun l => (Sum.inl (1 : Fin (n + 2)).succ.castSucc, Sum.inr l)))
 
-/-- The stars-four family (a step of `lem:pencil-d-stars-four`): the vectors `bρ`, a basis of `ρ`
-where the proof uses it, the `n + 4` joins of the path `pa, Y 0, …, Y (n + 2), pb`, which span
-`J(y)`, and the joins `Y 0 ∨ e_l`, `Y 1 ∨ e_l`, which span the stars of `y₁ = Y 0` and
-`y₃ = Y 1`. -/
+/-- The stars family (a step of `lem:pencil-d-stars-four` and `lem:pencil-d-stars-three`): the
+vectors `bρ`, a basis of `ρ` where the proof uses it, the `n + 3` joins of the path
+`pa, Y 0, …, Y (n + 1), pb`, which span `J(y)`, and the joins `Y 0 ∨ e_l`, `Y 1 ∨ e_l`, which span
+the stars of `y₁ = Y 0` and `y₃ = Y 1`. Stars-four takes it at `n + 1`, stars-three at `n = 0`. -/
 noncomputable def starsFamily {n r : ℕ} (bρ : Fin r → ⋀[K]^2 (Fin (k + 2) → K))
-    (pa pb : Fin (k + 2) → K) (Y : Fin (n + 3) → Fin (k + 2) → K) :
-    Fin r ⊕ (Fin (n + 4) ⊕ Fin (k + 2) ⊕ Fin (k + 2)) → ⋀[K]^2 (Fin (k + 2) → K) :=
+    (pa pb : Fin (k + 2) → K) (Y : Fin (n + 2) → Fin (k + 2) → K) :
+    Fin r ⊕ (Fin (n + 3) ⊕ Fin (k + 2) ⊕ Fin (k + 2)) → ⋀[K]^2 (Fin (k + 2) → K) :=
   Sum.elim bρ fun i => normalsJoin (starsPoint pa pb Y (starsEnds i).1)
     (starsPoint pa pb Y (starsEnds i).2)
 
 /-- `starsPoint` along `Y + t Y'` is `starsPoint Y + t starsDir Y'`. -/
-theorem starsPoint_add_smul {n : ℕ} (pa pb : Fin (k + 2) → K) (Y Y' : Fin (n + 3) → Fin (k + 2) → K)
+theorem starsPoint_add_smul {n : ℕ} (pa pb : Fin (k + 2) → K) (Y Y' : Fin (n + 2) → Fin (k + 2) → K)
     (t : K) (e) : starsPoint pa pb (Y + t • Y') e = starsPoint pa pb Y e + t • starsDir Y' e := by
   rcases e with idx | l
   · simp only [starsPoint, starsDir, Sum.elim_inl, pathVertex_add_smul]; rfl
   · simp [starsPoint, starsDir]
 
-/-- The stars-four family along `Y + t Y'`, expanded in `t`: the vectors `bρ` do not move, and a
+/-- The stars family along `Y + t Y'`, expanded in `t`: the vectors `bρ` do not move, and a
 join `p ∨ q` moves by `t (p' ∨ q + p ∨ q') + t² (p' ∨ q')`, with `p'`, `q'` the directions of its
 ends (`normalsJoin_add_smul_add_smul`). -/
 theorem starsFamily_add_smul {n r : ℕ} (bρ : Fin r → ⋀[K]^2 (Fin (k + 2) → K))
-    (pa pb : Fin (k + 2) → K) (Y Y' : Fin (n + 3) → Fin (k + 2) → K) (t : K) (i) :
+    (pa pb : Fin (k + 2) → K) (Y Y' : Fin (n + 2) → Fin (k + 2) → K) (t : K) (i) :
     starsFamily bρ pa pb (Y + t • Y') i = starsFamily bρ pa pb Y i +
       t • Sum.elim (fun _ => 0) (fun i => normalsJoin (starsDir Y' (starsEnds i).1)
         (starsPoint pa pb Y (starsEnds i).2) + normalsJoin (starsPoint pa pb Y (starsEnds i).1)
@@ -621,23 +662,23 @@ theorem starsFamily_add_smul {n r : ℕ} (bρ : Fin r → ⋀[K]^2 (Fin (k + 2) 
   · simp [starsFamily]
   · simp only [starsFamily, Sum.elim_inr, starsPoint_add_smul, normalsJoin_add_smul_add_smul]
 
-/-- The coordinates of the stars-four family, in the basis of `⋀²` that the standard basis induces,
+/-- The coordinates of the stars family, in the basis of `⋀²` that the standard basis induces,
 are polynomials `c` in the points of the chain `Y`: constants for the vectors `bρ`, and for a join
 `normalsJoinPoly` at the path's points, which are polynomial in `Y`. -/
 theorem exists_mvPolynomial_repr_starsFamily {n r : ℕ} (bρ : Fin r → ⋀[K]^2 (Fin (k + 2) → K))
     (pa pb : Fin (k + 2) → K) :
-    ∃ c : Fin r ⊕ (Fin (n + 4) ⊕ Fin (k + 2) ⊕ Fin (k + 2)) → Set.powersetCard (Fin (k + 2)) 2 →
-        MvPolynomial (Fin (n + 3) × Fin (k + 2)) K,
-      ∀ (Y : Fin (n + 3) → Fin (k + 2) → K) i s,
+    ∃ c : Fin r ⊕ (Fin (n + 3) ⊕ Fin (k + 2) ⊕ Fin (k + 2)) → Set.powersetCard (Fin (k + 2)) 2 →
+        MvPolynomial (Fin (n + 2) × Fin (k + 2)) K,
+      ∀ (Y : Fin (n + 2) → Fin (k + 2) → K) i s,
         ((Pi.basisFun K (Fin (k + 2))).exteriorPower 2).repr (starsFamily bρ pa pb Y i) s =
           MvPolynomial.eval (fun p => Y p.1 p.2) (c i s) := by
   classical
   set b := (Pi.basisFun K (Fin (k + 2))).exteriorPower 2
-  set PP : Fin (n + 5) ⊕ Fin (k + 2) → Fin (k + 2) → MvPolynomial (Fin (n + 3) × Fin (k + 2)) K :=
+  set PP : Fin (n + 4) ⊕ Fin (k + 2) → Fin (k + 2) → MvPolynomial (Fin (n + 2) × Fin (k + 2)) K :=
     Sum.elim (pathVertex (fun j => MvPolynomial.C (pa j)) (fun i j => MvPolynomial.X (i, j))
       (fun j => MvPolynomial.C (pb j)))
       (fun l j => MvPolynomial.C ((Pi.single l 1 : Fin (k + 2) → K) j)) with hPP
-  have hPPe : ∀ (Y : Fin (n + 3) → Fin (k + 2) → K) e j,
+  have hPPe : ∀ (Y : Fin (n + 2) → Fin (k + 2) → K) e j,
       MvPolynomial.eval (fun p => Y p.1 p.2) (PP e j) = starsPoint pa pb Y e j := by
     intro Y e j
     rcases e with idx | l
@@ -651,15 +692,15 @@ theorem exists_mvPolynomial_repr_starsFamily {n r : ℕ} (bρ : Fin r → ⋀[K]
       · simp
     · simp [hPP, starsPoint]
   refine ⟨Sum.elim (fun i s => MvPolynomial.C (b.repr (bρ i) s)) (fun i s =>
-      MvPolynomial.aeval (fun p : (Fin (n + 5) ⊕ Fin (k + 2)) × Fin (k + 2) => PP p.1 p.2)
+      MvPolynomial.aeval (fun p : (Fin (n + 4) ⊕ Fin (k + 2)) × Fin (k + 2) => PP p.1 p.2)
         (normalsJoinPoly (K := K) (starsEnds i).1 (starsEnds i).2 s)), fun Y i s => ?_⟩
   rcases i with i | i
   · simp [starsFamily, b]
   · simp only [starsFamily, Sum.elim_inr]
     have : MvPolynomial.eval (fun p => Y p.1 p.2) (MvPolynomial.aeval
-        (fun p : (Fin (n + 5) ⊕ Fin (k + 2)) × Fin (k + 2) => PP p.1 p.2)
+        (fun p : (Fin (n + 4) ⊕ Fin (k + 2)) × Fin (k + 2) => PP p.1 p.2)
         (normalsJoinPoly (K := K) (starsEnds i).1 (starsEnds i).2 s)) =
-        MvPolynomial.eval (fun p : (Fin (n + 5) ⊕ Fin (k + 2)) × Fin (k + 2) =>
+        MvPolynomial.eval (fun p : (Fin (n + 4) ⊕ Fin (k + 2)) × Fin (k + 2) =>
           starsPoint pa pb Y p.1 p.2)
           (normalsJoinPoly (K := K) (starsEnds i).1 (starsEnds i).2 s) := by
       rw [← MvPolynomial.coe_aeval_eq_eval]
@@ -778,7 +819,7 @@ theorem exists_mvPolynomial_starsFour [Infinite K] {n : ℕ}
   have : Module.Finite K ρ := inferInstance
   obtain ⟨bρ, hbρ⟩ : ∃ bρ : Fin (Module.finrank K ρ) → ⋀[K]^2 (Fin (k + 2) → K),
       bρ = fun i => (Module.finBasis K ρ i : ⋀[K]^2 (Fin (k + 2) → K)) := ⟨_, rfl⟩
-  obtain ⟨c, hc⟩ := exists_mvPolynomial_repr_starsFamily (n := n) bρ pa pb
+  obtain ⟨c, hc⟩ := exists_mvPolynomial_repr_starsFamily (n := n + 1) bρ pa pb
   -- the parameters: the uncurried chain, `Y 0 ∈ Sa`, `Y (n + 2) ∈ Sb`
   obtain ⟨L, hL⟩ : ∃ L : Submodule K (Fin (n + 3) × Fin (k + 2) → K), ∀ y, y ∈ L ↔
       (fun j => y (0, j)) ∈ Sa ∧ (fun j => y (Fin.last (n + 2), j)) ∈ Sb :=

@@ -2679,8 +2679,13 @@ $x \wedge \omega = 0$.
 
 % Source: SHORT-CORE workbook, S32 (with S22 and the curves of S6; the existence step
 % as corrected in S12, read at kappa <= 1 as in S32).
+% The Lean (exists_mvPolynomial_starsThree) proves it on forms, as stars-four's, without
+% kappa <= 1, p_a, p_b independent and d >= 4; the proof below is the chapter's
+% (notes/Cleanup42.md, R-13).
 \begin{lemma}[A span containing two stars, at three interior bodies]
   \label{lem:pencil-d-stars-three}
+  \lean{CombinatorialRigidity.Molecular.exists_mvPolynomial_starsThree}
+  \leanok
   \uses{def:join}
   Let $K$ be infinite and $d \ge 4$. Let
   $\rho \subseteq \bigwedge^2 K^{d+1}$ be a subspace, and let
@@ -2698,6 +2703,7 @@ $x \wedge \omega = 0$.
   $\operatorname{star}(y_1) + \operatorname{star}(y_3)$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-d-two-stars, lem:pencil-d-kernel-curve}
   \emph{Four independent points.} We first find $y_1 \in \Pi_a$ and
   $y_3 \in \Pi_b$ with $p_a, y_1, y_3, p_b$ linearly independent. Let

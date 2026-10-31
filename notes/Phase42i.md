@@ -5,30 +5,28 @@
 mode, the Lean under `/coordinate-phase`: the four red nodes of `pencil-d.tex`'s `-short-three`, the
 theorem at `4 ≤ d ≤ 6`. The pre-build recon has landed: 42h's factoring cannot take the three-body
 condition (a kernel-checked counterexample), so a variant is pinned, with the four signatures and a
-build order of five or six commits (*Lemma checklist*). The variant factoring has landed in
-`Grade/Short.lean` (no node flipped). Next (*Hand-off*): stars-three, a new `Grade/StarsThree.lean`.
+build order of five or six commits (*Lemma checklist*). The variant factoring and stars-three have
+landed: 1 of 4 nodes green. Next (*Hand-off*): planes-meet, a new `Grade/PlanesMeet.lean`.
 
 ## Current state
 
-**Landed: the variant factoring** (first build): `joinMotions`, `mem_joinMotions`, `joinRelScrews`,
-`map_relScrews_ofNormals_eq_joinRelScrews`, `Graph.exists_earBase_splitOff_grade` generalized in
-place (`Rz`, `hRz`; also returns `zs`, `la`, `lb`), `Graph.X0AttainsGrade.of_openEar_splitOff_of_base`,
-and `of_openEar_splitOff` re-proved as its corollary with its statement unchanged;
-`of_openEar_four` untouched. `lake build` of `Grade/Short` and `lake lint` are clean, and
-`#print axioms` of all six is `[propext, Classical.choice, Quot.sound]`. The spike's
-long lines are fixed, no primed name survives, and the module header and the docstrings read
-`_of_base` as the three-body step. **Next: stars-three** (*Hand-off*), the second of five or six
-builds. The recon spiked everything under `lake lean` in the gitignored `scratch/42i/`, on HEAD
-`64f0fe75`:
-- **Complete, no `sorry`:** `HinsFails.lean` (134 lines, Question 1's counterexample);
-  `Variant.lean` (577 lines, most of them copied from the landed Lean: the variant, its bridge
-  and the landed factoring as its corollary); `Helpers.lean` (132 lines) and `StarsFamily.lean`
-  (116 lines; the four-body helpers and stars-four's family one index down, landed proofs
-  unchanged).
-- **Signatures and composition:** `Three.lean` (705 lines, `Variant.lean` plus the four
-  signatures, each `sorry`, and the theorem built on the variant). Its one residual is the
-  insertion hypothesis at the base data (*Lemma checklist*, the theorem).
-No Lean in the tree yet. The chapter is the lemma index (forward mode).
+**Landed, second build: stars-three.** `exists_mvPolynomial_starsThree` (new `Grade/StarsThree.lean`)
+pins `lem:pencil-d-stars-three`, green, its statement unchanged. It takes `ρ`,
+`hSa : finrank Sa = 3`, `hSb : finrank Sb = 3`, `hdκ : k + finrank (Sa ⊓ Sb) ≤ 5`, `hpa : pa ∈ Sa`
+and `hpb : pb ∈ Sb`: the recon's signature, compiled. Its forms proof uses none of `κ ≤ 1`, `p_a`,
+`p_b` independent or `d ≥ 4` (*Blockers*). In `Grade/Stars.lean`: the seven family declarations
+(`starsPoint` to `exists_mvPolynomial_repr_starsFamily`) one index down, at `Fin (n + 2)` points,
+with stars-four's statement unchanged and its body at `n + 1`; two first-order helpers; and
+`starGrade_smul`, moved from `Grade/Short.lean`. `lake build` is warning-clean and `lake lint`
+passes. `#print axioms` of the new and changed declarations is `[propext, Classical.choice,
+Quot.sound]` or less.
+**Landed, first build: the variant factoring** in `Grade/Short.lean` (*Lemma checklist*).
+**Next: planes-meet** (*Hand-off*), then glued-ends and the theorem. The recon's spikes, on HEAD
+`64f0fe75` under `lake lean`, are in the gitignored `scratch/42i/`: `Three.lean` (the four
+signatures and the theorem composed on the variant; its one residual is the insertion hypothesis
+at the base data), `Helpers.lean` (the four-body helpers one index down, for the theorem) and
+`HinsFails.lean` (the recon's counterexample). `StarsThreeDev.lean` is this build's spike.
+The chapter is the lemma index (forward mode).
 
 ## Architectural choices made up front
 
@@ -46,7 +44,8 @@ No Lean in the tree yet. The chapter is the lemma index (forward mode).
   landed), with the kernel curve on forms `exists_mvPolynomial_dual_kernel_curve`.
 - **The standing rule** (design doc §3): the recon and every build add a row to
   `notes/Cleanup42.md` §2 where their Lean departs from the chapter's proof, in the same commit
-  (R-9 to R-15 open, R-13 to R-15 planned at the recon; R-7 and R-8 aligned).
+  (R-9 to R-15 open; R-13 landed with stars-three, R-14 and R-15 planned at the recon; R-7 and
+  R-8 aligned).
 
 ## Lemma checklist
 
@@ -79,20 +78,19 @@ goes in the root import file. Every statement below type-checks in `scratch/42i/
     `ρ := joinRelScrews (G.induce V₁) (pencilConfigPointGrade q z) a b` for the quantified `ρ`).
   - `Graph.X0AttainsGrade.of_openEar_splitOff`, statement unchanged, becomes a corollary
     (`Pq = 1`, `Rz = fun _ => 1`, ten lines). `of_openEar_four` is untouched.
-- [ ] `lem:pencil-d-stars-three` → `exists_mvPolynomial_starsThree`, new `Grade/StarsThree.lean`.
-  At `V = Fin (k + 2) → K`, `d = k + 1`, every `k`:
+- [x] `lem:pencil-d-stars-three` → `exists_mvPolynomial_starsThree`, new `Grade/StarsThree.lean`,
+  green. At `V = Fin (k + 2) → K`, `d = k + 1`, every `k`:
   `(ρ) {Sa Sb} (hSa : finrank Sa = 3) (hSb : finrank Sb = 3) (hdκ : k + finrank (Sa ⊓ Sb) ≤ 5)`
   `{pa pb} (hpa : pa ∈ Sa) (hpb : pb ∈ Sb) : ∃ f : MvPolynomial (Fin 2 × Fin (k + 2)) K, …`,
   the conclusion `exists_mvPolynomial_starsFour`'s at two interior points (`Y : Fin 2 → V`, the
   three joins of `pathVertex pa Y pb`). The proof is stars-four's on forms: the dual kernel curve
-  for stars-four's family one index down (generalize the seven declarations from `starsPoint` to
-  `exists_mvPolynomial_repr_starsFamily` from `Fin (n + 3)` to `Fin (n + 2)` points, checked in
-  `StarsFamily.lean`; stars-four's body then names `n + 1`, not checked), `ν` a coordinate of
-  `Y 0 ∨ Y 1`. Move `Y 0` along `pa`, then any `u ∈ Sa`, and `Y 1` along `pb`, then any `w ∈ Sb`.
-  Each time `φ₁` kills `W`, hence the stars, so `u` (`w`) joins the radical of `φ₀`. Then
+  for `starsFamily` at `n = 0` (the seven family declarations generalized to `Fin (n + 2)` points;
+  stars-four calls them at `n + 1`), `ν` a coordinate of `Y 0 ∨ Y 1`; moving `Y 0` along `pa`, then
+  any `u ∈ Sa` (`forall_mem_normalsJoin_eq_zero_of_pivot`), `φ₁` kills `W`, so `u` joins the
+  radical of `φ₀` (`forall_normalsJoin_eq_zero_of_firstOrder`), and likewise `Y 1` along `Sb`; then
   `finrank_add_two_le_of_forall_ιMulti_eq_zero` on `Sa ⊔ Sb`, of dimension `6 − κ`, contradicts
-  `hdκ`. Derived in prose, not compiled. It does not use the statement's `κ ≤ 1`, `p_a`, `p_b`
-  independent or `d ≥ 4`, so the Lean drops them (*Blockers*; `notes/Cleanup42.md` R-13).
+  `hdκ`. The statement's `κ ≤ 1`, `p_a`, `p_b` independent and `d ≥ 4` are not taken (*Blockers*;
+  `notes/Cleanup42.md` R-13).
 - [ ] `lem:pencil-d-planes-meet` → `Graph.liftingPlanesDiff` and
   `Graph.exists_mvPolynomial_planesMeet`, new `Grade/PlanesMeet.lean`, every `m`:
   `liftingPlanesDiff G q a b := (G.liftingPlanes q).map (proj b − proj a)` (instance: no links,
@@ -138,13 +136,14 @@ goes in the root import file. Every statement below type-checks in `scratch/42i/
 
 - **Nothing blocks the builds.** The recon's questions are settled (*Decisions made*, the
   verdict). One question goes to the PI, and nothing waits on it:
-  - **Stars-three's statement.** Its forms proof (*Lemma checklist*) uses only
-    `d + κ ≤ 6`, `p_a ∈ Π_a`, `p_b ∈ Π_b` and `dim Π_a = dim Π_b = 3`, not `κ ≤ 1`, `p_a`, `p_b`
-    independent or `d ≥ 4`. The chapter's proof needs `κ ≤ 1` only for its four-points step, which
-    the Lean replaces by a coordinate of `y₁ ∨ y₃` as stars-four's does. The Lean drops the three,
-    which proves a stronger lemma. The statement stays (no edit to a node's statement). Whether
-    it and the proof follow the Lean, as stars-four's did at the PI's word, goes to the PI or the
-    cleanup (`notes/Cleanup42.md` R-13). This is derived in prose; the build compiles it.
+  - **Stars-three's statement.** Its Lean, landed and green, takes exactly `ρ`,
+    `dim Π_a = dim Π_b = 3` (`hSa`, `hSb`), `d + κ ≤ 6` (`hdκ : k + κ ≤ 5`, `d = k + 1`),
+    `p_a ∈ Π_a` and `p_b ∈ Π_b`. It drops three of the node's hypotheses: `κ ≤ 1`, `p_a`, `p_b`
+    linearly independent, and `d ≥ 4`. The chapter's proof needs `κ ≤ 1` and the independence
+    only for its four-points step, which the Lean replaces by a coordinate of `y₁ ∨ y₃` as
+    stars-four's does. The statement is unchanged (no edit to a node's statement), so the Lean is
+    stronger than the node. Whether the statement and its proof follow the Lean, as stars-four's
+    did at the PI's word, goes to the PI or the cleanup (`notes/Cleanup42.md` R-13).
 - **Risks the builds carry:** glued-ends is new planar mathematics on Phase 40's carrier, and may
   take two commits. That includes the contraction `G.map (collapseTo a {a, b})` with
   `def₂ = deficiencyMerged` (`partitionDef_map`), `Z⁰(q)` bounded by rank openness
@@ -154,28 +153,33 @@ goes in the root import file. Every statement below type-checks in `scratch/42i/
 
 ## Hand-off / next phase
 
-The next concrete commit is **stars-three**: `lem:pencil-d-stars-three` →
-`exists_mvPolynomial_starsThree`, a new `Grade/StarsThree.lean` (root import file too), with its
-`\lean{}` and `\leanok`. Its statement and proof sketch are in the *Lemma checklist*: stars-four's
-family one index down (generalize the seven declarations from `starsPoint` to
-`exists_mvPolynomial_repr_starsFamily` in `Grade/Stars.lean`, checked in
-`scratch/42i/StarsFamily.lean`), then the forms-side contradiction by
-`finrank_add_two_le_of_forall_ιMulti_eq_zero`, derived in prose and not compiled, so assess whether
-it is one session's work. Add its `notes/Cleanup42.md` row (R-13, planned, becomes aligned or
-open). Then planes-meet (one commit), glued-ends (one or two) and the theorem (one).
+The next concrete commit is **planes-meet**: `lem:pencil-d-planes-meet` → `Graph.liftingPlanesDiff`
+and `Graph.exists_mvPolynomial_planesMeet`, a new `Grade/PlanesMeet.lean` (root import file too),
+with their `\lean{}` and `\leanok`. The signatures are in the *Lemma checklist* and type-check in
+`scratch/42i/Three.lean`; the proof is not spiked. Each `la i` is the inverse of the admissible
+three-point matrix applied to `z`, and `R` comes by rank openness
+(`exists_mvPolynomial_le_finrank_span_of_repr`) at a height whose rows are independent
+(`notes/Cleanup42.md` R-15), so assess first whether it is one session's work. If not, land
+`liftingPlanesDiff` with the lemma that reads the planes off `z`, and hand off the count. Update
+R-15 (planned, becomes aligned or open). Then glued-ends (one or two commits) and the theorem (one).
 
 - **The standing rule** (*Architectural choices*): a row in `notes/Cleanup42.md` §2 per departure;
-  the recon added R-13 to R-15 (planned, `open`).
+  the recon added R-13 to R-15 (`open`); R-13 has landed, R-14 and R-15 are planned.
 - **Deferred, where it lands** (design doc §3; FRICTION's `[open]` entries): the home debts of
   42b–42h are unchanged, each riding with the next commit that edits its target file
-  (`notes/Phase42h.md` *Hand-off* lists 42h's). The variant's commit edits `Grade/Short.lean`,
-  which is no deferral's target. Stars-three's commit, generalizing stars-four's family in place,
-  edits `Grade/Stars.lean`, the target of `starGrade_smul`, which moves there with it.
+  (`notes/Phase42h.md` *Hand-off* lists 42h's), except `starGrade_smul`, which moved to
+  `Grade/Stars.lean` with stars-three. Planes-meet's commit adds a file, which is no deferral's
+  target; a lemma it adds to an existing file takes along that file's debts.
 - **After 42i:** PD-STEPS is complete. PD-COVERAGE (`-chains`, `-coverage`, 4 red nodes),
   PD-REDUCTION and PD-HEAD open at the PI's word (design doc §3).
 
 ## Decisions made during this phase
 
+- **Stars-three's helpers live in `Grade/Stars.lean`** (2026-10-31, second build), beside
+  `starGrade` and `normalsJoinLin`, whose file is their home, so the build adds no home debt;
+  `Grade/StarsThree.lean` holds the node's lemma only. `starGrade_smul` moved there too, re-proved
+  by mathlib's one-scalar `Submodule.span_smul_eq_of_isUnit`, so `span_range_smul_eq` stays in
+  `Grade/Short.lean` with its one consumer, `starsCond_of_smul`.
 - **The recon's verdict (2026-10-31, design pass).** 42h's factoring cannot carry three bodies.
   Kernel-checked (`scratch/42i/HinsFails.lean`, `hins_three_false`, axioms `propext`,
   `Classical.choice`, `Quot.sound`): at `k = 2`, `m ≥ 2`, whenever `G″` has an admissible picture

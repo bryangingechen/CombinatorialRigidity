@@ -167,18 +167,20 @@ valid. The cleanup chooses one per `open` row, with the PI.
   scale invariance), then `exists_insertion_of_starGrade_sup` at `R = ρ ⊔` the joins of `G″` but the
   one at `1` (`span_joins_succAbove_two`). The order is the factored one, not the chapter's.
   *Remedies:* the prose to the Lean (state the factoring), or keep both.
-- **R-13** · `lem:pencil-d-stars-three` (planned `exists_mvPolynomial_starsThree`, 42i recon) ·
-  **open**.
+- **R-13** · `lem:pencil-d-stars-three` (`exists_mvPolynomial_starsThree`, `Grade/StarsThree.lean`,
+  42i) · **open**.
   *Chapter:* annihilators read in `⋀^{d−1}`, `M(y₁, y₃)` on `⋀^{d−3}` and `ζ` in its kernel. A
   first step finds four independent points `p_a, y₁, y₃, p_b`, which uses `κ ≤ 1`, and its minor
   enters the polynomial.
-  *Lean (planned, derived in prose):* forms on `⋀²` as stars-four's (R-8). The dual kernel curve
-  runs for stars-four's family at two interior points. Moving `y₁` along `p_a`, then any
-  `u ∈ Π_a`, and `y₃` along `p_b`, then any `w ∈ Π_b`, puts `Π_a + Π_b` in the radical of `φ₀`.
-  `y₁`, `y₃` are independent off a coordinate of `y₁ ∨ y₃`, with no four-point minor. The
-  statement's `κ ≤ 1`, `p_a`, `p_b` independent and `d ≥ 4` go unused, and the Lean drops them.
-  *Remedies:* the prose to the Lean, as stars-four's at the PI's word; the statement's three
-  hypotheses go to the PI (`notes/Phase42i.md` *Blockers*).
+  *Lean (landed):* forms on `⋀²` as stars-four's (R-8). The dual kernel curve runs for
+  `starsFamily` at two interior points (the family generalized one index down). Moving `y₁` along
+  `p_a`, then any `u ∈ Π_a`, and `y₃` along `p_b`, then any `w ∈ Π_b`, puts `Π_a + Π_b` in the
+  radical of `φ₀`. `y₁`, `y₃` are independent off a coordinate of `y₁ ∨ y₃`, with no four-point
+  minor. The Lean takes only `dim Π_a = dim Π_b = 3`, `d + κ ≤ 6` (`k + κ ≤ 5`), `p_a ∈ Π_a` and
+  `p_b ∈ Π_b`: the statement's `κ ≤ 1`, `p_a`, `p_b` independent and `d ≥ 4` are dropped, so the
+  green node's Lean is stronger than its statement.
+  *Remedies:* the prose to the Lean, as stars-four's at the PI's word; whether the statement drops
+  the three hypotheses goes to the PI (`notes/Phase42i.md` *Blockers*).
 - **R-14** · `thm:pencil-d-open-ear-three` (planned `Graph.X0AttainsGrade.of_openEar_three`, on
   `Graph.X0AttainsGrade.of_openEar_splitOff_of_base`, 42i recon) · **open**.
   *Chapter:* the proof of `thm:pencil-d-open-ear-four` with the first stage and the third condition
@@ -189,8 +191,8 @@ valid. The cleanup chooses one per `open` row, with the PI.
   *Lean (planned):* R-12's factored order, through the variant whose insertion hypothesis is taken
   at the first stage's base data (`Pq`, `Rz`) for `ρ = joinRelScrews` of `G[V₁]`. A common member
   `t` of the closed neighbourhoods of `a` and `b` gives `ρ ⊆ span(b_a ∨ b_t, b_t ∨ b_b)` directly
-  from the motions. So there is no component step and no path lemma. If R-13's Lean holds, the
-  first stage also drops the first coordinate of `q_a − q_b`.
+  from the motions. So there is no component step and no path lemma. As R-13's Lean drops `p_a`,
+  `p_b` independent, the first stage can also drop the first coordinate of `q_a − q_b`.
   *Remedies:* the prose to the Lean (state the variant), or keep both.
 - **R-15** · `lem:pencil-d-planes-meet` (planned `Graph.exists_mvPolynomial_planesMeet`, 42i
   recon) · **open**.

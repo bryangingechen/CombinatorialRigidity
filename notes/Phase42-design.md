@@ -921,10 +921,10 @@ marked `no departure` (R-6). The post-Phase-42 cleanup acts on the ledger (that 
   `pathVertex_zero_single`) beside `pathVertex`, and of the three of `Grade/Short.lean`
   (`pathVertex_comp_succAbove_one`, `pathVertex_smul_comp`, `pathVertex_map`), the first with or
   after the `Fin.succAbove` values it uses. With the next commit that edits the file each names,
-  FRICTION's other 42h home debts: `starGrade_smul` to `Grade/Stars.lean`; `coe_succAbove_one` and
-  `coe_succAbove_two`, as one `Fin.val_succAbove`, to the mirror `Mathlib/Data/Fin/Basic.lean`
-  (whose edit rebuilds `Grade/Polygon.lean` and the files after it); and `span_range_smul_eq`, a
-  mirror candidate, at a cleanup round.
+  FRICTION's other 42h home debts: `coe_succAbove_one` and `coe_succAbove_two`, as one
+  `Fin.val_succAbove`, to the mirror `Mathlib/Data/Fin/Basic.lean` (whose edit rebuilds
+  `Grade/Polygon.lean` and the files after it); and `span_range_smul_eq`, a mirror candidate, at a
+  cleanup round. (`starGrade_smul` moved to `Grade/Stars.lean` with 42i's stars-three.)
 - **PD-REDUCTION**, **PD-HEAD**: Phase 39's reduction in `Pᵈ`; the headline `PencilPair`, and the
   flag strata as corollaries. Their informal proofs are 42d's `sec:pencil-d-reduction` and, for
   the generic conjunct, `sec:pencil-d-nondegenerate` to `sec:pencil-d-generic`. **At Phase 42's close**, Tier 0 joins `formalization.yaml`'s

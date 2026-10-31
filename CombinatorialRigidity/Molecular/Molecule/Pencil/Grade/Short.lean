@@ -43,9 +43,9 @@ bodies (which uses the variant `_of_base`).
 Helpers whose homes are other files, moved with the next commit that edits those files
 (`notes/Phase42h.md` *Hand-off*): `complementScrew` belongs beside `panelSupportExtensor` in
 `AlgebraicInduction/PanelLayer.lean`; `pathVertex_comp_succAbove_one`, `pathVertex_smul_comp` and
-`pathVertex_map` in `MainComponent/Cut.lean`; `starGrade_smul` in `Grade/Stars.lean`; and the
-upstream candidates `coe_succAbove_one` and `coe_succAbove_two`, as one `Fin.val_succAbove`, in the
-mirror `Mathlib/Data/Fin/Basic.lean`, and `span_range_smul_eq` (`notes/FRICTION.md`).
+`pathVertex_map` in `MainComponent/Cut.lean`; and the upstream candidates `coe_succAbove_one` and
+`coe_succAbove_two`, as one `Fin.val_succAbove`, in the mirror `Mathlib/Data/Fin/Basic.lean`, and
+`span_range_smul_eq` (`notes/FRICTION.md`).
 -/
 
 @[expose] public section
@@ -893,14 +893,6 @@ theorem span_range_smul_eq {ι V : Type*} [AddCommGroup V] [Module K V] (x : ι 
     have : x i = (d i)⁻¹ • (d i • x i) := by rw [smul_smul, inv_mul_cancel₀ (hd i), one_smul]
     rw [this]
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
-
-/-- The star of a point is that of any nonzero multiple. -/
-theorem starGrade_smul {k : ℕ} {c : K} (hc : c ≠ 0) (y : Fin (k + 2) → K) :
-    starGrade (c • y) = starGrade y := by
-  have h : normalsJoin (c • y) = fun u => c • normalsJoin y u :=
-    funext fun u => normalsJoin_smul_left c y u
-  rw [starGrade, starGrade, h]
-  exact span_range_smul_eq (normalsJoin y) (fun _ => c) (fun _ => hc)
 
 /-- The stars condition of `lem:pencil-d-stars-four` holds at the interior points `Y` if it holds at
 their nonzero multiples `c i • Y i`, as rescaling changes neither the span of the joins nor the

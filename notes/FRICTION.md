@@ -148,6 +148,19 @@ to be re-derived by re-reading entries later.
   `Fin.val_succAbove` entry below): it moves with them, or after them.
 - **Status:** open (42h's deferral; tracked under PD-STEPS, `notes/Phase42-design.md` §3).
 
+### [idiom] `simp` turns `(0 : Fin 3).castSucc` into `0` before a lemma stated at `j.castSucc` can fire
+- **Where it bit:** Phase 42i, `Pencil/Grade/StarsThree.lean` (`exists_mvPolynomial_starsThree`),
+  reading the three joins of the path `pa, Y 0, Y 1, pb` at `j = 0, 1, 2`.
+- **Friction:** the local `hpvL : pathVertex a x b j.castSucc = ![a, x 0, x 1] j` (and `hpvR` at
+  `j.succ`, each `fin_cases j <;> rfl`) did nothing inside `simpa [hpvL, hpvR, …] using h 0`: simp
+  first rewrote `(0 : Fin 3).castSucc` to `0` and `(0 : Fin 3).succ` to `1`, and neither lemma then
+  matched, leaving `pathVertex pa Y pb 1`.
+- **Fix:** `simp only [hpvL, hpvR] at h` first, then `simpa [...] using h`, which evaluates the
+  `![…] j` by `Matrix.cons_val`. (Also there: `finrank_add_two_le_of_forall_ιMulti_eq_zero` takes
+  its radical on `ιMulti K 2 ![x, u]`, so the caller `change`s each to the defeq `normalsJoin x u`;
+  a `normalsJoin` form of the bound is worth adding at a second caller.)
+- **Status:** resolved in-proof (usage note).
+
 ### [open] `complementScrew` sits in `Pencil/Grade/Short.lean`, not `PanelLayer.lean`
 - **Where it bit:** Phase 42h, `Pencil/Grade/Short.lean`: `complementScrew K k`, the complement
   isomorphism `complementIso (j := 2)` of `⋀² K^(k+2)` onto `ScrewSpace K k` as a named
@@ -169,8 +182,8 @@ to be re-derived by re-reading entries later.
   `coe_succAbove_two` (the value of `(1 : Fin (n + 3)).succAbove j` and of
   `(2 : Fin (n + 4)).succAbove j`: `j` below the pivot, else `j + 1`), for the index bookkeeping of
   `pathVertex_comp_succAbove_one` and `span_joins_succAbove_two`; and `span_range_smul_eq`
-  (rescaling each member of a family by a nonzero scalar keeps its span), for `starGrade_smul` and
-  `starsCond_of_smul`.
+  (rescaling each member of a family by a nonzero scalar keeps its span), for `starsCond_of_smul`
+  (and, until 42i's stars-three, `starGrade_smul`).
 - **Friction:** mathlib has no value lemma for `Fin.succAbove` at a general pivot (the mirror's
   `Fin.val_succ_succAbove` takes a pivot `i.succ`; the two are its cases `i = 0, 1`), and only the
   one-scalar `Submodule.span_smul_eq_of_isUnit` for spans (`lean_loogle` and a grep of mathlib).
@@ -180,8 +193,9 @@ to be re-derived by re-reading entries later.
   `Grade/Polygon.lean` and the `Grade/` files after it). `Submodule.span_range_smul_eq (x : ι → M)
   (d : ι → R) (hd : ∀ i, IsUnit (d i)) : span R (range fun i => d i • x i) = span R (range x)` in
   a new mirror `Mathlib/LinearAlgebra/Span/Basic.lean`, beside `span_smul_eq_of_isUnit`, at a
-  cleanup round or with a consumer outside `Grade/Short.lean`. And `starGrade_smul` (Short's) goes
-  beside `starGrade` in `Grade/Stars.lean`, with the next commit that edits that file.
+  cleanup round or with a consumer outside `Grade/Short.lean`. (`starGrade_smul` moved beside
+  `starGrade` in `Grade/Stars.lean` with 42i's stars-three, re-proved by the one-scalar
+  `Submodule.span_smul_eq_of_isUnit`, so `span_range_smul_eq` keeps its one consumer.)
 - **Status:** open (mirror-candidate; 42h's deferral, `notes/Phase42-design.md` §3).
 
 ### [open] The kernel argument at an additive core is proved twice, inline at `d = 3` and in `Pencil/Grade/`

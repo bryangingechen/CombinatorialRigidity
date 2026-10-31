@@ -57,6 +57,7 @@ public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Realization
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Short
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Stable
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Stars
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.StarsThree
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.TheoremS
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Witness
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.ZeroHeights
