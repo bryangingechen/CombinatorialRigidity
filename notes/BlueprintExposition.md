@@ -1806,6 +1806,19 @@ paragraph break after `def:pencil-d-nondegenerate`, a reason clause in `lem:penc
 a clearer count in `lem:pencil-d-nonsimple-case`'s remark).
 **Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
 
+### `pencil-d.tex` — Phase 42e (PD-CARRIER: the setting and the flat rank in every dimension)
+
+**No new entries — judged at the sub-phase close (2026-10-30).** The source is the project's own
+(42d's write-up, slice W1); the criterion transfers as in the `pencil.tex` section. The four nodes
+of `sec:pencil-d-induction` and `sec:pencil-d-flat` are green and landed as written, in one build
+commit from the recon's spikes: nothing rerouted or decomposed. The one step where the dimension
+bites, that the one plane normal of `d = 3` gives way to the projection keeping the picture
+coordinates, is spelled out in `lem:pencil-d-condition-linear`'s proof, with its closing paragraph
+naming the change. The close's end-to-end re-read of both sections against the landed statements
+found no wording false and changed none (the Lean also holds at `d = 2`; the nodes keep the
+chapter's `d ≥ 3`).
+**Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
+
 ## Retroactive coverage
 
 - **Molecular program (Phases 17–22a): scanned 2026-06-04** — candidates folded

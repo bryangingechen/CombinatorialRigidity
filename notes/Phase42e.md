@@ -1,178 +1,90 @@
 # Phase 42e — PD-CARRIER: the setting and the flat rank in every dimension (work log)
 
-**Status:** all four nodes green, opened 2026-10-30 at the PI's word ("PD-CARRIER only
-(Recommended)", design doc §1), a sub-phase of Phase 42 and the first layer formalizing 42d's
-proof. Forward mode, the Lean under `/coordinate-phase`: the four nodes of
-`blueprint/src/chapter/pencil-d.tex` in `sec:pencil-d-induction` and `sec:pencil-d-flat`, on 42b's
-carrier, landed as `Pencil/Grade/Flat.lean` (three nodes) and `Pencil/Grade/ConditionLinear.lean`
-(one), at every `m`. Next (*Hand-off*): the 42e close, an intermediate sub-phase close.
+**Status:** ✓ closed 2026-10-30 (opened the same day at the PI's word, "PD-CARRIER only
+(Recommended)", design doc §1), a sub-phase of Phase 42, which stays in progress with no sub-phase
+open. Forward mode, the Lean under `/coordinate-phase`: the four nodes of
+`blueprint/src/chapter/pencil-d.tex` in `sec:pencil-d-induction` and `sec:pencil-d-flat` are
+green, formalized as written, their Lean at every `m` (every `d ≥ 2`), in four commits with the
+open and the close. Next (*Hand-off*): PD-STEPS's open goes to the PI.
 
 ## Current state
 
-**Next: the 42e close** (*Hand-off*). `Pencil/Grade/Flat.lean` and `Pencil/Grade/ConditionLinear.lean`
-landed together, copied as the recon spiked them: both build warning-clean, `lake lint` passes,
-`blueprint/lint.sh` and `blueprint/verify.sh` pass (checkdecls sees the new pins), and the four
-nodes carry `\lean{}` and `\leanok` on statement and proof. The `ConditionLinear` proof gained
-`\uses{lem:pencil-d-config-realization}` (its Lean calls
-`linearIndependent_pencilConfigPointGrade_of_linearIndependent_pencilPicturePoint`); no statement
-text changed, no landed Lean file was edited. The other red nodes of the chapter map to PD-STEPS,
-PD-COVERAGE, PD-REDUCTION and PD-HEAD by section in design doc §3 (*The red nodes by layer*), with
-no letter minted.
+**Closed.** Formalizing 42d's proof began here, with Phase 40b–40d in `Pᵈ`: the setting
+(coplanarity is linear in the heights) and the flat rank with its two corollaries. File map, one
+line each:
+- `Grade/ConditionLinear.lean` (imports `Grade.Configuration`): `gradeSigma` (`σ_v`),
+  `gradeSigmaPerp` (`n^i`) and their lemmas, `dotPerp_range_gradeSigma` (`Π_v^⊥ = span {n^i}`),
+  `pencilConfigPointGrade_eq_gradeSigma_iff`, and over an admissible picture
+  `Graph.IsAdmissiblePicture.span_pencilConfigPointGrade_closedNbhd_eq_range`,
+  `…finrank_span_pencilConfigPointGrade_closedNbhd_le_iff` and
+  `…mem_liftingSpaceGrade_iff_finrank_span_closedNbhd_le` (`lem:pencil-d-condition-linear`).
+- `Grade/Flat.lean` (imports `Grade.ZeroHeights`, `MainComponent.Bridge`):
+  `Graph.finrank_span_rigidityRows_ofNormals_flat_grade`, `…_flat_le_grade` and
+  `…_flat_eq_iff_grade` (`thm:pencil-d-flat-rank`);
+  `Graph.finrank_liftingSpace_eq_three_add_deficiency_iff` and
+  `Graph.x0AttainsGrade_of_finrank_liftingSpace_le` (`cor:pencil-d-flat-attains`);
+  `Graph.x0AttainsGrade_of_deficiency_two_eq` (`cor:pencil-d-jj-flat`).
+
+`#print axioms` at the close (`lake lean`, a scratch file) on the twelve pinned names:
+`[propext, Classical.choice, Quot.sound]`, and `[propext, Quot.sound]` for `gradeSigmaPerp`.
+The close re-read both sections end to end against the landed statements and found no wording
+false: the nodes state `d ≥ 3`, the chapter's notation from `sec:pencil-d-induction` on, and the
+Lean is stronger, holding at `d = 2` too; no statement changed.
 
 ## Architectural choices made up front
 
 - **Scope** (the PI's, verbatim in design doc §1): PD-CARRIER only, the four nodes above.
-  `rem:pencil-d-flat-class` is a remark, which the dependency graph does not draw (plastexdepgraph
-  draws definitions, lemmas, propositions, theorems and corollaries; no remark in the blueprint
-  carries a `\lean` pin), so it is not a target. Its claim checks (below), and nothing uses it.
+  `rem:pencil-d-flat-class` is a remark, which the dependency graph does not draw, so it was no
+  target. Its claim checks, and nothing uses it.
 - **Encoding** as 42b and 42c: `m = d − 2` heights at grade `k = m + 1`, `D = screwDim (m + 1)`,
   `def_d` is `G.deficiency (m + 2)` and `def_2` is `G.deficiency 2` (`notes/Phase42b.md`,
   `notes/Phase42c.md` *Architectural choices*). Attaining is `Graph.X0AttainsGrade K m`.
 
-## Consistency read at the open
-
-The red-node consistency gate (`PHASE-BOUNDARIES.md`): each node read in full against the landed
-carrier (42b's and 42c's green nodes, `Pencil/Grade/`) and the `main-component.tex` node it
-generalizes. Every Lean name below was opened at its declaration. No proof fails; no `\uses`
-reaches a superseded node (`blueprint/lint.sh`, check 3).
-- **`lem:pencil-d-condition-linear`** generalizes `lem:pencil-condition-linear` (40b), whose Lean
-  is `Graph.IsAdmissiblePicture.mem_liftingSpace_iff_coplanar` and `.exists_smul_eq_interpolant`
-  (`MainComponent/Configuration.lean`), through one normal (`pencilNormalOfPicture`,
-  `finrank_toDualPerp_triple_eq`, both at `K⁴`). The proof routes through its claim: admissibility
-  makes `π` (first, second, last coordinate) onto `K³` on the span `S`, so `dim S ≤ 3` makes `π`
-  an isomorphism whose inverse `σ` gives the affine functions; conversely `σ_v` is injective with
-  image `S`; the `n^i` are independent, and `dim Π_v^⊥ = d − 2`. The one-normal route does not
-  generalize, as the proof says. Grade Lean already landed: `π` is the private `pictureProj`
-  (`Grade/Configuration.lean`); the "if" half's bound is
-  `finrank_span_pencilConfigPointGrade_closedNbhd_le`, whose map
-  `c ↦ gradeMk (c 0) (c 1) (h_i ⬝ᵥ c) (c 2)` is `σ_v`; three independent points are
-  `linearIndependent_pencilConfigPointGrade_of_linearIndependent_pencilPicturePoint`; `finrank_dotPerp`
-  gives `Π_v^⊥`. Carrier: Lean's `Graph.liftingSpace` holds heights vanishing off `V(G)`, so the
-  "in particular" takes that hypothesis per height, as the `d = 3` Lean's `hs` does; the chapter's
-  heights live on `V(G)`, so no statement changes. Its consumers, `thm:pencil-d-open-ear-four` and
-  `lem:pencil-d-planes-meet` (PD-STEPS), read `σ_a` and `σ_b` explicitly.
-- **`thm:pencil-d-flat-rank`** generalizes `thm:pencil-flat-rank` (40c FLAT):
-  `Graph.finrank_span_rigidityRows_ofNormals_flat`, `_flat_le` and `_flat_eq_iff`
-  (`MainComponent/Flat.lean`), through the `K⁴` split `flatScrewEquiv`. The proof's first paragraph
-  composes green Lean: the rank with no height, `3|V| − dim L(q)`
-  (`Graph.finrank_span_rigidityRows_ofNormals_pencilPicturePoint`), plus `(D − 3)(|V| − 1)` for the
-  zero heights (`Graph.finrank_span_rigidityRows_ofNormals_pencilConfigPointGrade_padHeights` at
-  `m' = 0`), and the bound by `Graph.three_add_deficiency_le_finrank_liftingSpace`; the sum
-  closes. Its second paragraph, the `d = 3` split in dimension `d` (a complement of `Λ²Ĥ` of
-  dimension `D − 3`), also checks, but needs no Lean. Three bridges, all holding (the recon,
-  *Decisions made*): `pencilConfigPointGrade_eq_pencilPicturePoint` at `m = 0`,
-  `padHeights m z₀ = 0` for `z₀ : α × Fin 0 → K`, and frameworks at `k := 0 + 1` against `k := 1`
-  (the `_one` lemma's docstring records `rfl` exhausting heartbeats at `1 + 1`).
-- **`cor:pencil-d-flat-attains`** generalizes `cor:pencil-flat-attains` (40c FLAT):
-  `Graph.finrank_liftingSpace_eq_three_add_deficiency_three_iff` and
-  `Graph.x0Attains_of_finrank_liftingSpace_le`. Its proof transcribes theirs: the exact rank (the
-  `d = 3` `_flat_eq_iff` already takes any deficiency index), the lower bound with
-  `Graph.Connected.deficiency_le_deficiency_of_le` at `2 ≤ m + 2`, then a main picture, the zero
-  heights in `L(q)^{d−2}` and `Graph.x0AttainsGrade_of_exists` (`lem:pencil-d-x0-one-witness`).
-- **`cor:pencil-d-jj-flat`** generalizes `cor:pencil-jj-flat` (40d BRIDGE):
-  `Graph.x0Attains_of_deficiency_two_eq_three` (`MainComponent/Bridge.lean`). Its proof is Jackson
-  and Jordán's equality, planar and unchanged (`Graph.exists_isMainPicture_finrank_liftingSpace_eq`),
-  then `cor:pencil-d-flat-attains`. The remark after it gives a second route, dimension three and
-  then `Graph.X0AttainsGrade.of_le`, by `rem:pencil-d-flat-class`, whose partition count holds; the
-  node's own route is the first. Consumers: `cor:pencil-d-contract-rigid` and
-  `thm:pencil-d-coverage`, later layers.
-
 ## Lemma checklist
 
-Shorthand, exact by substitution: `hends` is
-`(hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)`, and `rk(q, z)` is the rank
-`Graph.X0AttainsGrade` reads,
-`(Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := m + 1) G ends
-(fun p => pencilConfigPointGrade q z p.1 p.2)).toBodyHinge.rigidityRows) : ℤ)`; `|V|` is
-`(V(G).ncard : ℤ)` and `finrank L(q)` is `(Module.finrank K (G.liftingSpace q) : ℤ)`. Every
-declaration is in `namespace CombinatorialRigidity.Molecular`, with `variable {K : Type*} [Field K]
-{α β : Type*} {m : ℕ}`, under `@[expose] public section`; `Graph.` names are `_root_.Graph.…`.
-
-- [x] **Pre-build recon** (this commit): the signatures below, all spiked; the three bridges hold
-  (*Decisions made*).
-- [x] `thm:pencil-d-flat-rank`, in the new `Pencil/Grade/Flat.lean` (imports `Grade.ZeroHeights`
-  and `MainComponent.Bridge`; nothing of `Grade/` imports `Flat.lean` or `Bridge.lean` today).
-  Pin `Graph.finrank_span_rigidityRows_ofNormals_flat_grade`, `…_flat_le_grade`,
-  `…_flat_eq_iff_grade`. With `[Finite α] (hG : G.Connected) {q} (hq : G.IsAdmissiblePicture q)
-  {ends} hends`, at `z = (0 : α × Fin m → K)`:
-  `_flat_grade`: `rk(q, 0) = screwDim (m + 1) * ((V(G).ncard : ℤ) - 1) + 3 - finrank L(q)`;
-  `_flat_le_grade` (adds `[Finite β]`): `rk(q, 0) ≤ screwDim (m + 1) * (|V| - 1) - G.deficiency 2`;
-  `_flat_eq_iff_grade (n : ℕ)`: `rk(q, 0) = screwDim (m + 1) * (|V| - 1) - G.deficiency n ↔
-  finrank L(q) = 3 + G.deficiency n`. Route: `…_pencilConfigPointGrade_padHeights` at `m' = 0`,
-  `z = 0 : α × Fin 0 → K`; rewrite `padHeights m 0 = 0` (`funext p; simp [padHeights]`) and the
-  normals by `pencilConfigPointGrade_eq_pencilPicturePoint` (a `funext` `have`, as the `_one`
-  lemma does); then `rw [Graph.finrank_span_rigidityRows_ofNormals_pencilPicturePoint hq hends]`
-  matches the `k := 0 + 1` term with no cast; `simp only [zero_add, screwDim_one]`, `push_cast`,
-  `ring`. The bound and the iff: `Graph.three_add_deficiency_le_finrank_liftingSpace`, `linarith`.
-- [x] `cor:pencil-d-flat-attains`, in `Grade/Flat.lean`. Pin `…_flat_eq_iff_grade` (its first
-  equivalence, at `n = m + 2`), `Graph.finrank_liftingSpace_eq_three_add_deficiency_iff`,
-  `Graph.x0AttainsGrade_of_finrank_liftingSpace_le`. The iff, with `[Finite α] [Finite β] hG hq
-  {n : ℕ} (hn : 2 ≤ n)`: `finrank L(q) = 3 + G.deficiency n ↔ finrank L(q) = 3 + G.deficiency 2 ∧
-  G.deficiency 2 = G.deficiency n`. The attaining, with `[Finite α] [Finite β] hG hq
-  (hL : finrank L(q) ≤ 3 + G.deficiency (m + 2))`: `G.X0AttainsGrade K m`. Route: the `d = 3`
-  proofs (`MainComponent/Flat.lean`) with `Graph.Connected.deficiency_le_deficiency_of_le` at
-  `2 ≤ m + 2`, then `Graph.x0AttainsGrade_of_exists hV G.endsOf hends hmain
-  (G.liftingSpaceGrade q m).zero_mem` and `_flat_grade`.
-- [x] `cor:pencil-d-jj-flat`, in `Grade/Flat.lean`. Pin `Graph.x0AttainsGrade_of_deficiency_two_eq`:
-  `[Infinite K] [Finite α] [Finite β] hG (hSimple : G.Simple)
-  (h3 : ∀ v ∈ V(G), 3 ≤ (G.closedNbhd v).ncard) (hdef : G.deficiency 2 = G.deficiency (m + 2)) :
-  G.X0AttainsGrade K m`. Route: `Graph.exists_isMainPicture_finrank_liftingSpace_eq`, then the
-  attaining corollary.
-- [x] `lem:pencil-d-condition-linear`, in the new `Pencil/Grade/ConditionLinear.lean` (imports
-  `Grade.Configuration`; `pictureProj` stays private there). Pin `gradeSigma`, `gradeSigmaPerp`,
-  `dotPerp_range_gradeSigma` (all `CombinatorialRigidity.Molecular.`),
-  `Graph.IsAdmissiblePicture.finrank_span_pencilConfigPointGrade_closedNbhd_le_iff`,
-  `…span_pencilConfigPointGrade_closedNbhd_eq_range`,
-  `…mem_liftingSpaceGrade_iff_finrank_span_closedNbhd_le` (a bare-label lead unpinned is a
-  docstring-label finding). Definitions, for `h : Fin m → Fin 3 → K`: `gradeSigma h :
-  (Fin 3 → K) →ₗ[K] (Fin (m + 1 + 2) → K)`, `c ↦ gradeMk (c 0) (c 1) (fun i => h i ⬝ᵥ c) (c 2)`
-  (`σ_v`; `gradeSigma_apply` is `rfl`); `gradeSigmaPerp h i := gradeMk (h i 0) (h i 1)
-  (-Pi.single i 1) (h i 2)` (`n^i`). Lemmas: `gradeSigma_injective`, `finrank_range_gradeSigma`
-  (`= 3`), `gradeSigmaPerp_dotProduct_gradeMk` (`= h i 0 * x + h i 1 * y - u i + h i 2 * w`),
-  `linearIndependent_gradeSigmaPerp`, `dotPerp_range_gradeSigma : dotPerp (range (gradeSigma h)) =
-  span K (Set.range (gradeSigmaPerp h))`, `pencilConfigPointGrade_eq_gradeSigma_iff q z h w :
-  pencilConfigPointGrade q z w = gradeSigma h (pencilPicturePoint q w) ↔ ∀ i, z (w, i) = h i ⬝ᵥ
-  pencilPicturePoint q w`. With `(hq : G.IsAdmissiblePicture q) (hv : v ∈ V(G))` and
-  `hh : ∀ i, ∀ w ∈ G.closedNbhd v, z (w, i) = h i ⬝ᵥ pencilPicturePoint q w`:
-  `_eq_range hq hv hh : span K (pencilConfigPointGrade q z '' G.closedNbhd v) =
-  range (gradeSigma h)`; `_le_iff hq z hv : finrank (that span) ≤ 3 ↔ ∃ h, hh`; and with
-  `(hs : ∀ i, ∀ w ∉ V(G), z (w, i) = 0)`, `_le hq hs : z ∈ G.liftingSpaceGrade q m ↔ ∀ v ∈ V(G),
-  finrank (that span) ≤ 3`. Route of the "only if": the local projection
-  `LinearMap.funLeft K K ![0, 1, Fin.last (m + 2)]` restricted to the span is onto `K³` (three
-  admissible points, `LinearIndependent.span_eq_top_of_card_eq_finrank`), so bijective
-  (`LinearMap.injective_iff_surjective_of_finrank_eq_finrank`); the height coordinates of its
-  inverse are linear forms, `h i ⬝ᵥ ·` by `LinearMap.pi_apply_eq_sum_univ`. Its proof may add
-  `\uses{lem:pencil-d-config-realization}` (an edge, not a statement change): the Lean calls
-  `linearIndependent_pencilConfigPointGrade_of_linearIndependent_pencilPicturePoint`.
-- [ ] **Close** 42e, an intermediate sub-phase close (`PHASE-BOUNDARIES.md`). Its organization
-  review weighs one duplication the new file leaves: `gradeSigma` is the inline map of
-  `finrank_span_pencilConfigPointGrade_closedNbhd_le` and its projection `pictureProj`'s, both in
-  `Grade/Configuration.lean`; folding them means moving `gradeSigma` beside `gradeMk` in
-  `Grade/Carrier.lean`, which rebuilds the `Grade/` stack.
+All four nodes are green, each pinned in its section with its Lean names; the chapter is the
+index (forward mode), and the file map is under *Current state*.
 
 ## Blockers / open questions
 
-- None. The recon settled the open's three questions (*Decisions made*).
+- None. PD-STEPS opens at the PI's word (*Hand-off*).
 
 ## Hand-off / next phase
 
-The next concrete commit is the **42e close**, an intermediate sub-phase close
-(`PHASE-BOUNDARIES.md` *When this commit closes a phase*): flip and re-thin the ROADMAP row, compress
-the §42 planning prose, sync the status surfaces, and weigh the organization review's one
-duplication, `gradeSigma` against the inline map of
-`finrank_span_pencilConfigPointGrade_closedNbhd_le` and `pictureProj` in `Grade/Configuration.lean`
-(*Lemma checklist*, last item). Folding them rebuilds the `Grade/` stack, so it is a separate
-decision. The next layer (PD-STEPS) opens at the PI's word.
+Phase 42 stays in progress with no sub-phase open. The next step is **putting PD-STEPS's open to
+the PI** (design doc §3): Phase 40e–40m's steps in `Pᵈ`, the 28 red nodes of `-cut`, `-contract`,
+`-splitoff`, `-short`, `-long` and `-ear-deficiency`, with the question §3 leaves to that open:
+whether `thm:pencil-d-splitoff` and `thm:pencil-d-open-ear-deficiency` (with
+`lem:pencil-d-polygon-ear`), which no coverage step consumes, are formalized. What 42e hands it,
+all at every `m`, so no `1 ≤ m` side condition reaches a consumer:
+- `σ_v` and `Π_v` exposed: `gradeSigma h` and its range, which `def:pencil-d-ear-data` and
+  `lem:pencil-d-planes-meet` read, with `pencilConfigPointGrade_eq_gradeSigma_iff` and
+  `…span_pencilConfigPointGrade_closedNbhd_eq_range` reading a closed neighbourhood through them.
+- `Graph.x0AttainsGrade_of_deficiency_two_eq`, the graphs with `def_2 = def_d`, which
+  `cor:pencil-d-contract-rigid` (PD-STEPS) and `thm:pencil-d-coverage` (PD-COVERAGE) consume.
+- The flat rank `…_flat_grade`. No node outside `sec:pencil-d-flat` `\uses` it; `-short` computes
+  ranks with joins as its proof's second paragraph does, in prose, which needed no Lean here.
+
+**Deferred from 42e, where it lands** (design doc §3, *Deferred to them from PD-CARRIER*;
+FRICTION): `gradeSigma` duplicates the map `finrank_span_pencilConfigPointGrade_closedNbhd_le`
+builds inline, and ConditionLinear's local projection duplicates the private `pictureProj`, both in
+`Grade/Configuration.lean`; the fold lands with the next commit that edits `Configuration.lean` or
+`Grade/Carrier.lean`. The deferrals from 42b and 42c (design doc §3) are unchanged: 42e edited no
+file they name.
 
 ## Decisions made during this phase
 
-- **The pre-build recon** (2026-10-30; spikes in `scratch/42e/`): the open's three questions.
-  (1) PD-STEPS reads `σ_v` and `Π_v` exposed: `def:pencil-d-ear-data` takes maps keeping the
-  first, second and last coordinate, and `lem:pencil-d-planes-meet` reads `σ_a`'s height forms, so
-  `σ_h` is a `def` (`gradeSigma`) and `Π_v` its `range`, beside the equivalence. (2) Every `m`, no
-  `1 ≤ m`: no proof uses `d ≥ 3`, and `m = 0` is the plane (as `Graph.X0AttainsGrade.of_le` takes
-  any `m' ≤ m`). (3) Two new `Grade/` files: the "only if" half projects locally, so `pictureProj`
-  stays private. The three bridges hold: `rw` matches `k := 0 + 1` against `k := 1` once the
-  normals are rewritten.
 - **The open** (the PI, 2026-10-30; verbatim in design doc §1): 42e opens as PD-CARRIER only; the
   other layers are mapped by section in design doc §3, no letters minted.
+- **The open's consistency read:** each proof routes through the argument its statement claims, on
+  42b's carrier. The `d = 3` one-normal route does not generalize and the projection route does;
+  Lean's `L(q)` holds heights vanishing off `V(G)`, so the "in particular" takes that hypothesis per
+  height (`hs`), as at `d = 3`, with no statement change.
+- **The pre-build recon** (spikes in `scratch/42e/`): `σ_v` is a `def` and `Π_v` its `range`, as
+  PD-STEPS reads both; every `m`, as no proof uses `d ≥ 3`; two new files, `pictureProj` private.
+  The three flat-rank bridges hold: `rw` matches `k := 0 + 1` against `k := 1` once the normals
+  are rewritten.
+- **The build** (one commit, the recon's spikes copied): the condition-linear proof gained
+  `\uses{lem:pencil-d-config-realization}`, an edge, not a statement change.
+- **The close:** the duplication deferred (the coordinator's call: the fold rebuilds the `Grade/`
+  stack). No `main_results` row: an intermediate close adds none (design doc §3, PD-HEAD).

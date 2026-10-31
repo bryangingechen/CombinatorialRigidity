@@ -110,6 +110,25 @@ moment you resolve the entry) is what makes the sweep a pure
 to be re-derived by re-reading entries later.
 
 ## Open
+### [open] `gradeSigma` and the picture projection are each defined twice in `Pencil/Grade/`
+- **Where it bit:** Phase 42e, `lem:pencil-d-condition-linear`
+  (`Pencil/Grade/ConditionLinear.lean`). Its map `σ_h`, `gradeSigma h : (Fin 3 → K) →ₗ[K]
+  (Fin (m + 1 + 2) → K)`, `c ↦ gradeMk (c 0) (c 1) (fun i => h i ⬝ᵥ c) (c 2)`, is the linear map
+  `finrank_span_pencilConfigPointGrade_closedNbhd_le` builds inline as a `let`
+  (`Grade/Configuration.lean`, 42b). The "only if" half projects to the coordinates `0`, `1` and
+  the last by a local `LinearMap.funLeft K K ![0, 1, Fin.last (m + 2)]`, which is
+  `Configuration.lean`'s `private def pictureProj` (with
+  `pictureProj_pencilConfigPointGrade`) under another name.
+- **Friction:** none at the build: the 42e recon kept the new file additive, since a declaration
+  added to `Configuration.lean` or `Carrier.lean` rebuilds every `Grade/` file after it. The cost
+  is two definitions of each map and two proofs of linearity.
+- **Proposed fix:** `gradeSigma` and `gradeSigma_apply` beside `gradeMk` in `Grade/Carrier.lean`;
+  `finrank_span_pencilConfigPointGrade_closedNbhd_le` builds its map as `gradeSigma h`;
+  `pictureProj` public, and ConditionLinear's `π` replaced by it. With the next commit that edits
+  `Grade/Configuration.lean` or `Grade/Carrier.lean` (design doc `notes/Phase42-design.md` §3,
+  *Deferred to them from PD-CARRIER*), not alone.
+- **Status:** open.
+
 ### [open] `check-phase-note.py --selftest` fails when no phase note is in progress
 - **Where it bit:** Phase 42d's close (project-organization review). `notes/Phase23d.md`'s
   `**Status:**` header still read "in progress" two phases after Phase 23 closed, so `--all`

@@ -1,13 +1,13 @@
 # Phase 42d — PD-ALL: an informal proof in every `Pᵈ`, all three conjuncts (work log)
 
 **Status:** ✓ closed 2026-10-30 (opened the same day with the PI), a research sub-phase of Phase
-42, which stays in progress with 42e. Its target is met: the sections of
+42, which stays in progress. Its target is met: the sections of
 `blueprint/src/chapter/pencil-d.tex` from `sec:pencil-d-induction` to `sec:pencil-d-generic`, 65
 red nodes and a remark, give an informal proof at every `d ≥ 3` of the conditioned pair's three conjuncts (bare,
 adjacent-distinct and generic; headline `cor:pencil-d-conditioned-pair`), checked by two fresh
 reads and the close's end-to-end re-read. CERT and NONDEG closed; COUNT's Lean landed (11 green
 nodes). 38 commits with the open and the close. **Next** (*Hand-off*): formalizing the proof,
-begun as 42e (PD-CARRIER, `notes/Phase42e.md`). Plan and the PI's decisions:
+begun as 42e (PD-CARRIER, closed 2026-10-30, `notes/Phase42e.md`). Plan and the PI's decisions:
 `notes/Phase42-design.md` (§1, §3 PD-ALL).
 
 ## Current state
@@ -101,13 +101,13 @@ FRICTION's entry).
 
 ## Hand-off / next phase
 
-Phase 42 continues with **42e** (PD-CARRIER, `notes/Phase42e.md`), opened 2026-10-30 at the PI's
-word: formalizing 42d's proof begins with its setting and the flat rank, the four red nodes of
-`sec:pencil-d-induction` and `sec:pencil-d-flat`. PD-STEPS, PD-COVERAGE, PD-REDUCTION and PD-HEAD
-follow, each at the PI's word, with no letter minted until it opens (design doc §3, which maps the
-other red nodes to them by section and carries what PD-RECON, PD-STATE and PD-STABLE handed
-on). What 42d leaves them: the
-red nodes of `pencil-d.tex` from `sec:pencil-d-induction` on are the dep-graph, leaf-first, each
+Phase 42 continued with **42e** (PD-CARRIER, `notes/Phase42e.md`), opened and closed 2026-10-30 at
+the PI's word: formalizing 42d's proof began with its setting and the flat rank, the four nodes
+of `sec:pencil-d-induction` and `sec:pencil-d-flat`, now green. PD-STEPS, PD-COVERAGE,
+PD-REDUCTION and PD-HEAD follow, each at the PI's word, with no letter minted until it opens
+(design doc §3, which maps the other red nodes to them by section and carries what PD-RECON,
+PD-STATE and PD-STABLE handed on). What 42d leaves them: the red nodes of `pencil-d.tex` from
+`sec:pencil-d-induction` on are the dep-graph, leaf-first, each
 naming the `main-component.tex` node it generalizes and where the `d = 3` proof used its
 dimension; COUNT-C is `lem:pencil-d-chain-count`; the coverage's Lean needs data-returning forms
 of `lem:pencil-x0-cut-reduces`, `-cycle-reduces` and `-planar-rigid-reduces` (design doc §3

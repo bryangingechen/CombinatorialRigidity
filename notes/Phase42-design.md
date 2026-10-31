@@ -1,10 +1,10 @@
 # Phase 42 — PENCIL-D: design (cross-phase plan and recon)
 
-**Status:** opened 2026-10-29 with the PI, sub-lettered, research first; **42e** (PD-CARRIER,
-`notes/Phase42e.md`) **open since 2026-10-30** at the PI's word (§1): formalizing 42d's proof
-begins with its setting and the flat rank, four red nodes of `pencil-d.tex`; PD-STEPS,
-PD-COVERAGE, PD-REDUCTION and PD-HEAD follow (§3, which maps the other red nodes to them by
-section), each at the PI's word.
+**Status:** opened 2026-10-29 with the PI, sub-lettered, research first; no sub-phase open.
+**42e** (PD-CARRIER, `notes/Phase42e.md`) **opened and closed 2026-10-30** at the PI's word (§1):
+formalizing 42d's proof began with its setting and the flat rank, four nodes of `pencil-d.tex`,
+all green (verdict §3). PD-STEPS is next, then PD-COVERAGE, PD-REDUCTION and PD-HEAD (§3, which
+maps the remaining red nodes to them by section), each at the PI's word.
 **42a** (PD-RECON, `notes/Phase42a.md`) **closed 2026-10-30**: the step table (§2.1), the thresholds
 and the content `def[3] ≥ C(d,2) − 2` (§2.5), T1–T5 (§2.4), ONE-CLASS (§2.3, Result 27) and
 SHORT-CORE's attack track (§2.3; closed 2026-10-30, `notes/attacks/short-core/state.md`): the
@@ -38,7 +38,8 @@ through Phase 39's reduction.
 Status: `d = 2, 3` are proved and formalized (Phases 40a, 40). Every `d` with `def_3 ≤ 1` is
 `Strata.md` Result 17, and every `d` at `def_3 ≤ 3` follows from Result 17's proof with the sharp
 deficiency lemma, proved and formalized (42c, `thm:pencil-d-deficiency-two-le-three`). Every `d` is
-proved on paper (42d, `cor:pencil-d-conditioned-pair`), not yet formalized. `d = 4, 5, 6` are
+proved on paper (42d, `cor:pencil-d-conditioned-pair`); formalizing it began with the setting and
+the flat rank (42e). `d = 4, 5, 6` are
 measured (Results 11, 19), not found below target under
 the `--d4` population's cap (`n ≤ 12`, 36 simple graphs) and 8 graphs past it. Where the
 conjecture has content, that is 47 cells on 18 graphs, six of them cycles (§2.5).
@@ -611,16 +612,16 @@ leaves out each graph's top cell, `d = 2 + def[3]`, which also carries content.
   COUNT-A and COUNT-B formalized the counting at every `D` (11 green nodes, `sec:pencil-d-deficiency`).
   `thm:pencil-d-splitoff` and `thm:pencil-d-open-ear-deficiency` stay standalone (the PI). Two fresh
   reads checked the coverage and W10's generic conjunct; the close's end-to-end re-read found no gap.
-- **PD-CARRIER** (**42e**, opened 2026-10-30 at the PI's word, §1; `notes/Phase42e.md`): Phase
-  40b–40d in `Pᵈ`, the first layer formalizing PD-ALL's write-up. Its targets are the four red
-  nodes of `pencil-d.tex` §`sec:pencil-d-induction` and §`sec:pencil-d-flat`, which are
-  authoritative: `lem:pencil-d-condition-linear` (40b's `lem:pencil-condition-linear`),
-  `thm:pencil-d-flat-rank` and `cor:pencil-d-flat-attains` (40c FLAT) and `cor:pencil-d-jj-flat`
-  (40d BRIDGE). The open's red-node consistency read found each proof routing through the
-  argument its statement claims, on 42b's carrier; its findings, and the Lean each node
-  generalizes, are in the phase note. `rem:pencil-d-flat-class` is a remark, not a dep-graph node,
-  so not a target. The deferrals listed under PD-STEPS and PD-COVERAGE below, from PD-STATE and
-  PD-STABLE, bind it too wherever it edits a file they name.
+- **PD-CARRIER** (**42e**, opened and **closed 2026-10-30** at the PI's word, §1;
+  `notes/Phase42e.md`): Phase 40b–40d in `Pᵈ`, the first layer formalizing PD-ALL's write-up. The
+  four nodes of `pencil-d.tex` §`sec:pencil-d-induction` and §`sec:pencil-d-flat` are green,
+  formalized as written: `lem:pencil-d-condition-linear` (`Pencil/Grade/ConditionLinear.lean`) and
+  `thm:pencil-d-flat-rank`, `cor:pencil-d-flat-attains`, `cor:pencil-d-jj-flat`
+  (`Grade/Flat.lean`). Verdicts: the Lean holds at every `m`, so at every `d ≥ 2`, since no proof
+  uses `d ≥ 3` (the nodes keep the chapter's `d ≥ 3`); `σ_v` is a `def` (`gradeSigma`) and `Π_v` its
+  range, as PD-STEPS reads both (`def:pencil-d-ear-data`, `lem:pencil-d-planes-meet`); the flat rank
+  is the plane rank plus the zero heights' (`padHeights` at no height). It edited no file a deferral
+  below names. `rem:pencil-d-flat-class` is a remark, not a dep-graph node, so it was no target.
 - **PD-STEPS**, **PD-COVERAGE**: Phase 40e–40m in `Pᵈ`, on R2's steps (§1), formalizing PD-ALL's
   write-up after PD-CARRIER.
   **Handed on from PD-RECON** (42a's close; SHORT-CORE's workbook S56 has the detail):
@@ -659,6 +660,13 @@ leaves out each graph's top cell, `d = 2 + def[3]`, which also carries content.
   `normalsJoin`, and of `BodyHingeFramework.map` and the zero-hinge motion lemmas to
   `RigidityMatrix/Basic.lean` and `GenericityDevice.lean`; and FRICTION's open `contragredientEquiv`
   in `Meet.lean`, which `Grade/Collineation.lean`'s inline contragredient would then call.
+  **Deferred to them from PD-CARRIER**, with the next commit that edits `Grade/Configuration.lean`
+  or `Grade/Carrier.lean` (alone, the fold rebuilds the `Grade/` stack): FRICTION's duplication of
+  `gradeSigma` (`Grade/ConditionLinear.lean`), the map that
+  `finrank_span_pencilConfigPointGrade_closedNbhd_le` builds inline in `Configuration.lean`, and of
+  that file's private `pictureProj`, which ConditionLinear's "only if" rebuilds as a local
+  `LinearMap.funLeft`. The fold: `gradeSigma` beside `gradeMk` in `Carrier.lean`, the inline map
+  restated as it, `pictureProj` public.
 - **PD-REDUCTION**, **PD-HEAD**: Phase 39's reduction in `Pᵈ`; the headline `PencilPair`, and the
   flag strata as corollaries. Their informal proofs are 42d's `sec:pencil-d-reduction` and, for
   the generic conjunct, `sec:pencil-d-nondegenerate` to `sec:pencil-d-generic`. **At Phase 42's close**, Tier 0 joins `formalization.yaml`'s
@@ -667,10 +675,11 @@ leaves out each graph's top cell, `d = 2 + def[3]`, which also carries content.
   added no row, as Phase 40's sub-phases did not.
 
 **The red nodes by layer** (42e's open, by section of `pencil-d.tex`; no letters minted). From
-`sec:pencil-d-induction` on the chapter has 65 dep-graph nodes, all red; the count of 66 put to the
-PI at 42e's open (§1) included `rem:pencil-d-flat-class`, a remark, which the dependency graph
-does not draw (it draws definitions, lemmas, propositions, theorems and corollaries).
-- PD-CARRIER (42e): `-induction` (1) and `-flat` (3); 4.
+`sec:pencil-d-induction` on the chapter has 65 dep-graph nodes, all red at the open and 61 since
+42e's close; the count of 66 put to the PI at 42e's open (§1) included `rem:pencil-d-flat-class`,
+a remark, which the dependency graph does not draw (it draws definitions, lemmas, propositions,
+theorems and corollaries).
+- PD-CARRIER (42e, closed, all green): `-induction` (1) and `-flat` (3); 4.
 - PD-STEPS: `-cut` (3), `-contract` (3), `-splitoff` (1), `-short` (12), `-long` (7) and
   `-ear-deficiency` (2); 28. `thm:pencil-d-splitoff` and `thm:pencil-d-open-ear-deficiency`, with
   `lem:pencil-d-polygon-ear` (used only by the latter), have no consumer in the coverage (the PI
