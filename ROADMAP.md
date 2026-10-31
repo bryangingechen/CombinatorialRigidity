@@ -1314,7 +1314,8 @@ coverage does not use, the split-off and the open ear that assumes `def_d(G[V₁
 leaving PD-STEPS 25 nodes. Its second sub-phase, **42g** (opened 2026-10-30 at the PI's word,
 `notes/Phase42g.md`), takes the cycle and the open ears with at least `D − 1` interior bodies:
 seven nodes of `pencil-d.tex` on CERT's closed polygons with independent joins, whose proofs a read
-at the open found sound on the carrier. A recon of their Lean signatures comes first; the short
+at the open found sound on the carrier. A recon then pinned the seven Lean statements, each
+checked in a complete scratch proof, for two new files: two builds and the close remain. The short
 ears open later at the PI's word, as each later layer does. The targets are three tiers:
 every `d` at `def_3 ≤ 3` (proved and formalized, 42c), a `P⁴` theorem (every `d` at `def_3 ≤ 7`,
 by the sharp lemma), and every `d` (proved on paper, 42d).
