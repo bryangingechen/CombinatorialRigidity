@@ -8,8 +8,9 @@ Phase 42d's proof in every dimension began as 42e (PD-CARRIER, closed 2026-10-30
 `notes/Phase42e.md`) and continued as 42f (PD-STEPS's cut-vertex, bridge and contraction steps,
 closed 2026-10-30, `notes/Phase42f.md`), 42g (its cycle and long-ear steps, closed 2026-10-31,
 `notes/Phase42g.md`), 42h (the short ears with four or more interior bodies, closed 2026-10-31,
-`notes/Phase42h.md`) and 42i (the three-body short ear, opened 2026-10-31, `notes/Phase42i.md`;
-design doc §3). No Lean, no blueprint here. Evidence drivers:
+`notes/Phase42h.md`) and 42i (the three-body short ear, closed 2026-10-31, `notes/Phase42i.md`),
+which completes PD-STEPS; PD-COVERAGE opens next, at the PI's word (design doc §3). No Lean, no
+blueprint here. Evidence drivers:
 `notes/scripts/strata/strata.py` (exact ℚ, seeded) and `oneclass.py` beside it. Editing
 discipline as for phase notes (≤ 8-line entries). `HARNESS.md` *Evidence* and *Reproducibility*
 bind this work; it is not an attack track.

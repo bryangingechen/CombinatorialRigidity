@@ -176,7 +176,8 @@ to be re-derived by re-reading entries later.
   `simpa using Finset.card_le_two`).
 - **Proposed fix:** state the insertion once, for the ear of `G″` with `n + 2` interior bodies, and
   call it from both steps, at a cleanup round; only `of_openEar_four`'s proof changes.
-- **Status:** open (42i; a cleanup-round fold, `notes/Phase42i.md` *Hand-off*).
+- **Status:** open (42i's deferral, a cleanup-round fold; tracked under PD-STEPS,
+  `notes/Phase42-design.md` §3).
 
 ### [open] `complementScrew` sits in `Pencil/Grade/Short.lean`, not `PanelLayer.lean`
 - **Where it bit:** Phase 42h, `Pencil/Grade/Short.lean`: `complementScrew K k`, the complement

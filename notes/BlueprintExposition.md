@@ -1870,6 +1870,24 @@ at general points of the ear where stars-four gives "whenever it contains both s
 also holds at `d = 2`; the nodes keep the chapter's `d ≥ 3`).
 **Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
 
+### `pencil-d.tex` — Phase 42i (PD-STEPS: open ears with three interior bodies in dimensions four to six)
+
+**No new entries — judged at the sub-phase close (2026-10-31).** The source is the project's own
+(42d's write-up of the SHORT-CORE workbook, cited in TeX comments); the criterion transfers as in
+the `pencil.tex` section. The four `-short-three` nodes of `sec:pencil-d-short` are green, in five
+build commits from the recon's pins, and no node decomposed. The recon's finding, that 42h's
+factoring took the three-body condition at every base datum where the chapter proves it only at
+its first stage's, is project-side: the chapter's proof already argues at those base data, and the
+Lean's generalized factoring follows it. One node changed at the PI's word, not for difficulty:
+stars-three's statement and proof follow its Lean's route on forms, as stars-four's do, which
+drops a step finding four independent points and its hypotheses; it is written out in full. The
+route differences left (the theorem's common member of the ends' neighbourhoods for its component
+and path step, planes-meet's fixed inverse for the functionals `λ`, glued-ends without the merged
+deficiency) are a matter of presentation, tracked for the cleanup after Phase 42
+(`notes/Cleanup42.md`), not a compressed step. The close's end-to-end re-read against the landed
+statements found no wording false and changed none.
+**Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
+
 ## Retroactive coverage
 
 - **Molecular program (Phases 17–22a): scanned 2026-06-04** — candidates folded

@@ -180,7 +180,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (RECONCILE 3/3: the Lean outside the phase's footprint) | the Lean's dead code, signatures, docstrings and the pebble game's search, a non-vacuity witness per main result, and the blueprint pins they move (no main result's statement changes) | ✓ Complete — dead code deleted, unneeded hypotheses dropped and the blueprint statements they reached restated, the search re-proved, the docstrings checked and a non-vacuity witness per main result outside the next phase's rows, no main result's statement changed (see `notes/Reconcile-lean-cleanup.md`; plan `notes/Reconcile.md`; round manual: `CLEANUP.md`) |
 | ⋮ Toolchain bump to Lean v4.36.0-rc1 (maintenance, cross-phase) | `lean-toolchain`, `lake-manifest.json`, `lakefile.toml` (+ renames, imports and one-line fixes in 39 Lean files) | ✓ Complete — v4.34.0-rc2 → v4.36.0-rc1, mathlib → `930ae14`, `Matroid` → `8ece630`; every gate green, all 19 main results' axioms unchanged; pushed 2026-10-25, CI green at `4c892cb6` (see `notes/Bump-v4.36.0-rc1.md`; record `notes/ToolchainBumps.md`) |
 | 41. The panel-hinge carrier and its graph (post-program) — RECONCILE-FORMAL | `Molecular/` (structural edit; sub-lettered, 41a–41e) | ✓ Complete — each hinge at its own edge's ends, and the RECONCILE program closed (see `notes/Phase41e.md`; plan `notes/Phase41-design.md`) |
-| 42. The pencil realization theorem in every dimension (post-program) — PENCIL-D | research first, then `Molecular/`, `pencil-d.tex` (sub-lettered, 42a–42i) | In progress — 42a ✓ PD-RECON, 42b ✓ PD-STATE, 42c ✓ PD-STABLE, 42d ✓ PD-ALL, 42e ✓ PD-CARRIER, 42f ✓ PD-STEPS's cut, bridges and contraction, 42g ✓ PD-STEPS's cycles and long ears, 42h ✓ PD-STEPS's short ears with four or more interior bodies; 42i PD-STEPS's three-body ear open (see `notes/Phase42i.md`; plan `notes/Phase42-design.md`) |
+| 42. The pencil realization theorem in every dimension (post-program) — PENCIL-D | research first, then `Molecular/`, `pencil-d.tex` (sub-lettered, 42a–42i) | In progress — 42a ✓ PD-RECON, 42b ✓ PD-STATE, 42c ✓ PD-STABLE, 42d ✓ PD-ALL, 42e ✓ PD-CARRIER, 42f ✓ PD-STEPS's cut, bridges and contraction, 42g ✓ PD-STEPS's cycles and long ears, 42h ✓ PD-STEPS's short ears with four or more interior bodies, 42i ✓ PD-STEPS's three-body ear; PD-COVERAGE opens at the PI's word (see `notes/Phase42i.md`; plan `notes/Phase42-design.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1323,16 +1323,16 @@ ears with four or more interior bodies: eight nodes of `pencil-d.tex` (SHORT-COR
 the tools both halves share), formalized, their Lean at every `d ≥ 2` (`Grade/Stars.lean`, the linear
 algebra; `Grade/EarData.lean`, the ear data; `Grade/Short.lean`, the step). At the PI's word one of
 their statements is worded on linear forms and one proof follows its Lean. At the PI's word
-**42i** (opened 2026-10-31, `notes/Phase42i.md`) takes the three-body ear at `d = 4` to `6`, four
-nodes that build on these, as the chapter states them; the last of PD-STEPS. A read at the open
-found their proofs sound. The recon of their Lean on 42h's found that 42h's step cannot take the
-three-body condition, which the chapter proves only at general base data and for the relative
-screws of `G[V₁]`. It pinned a generalization of the step that takes the condition only there, and
-five or six builds. All four nodes are now formalized, one of them restated to its Lean at the PI's
-word; 42i's close is next. The layers after PD-STEPS open at the PI's word, as each
-before them did. The targets are three tiers:
-every `d` at `def_3 ≤ 3` (proved and formalized, 42c), a `P⁴` theorem (every `d` at `def_3 ≤ 7`,
-by the sharp lemma), and every `d` (proved on paper, 42d).
+**42i** (opened and closed 2026-10-31, `notes/Phase42i.md`) took the three-body ear at `d = 4` to
+`6`, the last of PD-STEPS: four nodes of `pencil-d.tex` that build on these, formalized
+(`Grade/StarsThree.lean`, `Grade/PlanesMeet.lean`, `Grade/GluedEnds.lean`,
+`Grade/ShortThree.lean`). Its recon found that 42h's step cannot take the three-body condition,
+which the chapter proves only at general base data and for the relative screws of `G[V₁]`, so the
+step gained a generalization that takes the condition only there. At the PI's word one of the
+four statements was restated to its Lean. PD-STEPS is complete. The layers after it, PD-COVERAGE
+(the coverage, four nodes) first, open at the PI's word, as each before them did. The targets are
+three tiers: every `d` at `def_3 ≤ 3` (proved and formalized, 42c), a `P⁴` theorem (every `d` at
+`def_3 ≤ 7`, by the sharp lemma), and every `d` (proved on paper, 42d).
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 
