@@ -230,13 +230,13 @@ valid. The cleanup chooses one per `open` row, with the PI.
   with `lem:pencil-lifting-planes-dim`). The Lean takes every number of heights, not only `d ≥ 3`.
   *Remedies:* keep both, or the prose to the Lean (the proof's `\uses` then drops
   `def:deficiency-merged`).
-- **R-17** · `lem:pencil-d-chain-count` (`Graph.IsChain.partitionDef_induce_le`, 42j recon, to land
-  in `Grade/Chains.lean`) · **open**.
+- **R-17** · `lem:pencil-d-chain-count` (`Graph.IsChain.partitionDef_induce_le`,
+  `Grade/Chains.lean`, 42j, landed) · **open**.
   *Chapter:* the segments (the chains and the edges joining two branch bodies) partition `E(G)`,
   each body of degree two interior to exactly one, so `|E(G)| = Σ L_j` and
   `|V(G)| = |B| + Σ (L_j − 1)`; the branch bodies' degrees sum to `2e`, so `3|B| ≤ 2e`; then
   `s_D(V₁) = Σ_{j≠i} L_j − D(e − |B|) ≤ −(ℓ + 1)`.
-  *Lean (spiked complete, `scratch/42j/Chains.lean`):* no edge segments. The interior bodies of the
+  *Lean (landed, the recon's spike):* no edge segments. The interior bodies of the
   chains are the classes: two chains sharing an interior body have the same interior bodies
   (`Graph.IsChain.range_subset_of_mem`, walking along bodies of degree two), and every body of
   degree two lies on one (`lem:pencil-x0-chain-exists`). The edges at the interior bodies of a chain

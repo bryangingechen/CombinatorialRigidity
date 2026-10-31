@@ -9,8 +9,9 @@ Phase 42d's proof in every dimension began as 42e (PD-CARRIER, closed 2026-10-30
 closed 2026-10-30, `notes/Phase42f.md`), 42g (its cycle and long-ear steps, closed 2026-10-31,
 `notes/Phase42g.md`), 42h (the short ears with four or more interior bodies, closed 2026-10-31,
 `notes/Phase42h.md`) and 42i (the three-body short ear, closed 2026-10-31, `notes/Phase42i.md`),
-which completes PD-STEPS, and then as 42j (PD-COVERAGE, the coverage, opened 2026-10-31,
-`notes/Phase42j.md`; design doc §3). No Lean, no blueprint here. Evidence drivers:
+which completes PD-STEPS, and 42j (PD-COVERAGE, the coverage, closed 2026-10-31,
+`notes/Phase42j.md`), which completes the induction; PD-REDUCTION opens next, at the PI's word
+(design doc §3). No Lean, no blueprint here. Evidence drivers:
 `notes/scripts/strata/strata.py` (exact ℚ, seeded) and `oneclass.py` beside it. Editing
 discipline as for phase notes (≤ 8-line entries). `HARNESS.md` *Evidence* and *Reproducibility*
 bind this work; it is not an attack track.

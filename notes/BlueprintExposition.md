@@ -1888,6 +1888,23 @@ deficiency) are a matter of presentation, tracked for the cleanup after Phase 42
 statements found no wording false and changed none.
 **Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
 
+### `pencil-d.tex` — Phase 42j (PD-COVERAGE: the coverage in every dimension)
+
+**No new entries — judged at the sub-phase close (2026-10-31).** The source is the project's own
+(42d's write-up of the SHORT-CORE workbook's S53, cited in TeX comments); the criterion transfers
+as in the `pencil.tex` section. The four nodes of `sec:pencil-d-chains` and
+`sec:pencil-d-coverage` are green, in three build commits from the recon's spikes, and no node
+decomposed or rerouted. The recon's findings are project-side: Phase 40's reductions now return
+their data, which the coverage's proof already takes from their proofs, and the ear steps take a
+chain's fields. The one route difference left, the chain count's Lean counting the chains'
+interior bodies against the handshake bound where the chapter counts segments, is a matter of
+presentation, tracked for the cleanup after Phase 42 (`notes/Cleanup42.md` R-17), not a compressed
+step; the chapter's segment count is written out in full. The close's end-to-end re-read against
+the landed statements found no wording false and changed none (the chain count's Lean drops
+`d ≥ 3` and `ℓ ≥ 1`, which its other hypotheses force, and chain-or-core's drops `ℓ ≥ 1`; the
+nodes keep the chapter's hypotheses).
+**Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
+
 ## Retroactive coverage
 
 - **Molecular program (Phases 17–22a): scanned 2026-06-04** — candidates folded

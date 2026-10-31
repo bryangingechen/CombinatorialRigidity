@@ -323,6 +323,8 @@ to be re-derived by re-reading entries later.
   rebuilds nearly every module. COUNT-B, which needs `6 ≤ bodyBarDim n` from `3 ≤ n`, is its
   fourth site: a `private six_le_bodyBarDim` in `Pencil/Grade/TheoremS.lean`, not landed in
   `BodyBar/Framework.lean` for the same rebuild cost. The fix replaces it with `bodyBarDim_mono`.
+  The fifth site is 42j's private `exists_chainBound` (`Pencil/Grade/Coverage.lean`), which
+  unfolds it for `12 ≤ bodyBarDim (m + 2)` at `m ≥ 3` (found at 42j's close).
 - **Status:** open.
 
 ### [idiom] `Set.nonempty_of_ncard_ne_zero (by omega)` against `V(G.induce Y).Nonempty` needs `(s := Y)`
