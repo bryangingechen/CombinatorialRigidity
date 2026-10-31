@@ -1325,9 +1325,10 @@ algebra; `Grade/EarData.lean`, the ear data; `Grade/Short.lean`, the step). At t
 their statements is worded on linear forms and one proof follows its Lean. At the PI's word
 **42i** (opened 2026-10-31, `notes/Phase42i.md`) takes the three-body ear at `d = 4` to `6`, four
 nodes that build on these, as the chapter states them; the last of PD-STEPS. A read at the open
-found their proofs sound, and a recon of their Lean on 42h's comes first. It asks first whether
-42h's step can take the three-body condition, which the chapter proves only at general base data
-and for the relative screws of `G[V₁]`. The layers after PD-STEPS open at the PI's word, as each
+found their proofs sound. The recon of their Lean on 42h's found that 42h's step cannot take the
+three-body condition, which the chapter proves only at general base data and for the relative
+screws of `G[V₁]`. It pinned a generalization of the step that takes the condition only there, and
+five or six builds. The layers after PD-STEPS open at the PI's word, as each
 before them did. The targets are three tiers:
 every `d` at `def_3 ≤ 3` (proved and formalized, 42c), a `P⁴` theorem (every `d` at `def_3 ≤ 7`,
 by the sharp lemma), and every `d` (proved on paper, 42d).

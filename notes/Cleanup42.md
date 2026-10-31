@@ -167,6 +167,42 @@ valid. The cleanup chooses one per `open` row, with the PI.
   scale invariance), then `exists_insertion_of_starGrade_sup` at `R = ρ ⊔` the joins of `G″` but the
   one at `1` (`span_joins_succAbove_two`). The order is the factored one, not the chapter's.
   *Remedies:* the prose to the Lean (state the factoring), or keep both.
+- **R-13** · `lem:pencil-d-stars-three` (planned `exists_mvPolynomial_starsThree`, 42i recon) ·
+  **open**.
+  *Chapter:* annihilators read in `⋀^{d−1}`, `M(y₁, y₃)` on `⋀^{d−3}` and `ζ` in its kernel. A
+  first step finds four independent points `p_a, y₁, y₃, p_b`, which uses `κ ≤ 1`, and its minor
+  enters the polynomial.
+  *Lean (planned, derived in prose):* forms on `⋀²` as stars-four's (R-8). The dual kernel curve
+  runs for stars-four's family at two interior points. Moving `y₁` along `p_a`, then any
+  `u ∈ Π_a`, and `y₃` along `p_b`, then any `w ∈ Π_b`, puts `Π_a + Π_b` in the radical of `φ₀`.
+  `y₁`, `y₃` are independent off a coordinate of `y₁ ∨ y₃`, with no four-point minor. The
+  statement's `κ ≤ 1`, `p_a`, `p_b` independent and `d ≥ 4` go unused, and the Lean drops them.
+  *Remedies:* the prose to the Lean, as stars-four's at the PI's word; the statement's three
+  hypotheses go to the PI (`notes/Phase42i.md` *Blockers*).
+- **R-14** · `thm:pencil-d-open-ear-three` (planned `Graph.X0AttainsGrade.of_openEar_three`, on
+  `Graph.X0AttainsGrade.of_openEar_splitOff_of_base`, 42i recon) · **open**.
+  *Chapter:* the proof of `thm:pencil-d-open-ear-four` with the first stage and the third condition
+  changed. A span with both stars, not everything, gives `dim ρ ≥ 2d − 4`. Then `a`, `b` lie in one
+  component (else `ρ` is everything), and a path joins them (`lem:relative-screws-path`) with at
+  least four edges. So they are not adjacent and have no common neighbour, and glued-ends gives
+  `r = 3`.
+  *Lean (planned):* R-12's factored order, through the variant whose insertion hypothesis is taken
+  at the first stage's base data (`Pq`, `Rz`) for `ρ = joinRelScrews` of `G[V₁]`. A common member
+  `t` of the closed neighbourhoods of `a` and `b` gives `ρ ⊆ span(b_a ∨ b_t, b_t ∨ b_b)` directly
+  from the motions. So there is no component step and no path lemma. If R-13's Lean holds, the
+  first stage also drops the first coordinate of `q_a − q_b`.
+  *Remedies:* the prose to the Lean (state the variant), or keep both.
+- **R-15** · `lem:pencil-d-planes-meet` (planned `Graph.exists_mvPolynomial_planesMeet`, 42i
+  recon) · **open**.
+  *Chapter:* the functionals `λ^i_v`, the inverse of the lifting-planes isomorphism, linear in
+  `z`. `Π_a ∩ Π_b` is `σ_a` of the common kernel of the rows of `L(z)`. `R` is a nonzero minor of
+  `L(z)`, whose entries are linear in `z`.
+  *Lean (planned):* no `λ` map. The statement takes `la`, `lb` by their agreement with `z` on the
+  closed neighbourhoods, as the base data give them, and `Π_a ∩ Π_b` as
+  `range (gradeSigma la) ⊓ range (gradeSigma lb)`. Each `la i` is the inverse three-point matrix
+  applied to `z`, and `R` comes by rank openness (`exists_mvPolynomial_le_finrank_span_of_repr`)
+  at a height whose rows are independent.
+  *Remedies:* keep both, or the prose names `R` by rank openness.
 
 ## 3. The cleanup (not yet planned)
 

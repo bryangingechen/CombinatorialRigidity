@@ -3,8 +3,9 @@
 **Status:** opened 2026-10-29 with the PI, sub-lettered, research first; **42i open**.
 **42i** (the fourth and last sub-phase of PD-STEPS, `notes/Phase42i.md`) **opened 2026-10-31** at
 the PI's word (§1): the four nodes of `pencil-d.tex`'s `-short-three`, the open ear with three
-interior bodies, the theorem at `d = 4` to `6` as the chapter states it (§3). Its next step is the
-pre-build recon, whose first question is whether 42h's factoring can take the three-body condition.
+interior bodies, the theorem at `d = 4` to `6` as the chapter states it (§3). Its pre-build recon
+found that 42h's factoring cannot take the three-body condition and pinned a variant (§3); the
+variant's build comes next, then the four nodes.
 PD-COVERAGE, PD-REDUCTION and PD-HEAD (§3, which maps the remaining red nodes to them by section)
 then open, each at the PI's word.
 **42h** (the third sub-phase of PD-STEPS, `notes/Phase42h.md`) **opened and closed 2026-10-31** at
@@ -849,8 +850,14 @@ marked `no departure` (R-6). The post-Phase-42 cleanup acts on the ledger (that 
   `d = 4` to `6`, its recon building on 42h's Lean. Its open's consistency read passed all four, their
   30 outside dependencies green. It found that the insertion hypothesis 42h's factoring leaves is
   quantified over every base datum and every `ρ`, where the chapter proves the three-body condition
-  only at its first stage's base data and, when `r ≤ 2`, at `G[V₁]`'s own `ρ`. Whether it can be
-  met is the recon's first question (that note's *Blockers*).
+  only at its first stage's base data and, when `r ≤ 2`, at `G[V₁]`'s own `ρ`. The pre-build
+  recon (2026-10-31, a design pass) found it cannot be met. A kernel-checked counterexample at every
+  `m ≥ 2` takes `la = lb` and `ρ` the joins meeting `Π_a`, codimension `binom(m, 2)`. The recon
+  pinned a generalization of the factoring that takes it only there,
+  `of_openEar_splitOff_of_base`, of which 42h's factoring is a corollary (spike complete). It
+  also pinned the four signatures (stars-three on forms, without three of its statement's
+  hypotheses, a question for the PI) and five or six builds (that note's *Lemma checklist*; ledger
+  R-13 to R-15).
   **Handed on from PD-RECON** (42a's close; SHORT-CORE's workbook S56 has the detail):
   - *PD-STEPS, the short-ear step (row 13).* At `d = 4`, `k = 3, 4, 5`: the `P³` factoring
     (`Graph.X0Attains.of_openEar_splitOff`) with `D = 10`, its insertion hypothesis taken at base
