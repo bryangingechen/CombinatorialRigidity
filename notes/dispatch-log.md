@@ -210,6 +210,22 @@ read caught it; the close found four more (F44). (4) A 42d sentence of the
 section overview overstated stars-four; the close's end-to-end re-read caught
 it. Tool: `phasenote.py --surfaces` still misses the sub-lettered row.
 
+**Phase 42i (PD-STEPS: open ears with three interior bodies) rows, 2026-10-31:
+3, written at 42i's close.** None BLOCKED, escalated or killed; eight
+dispatches (open; recon, its variant spiked complete beside a kernel-checked
+refutation; two sonnet builds; three opus builds, the last carrying a
+PI-adjudicated restatement; close) and one coordinator fixup. (1) The open's
+question to the PI repeated 42h's close hand-off: its factoring "applies at
+three bodies, leaving only the insertion condition". That was checked by type
+only; `hins`, quantified over every base datum and `ρ`, is false there. The
+open's consistency read flagged it, and the recon refuted it in Lean and pinned
+a variant (+1 build). The same question's "about 430 lines" was 98 (F8, F19).
+(2) The sonnet variant build dropped a section header and left a loose header
+bullet. The coordinator's full-diff read caught both, fixed in `9a19579e` (F44).
+(3) The PI's stars-three option repeated an unverified recon claim (the first
+stage's polynomial drops). The theorem dispatch marked it a hypothesis, and it
+held (F14).
+
 ## Findings
 
 (Distill recurring lessons here — one entry per lesson, rows cite it.
