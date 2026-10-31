@@ -3641,6 +3641,9 @@ the point of a picture point and $d - 2$ heights.
 % Source: CERT workbook, S6 (C1) for m <= D and S7 (a) for m > D.
 \begin{theorem}[A cycle, in every dimension]
   \label{thm:pencil-d-cycle}
+  \lean{Graph.X0AttainsGrade.of_cycle,
+        Graph.X0AttainsGrade.of_cycle_of_certificate}
+  \leanok
   \uses{def:pencil-d-x0-attains}
   Let $K$ be infinite and $d \ge 3$, and let $G$ be a cycle on $m \ge 3$
   bodies: $V(G) = \{a, x_1, \dots, x_k, b\}$ with these bodies distinct
@@ -3650,6 +3653,7 @@ the point of a picture point and $d - 2$ heights.
   (\cref{def:pencil-d-x0-attains}).
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-d-polygons, lem:pencil-d-polygon-collapse,
         lem:pencil-three-points, lem:pencil-d-join-independence-open,
         lem:pencil-x0-main-picture-open, lem:pencil-d-config-realization,
@@ -3733,6 +3737,9 @@ the point of a picture point and $d - 2$ heights.
 % S3's consumer reading (every height zero on V_1, x_1 and x_k).
 \begin{theorem}[An open ear with $D - 1$ or more interior bodies]
   \label{thm:pencil-d-open-ear-long}
+  \lean{Graph.X0AttainsGrade.of_openEar,
+        Graph.X0AttainsGrade.of_openEar_of_cert}
+  \leanok
   \uses{def:pencil-d-x0-attains, def:pencil-x0-standing, def:open-ear}
   Let $K$ be infinite, $d \ge 3$ and $D = \binom{d+1}{2}$, and let $G$
   satisfy the standing hypotheses (\cref{def:pencil-x0-standing}), with
@@ -3743,6 +3750,7 @@ the point of a picture point and $d - 2$ heights.
   $G$ attains in dimension $d$.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-d-polygons, lem:pencil-d-polygon-collapse,
         lem:pencil-d-join-independence-open, lem:pencil-ear-fibre,
         lem:pencil-d-lifting-restrict, lem:pencil-x0-fibre-intersection,

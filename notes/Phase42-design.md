@@ -749,7 +749,8 @@ cleanup acts on the ledger (that note, §3).
   height, `T = t`, through the bridge to `pencilConfigPoint`; the grade scale-shift's `t • id`
   case at every `m` (not a one-line add, for the same bridge); and the hinge form of join
   independence (the hinges `C(b_u, b_w)` rather than the joins, through the complement
-  isomorphism), for the cycle and long-ear steps (rows 10–11). Each makes a `P³` file import
+  isomorphism), for the cycle and long-ear steps (rows 10–11) (**discharged by 42g**:
+  `card_le_finrank_of_linearIndependent_normalsJoin`, `Grade/Chain.lean`). Each makes a `P³` file import
   `Pencil/Grade/`, which 42b's additive commits avoided. **Deferred to them from PD-STABLE**, each
   with the next commit that edits the file it names (a new declaration there rebuilds most of
   `Molecular/`): FRICTION's moves of `exteriorPower_map_normalsJoin` to `PanelLayer.lean`, beside

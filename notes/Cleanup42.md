@@ -94,15 +94,23 @@ both routes, each valid. The cleanup chooses one per `open` row, with the PI.
   *Remedies:* keep both (the coordinator judged the chapter's the better read); a Lean helper, the
   basis of `⋀²` induced by a basis of `K^{d+1}` (mathlib's, or a mirror), so that the Lean follows
   the chapter; or the prose to the minors, which the star's proof now uses (R-1).
-- **R-5** · `thm:pencil-d-cycle`, the placement (`Graph.X0AttainsGrade.of_cycle`, pinned by 42g's
-  recon, not yet built) · **open**.
+- **R-5** · `thm:pencil-d-cycle`, the placement (`Graph.X0AttainsGrade.of_cycle`,
+  `Pencil/Grade/Chain.lean`) · **open**.
   *Chapter:* two cases, CERT S6 (C1) and S7 (a): for `m ≤ D` the bodies at the vertices of a closed
   `m`-gon (`lem:pencil-d-polygons`); for `m > D` on a closed `D`-gon by part (1) of
   `lem:pencil-d-polygon-collapse`.
-  *Lean (the recon's spike):* one path, a closed `N`-gon with `N = min(m, D)` and every `c_j` at
-  `Y_{π(j)}`, `π = polygonCollapse N m`, the identity when `N = m`. The build of
-  `Grade/Chain.lean` rechecks this row against its landed proof.
+  *Lean (the landed proof, rechecked at the Chain build; it is the spike's):* one path, a closed
+  `N`-gon with `N = min(m, D)` and every `c_j` at `Y_{π(j)}`, `π = polygonCollapse N m`, the
+  identity when `N = m`.
   *Remedies:* a toss-up (the coordinator): the prose to the one path, or keep both.
+- **R-6** · `thm:pencil-d-cycle`, the heights (`Graph.X0AttainsGrade.of_cycle_of_certificate`) ·
+  **open** (added at the Chain build).
+  *Chapter:* `z` is the heights of the placement, and `z ∈ L_G(q)^{d-2}` at an admissible `q`
+  because each closed neighbourhood has three members.
+  *Lean:* the placement's heights `zs` are arbitrary (the certificate lemma takes any picture and
+  heights); the heights used are `z = Graph.liftingRestrict (Prod.fst ⁻¹' V(G)) zs`, in
+  `L_G(q)^m` by the three-member criterion and with the same points on `V(G)`, so the same joins.
+  *Remedies:* the prose to the Lean (one clause: restrict the heights to `V(G)`), or keep both.
 
 ## 3. The cleanup (not yet planned)
 
