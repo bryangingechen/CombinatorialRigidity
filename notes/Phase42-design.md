@@ -1,13 +1,16 @@
 # Phase 42 — PENCIL-D: design (cross-phase plan and recon)
 
-**Status:** opened 2026-10-29 with the PI, sub-lettered, research first; no sub-phase open.
+**Status:** opened 2026-10-29 with the PI, sub-lettered, research first; **42i open**.
+**42i** (the fourth and last sub-phase of PD-STEPS, `notes/Phase42i.md`) **opened 2026-10-31** at
+the PI's word (§1): the four nodes of `pencil-d.tex`'s `-short-three`, the open ear with three
+interior bodies, the theorem at `d = 4` to `6` as the chapter states it (§3). Its next step is the
+pre-build recon, whose first question is whether 42h's factoring can take the three-body condition.
+PD-COVERAGE, PD-REDUCTION and PD-HEAD (§3, which maps the remaining red nodes to them by section)
+then open, each at the PI's word.
 **42h** (the third sub-phase of PD-STEPS, `notes/Phase42h.md`) **opened and closed 2026-10-31** at
 the PI's word (§1): the eight nodes of `pencil-d.tex`'s `-short-four`, Phase 40's short-ear step in
 `Pᵈ` at four or more interior bodies, all green, their Lean in every `d` (verdict §3; at the PI's
-word, §1, two-stars is stated on forms and stars-four's proof follows its Lean). The other half of
-`-short`, the three-body ear at `d = 4` to `6` (`-short-three`, 4 nodes; codes in §3), is next,
-then PD-COVERAGE, PD-REDUCTION and PD-HEAD (§3, which maps the remaining red nodes to them by
-section), each at the PI's word.
+word, §1, two-stars is stated on forms and stars-four's proof follows its Lean).
 **42g** (the second sub-phase of PD-STEPS, `notes/Phase42g.md`) **opened 2026-10-30 and closed
 2026-10-31** at the PI's word (§1): the seven nodes of `pencil-d.tex`'s `-long`, Phase 40's cycle
 and long-ear steps in `Pᵈ` on CERT's closed polygons, all green (verdict §3).
@@ -52,7 +55,8 @@ Status: `d = 2, 3` are proved and formalized (Phases 40a, 40). Every `d` with `d
 deficiency lemma, proved and formalized (42c, `thm:pencil-d-deficiency-two-le-three`). Every `d` is
 proved on paper (42d, `cor:pencil-d-conditioned-pair`); formalizing it began with the setting and
 the flat rank (42e), then the induction's cut-vertex, bridge and contraction steps (42f), its
-cycle and long-ear steps (42g) and its short-ear step at four or more interior bodies (42h).
+cycle and long-ear steps (42g) and its short-ear step at four or more interior bodies (42h); its
+step at three interior bodies is open (42i).
 `d = 4, 5, 6` are measured (Results 11, 19), not found below target under the `--d4`
 population's cap (`n ≤ 12`, 36 simple graphs) and 8 graphs past it. Where the
 conjecture has content, that is 47 cells on 18 graphs, six of them cycles (§2.5).
@@ -317,6 +321,32 @@ fibre-intersection lemma and Jackson–Jordán's equality.
   Lean and cites part (2) only (`notes/Cleanup42.md` R-7 and R-8 aligned); stars-three's proof
   cites the restated parts through the pairing, its last step reading the radical in `K^{d+1}`,
   its argument otherwise unchanged.
+- **PI, 2026-10-31 (42i's open):** asked "Phase 42i isn't open yet. 42h closed with the last of
+  PD-STEPS waiting on your go-ahead: the 4 red nodes of pencil-d.tex's -short-three, the open ear
+  with three interior bodies at d = 4 to 6 (stars-three, glued-ends, planes-meet,
+  thm:pencil-d-open-ear-three). The theorem builds on 42h's landed four-body Lean: 42h's close
+  checked that its factoring applies at three bodies, leaving only the insertion condition. The
+  chapter states the theorem for 4 ≤ d ≤ 6, but the coverage uses it only at d = 4. What should 42i
+  open as?", the PI answered "All 4 nodes as written (Recommended)", whose option read: "The
+  theorem at 4 ≤ d ≤ 6, as the chapter states it. An Opus open commit, a pre-build recon that
+  spikes the four against the carrier on 42h's Lean, then roughly 3–6 builds. Closes PD-STEPS."
+  The other options put were "Recon first, scope after" ("Open on all 4, but the recon sizes the
+  stars-three proof (the hardest node, about 430 chapter lines) and comes back to you before any
+  build, with the option to narrow to d = 4 then.") and "d = 4 only" ("Restate
+  thm:pencil-d-open-ear-three and stars-three at d = 4, the only dimension the coverage uses. This
+  changes chapter statements now, and d = 5, 6 would stay paper-only.").
+  *Note (not the PI's text):* the question and the option text are the coordinator's words, so the
+  estimate of roughly 3–6 builds is the coordinator's. "About 430 chapter lines" was the
+  coordinator's rough count of stars-three's environment (`pencil-d.tex` lines 2683–3111 at
+  `59ceecee`); 42i's open corrects it. The lemma and its proof are lines 2682–2779 at that commit,
+  98 lines, with a 9-line remark after them (lines 2781–2789) showing that `d + κ ≤ 6` cannot be
+  dropped. The range ran on to glued-ends' label, through `-short-four`'s ear-data nodes and
+  four-body theorem (lines 2791–3106, green). The four environments are 98 (stars-three), 106
+  (glued-ends), 73 (planes-meet) and 113 lines (the theorem). "Leaving only the insertion
+  condition" holds as a type-check. Whether that condition, `hins` as landed (every base datum and
+  every `ρ`), can be met at three bodies is the recon's first question (`notes/Phase42i.md`
+  *Blockers*). The chapter proves the condition only at the base data its first stage picks, and
+  when `r ≤ 2` only for `G[V₁]`'s own `ρ`.
 
 ## 2. PD-RECON (42a)
 
@@ -811,10 +841,16 @@ marked `no departure` (R-6). The post-Phase-42 cleanup acts on the ledger (that 
   stated so and stars-four's proof follows its Lean (§1); the other route differences are
   `notes/Cleanup42.md`'s ledger (R-9 to R-12 open). It edited no file a deferral below names.
   `-short-three`'s proofs use `-short-four`'s theorem and five of its lemmas, and no `-short-four`
-  node uses a `-short-three` one, so `-short-three` opens next, at the PI's word, its recon building
-  on 42h's Lean: the factoring applies at three interior bodies with `splitOff_ear_succAbove` at
-  `k = 0`, leaving only its insertion hypothesis (checked at 42h's close, `notes/Phase42h.md`
-  *Hand-off*).
+  node uses a `-short-three` one. The factoring applies at three interior bodies with
+  `splitOff_ear_succAbove` at `k = 0`, leaving only its insertion hypothesis (a type-check at 42h's
+  close, `notes/Phase42h.md` *Hand-off*).
+  **PD-STEPS's fourth and last sub-phase, 42i, opened 2026-10-31** at the PI's word (§1;
+  `notes/Phase42i.md`): `-short-three`, the four nodes as the chapter states them, the theorem at
+  `d = 4` to `6`, its recon building on 42h's Lean. Its open's consistency read passed all four, their
+  30 outside dependencies green. It found that the insertion hypothesis 42h's factoring leaves is
+  quantified over every base datum and every `ρ`, where the chapter proves the three-body condition
+  only at its first stage's base data and, when `r ≤ 2`, at `G[V₁]`'s own `ρ`. Whether it can be
+  met is the recon's first question (that note's *Blockers*).
   **Handed on from PD-RECON** (42a's close; SHORT-CORE's workbook S56 has the detail):
   - *PD-STEPS, the short-ear step (row 13).* At `d = 4`, `k = 3, 4, 5`: the `P³` factoring
     (`Graph.X0Attains.of_openEar_splitOff`) with `D = 10`, its insertion hypothesis taken at base
@@ -891,14 +927,15 @@ marked `no departure` (R-6). The post-Phase-42 cleanup acts on the ledger (that 
 
 **The red nodes by layer** (42e's open, by section of `pencil-d.tex`; a letter is minted only as
 a sub-phase opens). From `sec:pencil-d-induction` on the chapter has 62 dep-graph nodes, 37 of them
-red (recounted at 42h's close): 65 at 42e's open, all red, 4 green at its close, 3 cut at 42f's
-open (the PI, §1), 6 green at 42f's close, 7 at 42g's and 8 at 42h's. The count of 66 put to the PI
-at 42e's open (§1) included `rem:pencil-d-flat-class`, a remark, which the dependency graph does not
-draw (it draws definitions, lemmas, propositions, theorems and corollaries).
+red (recounted at 42h's close and again at 42i's open): 65 at 42e's open, all red, 4 green at its
+close, 3 cut at 42f's open (the PI, §1), 6 green at 42f's close, 7 at 42g's and 8 at 42h's. The
+count of 66 put to the PI at 42e's open (§1) included `rem:pencil-d-flat-class`, a remark, which the
+dependency graph does not draw (it draws definitions, lemmas, propositions, theorems and
+corollaries).
 - PD-CARRIER (42e, closed, all green): `-induction` (1) and `-flat` (3); 4.
 - PD-STEPS: `-cut` (3) and `-contract` (3), 42f, closed, all green; `-long` (7), 42g, closed, all
   green; `-short` (12), as `-short-four` (8), 42h, closed, all green, and `-short-three` (4, red),
-  no letter minted, next; 25.
+  42i, open; 25.
   `thm:pencil-d-splitoff`, `thm:pencil-d-open-ear-deficiency` and `lem:pencil-d-polygon-ear`, with
   their sections `-splitoff` and `-ear-deficiency`, had no consumer in the coverage and were cut at
   42f's open (the PI, §1).

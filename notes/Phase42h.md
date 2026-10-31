@@ -69,8 +69,9 @@ Phase 42 stays in progress with no sub-phase open. The next step is **putting `-
 open to the PI** (design doc §3): the four red nodes of `sec:pencil-d-short` for the open ear with
 three interior bodies at `d = 4` to `6` (`lem:pencil-d-stars-three`, `lem:pencil-d-glued-ends`,
 `lem:pencil-d-planes-meet`, `thm:pencil-d-open-ear-three`), the last of PD-STEPS, no letter minted
-until it opens. What 42h hands it, each checked against the landed Lean at the close (a scratch
-type-check):
+until it opens (answered at 42i's open: all four as written, design doc §1; `notes/Phase42i.md`
+*Blockers* asks whether `hins` below can be met at three bodies). What 42h hands it, each checked
+against the landed Lean at the close (a scratch type-check):
 - **The factoring.** `Graph.X0AttainsGrade.of_openEar_splitOff` keeps the `P³` shape (any
   `v u w e₀`, `G″`'s ear given, `2 ≤ k`). At three interior bodies it applies at `k = 2`, with
   `splitOff_ear_succAbove` at `k = 0` and the four-body theorem's arguments otherwise, leaving
