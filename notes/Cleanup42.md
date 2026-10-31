@@ -194,16 +194,20 @@ valid. The cleanup chooses one per `open` row, with the PI.
   from the motions. So there is no component step and no path lemma. As R-13's Lean drops `p_a`,
   `p_b` independent, the first stage can also drop the first coordinate of `q_a − q_b`.
   *Remedies:* the prose to the Lean (state the variant), or keep both.
-- **R-15** · `lem:pencil-d-planes-meet` (planned `Graph.exists_mvPolynomial_planesMeet`, 42i
-  recon) · **open**.
+- **R-15** · `lem:pencil-d-planes-meet` (`Graph.exists_mvPolynomial_planesMeet`, 42i, landed) ·
+  **open**.
   *Chapter:* the functionals `λ^i_v`, the inverse of the lifting-planes isomorphism, linear in
   `z`. `Π_a ∩ Π_b` is `σ_a` of the common kernel of the rows of `L(z)`. `R` is a nonzero minor of
   `L(z)`, whose entries are linear in `z`.
-  *Lean (planned):* no `λ` map. The statement takes `la`, `lb` by their agreement with `z` on the
-  closed neighbourhoods, as the base data give them, and `Π_a ∩ Π_b` as
-  `range (gradeSigma la) ⊓ range (gradeSigma lb)`. Each `la i` is the inverse three-point matrix
-  applied to `z`, and `R` comes by rank openness (`exists_mvPolynomial_le_finrank_span_of_repr`)
-  at a height whose rows are independent.
+  *Lean:* no `λ` map. The statement takes `la`, `lb` by their agreement with `z` on the closed
+  neighbourhoods, as the base data give them, and `Π_a ∩ Π_b` as
+  `range (gradeSigma la) ⊓ range (gradeSigma lb)`. A fixed inverse three-point matrix
+  (`exists_inv_of_isAdmissiblePicture`) makes the rows `lb i − la i` linear in `z`, and `R` comes by
+  rank openness (`exists_mvPolynomial_le_finrank_span_of_repr`) at a height whose rows are
+  independent. The proof extends a family of lifting planes of `G[V₁]` along the ear
+  (`exists_mem_liftingPlanes_extend_ear`), as the chapter does by `ℓ₁, ℓ₂, ℓ₃`; the Lean keeps
+  `E = E(G[V₁])` as `Graph.liftingPlanesDiff` of the induced graph (so only `⊆` goes through
+  `G`'s planes). `[Infinite K]` and `[Finite α]` are not taken.
   *Remedies:* keep both, or the prose names `R` by rank openness.
 
 ## 3. The cleanup (not yet planned)

@@ -3224,6 +3224,9 @@ $(\xi, \eta, \omega) \mapsto (\xi, \eta, h_a \cdot (\xi, \eta, \omega),
 % Source: SHORT-CORE workbook, S33 (its lemma), with S9 (ii)-(iii) and S26 (iii).
 \begin{lemma}[Where the planes of the ends meet, in every dimension]
   \label{lem:pencil-d-planes-meet}
+  \lean{Graph.exists_mvPolynomial_planesMeet,
+        Graph.liftingPlanesDiff}
+  \leanok
   \uses{def:open-ear, def:pencil-d-configuration, def:pencil-lifting-space,
         def:pencil-lifting-planes, def:pencil-admissible-picture}
   Let $K$ be infinite and $d \ge 3$. Let $G$ have an open ear
@@ -3239,6 +3242,7 @@ $(\xi, \eta, \omega) \mapsto (\xi, \eta, h_a \cdot (\xi, \eta, \omega),
   meet in a subspace of dimension $3 - \min(d - 2, r)$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-d-condition-linear, lem:pencil-lifting-planes-dim}
   Let $z \in L_G(q)^{d-2}$. For each height $z^i$ and body $v$ let
   $\lambda^i_v \in K^3$ give the affine function

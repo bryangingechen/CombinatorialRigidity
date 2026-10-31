@@ -5,11 +5,22 @@
 mode, the Lean under `/coordinate-phase`: the four red nodes of `pencil-d.tex`'s `-short-three`, the
 theorem at `4 ≤ d ≤ 6`. The pre-build recon has landed: 42h's factoring cannot take the three-body
 condition (a kernel-checked counterexample), so a variant is pinned, with the four signatures and a
-build order of five or six commits (*Lemma checklist*). The variant factoring and stars-three have
-landed: 1 of 4 nodes green. Next (*Hand-off*): planes-meet, a new `Grade/PlanesMeet.lean`.
+build order of five or six commits (*Lemma checklist*). The variant factoring, stars-three and planes-meet have
+landed: 2 of 4 nodes green. Next (*Hand-off*): glued-ends, a new `Grade/GluedEnds.lean`.
 
 ## Current state
 
+**Landed, third build: planes-meet.** `Graph.exists_mvPolynomial_planesMeet` and
+`Graph.liftingPlanesDiff` (new `Grade/PlanesMeet.lean`, in the root import file) pin
+`lem:pencil-d-planes-meet`, green, the statement as pinned minus `[Infinite K]` and `[Finite α]`
+(unused: the rank-openness lemma needs neither). The file also holds the ear extension
+`exists_mem_liftingPlanes_extend_ear` (a family of lifting planes of `G[V₁]` extends along the
+two-body ear with the same values at `a`, `b`), `exists_inv_of_isAdmissiblePicture` (a fixed
+inverse matrix reads the plane off a height, so the rows `lb i − la i` are linear in `z`),
+`finrank_inf_range_gradeSigma` (`3 −` the rank of the rows), and two small lifting-planes
+facts. It imports `Grade/Stars` for rank openness, not only `ConditionLinear` and `Flat`. `lake
+build` is warning-clean, `lake lint` passes, `#print axioms` is `[propext, Classical.choice,
+Quot.sound]`.
 **Landed, second build: stars-three.** `exists_mvPolynomial_starsThree` (new `Grade/StarsThree.lean`)
 pins `lem:pencil-d-stars-three`, green, its statement unchanged. It takes `ρ`,
 `hSa : finrank Sa = 3`, `hSb : finrank Sb = 3`, `hdκ : k + finrank (Sa ⊓ Sb) ≤ 5`, `hpa : pa ∈ Sa`
@@ -21,7 +32,7 @@ with stars-four's statement unchanged and its body at `n + 1`; two first-order h
 passes. `#print axioms` of the new and changed declarations is `[propext, Classical.choice,
 Quot.sound]` or less.
 **Landed, first build: the variant factoring** in `Grade/Short.lean` (*Lemma checklist*).
-**Next: planes-meet** (*Hand-off*), then glued-ends and the theorem. The recon's spikes, on HEAD
+**Next: glued-ends** (*Hand-off*), then the theorem. The recon's spikes, on HEAD
 `64f0fe75` under `lake lean`, are in the gitignored `scratch/42i/`: `Three.lean` (the four
 signatures and the theorem composed on the variant; its one residual is the insertion hypothesis
 at the base data), `Helpers.lean` (the four-body helpers one index down, for the theorem) and
@@ -51,7 +62,7 @@ The chapter is the lemma index (forward mode).
 
 Build order, leaf first: the variant, stars-three, planes-meet, glued-ends (one or two commits),
 the theorem. Import order: `Grade/Stars` → `Grade/StarsThree`; `Grade/ConditionLinear` and
-`MainComponent/Flat` → `Grade/PlanesMeet`; `Grade/Short` and `Grade/PlanesMeet` →
+`MainComponent/Flat` → `Grade/PlanesMeet` (also `Grade/Stars`); `Grade/Short` and `Grade/PlanesMeet` →
 `Grade/GluedEnds`; `Grade/StarsThree` and `Grade/GluedEnds` → `Grade/ShortThree`. Each new file
 goes in the root import file. Every statement below type-checks in `scratch/42i/Three.lean`.
 
@@ -91,7 +102,7 @@ goes in the root import file. Every statement below type-checks in `scratch/42i/
   `finrank_add_two_le_of_forall_ιMulti_eq_zero` on `Sa ⊔ Sb`, of dimension `6 − κ`, contradicts
   `hdκ`. The statement's `κ ≤ 1`, `p_a`, `p_b` independent and `d ≥ 4` are not taken (*Blockers*;
   `notes/Cleanup42.md` R-13).
-- [ ] `lem:pencil-d-planes-meet` → `Graph.liftingPlanesDiff` and
+- [x] `lem:pencil-d-planes-meet` → `Graph.liftingPlanesDiff` and
   `Graph.exists_mvPolynomial_planesMeet`, new `Grade/PlanesMeet.lean`, every `m`:
   `liftingPlanesDiff G q a b := (G.liftingPlanes q).map (proj b − proj a)` (instance: no links,
   `a ≠ b`: all of `K³`). Hypotheses: the ear `a − y 0 − y 1 − b` in the landed form
@@ -148,23 +159,21 @@ goes in the root import file. Every statement below type-checks in `scratch/42i/
   take two commits. That includes the contraction `G.map (collapseTo a {a, b})` with
   `def₂ = deficiencyMerged` (`partitionDef_map`), `Z⁰(q)` bounded by rank openness
   (`exists_mvPolynomial_le_finrank_span_of_repr`), and the `3|V(G)ᶜ|` the lifting planes count off
-  `V(G)` (`Graph.finrank_liftingPlanes`). Planes-meet reads `la i` as the inverse of the
-  admissible three-point matrix applied to `z`. Neither is spiked.
+  `V(G)` (`Graph.finrank_liftingPlanes`). Neither is spiked.
 
 ## Hand-off / next phase
 
-The next concrete commit is **planes-meet**: `lem:pencil-d-planes-meet` → `Graph.liftingPlanesDiff`
-and `Graph.exists_mvPolynomial_planesMeet`, a new `Grade/PlanesMeet.lean` (root import file too),
-with their `\lean{}` and `\leanok`. The signatures are in the *Lemma checklist* and type-check in
-`scratch/42i/Three.lean`; the proof is not spiked. Each `la i` is the inverse of the admissible
-three-point matrix applied to `z`, and `R` comes by rank openness
-(`exists_mvPolynomial_le_finrank_span_of_repr`) at a height whose rows are independent
-(`notes/Cleanup42.md` R-15), so assess first whether it is one session's work. If not, land
-`liftingPlanesDiff` with the lemma that reads the planes off `z`, and hand off the count. Update
-R-15 (planned, becomes aligned or open). Then glued-ends (one or two commits) and the theorem (one).
+The next concrete commit is **glued-ends**: `lem:pencil-d-glued-ends` →
+`Graph.exists_mvPolynomial_gluedEnds`, a new `Grade/GluedEnds.lean` (root import file too), with its
+`\lean{}` and `\leanok`. The signature is in the *Lemma checklist* and type-checks in
+`scratch/42i/Three.lean`; the proof is not spiked. It is new planar mathematics (*Blockers*, the
+risks), so assess first whether it is one session's work: if not, land a clean leaf (for example
+the contraction bookkeeping, or the bound of `Z⁰(q)` by rank openness) with the node left red, and
+hand off the rest. Planes-meet's `Graph.liftingPlanesDiff` and the lifting-planes facts in
+`Grade/PlanesMeet.lean` are available. Then the theorem (one commit). R-15 is aligned (below).
 
 - **The standing rule** (*Architectural choices*): a row in `notes/Cleanup42.md` §2 per departure;
-  the recon added R-13 to R-15 (`open`); R-13 has landed, R-14 and R-15 are planned.
+  the recon added R-13 to R-15 (`open`); R-13 and R-15 have landed, R-14 is planned.
 - **Deferred, where it lands** (design doc §3; FRICTION's `[open]` entries): the home debts of
   42b–42h are unchanged, each riding with the next commit that edits its target file
   (`notes/Phase42h.md` *Hand-off* lists 42h's), except `starGrade_smul`, which moved to
