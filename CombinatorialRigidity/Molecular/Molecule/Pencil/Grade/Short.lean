@@ -14,17 +14,26 @@ public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Shor
 # The step at four or more interior bodies of an open ear, in every dimension
 
 The step `thm:pencil-d-open-ear-four` (`blueprint/src/chapter/pencil-d.tex`,
-`sec:pencil-d-short`), with the leaves it shares with the step at three interior bodies.
+`sec:pencil-d-short`), with the factoring through `G″` it shares with the step at three interior
+bodies (which uses the variant `_of_base`).
 
 * `splitOff_ear_succAbove`: suppressing the second interior body `x 1` of an ear with `k + 3`
   interior bodies and relinking `e 1` to `x 0 − x 2` leaves an ear on `V₁` with `k + 2` interior
   bodies; `splitOff_ear_four` and `splitOff_ear_three` at every length.
-* `Graph.exists_earBase_splitOff_grade`: the base data of the steps at three and four or more
+* `Graph.exists_earBase_splitOff_grade`: the base data of the steps at three and at four or more
   interior bodies, `Graph.exists_earBase_splitOff` with `m` heights (the grade forms of the
-  ear data, of lifting an ear's heights column by column, and of the rank congruences).
-* `Graph.X0AttainsGrade.of_openEar_splitOff`: those steps factored through `G″`,
+  ear data, of lifting an ear's heights column by column, and of the rank congruences), and a
+  height polynomial `Rz q` threaded into the choice of the base.
+* `joinMotions`, `mem_joinMotions`, `joinRelScrews` and `map_relScrews_ofNormals_eq_joinRelScrews`:
+  the motions of a graph at points, in `⋀²`, the relative screws of two vertices (the chapter's
+  `ρ`), and their bridge to the hinge framework `ofNormals` through `complementScrew`.
+* `Graph.X0AttainsGrade.of_openEar_splitOff_of_base`: the step factored through `G″`,
   `Graph.X0Attains.of_openEar_splitOff` at grade `m + 1`, given that the suppressed body can be
-  put back (`hins`); the hinges become joins through `complementScrew`.
+  put back (`hins`), asked only at the base data of the first stage and for `G[V₁]`'s own
+  `joinRelScrews`. It serves the step at three interior bodies.
+* `Graph.X0AttainsGrade.of_openEar_splitOff`: its corollary with `hins` for every `ρ`, `Pq = 1` and
+  `Rz = 1`, which holds from four interior bodies on (not at three); the hinges become joins
+  through `complementScrew`.
 * `starsCond_of_smul` and `span_joins_succAbove_two`: the stars condition is scale invariant, and
   the joins of the ear of `G` are those of the ear of `G″` but one, with the two at the body put
   back.
@@ -43,7 +52,7 @@ mirror `Mathlib/Data/Fin/Basic.lean`, and `span_range_smul_eq` (`notes/FRICTION.
 
 namespace CombinatorialRigidity.Molecular
 
-open scoped Graph
+open scoped Graph Matrix
 
 variable {K : Type*} [Field K] {α β : Type*} {m : ℕ}
 
@@ -210,11 +219,16 @@ theorem splitOff_ear_succAbove {G : Graph α β} {V₁ : Set α} {k : ℕ} {x : 
       · exact hne _ v1 h'
       · exact hne _ v2 h'
 
-/-! ## The base data, in every dimension -/
 
 open Classical in
-/-- The base data of the steps at three and four or more interior bodies, with `m` heights:
-`Graph.exists_earBase_splitOff` at grade `m + 1`. -/
+/-- **The base data of the steps at three and at four or more interior bodies**, with `m` heights:
+`Graph.exists_earBase_splitOff` at grade `m + 1` (the grade forms of the ear data, of lifting an
+ear's heights column by column, and of the rank congruences), with a height polynomial threaded
+in. Given `Rz`, a polynomial in the heights for each admissible picture `q` of `G″` with a
+non-root among `G″`'s lifting heights (`hRz`), the base `z*` is chosen off `Rz q*` too, by two
+fibre intersections. The conclusion also returns `zs` (the height `z₁` agrees with on `V₁`), in
+`L_{G″}(q)^m` with `eval zs (Rz q) ≠ 0`, and the planes `la`, `lb` of `zs` on `G″`'s closed
+neighbourhoods of `a`, `b`. -/
 theorem _root_.Graph.exists_earBase_splitOff_grade [Infinite K] [Finite α] {G : Graph α β}
     {V₁ : Set α} {v u w : α} {e₀ : β} {k : ℕ} {y : Fin k → α} {a b : α} {e : Fin (k + 1) → β}
     (hk : 2 ≤ k) (hcover : V(G.splitOff v u w e₀) = V₁ ∪ Set.range y)
@@ -231,8 +245,11 @@ theorem _root_.Graph.exists_earBase_splitOff_grade [Infinite K] [Finite α] {G :
     {xf xl : α} {X : Set α} (hxf : xf ∈ (G.splitOff v u w e₀).closedNbhd a)
     (hxl : xl ∈ (G.splitOff v u w e₀).closedNbhd b) (hX : Set.range y ⊆ X)
     (h₁ : (G.induce V₁).X0AttainsGrade K m) (h₂ : (G.splitOff v u w e₀).X0AttainsGrade K m)
-    {Pm : MvPolynomial (α × Fin 2) K} (hPm : Pm ≠ 0) :
-    ∃ (q : α × Fin 2 → K) (z₁ : α × Fin m → K) (la lb : Fin m → Fin 3 → K)
+    {Pm : MvPolynomial (α × Fin 2) K} (hPm : Pm ≠ 0)
+    {Rz : (α × Fin 2 → K) → MvPolynomial (α × Fin m) K}
+    (hRz : ∀ q, (G.splitOff v u w e₀).IsAdmissiblePicture q →
+      ∃ z ∈ (G.splitOff v u w e₀).liftingSpaceGrade q m, MvPolynomial.eval z (Rz q) ≠ 0) :
+    ∃ (q : α × Fin 2 → K) (z₁ zs : α × Fin m → K) (la lb : Fin m → Fin 3 → K)
       (s₁ : (α × Fin 2) ⊕ (α × Fin m) → K) (ρ : Submodule K (ScrewSpace K (m + 1))),
       MvPolynomial.eval q Pm ≠ 0 ∧ (G.splitOff v u w e₀).IsAdmissiblePicture q ∧
       earPictureGrade V₁ q s₁ = q ∧
@@ -269,7 +286,13 @@ theorem _root_.Graph.exists_earBase_splitOff_grade [Infinite K] [Finite α] {G :
             (Function.update ends e₀ (u, w))
             (earConfigGrade V₁ q z₁ xf xl X la lb s)).toBodyHinge.supportExtensor⟩ :
               BodyHingeFramework K (m + 1) α β).rigidityRows) : ℤ) =
-        screwDim (m + 1) * ((V₁.ncard : ℤ) - 1) - (G.induce V₁).deficiency (m + 2)) := by
+        screwDim (m + 1) * ((V₁.ncard : ℤ) - 1) - (G.induce V₁).deficiency (m + 2)) ∧
+      zs ∈ (G.splitOff v u w e₀).liftingSpaceGrade q m ∧ MvPolynomial.eval zs (Rz q) ≠ 0 ∧
+      (∀ t ∈ V₁, ∀ i, z₁ (t, i) = zs (t, i)) ∧
+      (∀ i, ∀ p ∈ (G.splitOff v u w e₀).closedNbhd a,
+        zs (p, i) = la i ⬝ᵥ pencilPicturePoint q p) ∧
+      (∀ i, ∀ p ∈ (G.splitOff v u w e₀).closedNbhd b,
+        zs (p, i) = lb i ⬝ᵥ pencilPicturePoint q p) := by
   set H := G.splitOff v u w e₀ with hH
   have hle : G.induce V₁ ≤ H := hind ▸ Graph.induce_le (hcover ▸ Set.subset_union_left)
   set ends'' := Function.update ends e₀ (u, w) with hends''def
@@ -300,7 +323,14 @@ theorem _root_.Graph.exists_earBase_splitOff_grade [Infinite K] [Finite α] {G :
           H.earExtend_mem_liftingSpace hk hcover hinj hyV₁ ha hb hab hpath hsep hadm₂ hy 0
         exact ⟨z, hz, hzr⟩) hz₁'
     exact ⟨z, hz, by rwa [eval_restrictPoly, hzr]⟩
-  obtain ⟨zs, hzs, hzs₁, hzs₂⟩ := MvPolynomial.exists_mem_eval_ne_zero₂ hex₁ ⟨z₂', hz₂', hR₂'⟩
+  -- `z*` also off `Rz q*`: two applications of the fibre intersection
+  obtain ⟨zr, hzr, hzr₂, hzrR⟩ :=
+    MvPolynomial.exists_mem_eval_ne_zero₂ ⟨z₂', hz₂', hR₂'⟩ (hRz q' hadm₂)
+  obtain ⟨zs, hzs, hzs₁, hzs₂R⟩ := MvPolynomial.exists_mem_eval_ne_zero₂ (p₂ := R₂ * Rz q') hex₁
+    ⟨zr, hzr, by rw [map_mul]; exact mul_ne_zero hzr₂ hzrR⟩
+  rw [map_mul] at hzs₂R
+  have hzs₂ := left_ne_zero_of_mul hzs₂R
+  have hzsR := right_ne_zero_of_mul hzs₂R
   rw [eval_restrictPoly] at hzs₁
   set z₁ := Graph.liftingRestrict (Prod.fst ⁻¹' V₁) zs with hz₁def
   have hz₁ : z₁ ∈ (G.induce V₁).liftingSpaceGrade q' m :=
@@ -373,12 +403,13 @@ theorem _root_.Graph.exists_earBase_splitOff_grade [Infinite K] [Finite α] {G :
       pencilPicturePoint (earPictureGrade V₁ q' s) p = pencilPicturePoint q' p := by
     intro s p hp; funext i
     fin_cases i <;> simp [pencilPicturePoint, earPictureGrade_of_mem s hp]
-  refine ⟨q', z₁, la, lb, sstar,
+  refine ⟨q', z₁, zs, la, lb, sstar,
     (⟨G.induce V₁, (PanelHingeFramework.ofNormals (k := m + 1) G ends
       (cfg sstar)).toBodyHinge.supportExtensor⟩ : BodyHingeFramework K (m + 1) α β).relScrews a b,
     right_ne_zero_of_mul hq', hadm₂, hpicstar, ?_, ?_, fun s => ?_, fun s i p hp => ?_,
     fun s i p hp => ?_, fun s => BodyHingeFramework.relScrews_congr (G.induce V₁) (hCG s) a b,
-    fun s => ?_, hrk₁, fun s => ?_⟩
+    fun s => ?_, hrk₁, fun s => ?_, hzs, hzsR, fun t ht i => ?_, fun i p hp => hla i p hp,
+    fun i p hp => hlb i p hp⟩
   · rw [← hcfgdef, hcfgstar, PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr
       (k := m + 1) H hends'' hends₂ (fun _ _ _ => rfl)]
     exact hr₂
@@ -408,6 +439,8 @@ theorem _root_.Graph.exists_earBase_splitOff_grade [Infinite K] [Finite α] {G :
       (fun f p p' hf => (hC2 s f p p' hf).trans (hCG s f p p' hf)) a b
   · rw [hind, BodyHingeFramework.finrank_span_rigidityRows_congr (G.induce V₁) (hC2 s)]
     exact hrk₁ s
+  · simp [hz₁def, Graph.liftingRestrict_apply, ht]
+
 
 /-! ## The factoring through `G″`, in every dimension -/
 
@@ -466,12 +499,81 @@ theorem finrank_sup_map_complementScrew {k : ℕ} (ρ : Submodule K (ScrewSpace 
     simp
   rw [← LinearEquiv.finrank_map_eq (complementScrew K k).symm, Submodule.map_sup, hΛ]
 
+/-! ## The relative screws in `⋀²` (the chapter's `ρ`, `sec:pencil-d-short`) -/
+
+/-- The motions of `H` at the points `c`, in `⋀²` (`sec:pencil-d-short`): the assignments `S` with
+`S u − S w ∈ K (c u ∨ c w)` at every link `u w` of `H`. On a graph with no links this is
+everything. -/
+noncomputable def joinMotions {k : ℕ} (H : Graph α β) (c : α → Fin (k + 2) → K) :
+    Submodule K (α → ⋀[K]^2 (Fin (k + 2) → K)) :=
+  ⨅ (f : β) (u : α) (w : α) (_ : H.IsLink f u w),
+    (K ∙ normalsJoin (c u) (c w)).comap
+      ((LinearMap.proj u : (α → ⋀[K]^2 (Fin (k + 2) → K)) →ₗ[K] _) - LinearMap.proj w)
+
+/-- Membership in `joinMotions H c`: the difference at each link lies in the span of the join. -/
+theorem mem_joinMotions {k : ℕ} {H : Graph α β} {c : α → Fin (k + 2) → K}
+    {S : α → ⋀[K]^2 (Fin (k + 2) → K)} :
+    S ∈ joinMotions H c ↔ ∀ f u w, H.IsLink f u w → S u - S w ∈ K ∙ normalsJoin (c u) (c w) := by
+  simp [joinMotions, Submodule.mem_iInf]
+
+/-- The relative screws of `a, b` in `H` at the points `c`, in `⋀²` (`sec:pencil-d-short`'s `ρ`):
+the differences `S b − S a` over the motions `joinMotions H c`. -/
+noncomputable def joinRelScrews {k : ℕ} (H : Graph α β) (c : α → Fin (k + 2) → K) (a b : α) :
+    Submodule K (⋀[K]^2 (Fin (k + 2) → K)) :=
+  (joinMotions H c).map ((LinearMap.proj b : (α → ⋀[K]^2 (Fin (k + 2) → K)) →ₗ[K] _) -
+    LinearMap.proj a)
+
+/-- **The bridge to the hinge framework**: take `ofNormals G ends c` (whose ends `ends` record
+links of `G`) and restrict its hinges to the links of a subgraph `H ≤ G`. The relative screws of
+`a, b` of the resulting body-hinge framework, pulled back along `complementScrew`, are
+`joinRelScrews H` at the points `c (t, ·)`. -/
+theorem map_relScrews_ofNormals_eq_joinRelScrews {k : ℕ} {G H : Graph α β} {ends : β → α × α}
+    (hends : ∀ f u w, G.IsLink f u w → G.IsLink f (ends f).1 (ends f).2)
+    (hHG : ∀ f u w, H.IsLink f u w → G.IsLink f u w) (c : α × Fin (k + 2) → K) (a b : α) :
+    ((⟨H, (PanelHingeFramework.ofNormals (k := k) G ends c).toBodyHinge.supportExtensor⟩ :
+      BodyHingeFramework K k α β).relScrews a b).map (complementScrew K k).symm.toLinearMap =
+    joinRelScrews H (fun t j => c (t, j)) a b := by
+  set ι := complementScrew K k with hι
+  have hspan : ∀ f u w, H.IsLink f u w →
+      Submodule.span K
+          {(PanelHingeFramework.ofNormals (k := k) G ends c).toBodyHinge.supportExtensor f} =
+        (K ∙ normalsJoin (fun j => c (u, j)) (fun j => c (w, j))).map ι.toLinearMap := by
+    intro f u w hf
+    rw [span_supportExtensor_ofNormals_eq hends c (hHG f u w hf), Submodule.map_span,
+      Set.image_singleton]
+    rfl
+  ext x
+  constructor
+  · rintro ⟨_, ⟨S, hS, rfl⟩, rfl⟩
+    refine ⟨fun t => ι.symm (S t), mem_joinMotions.mpr fun f u w hf => ?_, ?_⟩
+    · have h := hS f u w hf
+      rw [BodyHingeFramework.hingeConstraint, hspan f u w hf] at h
+      obtain ⟨y, hy, hyeq⟩ := h
+      have : ι.symm (S u) - ι.symm (S w) = y := by
+        rw [← map_sub, ← hyeq]; simp
+      change ι.symm (S u) - ι.symm (S w) ∈ _
+      rw [this]; exact hy
+    · simp [BodyHingeFramework.screwDiff_apply]
+  · rintro ⟨S, hS, rfl⟩
+    rw [SetLike.mem_coe, mem_joinMotions] at hS
+    refine ⟨_, ⟨fun t => ι (S t), fun f u w hf => ?_, rfl⟩, ?_⟩
+    · rw [BodyHingeFramework.hingeConstraint, hspan f u w hf]
+      rw [← map_sub]
+      exact Submodule.mem_map_of_mem (hS f u w hf)
+    · simp [BodyHingeFramework.screwDiff_apply]
+
 open Classical in
-/-- `Graph.X0Attains.of_openEar_splitOff` at grade `m + 1`: the steps at three and at four or more
-interior bodies, given that the suppressed body `v` can be put back off a polynomial in the ear
-data, with `D = screwDim (m + 1)` for `6`. The subspace `ρ` of `hins` lies in `⋀²`, the space of
-the joins. -/
-theorem _root_.Graph.X0AttainsGrade.of_openEar_splitOff [Infinite K] [Finite α] [Finite β]
+/-- **The factoring through `G″`, with its insertion hypothesis at the base data only.**
+`Graph.X0Attains.of_openEar_splitOff` at grade `m + 1`: the ear on `V₁` through `x` with `k + 1`
+interior bodies attains grade `m`, given that `G[V₁]` and `G″ = G.splitOff v u w e₀` do and that
+the suppressed body `v` can be put back (`hins`). Unlike `of_openEar_splitOff`, `hins` is asked
+only at the base data of the first stage: a picture `q` off the polynomial `Pq`, a height `zs`
+off `Rz q` in `L_{G″}(q)^m` with `z` agreeing with it on `V₁`, and the planes `la`, `lb` of `zs`
+at the closed neighbourhoods of `a` and `b`. The subspace `ρ` it quantifies over is
+`joinRelScrews (G.induce V₁) (pencilConfigPointGrade q z) a b`, the relative screws of `a`, `b`
+in `G[V₁]`, in `⋀²` (not an arbitrary subspace, which fails at three interior bodies). With
+`D = screwDim (m + 1)` for `6`. -/
+theorem _root_.Graph.X0AttainsGrade.of_openEar_splitOff_of_base [Infinite K] [Finite α] [Finite β]
     {G : Graph α β} (hG : G.IsX0Graph) {V₁ : Set α} {k : ℕ} (hk : 2 ≤ k)
     {x : Fin (k + 1) → α} {a b : α} {e : Fin (k + 2) → β} (hcover : V(G) = V₁ ∪ Set.range x)
     (hinj : Function.Injective x) (hxV₁ : ∀ i, x i ∉ V₁) (ha : a ∈ V₁) (hb : b ∈ V₁)
@@ -490,21 +592,31 @@ theorem _root_.Graph.X0AttainsGrade.of_openEar_splitOff [Infinite K] [Finite α]
     (hl₀ : G.IsLink e₀ u v) (hl₀'' : (G.splitOff v u w e₀).IsLink e₀ u w)
     (hdef : (G.splitOff v u w e₀).deficiency (m + 2) ≤ G.deficiency (m + 2)) {xf xl : α}
     (hxf : x ⟨0, by omega⟩ = xf) (hxl : x ⟨k, by omega⟩ = xl) (hvf : v ≠ xf) (hvl : v ≠ xl)
-    (hins : ∀ (q : α × Fin 2 → K) (z : α × Fin m → K) (la lb : Fin m → Fin 3 → K)
-      (ρ : Submodule K (⋀[K]^2 (Fin (m + 1 + 2) → K))),
-      (∀ i, z (a, i) = la i ⬝ᵥ pencilPicturePoint q a) →
-      (∀ i, z (b, i) = lb i ⬝ᵥ pencilPicturePoint q b) →
+    {Pq : MvPolynomial (α × Fin 2) K} (hPq : Pq ≠ 0)
+    {Rz : (α × Fin 2 → K) → MvPolynomial (α × Fin m) K}
+    (hRz : ∀ q, (G.splitOff v u w e₀).IsAdmissiblePicture q →
+      ∃ z ∈ (G.splitOff v u w e₀).liftingSpaceGrade q m, MvPolynomial.eval z (Rz q) ≠ 0)
+    (hins : ∀ (q : α × Fin 2 → K) (z zs : α × Fin m → K) (la lb : Fin m → Fin 3 → K),
+      MvPolynomial.eval q Pq ≠ 0 → (G.splitOff v u w e₀).IsAdmissiblePicture q →
+      zs ∈ (G.splitOff v u w e₀).liftingSpaceGrade q m → MvPolynomial.eval zs (Rz q) ≠ 0 →
+      (∀ t ∈ V₁, ∀ i, z (t, i) = zs (t, i)) →
+      (∀ i, ∀ p ∈ (G.splitOff v u w e₀).closedNbhd a,
+        zs (p, i) = la i ⬝ᵥ pencilPicturePoint q p) →
+      (∀ i, ∀ p ∈ (G.splitOff v u w e₀).closedNbhd b,
+        zs (p, i) = lb i ⬝ᵥ pencilPicturePoint q p) →
       ∃ Q : MvPolynomial ((α × Fin 2) ⊕ (α × Fin m)) K, Q ≠ 0 ∧ ∀ s, MvPolynomial.eval s Q ≠ 0 →
         (G.splitOff v u w e₀).IsAdmissiblePicture (earPictureGrade V₁ q s) →
         ∃ x₂ : Fin (m + 1 + 2) → K, x₂ (Fin.last (m + 2)) = 1 ∧
           ∀ p : α → Fin (m + 1 + 2) → K, p v = x₂ →
           (∀ t, t ≠ v → p t = fun j => earConfigGrade V₁ q z xf xl (Set.range x) la lb s (t, j)) →
-          min (Module.finrank K ↥(ρ ⊔ Submodule.span K (Set.range fun i : Fin (k + 1) =>
+          min (Module.finrank K ↥(joinRelScrews (G.induce V₁) (pencilConfigPointGrade q z) a b ⊔
+            Submodule.span K (Set.range fun i : Fin (k + 1) =>
             normalsJoin (fun j => earConfigGrade V₁ q z xf xl (Set.range x) la lb s
                 (pathVertex a y b i.castSucc, j))
               (fun j => earConfigGrade V₁ q z xf xl (Set.range x) la lb s
                 (pathVertex a y b i.succ, j)))) + 1) (screwDim (m + 1)) ≤
-          Module.finrank K ↥(ρ ⊔ Submodule.span K (Set.range fun i : Fin (k + 2) =>
+          Module.finrank K ↥(joinRelScrews (G.induce V₁) (pencilConfigPointGrade q z) a b ⊔
+            Submodule.span K (Set.range fun i : Fin (k + 2) =>
             normalsJoin (p (pathVertex a x b i.castSucc)) (p (pathVertex a x b i.succ)))))
     (h₁ : (G.induce V₁).X0AttainsGrade K m) (h₂ : (G.splitOff v u w e₀).X0AttainsGrade K m) :
     G.X0AttainsGrade K m := by
@@ -533,16 +645,33 @@ theorem _root_.Graph.X0AttainsGrade.of_openEar_splitOff [Infinite K] [Finite α]
   have hends'' : ∀ f p p', G''.IsLink f p p' → G''.IsLink f (ends'' f).1 (ends'' f).2 :=
     fun _ _ _ =>
       ((PanelHingeFramework.recordsLinks_iff_forall_isLink.mpr hends).update_splitOff hl₀'').isLink
-  obtain ⟨q', z₁, la, lb, sstar, ρM, hqm', hadm₂, hpicstar, hrk₂, hne₂, hz₁s, hlas, hlbs, hρG,
-      hρ2, hrk₁, hrk₁''⟩ :=
+  obtain ⟨q', z₁, zs, la, lb, sstar, ρM, hqm', hadm₂, hpicstar, hrk₂, hne₂, hz₁s, hlas, hlbs, hρG,
+      hρ2, hrk₁, hrk₁'', hzs, hzsR, hz₁zs, hlaz, hlbz⟩ :=
     Graph.exists_earBase_splitOff_grade hk hcover'' hinj'' hyV₁ ha hb hab hpath'' hsep'' hl₀'' he₀
       hind hends (hkeep _ _ _ (hxf ▸ ear_isLink_first hpath (by omega)) ha hvf)
-      (hkeep _ _ _ (hxl ▸ (ear_isLink_last hpath (by omega)).symm) hb hvl) hyx h₁ h₂ hPm
+      (hkeep _ _ _ (hxl ▸ (ear_isLink_last hpath (by omega)).symm) hb hvl) hyx h₁ h₂
+      (mul_ne_zero hPm hPq) hRz
+  rw [map_mul] at hqm'
   set ρJ := ρM.map (complementScrew K (m + 1)).symm.toLinearMap with hρJ
   -- the insertion hypothesis, a polynomial condition on the ear data
-  obtain ⟨Qx, hQx₀, hQx⟩ := hins q' z₁ la lb ρJ
-    (fun i => by have := hlas sstar i a (Or.inl rfl); rwa [hpicstar] at this)
-    (fun i => by have := hlbs sstar i b (Or.inl rfl); rwa [hpicstar] at this)
+  -- `ρJ` is `G[V₁]`'s relative screws at the base configuration `(q*, z₁)`
+  have hendsI := PanelHingeFramework.recordsLinks_iff_forall_isLink.mp
+    ((PanelHingeFramework.recordsLinks_iff_forall_isLink.mpr hends).induce V₁)
+  have hρJ' : ρJ = joinRelScrews (G.induce V₁) (pencilConfigPointGrade q' z₁) a b := by
+    rw [hρJ, ← hρG sstar, ← map_relScrews_ofNormals_eq_joinRelScrews hends
+      (fun f p p' hf => hf.of_le (Graph.induce_le (hcover ▸ Set.subset_union_left)))
+      (fun p => pencilConfigPointGrade q' z₁ p.1 p.2)]
+    congr 1
+    refine BodyHingeFramework.relScrews_congr (G.induce V₁) (fun f p p' hf => ?_) a b
+    obtain ⟨-, h1, h2⟩ := hendsI f p p' hf
+    simp only [PanelHingeFramework.toBodyHinge_supportExtensor,
+      PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_ends]
+    congr 1 <;> funext j
+    · exact earConfigGrade_of_mem sstar h1 j
+    · exact earConfigGrade_of_mem sstar h2 j
+  obtain ⟨Qx, hQx₀, hQx⟩ := hins q' z₁ zs la lb (right_ne_zero_of_mul hqm') hadm₂ hzs hzsR hz₁zs
+    hlaz hlbz
+  rw [← hρJ'] at hQx
   set cfg := earConfigGrade V₁ q' z₁ xf xl (Set.range x) la lb
   set P := earPointPolyGrade V₁ q' z₁ xf xl (Set.range x) la lb
   have hPc : ∀ s p, MvPolynomial.eval s (P p) = cfg s p :=
@@ -638,7 +767,7 @@ theorem _root_.Graph.X0AttainsGrade.of_openEar_splitOff [Infinite K] [Finite α]
   obtain ⟨Qs, hQs₀, hQs⟩ := exists_mvPolynomial_le_finrank_sup_span_normalsJoin ρJ P
     (fun i : Fin (k + 2) => pathVertex a x b i.castSucc) (fun i => pathVertex a x b i.succ) hNt
   have hPm'₀ : MvPolynomial.eval sstar (MvPolynomial.bind₁ (earPicturePolyGrade V₁ q') Pm) ≠ 0 := by
-    rwa [eval_bind₁_earPicturePolyGrade, hpicstar]
+    rw [eval_bind₁_earPicturePolyGrade, hpicstar]; exact left_ne_zero_of_mul hqm'
   -- the ear data of `G`: a common non-root `s₀`, main for `G`
   obtain ⟨s₀, hs₀a, hs₀b⟩ := MvPolynomial.exists_eval_ne_zero₂ (hne0 hQs₀) (hne0 hPm'₀)
   rw [eval_bind₁_earPicturePolyGrade] at hs₀b
@@ -671,6 +800,60 @@ theorem _root_.Graph.X0AttainsGrade.of_openEar_splitOff [Infinite K] [Finite α]
   have h₁ := Int.ofNat_le.mpr hspan₀
   push_cast at h₁ ⊢
   linarith
+
+open Classical in
+/-- `Graph.X0Attains.of_openEar_splitOff` at grade `m + 1`: the step at four or more interior
+bodies, given that the suppressed body `v` can be put back off a polynomial in the ear data, with
+`D = screwDim (m + 1)` for `6`. The subspace `ρ` of `hins` lies in `⋀²`, the space of the joins.
+It is the corollary of `of_openEar_splitOff_of_base` at `Pq = 1`, `Rz = 1`, and cannot take three
+interior bodies, where `hins` fails (`notes/Phase42i.md`); that step goes through `_of_base`. -/
+theorem _root_.Graph.X0AttainsGrade.of_openEar_splitOff [Infinite K] [Finite α] [Finite β]
+    {G : Graph α β} (hG : G.IsX0Graph) {V₁ : Set α} {k : ℕ} (hk : 2 ≤ k)
+    {x : Fin (k + 1) → α} {a b : α} {e : Fin (k + 2) → β} (hcover : V(G) = V₁ ∪ Set.range x)
+    (hinj : Function.Injective x) (hxV₁ : ∀ i, x i ∉ V₁) (ha : a ∈ V₁) (hb : b ∈ V₁)
+    (hab : a ≠ b)
+    (hpath : ∀ i : Fin (k + 2),
+      G.IsLink (e i) (pathVertex a x b i.castSucc) (pathVertex a x b i.succ))
+    (hsep : ∀ f u w, G.IsLink f u w → (∀ i, f ≠ e i) → u ∈ V₁ ∧ w ∈ V₁)
+    {v u w : α} {e₀ : β} {y : Fin k → α} {e'' : Fin (k + 1) → β}
+    (hcover'' : V(G.splitOff v u w e₀) = V₁ ∪ Set.range y) (hinj'' : Function.Injective y)
+    (hyV₁ : ∀ i, y i ∉ V₁)
+    (hpath'' : ∀ i : Fin (k + 1), (G.splitOff v u w e₀).IsLink (e'' i)
+      (pathVertex a y b i.castSucc) (pathVertex a y b i.succ))
+    (hsep'' : ∀ f p p', (G.splitOff v u w e₀).IsLink f p p' → (∀ i, f ≠ e'' i) →
+      p ∈ V₁ ∧ p' ∈ V₁)
+    (hyx : Set.range y ⊆ Set.range x) (hv : v ∈ Set.range x) (hu : u ∉ V₁)
+    (hl₀ : G.IsLink e₀ u v) (hl₀'' : (G.splitOff v u w e₀).IsLink e₀ u w)
+    (hdef : (G.splitOff v u w e₀).deficiency (m + 2) ≤ G.deficiency (m + 2)) {xf xl : α}
+    (hxf : x ⟨0, by omega⟩ = xf) (hxl : x ⟨k, by omega⟩ = xl) (hvf : v ≠ xf) (hvl : v ≠ xl)
+    (hins : ∀ (q : α × Fin 2 → K) (z : α × Fin m → K) (la lb : Fin m → Fin 3 → K)
+      (ρ : Submodule K (⋀[K]^2 (Fin (m + 1 + 2) → K))),
+      (∀ i, z (a, i) = la i ⬝ᵥ pencilPicturePoint q a) →
+      (∀ i, z (b, i) = lb i ⬝ᵥ pencilPicturePoint q b) →
+      ∃ Q : MvPolynomial ((α × Fin 2) ⊕ (α × Fin m)) K, Q ≠ 0 ∧ ∀ s, MvPolynomial.eval s Q ≠ 0 →
+        (G.splitOff v u w e₀).IsAdmissiblePicture (earPictureGrade V₁ q s) →
+        ∃ x₂ : Fin (m + 1 + 2) → K, x₂ (Fin.last (m + 2)) = 1 ∧
+          ∀ p : α → Fin (m + 1 + 2) → K, p v = x₂ →
+          (∀ t, t ≠ v → p t = fun j => earConfigGrade V₁ q z xf xl (Set.range x) la lb s (t, j)) →
+          min (Module.finrank K ↥(ρ ⊔ Submodule.span K (Set.range fun i : Fin (k + 1) =>
+            normalsJoin (fun j => earConfigGrade V₁ q z xf xl (Set.range x) la lb s
+                (pathVertex a y b i.castSucc, j))
+              (fun j => earConfigGrade V₁ q z xf xl (Set.range x) la lb s
+                (pathVertex a y b i.succ, j)))) + 1) (screwDim (m + 1)) ≤
+          Module.finrank K ↥(ρ ⊔ Submodule.span K (Set.range fun i : Fin (k + 2) =>
+            normalsJoin (p (pathVertex a x b i.castSucc)) (p (pathVertex a x b i.succ)))))
+    (h₁ : (G.induce V₁).X0AttainsGrade K m) (h₂ : (G.splitOff v u w e₀).X0AttainsGrade K m) :
+    G.X0AttainsGrade K m := by
+  have hRz : ∀ q, (G.splitOff v u w e₀).IsAdmissiblePicture q →
+      ∃ z ∈ (G.splitOff v u w e₀).liftingSpaceGrade q m,
+        MvPolynomial.eval z ((fun _ => (1 : MvPolynomial (α × Fin m) K)) q) ≠ 0 :=
+    fun q _ => ⟨0, Submodule.zero_mem _, by simp⟩
+  exact Graph.X0AttainsGrade.of_openEar_splitOff_of_base hG hk hcover hinj hxV₁ ha hb hab hpath
+    hsep hcover'' hinj'' hyV₁ hpath'' hsep'' hyx hv hu hl₀ hl₀'' hdef hxf hxl hvf hvl
+    one_ne_zero hRz
+    (fun q z zs la lb _ _ _ _ hz hla hlb => hins q z la lb _
+      (fun i => (hz a ha i).trans (hla i a (Or.inl rfl)))
+      (fun i => (hz b hb i).trans (hlb i b (Or.inl rfl)))) h₁ h₂
 
 /-! ## The stars condition and the insertion, in path-join form -/
 

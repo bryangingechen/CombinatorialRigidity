@@ -5,13 +5,21 @@
 mode, the Lean under `/coordinate-phase`: the four red nodes of `pencil-d.tex`'s `-short-three`, the
 theorem at `4 ≤ d ≤ 6`. The pre-build recon has landed: 42h's factoring cannot take the three-body
 condition (a kernel-checked counterexample), so a variant is pinned, with the four signatures and a
-build order of five or six commits (*Lemma checklist*). Next (*Hand-off*): land the variant, whose
-spike is complete.
+build order of five or six commits (*Lemma checklist*). The variant factoring has landed in
+`Grade/Short.lean` (no node flipped). Next (*Hand-off*): stars-three, a new `Grade/StarsThree.lean`.
 
 ## Current state
 
-**Next: land the variant factoring** (*Hand-off*), the first of five or six builds. The recon spiked
-everything under `lake lean` in the gitignored `scratch/42i/`, on HEAD `64f0fe75`:
+**Landed: the variant factoring** (first build): `joinMotions`, `mem_joinMotions`, `joinRelScrews`,
+`map_relScrews_ofNormals_eq_joinRelScrews`, `Graph.exists_earBase_splitOff_grade` generalized in
+place (`Rz`, `hRz`; also returns `zs`, `la`, `lb`), `Graph.X0AttainsGrade.of_openEar_splitOff_of_base`,
+and `of_openEar_splitOff` re-proved as its corollary with its statement unchanged;
+`of_openEar_four` untouched. `lake build` of `Grade/Short` and `lake lint` are clean, and
+`#print axioms` of all six is `[propext, Classical.choice, Quot.sound]`. The spike's
+long lines are fixed, no primed name survives, and the module header and the docstrings read
+`_of_base` as the three-body step. **Next: stars-three** (*Hand-off*), the second of five or six
+builds. The recon spiked everything under `lake lean` in the gitignored `scratch/42i/`, on HEAD
+`64f0fe75`:
 - **Complete, no `sorry`:** `HinsFails.lean` (134 lines, Question 1's counterexample);
   `Variant.lean` (577 lines, most of them copied from the landed Lean: the variant, its bridge
   and the landed factoring as its corollary); `Helpers.lean` (132 lines) and `StarsFamily.lean`
@@ -49,7 +57,7 @@ the theorem. Import order: `Grade/Stars` → `Grade/StarsThree`; `Grade/Conditio
 goes in the root import file. Every statement below type-checks in `scratch/42i/Three.lean`.
 
 - [x] **Pre-build recon** (this commit): verdict in *Decisions made*, signatures here.
-- [ ] **The variant factoring** (`Grade/Short.lean`; not a node: the theorem's factoring, tracked
+- [x] **The variant factoring** (`Grade/Short.lean`; not a node: the theorem's factoring, tracked
   here). Copy `scratch/42i/Variant.lean`, which is complete:
   - `joinMotions H c` (`⨅` over links of `comap (proj u − proj w) (K ∙ c u ∨ c w)`),
     `mem_joinMotions`, `joinRelScrews H c a b := (joinMotions H c).map (proj b − proj a)`: the
@@ -146,15 +154,16 @@ goes in the root import file. Every statement below type-checks in `scratch/42i/
 
 ## Hand-off / next phase
 
-The next concrete commit is **the variant factoring in `Grade/Short.lean`**: copy
-`scratch/42i/Variant.lean`'s `joinMotions`, `mem_joinMotions`, `joinRelScrews`,
-`map_relScrews_ofNormals_eq_joinRelScrews`, the generalized `Graph.exists_earBase_splitOff_grade`
-(in place, unprimed) and `Graph.X0AttainsGrade.of_openEar_splitOff_of_base`. Then replace
-`of_openEar_splitOff`'s body by the spike's corollary proof. It is one commit and a whole spike
-(`lake lean` clean but for long lines). It flips no node, and the chapter's prose waits for the
-theorem's build. Then the builds in the *Lemma checklist*'s order, each adding its node's
-`\lean{}` and `\leanok`: stars-three (one commit), planes-meet (one), glued-ends (one or two),
-the theorem (one).
+The next concrete commit is **stars-three**: `lem:pencil-d-stars-three` →
+`exists_mvPolynomial_starsThree`, a new `Grade/StarsThree.lean` (root import file too), with its
+`\lean{}` and `\leanok`. Its statement and proof sketch are in the *Lemma checklist*: stars-four's
+family one index down (generalize the seven declarations from `starsPoint` to
+`exists_mvPolynomial_repr_starsFamily` in `Grade/Stars.lean`, checked in
+`scratch/42i/StarsFamily.lean`), then the forms-side contradiction by
+`finrank_add_two_le_of_forall_ιMulti_eq_zero`, derived in prose and not compiled, so assess whether
+it is one session's work. Add its `notes/Cleanup42.md` row (R-13, planned, becomes aligned or
+open). Then planes-meet (one commit), glued-ends (one or two) and the theorem (one).
+
 - **The standing rule** (*Architectural choices*): a row in `notes/Cleanup42.md` §2 per departure;
   the recon added R-13 to R-15 (planned, `open`).
 - **Deferred, where it lands** (design doc §3; FRICTION's `[open]` entries): the home debts of
