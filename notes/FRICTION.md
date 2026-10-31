@@ -236,7 +236,47 @@ to be re-derived by re-reading entries later.
   `pictureProj` public, and ConditionLinear's `π` replaced by it. With the next commit that edits
   `Grade/Configuration.lean` or `Grade/Carrier.lean` (design doc `notes/Phase42-design.md` §3,
   *Deferred to them from PD-CARRIER*), not alone.
+- **42i:** `Grade/GluedEnds.lean` (glued-ends) adds a third copy of the projection,
+  `gradePlanarProj` (with `gradePlanarProj_pencilConfigPointGrade`), under which its `⋀²π`
+  (`gradePiForm`, `gradePi`) is built. The same fold replaces it by the public `pictureProj`.
 - **Status:** open.
+
+### [open] Glued-ends' contraction and lifting-planes helpers sit in `Pencil/Grade/GluedEnds.lean`
+- **Where it bit:** Phase 42i, `lem:pencil-d-glued-ends` (`Grade/GluedEnds.lean`). Its helpers
+  have homes upstream (three groups): `Graph.mem_closedNbhd_comm` (`w ∈ N[v] → v ∈ N[w]`; home
+  `Pencil/Motive.lean`, beside `closedNbhd`); the contraction of two bodies,
+  `Graph.edgeSet_induce_pair_eq_empty`, `rigidContract_pair_simple`,
+  `mem_vertexSet_rigidContract_pair`, `exists_isLink_of_rigidContract_pair`,
+  `partitionDef_rigidContract_pair` and `three_le_ncard_closedNbhd_rigidContract_pair` (home
+  `MainComponent/ContractCurve.lean`, beside `rigidContract_induce_simple`); and
+  `Graph.liftingPlanesDiff_eq_top_of_notMem` (home `Grade/PlanesMeet.lean`, beside
+  `liftingPlanesDiff`).
+- **Friction:** none at the build; the file stayed additive, as a declaration added to `Motive.lean`
+  or `ContractCurve.lean` rebuilds most of `Pencil/`.
+- **Proposed fix:** move each, unchanged, with the next commit that edits its home file for another
+  reason; `liftingPlanesDiff_eq_top_of_notMem` with any edit of `Grade/PlanesMeet.lean` (its only
+  importers are the root and `Grade/GluedEnds.lean`).
+- **Status:** open (42i's deferral; tracked under PD-STEPS, `notes/Phase42-design.md` §3).
+
+### [idiom] `LinearMap.ker_eq_bot.mp` on a map out of a submodule of `⋀[K]^2` fails to unify the ring
+- **Where it bit:** Phase 42i, `Graph.exists_mvPolynomial_gluedEnds`: with
+  `hker : LinearMap.ker (gradePi.domRestrict ρ) = ⊥`, `ρ : Submodule K (⋀[K]^2 _)`,
+  `LinearMap.ker_eq_bot.mp hker` reports an application type mismatch between
+  `Field.toSemifield.toSemiring` and `Ring.toSemiring ?R`, though `rw [LinearMap.ker_eq_bot']`
+  on the same map worked.
+- **Friction:** one rebuild; the unifier does not solve the `Ring` instance from the elaborated
+  `Semiring` one here.
+- **Proposed fix:** name the ring and the module, `LinearMap.ker_eq_bot (R := K) (M := ρ) |>.mp
+  hker`, so the instances are synthesized, not unified.
+- **Status:** idiom.
+
+### [idiom] `(⟨a, ha⟩ : V(G).Nonempty).ncard_pos` projects from `Exists`, not `Set.Nonempty`
+- **Where it bit:** Phase 42i, `Graph.exists_partitionDef_eq_add_of_not_connBetween`: the ascribed
+  anonymous constructor elaborates to an `Exists` term, so `.ncard_pos` looks for
+  `Exists.ncard_pos`; `Set.Nonempty.ncard_pos ⟨a, ha⟩` sends the constructor to the wrong argument.
+- **Proposed fix:** `(show V(G).Nonempty from ⟨a, ha⟩).ncard_pos`, as `Molecular/Deficiency.lean`
+  writes it.
+- **Status:** idiom.
 
 ### [open] `check-phase-note.py --selftest` fails when no phase note is in progress
 - **Where it bit:** Phase 42d's close (project-organization review). `notes/Phase23d.md`'s

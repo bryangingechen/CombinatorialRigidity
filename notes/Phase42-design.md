@@ -4,8 +4,8 @@
 **42i** (the fourth and last sub-phase of PD-STEPS, `notes/Phase42i.md`) **opened 2026-10-31** at
 the PI's word (§1): the four nodes of `pencil-d.tex`'s `-short-three`, the open ear with three
 interior bodies, the theorem at `d = 4` to `6` as the chapter states it (§3). Its pre-build recon
-found that 42h's factoring cannot take the three-body condition and pinned a variant (§3); the
-variant's build comes next, then the four nodes.
+found that 42h's factoring cannot take the three-body condition and pinned a variant (§3). The
+variant, stars-three, planes-meet and glued-ends have landed; the theorem comes next.
 PD-COVERAGE, PD-REDUCTION and PD-HEAD (§3, which maps the remaining red nodes to them by section)
 then open, each at the PI's word.
 **42h** (the third sub-phase of PD-STEPS, `notes/Phase42h.md`) **opened and closed 2026-10-31** at
@@ -348,6 +348,26 @@ fibre-intersection lemma and Jackson–Jordán's equality.
   every `ρ`), can be met at three bodies is the recon's first question (`notes/Phase42i.md`
   *Blockers*). The chapter proves the condition only at the base data its first stage picks, and
   when `r ≤ 2` only for `G[V₁]`'s own `ρ`.
+- **PI, 2026-10-31 (42i, stars-three):** asked "Stars-three (lem:pencil-d-stars-three) is now
+  green, and its Lean proves a stronger lemma than the chapter states. It works on forms on ⋀², as
+  stars-four's does, and takes only dim Π_a = dim Π_b = 3, d + κ ≤ 6, p_a ∈ Π_a and p_b ∈ Π_b. It
+  drops three of the node's hypotheses: κ ≤ 1, p_a and p_b linearly independent, and d ≥ 4. The
+  chapter's proof needs κ ≤ 1 and the independence only for its four-independent-points step,
+  which the Lean replaces by one coordinate of y₁ ∨ y₃. The chapter is not wrong. In 42h you had
+  stars-four's proof follow its Lean. What should the chapter do with stars-three?", the PI
+  answered "Restate to the Lean (Recommended)", whose option read: "Drop the three hypotheses from
+  stars-three's statement and rewrite its proof to the forms route, as stars-four's. The theorem's
+  first stage then also drops the polynomial that keeps q_a − q_b off zero. Lands in the theorem's
+  build commit, which edits that proof anyway; no extra commit. Ledger row R-13 becomes aligned."
+  The other options put were "Proof only" ("Rewrite stars-three's proof to the forms route but keep
+  the statement's hypotheses, so the Lean stays stronger than the node. Lands in the theorem's
+  build commit.") and "Leave for the cleanup" ("Chapter unchanged now; R-13 stays open in
+  notes/Cleanup42.md for the cleanup after Phase 42.").
+  *Note (not the PI's text):* the question and the option text are the coordinator's words. The
+  glued-ends commit recorded the answer and changed no chapter text; the restatement of
+  stars-three's statement and proof, and the theorem's first stage without the first coordinate of
+  `q_a − q_b`, land in the theorem's build commit (`notes/Phase42i.md` *Hand-off*), which turns
+  `notes/Cleanup42.md` R-13 aligned.
 
 ## 2. PD-RECON (42a)
 
@@ -925,6 +945,11 @@ marked `no departure` (R-6). The post-Phase-42 cleanup acts on the ledger (that 
   `Fin.val_succAbove`, to the mirror `Mathlib/Data/Fin/Basic.lean` (whose edit rebuilds
   `Grade/Polygon.lean` and the files after it); and `span_range_smul_eq`, a mirror candidate, at a
   cleanup round. (`starGrade_smul` moved to `Grade/Stars.lean` with 42i's stars-three.)
+  **Deferred to them from PD-STEPS (42i)**, each with the next commit that edits the file it
+  names: FRICTION's glued-ends helpers (`Graph.mem_closedNbhd_comm` to `Pencil/Motive.lean`; the
+  two-body contraction lemmas to `MainComponent/ContractCurve.lean`;
+  `Graph.liftingPlanesDiff_eq_top_of_notMem` to `Grade/PlanesMeet.lean`), and `gradePlanarProj`
+  into the PD-CARRIER fold of the picture projection.
 - **PD-REDUCTION**, **PD-HEAD**: Phase 39's reduction in `Pᵈ`; the headline `PencilPair`, and the
   flag strata as corollaries. Their informal proofs are 42d's `sec:pencil-d-reduction` and, for
   the generic conjunct, `sec:pencil-d-nondegenerate` to `sec:pencil-d-generic`. **At Phase 42's close**, Tier 0 joins `formalization.yaml`'s

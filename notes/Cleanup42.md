@@ -179,8 +179,9 @@ valid. The cleanup chooses one per `open` row, with the PI.
   minor. The Lean takes only `dim Π_a = dim Π_b = 3`, `d + κ ≤ 6` (`k + κ ≤ 5`), `p_a ∈ Π_a` and
   `p_b ∈ Π_b`: the statement's `κ ≤ 1`, `p_a`, `p_b` independent and `d ≥ 4` are dropped, so the
   green node's Lean is stronger than its statement.
-  *Remedies:* the prose to the Lean, as stars-four's at the PI's word; whether the statement drops
-  the three hypotheses goes to the PI (`notes/Phase42i.md` *Blockers*).
+  *Remedies:* the prose and the statement to the Lean, chosen by the PI on 2026-10-31 ("Restate to
+  the Lean", `notes/Phase42-design.md` §1, *42i, stars-three*); it lands in the build of
+  `thm:pencil-d-open-ear-three`, which turns this row aligned.
 - **R-14** · `thm:pencil-d-open-ear-three` (planned `Graph.X0AttainsGrade.of_openEar_three`, on
   `Graph.X0AttainsGrade.of_openEar_splitOff_of_base`, 42i recon) · **open**.
   *Chapter:* the proof of `thm:pencil-d-open-ear-four` with the first stage and the third condition
@@ -209,6 +210,25 @@ valid. The cleanup chooses one per `open` row, with the PI.
   `E = E(G[V₁])` as `Graph.liftingPlanesDiff` of the induced graph (so only `⊆` goes through
   `G`'s planes). `[Infinite K]` and `[Finite α]` are not taken.
   *Remedies:* keep both, or the prose names `R` by rank openness.
+- **R-16** · `lem:pencil-d-glued-ends` (`Graph.exists_mvPolynomial_gluedEnds`,
+  `Grade/GluedEnds.lean`, 42i, landed) · **open**.
+  *Chapter:* `m = def₂(G; a, b)`, the merged deficiency, equal to `def₂(G')` by the partitions of
+  `G'`; `g` a nonzero minor of `Z⁰(q)`'s matrix at the glued picture times the first coordinates
+  of `q_u − q_v` over the edges, so that `dim Z⁰(q) = 3 + m`; a part `X` of value `m` refined into
+  the `c ≥ 2` components of `G[X]`, the lifting planes constant on the refined parts counted
+  directly, `r ≥ 3(c − 1)`.
+  *Lean:* no merged deficiency: a partition of `G'` of the largest value pulls back
+  (`partitionDef_map`) to one of `G` with `a`, `b` in one part and value `def₂(G')`, and only
+  `dim Z⁰(q) ≤ 3|V(G)ᶜ| + 3 + def₂(G')` is used, from the kernel-dimension polynomial of `Z⁰`'s
+  matrix (`Matrix.exists_mvPolynomial_section_mulVec_eq_zero`) and the inclusion of `Z⁰_G(q₀)` in
+  `G'`'s lifting planes with `h_a = h_b`. `g` is that polynomial times Jackson–Jordán's polynomial
+  for `G`, whose admissible pictures replace the edge coordinates. The planes constant on the
+  parts are the plane framework's partition motions read through `screwOneEquiv`. The refinement
+  splits `X` in two (the bodies `G[X]` joins to `a`, and the rest, `partitionDef_merge` read
+  backwards), counted by `dim F(q) ≥ 3|V(G)ᶜ| + 3 + def₂(G)` (`lem:pencil-lifting-space-deficiency`
+  with `lem:pencil-lifting-planes-dim`). The Lean takes every number of heights, not only `d ≥ 3`.
+  *Remedies:* keep both, or the prose to the Lean (the proof's `\uses` then drops
+  `def:deficiency-merged`).
 
 ## 3. The cleanup (not yet planned)
 

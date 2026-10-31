@@ -51,6 +51,7 @@ public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Cut
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.EarData
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Embedding
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Flat
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.GluedEnds
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.JoinIndependence
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.PlanesMeet
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Polygon

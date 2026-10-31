@@ -3116,6 +3116,8 @@ $(\xi, \eta, \omega) \mapsto (\xi, \eta, h_a \cdot (\xi, \eta, \omega),
 % equality made here.
 \begin{lemma}[Glued ends in the plane bound the relative screws]
   \label{lem:pencil-d-glued-ends}
+  \lean{Graph.exists_mvPolynomial_gluedEnds}
+  \leanok
   \uses{def:pencil-lifting-planes, def:pencil-d-configuration,
         def:relative-screws, def:join}
   Let $K$ be infinite, and let $G$ be a simple graph in which every body
@@ -3133,6 +3135,7 @@ $(\xi, \eta, \omega) \mapsto (\xi, \eta, h_a \cdot (\xi, \eta, \omega),
   $\dim \rho \le r$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{def:rigid-contraction, def:deficiency-merged, def:D-deficiency,
         thm:pencil-jj-equality, lem:pencil-lifting-planes-dim,
         lem:pencil-lifting-space-deficiency, lem:pencil-flat-split}
