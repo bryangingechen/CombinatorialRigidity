@@ -1311,8 +1311,9 @@ its cut-vertex, bridge and contraction steps, Phase 40e/40f/40k in `Pᵈ`, six n
 `pencil-d.tex` whose proofs a read at the open found sound on the carrier. At the same word the
 open cut two steps the coverage does not use, the split-off and the open ear that assumes
 `def_d(G[V₁]) ≤ def_d(G)`, leaving PD-STEPS 25 nodes; the rest of it, the cycle and the other ears,
-opens later at the PI's word, as each later layer does. A recon of the six Lean signatures comes
-first. The targets are three tiers:
+opens later at the PI's word, as each later layer does. A recon then pinned the six Lean
+statements, each checked in a complete scratch proof, for two new files: two builds and the close
+remain. The targets are three tiers:
 every `d` at `def_3 ≤ 3` (proved and formalized, 42c), a `P⁴` theorem (every `d` at `def_3 ≤ 7`,
 by the sharp lemma), and every `d` (proved on paper, 42d).
 
