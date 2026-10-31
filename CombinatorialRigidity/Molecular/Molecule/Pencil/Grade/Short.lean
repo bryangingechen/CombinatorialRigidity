@@ -32,8 +32,8 @@ bodies (which uses the variant `_of_base`).
   put back (`hins`), asked only at the base data of the first stage and for `G[V₁]`'s own
   `joinRelScrews`. It serves the step at three interior bodies.
 * `Graph.X0AttainsGrade.of_openEar_splitOff`: its corollary with `hins` for every `ρ`, `Pq = 1` and
-  `Rz = 1`, which holds from four interior bodies on (not at three); the hinges become joins
-  through `complementScrew`.
+  `Rz = 1`, whose `hins` can be met from four interior bodies on (not at three); the hinges
+  become joins through `complementScrew`.
 * `starsCond_of_smul` and `span_joins_succAbove_two`: the stars condition is scale invariant, and
   the joins of the ear of `G` are those of the ear of `G″` but one, with the two at the body put
   back.
@@ -219,6 +219,7 @@ theorem splitOff_ear_succAbove {G : Graph α β} {V₁ : Set α} {k : ℕ} {x : 
       · exact hne _ v1 h'
       · exact hne _ v2 h'
 
+/-! ## The base data, in every dimension -/
 
 open Classical in
 /-- **The base data of the steps at three and at four or more interior bodies**, with `m` heights:
@@ -440,7 +441,6 @@ theorem _root_.Graph.exists_earBase_splitOff_grade [Infinite K] [Finite α] {G :
   · rw [hind, BodyHingeFramework.finrank_span_rigidityRows_congr (G.induce V₁) (hC2 s)]
     exact hrk₁ s
   · simp [hz₁def, Graph.liftingRestrict_apply, ht]
-
 
 /-! ## The factoring through `G″`, in every dimension -/
 
