@@ -3381,6 +3381,9 @@ the point of a picture point and $d - 2$ heights.
 % (part 2).
 \begin{lemma}[Three consecutive vertices of a closed polygon]
   \label{lem:pencil-d-polygon-normal}
+  \lean{CombinatorialRigidity.Molecular.linearIndependent_polygon_vertices,
+        CombinatorialRigidity.Molecular.exists_linearEquiv_polygon_normal}
+  \leanok
   \uses{def:join}
   Let $d \ge 3$, and let $Y$ be a closed $m$-gon in $K^{d+1}$ with
   independent joins.
@@ -3396,6 +3399,7 @@ the point of a picture point and $d - 2$ heights.
   \end{enumerate}
 \end{lemma}
 \begin{proof}
+  \leanok
   (1) The join $J_{i-1} = Y_{i-1} \vee Y_i$ is nonzero, as a member of
   an independent family, so $Y_{i-1}$ and $Y_i$ are linearly independent
   (the remark after \cref{def:extensor}). Suppose that
@@ -3439,12 +3443,15 @@ the point of a picture point and $d - 2$ heights.
 % standard basis vectors.
 \begin{lemma}[A line through a vertex off the span of the joins]
   \label{lem:pencil-d-polygon-star}
+  \lean{CombinatorialRigidity.Molecular.exists_normalsJoin_notMem_span_polygon}
+  \leanok
   \uses{def:join}
   Let $d \ge 3$, and let $Y$ be a closed $m$-gon in $K^{d+1}$ with
   independent joins, where $m < D$. Then some vertex $Y_i$ and some
   $u \in K^{d+1}$ have $Y_i \vee u \notin W(Y)$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-d-polygon-normal}
   As the joins are independent, $\dim W(Y) = m$. Let $S$ be the span of
   the vertices.
@@ -3473,6 +3480,8 @@ the point of a picture point and $d - 2$ heights.
 % Source: CERT workbook, S5.
 \begin{lemma}[Inserting a vertex into a closed polygon]
   \label{lem:pencil-d-polygon-insert}
+  \lean{CombinatorialRigidity.Molecular.exists_insertNth_linearIndependent_join}
+  \leanok
   \uses{def:join}
   Let $K$ have at least four elements and $d \ge 3$. Let $Y$ be a closed
   $m$-gon in $K^{d+1}$ with independent joins whose vertices have last
@@ -3483,6 +3492,7 @@ the point of a picture point and $d - 2$ heights.
   joins.
 \end{lemma}
 \begin{proof}
+  \leanok
   Let $\omega$ be the last coordinate of $u$. For $t \in K$ with
   $c(t) = 1 + t\omega \neq 0$, put $y(t) = (Y_i + t u)/c(t)$, which has
   last coordinate $1$, and let $Y(t)$ be the closed $(m + 1)$-gon with
@@ -3525,6 +3535,8 @@ the point of a picture point and $d - 2$ heights.
 % exactly over the rationals at d = 3, ..., 9 (notes/attacks/cert/drivers/cert_r1.py).
 \begin{lemma}[Closed polygons with independent joins, in every dimension]
   \label{lem:pencil-d-polygons}
+  \lean{CombinatorialRigidity.Molecular.exists_polygon_linearIndependent_join}
+  \leanok
   \uses{def:join}
   Let $K$ have at least four elements, $d \ge 3$ and
   $D = \binom{d+1}{2}$. For every $3 \le m \le D$ there is a closed
@@ -3533,6 +3545,7 @@ the point of a picture point and $d - 2$ heights.
   $Y_1 = P_2$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-d-polygon-normal, lem:pencil-d-polygon-star,
         lem:pencil-d-polygon-insert}
   We first find, by induction on $m$, a closed $m$-gon with independent
@@ -3560,6 +3573,14 @@ the point of a picture point and $d - 2$ heights.
 % Source: CERT workbook, S7; part (2) is derived here from part (1) with m = k + 1.
 \begin{lemma}[A long cycle or ear on a closed $D$-gon]
   \label{lem:pencil-d-polygon-collapse}
+  \lean{CombinatorialRigidity.Molecular.polygonCollapse,
+        CombinatorialRigidity.Molecular.polygonCollapseEdge,
+        CombinatorialRigidity.Molecular.polygonCollapseEdge_injective,
+        CombinatorialRigidity.Molecular.polygonCollapse_polygonCollapseEdge,
+        CombinatorialRigidity.Molecular.polygonCollapse_zero,
+        CombinatorialRigidity.Molecular.polygonCollapse_one,
+        CombinatorialRigidity.Molecular.polygonCollapse_neg_one}
+  \leanok
   \uses{def:join}
   Let $d \ge 3$ and $D = \binom{d+1}{2}$, and let $Y$ be a closed
   $D$-gon in $K^{d+1}$ with independent joins $J_0, \dots, J_{D-1}$. For
@@ -3581,6 +3602,7 @@ the point of a picture point and $d - 2$ heights.
   \end{enumerate}
 \end{lemma}
 \begin{proof}
+  \leanok
   (1) For $0 \le j \le D - 3$ the bodies $c_j$ and $c_{j+1}$ are at
   $Y_j$ and $Y_{j+1}$, as $j + 1 \le D - 2$. So the join at the edge
   $c_j c_{j+1}$ is $J_j$. As $m - 2 \ge D - 2$, the body $c_{m-2}$ is at

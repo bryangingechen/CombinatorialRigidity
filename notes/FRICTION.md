@@ -110,6 +110,15 @@ moment you resolve the entry) is what makes the sweep a pure
 to be re-derived by re-reading entries later.
 
 ## Open
+### [open] The `normalsJoin` linearity and minor lemmas sit in `Pencil/Grade/Polygon.lean`, not `PanelLayer.lean`
+- **Where it bit:** Phase 42g, `Pencil/Grade/Polygon.lean`: `normalsJoin_add_right`, `normalsJoin_smul_right`,
+  `normalsJoin_zero_left` and `exists_linearMap_normalsJoin_eq` (a `2 × 2` minor as a functional on `⋀²`)
+  are about `normalsJoin`, whose home is `AlgebraicInduction/PanelLayer.lean`.
+- **Proposed fix:** move them beside `normalsJoin` (with `exteriorPower_map_normalsJoin`, above) with the
+  next commit that edits `PanelLayer.lean` for another reason: a new declaration there rebuilds most of
+  `Molecular/`.
+- **Status:** open (42c's deferral, extended; tracked under PD-STEPS, `notes/Phase42-design.md` §3).
+
 ### [open] The kernel argument at an additive core is proved twice, inline at `d = 3` and in `Pencil/Grade/`
 - **Where it bit:** Phase 42f, `lem:pencil-contract-additive-kernel`
   (`Graph.finrank_ker_contractLiftingMatrix_zero_eq_and_map_eq`,

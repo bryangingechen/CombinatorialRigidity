@@ -22,6 +22,7 @@ public import CombinatorialRigidity.Mathlib.Combinatorics.Graph.Delete
 public import CombinatorialRigidity.Mathlib.Combinatorics.SimpleGraph.Acyclic
 public import CombinatorialRigidity.Mathlib.Combinatorics.SimpleGraph.Connectivity.Connected
 public import CombinatorialRigidity.Mathlib.Combinatorics.SimpleGraph.DeleteEdges
+public import CombinatorialRigidity.Mathlib.Data.Fin.Basic
 public import CombinatorialRigidity.MatroidIdentification
 public import CombinatorialRigidity.Molecular.AlgebraicInduction.Nonvacuity
 public import CombinatorialRigidity.Molecular.AlgebraicInduction.Theorem55
@@ -49,6 +50,7 @@ public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Cut
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Embedding
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Flat
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.JoinIndependence
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Polygon
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Realization
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Stable
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.TheoremS
