@@ -63,7 +63,8 @@ index (forward mode), and the file map is under *Current state*.
 
 Phase 42 stays in progress with no sub-phase open, and PD-COVERAGE is complete (4 nodes, all
 green), which completes the induction in every dimension. The next step is **putting
-PD-REDUCTION's open to the PI** (design doc §3), no letter minted until it opens: the 8 red nodes
+PD-REDUCTION's open to the PI** (design doc §3), no letter minted until it opens (answered at
+42k's open: all eight as written, design doc §1; `notes/Phase42k.md`): the 8 red nodes
 of `pencil-d.tex`'s `sec:pencil-d-reduction`, Phase 39's reduction in `Pᵈ` (from
 `lem:pencil-d-two-pencil-extension` to the theorem `thm:pencil-d-realization-theorem`); then
 PD-HEAD (21 nodes), at the PI's word. What 42j hands on:

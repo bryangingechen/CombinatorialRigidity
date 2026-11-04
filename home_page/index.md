@@ -184,7 +184,7 @@ strongest form included. Formalizing that proof has begun with its
 induction, now formalized: in every dimension, every simple connected
 graph of minimum degree at least two has a pencil realization at the
 deficiency rank, whatever its deficiency in the plane. The reduction
-from these graphs to all multigraphs is next.
+from these graphs to all multigraphs is in progress.
 
 ### How the pencil realization theorem is proved
 

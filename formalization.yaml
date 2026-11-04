@@ -304,7 +304,7 @@ status:
     (Graph.IsX0Graph.x0AttainsGrade with Graph.X0AttainsGrade.hasGradedDistinctPencilRealization;
     for the simple two-edge-connected graphs on at least three bodies,
     Graph.hasGradedDistinctPencilRealization_of_twoEdgeConnected); the reduction from these graphs
-    to all multigraphs is next.
+    to all multigraphs is in progress.
   sorry_count: 0
   sorry_in_definitions: 0
   axioms: ["propext", "Classical.choice", "Quot.sound"]          # only Lean/mathlib standard axioms; no project-specific axioms

@@ -324,7 +324,10 @@ to be re-derived by re-reading entries later.
   fourth site: a `private six_le_bodyBarDim` in `Pencil/Grade/TheoremS.lean`, not landed in
   `BodyBar/Framework.lean` for the same rebuild cost. The fix replaces it with `bodyBarDim_mono`.
   The fifth site is 42j's private `exists_chainBound` (`Pencil/Grade/Coverage.lean`), which
-  unfolds it for `12 ≤ bodyBarDim (m + 2)` at `m ≥ 3` (found at 42j's close).
+  unfolds it for `12 ≤ bodyBarDim (m + 2)` at `m ≥ 3` (found at 42j's close). Correction (42k's
+  open): a public `Graph.six_le_bodyBarDim` has been in `BodyBar/Framework.lean` since 2026-07-03
+  (`33d6b2a6`; `Pencil/Pair2.lean` calls it), so the fourth site's private copy duplicates it and
+  the fix deletes that copy.
 - **Status:** open.
 
 ### [idiom] `Set.nonempty_of_ncard_ne_zero (by omega)` against `V(G.induce Y).Nonempty` needs `(s := Y)`

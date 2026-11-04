@@ -230,7 +230,7 @@ every dimension, its strongest form included. Formalizing that proof has
 begun with its induction, now formalized: in every dimension, every
 simple connected graph of minimum degree at least two has a pencil
 realization at the deficiency rank, whatever its deficiency in the
-plane. The reduction from these graphs to all multigraphs is next.
+plane. The reduction from these graphs to all multigraphs is in progress.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries

@@ -10,11 +10,11 @@ closed 2026-10-30, `notes/Phase42f.md`), 42g (its cycle and long-ear steps, clos
 `notes/Phase42g.md`), 42h (the short ears with four or more interior bodies, closed 2026-10-31,
 `notes/Phase42h.md`) and 42i (the three-body short ear, closed 2026-10-31, `notes/Phase42i.md`),
 which completes PD-STEPS, and 42j (PD-COVERAGE, the coverage, closed 2026-10-31,
-`notes/Phase42j.md`), which completes the induction; PD-REDUCTION opens next, at the PI's word
-(design doc §3). No Lean, no blueprint here. Evidence drivers:
-`notes/scripts/strata/strata.py` (exact ℚ, seeded) and `oneclass.py` beside it. Editing
-discipline as for phase notes (≤ 8-line entries). `HARNESS.md` *Evidence* and *Reproducibility*
-bind this work; it is not an attack track.
+`notes/Phase42j.md`), which completes the induction, and then as 42k (PD-REDUCTION, Phase 39's
+reduction, opened 2026-11-04, `notes/Phase42k.md`; design doc §3). No Lean, no blueprint here.
+Evidence drivers: `notes/scripts/strata/strata.py` (exact ℚ, seeded) and `oneclass.py` beside it.
+Editing discipline as for phase notes (≤ 8-line entries). `HARNESS.md` *Evidence* and
+*Reproducibility* bind this work; it is not an attack track.
 
 ## The question
 
