@@ -306,7 +306,7 @@ valid. The cleanup chooses one per `open` row, with the PI.
   *Remedies:* the prose to the Lean (the section, as `lem:pencil-d-x0-one-witness` already reads),
   or keep both.
 - **R-22** · `lem:pencil-d-steer` (`PencilSeed.ofGamma`, `steerPoint`, `steerNormal`, `steerSet`;
-  `Grade/Lift.lean`, 42l, the recon's spike) · **open**.
+  `Grade/Lift.lean`, 42l build 3) · **open** (the Lean landed as below; the chapter stays as the prose).
   *Chapter:* `Γ(G)` has at each body `m_v` and five auxiliary vectors, the closed
   (hub-)neighbourhood in a fixed order followed by as many of the first three, or of the last two,
   as are needed.

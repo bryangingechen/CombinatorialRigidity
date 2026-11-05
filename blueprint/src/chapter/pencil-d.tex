@@ -4957,6 +4957,20 @@ the points of the realization.
 % its vector n_v, are S18 (i)'s reading of "any nonzero vector orthogonal to their points".
 \begin{lemma}[A parametrization in dimension three]
   \label{lem:pencil-d-steer}
+  \lean{CombinatorialRigidity.Molecular.PencilSeed.ofGamma,
+        CombinatorialRigidity.Molecular.PencilSeed.toGamma,
+        CombinatorialRigidity.Molecular.steerPoint,
+        CombinatorialRigidity.Molecular.steerNormal,
+        CombinatorialRigidity.Molecular.steerSet,
+        CombinatorialRigidity.Molecular.isPolyFun_steerPoint,
+        CombinatorialRigidity.Molecular.isPolyFun_steerNormal,
+        CombinatorialRigidity.Molecular.steerPoint_dotProduct_steerNormal,
+        CombinatorialRigidity.Molecular.mem_steerSet_iff,
+        CombinatorialRigidity.Molecular.isZariskiOpen_steerSet,
+        CombinatorialRigidity.Molecular.exists_mem_steerSet_of_isNondeg,
+        CombinatorialRigidity.Molecular.steerSet_nonempty_iff,
+        CombinatorialRigidity.Molecular.HoldsGenerally}
+  \leanok
   \uses{def:pencil-d-nondegenerate, lem:pencil-d-nondegenerate-three}
   Let $G$ be a finite simple multigraph whose closed hub-neighbourhoods
   have at most three members. Let $\Gamma(G)$ be the space of tuples $s$
@@ -4985,6 +4999,7 @@ the points of the realization.
   when $G$ is nondegeneracy-feasible.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-generic-steer, lem:pencil-d-point-configuration}
   A body that is not a hub has at most three members in its closed
   neighbourhood, and at least one, so at most two auxiliary vectors
@@ -5052,6 +5067,13 @@ subset.
 % embedding and the lifts of a configuration are configurations (no coordinate permutation).
 \begin{definition}[Lifts of a realization in dimension three]
   \label{def:pencil-d-lift}
+  \lean{CombinatorialRigidity.Molecular.liftVec,
+        CombinatorialRigidity.Molecular.liftSpace,
+        CombinatorialRigidity.Molecular.IsTrivialLift,
+        CombinatorialRigidity.Molecular.liftMaps,
+        CombinatorialRigidity.Molecular.liftNormal,
+        CombinatorialRigidity.Molecular.liftSubspace}
+  \leanok
   \uses{def:pencil-d-nondegenerate, def:pencil-d-embedding,
         def:panel-hinge-framework, def:rigidity-matrix}
   Let $G$ be a multigraph, and at every body $v$ let $b^0_v \in K^4$ and
@@ -5095,6 +5117,13 @@ $(b^0, \Pi^0)$ itself.
 % part (2), and S25's change of coordinates for part (3).
 \begin{lemma}[Lifts are nondegenerate realizations]
   \label{lem:pencil-d-lift-realization}
+  \lean{CombinatorialRigidity.Molecular.IsNondegPencilPlaneRealization.lift,
+        CombinatorialRigidity.Molecular.mem_liftMaps_iff,
+        CombinatorialRigidity.Molecular.liftSmul_mem_liftSpace_iff,
+        CombinatorialRigidity.Molecular.liftTransport_mem_liftSpace_iff,
+        CombinatorialRigidity.Molecular.finrank_span_rigidityRows_ofNormals_smul,
+        CombinatorialRigidity.Molecular.finrank_liftNormal_transport}
+  \leanok
   \uses{def:pencil-d-lift, def:pencil-d-nondegenerate}
   Let $d \ge 3$, let $(b^0, \Pi^0)$ be a nondegenerate realization of $G$
   in dimension three, and let $\lambda \in \mathcal{L}(b^0, \Pi^0)^m$.
@@ -5118,6 +5147,7 @@ $(b^0, \Pi^0)$ itself.
   \end{enumerate}
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-d-point-configuration, lem:pencil-d-nondegenerate-maps,
         lem:pencil-d-rank-collineation}
   (1) The subspace $\Pi_v$ is the image of $\Pi^0_v$ under an injective
@@ -5151,6 +5181,8 @@ $(b^0, \Pi^0)$ itself.
 % Source: NONDEG workbook, S18 (iv), stated in S18 (v)'s pointwise form.
 \begin{definition}[The general lift attains]
   \label{def:pencil-d-lift-attains}
+  \lean{CombinatorialRigidity.Molecular.LiftAttains}
+  \leanok
   \uses{def:pencil-d-lift, def:D-deficiency}
   Let $d \ge 3$ and let $G$ be nondegeneracy-feasible
   (\cref{def:pencil-nondegenerate}). The \emph{general lift of $G$ attains
