@@ -802,9 +802,10 @@ its one new step proved by hand at `d = 4` by the SHORT-CORE attack track; PD-ST
 proof as red nodes. Formalizing it took PD-CARRIER (42e), PD-STEPS (42f–42i), PD-COVERAGE (42j),
 PD-REDUCTION (42k) and PD-HEAD (42l–42m), the last the generic conjunct by lifts of `P³`
 realizations and the headline. The Lean proofs that depart from the chapter's are the ledger of
-`notes/Cleanup42.md`. Summary: ROADMAP §42. Still queued, codenamed: **CLEANUP-42** (the
-`pencil-d.tex` proofs against their Lean, `notes/Cleanup42.md`; next to open, with the PI, its place
-ahead of ORIGAMI the coordinator's proposal), **ORIGAMI** (the planar-blocks / molecular-origami
+`notes/Cleanup42.md`. Summary: ROADMAP §42. **CLEANUP-42** (the `pencil-d.tex` proofs
+against their Lean, `notes/Cleanup42.md`) opened 2026-11-05 at the PI's word, ahead of ORIGAMI; its
+round 1, the route audit, closed the same day at a stop for the PI. Still queued, codenamed:
+**ORIGAMI** (the planar-blocks / molecular-origami
 conjecture, `notes/Origami.md`, with the PI), **PIN** (a second,
 independent proof of the 2-d molecular conjecture by Jackson–Jordán 2008's
 pin-collinear route, re-scoped at 40a's close; unplanned), **UPSTREAM** (mathlib upstreaming) and

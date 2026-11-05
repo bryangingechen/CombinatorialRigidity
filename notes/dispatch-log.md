@@ -298,6 +298,24 @@ labels, `LiftAttains` asks for a selector that cannot exist. 42l's row
 The line it drew: a carrier artifact at a degenerate type is an
 encoding, and a change to the mathematics is a departure.
 
+**CLEANUP-42 round 1 (the route audit) rows, 2026-11-05: 3, written at the
+stop.** None BLOCKED, escalated or killed. Sixteen dispatches, all Opus: the
+open, fourteen recon slices (one docs commit each) and the stop. (1) The open
+wrote round 1's next task number into ROADMAP's CLEANUP-42 bullet, a surface
+its own scope barred the slices from editing; it went stale at the first
+slice, and a coordinator fixup (`191275be`) made it a pointer to the work
+log's **Status**. A surface the slices may not touch carries a pointer, never
+a task number. (2) The work log's forward weighting fell to 104 / 95 by task
+9, each tick moving a forward line to a finished one; task 10 cut the ticked
+lines to a three-line register written into the checklist. A long
+uniform-slice round sets that register at its open. (3) Criterion (3) split
+the recons: a hypothesis the pin drops was `open` in some slices (R-35) and
+`no departure` in others (R-36, R-44). From task 12 the prompt pinned it:
+`no departure` only when the drop is vacuous or trivially recovered, else
+`open`; the stop lists the close calls for the PI. A recon's clause on
+callers (R-50, "one caller") was wrong, caught by the next slice and fixed by
+a grep-verified `scope-pin`.
+
 ## Findings
 
 (Distill recurring lessons here — one entry per lesson, rows cite it.
