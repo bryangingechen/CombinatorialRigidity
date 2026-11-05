@@ -9,13 +9,13 @@ Lean under `/coordinate-phase`: the eight red nodes of `blueprint/src/chapter/pe
 `lem:pencil-d-nonsimple-case`) and the theorem `thm:pencil-d-realization-theorem`, on the
 `Pencil/Grade/` carrier, Phase 39's `Graph.pencil_reduction` and 42j's distinct statement. The
 pre-build recon spiked all eight complete, with no `sorry`, and pinned three builds; build 1
-(`Grade/TwoPencil.lean`) made the three linear-algebra nodes green and build 2 (`Grade/Arms.lean`)
-the loop, base and cut-edge cases, 6 of 8. Next: build 3, `Grade/Reduction.lean`, the nonsimple
-case and the theorem (*Hand-off*).
+(`Grade/TwoPencil.lean`) made the three linear-algebra nodes green, build 2 (`Grade/Arms.lean`) the
+loop, base and cut-edge cases, and build 3 (`Grade/Reduction.lean`) the nonsimple case and the
+theorem: all 8 green. Next: the close, its own commit (*Hand-off*).
 
 ## Current state
 
-**Next: build 3, `Grade/Reduction.lean`** (*Hand-off*). Green: 6 of the 8 nodes.
+**Next: the close** (*Hand-off*). Green: all 8 nodes.
 - **Build 1, landed:** `Pencil/Grade/TwoPencil.lean` (imports `Grade/Realization`):
   `lem:pencil-d-two-pencil-extension` (`perpExtensor`, `C_B`, and its three parts),
   `lem:pencil-d-projective-transport` and `lem:pencil-d-cut-reposition`, with their helpers and
@@ -23,6 +23,10 @@ case and the theorem (*Hand-off*).
 - **Build 2, landed:** `Pencil/Grade/Arms.lean` (imports `Grade/TwoPencil`):
   `lem:pencil-d-loop-case`, `lem:pencil-d-base-case` and `lem:pencil-d-cut-case`, both forms of
   each of the last two, the cut case from its core and the glue; R-18's Lean as recorded.
+- **Build 3, landed:** `Pencil/Grade/Reduction.lean` (imports `Grade/Arms` and `Grade/Coverage`):
+  `lem:pencil-d-nonsimple-case` (R-19's Lean as recorded) and `thm:pencil-d-realization-theorem`,
+  `Graph.graded_pencil_realization_theorem`, by `Graph.pencil_reduction` at `n = m + 2`; it
+  depends on the three standard axioms only.
 
 The pre-build recon (design pass, 2026-11-04) spiked the whole layer on the landed carrier, with no
 `sorry`: `scratch/42k/Spike.lean` (gitignored, 1167 lines; `lake lean` clean with no warning, the
@@ -30,7 +34,7 @@ three standard axioms at the nine declarations checked, the `unusedArguments` an
 clean). Its sections are the three builds, in order, each a mechanical transcription:
 - the linear algebra (build 1, landed);
 - the loop, base and cut-edge cases (build 2, landed);
-- the nonsimple case and the theorem (build 3).
+- the nonsimple case and the theorem (build 3, landed).
 
 Two `example`s at its end check, at `d = 4` over `ℚ`, that the adjacent-distinct form is
 satisfiable on one body and on two bodies with one edge (by the base case). The chapter is the
@@ -61,8 +65,8 @@ lemma index (forward mode). The pinned signatures, the files and the build order
 - [x] `lem:pencil-d-loop-case`, build 2, `Grade/Arms.lean`.
 - [x] `lem:pencil-d-base-case`, both forms, build 2, same file.
 - [x] `lem:pencil-d-cut-case`, both forms, build 2, same file.
-- [ ] `lem:pencil-d-nonsimple-case`, build 3, `Grade/Reduction.lean`.
-- [ ] `thm:pencil-d-realization-theorem`, by `Graph.pencil_reduction`, build 3, same file.
+- [x] `lem:pencil-d-nonsimple-case`, build 3, `Grade/Reduction.lean`.
+- [x] `thm:pencil-d-realization-theorem`, by `Graph.pencil_reduction`, build 3, same file.
 - [ ] **Close** 42k, an intermediate sub-phase close that ends PD-REDUCTION (`PHASE-BOUNDARIES.md`).
 
 ## Blockers / open questions
@@ -74,26 +78,20 @@ lemma index (forward mode). The pinned signatures, the files and the build order
 
 ## Hand-off / next phase
 
-The next concrete commit is **build 3**: a new `Pencil/Grade/Reduction.lean`, importing
-`Grade/Arms` and `Grade/Coverage`, transcribed from `scratch/42k/Spike.lean`'s sections *The
-nonsimple case* and *The theorem* (about 310 lines), with its line in `CombinatorialRigidity.lean`,
-the `\lean{}` and `\leanok` of the last two nodes, and R-19's Lean as recorded. It is the phase's
-last build; the close follows as its own commit (`PHASE-BOUNDARIES.md`). In
-`CombinatorialRigidity.Molecular`, at `[Finite α] [Finite β] {m}`:
-- `lem:pencil-d-nonsimple-case` pins `hasGradedPencilRealization_of_not_simple (G) (hloop :
-  G.Loopless) (hV : 3 ≤ V(G).ncard) (hs : ¬ G.Simple) (hIH : ∀ G', V(G').Nonempty → V(G').ncard <
-  V(G).ncard → HasGradedPencilRealization K (m + 1) (m + 2) G') : HasGradedPencilRealization K
-  (m + 1) (m + 2) G` (the hinges from `exists_two_planes_of_mem`, `perpExtensor_two_pencils` and
-  `linearIndependent_perpExtensor_pair`; the rank by the splice, R-19).
-- `thm:pencil-d-realization-theorem` pins `Graph.graded_pencil_realization_theorem [Infinite K]
-  (hm : 1 ≤ m) {G} (hne : V(G).Nonempty) : HasGradedPencilRealization K (m + 1) (m + 2) G ∧
-  (G.Simple → HasGradedDistinctPencilRealization K (m + 1) (m + 2) G)`, by
-  `Graph.pencil_reduction` at `n = m + 2`, its cut, contraction and split cases one function.
-- **The standing rule**: build 3 lands R-19's Lean as recorded (`notes/Cleanup42.md`); a build
-  that aligns it sets its status. R-18 landed with build 2, as recorded.
-- **Deferred, where it lands** (design doc §3; FRICTION's `[open]` entries): no build edits a file
-  that carries a home debt of 42b–42i (`notes/Phase42i.md` *Hand-off*), so none rides; 42j added
-  none. Builds 1 and 2 added five, each with the next commit that edits its file (FRICTION *42k's
+The next concrete commit is **the close** of 42k, its own commit: an intermediate sub-phase close
+that ends PD-REDUCTION (`PHASE-BOUNDARIES.md` *When this commit closes a phase*, its sub-phase
+adaptations). All eight nodes are green, and builds 1, 2 and 3 have landed (*Current state*). The
+close advances ROADMAP's Phase 42 cell (42k done; PD-HEAD next, at the PI's word) and compresses
+42k's detail in ROADMAP §42 and design doc §3 to a summary and pointer; re-reads
+`sec:pencil-d-reduction` end to end against the landed Lean, and adds a
+`notes/BlueprintExposition.md` entry if a node earns one; compresses this note to its archive form;
+and runs the project-organization review. No `formalization.yaml` row: intermediate sub-phase
+closes add none (design doc §3).
+- **The standing rule**: R-18 and R-19 landed as recorded (`notes/Cleanup42.md`, both open for the
+  cleanup). CLEANUP-42 also takes the fold of the `d = 3` cases into 42k's graded ones (its §3).
+- **Deferred, where it lands** (design doc §3; FRICTION's `[open]` entries): no build edited a file
+  that carries a home debt of 42b–42i (`notes/Phase42i.md` *Hand-off*), so none rode; 42j added
+  none. Builds 1 and 2 added four, each with the next commit that edits its file (FRICTION *42k's
   home debts* and *42k build 2*): `exists_smul_extensor_eq_of_mem_span_range_grade` to `Meet.lean`
   (with `contragredientEquiv`), `ExtensorInPanel.smul` to `RigidityMatrix/Basic.lean`,
   `dotPerp_map_eq` to `Grade/Realization.lean`, `finrank_span_rigidityRows_of_single_edge` to
@@ -101,8 +99,8 @@ last build; the close follows as its own commit (`PHASE-BOUNDARIES.md`). In
   (`finrank_span_pair_eq_two`, `exists_mem_linearIndependent_pair`,
   `exists_pair_of_ncard_le_two_of_edgeSet_nonempty`).
 - **After 42k:** PD-HEAD (`-nondegenerate`, `-lift`, `-generic`; 21 red nodes, ending in the
-  headline `cor:pencil-d-conditioned-pair`, which takes its first two claims from the theorem's two
-  conjuncts) opens at the PI's word (design doc §3).
+  headline `cor:pencil-d-conditioned-pair`, which takes its first two claims from
+  `Graph.graded_pencil_realization_theorem`'s two conjuncts) opens at the PI's word (design doc §3).
 
 ## Decisions made during this phase
 

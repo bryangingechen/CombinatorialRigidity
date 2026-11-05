@@ -260,15 +260,15 @@ valid. The cleanup chooses one per `open` row, with the PI.
   the same bodies does not raise it; the rank `D` is the chapter's (`lem:theorem-55-base`).
   *Remedies:* the prose to the Lean, a Lean helper (the motions of one edge, of codimension
   `D − 1`) so that the Lean follows the chapter, or keep both.
-- **R-19** · `lem:pencil-d-nonsimple-case` (`hasGradedPencilRealization_of_not_simple`, 42k recon,
-  to land in `Grade/Reduction.lean`) · **open**.
+- **R-19** · `lem:pencil-d-nonsimple-case` (`hasGradedPencilRealization_of_not_simple`,
+  `Grade/Reduction.lean`, 42k build 3, landed) · **open**.
   *Chapter:* every edge joining `u` and `w` other than `e` gets `C_{B₂}`; the motions of `G` are
   those of `G/H` with `S(w) = S(u)`, of codimension `D` in them, so the rank is that of `G/H` plus
   `D`. Its closing remark cites the block-triangular count (KT eqs. (6.3)–(6.5),
   `lem:rigidityRows-splice-rank-add`) only at `d = 3`.
-  *Lean (spiked complete):* the `d = 3` Lean's route (`hasPencilRealization_of_not_simple`), at
-  `D`. `e ↦ C_{B₁}`, `f ↦ C_{B₂}`, and the other edges joining `u` and `w`, loops at `u` in `G/H`,
-  keep their hinges there. The rank is at least `D` (the rows of `e` and `f`,
+  *Lean (landed, the recon's spike):* the `d = 3` Lean's route
+  (`hasPencilRealization_of_not_simple`), at `D`. `e ↦ C_{B₁}`, `f ↦ C_{B₂}`, and the other edges
+  joining `u` and `w`, loops at `u` in `G/H`, keep their hinges there. The rank is at least `D` (the rows of `e` and `f`,
   `lem:theorem-55-base`) plus that of `G/H`, by the splice
   (`BodyHingeFramework.le_finrank_span_rigidityRows_of_splice`, at every grade), and at most the
   target (`lem:relative-deficiency-rank-bound`).
@@ -285,6 +285,11 @@ valid. The cleanup chooses one per `open` row, with the PI.
   bridge `Graph.ChainUsable ↔ Graph.ChainUsableAt 3`. It reverses the import, so COUNT-B's
   lemmas move upstream of the `d = 3` coverage; no node of PD-COVERAGE uses Theorem S at `D` (42j's
   recon, `notes/Phase42j.md`).
+- **Also left to it** (not a route row): the `d = 3` cases of the reduction (`Pencil/Arms.lean`,
+  `hasPencilRealization_of_not_simple` in `Pencil/X0.lean`) as the `m = 1` case of 42k's graded
+  ones (`Grade/Arms.lean`, `Grade/Reduction.lean`) through `hasGradedPencilRealization_two_iff`. It
+  reverses the imports, as Theorem S's fold does (FRICTION *42k's cases repeat the `d = 3` cases'
+  proofs*).
 - **At its open**, with the PI: the placement (§1), then the opening recon, which compares every
   green node of `pencil-d.tex` with its Lean and adds a row for each departure; then the rounds,
   and a remedy per `open` row, are planned with the PI.

@@ -4493,6 +4493,8 @@ $K^{d+1}$ chosen to meet it (\cref{lem:pencil-d-cut-reposition}).
 
 \begin{lemma}[A multigraph with parallel edges, in every dimension; cf.\ KT Lemma~6.2]
   \label{lem:pencil-d-nonsimple-case}
+  \lean{CombinatorialRigidity.Molecular.hasGradedPencilRealization_of_not_simple}
+  \leanok
   \uses{def:pencil-d-rank-hypothesis}
   Let $d \ge 3$, and let $G$ be a loopless multigraph on at least three
   bodies that is not simple. If every multigraph with at least one body
@@ -4501,6 +4503,7 @@ $K^{d+1}$ chosen to meet it (\cref{lem:pencil-d-cut-reposition}).
   does $G$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{def:D-deficiency, def:rigid-subgraph, def:rigid-contraction,
         lem:pencil-contraction-deficiency, lem:reduction-measure,
         lem:pencil-d-two-pencil-extension, lem:theorem-55-base,
@@ -4566,6 +4569,8 @@ $K^{d+1}$ chosen to meet it (\cref{lem:pencil-d-cut-reposition}).
 
 \begin{theorem}[Pencil realizations at the deficiency rank, in every dimension]
   \label{thm:pencil-d-realization-theorem}
+  \lean{Graph.graded_pencil_realization_theorem}
+  \leanok
   \uses{def:pencil-d-rank-hypothesis, def:pencil-d-distinct-motive}
   Let $K$ be an infinite field and $d \ge 3$. Every multigraph with at
   least one body has a pencil realization at the deficiency rank in
@@ -4574,6 +4579,7 @@ $K^{d+1}$ chosen to meet it (\cref{lem:pencil-d-cut-reposition}).
   simple.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{thm:pencil-reduction, lem:pencil-d-loop-case,
         lem:pencil-d-base-case, lem:pencil-d-cut-case,
         lem:pencil-d-distinct-statement, lem:pencil-d-nonsimple-case}
