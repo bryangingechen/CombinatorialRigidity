@@ -110,6 +110,32 @@ moment you resolve the entry) is what makes the sweep a pure
 to be re-derived by re-reading entries later.
 
 ## Open
+### [idiom] 42m build 5: a `set` does not abstract a defeq spelling, and three small traps
+- **Where it bit:** Phase 42m, `Pencil/Grade/LiftNoRigid.lean`
+  (`liftAttains_of_forall_deficiency_two_ne_zero`, `exists_pencilConfigPoint_of_dotProduct`).
+- **Friction:** (1) `set b := pencilConfigPoint q fun v => z (v, 0)` left the hypotheses from
+  `isNondeg_pencilConfig_of_planeDiff` in their own spelling `fun a => x (Sum.inl a)` (defeq, as
+  `x := X ∘ col`, `z := X ∘ Sum.inl`), so `simp only [hbdef, …]` made no progress. **Fix:** state the
+  rewrite as a function equality proved by `congrFun` of the lemma (defeq does the rest), then
+  `rw` it. (2) `Pi.single 2 1 ∉ P0 v` inside a `fun b0 P0 => …` predicate elaborated at `ℕ`
+  (*"failed to synthesize `Module K (Fin 4 → ℕ)`"*): ascribe `(Pi.single 2 1 : Fin 4 → K)`.
+  (3) `convert hx using 1` on membership in a `set`-named kernel produced an `↔` goal, not the
+  function equality: prove the equality by `funext` and `rw` it. (4) `if_pos`/`if_neg` and
+  `Set.mem_setOf_eq` are deprecated on this toolchain: `ite_eq_left`/`ite_eq_right`,
+  `Set.mem_ofPred_eq`.
+- **Status:** idiom (resolved in-proof).
+
+### [mirror-candidate] 42m build 5: `LinearMap.pi_apply_eq_sum_univ` reads the basis as `fun j => if i = j …`, not `Pi.single`
+- **Where it bit:** Phase 42m, `Pencil/Grade/LiftNoRigid.lean` (`mem_liftMaps_pencilConfigPoint_iff`),
+  as in `Pencil/Grade/LiftWitness.lean` (`exists_mem_liftSpaceTilde_of_mem_liftSpace`).
+- **Friction:** expanding a form `ψ` on `Fin n → K` as `∑ i, p i * ψ (Pi.single i 1)` takes
+  `LinearMap.pi_apply_eq_sum_univ` and then `simp [Pi.single_apply, eq_comm]` under a `congr 2` at
+  each summand; `lean_loogle` finds no `Pi.single` form.
+- **Proposed fix:** a mirror `LinearMap.pi_apply_eq_sum_univ_single` in
+  `Mathlib/LinearAlgebra/Pi.lean`, and the two call sites on it; not now (two call sites, a
+  cleanup round).
+- **Status:** mirror-candidate (open; a cleanup round).
+
 ### [idiom] 42m build 3: a pair-flip fed to a lemma generic in `{N}` times out, and three small traps
 - **Where it bit:** Phase 42m, `Pencil/Grade/LiftCutEdge.lean` (`exists_basis_frame`,
   `exists_dotProduct_eq_zero_avoid`, `cutEdge_rank`).

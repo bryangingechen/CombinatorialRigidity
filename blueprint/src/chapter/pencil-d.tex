@@ -5231,6 +5231,7 @@ one (\cref{lem:pencil-d-lift-realization}).
   \label{lem:pencil-d-lift-one-witness}
   \lean{CombinatorialRigidity.Molecular.liftAttains_of_least,
         CombinatorialRigidity.Molecular.liftAttains_of_holdsGenerally,
+        CombinatorialRigidity.Molecular.exists_holdsGenerally_finrank_liftSpaceTilde_le,
         CombinatorialRigidity.Molecular.exists_weightedHomogeneousComponent_of_eval_ne_zero,
         CombinatorialRigidity.Molecular.liftSpaceTilde_eq_ker}
   \leanok
@@ -5737,6 +5738,14 @@ the rest of $G$, and extending them to realizations of $G$
 % coordinates of def:pencil-d-lift inserted before the last one, they are the chapter's.
 \begin{lemma}[Without a planar-rigid set]
   \label{lem:pencil-d-lift-no-rigid}
+  \lean{CombinatorialRigidity.Molecular.liftAttains_of_forall_deficiency_two_ne_zero,
+        CombinatorialRigidity.Molecular.exists_planeDiff_ne_zero_poly,
+        CombinatorialRigidity.Molecular.mem_liftMaps_pencilConfigPoint_iff,
+        CombinatorialRigidity.Molecular.liftNormal_pencilConfigPoint,
+        CombinatorialRigidity.Molecular.finrank_liftSpaceTilde_pencilConfigPoint_ker,
+        CombinatorialRigidity.Molecular.finrank_liftSpaceTilde_pencilConfigPoint,
+        CombinatorialRigidity.Molecular.exists_pencilConfigPoint_of_dotProduct}
+  \leanok
   \uses{def:pencil-d-lift-attains, def:pencil-d-x0-attains,
         def:pencil-x0-standing}
   Let $K$ be infinite and $d \ge 3$, and let $G$ satisfy the standing
@@ -5747,6 +5756,7 @@ the rest of $G$, and extending them to realizations of $G$
   of $G$ attains in dimension $d$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-feasible-hub-conditions, thm:pencil-jj-equality,
         lem:pencil-x0-planes-separate, lem:pencil-x0-conjunct-three,
         lem:pencil-condition-linear, lem:pencil-x0-fibre-intersection,

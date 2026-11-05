@@ -16,7 +16,8 @@ The two nodes of `blueprint/src/chapter/pencil-d.tex` that follow `def:pencil-d-
 
 * `lem:pencil-d-lift-one-witness`: `LiftAttains` is homogeneous in each body (`bodyWeight`); one
   lift of least `dim L̃` (`liftSpaceTilde`) of the target rank gives the general lift attaining
-  (`liftAttains_of_least`), and so does a general realization with one
+  (`liftAttains_of_least`); the least value is taken generally
+  (`exists_holdsGenerally_finrank_liftSpaceTilde_le`), so a general realization with one suffices
   (`liftAttains_of_holdsGenerally`).
 * `lem:pencil-d-lift-transfer`: the lifts of a subgraph that attain form a nonempty Zariski-open
   set of the maps (`lift_transfer`).
@@ -527,13 +528,69 @@ theorem finrank_liftSpaceTilde_smul {G : Graph α β} {b b' : α → Fin 4 → K
 theorem isZariskiOpen_eval_ne_zero {σ : Type*} (R : MvPolynomial σ K) :
     IsZariskiOpen {s : σ → K | MvPolynomial.eval s R ≠ 0} := fun _ hs => ⟨R, hs, fun _ h => h⟩
 
+theorem isZariskiOpen_ne_zero_of_isPolyFun {σ : Type*} {f : (σ → K) → K} (hf : IsPolyFun f) :
+    IsZariskiOpen {s | f s ≠ 0} := by
+  obtain ⟨c, hc⟩ := hf
+  intro s hs
+  exact ⟨c, by rwa [← hc], fun s' hs' => by rwa [Set.mem_ofPred_eq, hc]⟩
+
+/-- **A property that holds on a Zariski-open set of parameters meeting `U(G)` holds generally**
+(the remark after `lem:pencil-d-steer`). -/
+theorem HoldsGenerally.of_isZariskiOpen {G : Graph α β} {hubSel nbrSel : α → Fin 3 → Option α}
+    {p : (α → Fin 4 → K) → (α → Submodule K (Fin 4 → K)) → Prop}
+    {S : Set (α × Fin 7 × Fin 4 → K)} (hS : IsZariskiOpen S) {s₀ : α × Fin 7 × Fin 4 → K}
+    (hs₀ : s₀ ∈ steerSet G hubSel nbrSel) (hs₀S : s₀ ∈ S)
+    (h : ∀ s ∈ steerSet G hubSel nbrSel, s ∈ S →
+      p (steerPoint hubSel s) (fun v => dotPerp (K ∙ steerNormal hubSel nbrSel G s v))) :
+    HoldsGenerally G hubSel nbrSel p := by
+  obtain ⟨R, hR0, hR⟩ := hS s₀ hs₀S
+  exact ⟨R, ⟨s₀, hs₀, hR0⟩, fun s hs hRs => h s hs (hR s hRs)⟩
+
+/-- **`dim L̃` takes its least value at a general nondegenerate realization**
+(`lem:pencil-d-lift-one-witness`, a step of part (2)): some `N` bounds `dim L̃` below at every
+nondegenerate realization in dimension three, and is attained generally. `N` is the least value on
+`U(G)`, least among all nondegenerate realizations as each is `r(s)` up to scalars
+(`exists_mem_steerSet_of_isNondeg`, `finrank_liftSpaceTilde_smul`); `dim L̃` is at most `N` off
+the zero set of the polynomial of the section at a point where it is least
+(`Matrix.exists_mvPolynomial_section_mulVec_eq_zero` at `z₀ = 0`). -/
+theorem exists_holdsGenerally_finrank_liftSpaceTilde_le [Finite α] {G : Graph α β}
+    {hubSel nbrSel : α → Fin 3 → Option α}
+    (hHubSel : ∀ v, IsFin3SelectorOf (G.closedHubNbhd v) (hubSel v))
+    (hNbrSel : ∀ v, ¬ G.PencilHub v → IsFin3SelectorOf (G.closedNbhd v) (nbrSel v))
+    (hfeas : PencilNondegFeasible K G) :
+    ∃ N : ℕ, (∀ (F' : BodyHingeFramework K 2 α β) (b' : α → Fin 4 → K)
+      (P' : α → Submodule K (Fin 4 → K)), IsNondegPencilPlaneRealization G F' b' P' →
+        N ≤ Module.finrank K (liftSpaceTilde G b')) ∧
+      HoldsGenerally (K := K) G hubSel nbrSel fun b0 _ =>
+        Module.finrank K (liftSpaceTilde G b0) ≤ N := by
+  classical
+  have := Fintype.ofFinite α
+  obtain ⟨s₀, hs₀⟩ := (steerSet_nonempty_iff (K := K) hHubSel hNbrSel).2 hfeas
+  set S : Set ℕ := {n | ∃ s ∈ steerSet (K := K) G hubSel nbrSel,
+    Module.finrank K (liftSpaceTilde G (steerPoint hubSel s)) = n} with hS
+  have hSne : S.Nonempty := ⟨_, s₀, hs₀, rfl⟩
+  obtain ⟨s₁, hs₁, hs₁min⟩ := Nat.sInf_mem hSne
+  refine ⟨sInf S, fun F' b' P' hnd' => ?_, ?_⟩
+  · obtain ⟨s, hs, hpt, -⟩ := exists_mem_steerSet_of_isNondeg hHubSel hNbrSel hnd'
+    choose! c hc hceq using hpt
+    rw [← finrank_liftSpaceTilde_smul hc hceq]
+    exact Nat.sInf_le ⟨s, hs, rfl⟩
+  set q₁ : α × Fin 4 → K := fun p => steerPoint hubSel s₁ p.1 p.2
+  obtain ⟨D, -, hD₀, -, hDle, -⟩ := Matrix.exists_mvPolynomial_section_mulVec_eq_zero
+    (liftMatrixPoly (K := K) G) (q₀ := q₁) (z₀ := 0) (by simp)
+  obtain ⟨R₂, hR₂⟩ := IsPolyFun.comp D (f := fun (s : α × Fin 7 × Fin 4 → K) p =>
+    steerPoint hubSel s p.1 p.2) fun p => isPolyFun_steerPoint hubSel p.1 p.2
+  refine ⟨R₂, ⟨s₁, hs₁, by rw [← hR₂]; exact hD₀⟩, fun s _ hsR => ?_⟩
+  have hle := hDle (fun p => steerPoint hubSel s p.1 p.2) (by rw [← hR₂] at hsR; exact hsR)
+  rw [← liftSpaceTilde_eq_ker, ← liftSpaceTilde_eq_ker] at hle
+  rw [← hs₁min]
+  exact hle
+
 /-- **One lift suffices, at a general realization** (`lem:pencil-d-lift-one-witness`, part (2)):
 if a general nondegenerate realization in dimension three has a lift of rank `tgt_d(G)`, the
-general lift attains. `dim L̃` is least on `U(G)` off the zero set of the polynomial of the section
-at a point where it is least (`Matrix.exists_mvPolynomial_section_mulVec_eq_zero` at `z₀ = 0`),
-least among all nondegenerate realizations as each is `r(s)` up to scalars
-(`exists_mem_steerSet_of_isNondeg`, `finrank_liftSpaceTilde_smul`), and two nonempty Zariski-open
-subsets meet. -/
+general lift attains. `dim L̃` takes its least value generally
+(`exists_holdsGenerally_finrank_liftSpaceTilde_le`), and two nonempty Zariski-open subsets of
+`U(G)` meet. -/
 theorem liftAttains_of_holdsGenerally [Infinite K] [Finite α] [Finite β] {r : ℕ} {G : Graph α β}
     {hubSel nbrSel : α → Fin 3 → Option α}
     (hHubSel : ∀ v, IsFin3SelectorOf (G.closedHubNbhd v) (hubSel v))
@@ -546,41 +603,18 @@ theorem liftAttains_of_holdsGenerally [Infinite K] [Finite α] [Finite β] {r : 
           (fun p => liftNormal b0 (fun i => (lam i).1) p.1 p.2)).toBodyHinge.rigidityRows) : ℤ)
           = screwDim (r + 1 + 1) * ((V(G).ncard : ℤ) - 1) - G.deficiency (r + 1 + 2)) :
     LiftAttains K r G := by
-  classical
-  have := Fintype.ofFinite α
   obtain ⟨R₁, ⟨s₀, hs₀, hR₁s₀⟩, hR₁⟩ := h
-  -- the least `dim L̃` on `U(G)`
-  set S : Set ℕ := {n | ∃ s ∈ steerSet (K := K) G hubSel nbrSel,
-    Module.finrank K (liftSpaceTilde G (steerPoint hubSel s)) = n} with hS
-  have hSne : S.Nonempty := ⟨_, s₀, hs₀, rfl⟩
-  obtain ⟨s₁, hs₁, hs₁min⟩ := Nat.sInf_mem hSne
-  have hmin : ∀ (F' : BodyHingeFramework K 2 α β) (b' : α → Fin 4 → K)
-      (P' : α → Submodule K (Fin 4 → K)), IsNondegPencilPlaneRealization G F' b' P' →
-      sInf S ≤ Module.finrank K (liftSpaceTilde G b') := by
-    intro F' b' P' hnd'
-    obtain ⟨s, hs, hpt, -⟩ := exists_mem_steerSet_of_isNondeg hHubSel hNbrSel hnd'
-    choose! c hc hceq using hpt
-    rw [← finrank_liftSpaceTilde_smul hc hceq]
-    exact Nat.sInf_le ⟨s, hs, rfl⟩
-  -- upper semicontinuity of `dim L̃` at `b(s₁)`
-  set q₁ : α × Fin 4 → K := fun p => steerPoint hubSel s₁ p.1 p.2
-  obtain ⟨D, -, hD₀, -, hDle, -⟩ := Matrix.exists_mvPolynomial_section_mulVec_eq_zero
-    (liftMatrixPoly (K := K) G) (q₀ := q₁) (z₀ := 0) (by simp)
-  obtain ⟨R₂, hR₂⟩ := IsPolyFun.comp D (f := fun (s : α × Fin 7 × Fin 4 → K) p =>
-    steerPoint hubSel s p.1 p.2) fun p => isPolyFun_steerPoint hubSel p.1 p.2
+  obtain ⟨N, hN, R₂, ⟨s₂, hs₂, hR₂s₂⟩, hR₂⟩ := exists_holdsGenerally_finrank_liftSpaceTilde_le
+    hHubSel hNbrSel ((steerSet_nonempty_iff (K := K) hHubSel hNbrSel).1 ⟨s₀, hs₀⟩)
   obtain ⟨s, ⟨hsU, hsR₁⟩, hsR₂⟩ := IsZariskiOpen.exists_mem_inter
     ((isZariskiOpen_steerSet hHubSel hNbrSel).inter (isZariskiOpen_eval_ne_zero R₁))
-    (isZariskiOpen_eval_ne_zero R₂) ⟨hs₀, hR₁s₀⟩ (show s₁ ∈ {s | MvPolynomial.eval s R₂ ≠ 0} by
-      simp only [Set.mem_ofPred_eq, ← hR₂]; exact hD₀)
+    (isZariskiOpen_eval_ne_zero R₂) ⟨hs₀, hR₁s₀⟩ (show s₂ ∈ {s | MvPolynomial.eval s R₂ ≠ 0} from
+      hR₂s₂)
   obtain ⟨lam, hlam, hrank⟩ := hR₁ s hsU hsR₁
+  have hle := hR₂ s hsU hsR₂
   obtain ⟨-, F, hnd⟩ := hsU
-  refine liftAttains_of_least hnd (fun F' b' P' hnd' => ?_) hlam hlinks hrank
-  refine le_trans ?_ (hmin F' b' P' hnd')
-  have hle := hDle (fun p => steerPoint hubSel s p.1 p.2) (by
-    simp only [Set.mem_ofPred_eq, ← hR₂] at hsR₂; exact hsR₂)
-  rw [← liftSpaceTilde_eq_ker, ← liftSpaceTilde_eq_ker] at hle
-  rw [← hs₁min]
-  exact hle
+  exact liftAttains_of_least hnd (fun F' b' P' hnd' => hle.trans (hN F' b' P' hnd')) hlam hlinks
+    hrank
 
 /-! ## Lifts restrict to a subgraph -/
 

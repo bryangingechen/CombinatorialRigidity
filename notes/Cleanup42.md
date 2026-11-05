@@ -454,6 +454,25 @@ valid. The cleanup chooses one per `open` row, with the PI.
   The pin adds the first outcome as `∃ x₁ x₂ c` (the chapter's two adjacent bodies of degree two
   with a common neighbour of degree at least four).
   *Remedies:* the prose to the Lean (no `s(X)` for connectivity), or keep both.
+- **R-32** · `lem:pencil-d-lift-no-rigid` (`liftAttains_of_forall_deficiency_two_ne_zero`,
+  `exists_planeDiff_ne_zero_poly`, `finrank_liftSpaceTilde_pencilConfigPoint`,
+  `exists_pencilConfigPoint_of_dotProduct`, `Grade/LiftNoRigid.lean`, 42m build 5) · **open** (the
+  Lean landed as below; the chapter stays as the prose).
+  *Chapter:* `q` off Jackson and Jordán's polynomial, `dim L(q) = ℓ₀ = 3 + def₂(G)`; at `r*`,
+  `dim L̃ = dim L(b⁰) + |V(G)|` by the spanning of the closed neighbourhoods; at a general spanning
+  realization a map `g` of `K⁴` (`g b⁰_v` of nonzero last coordinate, `e₃ ∉ gΠ⁰_v`) and a rescaling
+  give a configuration over an admissible `q'`, so `dim L̃ ≥ ℓ₀ + |V(G)|`.
+  *Lean:* `q` off the main-picture polynomial (`Graph.exists_mvPolynomial_isMainPicture`; only
+  `dim L(q) ≤ dim L(q')` is used, never `ℓ₀`). One point of the space of the `r + 1` heights and
+  the first one's planes makes the attaining and planes polynomials nonzero
+  (`exists_mem_eval_ne_zero₂`). At every configuration with `z ∈ L(q)`, spanning or not,
+  `dim L̃ = dim L(q) +` the free coordinates (`liftFreeCoords`: maps and forms off `V(G)`, the third
+  coordinate of each form), by two injective maps through the lifting system's kernel. No `g`: the
+  two nonzero coordinates and three independent points per closed neighbourhood (`q`'s admissible
+  triples; the chapter's spanning) hold generally, witnessed at `r*`; the rescaled points of such a
+  realization are the configuration (`exists_pencilConfigPoint_of_dotProduct`).
+  *Remedies:* the prose to the Lean (no `g`, no `ℓ₀`, `dim L̃` through the lifting system), or keep
+  both.
 
 ## 3. The cleanup (not yet planned)
 
