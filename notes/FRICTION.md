@@ -110,6 +110,26 @@ moment you resolve the entry) is what makes the sweep a pure
 to be re-derived by re-reading entries later.
 
 ## Open
+### [idiom] 42m build 6b: a `pair_iff` applied to a `![…]` lemma inline times out, and four small traps
+- **Where it bit:** Phase 42m, `Pencil/Grade/EarFree.lean` (`span_pencilConfigPoint_eq_top`,
+  `isTrivialLift_of_finrank_liftSpaceTilde_le`, `holdsGenerally_earFree`).
+- **Friction:** (1) `(LinearIndependent.pair_iff.1 (planeNormal_pair hne)) c₁ (-c₂) (by …)` hit
+  *"(deterministic) timeout at `whnf`"* at the argument, as build 3's pair-flip did: bind
+  `have hLI := planeNormal_pair hne`, `rw [LinearIndependent.pair_iff] at hLI`, and prove the
+  combination as its own `have` first. (2) `rw [← hrange] at hz` where `hrange : range Ψ = L` and
+  `L` is a `set` of `liftSpaceTilde G b0` found no `L` in `hz` (the hypothesis keeps the unfolded
+  spelling): `obtain ⟨⟨c, e⟩, rfl⟩ : z ∈ LinearMap.range Ψ := hrange ▸ hz`. (3) In a `have`,
+  `isZariskiOpen_earFreeCond (isPolyFun_steerPoint hubSel) …` left `K` undetermined (*"typeclass
+  instance problem is stuck: Field ?m"*): `isPolyFun_steerPoint (K := K) hubSel`. (4) The
+  `span_induction` zero case over a subtype argument, `lam.2 v ⟨0, h⟩ = 0`, is not closed by
+  `simp`: `rw [show (⟨0, h⟩ : P0 v) = 0 from rfl, map_zero]`. (5) `Set.ncard_image_of_injOn` does not
+  exist: `Set.InjOn.ncard_image`; `Set.diff_subset(_diff_left)` are deprecated for
+  `Set.sdiff_subset(_sdiff_left)`. (6) `dotPerp ⊤ = ⊥` took four rewrites through `finrank_dotPerp`
+  (`finrank_top`, `finrank_fin_fun`, `Nat.sub_self`, `Submodule.finrank_eq_zero`): a `dotPerp_top`
+  beside `finrank_dotPerp` would do, with the deferred `dotPerp` move to `Grade/Realization.lean`.
+- **Status:** idiom (resolved in-proof). **Lifted to:** `TACTICS-QUIRKS.md` § 122 (with build 3's
+  pair-flip, its second occurrence).
+
 ### [idiom] 42m build 6: a helper's `if h ∈ X` under `open Classical` does not meet a caller's `X := W₀ \ {x}`, and three small traps
 - **Where it bit:** Phase 42m, `Pencil/Grade/EarFree.lean` (`exists_linearIndepOn_of_finrank`,
   called from `exists_earExtend_poly`).

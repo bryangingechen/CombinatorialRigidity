@@ -6116,6 +6116,11 @@ after the points of $X$ (\cref{lem:pencil-d-ear-extend}).
 % S34's count and S35 (c) are not used), with S29 (2)-(3) for the last claim.
 \begin{lemma}[The rest of the rigid set lifts only trivially]
   \label{lem:pencil-d-ear-free}
+  \lean{CombinatorialRigidity.Molecular.holdsGenerally_earFree,
+        CombinatorialRigidity.Molecular.earFree_of_finrank_liftSpaceTilde_le,
+        CombinatorialRigidity.Molecular.exists_earFree_config,
+        CombinatorialRigidity.Molecular.exists_earFree_gammaL}
+  \leanok
   \uses{lem:pencil-d-good-ear, def:pencil-d-lift}
   Let $K$ be infinite and let $G$ be simple and nondegeneracy-feasible.
   Let $W_0$ and $x$ be as in \cref{lem:pencil-d-good-ear}, with
@@ -6128,7 +6133,8 @@ after the points of $X$ (\cref{lem:pencil-d-ear-extend}).
   $\varphi_a(b^0_x) = \varphi_b(b^0_x)$.
 \end{lemma}
 \begin{proof}
-  \uses{lem:pencil-d-ear-extend, lem:pencil-d-steer,
+  \leanok
+  \uses{lem:pencil-d-ear-extend, lem:pencil-d-steer, lem:pencil-d-lift-no-rigid,
         lem:pencil-d-lift-one-witness, thm:pencil-jj-equality,
         lem:pencil-x0-planes-separate, lem:pencil-x0-conjunct-three,
         lem:pencil-condition-linear, lem:pencil-x0-fibre-intersection,

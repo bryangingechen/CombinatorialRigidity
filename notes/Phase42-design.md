@@ -1266,7 +1266,7 @@ does not draw (it draws definitions, lemmas, propositions, theorems and corollar
   green.
 - PD-REDUCTION: `-reduction` (8), Phase 39's reduction; 8, as 42k, closed, all green.
 - PD-HEAD: `-nondegenerate` (4) and `-lift` (6), as 42l, closed, all green; `-generic` (11, ending
-  in the headline `cor:pencil-d-conditioned-pair`), as 42m, open, eight green after its build 6a;
+  in the headline `cor:pencil-d-conditioned-pair`), as 42m, open, nine green after its build 6b;
   21, the generic conjunct and the headline, the largest layer.
 
 PD-STATE and PD-STABLE do not depend on the route, so they ran beside PD-RECON (§1's defaults).

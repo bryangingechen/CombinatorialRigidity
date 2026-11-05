@@ -6,17 +6,24 @@ the second and last sub-phase of Phase 42's last layer, PD-HEAD. Forward mode, t
 `sec:pencil-d-generic`, as the chapter states them (six cases of an induction on the bodies, the
 lemmas that find the good ear and supply its condition, the generic theorem and the headline).
 They are the blueprint's last red nodes, so 42m's close is Phase 42's. The pre-build recon landed
-(2026-11-05, *Decisions made*); seven builds planned, build 6 split. **Builds 1 to 6a landed**
+(2026-11-05, *Decisions made*); seven builds planned, build 6 split. **Builds 1 to 6 landed**
 (2026-11-05): `Grade/LiftSmall.lean`, `Grade/LiftCases.lean` (three nodes), `Grade/LiftCutEdge.lean`,
-`Grade/GoodEar.lean`, `Grade/LiftNoRigid.lean` and `Grade/EarFree.lean` (`lem:pencil-d-ear-extend`),
-eight of the eleven red nodes green; three remain. Next (*Hand-off*): build 6b,
-`lem:pencil-d-ear-free` in `Grade/EarFree.lean`.
+`Grade/GoodEar.lean`, `Grade/LiftNoRigid.lean` and `Grade/EarFree.lean` (`-ear-extend`, `-ear-free`),
+nine of the eleven red nodes green; two remain. Next (*Hand-off*): build 7, the theorem and the
+headline in `Grade/Generic.lean`.
 
 ## Current state
 
-**Next: build 6b** (*Hand-off*). In the tree, each file on the three standard axioms with the
+**Next: build 7** (*Hand-off*). In the tree, each file on the three standard axioms with the
 whole-project build, `lake lint`, `blueprint/lint.sh` and `blueprint/verify.sh` clean at its commit:
-`Grade/EarFree.lean` (build 6a: `exists_earExtend_poly`, with `exists_earExtend_cond_poly` (the
+`Grade/EarFree.lean` (build 6b: `holdsGenerally_earFree`, from its four steps
+`earFree_of_finrank_liftSpaceTilde_le` (the algebra at one realization, on
+`isTrivialLift_of_finrank_liftSpaceTilde_le`, `liftTildeOfTrivial`, `earLift_of_isTrivialLift`),
+`exists_earFree_config` (on `span_pencilConfigPoint_eq_top`, with the trace
+`Graph.IsPencilGoodEar.rest`), `exists_earFree_gammaL` (on `linearIndepOn_planeNormal_of_subset`,
+`exists_steerPoint_eq_smul`) and the transfer's `isZariskiOpen_earFreeCond`,
+`isZariskiOpen_finrank_liftSpaceTilde_le`, `earFreeCond_of_smul`,
+`finrank_span_image_of_linearIndepOn`; build 6a: `exists_earExtend_poly`, with `exists_earExtend_cond_poly` (the
 polynomial `E_L`) and `exists_linearIndepOn_of_finrank` (the greedy choice of the `n_u`); helpers
 `hubSlotPos`, `exists_gamma_eq_of_injective`, `isPolyFun_dotProduct`, `exists_mem_notMem_of_finrank`
 and the any-selector forms `dotProduct_pencilChartPoint_hubNormal_of_selector`,
@@ -37,9 +44,9 @@ and the any-selector forms `dotProduct_pencilChartPoint_hubNormal_of_selector`,
 `HoldsGenerally.of_forall`, `.mono`, `IsNondegPencilRealization.toPlane`) and
 `Grade/LiftSmall.lean` (build 1: `liftAttains_of_ncard_le_two`, `liftAttains_of_triangle`,
 `liftAttains_of_cutEdges_eq_empty`). The recon's spike is the gitignored `scratch/42m/Spike.lean`
-(`lake lean` clean; its `sorry`s are the unspiked lemma statements, one still to build); what
-it holds for later builds is under *Hand-off*. Build 6a's spike `scratch/42m/Build6.lean` chains
-`holdsGenerally_earFree` (stated, `sorry`) into `liftAttains_of_ear` (*Blockers*).
+(`lake lean` clean; its `sorry`s are the lemma statements, now all built); what it holds for build 7
+is under *Hand-off*. `scratch/42m/B6bChain.lean` chains the landed `holdsGenerally_earFree` into
+`liftAttains_of_ear` under `lake lean` (*Blockers*).
 
 **The eleven signatures** (namespace `CombinatorialRigidity.Molecular`; every one carries
 `{K : Type*} [Field K] {α β : Type*}`, `[Finite α] [Finite β]`, `[Infinite K]` unless noted, and
@@ -82,7 +89,7 @@ it holds for later builds is under *Hand-off*. Build 6a's spike `scratch/42m/Bui
   hfeas (hW : G.IsPencilGoodEar W₀ x a b) hHubSel (hL : ∀ v ∈ W₀ \ {x}, IsFin3SelectorOf {h | h ∈ (G.induce (W₀ \ {x})).closedNbhd v
   ∧ G.PencilHub h} (hubSelL v)) : ∃ E : MvPolynomial (α × Fin 7 × Fin 4) K, (∃ t, eval t E ≠ 0) ∧
   ∀ t, eval t E ≠ 0 → ∃ s, ∀ v ∈ W₀ \ {x}, ∃ c ≠ 0, steerPoint hubSel s v = c • steerPoint hubSelL t v`.
-- `lem:pencil-d-ear-free`: `holdsGenerally_earFree hS hfeas hW` (selectors of `G`) `:
+- `lem:pencil-d-ear-free` (landed as pinned): `holdsGenerally_earFree hS hfeas hW` (selectors of `G`) `:
   HoldsGenerally G hubSel nbrSel (fun b0 P0 => (∀ v ∈ W₀ \ {x}, finrank (span (b0 '' (G.induce
   (W₀ \ {x})).closedNbhd v)) = 3) ∧ span (b0 '' (W₀ \ {x})) = ⊤ ∧ ∀ lam ∈ liftSpace (G.induce
   (W₀ \ {x})) b0 P0, IsTrivialLift (G.induce (W₀ \ {x})) b0 P0 lam) ∧ EarLiftCondition G hubSel
@@ -103,7 +110,8 @@ for a selector `β → α × α` that does not exist (the chapter's proof treats
 theorem always has a body); `-lift-small` (2) is pinned without `G.Simple` and without `[Infinite K]`
 (build 1's proof needs neither; `notes/Cleanup42.md` R-28); `-lift-cut-edge` drops `|V₁|, |V₂| ≥ 2`
 (unused, R-30); `-lift-no-rigid` is pinned as its node states it (R-32); `-ear-extend` drops `G`
-simple and the neighbour selector (unused, R-33); encodings: "a triangle" as three
+simple and the neighbour selector (unused, R-33); `-ear-free` is pinned as its node states it
+(R-34); encodings: "a triangle" as three
 pairwise adjacent bodies, "at a general nondegenerate realization" as `HoldsGenerally` at the given
 selectors, `Γ_L` inside `Γ(G)`'s parameter type, "a nonzero polynomial" as one with a non-root.
 
@@ -119,7 +127,8 @@ Build numbers are *Hand-off*'s. "Spiked" means sorry-free in `scratch/42m/Spike.
 - [x] `lem:pencil-d-good-ear`, both outcomes, parts (i) to (v), sorry-free (build 4; R-31).
 - [x] `lem:pencil-d-lift-ear`: sorry-free, with `EarLiftCondition` (build 2; R-24, R-26).
 - [x] `lem:pencil-d-ear-extend`: sorry-free, `E_L` and the greedy choice (build 6a; R-33).
-- [ ] `lem:pencil-d-ear-free`: new (build 6b, maybe 6c; *Hand-off*).
+- [x] `lem:pencil-d-ear-free`: sorry-free in one session, its four steps and the transfer (build 6b;
+  R-34).
 - [ ] `thm:pencil-d-generic`, with the remark after `def:pencil-d-lift-attains`: spiked on the
   lemma statements (build 7).
 - [ ] `cor:pencil-d-conditioned-pair`: spiked (build 7).
@@ -133,62 +142,41 @@ Build numbers are *Hand-off*'s. "Spiked" means sorry-free in `scratch/42m/Spike.
 
 ## Blockers / open questions
 
-- None blocking build 6b. What the builds still carry:
-  - **`-ear-free`, re-derived against the bodies (build 6a):** satisfiable, and no weaker than its
-    node. The first conjunct's `≤ 3` holds on all of `U(G)` (the points of a closed neighbourhood in
-    `Y` lie in the three-dimensional `Π⁰_v`, `n_v ≠ 0`), `≥ 3` generally; `span = ⊤` needs
-    `|X| ≥ 4`, which `deficiency_ne` gives (three bodies of degree two in `Y` form a triangle,
-    `def₂ = 0`), and the chapter's distinct planes give it without the count; `U(G) ≠ ∅` is
-    `steerSet_nonempty_iff` with `hfeas`. `EarLiftCondition` follows from the third conjunct at
-    `a, b ∈ X` (a lift of `G − x` restricts to `Y`).
-  - **Composition, spiked (build 6a):** `holdsGenerally_earFree`'s selectors are exactly those
-    `liftAttains_of_ear` receives; `scratch/42m/Build6.lean` chains its `.2` into it, with
-    `hdef := (hW.deficiency_delete _ _).le`, under `lake lean`.
-  - **What build 5's shared steps ask of `Y = G[X]`, `X = W₀ \ {x}`** (traced against
-    `Graph.IsPencilGoodEar`): `exists_planeDiff_ne_zero_poly` asks `Y.Simple` (the instance
-    `G[X].Simple`), three members in every closed neighbourhood of `Y` (`two_le_degree` and
-    `Graph.three_le_ncard_closedNbhd`) and `def₂(Y[Z]) ≠ 0` for `Z ⊆ X`, `|Z| ≥ 2`
-    (`deficiency_ne`, through `Graph.induce_induce_of_subset`; `V(Y) = X` by `subset`);
-    `finrank_liftSpaceTilde_pencilConfigPoint` asks only an admissible `q` and `z ∈ L_Y(q)`. Neither
-    asks the standing hypotheses or attaining heights, so `G[X]` has all they need; `dim L_Y(q) = 4`
-    at a main picture is `Graph.IsMainPicture.finrank_liftingSpace_eq` with `deficiency_eq`.
+- None blocking build 7. What the builds still carry:
+  - **`-ear-free`'s leaves, traced against their consumer (build 6b):** each step's hypotheses are
+    what the assembly has: (1) `earFree_of_finrank_liftSpaceTilde_le` takes `G.Simple`, the good ear,
+    points in subspaces of dimension at most three on every closed neighbourhood of `G` (at any
+    `s ∈ U(G)` and any selectors of `G`: `steerPoint_dotProduct_steerNormal`,
+    `finrank_dotPerp_span_singleton_of_ne_zero`) and (a), (b), (c), which the transfer supplies;
+    (2) `exists_earFree_config`'s hypotheses on `Y = G[X]` are `Graph.IsPencilGoodEar.rest hS hW`
+    (machine-checked: the instance `G[X].Simple`, part (iii)'s degrees through
+    `Graph.three_le_ncard_closedNbhd`, `deficiency_ne` through `Graph.induce_induce_of_subset`,
+    `deficiency_eq`, `three_le`); (3) `exists_earFree_gammaL` takes `hfeas`, the good ear, selectors
+    of `H_L[v]` (chosen in the proof by `exists_isFin3SelectorOf_of_ncard_le_three`, as `H_L[v] ⊆`
+    the closed hub-neighbourhood) and (2)'s output; (4) the transfer's `E_L` is build 6a's at the same
+    selectors. The headline statement chains into `liftAttains_of_ear` with
+    `hdef := (hW.deficiency_delete _ _).le` (`scratch/42m/B6bChain.lean`, `lake lean` clean).
+  - **What build 5's shared steps ask of `Y = G[X]`** is now `Graph.IsPencilGoodEar.rest` (above).
   - **Instances of the two new predicates**: none closed yet. `Graph.IsPencilGoodEar` is produced
-    by build 4 and `EarLiftCondition` by build 6b; the candidate witness is `K_{2,3}` (`W₀` all
-    five bodies, `x` a body of degree two; `s(W₀) = 3·4 − 2·6 = 0`, `X` a four-cycle with `s = 1`),
-    for build 6b or the close's non-vacuity row.
+    by build 4 and `EarLiftCondition` by build 6b (`holdsGenerally_earFree`); the candidate witness
+    is `K_{2,3}` (`W₀` all five bodies, `x` a body of degree two; `s(W₀) = 3·4 − 2·6 = 0`, `X` a
+    four-cycle with `s = 1`), for the close's non-vacuity row.
   - **A call, for build 7:** the spike's assembly passes `h₁ h₂` to `liftAttains_of_cutEdge`,
     which build 3 dropped (R-30); build 7 drops them from the call.
 
 ## Hand-off / next phase
 
-Builds 1 to 6a landed (`Grade/LiftSmall.lean`; `Grade/LiftCases.lean`, three nodes;
+Builds 1 to 6 landed (`Grade/LiftSmall.lean`; `Grade/LiftCases.lean`, three nodes;
 `Grade/LiftCutEdge.lean`, R-30; `Grade/GoodEar.lean`, R-31; `Grade/LiftNoRigid.lean`, the least
-`dim L̃` with no map `g`, R-32; `Grade/EarFree.lean`, `-ear-extend`, R-33). What the spike still
-holds for later builds, each to land in its build's file: `holdsGenerally_earFree`'s statement
-(build 6b), `bnPoint_zero` and the assembly (build 7, whose call of `liftAttains_of_cutEdge` drops
-`h₁ h₂`). The next concrete commit is build 6b:
-- **Build 6b**, `lem:pencil-d-ear-free` (`holdsGenerally_earFree`) in `Grade/EarFree.lean`,
-  probably more than one session. Land its two independent halves first, as statement-level
-  sub-lemmas, and assess the rest once they close (a 6c if needed):
-  (1) *the algebra at one realization:* points of every closed neighbourhood of `Y = G[X]` of
-  rank 3 inside `Π⁰_v`, points of `X` spanning `K⁴` and `dim L̃_Y(b⁰) ≤ 4 + finrank (liftFreeCoords
-  Y)` make every lift of `Y` trivial (lifts to `L̃` and back:
-  `exists_mem_liftSpaceTilde_of_mem_liftSpace`, `exists_mem_liftSpace_of_mem_liftSpaceTilde`; the
-  trivial lifts' maps are four-dimensional by the spanning), and give `EarLiftCondition`'s
-  predicate there; (2) *the configuration of `Y`:* `q` off `exists_planeDiff_ne_zero_poly`'s, the
-  main-picture and the determinant polynomials for `Y` (*Blockers* has what they ask), `z ∈ L_Y(q)`
-  with distinct planes, and the three conditions at `pencilConfigPoint q z` (`dim L̃_Y = 4 + free`
-  by `finrank_liftSpaceTilde_pencilConfigPoint`, `Graph.IsMainPicture.finrank_liftingSpace_eq`).
-  Then (3) `t₀ ∈ Γ_L`: `planeNormal` at the hubs of `X`, independent on each `H_L[v]` as in
-  `lem:pencil-x0-conjunct-three`, completed by `exists_fill_cross₃_eq_smul_of_selector` at a
-  selector `hubSelL v` (`exists_isFin3SelectorOf_of_ncard_le_three`; `H_L[v] ⊆ closedHubNbhd v`).
-  (4) The transfer: rank 3 and spanning open as the independence of fixed triples and a fixed
-  quadruple, (c) as `dim L̃ ≤` its value at `t₀` (`Matrix.exists_mvPolynomial_section_mulVec_eq_zero`
-  on `liftMatrixPoly Y`, as in `exists_holdsGenerally_finrank_liftSpaceTilde_le`), times `E_L`;
-  `exists_earExtend_poly` into `Γ(G)`, `finrank_liftSpaceTilde_smul` for the rescaling,
-  `IsZariskiOpen.exists_mem_inter` with `steerSet`, and `HoldsGenerally.of_isZariskiOpen`.
-- **Build 7**, `Grade/Generic.lean`: the remark, `liftAttains_of_simple` and the two statements,
-  transcribed. Two nodes, the last; then the close.
+`dim L̃` with no map `g`, R-32; `Grade/EarFree.lean`, `-ear-extend`, R-33, and `-ear-free`, R-34).
+What the spike still holds for build 7: `bnPoint_zero` and the assembly (whose call of
+`liftAttains_of_cutEdge` drops `h₁ h₂`; its ear arm is `scratch/42m/B6bChain.lean`'s). The next
+concrete commit is build 7:
+- **Build 7**, `Grade/Generic.lean`: the remark (`LiftAttains.hasGradedGenericPencilRealization`),
+  `liftAttains_of_simple` and the two statements (`hasGradedGenericPencilRealization_of_simple`,
+  `Graph.graded_pencil_conditioned_pair`), transcribed from `scratch/42m/Spike.lean` onto the landed
+  names. Two nodes, the last; then the close. Re-check the spike's assembly with `lake lean` against
+  the landed signatures first (R-30 dropped `h₁ h₂`, which its call passes).
 - **Build tips, from the spike:** in a `change` to `panelSupportExtensor (liftNormal b0 ζ …) …`,
   give `ζ` explicitly (a `_` there ran `whnf` out of heartbeats); the frameworks
   `(ofNormals (G.induce V') ends q).toBodyHinge` and `⟨F.graph.induce V', F.supportExtensor⟩` are
@@ -198,10 +186,15 @@ holds for later builds, each to land in its build's file: `holdsGenerally_earFre
   `dotPerp` lemmas of `Grade/Feasible.lean` move to `Grade/Realization.lean` beside
   `finrank_dotPerp`, with 42k's `dotPerp_map_eq`, riding the next commit that edits
   `Grade/Realization.lean` (no build above plans to); the home debts of 42b–42k ride with the next
-  commit that edits their files (`notes/Phase42k.md` *Hand-off*); build 6a's helpers, each with the
-  next commit that edits its home (`isPolyFun_dotProduct` to `Grade/Feasible.lean`, `hubSlotPos`
-  and its three lemmas to `Grade/Lift.lean`, the any-selector chart lemmas to `Chart.lean`); at a
-  cleanup round, the mirror candidates `finrank_map_of_injOn` and `exists_mem_notMem_of_finrank`.
+  commit that edits their files (`notes/Phase42k.md` *Hand-off*); build 6's helpers, each with the
+  next commit that edits its home (`isPolyFun_dotProduct` to `Grade/Feasible.lean`; `hubSlotPos`
+  and its three lemmas and `exists_steerPoint_eq_smul` to `Grade/Lift.lean`; the any-selector chart
+  lemmas to `Chart.lean`; `liftTildeOfTrivial` and its two lemmas to `Grade/LiftNoRigid.lean` beside
+  `liftFreeCoords`; `isZariskiOpen_finrank_liftSpaceTilde_le` to `Grade/LiftWitness.lean`;
+  `span_pencilConfigPoint_eq_top` and `linearIndepOn_planeNormal_of_subset` to
+  `MainComponent/GenericBase.lean` beside `planeNormal_pair`); at a cleanup round, the mirror
+  candidates `finrank_map_of_injOn`, `exists_mem_notMem_of_finrank` and
+  `finrank_span_image_of_linearIndepOn`.
 - **After 42m:** Phase 42 is closed; CLEANUP-42 (`notes/Cleanup42.md`) and then ORIGAMI follow,
   each opening with the PI (ROADMAP *Queued post-program phases*).
 
@@ -215,7 +208,7 @@ holds for later builds, each to land in its build's file: `holdsGenerally_earFre
   `LiftWitness.lean`, and `Graph.graded_pencil_realization_theorem` (`Grade/Reduction.lean`).
 - **The standing rule** (design doc §3): every recon and build adds a `notes/Cleanup42.md` §2 row
   where its Lean departs from the chapter's proof, in the same commit. Open: R-3 to R-5, R-9 to
-  R-12, R-14 to R-21, R-23 to R-33; aligned: R-1, R-2, R-7, R-8, R-13, R-22; R-6 no departure.
+  R-12, R-14 to R-21, R-23 to R-34; aligned: R-1, R-2, R-7, R-8, R-13, R-22; R-6 no departure.
 
 ## Decisions made during this phase
 
@@ -268,3 +261,10 @@ holds for later builds, each to land in its build's file: `holdsGenerally_earFre
   triangle with two hubs), so the normals of each closed hub-neighbourhood are chosen one at a time
   in any order, and `exists_mem_forall_eval_ne_zero` takes one point of `∏ A_u` for all. Build 6
   split; `-ear-free` is 6b. R-33.
+- **Build 6b: `-ear-free` in one session, every lift of `Y` trivial by an embedding**
+  (`Grade/EarFree.lean`): the trivial lifts and the free coordinates, each form's third coordinate
+  moved along a normal of its closed neighbourhood, embed in `L̃` when the points of `X` span, so
+  `dim L̃ ≤ 4 +` the free coordinates makes them all of it (no `L(b⁰)` count). Rank at most three is
+  used only in `U(G)`; (a) and (b) are carried as fixed independent triples and a fixed set of four
+  bodies, (c) open at every point by the section. Sub-lemmas landed in the hand-off's order; the
+  node closed, no 6c. R-34.

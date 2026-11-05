@@ -489,6 +489,31 @@ valid. The cleanup chooses one per `open` row, with the PI.
   pin drops `G` simple and the neighbour selector (unused), stronger than the node.
   *Remedies:* the prose to the Lean (one witness per condition, the greedy choice), or keep both.
 
+- **R-34** · `lem:pencil-d-ear-free` (`holdsGenerally_earFree`, `earFree_of_finrank_liftSpaceTilde_le`,
+  `exists_earFree_config`, `exists_earFree_gammaL`, `Grade/EarFree.lean`, 42m build 6b) · **open**
+  (the Lean landed as below; the chapter stays as the prose).
+  *Chapter:* (c) is `dim L̃_Y(b) ≤ |X| + 4`; under (a) `dim L̃_Y = dim L_Y(b) + |X|`, so `L_Y(b)` is
+  the trivial maps; (a) is read with "rank at most three wherever it is read", argued on `Γ_L`, at
+  `Γ(G)` and at the configuration; (b) at the configuration by "a vanishing form makes `z` globally
+  affine (all planes agree) or puts the picture points on a line"; each condition open as "some
+  minor of a fixed size is nonzero"; `t₁` a non-root of the product with `E_L`.
+  *Lean:* `L̃` lives on all of `α`, so (c) is `≤ 4 +` the free coordinates (`liftFreeCoords`: `|X|`
+  plus five per body off `X`). The trivial lifts and the free coordinates, the third coordinate of
+  each form moved along a normal `n_v` of its closed neighbourhood, embed in `L̃`
+  (`liftTildeOfTrivial`), so by (c) they are all of it; `L_Y(b)` and the count `dim L̃ = dim L + |X|`
+  are not used. Rank at most three is used only at a realization in `U(G)` (the points of a closed
+  neighbourhood in a three-dimensional subspace), never on `Γ_L`; only rank at least three is
+  carried, as the independence of `q`'s admissible triples. (b) at the configuration: a vanishing
+  form is a multiple of the plane normals of two distinct bodies, which are independent
+  (`span_pencilConfigPoint_eq_top`); it is carried as the independence of the points on a fixed set
+  of four bodies (`exists_linearIndepOn_extension`). (c) is open at every point by the section of
+  `liftMatrixPoly` (`isZariskiOpen_finrank_liftSpaceTilde_le`). The planes' solution comes from
+  `exists_planeDiff_ne_zero_poly` itself (no fibre intersection here). `t₁` is a common non-root
+  (`IsZariskiOpen.exists_mem_inter`). `H_L[v]` has three members only with `v` among them, as a
+  body that is not a hub has at most three members in its closed neighbourhood.
+  *Remedies:* the prose to the Lean (the embedding by dimension, rank at most three only in `U(G)`,
+  (b) by two plane normals), or keep both.
+
 ## 3. The cleanup (not yet planned)
 
 - **Until it opens:** the standing rule (§1) keeps §2 current through PD-STEPS's rest,

@@ -152,6 +152,7 @@ failing pattern and the working fix.
 - `fun x hx => hx.1` (or `hx.2`, `hx.left`, `fun h => hnadj h.1`) given as a subset or non-membership argument fails with *"Invalid projection: Projection operates on types of the form `C ...`"* (or *"Invalid field notation"*), *"`hx` has type `?m.N.1 x`"*, where it compiled before the v4.36.0-rc1 bump → § 117 (`Set` is a structure now, so `x ∈ ?s` is a projection of a still-unassigned set, which the anonymous projection does not wait for; name the set: the named subset lemma, the set argument, or an ascribed binder)
 - A hypothesis that nothing in the proof needs (a copy without it elaborates with the same proof) is reported by neither `linter.unusedVariables` nor `lake lint`'s `unusedArguments`, so a cleanup's "`lake lint` to a fixed point" misses it, and the proof runs a `subst`, or an `rfl` pattern of `rcases`/`obtain`/`rintro`, on a variable its type mentions → § 118 (the substitution reverts the hypothesis and reintroduces it, so the proof term mentions it; both linters read it as used; screen such a binder by reading, and confirm by a copy without it)
 - *"Type mismatch"* (or a `whnf` timeout) applying a helper whose statement has `if a ∈ X then … else …` and was stated under `open Classical in`, at a caller whose `X` is a `set`/`let` for `W₀ \ {x}` (or any set with its own `Decidable` instance) → § 121 (take `[DecidablePred (· ∈ X)]` in the helper)
+- *"(deterministic) timeout at `whnf`"* at the argument of `LinearIndependent.pair_iff.1 h s t (by …)` (or another lemma's `.1`/`.2` applied with its trailing arguments in one term), where `h : LinearIndependent K ![…]` comes from a lemma generic in a dimension `{n}` or whose vectors are `def`s → § 122 (bind `h` first at the concrete type, `rw [LinearIndependent.pair_iff] at h`, prove the combination as its own `have`, then apply)
 - `lake lint`'s `defsWithUnderscore` reports *"`…tacticFoo_bar` contains an underscore"* on a `macro "foo_bar" : tactic` (or a `syntax`) the build accepted → § 119 (the syntax kind's generated name keeps the underscore; name it `macro (name := fooBar) "foo_bar"`)
 - *"could not synthesize default value for parameter `h` using tactics"* on a term whose proof argument a tactic fills in (a structure field's `:= by tac`, a constructor's autoParam), or a later *"motive is not type correct"*, *"don't know how to synthesize implicit argument"* or *"not type-correct under the `implicit` transparency level"* around such a term → § 120 (name the antecedent the tactic needs, put a conjunct it needs before it, pass an implicit proof binder by name, substitute rather than rewrite under the term)
 
@@ -4666,5 +4667,28 @@ frozen `Classical.decEq` against a derived instance under `rw`).
 
 **Calibration.** Phase 42m build 6: `exists_linearIndepOn_of_finrank` (`Pencil/Grade/EarFree.lean`)
 under `open Classical in` failed at `exists_earExtend_poly`'s call; with the binder it closed.
+
+---
+
+## 122. `pair_iff.1 (lemma …) s t (by …)` in one term times out at `whnf` — bind the independence first
+
+**Symptom.** `(LinearIndependent.pair_iff.1 (planeNormal_pair hne)) c₁ (-c₂) (by …)` (or
+`exists_dotProduct_eq_one_zero (LinearIndependent.pair_symm_iff.1 hf)`) fails with *"(deterministic)
+timeout at `whnf`, maximum number of heartbeats"* at the lemma argument, and the enclosing
+declaration reports a second timeout at its first line.
+
+**Cause (likely; not traced).** The elaborator unifies the `![x, y]` of `pair_iff`'s statement against the argument's
+type while the module (`Fin ?n → K`) or the vectors (a `def` such as `planeNormal h`, a `![…]`
+literal) are not yet fixed, and the trailing `by` block is elaborated against that half-solved
+goal; unfolding the `def`s and `Matrix.vecCons` chains exhausts the budget.
+
+**Fix.** Bind the independence at its concrete type first (`have hLI := planeNormal_pair hne`),
+`rw [LinearIndependent.pair_iff] at hLI`, prove the vanishing combination as its own `have` (with a
+type ascription restating any `![…]` hypothesis in the `def`'s spelling, defeq: `have e₁' : c =
+c₁ • planeNormal h := e₁`), then apply `hLI s t h0`.
+
+**Calibration.** Phase 42m build 3 (`exists_basis_frame`, `Pencil/Grade/LiftCutEdge.lean`, a
+pair-flip into a lemma generic in `{N}`) and build 6b (`span_pencilConfigPoint_eq_top`,
+`Pencil/Grade/EarFree.lean`): each closed once the hypothesis was bound first.
 
 ---
