@@ -254,6 +254,26 @@ transport lemma exists only at grade 2; `exists_extensor_in_two_panels_grade`
 gives none of two-pencil (1)–(3)). The prompt had marked them as hypotheses, and
 the recon checked them (F14).
 
+**Phase 42l (PD-HEAD's first half: nondegenerate realizations and their lifts)
+rows, 2026-11-04: 3, written at 42l's close.** None BLOCKED, escalated or killed;
+seven dispatches (open; recon, all ten nodes spiked complete; four sonnet builds
+transcribing the spike; an opus close). (1) The spike was `lake lean`-clean
+against its own imports, which omit `MainComponent/Lines.lean`. Its `liftPlane`
+clashed with that file's in the same namespace, and only build 3's whole-project
+`lake build` caught it (renamed `liftSubspace`). A spike's compile is
+import-relative, so the whole-project build is the clash check. Before build 4
+the coordinator grepped its 33 names (no other hit). (2) Build 3's hand-off line
+ranges left out `HoldsGenerally` (spike line 2047, in the one-witness section),
+though *Current state* assigned it to build 3. The coordinator's spike outline
+caught this before dispatch, and the prompt's scope-pin carried it. (3) The
+user asked about R-22 mid-loop: `lem:pencil-d-steer`'s five auxiliary vectors
+against the Lean's six. That difference sits in the node's *statement*, since
+`Γ(G)` is defined there, yet it was filed as a route difference and went green
+at build 3. The user had the node restated to its Lean at the close, and their
+words went verbatim through an `adjudication` block. Design doc §3's standing
+rule names departures from the chapter's *proof*; a departure in the statement
+needs the user's word before `\leanok`, as 42i's restatement had.
+
 ## Findings
 
 (Distill recurring lessons here — one entry per lesson, rows cite it.
