@@ -529,6 +529,18 @@ valid. The cleanup chooses one per `open` row, with the PI.
   ones (`Grade/Arms.lean`, `Grade/Reduction.lean`) through `hasGradedPencilRealization_two_iff`. It
   reverses the imports, as Theorem S's fold does (FRICTION *42k's cases repeat the `d = 3` cases'
   proofs*).
+- **Also left to it** (not a route row): two instances no `main_results` witness exhibits. (1) The
+  generic conjunct's hypothesis at a small graph. Phase 42's one `main_results` row, the headline
+  `Graph.graded_pencil_conditioned_pair`, has a witness of its distinct conjunct only (the PI's
+  (A) without (C), `notes/Phase42-design.md` §1, 2026-11-05), as the two `d = 3` pencil rows do,
+  so no row's witness meets the generic conjunct's feasibility hypothesis, whose satisfiability
+  `#print axioms` cannot see (F-207, F-252). The likely witness: `K₂`, by
+  `PencilNondegFeasible.mono` from `exists_isNondegPencilRealization_parallel_pair` through
+  `gradedPencilNondegFeasible_iff` (not spiked). (2) Beside it, an instance of the two predicates
+  42m introduced, `Graph.IsPencilGoodEar` and `EarLiftCondition`; the candidate is `K_{2,3}`
+  (`W₀` all five bodies, `x` a body of degree two; `s(W₀) = 3·4 − 2·6 = 0`, `X` a four-cycle with
+  `s = 1`; `notes/Phase42m.md` *Blockers*). It would witness an inner arm of the induction, not a
+  hypothesis of the headline.
 - **At its open**, with the PI: the placement (§1), then the opening recon, which compares every
   green node of `pencil-d.tex` with its Lean and adds a row for each departure; then the rounds,
   and a remedy per `open` row, are planned with the PI.

@@ -11,6 +11,7 @@ public import CombinatorialRigidity.JacobsTheorem
 public import CombinatorialRigidity.LamanTheorem
 public import CombinatorialRigidity.Molecular.GenericLift.HingeGeneric
 public import CombinatorialRigidity.Molecular.GenericLift.PanelGeneric
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Generic
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Statements
 public import CombinatorialRigidity.PebbleGame.Correctness
 public import Mathlib.Combinatorics.SimpleGraph.Star
@@ -91,6 +92,13 @@ input (for an `iff`, the side the theorem derives there). Each is the closed dec
   realization at the deficiency rank whose adjacent bodies have distinct points.
 * `pencilPair_of_nonempty_witness`: the pencil realization theorem's general form at the same star
   on four of five bodies, a graph that is not spanning, with the same conclusion.
+* `graded_pencil_conditioned_pair_witness`: the pencil realization theorem in every dimension at
+  the same star in dimension four, the least dimension the two pencil rows above do not reach.
+  There a body's hinges are planes of its panel, a hyperplane, and the pencil condition asks them
+  to contain a common line; two planes of a projective 3-space always share a line, so, as in
+  dimension three, the condition first binds at the centre, of degree three. The star is simple,
+  so it has a pencil realization at the deficiency rank whose adjacent bodies have linearly
+  independent normals.
 * `molecule_rank_formula_witness`: Jackson and Jordán's molecule rank formula (Katoh and
   Tanigawa's Corollary 5.7) at the triangle `K₃`, the least simple graph of minimum degree two.
   Its multigraph is a triangle, `0`-dof, so the square `K₃² = K₃` has generic rank `3 · 3 - 6 = 3`.
@@ -110,8 +118,8 @@ each hinge is two bars (`bodyHingeMult 2 = 2`): at `n = 1` a hinge carries no ba
 (`bodyHingeMult 1 = 0`) and a body's one motion is a translation (`bodyBarDim 1 = 1`). So are
 Theorems 5.5 and 5.6, the rank formula at generic panel normals and the molecular conjecture for
 multigraphs, whose least dimension is `n = 2` (a panel is a line and a hinge a point); the pencil
-rows are stated at `n = 3`, and the molecule and Jacobs rows, about the square of a graph, in
-3-space.
+rows are stated at `n = 3`, the pencil row in every dimension at `d = 4` (Lean's `m = d - 2 = 2`,
+grade `3`), and the molecule and Jacobs rows, about the square of a graph, in 3-space.
 -/
 
 @[expose] public section
@@ -599,6 +607,20 @@ theorem pencilPair_of_nonempty_witness :
       (Graph.OfSimpleGraph (SimpleGraph.starGraph (0 : Fin 5)) - {4}) :=
   have := ofSimpleGraph_simple (SimpleGraph.starGraph (0 : Fin 5))
   (pencilPair_of_nonempty _ ⟨0, by simp⟩).2.1 inferInstance
+
+/-- **The pencil realization theorem in every dimension, at the star `K₁,₃` in dimension four**:
+`Graph.graded_pencil_conditioned_pair` at `m = 2`, so in dimension `d = m + 2 = 4` (grade `3`,
+coordinates in `ℝ⁵`), at the star on four bodies centred at `0`, which has a body. In dimension four
+a body's hinges are planes of its panel, a hyperplane of projective 4-space, and the pencil
+condition asks them to contain a common line; two planes of a projective 3-space always share a
+line, so, as in `pencil_realization_theorem_witness`, the condition first binds at the centre, of
+degree three. The star is simple, so the theorem's second conjunct gives it a pencil realization at
+the deficiency rank whose normals at the two ends of each edge are linearly independent. -/
+theorem graded_pencil_conditioned_pair_witness :
+    HasGradedDistinctPencilRealization ℝ 3 4
+      (Graph.OfSimpleGraph (SimpleGraph.starGraph (0 : Fin 4))) :=
+  (Graph.graded_pencil_conditioned_pair (K := ℝ) (m := 2) (by norm_num) ⟨0, by simp⟩).2.1
+    (ofSimpleGraph_simple _)
 
 end
 

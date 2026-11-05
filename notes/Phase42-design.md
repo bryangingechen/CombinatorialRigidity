@@ -17,7 +17,8 @@ Evidence: `notes/Strata.md`, Results 12–27.
 This file is the phase's entry point: the target (§0), the PI's decisions (§1, verbatim), the recon
 (§2), the layers by stable code with their verdicts and deferrals (§3) and the settled questions
 (§4). **At the close** (2026-11-05) the header, §0's status, §3's arcs and §4 were compressed to
-verdicts (the full text is in git up to `e186a885`); §1 and §2 are byte-identical. §2 is **frozen**:
+verdicts (the full text is in git up to `e186a885`); §1 and §2 are byte-identical, net of §1's last
+entry, appended at the close's part 3. §2 is **frozen**:
 the research corpus (`notes/Strata.md`, `notes/scripts/strata/`, the attack briefs and
 `Grade/TheoremS.lean`) cites its rows, tests and obligations by number.
 
@@ -519,6 +520,32 @@ fibre-intersection lemma and Jackson–Jordán's equality.
   split and the conditioned pair). `-ear-extend` and `-ear-free` have no `d = 3` Lean, as at
   `d = 3` no lift is needed. "Where Tier 0's main_results row gets decided" holds (§3, *At Phase
   42's close*).
+- **PI, 2026-11-05 (Phase 42's main_results rows):** asked "Phase 42's close needs your call on its
+  main_results rows (formalization.yaml). Already settled: Tier 0 gets no row, because the coverage
+  subsumes it (design doc §3), and the headline Graph.graded_pencil_conditioned_pair (the pencil
+  realization theorem in every dimension, its three conjuncts) joins. Not settled: whether the
+  headline is the only row, and what its non-vacuity witness exercises. All seven candidates use
+  only the three standard axioms. Which shape?", the PI answered "(A) headline only
+  (Recommended)", whose option read: "One row: the headline. Its description and a new alignment
+  entry name the route (the coverage, the reduction, the generic theorem), the way Phase 40's rows
+  name x0Dist and x0Gen without rows of their own. Witness: the distinct conjunct at the star K₁,₃
+  in dimension four, as the d = 3 witnesses do." The other options put were "(B) headline +
+  coverage" ("Two rows. The coverage Graph.IsX0Graph.x0AttainsGrade also gets one: it is design
+  doc §0's target (a general picture with general heights attains, which the headline's existence
+  claims don't say) and what subsumes Tier 0. Coverage witness at the triangle K₃."), "(A) and (C)
+  generic witness" ("(A), plus the headline's witness also exercises the generic conjunct. That
+  means its feasibility hypothesis (the one no input might meet) is shown at a small graph, likely
+  K₂. The close agent recommends this. It isn't spiked yet: probably a few extra lines, but it
+  could take a short extra build.") and "(B) and (C)" ("Both rows, and the headline's witness also
+  exercises the generic conjunct, as in (C).").
+  *Note (not the PI's text):* the question and the option text are the coordinator's words, its
+  condensation of the close's part 1 options (A), (B) and (C) under `notes/Phase42m.md` *Blockers*.
+  The PI chose (A) without (C), so the witness exercises the distinct conjunct only, as the `d = 3`
+  rows' witnesses do, and the generic conjunct's satisfiability at a small graph (F-207, F-252)
+  stays unwitnessed by a row: an open item in `notes/Cleanup42.md` §3, beside a closed instance of
+  `Graph.IsPencilGoodEar` and `EarLiftCondition` (the builds' candidate, `K_{2,3}`). The close's
+  part 3 landed (A): one `main_results` row and one `alignment` entry, and
+  `graded_pencil_conditioned_pair_witness`.
 
 ## 2. PD-RECON (42a)
 
@@ -1085,7 +1112,9 @@ marked `no departure` (R-6). The post-Phase-42 cleanup acts on the ledger (that 
   added no row, as Phase 40's sub-phases did not, and no later sub-phase close has. The
   coverage (42j) subsumes Tier 0: `Graph.x0AttainsGrade_of_deficiency_two_le_three` is
   `Graph.IsX0Graph.x0AttainsGrade` with `def₂ ≤ 3` added, so Tier 0's distinct form also follows
-  from the coverage (by `Graph.X0AttainsGrade.hasGradedDistinctPencilRealization`).
+  from the coverage (by `Graph.X0AttainsGrade.hasGradedDistinctPencilRealization`). The PI chose
+  one row, the headline (§1, 2026-11-05); it joined at the close's part 3, with its witness at the
+  star `K₁,₃` in dimension four (`graded_pencil_conditioned_pair_witness`).
 
 **The nodes by layer.** `pencil-d.tex` has 99 dep-graph nodes, all green since 42m's build 7:
 PD-STATE 17 and PD-STABLE 9, COUNT-A and COUNT-B 11 (`sec:pencil-d-deficiency`), and from

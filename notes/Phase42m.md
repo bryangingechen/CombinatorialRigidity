@@ -6,14 +6,15 @@ the second and last sub-phase of Phase 42's last layer, PD-HEAD. Forward mode, t
 `sec:pencil-d-generic`, as the chapter states them. They were the blueprint's last red nodes, so
 42m's close is Phase 42's. The pre-build recon and **builds 1 to 7 landed** (2026-11-05): all
 eleven nodes green, the blueprint has none red. **The close runs in parts** (*Hand-off*): parts 1
-(the gates and the axioms on the final tree) and 2 (the re-read, the ledger, the compressions, the
-organization review) landed; next, part 3, once the PI answers the question on Phase 42's
-`main_results` rows (*Blockers*), then part 4, the last.
+(the gates and the axioms on the final tree), 2 (the re-read, the ledger, the compressions, the
+organization review) and 3 (Phase 42's `main_results` row, the headline, the PI's choice, with its
+witness) landed; next, part 4, the last.
 
 ## Current state
 
-**Next: the close's part 3, once the PI answers (*Blockers*), then part 4** (*Hand-off*); parts 1
-and 2 landed (*Decisions made*). In the tree,
+**Next: the close's part 4, the last** (*Hand-off*); parts 1 to 3 landed (*Decisions made*). In
+the tree, `Nonvacuity.lean`'s `graded_pencil_conditioned_pair_witness` (part 3: the headline's
+distinct conjunct at the star `K₁,₃` with `m = 2`, dimension four),
 `Grade/Generic.lean` (build 7: `LiftAttains.hasGradedGenericPencilRealization`, the remark, pinned
 at `def:pencil-d-lift-attains`; `liftAttains_of_simple`, the strong induction;
 `hasGradedGenericPencilRealization_of_simple`, which is `thm:pencil-d-generic`;
@@ -144,7 +145,7 @@ Build numbers are *Hand-off*'s. "Spiked" means sorry-free in `scratch/42m/Spike.
   - [x] Part 2: the chapter's end-to-end re-read and `notes/BlueprintExposition.md`; the design
     doc's compression; the phase note's *Decisions made* tail; the project-organization review
     (*Decisions made*).
-  - [ ] Part 3 (needs the PI's answer, *Blockers*): `formalization.yaml`'s `main_results` and
+  - [x] Part 3 (the PI's (A), *Decisions made*): `formalization.yaml`'s `main_results` and
     `alignment` (Tier 0 unless the headline subsumes it, design doc §3: subsumed, so no Tier 0
     row), each new row's closed non-vacuity witness in `CombinatorialRigidity/Nonvacuity.lean`,
     and the headline-axioms check with the new rows.
@@ -154,30 +155,7 @@ Build numbers are *Hand-off*'s. "Spiked" means sorry-free in `scratch/42m/Spike.
 
 ## Blockers / open questions
 
-- **For the PI (blocks part 3 only): Phase 42's `main_results` rows.** Settled: no Tier 0 row
-  (design doc §3: the coverage subsumes it, and at the same `1 ≤ m` the headline's second conjunct
-  gives its distinct form, `IsX0Graph` being simple with a body); the headline
-  `Graph.graded_pencil_conditioned_pair` (`Grade/Generic.lean`) joins (`PHASE-BOUNDARIES.md`: the
-  phase's headline theorem). Not settled by the design doc or the PI's answers: whether it is the
-  only row, and how much its witness exercises. All seven candidates are on the three standard
-  axioms (part 1).
-  - **(A), recommended: one row, the headline.** Its description and a new `alignment` entry name
-    the route, the coverage `Graph.IsX0Graph.x0AttainsGrade`, the reduction
-    `Graph.graded_pencil_realization_theorem` and `hasGradedGenericPencilRealization_of_simple`, as
-    Phase 40's rows name `x0Dist` and `x0Gen`, which got no row. Witness as the `d = 3` rows':
-    the star `K₁,₃` in dimension four (`m = 2`), its distinct conjunct.
-  - **(B): two rows, the headline and the coverage.** The coverage is design doc §0's target (at
-    every simple connected graph of minimum degree two, a general picture with general heights
-    attains, which the headline's existence claims do not say) and what subsumes Tier 0's first
-    claim (`Graph.x0AttainsGrade_of_deficiency_two_le_three`). Its witness at the triangle `K₃`.
-  - **(C), with (A) or (B): the headline's witness also exercises the generic conjunct**, its one
-    hypothesis no input might meet (F-207, F-252): feasibility at a small simple graph, likely
-    `K₂` by `PencilNondegFeasible.mono` from `exists_isNondegPencilRealization_parallel_pair`
-    through `gradedPencilNondegFeasible_iff` (not spiked). The `d = 3` rows' witnesses do not.
-  - Recommendation: (A) with (C). The builds' `K_{2,3}` instance of `Graph.IsPencilGoodEar` and
-    `EarLiftCondition` (below) would witness an inner arm, not a hypothesis of the headline, so no
-    option needs it; CLEANUP-42's unless the PI wants it in part 3.
-- Nothing else blocks the close. What the builds still carry:
+- Nothing blocks the close. What the builds still carry:
   - **`-ear-free`'s leaves, traced against their consumer (build 6b):** each step's hypotheses are
     what the assembly has: (1) `earFree_of_finrank_liftSpaceTilde_le` takes `G.Simple`, the good ear,
     points in subspaces of dimension at most three on every closed neighbourhood of `G` (at any
@@ -195,7 +173,8 @@ Build numbers are *Hand-off*'s. "Spiked" means sorry-free in `scratch/42m/Spike.
   - **Instances of the two new predicates**: none closed yet. `Graph.IsPencilGoodEar` is produced
     by build 4 and `EarLiftCondition` by build 6b (`holdsGenerally_earFree`); the candidate witness
     is `K_{2,3}` (`W₀` all five bodies, `x` a body of degree two; `s(W₀) = 3·4 − 2·6 = 0`, `X` a
-    four-cycle with `s = 1`); not a row's witness (the PI question above).
+    four-cycle with `s = 1`); not a row's witness (the PI's (A)), so CLEANUP-42's, recorded in
+    `notes/Cleanup42.md` §3 beside the generic conjunct's unwitnessed hypothesis.
   - **Build 7's honesty gate** (read, not assumed): `liftAttains_of_simple`'s hypotheses are the
     node's (`G.Simple`, a body, feasibility, `[Infinite K]`, finiteness); `EarLiftCondition` comes
     from `holdsGenerally_earFree` at the selectors `exists_steer_selectors` gives and
@@ -210,19 +189,13 @@ Builds 1 to 7 landed (`Grade/LiftSmall.lean`; `Grade/LiftCases.lean`, three node
 `Grade/EarFree.lean`, R-33 and R-34; `Grade/Generic.lean`, the theorem and the headline, no new row).
 No blueprint node is red. The close of 42m and Phase 42 together (`PHASE-BOUNDARIES.md` *When this
 commit closes a phase*, the full close) runs in parts, one commit each, on Phase 41's precedent;
-parts 1 and 2 landed (*Decisions made*). **The next concrete commit is part 3, once the PI answers
-the question under *Blockers***; part 4 flips the row, so it comes last and waits for part 3.
-- **Part 3 (Lean; after the PI's answer, *Blockers*):** the rows and `alignment` entries the PI
-  picks, `review.notes`' count of main results ("all twenty"), each new row's witness in
-  `CombinatorialRigidity/Nonvacuity.lean` (named `<declaration>_witness`; the module docstring's
-  list and its paragraph on dimensions gain it; the import `Grade.Generic`, and `Grade.Coverage`
-  under (B)); the headline-axioms harness `scratch/42m-close/Axioms.lean` (gitignored; the 20 rows,
-  byte-identical to 41e's close net of the path) re-run with the new rows; every gate.
+parts 1 to 3 landed (*Decisions made*). **The next concrete commit is part 4, the last.**
 - **Part 4, the last (docs only; flips the row):** the ROADMAP row to ✓, re-thinned, and §42
   compressed to one paragraph plus pointers (sub-phases by stable code); README *Project status*,
   `home_page/index.md` (status and phase table), `intro.tex`'s *Organization* enumerate and
   *Reading this blueprint* paragraph, `formalization.yaml`'s `status.scope` and
-  `fidelity.divergences` (each says Phase 42 is in progress), `notes/MolecularConjecture.md`'s
+  `fidelity.divergences` (each says Phase 42 is in progress; the scope to name part 3's row,
+  `Graph.graded_pencil_conditioned_pair`), `notes/MolecularConjecture.md`'s
   Phase 42 entry, all re-summarized, not appended to; what they carry on the pins: every pin equals
   or is stronger than its node except build 1's two-body pin, whose ambient `[Nonempty α]` is a
   carrier artifact at zero bodies (reported to the PI as an encoding, no objection), and the route
@@ -276,3 +249,13 @@ Compressed to one-line verdicts at the close's part 2 (the full entries are in g
   42m's deferrals moved to its §3). The organization review: the `CLAUDE.md` suite unchanged since
   2026-10-25, no extraction due; FRICTION's three `[resolved]` entries swept to the archive; no
   *Choices to revisit* entry answered; ROADMAP's directory layout names `Molecule/Pencil/`.
+- **PI, 2026-11-05 (Phase 42's main_results rows):** the PI answered "(A) headline only
+  (Recommended)", whose option read: "One row: the headline. Its description and a new alignment
+  entry name the route (the coverage, the reduction, the generic theorem), the way Phase 40's rows
+  name x0Dist and x0Gen without rows of their own. Witness: the distinct conjunct at the star K₁,₃
+  in dimension four, as the d = 3 witnesses do." The question as put, the other options and a note
+  on them (the coordinator's words; (A) without (C), so the generic conjunct's hypothesis stays
+  unwitnessed by a row, an open item in `notes/Cleanup42.md` §3): design doc §1.
+- **Close, part 3 (2026-11-05):** one `main_results` row and one `alignment` entry, the headline,
+  naming the route; `graded_pencil_conditioned_pair_witness` at `K₁,₃`, `m = 2`; the harness's 21
+  rows, the first 20 byte-identical to part 1's run, the new one on the three standard axioms.
