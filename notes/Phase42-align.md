@@ -8,8 +8,8 @@ formalization note naming the Lean's route for each of the 17 kept parts (K), wi
 slips round 1 moved here; then one `\uses` sweep over the chapter's missing edges (60 at the open).
 Blueprint and notes only: no Lean, no pin, no `\leanok`. Eleven tasks, one commit each: the open,
 eight slices by layer, the sweep and the close. 17 rows end `aligned` and 17 `kept`. Tasks 2
-and 3 landed (2 `aligned`, 6 `kept`). **Next concrete task:** task 4, 42i with 42j (R-14 L; R-15
-L statement and K note; R-16, R-17 K). Round manual: `CLEANUP.md`.
+to 4 landed (3 `aligned`, 9 `kept`). **Next concrete task:** task 5, 42k (R-19 L; R-18, R-46 K).
+Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -24,12 +24,14 @@ the PI answers in an entry that starts `**PI, <date>:**`.
 
 ## Current state
 
-**Task 3 landed** (this commit): R-9 `aligned`; R-10, R-11, R-12 `kept`, with three formalization
-notes (eight in the chapter); the ear-datum slip taken. Nothing is mid-stream; task 4 is next.
-Task 3's gates: G4's `verify.sh` has 9 `WARNING:` lines, task 2's nine (the count tasks 4–10
-hold), `print.log` rebuilt with 0 `LaTeX Warning`; G5's after-dump is byte-identical to
-`dump-6eb7a2e6.txt`, which serves as task 4's parent dump (`1886 edges f539dcce186aa853`,
-`lean_decls` `28b0db9377d77782`); `--chapter pencil-d` unchanged but for line numbers.
+**Task 4 landed** (this commit): R-14 `aligned`; R-15 (its statement restated), R-16, R-17
+`kept`, with three formalization notes (eleven in the chapter). Nothing is mid-stream; task 5 is
+next. Task 4's gates: G4's `verify.sh` has 9 `WARNING:` lines, task 3's nine (the count tasks 5–10
+hold), `print.log` rebuilt with 0 `LaTeX Warning`; G5's after-dump,
+`scratch/cleanup-42/round2/task4/dump-after.txt`, differs from `dump-6eb7a2e6.txt` in one line,
+the theorem's proof without `lem:relative-screws-path` (no drawn edge: it stays reached through
+`lem:block-rank-ear`; `1886 edges f539dcce186aa853`, `lean_decls` `28b0db9377d77782`), and serves
+as task 5's parent dump; `--chapter pencil-d`: 60 *missing*, 18 *unbacked transitive* (was 19).
 
 **Verified at the open** (2026-11-05, at `6eb7a2e6`):
 - **The ledger** (`notes/Cleanup42.md` §2): 54 rows, 34 `open` (R-3 to R-5, R-9 to R-12, R-14 to
@@ -163,21 +165,15 @@ statement, (T2) and other parts all in task 8).
 
 **42h** (`sec:pencil-d-short`, its first eight nodes).
 
-- [x] **3. The kernel curve, the ear data, two stars and four interior bodies** (this commit).
+- [x] **3. The kernel curve, the ear data, two stars and four interior bodies** (`c3f237fe`).
   Aligned: R-9 (the rank bounded along the line, no `K(t)`). Kept: R-10, R-11, R-12 (a note
   each); the ear-datum slip taken (`s`). No `\uses` change; one *Moved* line (below).
 
 **42i with 42j** (`sec:pencil-d-short`, its last four nodes; `sec:pencil-d-chains`).
 
-- [ ] **4. Three interior bodies, the planes, glued ends and the chain count.** R-14, L proof:
-  `thm:pencil-d-open-ear-three` (l. 3307), its first stage: at `r ≤ 2`, `dim ρ ≤ 2` by glued-ends
-  or a common member `t`, no component step or path, the factoring R-12's
-  (`Grade/ShortThree.lean`). R-15, L statement and K note: `lem:pencil-d-planes-meet` (l. 3222)
-  without `K` infinite; the note: no `λ` map, `R` by rank openness at a fixed inverse
-  (`Grade/PlanesMeet.lean`). K notes: R-16, `lem:pencil-d-glued-ends` (l. 3111), a partition of
-  `G′` pulled back, `X` split in two (`Grade/GluedEnds.lean`); R-17, `lem:pencil-d-chain-count`
-  (l. 2156), classes of interior bodies and the handshake bound (`Grade/Chains.lean`).
-  *Expected:* the theorem's proof may drop `lem:relative-screws-path` (*unbacked* at the open).
+- [x] **4. Three interior bodies, the planes, glued ends and the chain count** (this commit).
+  Aligned: R-14. Kept: R-15 (statement without `K` infinite, G6 run), R-16, R-17 (a note each).
+  `\uses`: the theorem's proof drops `lem:relative-screws-path`. One *Moved* line (below).
 
 **42k** (`sec:pencil-d-reduction`).
 
@@ -263,6 +259,9 @@ statement, (T2) and other parts all in task 8).
   `exists_mulVec_add_mulVec_eq_zero` docstring still says the chapter argues by Cramer's rule over
   `K(t)` (R-9), stale since task 3 put the chapter on the Lean's route. (Round 1's stale
   `Grade/LiftNoRigid.lean` docstring is round 4's too, §3 there; this round edits no Lean.)
+- **Task 4, for round 4** (Lean; mirrored in `notes/Cleanup42.md` §3): `Grade/ShortThree.lean`'s
+  `Graph.X0AttainsGrade.of_openEar_three` docstring still says the chapter's case `r ≤ 2` goes
+  through the components of `G[V₁]` and a path (R-14), stale since task 4.
 
 ## Blockers / open questions
 
@@ -270,11 +269,10 @@ statement, (T2) and other parts all in task 8).
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 4, 42i with 42j: R-14's proof (L), R-15's statement (L) and note (K),
-and the K notes of R-16 and R-17, one Opus dispatch. Its G5 parent dump is still the open's
-(`scratch/cleanup-42/round2/dump-6eb7a2e6.txt`, byte-identical at tasks 2 and 3), and G4 holds
-`verify.sh` to 9 `WARNING:` lines. Re-`grep` its nodes' lines: tasks 2 and 3 moved them by up to
-47. R-15's statement change runs G6.
+**Next concrete task:** task 5, 42k: R-19's proof (L) and the K notes of R-18 and R-46, one Opus
+dispatch. Its G5 parent dump is task 4's after-dump
+(`scratch/cleanup-42/round2/task4/dump-after.txt`), and G4 holds `verify.sh` to 9 `WARNING:`
+lines. Re-`grep` its nodes' lines: tasks 2–4 moved them by 114. No statement changes, so no G6.
 
 ## Decisions made during this round
 

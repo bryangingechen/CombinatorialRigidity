@@ -2243,6 +2243,19 @@ in dimension $d$ (\cref{lem:pencil-d-x0-attains-of-le}).
   $D = 10$, and those with three at every $d \ge 5$, where $D \ge 15$.
 \end{proof}
 
+\begin{fmlnote}
+  The formalization counts without segments: it takes as classes the
+  sets of interior bodies of the chains, which partition the $T$ bodies
+  of degree two, as two chains that share an interior body have the same
+  interior bodies; with $c$ classes, the edges at the interior bodies of
+  a chain, at least one more than these bodies and disjoint for distinct
+  classes, give $T + c \le |E(G)|$, the bound on the chains gives
+  $T + \ell \le k + \ell c$, the degrees, two at the $T$ bodies and at
+  least three at the others, give $3|V(G)| - T \le 2|E(G)|$ in place of
+  $3|B| \le 2e$, and with $e(V_1) \ge |E(G)| - (k + 1)$ these
+  inequalities reach the same last line, with $c$ in place of $e$.
+\end{fmlnote}
+
 % Source: SHORT-CORE workbook (notes/attacks/short-core/workbook.md), S53 (b),
 % with S52 and the ONE-CLASS lemma, both formalized in sec:pencil-d-deficiency.
 \begin{theorem}[A chain with many interior bodies, a core, or rigidity in dimension three]
@@ -3264,6 +3277,22 @@ $(\xi, \eta, \omega) \mapsto (\xi, \eta, h_a \cdot (\xi, \eta, \omega),
   every subspace $\rho$ (\cref{thm:pencil-x0-open-ear-three}).
 \end{proof}
 
+\begin{fmlnote}
+  The formalization proves this without the merged deficiency: it pulls a
+  partition of $G'$ of the largest value back to one of $V(G)$ with $a$
+  and $b$ in one part $X$ and value $\operatorname{def}_2(G')$
+  (\cref{lem:deficiency-additive-core} (1)), uses only
+  $\dim Z^0(q) \le 3 + \operatorname{def}_2(G')$, takes for the factor
+  of $g$ beside the minor the polynomial of \cref{thm:pencil-jj-equality}
+  for $G$ instead of the first coordinates of the differences
+  $q_u - q_v$, and, when $a$ and $b$ lie in different components of
+  $G[X]$, splits $X$ in two, into the bodies that $G[X]$ joins to $a$ and
+  the rest (the case $c = 2$ above), a partition of value
+  $\operatorname{def}_2(G') + 3$, at most $\operatorname{def}_2(G)$, so
+  that $\dim F(q) = 3 + \operatorname{def}_2(G)$
+  (\cref{lem:pencil-lifting-planes-dim}) gives $r \ge 3$.
+\end{fmlnote}
+
 % Source: SHORT-CORE workbook, S33 (its lemma), with S9 (ii)-(iii) and S26 (iii).
 \begin{lemma}[Where the planes of the ends meet, in every dimension]
   \label{lem:pencil-d-planes-meet}
@@ -3272,7 +3301,7 @@ $(\xi, \eta, \omega) \mapsto (\xi, \eta, h_a \cdot (\xi, \eta, \omega),
   \leanok
   \uses{def:open-ear, def:pencil-d-configuration, def:pencil-lifting-space,
         def:pencil-lifting-planes, def:pencil-admissible-picture}
-  Let $K$ be infinite and $d \ge 3$. Let $G$ have an open ear
+  Let $d \ge 3$. Let $G$ have an open ear
   $a - u_1 - u_2 - b$ on $V_1$ with two interior bodies
   (\cref{def:open-ear}), let $q$ be an admissible picture of $G$, and let
   $r$ be the dimension of the space of differences $h_b - h_a$ over the
@@ -3343,13 +3372,26 @@ $(\xi, \eta, \omega) \mapsto (\xi, \eta, h_a \cdot (\xi, \eta, \omega),
   $\Pi_a \cap \Pi_b$ down to dimension $3 - \min(d - 2, r)$.
 \end{proof}
 
+\begin{fmlnote}
+  The formalization proves this without the map
+  $z^i \mapsto (\lambda^i_v)_v$: at each of $a$ and $b$ it fixes three
+  members of the closed neighbourhood with linearly independent
+  homogeneous picture points, reads $\lambda^i_a$ and $\lambda^i_b$ off
+  the values of $z^i$ at these members through the inverse of their
+  $3 \times 3$ matrix, so that the rows of $L(z)$ are linear in $z$, and
+  takes for $R$ the polynomial that the openness of the rank of these
+  rows gives at heights whose first $\min(d - 2, r)$ rows are linearly
+  independent and whose other rows are zero.
+\end{fmlnote}
+
 % Source: SHORT-CORE workbook, S31, S33 and S32 (the proof at d = 4, 5, 6); S20 and S21
 % (the base data, without (P), which lem:pencil-d-stars-three no longer asks); S26 (i) for the
 % bound d + kappa <= 6. The workbook's first proof at d = 4 is S1-S21 (S6 with S12, S16, S21).
-% The Lean (Graph.X0AttainsGrade.of_openEar_three) factors through G'' with the insertion
-% hypothesis at the first stage's base data (of_openEar_splitOff_of_base), and bounds dim rho
-% by a common member of the closed neighbourhoods of a and b, without the component and path
-% steps below (notes/Cleanup42.md, R-14).
+% The third condition at r <= 2 follows the Lean (Graph.X0AttainsGrade.of_openEar_three):
+% dim rho <= 2 by glued-ends or a common member of the closed neighbourhoods of a and b, with
+% no component or path step (notes/Cleanup42.md, R-14). The Lean factors through G'' with the
+% insertion hypothesis at the first stage's base data (of_openEar_splitOff_of_base), R-12's
+% factoring, which thm:pencil-d-open-ear-four's formalization note names.
 \begin{theorem}[An open ear with three interior bodies, in dimensions four to six]
   \label{thm:pencil-d-open-ear-three}
   \lean{Graph.X0AttainsGrade.of_openEar_three}
@@ -3371,11 +3413,11 @@ $(\xi, \eta, \omega) \mapsto (\xi, \eta, h_a \cdot (\xi, \eta, \omega),
   \uses{thm:pencil-d-open-ear-four, def:pencil-admissible-picture,
         def:pencil-lifting-planes, lem:pencil-d-glued-ends,
         lem:pencil-d-planes-meet, lem:pencil-x0-fibre-intersection,
-        lem:pencil-d-two-stars, lem:relative-screws-path,
-        lem:pencil-d-stars-three, lem:pencil-d-ear-data,
-        lem:pencil-d-ear-data-open, lem:pencil-d-insertion,
-        lem:block-rank-ear, lem:splitoff-deficiency-reuse,
-        lem:deficiency-ear, lem:pencil-d-x0-one-witness}
+        lem:pencil-d-two-stars, lem:pencil-d-stars-three,
+        lem:pencil-d-ear-data, lem:pencil-d-ear-data-open,
+        lem:pencil-d-insertion, lem:block-rank-ear,
+        lem:splitoff-deficiency-reuse, lem:deficiency-ear,
+        lem:pencil-d-x0-one-witness}
   We follow the proof of \cref{thm:pencil-d-open-ear-four}, with the open
   ear $a - x_1 - x_3 - b$ of $G''$. Only the first stage and the third
   condition on the ear data change.
@@ -3387,10 +3429,10 @@ $(\xi, \eta, \omega) \mapsto (\xi, \eta, h_a \cdot (\xi, \eta, \omega),
   degree at least two there.
 
   \emph{The first stage.} Take $q^*$ as there. If $a$ and $b$ are not
-  adjacent and have no common neighbour, take $q^*$ also off the zero set
-  of the polynomial of \cref{lem:pencil-d-glued-ends} for $G[V_1]$. Let
-  $r$ be the dimension of the space of differences $h_b - h_a$ over the
-  lifting planes $h$ of $G[V_1]$ at $q^*$
+  adjacent and have no common neighbour in $G[V_1]$, take $q^*$ also off
+  the zero set of the polynomial of \cref{lem:pencil-d-glued-ends} for
+  $G[V_1]$. Let $r$ be the dimension of the space of differences
+  $h_b - h_a$ over the lifting planes $h$ of $G[V_1]$ at $q^*$
   (\cref{def:pencil-lifting-planes}). In $L_{G''}(q^*)^{d-2}$, take $z^*$
   as there and also off the zero set of the polynomial of
   \cref{lem:pencil-d-planes-meet} for $G''$ and its ear
@@ -3410,31 +3452,28 @@ $(\xi, \eta, \omega) \mapsto (\xi, \eta, h_a \cdot (\xi, \eta, \omega),
     y_3 \vee p_b)
   \]
   is all of $\bigwedge^2 K^{d+1}$ whenever it contains
-  $\operatorname{star}(y_1) + \operatorname{star}(y_3)$.
+  $\operatorname{star}(y_1) + \operatorname{star}(y_3)$. The
+  differences $h_b - h_a$ are affine functions on $K^2$, so $r \le 3$.
 
-  First let $y_1$ and $y_3$ be independent, and suppose that $W$ contains
-  both stars and $W \neq \bigwedge^2 K^{d+1}$. We show that $r = 3$. The
-  sum of the stars has dimension $2d - 1$
-  (\cref{lem:pencil-d-two-stars}), and $W$ is $\rho$ plus three joins, so
-  $\dim \rho \ge 2d - 4 \ge 4$. If $a$ and $b$ lay in different
-  components of $G[V_1]$, the motions equal to one element of
-  $\bigwedge^2 K^{d+1}$ on the component of $a$ and to another elsewhere
-  would give $\rho = \bigwedge^2 K^{d+1}$, and $W$ would be everything.
-  So some path joins $a$ to $b$ in $G[V_1]$. Every motion of $G[V_1]$
-  restricts to a motion of such a path, so $\rho$ lies in the span of the
-  joins along it (\cref{lem:relative-screws-path}), and the path has at
-  least four edges. Hence $a$ and $b$ are not adjacent and have no common
-  neighbour, and $q^*$ lies off the zero set of the polynomial of
-  \cref{lem:pencil-d-glued-ends}. As $\dim \rho > 2$, that lemma gives
-  $r > 2$. And $r \le 3$, as the differences $h_b - h_a$ are affine
-  functions on $K^2$. So $r = 3$.
+  First let $r \le 2$. We show that $\dim \rho \le 2$. If $a$ and $b$
+  are not adjacent and have no common neighbour in $G[V_1]$, then $q^*$
+  lies off the zero set of the polynomial of
+  \cref{lem:pencil-d-glued-ends}, which gives $\dim \rho \le r$.
+  Otherwise some body $t$ of $G[V_1]$ is $a$ or adjacent to $a$, and is
+  $b$ or adjacent to $b$. Let $p_t$ be the point of $t$. Every motion
+  $S$ of $G[V_1]$ has $S(t) - S(a) \in K\,(p_a \vee p_t)$ and
+  $S(b) - S(t) \in K\,(p_t \vee p_b)$, so $\rho$ lies in the span of
+  these two joins. Either way $W$, the sum of $\rho$ and three joins, has
+  dimension at most five. If $y_1$ and $y_3$ are independent, the sum of
+  their stars has dimension $2d - 1 \ge 7$, as $d \ge 4$
+  (\cref{lem:pencil-d-two-stars}), so $W$ does not contain it. So the
+  condition holds wherever $y_1$ and $y_3$ are independent. As they have
+  last coordinate $1$, this is so wherever the first coordinates of the
+  pictures of $x_1$ and $x_3$ differ, which is the non-vanishing of a
+  nonzero polynomial in the ear data.
 
-  So if $r \le 2$, the condition holds wherever $y_1$ and $y_3$ are
-  independent. As they have last coordinate $1$, this is so wherever the
-  first coordinates of the pictures of $x_1$ and $x_3$ differ, which is
-  the non-vanishing of a nonzero polynomial in the ear data. If $r = 3$,
-  then $\kappa = 3 - \min(d - 2, 3)$ is $1$ at $d = 4$ and $0$ at
-  $d = 5, 6$. So $d + \kappa \le 6$, and as $p_a \in \Pi_a$ and
+  If $r = 3$, then $\kappa = 3 - \min(d - 2, 3)$ is $1$ at $d = 4$ and
+  $0$ at $d = 5, 6$. So $d + \kappa \le 6$, and as $p_a \in \Pi_a$ and
   $p_b \in \Pi_b$, \cref{lem:pencil-d-stars-three} gives the condition off
   the zero set of a nonzero polynomial in
   $(y_1, y_3) \in \Pi_a \times \Pi_b$. The
@@ -3460,9 +3499,9 @@ $(\xi, \eta, \omega) \mapsto (\xi, \eta, h_a \cdot (\xi, \eta, \omega),
   fail. The proof therefore reads the relative screws of $G[V_1]$,
   through its lifting planes (\cref{lem:pencil-d-glued-ends},
   \cref{lem:pencil-d-planes-meet}). The counts and the heights change as
-  in \cref{thm:pencil-d-open-ear-four}. From $d = 7$ on, a span
-  containing both stars without being everything still forces $r = 3$,
-  but then $\kappa = 0$ and $d + \kappa \ge 7$, and the argument stops.
+  in \cref{thm:pencil-d-open-ear-four}. From $d = 7$ on, the case
+  $r \le 2$ goes through unchanged, but at $r = 3$ then $\kappa = 0$ and
+  $d + \kappa \ge 7$, and the argument stops.
   The coverage needs the step only at $d = 4$
   (\cref{thm:pencil-d-chain-or-core}).
 \end{proof}

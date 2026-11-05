@@ -13,7 +13,7 @@ every open row its remedy the same day, at round 1's stop and at a second stop o
 `kept` (a part keeps both routes, with a formalization note); no row goes H, so round 3 is empty.
 Round 2, opened 2026-11-05, applies them to the chapter in eight slices by layer, then one `\uses`
 sweep (blueprint and notes, no Lean); each slice sets its rows' status, and the tally here. The
-ledger now: 26 `open`, 8 `aligned`, 6 `kept`, 14 `no departure`. **Next concrete task:** round 2's
+ledger now: 22 `open`, 9 `aligned`, 9 `kept`, 14 `no departure`. **Next concrete task:** round 2's
 next open task (`notes/Phase42-align.md`'s **Status**); after round 2, round 4 (§3).
 
 ## 1. The PI's decisions (verbatim)
@@ -332,12 +332,13 @@ there.
   ("Restate to the Lean", `notes/Phase42-design.md` §1, *42i, stars-three*). The theorem's first
   stage no longer takes its picture off the first coordinate of `q_a − q_b`.
 - **R-14** · `thm:pencil-d-open-ear-three` (`Graph.X0AttainsGrade.of_openEar_three`,
-  `Grade/ShortThree.lean`, on `Graph.X0AttainsGrade.of_openEar_splitOff_of_base`, 42i) · **open**.
-  *Chapter:* the proof of `thm:pencil-d-open-ear-four` with the first stage and the third condition
-  changed. A span with both stars, not everything, gives `dim ρ ≥ 2d − 4`. Then `a`, `b` lie in one
-  component (else `ρ` is everything), and a path joins them (`lem:relative-screws-path`) with at
-  least four edges. So they are not adjacent and have no common neighbour, and glued-ends gives
-  `r = 3`.
+  `Grade/ShortThree.lean`, on `Graph.X0AttainsGrade.of_openEar_splitOff_of_base`, 42i) ·
+  **aligned, round 2 task 4**.
+  *Chapter (until then):* the proof of `thm:pencil-d-open-ear-four` with the first stage and the
+  third condition changed. A span with both stars, not everything, gives `dim ρ ≥ 2d − 4`. Then
+  `a`, `b` lie in one component (else `ρ` is everything), and a path joins them
+  (`lem:relative-screws-path`) with at least four edges. So they are not adjacent and have no
+  common neighbour, and glued-ends gives `r = 3`.
   *Lean (landed):* R-12's factored order, through the variant whose insertion hypothesis is taken
   at the first stage's base data (`Pq = g`, glued-ends' polynomial or `1`; `Rz` planes-meet's) for
   `ρ = joinRelScrews` of `G[V₁]`. When `r ≤ 2`, `dim ρ ≤ 2` directly: by glued-ends when the closed
@@ -347,9 +348,11 @@ there.
   independent points (`not_starGrade_sup_le_of_finrank_le_two`), with no `W ≠ ⋀²`. The third
   condition (`exists_mvPolynomial_earDataGrade_starsCond_three`) and the insertion
   (`exists_insertion_earDataGrade_three`) are lemmas of their own.
-  *Remedies:* the prose to the Lean (state the variant and the common member), or keep both.
+  *Remedies:* the prose to the Lean (state the variant and the common member), or keep both. The
+  prose to the Lean, taken (the PI, 2026-11-05): the common member at `r ≤ 2`; the variant stays
+  R-12's factoring, named by `thm:pencil-d-open-ear-four`'s formalization note.
 - **R-15** · `lem:pencil-d-planes-meet` (`Graph.exists_mvPolynomial_planesMeet`, 42i, landed) ·
-  **open**.
+  **kept, round 2 task 4**.
   *Chapter:* the functionals `λ^i_v`, the inverse of the lifting-planes isomorphism, linear in
   `z`. `Π_a ∩ Π_b` is `σ_a` of the common kernel of the rows of `L(z)`. `R` is a nonzero minor of
   `L(z)`, whose entries are linear in `z`.
@@ -363,9 +366,11 @@ there.
   `ℓ₁, ℓ₂, ℓ₃`; the Lean keeps
   `E = E(G[V₁])` as `Graph.liftingPlanesDiff` of the induced graph (so only `⊆` goes through
   `G`'s planes). `[Infinite K]` and `[Finite α]` are not taken.
-  *Remedies:* keep both, or the prose names `R` by rank openness.
+  *Remedies:* keep both, or the prose names `R` by rank openness. The statement to the Lean (no
+  `K` infinite), taken; for the argument, keep both, taken: a formalization note after the proof
+  names the Lean's route (the PI, 2026-11-05).
 - **R-16** · `lem:pencil-d-glued-ends` (`Graph.exists_mvPolynomial_gluedEnds`,
-  `Grade/GluedEnds.lean`, 42i, landed) · **open**.
+  `Grade/GluedEnds.lean`, 42i, landed) · **kept, round 2 task 4**.
   *Chapter:* `m = def₂(G; a, b)`, the merged deficiency, equal to `def₂(G')` by the partitions of
   `G'`; `g` a nonzero minor of `Z⁰(q)`'s matrix at the glued picture times the first coordinates
   of `q_u − q_v` over the edges, so that `dim Z⁰(q) = 3 + m`; a part `X` of value `m` refined into
@@ -385,9 +390,10 @@ there.
   `lem:pencil-lifting-space-deficiency`, is used, and that lemma is not called). The Lean takes
   every number of heights, not only `d ≥ 3`.
   *Remedies:* keep both, or the prose to the Lean (the proof's `\uses` then drops
-  `def:deficiency-merged`).
+  `def:deficiency-merged`). Keep both, taken: a formalization note after the proof names the Lean's
+  route (the PI, 2026-11-05).
 - **R-17** · `lem:pencil-d-chain-count` (`Graph.IsChain.partitionDef_induce_le`,
-  `Grade/Chains.lean`, 42j, landed) · **open**.
+  `Grade/Chains.lean`, 42j, landed) · **kept, round 2 task 4**.
   *Chapter:* the segments (the chains and the edges joining two branch bodies) partition `E(G)`,
   each body of degree two interior to exactly one, so `|E(G)| = Σ L_j` and
   `|V(G)| = |B| + Σ (L_j − 1)`; the branch bodies' degrees sum to `2e`, so `3|B| ≤ 2e`; then
@@ -403,7 +409,8 @@ there.
   `lem:pencil-x0-sparse-count`) replaces the branch degrees; `|E(G[V₁])| ≥ |E(G)| − (k + 1)` is
   used as an inequality. The same final count (`e − |B|` is `|E(G)| − |V(G)|`).
   *Remedies:* the prose to the Lean (classes of bodies, the handshake bound; the proof's `\uses`
-  then adds `lem:pencil-x0-sparse-count`), or keep both.
+  then adds `lem:pencil-x0-sparse-count`), or keep both. Keep both, taken: a formalization note
+  after the proof names the Lean's route (the PI, 2026-11-05).
 - **R-18** · `lem:pencil-d-base-case` (`hasGradedPencilRealization_of_ncard_le_two`,
   `finrank_span_rigidityRows_of_single_edge`, `Grade/Arms.lean`, 42k build 2, landed) · **open**.
   *Chapter:* the ranks are read off the motions, `D|U| − dim Z`: with one edge the motions are the
@@ -1075,6 +1082,11 @@ there.
     `Grade/Stars.lean`'s `exists_mulVec_add_mulVec_eq_zero` ends "The chapter argues by Cramer's
     rule over `K(t)` instead" (R-9), and its first line's "without `K(t)`" contrasts it with that
     proof; since R-9's alignment the chapter's proof of `lem:pencil-d-kernel-curve` is the Lean's.
+  - *Moved to a later round* (round 2 task 4; round 4, as it edits Lean): a stale docstring.
+    `Grade/ShortThree.lean`'s `Graph.X0AttainsGrade.of_openEar_three` ends "The chapter's proof of
+    the case `r ≤ 2` goes instead through the components of `G[V₁]` and a path from `a` to `b`"
+    (R-14); since R-14's alignment the chapter bounds `dim ρ ≤ 2` as the Lean does, by glued-ends
+    or a common member of the closed neighbourhoods of `a` and `b`.
 - **The ledger at Phase 42's close:** the standing rule (§1) kept §2 current through PD-STEPS's
   rest, PD-COVERAGE, PD-REDUCTION and PD-HEAD (`notes/Phase42-design.md` §3), the last rows 42m's,
   R-24 to R-34; Phase 42 closed on 2026-11-05 with no row added after them. Round 1 adds from R-35.
