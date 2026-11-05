@@ -5627,11 +5627,10 @@ the conditioned pair in every dimension
         CombinatorialRigidity.Molecular.liftAttains_of_cutEdges_eq_empty}
   \leanok
   \uses{def:pencil-d-lift-attains}
-  Let $K$ be infinite and $d \ge 3$, and let $G$ be simple and
-  nondegeneracy-feasible.
+  Let $d \ge 3$, and let $G$ be nondegeneracy-feasible.
   \begin{enumerate}
-    \item If $G$ has at most two bodies, or is a triangle, the general
-      lift of $G$ attains in dimension $d$.
+    \item If $G$ is simple, and has at most two bodies or is a triangle,
+      the general lift of $G$ attains in dimension $d$.
     \item If $V(G)$ is the disjoint union of nonempty sets $V_1$ and $V_2$
       with no edge between them, then $G[V_1]$ and $G[V_2]$ are
       nondegeneracy-feasible, and if their general lifts attain in
@@ -5682,16 +5681,32 @@ the conditioned pair in every dimension
   $6$, and $2D - 3(D - 1) < 0$ holds for every $D \ge 4$.
 \end{proof}
 
-% Source: NONDEG workbook, S21 (restriction, (T2) and the rank count), with S32 for (T1):
-% the glue matches each side's point at the far end, and E_1 is the cross condition.
-\begin{lemma}[A cut edge between two sides of at least two bodies]
+\begin{fmlnote}
+  The formalization proves that the triangle's rank $2D$ is the target
+  without the values of the partitions: the rank $D(|V(G)| - 1)$ of the
+  rigid lift is at most the target
+  (\cref{lem:relative-deficiency-rank-bound}), which is at most
+  $D(|V(G)| - 1)$ as the deficiency is never negative, so the two agree.
+  It proves (2) by gluing, body by body, lifts of the restrictions of a
+  realization of $G$ to the two sides, each body keeping the value of the
+  map and the form of its own side, as its closed neighbourhood lies in
+  that side, not by naming the lift space of $G$ as the product of those
+  of the sides.
+\end{fmlnote}
+
+% Source: NONDEG workbook, S21 (restriction, (T2) and the rank count), with S32 for (T1),
+% which takes S21's sides of at least two bodies. The glue and (T1) follow the formalization
+% (exists_cutEdge_glue, cutEdge_T1): one frame map, and E_1 one minor, nonzero at the
+% restriction of the realization of G that also gives r_2; S32 takes a general map of a set
+% of maps, E_1 = b_v . n_{w_1} from a case analysis on |S|, and replaces a normal of r_2.
+\begin{lemma}[A cut edge between two sides]
   \label{lem:pencil-d-lift-cut-edge}
   \lean{CombinatorialRigidity.Molecular.liftAttains_of_cutEdge}
   \leanok
   \uses{def:pencil-d-lift-attains, def:cut-edges-2ec}
   Let $K$ be infinite and $d \ge 3$, and let $G$ be simple and
   nondegeneracy-feasible. Let $uv$ be the only edge between $V_1 \ni u$
-  and $V_2 = V(G) \setminus V_1 \ni v$, with $|V_1|, |V_2| \ge 2$, and let
+  and $V_2 = V(G) \setminus V_1 \ni v$, and let
   $G_1 = G[V_1 \cup \{v\}]$ and $G_2 = G[V_2 \cup \{u\}]$. Then $G_1$ and
   $G_2$ are nondegeneracy-feasible, and if their general lifts attain in
   dimension $d$, so does that of $G$.
@@ -5701,7 +5716,8 @@ the conditioned pair in every dimension
   \uses{lem:pencil-d-lift-transfer, lem:pencil-d-lift-one-witness,
         lem:pencil-d-lift-realization, lem:block-rank-cut,
         lem:cut-edge-decomposition, lem:relative-deficiency-rank-bound,
-        lem:pencil-feasible-hub-conditions, lem:pencil-x0-fibre-intersection}
+        lem:pencil-d-nondegenerate-three, lem:pencil-cut-nondegeneracy,
+        lem:pencil-x0-fibre-intersection}
   \emph{Restriction.} In $G_1$ the bodies of $V_1$ keep their closed
   neighbourhoods and their degrees. The body $v$ has degree one, so it is
   not a hub of $G_1$, and its closed neighbourhood is $\{u, v\}$, whose
@@ -5714,66 +5730,74 @@ the conditioned pair in every dimension
 
   \emph{The glue.} Let $r_1$ and $r_2$ be nondegenerate realizations of
   $G_1$ and $G_2$ in dimension three, with normals $b$ and $b'$ and
-  subspaces $n^{\perp}$ and $n'^{\perp}$. Let $\mathcal{G}$ be the set of
-  invertible linear maps $g$ of $K^4$ with $g b'_u = b_u$ and
-  $g b'_v = b_v$, a nonempty Zariski-open subset of an affine space, as
-  both pairs are linearly independent. For $g \in \mathcal{G}$ let $h$ be
-  its inverse transpose, so that $g p \cdot h q = p \cdot q$. Glue $r_1$
-  on $V_1$ and the image of $r_2$ (normals $g b'$, vectors $h n'$) on
-  $V_2$. The closed neighbourhood in $G$ of a body of $V_1$ lies in
-  $V_1 \cup \{v\}$, where the glued normals are those of $r_1$, as
-  $g b'_v = b_v$. Likewise on $V_2$. So the incidences hold. The normals
-  of the two ends of every link are independent, at $uv$ as in $r_1$. A
-  body that is not a hub has the closed neighbourhood it has in its side,
-  with that side's normals, moved by $g$ on $V_2$. A closed
-  hub-neighbourhood of a body of $V_1$ other than $u$ lies in $V_1$, and
-  is the one in $G_1$; likewise on $V_2$. So the only
-  conditions of nondegeneracy of $G$ that read both sides are those at
-  $u$ and at $v$ at sets $S$ containing the far end of $uv$, which is
-  then a hub of $G$.
+  subspaces $n^{\perp}$ and $n'^{\perp}$. Let $C_u$ and $C_v$ be the
+  closed hub-neighbourhoods of $u$ and $v$ in $G$, and suppose that the
+  vectors $n_w$, $w \in C_u$, are linearly independent, and so are the
+  vectors $n'_w$, $w \in C_v$. At $d = 3$ the third condition of
+  nondegeneracy at a body asks exactly that the vectors of its closed
+  hub-neighbourhood be linearly independent
+  (\cref{lem:pencil-d-nondegenerate-three}).
 
-  Consider $u$ and a set $S$ in its closed hub-neighbourhood in $G$ with
-  $v \in S$, $|S| \ge 2$. The condition asks that $h n'_v$ and the
-  vectors $n_w$, $w \in S \setminus \{v\}$, be linearly independent. The
-  latter are independent (the condition at $u$ for $r_1$), and span a
-  space $N$ of dimension $|S| - 1$. As $n'_v$ is orthogonal to $b'_u$ and
-  $b'_v$, the vector $h n'_v$ lies in the two-dimensional
-  $P = \{b_u, b_v\}^{\perp}$. Every nonzero $t \in P$ is $h n'_v$ for some
-  $g \in \mathcal{G}$: complete $b'_u, b'_v$ to a basis of $n'^{\perp}_v$
-  and then of $K^4$ by a vector $e'$ with $n'_v \cdot e' = 1$, complete
-  $b_u, b_v$ likewise to a basis of $t^{\perp}$ and by $e$ with
-  $t \cdot e = 1$, and let $g$ map the first basis to the second. So the
-  condition holds for some $g$, and then for $g$ in a nonempty
-  Zariski-open subset of $\mathcal{G}$, exactly when $P \not\subseteq N$.
-  If $|S| = 2$, then $\dim N = 1 < \dim P$. If $|S| = 3$, then $u$ is a
-  hub, as a body that is not a hub has at most two members in its closed
-  hub-neighbourhood, and $S = \{u, v, w_1\}$ is all of it
-  (\cref{lem:pencil-feasible-hub-conditions}). Then $n_u \in P$, as
-  $b_u, b_v \in n_u^{\perp}$, and $N$ is spanned by $n_u$ and $n_{w_1}$.
-  So $P \subseteq N$ exactly when $P = N$, that is, exactly when
-  $n_{w_1} \in P$. As $b_u \cdot n_{w_1} = 0$ already, this happens
-  exactly when $E_1(r_1) = 0$, where $E_1 = b_v \cdot n_{w_1}$ when $u$
-  and $v$ are hubs of $G$ with closed hub-neighbourhood
-  $\{u, v, w_1\}$ of $u$, and $E_1 = 1$ otherwise. At $v$ the same holds
-  with $E_2 = b'_u \cdot n'_{w_2}$, which $g$ does not change. So when
-  $E_1(r_1) E_2(r_2) \ne 0$, a common $g$ in these finitely many nonempty
-  Zariski-open subsets of $\mathcal{G}$ makes the glued realization
-  nondegenerate.
+  The plane $P = \{b_u, b_v\}^{\perp}$ is two-dimensional, as $b_u$ and
+  $b_v$ are linearly independent, and it contains $n_u$ and $n_v$, as $u$
+  and $v$ are adjacent in $G_1$. Let $N$ be the span of the vectors
+  $n_w$, $w \in C_u \setminus \{v\}$. If $v$ is a hub of $G$, it lies in
+  $C_u$, so $n_v \notin N$ and $P \not\subseteq N$. A vector space is not
+  the union of two proper subspaces, so some $t \in P$ lies off the line
+  $K n_u$ and, if $v$ is a hub of $G$, off $N$. Likewise some $t'$ in
+  $\{b'_u, b'_v\}^{\perp}$ lies off $K n'_v$ and, if $u$ is a hub of $G$,
+  off the span $N'$ of the vectors $n'_w$, $w \in C_v \setminus \{u\}$.
+  Complete $b'_u, b'_v$ to a basis of $K^4$ by vectors $y'_1, y'_2$ with
+  $y'_1 \cdot n'_v = y'_2 \cdot t' = 1$ and
+  $y'_1 \cdot t' = y'_2 \cdot n'_v = 0$, and complete $b_u, b_v$ likewise
+  by $y_1, y_2$ dual to $t$ and $n_u$. This is possible, as $n'_v$ and
+  $t'$ are linearly independent and orthogonal to $b'_u$ and $b'_v$, and
+  so are $t$ and $n_u$ to $b_u$ and $b_v$. Let $g$ be the invertible
+  linear map of $K^4$ that maps the first basis to the second, in order,
+  and $h$ its inverse transpose, so that $g p \cdot h q = p \cdot q$ (as
+  in \cref{lem:pencil-cut-nondegeneracy}). Then $g b'_u = b_u$ and
+  $g b'_v = b_v$. Moreover $h n'_v = t$ and $h t' = n_u$: at every vector
+  $p$ of the first basis, $g p \cdot t = p \cdot n'_v$ and
+  $g p \cdot n_u = p \cdot t'$, so $h n'_v - t$ and $h t' - n_u$ are
+  orthogonal to the second basis.
 
-  \emph{(T1) and (T2).} The polynomial $E_2$ is nonzero at some
-  nondegenerate realization of $G_2$. If $E_2 \ne 1$, take the restriction
-  of a nondegenerate realization of $G$, and replace the normal of $u$,
-  of degree one in $G_2$, by a vector of $n'^{\perp}_v$ outside
-  $K b'_v$ and outside $n'^{\perp}_{w_2}$, and its subspace by one through
-  that vector and $b'_v$. This keeps the realization nondegenerate, as
-  $u$ enters only the independence at $uv$, and makes $E_2 \ne 0$. Such a
-  vector exists, as $n'^{\perp}_v \ne n'^{\perp}_{w_2}$ by the condition
-  at $v$. So every nondegenerate realization $r_1$ of $G_1$ with
-  $E_1(r_1) \ne 0$, glued with such a realization of $G_2$, gives a
-  nondegenerate realization of $G$ that restricts to $r_1$ except at the
-  subspace of $v$, of degree one in $G_1$; and $E_1$ is nonzero at some
-  nondegenerate realization of $G_1$ by the same argument. This is (T1) of
-  \cref{lem:pencil-d-lift-transfer} for $G_1$, and likewise for $G_2$.
+  Glue $r_1$ on $V_1$ and the image of $r_2$ under $g$ (normals $g b'$,
+  vectors $h n'$) on $V_2$. This image is a nondegenerate realization of
+  $G_2$, as $g b'_w \cdot h n'_y = b'_w \cdot n'_y$ and invertible maps
+  keep linear independence. A body of $V_1$ has the same degree in $G$
+  and in $G_1$, and its closed neighbourhood in $G$ lies in
+  $V_1 \cup \{v\}$ and is the one in $G_1$, where the glued normals are
+  those of $r_1$, as $g b'_v = b_v$. Likewise on $V_2$, as $g b'_u = b_u$.
+  So the incidences hold, the normals of the two ends of every link are
+  linearly independent, at $uv$ as in $r_1$, and so are those of the
+  closed neighbourhood of a body that is not a hub. The closed
+  hub-neighbourhood in $G$ of a body of $V_1$ is the one in $G_1$,
+  together with $v$ when the body is $u$ and $v$ is a hub of $G$; likewise
+  on $V_2$. So every condition of nondegeneracy of $G$ holds as in $r_1$
+  or in the image of $r_2$, except the independence of the glued vectors
+  on $C_u$ when $v$ is a hub of $G$, and on $C_v$ when $u$ is one. On
+  $C_u$ these are the vectors $n_w$, $w \in C_u \setminus \{v\}$, which
+  are linearly independent by the condition at $u$ for $r_1$, and
+  $h n'_v = t \notin N$. On $C_v$ they are the images under $h$ of the
+  vectors $n'_w$, $w \in C_v \setminus \{u\}$, and of $t' \notin N'$, as
+  $h t' = n_u$. So both families are linearly independent, and the glued
+  realization is nondegenerate.
+
+  \emph{(T1) and (T2).} Fix a nondegenerate realization $r$ of $G$ in
+  dimension three, and let $r_2$ be its restriction to $G_2$,
+  nondegenerate by the restriction above. Its vectors are linearly
+  independent on $C_v$, by the condition at $v$ for $r$. Let $E_1$ be a
+  maximal minor of the coordinate matrix of the vectors $n_w$,
+  $w \in C_u$, that is nonzero at the restriction of $r$ to $G_1$, as the
+  condition at $u$ for $r$ allows. It is a polynomial in the vectors of
+  bodies of $G_1$, homogeneous in each, and off its zero set these
+  vectors are linearly independent. So every nondegenerate realization
+  $r_1$ of $G_1$ with $E_1(r_1) \ne 0$ glues with $r_2$ to a nondegenerate
+  realization of $G$ with the normals of $r_1$, and with its subspaces at
+  the bodies of $V_1$, which include every body of degree at least two in
+  $G_1$, as $v$ has degree one there. This is (T1) of
+  \cref{lem:pencil-d-lift-transfer} for $G_1$, with $E = E_1$, and
+  likewise for $G_2$.
   For (T2), let $r^0$ be a nondegenerate realization of $G$ and
   $(\zeta_1, \varphi_1)$ a lift of $r^0|_{G_1}$. Extend
   $\varphi_{1,v}$, a linear form on the subspace of $v$, to a linear form
@@ -5806,14 +5830,16 @@ the conditioned pair in every dimension
   $\operatorname{tgt}_d(G)$ (\cref{lem:relative-deficiency-rank-bound}).
   \Cref{lem:pencil-d-lift-one-witness} completes the proof.
 
-  At $d = 3$ this is the cut-edge case of
-  \cref{lem:pencil-pair-loop-base-cut} with two sides of at least two
-  bodies. There the second side is moved by a map that avoids finitely
-  many subspaces, and the generic realizations are combined through
-  \cref{lem:pencil-generic-steer}(b). In dimension $d$ we glue
-  realizations in dimension three. The two sides meet only in the
-  conditions at $u$ and at $v$, which hold when $E_1$ and $E_2$ are
-  nonzero. The rank count reads $D - 1$ in place of $5$.
+  At $d = 3$, with two sides of at least two bodies, this is the cut-edge
+  case of \cref{lem:pencil-pair-loop-base-cut}. There the second side is
+  moved by a map that avoids finitely many subspaces, and the generic
+  realizations are combined through \cref{lem:pencil-generic-steer}(b).
+  In dimension $d$ we glue realizations in dimension three by one map,
+  which meets the conditions at $u$ and at $v$, the only ones that read
+  both sides, once the vectors of each side are linearly independent on
+  the closed hub-neighbourhood in $G$ of its end of $uv$. The argument
+  reads no size of the sides. The rank count reads $D - 1$ in place of
+  $5$.
 \end{proof}
 
 % Source: NONDEG workbook, S22.
@@ -5943,6 +5969,10 @@ the conditioned pair in every dimension
 % Source: NONDEG workbook, S25 (with S13 and S14's corollary). The fresh read of the
 % coverage notes that S25's points are a coordinate permutation of the chapter's; with the
 % coordinates of def:pencil-d-lift inserted before the last one, they are the chapter's.
+% The least lift space follows the formalization (finrank_liftSpaceTilde_pencilConfigPoint,
+% exists_pencilConfigPoint_of_dotProduct): only the minimality of a main picture, and dim L~
+% through the lifting system; S25 reads dim L(q) from Jackson and Jordan's equality and moves
+% a realization to a configuration by a general change of coordinates of K^4.
 \begin{lemma}[Without a planar-rigid set]
   \label{lem:pencil-d-lift-no-rigid}
   \lean{CombinatorialRigidity.Molecular.liftAttains_of_forall_deficiency_two_ne_zero,
@@ -5964,19 +5994,20 @@ the conditioned pair in every dimension
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:pencil-feasible-hub-conditions, thm:pencil-jj-equality,
+  \uses{lem:pencil-feasible-hub-conditions, lem:pencil-x0-main-picture-open,
         lem:pencil-x0-planes-separate, lem:pencil-x0-conjunct-three,
         lem:pencil-condition-linear, lem:pencil-x0-fibre-intersection,
-        lem:pencil-d-nondegenerate-three, lem:pencil-d-lift-realization,
-        lem:pencil-d-lift-one-witness, def:pencil-main-picture,
+        lem:pencil-d-nondegenerate-three, lem:pencil-d-steer,
+        lem:pencil-d-lift-realization, lem:pencil-d-lift-one-witness,
+        def:pencil-main-picture, def:pencil-lifting-system,
         def:pencil-d-configuration}
   \emph{A nondegenerate configuration.} Every closed hub-neighbourhood has
   at most three members (\cref{lem:pencil-feasible-hub-conditions}). Take
   a picture $q$ off the zero sets of these nonzero polynomials: one
   witnessing that the general configuration attains in dimension $d$,
-  whose non-roots are admissible; that of Jackson and Jord\'an's equality
-  (\cref{thm:pencil-jj-equality}), whose non-roots are main pictures
-  with $\dim L(q) = \ell_0 = 3 + \operatorname{def}_2(G)$; for every three
+  whose non-roots are admissible; that of
+  \cref{lem:pencil-x0-main-picture-open}, whose non-roots are main
+  pictures (\cref{def:pencil-main-picture}); for every three
   distinct bodies, the determinant of their homogeneous picture points;
   and for every two distinct bodies, the polynomial of
   \cref{lem:pencil-x0-planes-separate}. Over $q$ the attaining heights
@@ -6005,30 +6036,56 @@ the conditioned pair in every dimension
   $(z^2, \dots, z^{d-2})$ therefore has rank $\operatorname{tgt}_d(G)$.
 
   \emph{The least lift space.} We show that $\dim \widetilde L$ is least
-  at $r^*$ (\cref{lem:pencil-d-lift-one-witness}). At $r^*$ the points of
-  each closed neighbourhood span a three-dimensional subspace, so
-  $\dim \widetilde L(b^0) = \dim L(b^0) + |V(G)| = \ell_0 + |V(G)|$.
-  Let $(b^0, \Pi^0)$ be a nondegenerate realization at which the points
-  of every closed neighbourhood span $\Pi^0_v$. Take an invertible linear
-  map $g$ of $K^4$ with $g b^0_v$ of nonzero last coordinate and $g
-  \Pi^0_v$ not containing $e_3$ at every body, which exists as $K$ is
-  infinite. Rescale the points to last coordinate $1$. Neither step
-  changes $\dim \widetilde L$, as
-  $(\zeta, \psi) \mapsto ((c_v \zeta_v)_v, \psi)$ and
-  $(\zeta, \psi) \mapsto (\zeta, (\psi_v \circ g^{-1})_v)$ are linear
-  bijections, nor the nondegeneracy and the spanning. Then the projection
-  forgetting the third coordinate is injective on each $g\Pi^0_v$, so the
-  third coordinate is an affine function of the first two there. Hence the
-  points are a configuration $(q', z')$ with $z' \in L(q')$. Its picture
-  $q'$ is admissible: the projection maps independent points of one
-  subspace to independent homogeneous picture points, at the two ends of a
-  link and at three spanning points of a closed neighbourhood. So
-  $\dim \widetilde L = \dim L(q') + |V(G)| \ge \ell_0 + |V(G)|$
-  (\cref{def:pencil-main-picture}). The
-  spanning condition is open and holds at $r^*$, so it holds at a general
-  nondegenerate realization, where $\dim \widetilde L$ takes its least
-  value (the proof of \cref{lem:pencil-d-lift-one-witness}). So that value
-  is at least $\ell_0 + |V(G)|$, and $r^*$ attains it.
+  at $r^*$ (\cref{lem:pencil-d-lift-one-witness}). Let $b'$ be the points
+  of a configuration $(q', z')$ in dimension three with $z' \in L(q')$,
+  and at every body $v$ let $h'_v \in K^3$ have
+  $z'_w = h'_v \cdot (x'_w, y'_w, 1)$ for every $w$ in its closed
+  neighbourhood. For a linear form $\psi$ on $K^4$ write
+  $\bar\psi \in K^3$ for its values at $e_1$, $e_2$ and $e_4$, so that
+  $\psi(x, y, z, 1) = \bar\psi \cdot (x, y, 1) + \psi(e_3)\, z$. Then
+  $\psi_v(b'_w) = (\bar\psi_v + \psi_v(e_3)\, h'_v) \cdot (x'_w, y'_w, 1)$
+  for every $w$ in the closed neighbourhood of $v$. So the map
+  $(\zeta, \psi) \mapsto ((\zeta, (\bar\psi_v + \psi_v(e_3)\, h'_v)_v),
+  (\psi_v(e_3))_v)$ is a linear bijection from $\widetilde L(b')$ onto
+  the product of the space of solutions $(\zeta, k)$ of the lifting
+  system $M(q')$ (\cref{def:pencil-lifting-system}) and $K^{V(G)}$. Its
+  inverse takes a solution $(\zeta, k)$ and $\gamma \in K^{V(G)}$ to the
+  pair $(\zeta, \psi)$ with $\psi_v(e_3) = \gamma_v$ and
+  $\bar\psi_v = k_v - \gamma_v h'_v$. If $q'$ is admissible, the solutions of
+  $M(q')$ form a space of dimension $\dim L(q')$, and so
+  $\dim \widetilde L(b') = \dim L(q') + |V(G)|$. At $r^*$, the
+  configuration $(q, z^1)$, this is $\dim L(q) + |V(G)|$.
+
+  Now let $(b^0, \Pi^0)$, with $\Pi^0_v = n_v^{\perp}$, be a
+  nondegenerate realization at which every point $b^0_v$ has a nonzero
+  last coordinate, every vector $n_v$ a nonzero third coordinate, and, at
+  every body $v$, three members of its closed neighbourhood, fixed with
+  linearly independent homogeneous picture points at $q$, have linearly
+  independent points. Rescaling the points to last coordinate $1$ changes
+  neither $\dim \widetilde L$, as
+  $(\zeta, \psi) \mapsto ((c_v \zeta_v)_v, \psi)$ is a linear bijection,
+  nor these conditions. The rescaled points are those of a configuration
+  $(q', z')$. At every body $v$ the points of its closed neighbourhood
+  are orthogonal to $n_v$, whose third coordinate is nonzero, so $z'$
+  agrees there with an affine function of the picture, and
+  $z' \in L(q')$. So a linear relation among the homogeneous picture
+  points of members of a closed neighbourhood holds among their points.
+  Hence the three members fixed at $v$ have linearly independent
+  homogeneous picture points, and the two ends of a link, whose points
+  are linearly independent, have distinct picture points. So $q'$ is
+  admissible, and
+  $\dim \widetilde L(b^0) = \dim L(q') + |V(G)| \ge \dim L(q) + |V(G)|$,
+  as $q$ is a main picture (\cref{def:pencil-main-picture}). The three
+  conditions are open, and they hold at $r^*$: its points have last
+  coordinate $1$, its vector $n_v$, orthogonal to the points of the
+  closed neighbourhood of $v$, has a nonzero third coordinate
+  (\cref{lem:pencil-condition-linear}), and points with linearly
+  independent homogeneous picture points are linearly independent. So
+  they hold at a general nondegenerate realization (the remarks after
+  \cref{lem:pencil-d-steer}), where $\dim \widetilde L$ takes its least
+  value (the proof of \cref{lem:pencil-d-lift-one-witness}). So that
+  value is at least $\dim L(q) + |V(G)|$, the value at $r^*$, and $r^*$
+  attains it.
   \Cref{lem:pencil-d-lift-one-witness} completes the proof.
 
   At $d = 3$ this is \cref{thm:pencil-x0-base-generic}: there the
