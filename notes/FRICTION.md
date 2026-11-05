@@ -110,6 +110,50 @@ moment you resolve the entry) is what makes the sweep a pure
 to be re-derived by re-reading entries later.
 
 ## Open
+### [open] 42k's home debts: three helpers of `Pencil/Grade/TwoPencil.lean` belong upstream of it
+- **Where it bit:** Phase 42k, build 1 (`lem:pencil-d-two-pencil-extension`,
+  `lem:pencil-d-projective-transport`), `Pencil/Grade/TwoPencil.lean`:
+  `exists_smul_extensor_eq_of_mem_span_range_grade` (extensors of two bases of one subspace are
+  proportional, at every `j`) is `Meet.lean`'s `exists_smul_extensor_eq_of_mem_span_range` with `j`
+  for `2`, the same proof; `ExtensorInPanel.smul` is about `ExtensorInPanel`
+  (`RigidityMatrix/Basic.lean`); `dotPerp_map_eq` (`(g P)^⊥ = h (P^⊥)` for an inverse transpose
+  `h`) is about `dotPerp` (`Grade/Realization.lean`).
+- **Friction:** none in the proofs; each sits downstream of its definition because a declaration
+  added to `Meet.lean` or `RigidityMatrix/Basic.lean` rebuilds most of `Molecular/`, and one added
+  to `Grade/Realization.lean` the whole `Grade/` stack.
+- **Proposed fix:** with the next commit that edits each file: the graded lemma into `Meet.lean`
+  beside the pair form, which becomes its `j = 2` case (with FRICTION's `contragredientEquiv`, the
+  other `Meet.lean` debt); `ExtensorInPanel.smul` beside `ExtensorInPanel`; `dotPerp_map_eq` beside
+  `finrank_dotPerp`.
+- **Status:** open (42k's deferral, tracked in `notes/Phase42k.md` *Hand-off*).
+
+### [mirror-candidate] No two-vector `finrank_span_pair` or "independent partner in a subspace" lemma
+- **Where it bit:** Phase 42k, build 1, `Pencil/Grade/TwoPencil.lean`: `finrank_span_pair_eq_two`
+  (`LinearIndependent K ![x, y] → finrank K (span K {x, y}) = 2`, by `finrank_span_eq_card` after
+  `Matrix.range_cons_cons_empty`) and `exists_mem_linearIndependent_pair` (`b ≠ 0` and
+  `2 ≤ finrank P` give `c ∈ P` with `LinearIndependent K ![b, c]`), both at `Fin n → K`; the
+  second serves part (2)'s criterion, the reposition, `exists_two_planes_of_mem` and build 2's loop
+  case.
+- **Friction:** `lean_loogle` finds neither (`Module.finrank _ ↥(Submodule.span _ {_, _}) = 2`); the
+  pair form of `finrank_span_eq_card` needs the `range ![x, y] = {x, y}` rewrite at each site.
+- **Proposed fix:** both for a vector space `V` over a division ring, in a new mirror
+  `Mathlib/LinearAlgebra/Dimension/...` (the second needs `P` finite-dimensional, which
+  `2 ≤ finrank P` gives), at a cleanup round or with a consumer outside `Grade/`. Not mirrored here:
+  the existing mirror `Mathlib/LinearAlgebra/LinearIndependent/Basic.lean` rebuilds most of the tree.
+- **Status:** open (mirror-candidate).
+
+### [idiom] Transcribing `C_B`: `Π` is not an identifier, and a `set` basis family times out at `whnf`
+- **Where it bit:** Phase 42k's recon spike of `Pencil/Grade/TwoPencil.lean`.
+- **Friction:** (1) the chapter's `Π_u` as a binder name fails to parse ("unexpected token 'Π'",
+  Mathlib's pi-binder notation), so the Lean names the subspaces `Pu`, `Pv`, `P`. (2) In
+  `exists_extensor_eq_perpExtensor`, `set b := Module.finBasisOfFinrankEq K (dotPerp B) h` and then
+  `refine ⟨fun i => b i, b.linearIndependent.map' _ (Submodule.ker_subtype _), …⟩` hit a
+  `(deterministic) timeout at whnf` unifying the coerced family with `_ ∘ b`.
+- **Fix:** (2) state the family's independence in a `have` with its type written out,
+  `LinearIndependent K (fun i => (Module.finBasisOfFinrankEq K (dotPerp B) h i : Fin (k + 2) → K))`,
+  passing `(dotPerp B).subtype` explicitly and no `set` (TACTICS-QUIRKS § 38, § 43).
+- **Status:** idiom.
+
 ### [open] `pencilConfigPointGrade_ofPoints` sits in `Pencil/Grade/Chain.lean`, not `Grade/Carrier.lean`
 - **Where it bit:** Phase 42g, `Pencil/Grade/Chain.lean`: `pencilConfigPointGrade_ofPoints` (a vector
   with last coordinate `1` is the configuration point of its own picture and heights, by

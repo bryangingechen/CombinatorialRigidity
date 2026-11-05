@@ -4171,6 +4171,13 @@ $K^{d+1}$ chosen to meet it (\cref{lem:pencil-d-cut-reposition}).
 
 \begin{lemma}[A hinge in two pencils, in every dimension]
   \label{lem:pencil-d-two-pencil-extension}
+  \lean{CombinatorialRigidity.Molecular.perpExtensor,
+        CombinatorialRigidity.Molecular.exists_extensor_eq_perpExtensor,
+        CombinatorialRigidity.Molecular.perpExtensor_two_pencils,
+        CombinatorialRigidity.Molecular.exists_eq_smul_perpExtensor,
+        CombinatorialRigidity.Molecular.exists_extensor_two_pencils_iff_grade,
+        CombinatorialRigidity.Molecular.linearIndependent_perpExtensor_pair}
+  \leanok
   \uses{def:genuine-hinge-realization, def:extensor-through-flat}
   Let $d \ge 3$, let $b_u, b_v \in K^{d+1}$ be nonzero, and let
   $\Pi_u \ni b_u$ and $\Pi_v \ni b_v$ be three-dimensional subspaces of
@@ -4193,6 +4200,7 @@ $K^{d+1}$ chosen to meet it (\cref{lem:pencil-d-cut-reposition}).
   \end{enumerate}
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{def:extensor, lem:decomposable-extensor-span-unique}
   As the dot product of $K^{d+1}$ is nondegenerate, $B^{\perp}$ has
   dimension $d - 1$ and $(B^{\perp})^{\perp} = B$. The extensor of
@@ -4249,6 +4257,8 @@ $K^{d+1}$ chosen to meet it (\cref{lem:pencil-d-cut-reposition}).
 
 \begin{lemma}[Moving a pencil realization by a linear map, in every dimension]
   \label{lem:pencil-d-projective-transport}
+  \lean{CombinatorialRigidity.Molecular.hasPencilPlaneRealization_mapExtensor_screwEquivOfLinearEquiv}
+  \leanok
   \uses{def:pencil-d-realization, def:induced-screw-map}
   Let $d \ge 3$, let $g$ be an invertible linear map of $K^{d+1}$, and
   let $h$ be its inverse transpose, so that $h x \cdot g y = x \cdot y$
@@ -4262,6 +4272,7 @@ $K^{d+1}$ chosen to meet it (\cref{lem:pencil-d-cut-reposition}).
   ones are.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:screw-map-rows}
   If $C_e = x_1 \vee \cdots \vee x_{d-1}$, then
   $\Lambda_h(C_e) = h x_1 \vee \cdots \vee h x_{d-1}$. When every $x_i$
@@ -4286,6 +4297,8 @@ $K^{d+1}$ chosen to meet it (\cref{lem:pencil-d-cut-reposition}).
 
 \begin{lemma}[Moving one side of a cut edge, in every dimension]
   \label{lem:pencil-d-cut-reposition}
+  \lean{CombinatorialRigidity.Molecular.exists_reposition_planes}
+  \leanok
   Let $d \ge 3$, let $b_u, b_v \in K^{d+1}$ be nonzero, and let
   $\Pi_u \ni b_u$ and $\Pi_v \ni b_v$ be three-dimensional subspaces of
   $K^{d+1}$. There is an invertible linear map $g$ of $K^{d+1}$ such that
@@ -4293,6 +4306,7 @@ $K^{d+1}$ chosen to meet it (\cref{lem:pencil-d-cut-reposition}).
   $\Pi_u \cap g\Pi_v$.
 \end{lemma}
 \begin{proof}
+  \leanok
   As $\Pi_u$ has dimension three, it contains a vector $c$ such that
   $b_u$ and $c$ are linearly independent. Likewise $\Pi_v$ contains a
   vector $c'$ such that $b_v$ and $c'$ are linearly independent. Extend

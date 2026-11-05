@@ -8,18 +8,23 @@ Lean under `/coordinate-phase`: the eight red nodes of `blueprint/src/chapter/pe
 (`lem:pencil-d-loop-case`, `lem:pencil-d-base-case`, `lem:pencil-d-cut-case`,
 `lem:pencil-d-nonsimple-case`) and the theorem `thm:pencil-d-realization-theorem`, on the
 `Pencil/Grade/` carrier, Phase 39's `Graph.pencil_reduction` and 42j's distinct statement. The
-pre-build recon spiked all eight complete, with no `sorry`, and pinned three builds (*Hand-off*).
-Next: build 1, `Grade/TwoPencil.lean`, the three linear-algebra nodes.
+pre-build recon spiked all eight complete, with no `sorry`, and pinned three builds; build 1
+(`Grade/TwoPencil.lean`) made the three linear-algebra nodes green, 3 of 8. Next: build 2,
+`Grade/Arms.lean`, the loop, base and cut-edge cases (*Hand-off*).
 
 ## Current state
 
-**Next: build 1, `Grade/TwoPencil.lean`** (*Hand-off*). No Lean has landed yet. The pre-build
-recon (design pass, 2026-11-04) spiked the whole layer on the landed carrier, with no `sorry`:
-`scratch/42k/Spike.lean` (gitignored, 1167 lines; `lake lean` clean with no warning, the three
-standard axioms at the nine declarations checked, the `unusedArguments` and `docBlame` lints
+**Next: build 2, `Grade/Arms.lean`** (*Hand-off*). Green: 3 of the 8 nodes.
+- **Build 1, landed:** `Pencil/Grade/TwoPencil.lean` (imports `Grade/Realization`):
+  `lem:pencil-d-two-pencil-extension` (`perpExtensor`, `C_B`, and its three parts),
+  `lem:pencil-d-projective-transport` and `lem:pencil-d-cut-reposition`, with their helpers and
+  `exists_two_planes_of_mem`, transcribed from the recon's spike.
+
+The pre-build recon (design pass, 2026-11-04) spiked the whole layer on the landed carrier, with no
+`sorry`: `scratch/42k/Spike.lean` (gitignored, 1167 lines; `lake lean` clean with no warning, the
+three standard axioms at the nine declarations checked, the `unusedArguments` and `docBlame` lints
 clean). Its sections are the three builds, in order, each a mechanical transcription:
-- the linear algebra (build 1): `C_B`, the two-pencil lemma's three parts, the transport and the
-  reposition, with their helpers;
+- the linear algebra (build 1, landed);
 - the loop, base and cut-edge cases (build 2);
 - the nonsimple case and the theorem (build 3).
 
@@ -46,9 +51,9 @@ lemma index (forward mode). The pinned signatures, the files and the build order
 ## Lemma checklist
 
 - [x] **Pre-build recon** (design pass): all eight spiked complete; *Decisions made*.
-- [ ] `lem:pencil-d-two-pencil-extension`, parts (1) to (3), build 1, `Grade/TwoPencil.lean`.
-- [ ] `lem:pencil-d-projective-transport`, build 1, same file.
-- [ ] `lem:pencil-d-cut-reposition`, build 1, same file.
+- [x] `lem:pencil-d-two-pencil-extension`, parts (1) to (3), build 1, `Grade/TwoPencil.lean`.
+- [x] `lem:pencil-d-projective-transport`, build 1, same file.
+- [x] `lem:pencil-d-cut-reposition`, build 1, same file.
 - [ ] `lem:pencil-d-loop-case`, build 2, `Grade/Arms.lean`.
 - [ ] `lem:pencil-d-base-case`, both forms, build 2, same file.
 - [ ] `lem:pencil-d-cut-case`, both forms, build 2, same file.
@@ -65,61 +70,43 @@ lemma index (forward mode). The pinned signatures, the files and the build order
 
 ## Hand-off / next phase
 
-The next concrete commit is **build 1**: a new `Pencil/Grade/TwoPencil.lean`, importing
-`Grade/Realization`, transcribed from `scratch/42k/Spike.lean` (its sections *Helpers* to
-*`lem:pencil-d-cut-reposition`*, and `exists_two_planes_of_mem`; about 300 lines), with its line in
-`CombinatorialRigidity.lean` and the `\lean{}` and `\leanok` of three nodes. All in
-`CombinatorialRigidity.Molecular`, at `{k : ℕ}` with `K^(k+2)` as `Fin (k + 2) → K`:
-- `lem:pencil-d-two-pencil-extension` pins six names. `noncomputable def perpExtensor
-  (B : Submodule K (Fin (k + 2) → K)) : ScrewSpace K k` is `C_B`, the extensor of a basis of
-  `dotPerp B` (`0` unless that has dimension `k`); `exists_extensor_eq_perpExtensor (hB : finrank B
-  = 2) : ∃ p, LinearIndependent K p ∧ span (range p) = dotPerp B ∧ (perpExtensor B).val = extensor
-  p`. (1) `perpExtensor_two_pencils (hB) (hu : bu ∈ B) (hv : bv ∈ B) (hBu : B ≤ Pu) (hBv : B ≤ Pv)
-  : perpExtensor B ≠ 0 ∧ ExtensorInPanel _ bu ∧ ExtensorInPanel _ bv ∧ ExtensorThroughSubspace _
-  (dotPerp Pu) ∧ ExtensorThroughSubspace _ (dotPerp Pv)`. (2) `exists_eq_smul_perpExtensor (hC : C
-  ≠ 0)` and the four incidences of `C` `: ∃ B, finrank B = 2 ∧ bu ∈ B ∧ bv ∈ B ∧ B ≤ Pu ∧ B ≤ Pv ∧
-  ∃ c, c ≠ 0 ∧ C = c • perpExtensor B`; `exists_extensor_two_pencils_iff_grade (hbu : bu ≠ 0) : (∃
-  C, C ≠ 0 ∧` the four incidences`) ↔ bu ∈ Pu ⊓ Pv ∧ bv ∈ Pu ⊓ Pv ∧ 2 ≤ finrank ↥(Pu ⊓ Pv)`. (3)
-  `linearIndependent_perpExtensor_pair [NeZero k] (hB) (hB' : finrank B' = 2) (hne : B ≠ B') :
-  LinearIndependent K ![perpExtensor B, perpExtensor B']`.
-- `lem:pencil-d-projective-transport` pins `hasPencilPlaneRealization_mapExtensor_screwEquivOfLinearEquiv
-  (g h : (Fin (k + 2) → K) ≃ₗ[K] _) (hgh : ∀ x y, h x ⬝ᵥ g y = x ⬝ᵥ y) (hr :
-  HasPencilPlaneRealization G F normal plane)`, concluding the realization `(F.mapExtensor
-  (screwEquivOfLinearEquiv h), g ∘ normal, (plane ·).map g)`, the equal `finrank` of the rows, and
-  `∀ u v, LinearIndependent K ![normal u, normal v] → LinearIndependent K ![g (normal u), g (normal
-  v)]`.
-- `lem:pencil-d-cut-reposition` pins `exists_reposition_planes (hbu : bu ≠ 0) (hbv : bv ≠ 0) (hPu :
-  finrank Pu = 3) (hPv : finrank Pv = 3) (hu : bu ∈ Pu) (hv : bv ∈ Pv) : ∃ g, LinearIndependent K
-  ![bu, g bv] ∧ bu ∈ Pu ⊓ Pv.map g ∧ g bv ∈ Pu ⊓ Pv.map g`.
-- Unpinned helpers: `finrank_span_pair_eq_two` and `exists_mem_linearIndependent_pair` (on `Fin n →
-  K`; mirror candidates for the friction review), `ExtensorInPanel.smul`,
-  `exists_smul_extensor_eq_of_mem_span_range_grade` (`Meet.lean`'s
-  `exists_smul_extensor_eq_of_mem_span_range` at every `j`: a FRICTION home debt for the next
-  commit that edits `Meet.lean`), `dotPerp_map_eq`, `exists_two_planes_of_mem`.
+The next concrete commit is **build 2**: a new `Pencil/Grade/Arms.lean`, importing
+`Grade/TwoPencil`, transcribed from `scratch/42k/Spike.lean`'s sections *Two planes through a
+normal, and the loop case* (less `exists_two_planes_of_mem`, landed in build 1), *The base case*
+and *The cut-edge case* (about 500 lines; splittable into the loop and base cases, then the cut),
+with its line in `CombinatorialRigidity.lean` and the `\lean{}` and `\leanok` of three nodes, and
+R-18's Lean as recorded. In `CombinatorialRigidity.Molecular`:
+- `lem:pencil-d-loop-case` pins `hasGradedPencilRealization_of_isLoopAt {k n} (hloop : G.IsLoopAt
+  e v) (hrec : HasGradedPencilRealization K k n (G ＼ {e})) : HasGradedPencilRealization K k n G`.
+- At `[Finite α] [Finite β] {m}`, to `HasGraded(Distinct)PencilRealization K (m + 1) (m + 2) G`:
+  `lem:pencil-d-base-case` pins `hasGradedPencilRealization_of_ncard_le_two (hloop : G.Loopless)
+  (hne : V(G).Nonempty) (hV2 : V(G).ncard ≤ 2)` and `hasGradedDistinctPencilRealization_of_ncard_le_two
+  (hS : G.Simple) (hne) (hV2)`; `lem:pencil-d-cut-case` pins `hasGradedPencilRealization_of_cutEdges
+  (hssub : V₁ ⊂ V(G)) (hne : V₁.Nonempty) (hcut : (G.cutEdges V₁).ncard ≤ 1) (h₁ : … (G.induce V₁))
+  (h₂ : … (G.induce (V(G) \ V₁)))` and its `Distinct` twin, both from the core
+  `exists_hasPencilPlaneRealization_of_cutEdges` and the glue `exists_hasPencilPlaneRealization_glue`
+  (at `k`, with `hk : 1 ≤ k`, `hn`).
+- Helpers: `exists_plane_single_zero_one`, `finrank_span_rigidityRows_of_single_edge`,
+  `exists_pair_of_ncard_le_two_of_edgeSet_nonempty`. The glue's plane dimension goal sits under
+  `↥(if …)`, where `simp` cannot rewrite: `beta_reduce`, then `rw [ite_eq_left h]` (the spike's).
 
-Then, each a transcription of its section of the spike:
-- **Build 2**, `Grade/Arms.lean` (imports `Grade/TwoPencil`; about 500 lines, splittable into the
-  loop and base cases, then the cut). `hasGradedPencilRealization_of_isLoopAt {k n} (hloop :
-  G.IsLoopAt e v) (hrec : HasGradedPencilRealization K k n (G ＼ {e})) : HasGradedPencilRealization
-  K k n G`. At `[Finite α] [Finite β] {m}`, to `HasGraded(Distinct)PencilRealization K (m + 1) (m +
-  2) G`: `hasGradedPencilRealization_of_ncard_le_two (hloop : G.Loopless) (hne : V(G).Nonempty)
-  (hV2 : V(G).ncard ≤ 2)`, `hasGradedDistinctPencilRealization_of_ncard_le_two (hS : G.Simple) (hne)
-  (hV2)`; `hasGradedPencilRealization_of_cutEdges (hssub : V₁ ⊂ V(G)) (hne : V₁.Nonempty) (hcut :
-  (G.cutEdges V₁).ncard ≤ 1) (h₁ : … (G.induce V₁)) (h₂ : … (G.induce (V(G) \ V₁)))` and its
-  `Distinct` twin, both from the core `exists_hasPencilPlaneRealization_of_cutEdges` and the glue
-  `exists_hasPencilPlaneRealization_glue` (at `k`, with `hk : 1 ≤ k`, `hn`).
+Then, a transcription of the spike's last two sections:
 - **Build 3**, `Grade/Reduction.lean` (imports `Grade/Arms` and `Grade/Coverage`; about 310
   lines). `hasGradedPencilRealization_of_not_simple (G) (hloop : G.Loopless) (hV : 3 ≤ V(G).ncard)
   (hs : ¬ G.Simple) (hIH : ∀ G', V(G').Nonempty → V(G').ncard < V(G).ncard →
-  HasGradedPencilRealization K (m + 1) (m + 2) G')`, and `Graph.graded_pencil_realization_theorem
-  [Infinite K] [Finite α] [Finite β] {m} (hm : 1 ≤ m) {G} (hne : V(G).Nonempty) :
-  HasGradedPencilRealization K (m + 1) (m + 2) G ∧ (G.Simple → HasGradedDistinctPencilRealization K
-  (m + 1) (m + 2) G)`. Then the close.
+  HasGradedPencilRealization K (m + 1) (m + 2) G')`, with R-19's Lean as recorded, and
+  `Graph.graded_pencil_realization_theorem [Infinite K] [Finite α] [Finite β] {m} (hm : 1 ≤ m) {G}
+  (hne : V(G).Nonempty) : HasGradedPencilRealization K (m + 1) (m + 2) G ∧ (G.Simple →
+  HasGradedDistinctPencilRealization K (m + 1) (m + 2) G)`. Then the close.
 - **The standing rule**: builds 2 and 3 land R-18 and R-19's Lean as recorded; a build that aligns
   one sets its status.
 - **Deferred, where it lands** (design doc §3; FRICTION's `[open]` entries): no build edits a file
   that carries a home debt of 42b–42i (`notes/Phase42i.md` *Hand-off*), so none rides; 42j added
-  none, and build 1 adds the `Meet.lean` one above.
+  none. Build 1 added three, each with the next commit that edits its file (FRICTION *42k's home
+  debts*): `exists_smul_extensor_eq_of_mem_span_range_grade` to `Meet.lean` (with
+  `contragredientEquiv`), `ExtensorInPanel.smul` to `RigidityMatrix/Basic.lean`, `dotPerp_map_eq`
+  to `Grade/Realization.lean`; and a mirror candidate (`finrank_span_pair_eq_two`,
+  `exists_mem_linearIndependent_pair`).
 - **After 42k:** PD-HEAD (`-nondegenerate`, `-lift`, `-generic`; 21 red nodes, ending in the
   headline `cor:pencil-d-conditioned-pair`, which takes its first two claims from the theorem's two
   conjuncts) opens at the PI's word (design doc §3).

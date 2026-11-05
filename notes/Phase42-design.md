@@ -6,8 +6,9 @@ nodes of `pencil-d.tex`'s `-reduction` (a hinge in two pencils, moving a realiza
 map, moving one side of a cut edge, the cases at a loop, on at most two bodies, at a cut edge and
 at parallel edges, and the realization theorem in every dimension) as the chapter states them
 (§3). Its pre-build recon spiked all eight complete, with no `sorry`, and pinned three builds;
-next, build 1 (`notes/Phase42k.md` *Hand-off*). PD-HEAD (§3, which maps the remaining red nodes
-to it by section) then opens at the PI's word.
+build 1 made the three linear-algebra nodes green, and build 2 is next (`notes/Phase42k.md`
+*Hand-off*). PD-HEAD (§3, which maps the remaining red nodes to it by section) then opens at the
+PI's word.
 **42j** (PD-COVERAGE, `notes/Phase42j.md`) **opened and closed 2026-10-31** at the PI's word (§1):
 the four nodes of `pencil-d.tex`'s `-chains` and `-coverage` (the chain count, a long chain or a
 core, the coverage in every dimension and the distinct statement), all green, as the chapter
@@ -1092,7 +1093,7 @@ definitions, lemmas, propositions, theorems and corollaries).
 - PD-COVERAGE: `-chains` (2; `lem:pencil-d-chain-count` is COUNT-C) and `-coverage` (2, with
   `lem:pencil-d-distinct-statement`, the coverage read as a realization); 4, as 42j, closed, all
   green.
-- PD-REDUCTION: `-reduction` (8), Phase 39's reduction; 8, as 42k, open.
+- PD-REDUCTION: `-reduction` (8), Phase 39's reduction; 8, as 42k, open, 3 green (build 1).
 - PD-HEAD: `-nondegenerate` (4), `-lift` (6) and `-generic` (11, ending in the headline
   `cor:pencil-d-conditioned-pair`); 21, the generic conjunct and the headline, the largest layer.
 

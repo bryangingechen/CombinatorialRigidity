@@ -64,6 +64,7 @@ public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Stable
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Stars
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.StarsThree
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.TheoremS
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.TwoPencil
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Witness
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.ZeroHeights
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Bridge
