@@ -274,6 +274,30 @@ words went verbatim through an `adjudication` block. Design doc §3's standing
 rule names departures from the chapter's *proof*; a departure in the statement
 needs the user's word before `\leanok`, as 42i's restatement had.
 
+**Phase 42m (PD-HEAD's second half: the generic conjunct and the headline;
+closes Phase 42) rows, 2026-11-05: 3, written after the close.** None
+BLOCKED, escalated or killed. Fourteen dispatches: the open; a recon (3 of
+11 nodes spiked complete, all 11 signatures checked); eight builds (Sonnet
+1, 2, 4, 7; Opus 3, 5, 6a, 6b, the last four new math with no spike); and
+a close in four Opus parts with one PI question. The estimate of 4–7 builds
+was 8, with 6 split. (1) The coordinator's build-1 `route` block said a
+declaration in the hand-off (`exists_hasPencilPlaneRealization`) was not
+found. It exists (`Grade/Feasible.lean:161`). An `-E` grep with `\b`
+missed it, for a reason not pinned. The block had marked it a hypothesis
+(F41/F42), and the builder found it. For an absence claim, use the Lean
+MCP's local search or a fixed-string `grep -rn "theorem <name>"`, not a
+regex with `\b`. (2) Build 4's first `lake build` had a stray
+stdin-reading `cat` in its command, and the harness backgrounded it. The
+builder stopped it and re-ran every gate in the foreground. This is F6's
+park shape by a new path: a command that waits on stdin. (3) Build 1's
+two-body pin adds an ambient `[Nonempty α]`. Over an empty `α` with edge
+labels, `LiftAttains` asks for a selector that cannot exist. 42l's row
+(3) says a departure in a statement needs the user's word before
+`\leanok`. The coordinator classed this one as an encoding (design doc
+§3's standing rule), told the user, and did not block; no objection came.
+The line it drew: a carrier artifact at a degenerate type is an
+encoding, and a change to the mathematics is a departure.
+
 ## Findings
 
 (Distill recurring lessons here — one entry per lesson, rows cite it.
