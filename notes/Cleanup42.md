@@ -9,11 +9,11 @@ row to §2 for each departure, with no prose or Lean edit, then a stop at which 
 remedy per `open` row and plans rounds 2+ (§3). `.claude/autopilot/queue.toml` carries it as
 `CLEANUP-42`, attended, between PENCIL-D (done) and ORIGAMI; ROADMAP *Queued post-program phases*
 lists it. Its input is the proof-route ledger (§2): 34 rows at Phase 42's close (2026-11-05), 27
-`open`, 6 `aligned`, 1 `no departure`, to which round 1 adds; after its task 14, 52 rows, 33
-`open`, 6 `aligned` and 13 `no departure` (R-35, R-46 and R-48 to R-51 `open`, R-36 to R-45, R-47
-and R-52 `no departure`; R-1 to R-30 re-checked, R-7, R-9, R-12, R-15 to R-17 and R-24 to R-27
-corrected in place). **Next concrete task:** round 1's task 15, PD-HEAD's second half (42m), the
-rest (`notes/Phase42-cleanup.md` *Lemma checklist*).
+`open`, 6 `aligned`, 1 `no departure`, to which round 1 adds; after its task 15, the audit's last
+slice, 54 rows, 34 `open`, 6 `aligned` and 14 `no departure` (R-35, R-46, R-48 to R-51 and R-53
+`open`, R-36 to R-45, R-47, R-52 and R-54 `no departure`; R-1 to R-34 re-checked, R-7, R-9, R-12,
+R-15 to R-17, R-24 to R-27, R-31, R-32 and round 1's R-50 corrected in place). **Next concrete
+task:** round 1's task 16, the planned stop (`notes/Phase42-cleanup.md` *Lemma checklist*).
 
 ## 1. The PI's decisions (verbatim)
 
@@ -486,7 +486,8 @@ task in `notes/Phase42-cleanup.md`, and its re-checks of R-1 to R-34 are recorde
   `def_d(G[X]) = 0`, the merged deficiency and the ear's bound, and a partition of `V(G)` is at
   most its restriction; (v) from (i) and `hF1`.
   *Lean:* `exists_oneEar_or_pendantTriangle`'s proof is split at its core
-  (`exists_minimalRigid_ear_or_pendantTriangle`, returning `W₀`, the ear's data and the hubs; the
+  (`exists_minimalRigid_ear_or_pendantTriangle`, returning `W₀`, the ear's data, the hubs,
+  `|X| ≥ 3` (R-53) and `s(X) ≤ 1`, the latter by adding `x` with its two edges as (iii) does; the
   old theorem is now its corollary, statement unchanged), and `closedEar_two_of_triangle` states
   the pendant triangle with its end explicit (the end's degree at least four). (iii)'s
   `def₂(G[X]) = 1` is the partition case split at `n = 2` (`deficiency_two_induce_le_one_of_tight`,
@@ -496,11 +497,12 @@ task in `notes/Phase42-cleanup.md`, and its re-checks of R-1 to R-34 are recorde
   an end is the triangle lemma's hypothesis at `(x, a)`. (iv)'s lower bound is
   `partitionDef_induce_insert` at `x` with two edges to the other labels. The index of
   `deficiency n` is the chapter's `d` (`bodyBarDim 2 = 3`, `(i)`'s `s` is `partitionDef 2 id`).
-  The pin adds the first outcome as `∃ x₁ x₂ c` (the chapter's two adjacent bodies of degree two
-  with a common neighbour of degree at least four).
+  The pin's first outcome is the node's, `∃ x₁ x₂ c` (two adjacent bodies of degree two with a
+  common neighbour of degree at least four), as the core returns it; the `d = 3` pin's is a closed
+  ear (`exists_closedEar_two_of_triangle`).
   *Remedies:* the prose to the Lean (no `s(X)` for connectivity), or keep both.
 - **R-32** · `lem:pencil-d-lift-no-rigid` (`liftAttains_of_forall_deficiency_two_ne_zero`,
-  `exists_planeDiff_ne_zero_poly`, `finrank_liftSpaceTilde_pencilConfigPoint`,
+  `exists_planeDiff_ne_zero_poly`, `finrank_liftSpaceTilde_pencilConfigPoint` and its `_ker`,
   `exists_pencilConfigPoint_of_dotProduct`, `Grade/LiftNoRigid.lean`, 42m build 5) · **open** (the
   Lean landed as below; the chapter stays as the prose).
   *Chapter:* `q` off Jackson and Jordán's polynomial, `dim L(q) = ℓ₀ = 3 + def₂(G)`; at `r*`,
@@ -510,12 +512,15 @@ task in `notes/Phase42-cleanup.md`, and its re-checks of R-1 to R-34 are recorde
   *Lean:* `q` off the main-picture polynomial (`Graph.exists_mvPolynomial_isMainPicture`; only
   `dim L(q) ≤ dim L(q')` is used, never `ℓ₀`). One point of the space of the `r + 1` heights and
   the first one's planes makes the attaining and planes polynomials nonzero
-  (`exists_mem_eval_ne_zero₂`). At every configuration with `z ∈ L(q)`, spanning or not,
-  `dim L̃ = dim L(q) +` the free coordinates (`liftFreeCoords`: maps and forms off `V(G)`, the third
-  coordinate of each form), by two injective maps through the lifting system's kernel. No `g`: the
-  two nonzero coordinates and three independent points per closed neighbourhood (`q`'s admissible
-  triples; the chapter's spanning) hold generally, witnessed at `r*`; the rescaled points of such a
-  realization are the configuration (`exists_pencilConfigPoint_of_dotProduct`).
+  (`exists_mem_eval_ne_zero₂`). At every configuration with `z ∈ L(q)`, spanning or not, `dim L̃`
+  is the dimension of the lifting system's kernel at `q` plus the free coordinates
+  (`liftFreeCoords`: maps and forms off `V(G)`, the third coordinate of each form), by two
+  injective maps (`finrank_liftSpaceTilde_pencilConfigPoint_ker`); over an admissible picture, as
+  `q` and `q'` are, the kernel has dimension `dim L(q)` (`Graph.finrank_ker_liftingMatrix`), so
+  `dim L̃ = dim L(q) +` the free coordinates (`finrank_liftSpaceTilde_pencilConfigPoint`). No `g`:
+  the two nonzero coordinates and three independent points per closed neighbourhood (`q`'s
+  admissible triples; the chapter's spanning) hold generally, witnessed at `r*`; the rescaled
+  points of such a realization are the configuration (`exists_pencilConfigPoint_of_dotProduct`).
   *Remedies:* the prose to the Lean (no `g`, no `ℓ₀`, `dim L̃` through the lifting system), or keep
   both.
 
@@ -810,15 +815,21 @@ task in `notes/Phase42-cleanup.md`, and its re-checks of R-1 to R-34 are recorde
   maps `ζ` (the scaling at any grade). Each proof is the chapter's, so the pins are stronger than
   their node. Not vacuous (`b⁰ = 0` meets (2)'s hypothesis; (3)'s pins have none beyond the
   scalars) and not recovered. (1)'s pin, `IsNondegPencilPlaneRealization.lift`, takes the node's
-  setting. (2)'s one caller, the cut edge's (T2) (`Grade/LiftCutEdge.lean`), calls it at `G` and
-  at an induced subgraph with `G`'s chart points and subspaces, supplying only the incidences: in
-  `def:pencil-d-lift`'s setting, not the node's. (3)'s scaling is called in the setting
-  (`liftAttains_of_least`, at `c b⁰`); its transport has no caller (`scripts/blueprint-deps.py`
-  calls its two pins dead).
+  setting. (2) has five callers, each supplying only the incidences. The (T2) steps of the cut
+  edge (`cutEdge_T2`, `Grade/LiftCutEdge.lean`), the pendant and the pendant triangle
+  (`pendant_T2`, `pendantTri_T2`, `Grade/LiftCases.lean`) call it at `G`, at a point of `U(G)` (a
+  nondegenerate realization, the node's setting), and at an induced subgraph with `G`'s chart
+  points and subspaces; `ear_T2` calls it at `G` alone, at a point of `U(G)`; and
+  `mem_liftMaps_pencilConfigPoint_iff` (`Grade/LiftNoRigid.lean`, a pin of
+  `lem:pencil-d-lift-no-rigid`) at any configuration `(q, z)` with `z ∈ L(q)` and any subspaces
+  containing its closed neighbourhoods (its one caller at the nondegenerate `r*`). So four of the
+  five use (2) in `def:pencil-d-lift`'s setting, not the node's. (3)'s scaling is called in the
+  setting (`liftAttains_of_least`, at `c b⁰`); its transport has no caller
+  (`scripts/blueprint-deps.py` calls its two pins dead).
   *Remedies:* the prose to the Lean ((2) and (3) for any `(b⁰, Π⁰)` as in `def:pencil-d-lift`,
   (1) alone at a nondegenerate realization and `λ ∈ 𝓛^m`; the proofs and `\uses` unchanged), or
-  keep both (one setting for the three parts). The recon leans to the prose, as (2)'s caller is
-  outside the node's setting.
+  keep both (one setting for the three parts). The recon leans to the prose, as four of (2)'s five
+  callers are outside the node's setting.
 
 - **R-51** · `lem:pencil-d-lift-small`, its infinite `K` (`liftAttains_of_ncard_le_two`,
   `liftAttains_of_triangle`, `liftAttains_of_cutEdges_eq_empty`, `Grade/LiftSmall.lean`, round 1
@@ -857,6 +868,40 @@ task in `notes/Phase42-cleanup.md`, and its re-checks of R-1 to R-34 are recorde
   `α` with edge labels, `LiftAttains` asks for a selector `β → α × α`, which does not exist
   (reported to the PI at 42m as an encoding, `notes/Phase42m.md` *Statement faithfulness*).
 
+- **R-53** · `lem:pencil-d-good-ear`, (iii)'s `|X| ≥ 3`
+  (`Graph.IsX0Graph.exists_minimalRigid_ear_or_pendantTriangle`, `MainComponent/GoodEar.lean`;
+  `exists_goodEar_or_pendantTriangle`, `Grade/GoodEar.lean`; round 1 task 15) · **open**.
+  *Chapter:* (iii) shows that `a` and `b` keep two neighbours in `X` and the other bodies of `X`
+  all of theirs, so `G[X]` has minimum degree at least two, "and `|X| ≥ 3` as `G` is simple".
+  *Lean:* `|X| ≥ 3` is the core's output, by the argument of the last paragraph of
+  `lem:pencil-rigid-good-ear`'s proof: were `X = {a, b}`, `s(X) ≤ 1` would need the edge `ab`
+  (`Graph.partitionDef_two_induce_insert_id` at `a` and `{b}`), and `{x, a, b}` would be a
+  triangle with two hubs (`hF2`). The minimum degree two is shown after it and does not feed it.
+  The rest of (iii) is R-31's. Close, and not a departure: a planar-rigid `Z ⊆ X` is excluded by
+  (i), `s(Z) ≤ def₂(G[Z]) = 0` against `s(Z) ≥ 1`, not by the minimality of `W₀` that (i) records.
+  *Remedies:* the prose to the Lean ((iii) reads `|X| ≥ 3` off the proof of
+  `lem:pencil-rigid-good-ear`, as the first paragraph reads (i) and (ii) off it; the statement and
+  the `\uses` unchanged), or keep both (one line each). The recon leans to the prose: one clause,
+  and that proof states it.
+
+- **R-54** · `thm:pencil-d-generic`, its case split (`liftAttains_of_simple`,
+  `hasGradedGenericPencilRealization_of_simple`, `Grade/Generic.lean`, round 1 task 15) · **no
+  departure**: the induction is the chapter's, arm by arm and in its order (at most two bodies; a
+  cut no edge crosses; a cut edge with two bodies on each side, or a pendant body; the triangle;
+  no planar-rigid set, with the coverage `Graph.IsX0Graph.x0AttainsGrade`; the good ear's two
+  outcomes, the ear's condition from `holdsGenerally_earFree`), each smaller graph feasible by its
+  case lemma, and the outer pin is the chapter's first and last steps
+  (`gradedPencilNondegFeasible_iff`, `LiftAttains.hasGradedGenericPencilRealization`). It reads
+  less than the chapter only where a case's pin drops a hypothesis of its node: it never derives
+  that the pendant's neighbour `u` has another neighbour (R-25), and passes `a ≠ b` to the ear,
+  not `a ≁ b` (R-29). Those are the rows': R-25's prose-to-Lean remedy also strikes the proof's
+  "and its neighbour `u` has another neighbour, as `G` is connected with at least three bodies".
+  `|V₁|, |V₂| ≥ 2`, which the cut edge's pin drops (R-30), still bound the sides' sizes, as in the
+  chapter; R-28's and R-51's drops do not reach it, as the theorem takes `G` simple and `K`
+  infinite. The rest are carrier readings: "say `V₂`" as two cases, the triangle from the degrees
+  (`adj_of_twoEdgeConnected_ncard_eq_three`), connectivity from two-edge-connectivity, and the
+  ear's condition at the selectors of `lem:pencil-d-steer` (`exists_steer_selectors`).
+
 ## 3. The cleanup's rounds
 
 - **Round 1, the route audit** (opened 2026-11-05, `notes/Phase42-cleanup.md`): every green node of
@@ -881,6 +926,11 @@ task in `notes/Phase42-cleanup.md`, and its re-checks of R-1 to R-34 are recorde
     embeds a realization in dimension `d′ ≤ d` into dimension `d` (the letters of
     `lem:pencil-d-embed-realization`), a map `K^(d′+1) → K^(d+1)`: `d` and `d′` swap roles within
     one statement.
+  - *Moved to a later round* (round 1 task 15): a stale docstring. `Grade/LiftNoRigid.lean`'s
+    module docstring names `mem_liftMaps_pencilConfigPoint_iff` among the steps stated "for
+    `lem:pencil-d-ear-free`" (`L(b⁰) = L(q)` in the maps), but its one caller is
+    `liftAttains_of_forall_deficiency_two_ne_zero`: the Lean of `-ear-free` never reads `L(b⁰)`
+    (R-34) and calls only the other two it names.
 - **The ledger at Phase 42's close:** the standing rule (§1) kept §2 current through PD-STEPS's
   rest, PD-COVERAGE, PD-REDUCTION and PD-HEAD (`notes/Phase42-design.md` §3), the last rows 42m's,
   R-24 to R-34; Phase 42 closed on 2026-11-05 with no row added after them. Round 1 adds from R-35.

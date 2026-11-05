@@ -7,12 +7,12 @@ from the chapter's route; its plan, the PI's words and the proof-route ledger ar
 and adds a ledger row for each departure, re-checking R-1 to R-34 at HEAD; it edits no prose,
 statement, pin or Lean. The open (task 1, docs only) sliced the nodes by layer into 14
 one-dispatch Opus recon tasks, the 47 never-checked nodes of 42b–42f first, then a planned stop
-(task 16) at which the PI picks a remedy per `open` row and plans rounds 2+. Tasks 2 to 14
-(PD-STATE, PD-STABLE, COUNT-A and COUNT-B, PD-CARRIER, PD-STEPS, PD-COVERAGE, PD-REDUCTION,
-PD-HEAD's first half and 42m's cases) added R-35, R-46 and R-48 to R-51 (`open`), R-36 to R-45,
-R-47 and R-52 (`no departure`); tasks 8 to 14 re-checked R-1 to R-30, correcting R-7, R-9, R-12,
-R-15 to R-17 and R-24 to R-27 in place. **Next concrete task:** task 15, PD-HEAD's second half
-(42m), the rest, re-checking R-31 to R-34 (*Lemma checklist*). Round manual: `CLEANUP.md`.
+(task 16) at which the PI picks a remedy per `open` row and plans rounds 2+. Tasks 2 to 15, the
+whole audit (PD-STATE, PD-STABLE, COUNT-A and COUNT-B, PD-CARRIER, PD-STEPS, PD-COVERAGE,
+PD-REDUCTION, PD-HEAD), added R-35, R-46, R-48 to R-51 and R-53 (`open`), R-36 to R-45, R-47,
+R-52 and R-54 (`no departure`); tasks 8 to 15 re-checked R-1 to R-34, correcting R-7, R-9, R-12,
+R-15 to R-17, R-24 to R-27, R-31 and R-32 in place, and task 15 corrected round 1's R-50.
+**Next concrete task:** task 16, the planned stop (*Lemma checklist*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -26,11 +26,11 @@ picks a remedy per `open` row and plans rounds 2+ (`notes/Cleanup42.md` §3). An
 
 ## Current state
 
-**Tasks 1 to 14 have landed** (task 14 this commit: R-51 `open`, the infinite `K` that
-`lem:pencil-d-lift-small`'s three pins drop; R-52 `no departure`, (1)'s lift at `λ = 0` and its
-cases on at most two bodies; R-24 to R-27, written from 42m's spike, now name the files it landed
-in, their names and steps unchanged at the builds; R-28 to R-30 accurate). The ledger has
-52 rows, 33 `open`; the next row is R-53. Nothing is mid-stream; task 15 is next.
+**Tasks 1 to 15 have landed: the audit is done** (task 15 this commit: R-53 `open`,
+`lem:pencil-d-good-ear`'s `|X| ≥ 3` by the `d = 3` proof's argument; R-54 `no departure`,
+`thm:pencil-d-generic`'s case split; R-33, R-34 accurate; R-31, R-32 and R-50 corrected in place).
+The ledger has 54 rows: 34 `open`, 6 `aligned`, 14 `no departure`; the next row is R-55. Nothing
+is mid-stream; task 16, the planned stop, is next.
 
 **Verified at the open** (2026-11-05, at `a3b80ac4`):
 - **The Lean baseline** is the coordinator's run this session, not repeated here: `lake build
@@ -168,14 +168,12 @@ or *Moved* line. The reasons stay in the landing commit's message and in the led
 - [x] **13. 42l** (`5b25294b`). Open: R-48, R-49, R-50. No departure: `def:pencil-d-nondegenerate`,
   `lem:pencil-d-nondegenerate-three`, `def:pencil-d-lift`, `-lift-attains`. Re-checks: R-20 to R-23
   accurate (R-22 `aligned`). One *Moved* line.
-- [x] **14. 42m, the cases** (this commit). Open: R-51. No departure: R-52. Re-checks: R-28 to R-30
+- [x] **14. 42m, the cases** (`bd048052`). Open: R-51. No departure: R-52. Re-checks: R-28 to R-30
   accurate; R-24 to R-27 corrected (the spike's declarations, landed in `Grade/LiftSmall.lean` and
   `Grade/LiftCases.lean`).
-- [ ] **15. PD-HEAD's second half (42m), the rest.** `lem:pencil-d-lift-no-rigid`, `-good-ear`
-  (5747–5932), `-ear-extend`, `-ear-free`, `thm:pencil-d-generic` and
-  `cor:pencil-d-conditioned-pair` (6035–6359), 6 heavy nodes. Re-checks R-31 to R-34; fresh: the
-  theorem and the corollary. Reads `Grade/LiftNoRigid.lean`, `Grade/GoodEar.lean` (and the core it
-  calls, `MainComponent/GoodEar.lean`), `Grade/EarFree.lean`, `Grade/Generic.lean`.
+- [x] **15. 42m, the rest** (this commit). Open: R-53. No departure: R-54;
+  `cor:pencil-d-conditioned-pair`. Re-checks: R-33, R-34 accurate; R-31, R-32 corrected; R-50
+  corrected (its five callers; its lean's clause to match). One *Moved* line.
 - [ ] **16. The stop** (docs only; the planned stop, *Autopilot: for the PI*). The ledger's tally
   at the audit's end (rows by status, the new rows by task); the no-Lean-edit `git diff --stat`;
   a `NEEDS_PI` entry with each `open` row and its remedies and the *Candidates* lines; round 1
@@ -201,6 +199,10 @@ or *Moved* line. The reasons stay in the landing commit's message and in the led
   `lem:pencil-d-nondegenerate-maps` fixes `p : K^(d+1) → K^(d′+1)`, so (2)'s injective `p` has
   `d ≤ d′`, but its "in particular" embeds a realization in dimension `d′ ≤ d` into dimension `d`
   (`lem:pencil-d-embed-realization`'s letters): `d` and `d′` swap roles within one statement.
+- **A stale docstring** (task 15; mirrored in `notes/Cleanup42.md` §3). `Grade/LiftNoRigid.lean`'s
+  module docstring names `mem_liftMaps_pencilConfigPoint_iff` among the steps stated "for
+  `lem:pencil-d-ear-free`"; its one caller is `liftAttains_of_forall_deficiency_two_ne_zero`, as
+  the Lean of `-ear-free` never reads `L(b⁰)` (R-34).
 
 ## Blockers / open questions
 
@@ -208,20 +210,17 @@ or *Moved* line. The reasons stay in the landing commit's message and in the led
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 15, PD-HEAD's second half (42m), the rest. One Opus recon reads the
-six nodes `lem:pencil-d-lift-no-rigid`, `-good-ear`, `-ear-extend`, `-ear-free`,
-`thm:pencil-d-generic` and `cor:pencil-d-conditioned-pair` against their pins in
-`Grade/LiftNoRigid.lean`, `Grade/GoodEar.lean` (and `MainComponent/GoodEar.lean`),
-`Grade/EarFree.lean` and `Grade/Generic.lean`, under *The audit's criterion*: each node read whole,
-R-31 to R-34 re-checked at HEAD, the theorem and the corollary fresh (task 15's line), then one
-docs commit: any new rows (from R-53), the ledger's **Status**, and task 15's line here, in the
-three-line register. The theorem's induction (`liftAttains_of_simple`) calls the five case pins,
-which drop hypotheses their nodes take (R-25, R-28 to R-30, R-51), so its case split may read
-less than the chapter's. Task 14 found R-50 (task 13) stale in one clause: `mem_liftMaps_iff` has
-five callers, not only the cut edge's (T2): also `pendant_T2` and `pendantTri_T2` (at an induced
-subgraph, as the cut edge), `ear_T2` (at `G`), and `mem_liftMaps_pencilConfigPoint_iff`
-(`Grade/LiftNoRigid.lean`, at any configuration); its correction in place is the coordinator's
-call. Then the stop.
+**Next concrete task:** task 16, the planned stop (docs only; *Autopilot: for the PI*). One
+commit: the ledger's tally at the audit's end (54 rows: 34 `open`, 6 `aligned`, 14 `no
+departure`; round 1's 20 rows by task, from the *Lemma checklist*); the no-Lean-edit check, `git
+diff --stat a3b80ac4.. -- CombinatorialRigidity/ lakefile.toml lake-manifest.json lean-toolchain`
+empty; a `NEEDS_PI` entry under *Autopilot: for the PI* with each `open` row, its remedies and the
+recon's lean, and the *Candidates* lines (none so far); and round 1 closed, with ROADMAP's Status
+row and CLEANUP-42 bullet, `notes/Cleanup42.md`'s **Status** and §3 pointing at the PI's answer,
+which plans rounds 2+. Two links for the entry: R-25's remedy binds `thm:pencil-d-generic`'s proof
+too (R-54: the prose-to-Lean remedy strikes its derived "another neighbour" clause); and the
+criterion's example of a pin carrying more than its node, "R-31's explicit first outcome", no
+longer holds (R-31 corrected: that outcome is the node's).
 
 ## Decisions made during this round
 
