@@ -5,8 +5,10 @@ asked for a cleanup phase after Phase 42 to address the informal proofs of
 `blueprint/src/chapter/pencil-d.tex` that were difficult to formalize as written (§1). Its
 placement, right after Phase 42 and ahead of ORIGAMI, is the coordinator's proposal, which the PI
 has not answered. `.claude/autopilot/queue.toml` carries it as `CLEANUP-42`, attended, between
-PENCIL-D and ORIGAMI; ROADMAP *Queued post-program phases* lists it. Its input is the proof-route
-ledger (§2), which every remaining Phase 42 recon or build extends until the cleanup opens (§3).
+PENCIL-D (done) and ORIGAMI; ROADMAP *Queued post-program phases* lists it. Its input is the
+proof-route ledger (§2), final since Phase 42 closed (2026-11-05): 34 rows, 27 `open`, 6 `aligned`,
+1 `no departure` (§3). The queue runs it next, attended, so its open goes to the PI, who settles
+its placement then.
 
 ## 1. The PI's decision (2026-10-30, verbatim)
 
@@ -516,8 +518,9 @@ valid. The cleanup chooses one per `open` row, with the PI.
 
 ## 3. The cleanup (not yet planned)
 
-- **Until it opens:** the standing rule (§1) keeps §2 current through PD-STEPS's rest,
-  PD-COVERAGE, PD-REDUCTION and PD-HEAD (`notes/Phase42-design.md` §3).
+- **The ledger is final:** the standing rule (§1) kept §2 current through PD-STEPS's rest,
+  PD-COVERAGE, PD-REDUCTION and PD-HEAD (`notes/Phase42-design.md` §3), the last rows 42m's, R-24
+  to R-34; Phase 42 closed on 2026-11-05 with no row added after them.
 - **Also left to it** (not a route row): Theorem S's fold, `Graph.IsX0Graph.exists_additiveCore`
   (`MainComponent/CoverageTheoremS.lean`) as the `n = 3` case of
   `Graph.IsX0Graph.exists_additiveCoreAt` (`Grade/TheoremS.lean`, which imports that file), with a

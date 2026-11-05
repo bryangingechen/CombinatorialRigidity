@@ -793,30 +793,19 @@ generic body-hinge theorem holds for every multigraph, loops allowed, and KT Pro
 state it (MULTIGRAPH); no main result bounds the edge labels (RELABEL); and each claim no
 declaration stated has one, with KT Proposition 2.3 and the generic body-hinge theorem at KT's own
 genericity (UNSTATED). Summary: ROADMAP §41. **Phase 42** (PENCIL-D,
-`notes/Phase42-design.md`) opened 2026-10-29 with the PI: the pencil realization theorem in every
-dimension, research first (42a, PD-RECON, closed 2026-10-30, `notes/Phase42a.md`: the route, and
-the coverage's new mathematics proved by hand at `d = 4` by the SHORT-CORE attack track), with the
-statement layer beside it (42b, PD-STATE,
-closed 2026-10-30 with its chapter `pencil-d.tex` formalized, `notes/Phase42b.md`); PD-STABLE
-ran the same day (42c, closed 2026-10-30, `notes/Phase42c.md`): every `d` from Phase 40 at
-`def_3 ≤ 3`, Tier 0. PD-ALL ran as 42d (opened and closed 2026-10-30, `notes/Phase42d.md`): an
-informal proof in every dimension of all three conjuncts, as red nodes of `pencil-d.tex`;
-formalizing it began as 42e (PD-CARRIER, opened and closed 2026-10-30, `notes/Phase42e.md`): the
-setting and the flat rank, formalized; PD-STEPS began as 42f (opened and closed 2026-10-30,
-`notes/Phase42f.md`): its cut-vertex, bridge and contraction steps, formalized; and continued as 42g
-(opened 2026-10-30, closed 2026-10-31, `notes/Phase42g.md`): its cycle and long-ear steps,
-formalized; the short ears, the rest of PD-STEPS, continued as 42h (opened and closed 2026-10-31,
-`notes/Phase42h.md`): those with four or more interior bodies, formalized; and the three-body case,
-the last of PD-STEPS, as 42i (opened and closed 2026-10-31, `notes/Phase42i.md`): formalized at
-`d = 4` to `6`, which completes PD-STEPS; and the coverage, PD-COVERAGE, as 42j (opened and closed
-2026-10-31, `notes/Phase42j.md`): formalized, which completes the induction in every dimension;
-and Phase 39's reduction, PD-REDUCTION, as 42k (opened and closed 2026-11-04, `notes/Phase42k.md`):
-formalized, which gives the headline's first two conjuncts in every dimension; and PD-HEAD's first
-half, nondegeneracy and lifts in every dimension, as 42l (opened and closed 2026-11-04,
-`notes/Phase42l.md`): formalized; and PD-HEAD's second half, the generic theorem and the headline,
-as 42m (opened 2026-11-05, `notes/Phase42m.md`), whose close is Phase 42's. Summary: ROADMAP §42.
-Still queued, codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
-conjecture, `notes/Origami.md` — the next phase to open after PENCIL-D, with the PI), **PIN** (a second,
+`notes/Phase42-design.md`) opened 2026-10-29 with the PI and closed 2026-11-05, in thirteen
+sub-phases, 42a–42m, **proving the pencil realization theorem in every dimension `d ≥ 3`** over
+every infinite field (`Graph.graded_pencil_conditioned_pair`, `pencil-d.tex`, every node green).
+It ran research first: PD-RECON (42a) took Phase 40's induction to every `d` with `d − 2` heights,
+its one new step proved by hand at `d = 4` by the SHORT-CORE attack track; PD-STATE and PD-STABLE
+(42b, 42c) stated the pencil in `Pᵈ` and gave every `d` at `def_3 ≤ 3`; PD-ALL (42d) wrote the whole
+proof as red nodes. Formalizing it took PD-CARRIER (42e), PD-STEPS (42f–42i), PD-COVERAGE (42j),
+PD-REDUCTION (42k) and PD-HEAD (42l–42m), the last the generic conjunct by lifts of `P³`
+realizations and the headline. The Lean proofs that depart from the chapter's are the ledger of
+`notes/Cleanup42.md`. Summary: ROADMAP §42. Still queued, codenamed: **CLEANUP-42** (the
+`pencil-d.tex` proofs against their Lean, `notes/Cleanup42.md`; next to open, with the PI, its place
+ahead of ORIGAMI the coordinator's proposal), **ORIGAMI** (the planar-blocks / molecular-origami
+conjecture, `notes/Origami.md`, with the PI), **PIN** (a second,
 independent proof of the 2-d molecular conjecture by Jackson–Jordán 2008's
 pin-collinear route, re-scoped at 40a's close; unplanned), **UPSTREAM** (mathlib upstreaming) and
 **VERSO** (the paused verso-blueprint port).

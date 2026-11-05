@@ -18,7 +18,7 @@ and Katoh–Tanigawa 2011's proof of the **molecular
 conjecture**, at every dimension, with its molecule application, the
 protein-flexibility rank formula `r(G²) = 3|V| − 6 − def(G̃)`. Its newest
 result is a strengthening of the molecular conjecture that appears to be
-new, the **pencil realization theorem**.
+new, the **pencil realization theorem**, now proved in every dimension.
 
 The development was originally hosted under `Archive/CombinatorialRigidity/`
 in a fork of mathlib4 and has been lifted to this standalone, mathlib-downstream
@@ -49,6 +49,19 @@ we know of no earlier statement of it. In Lean,
 a multigraph on the whole body set, and `pencilPair_of_nonempty` for every
 multigraph with at least one body. The proof is outlined under *Project
 status* below, and given in full in the blueprint.
+
+In projective `d`-space the hinges are `(d−2)`-flats, and the hinges at a
+body form a pencil when they lie in a hyperplane, the body's panel, and
+contain a common `(d−3)`-flat of it; at `d = 3` this is the pencil above.
+Phase 42 (closed 2026-11-05) proved the theorem in every dimension
+`d ≥ 3`: over every infinite field, every multigraph `G` with at least one
+body has a pencil realization of rank `D(|V(G)| − 1) − def(G̃)`, where
+`D = (d+1)d/2`, the rank of a generic body-hinge realization of `G`. If `G`
+is simple, adjacent bodies can be given distinct panels, and if `G` has a
+nondegenerate pencil realization at all, it has one of that rank
+(`Graph.graded_pencil_conditioned_pair`). A pencil realization is in
+particular a panel realization, so this strengthens Katoh and Tanigawa's
+rank form of the molecular conjecture in every dimension.
 
 ## Links
 
@@ -212,26 +225,20 @@ declarations were corrected, every main result has a closed witness that
 its hypotheses can all be met, and each claim the chapters made without a
 Lean declaration was given one.
 
-Phase 42, in progress, asks whether the pencil realization theorem holds
-in every dimension. In projective `d`-space the hinges at a body form a
-pencil when they contain a common `(d−3)`-flat and lie in a hyperplane;
-the theorem is formalized at `d = 2` and `d = 3`, and the general case
-would imply Katoh–Tanigawa's panel theorem in every dimension. A paper
-check found most of the `d = 3` proof dimension-general, with one step
-needing new mathematics from dimension four. Beside that research, a new
-blueprint chapter states pencil realizations in every dimension, their
-agreement with the three-dimensional ones, and the tools a proof in every
-dimension would use, all formalized. One of its sections embeds a lower
-dimension in a higher one, and so proves, in every dimension, that a
-simple connected graph of minimum degree at least two whose deficiency in
-the plane is at most three has a pencil realization at the deficiency
-rank. The chapter now also carries a proof on paper of the theorem in
-every dimension, its strongest form included. Formalizing that proof has
-reached the theorem's first two claims: in every dimension, every
-multigraph with at least one body has a pencil realization at the
-deficiency rank, and, when it is simple, one in which adjacent bodies
-have distinct hyperplanes. Its strongest form, on nondegenerate pencil
-realizations, is in progress.
+Phase 42 (closed 2026-11-05) proved the pencil realization theorem in
+every dimension `d ≥ 3`, stated above, formalizing a proof first worked
+out on paper and independently checked. A paper check found most of the
+three-dimensional proof dimension-general, a few of its steps needing new
+arguments in higher dimensions. The proof runs the three-dimensional
+induction once with `d − 2` heights in place of one, calling on the
+three-dimensional theorem, embedded in a higher dimension, at the graphs
+whose deficiency is the same in both. It needed one new step, at ears
+with few interior bodies, first proved by hand in dimension four. On top
+of the induction, the reduction to all multigraphs runs in every
+dimension, and the nondegenerate claim is proved by lifting nondegenerate
+three-dimensional realizations to dimension `d`. Where a formal proof
+takes a different route from the blueprint's, the difference is recorded
+for the cleanup that follows the phase.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries

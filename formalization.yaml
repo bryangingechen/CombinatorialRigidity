@@ -288,24 +288,21 @@ status:
     edge labels, and the body-hinge theorem also holds at Katoh-Tanigawa's own notion of
     genericity, the maximum rank over the realizations with nondegenerate hinges; every main
     result has a closed witness that its hypotheses can all be met; and each claim the blueprint
-    made without a Lean declaration was given one. Phase 42 (in progress) asks whether the pencil
-    realization theorem holds in every dimension, in projective d-space with each body's hinges
-    containing a common (d-3)-flat and lying in a hyperplane; a new blueprint chapter states pencil
-    realizations in every dimension, their agreement with the three-dimensional ones, and the tools
-    a proof in every dimension would use, all formalized, and one of its sections embeds a lower
-    dimension in a higher one and so proves, over any infinite field and in every dimension, that a
-    simple connected graph of minimum degree at least two whose deficiency in the plane is at most
-    three has a pencil realization at the deficiency rank
-    (Graph.hasGradedDistinctPencilRealization_of_deficiency_two_le_three). The chapter now also
-    carries a proof on paper of the theorem in every dimension, its strongest form included;
-    formalizing that proof has reached the theorem's first two claims, its induction and the
-    reduction to all multigraphs: over any infinite field and in every dimension d >= 3, every
-    multigraph with at least one body has a pencil realization at the deficiency rank, and, when it
-    is simple, one whose normals are linearly independent at adjacent bodies
-    (Graph.graded_pencil_realization_theorem; the induction alone, at every simple connected graph
-    of minimum degree at least two whatever its deficiency in the plane, is
-    Graph.IsX0Graph.x0AttainsGrade). Its strongest form, on nondegenerate pencil realizations, is
-    in progress.
+    made without a Lean declaration was given one. Phase 42 (closed 2026-11-05) proved the pencil
+    realization theorem in every dimension d >= 3, over any infinite field, in projective d-space
+    with each body's hinges lying in a hyperplane, its panel, and containing a common (d-3)-flat of
+    it: every multigraph with at least one body has a pencil realization at the deficiency rank, one
+    whose normals are linearly independent at adjacent bodies when it is simple, and a nondegenerate
+    one at that rank when it is simple and has a nondegenerate pencil realization
+    (Graph.graded_pencil_conditioned_pair; the question appears to be new). It formalizes the
+    project's own informal proof, written first in a new blueprint chapter and independently
+    checked: the d = 3 induction run in every dimension with d - 2 heights
+    (Graph.IsX0Graph.x0AttainsGrade, which subsumes the phase's earlier corollary for graphs whose
+    deficiency in the plane is at most three,
+    Graph.hasGradedDistinctPencilRealization_of_deficiency_two_le_three), phase 39's reduction in
+    every dimension (Graph.graded_pencil_realization_theorem, the first two claims), and the
+    nondegenerate claim by lifting nondegenerate three-dimensional pencil realizations to dimension
+    d (CombinatorialRigidity.Molecular.hasGradedGenericPencilRealization_of_simple).
   sorry_count: 0
   sorry_in_definitions: 0
   axioms: ["propext", "Classical.choice", "Quot.sound"]          # only Lean/mathlib standard axioms; no project-specific axioms
@@ -708,7 +705,13 @@ fidelity:
     source; it is formalized from the project's own informal proof, whose second main-component statement
     did not follow as planned (at K_{2,3}, two bodies with three common neighbours, no
     configuration over a general picture is nondegenerate) and is proved instead inside the
-    pencil reduction's own induction. Nothing is cited in place of a proof - every
+    pencil reduction's own induction. Its form in every dimension (phase 42) is likewise formalized
+    from the project's own informal proof, the blueprint chapter on the pencil in every dimension:
+    each Lean statement is at least as strong as its blueprint node, save that one lemma's case of
+    two bodies assumes the type of bodies nonempty, an artifact of the formal carrier at zero bodies
+    (the main result assumes a body), and each Lean proof whose route departs from the chapter's is
+    recorded for the cleanup that follows (notes/Cleanup42.md's proof-route ledger: 34 rows, 27 of
+    them open at the close). Nothing is cited in place of a proof - every
     result the arguments use is formalized, the vendored matroid-union subsystem included. The
     blueprint (project.blueprint above) aims to state each result in the exact form proved,
     and discusses its departures from the source in the chapter that proves it; its appendix,

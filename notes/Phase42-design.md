@@ -1,25 +1,28 @@
 # Phase 42 — PENCIL-D: design (cross-phase plan and recon)
 
-**Status:** opened 2026-10-29 with the PI, sub-lettered, research first. **Every node of
-`pencil-d.tex` is green** (42m's build 7, 2026-11-05), and the close of 42m and Phase 42 together
-runs in parts (`notes/Phase42m.md` *Hand-off*). Each sub-phase opened at the PI's word (§1); its
-verdict is in §3 and its work log is `notes/Phase42<letter>.md`. **42a** PD-RECON (closed
-2026-10-30): the step table (§2.1), the routes (§2.2), ONE-CLASS and SHORT-CORE (§2.3), T1–T5
-(§2.4), the thresholds (§2.5); the route is the PI's (§1), R2's steps with Result 15's embedding as
-the base row. Beside it **42b** PD-STATE and **42c** PD-STABLE (both 2026-10-30): the statement
-layer, and Tier 0 (`def[3] ≤ 3`, widened by the PI from `≤ 1`). **42d** PD-ALL (2026-10-30): the
-informal proof at every `d` of the conditioned pair's three conjuncts, by `/coordinate-tracks`.
-Formalizing it: **42e** PD-CARRIER (2026-10-30); PD-STEPS as **42f** (2026-10-30), **42g**
-(2026-10-30/31), **42h** and **42i** (2026-10-31); **42j** PD-COVERAGE (2026-10-31); **42k**
-PD-REDUCTION (2026-11-04); PD-HEAD as **42l** (2026-11-04) and **42m** (opened 2026-11-05).
+**Status:** ✓ closed 2026-11-05 (opened 2026-10-29 with the PI), sub-lettered, research first:
+the pencil realization theorem in every dimension `d ≥ 3` over every infinite field is proved and
+formalized. **Every node of `pencil-d.tex` is green**, and the headline,
+`Graph.graded_pencil_conditioned_pair` (§0), is the phase's one `main_results` row (the PI, §1).
+Each sub-phase opened at the PI's word (§1); its verdict is in §3 and its work log is
+`notes/Phase42<letter>.md`. **42a** PD-RECON (closed 2026-10-30): the step table (§2.1), the
+routes (§2.2), ONE-CLASS and SHORT-CORE (§2.3), T1–T5 (§2.4), the thresholds (§2.5); the route is
+the PI's (§1), R2's steps with Result 15's embedding as the base row. Beside it **42b** PD-STATE
+and **42c** PD-STABLE (both 2026-10-30): the statement layer, and Tier 0 (`def[3] ≤ 3`, widened by
+the PI from `≤ 1`). **42d** PD-ALL (2026-10-30): the informal proof at every `d` of the conditioned
+pair's three conjuncts, by `/coordinate-tracks`. Formalizing it: **42e** PD-CARRIER (2026-10-30);
+PD-STEPS as **42f** (2026-10-30), **42g** (2026-10-30/31), **42h** and **42i** (2026-10-31);
+**42j** PD-COVERAGE (2026-10-31); **42k** PD-REDUCTION (2026-11-04); PD-HEAD as **42l**
+(2026-11-04) and **42m** (2026-11-05), whose close, in four parts, closed Phase 42
+(`notes/Phase42m.md`). Next: CLEANUP-42 (`notes/Cleanup42.md`), then ORIGAMI, each with the PI.
 Evidence: `notes/Strata.md`, Results 12–27.
 
 This file is the phase's entry point: the target (§0), the PI's decisions (§1, verbatim), the recon
 (§2), the layers by stable code with their verdicts and deferrals (§3) and the settled questions
 (§4). **At the close** (2026-11-05) the header, §0's status, §3's arcs and §4 were compressed to
-verdicts (the full text is in git up to `e186a885`); §1 and §2 are byte-identical, net of §1's last
-entry, appended at the close's part 3. §2 is **frozen**:
-the research corpus (`notes/Strata.md`, `notes/scripts/strata/`, the attack briefs and
+verdicts (the full text is in git up to `e186a885`), and the header put in closed form at its last
+part; §1 and §2 are byte-identical, net of §1's last entry, appended at the close's part 3. §2 is
+**frozen**: the research corpus (`notes/Strata.md`, `notes/scripts/strata/`, the attack briefs and
 `Grade/TheoremS.lean`) cites its rows, tests and obligations by number.
 
 ## 0. Target
@@ -1086,10 +1089,11 @@ marked `no departure` (R-6). The post-Phase-42 cleanup acts on the ledger (that 
   `finrank_dotPerp_span_singleton_of_ne_zero`) to `Grade/Realization.lean` beside
   `finrank_dotPerp`, with 42k's `dotPerp_map_eq`; at a cleanup round, the mirror candidate
   `finrank_map_of_injOn` (`Grade/Nondegenerate.lean`).
-  **PD-HEAD's second half, as 42m** (opened 2026-11-05 at the PI's word, §1; `notes/Phase42m.md`):
-  `-generic`, the eleven nodes as the chapter states them, the blueprint's last red ones, so 42m's
-  close is Phase 42's. Its recon pinned the eleven signatures, each kernel-checked, and spiked three
-  complete; seven builds landed them (`Grade/LiftSmall.lean`, `Grade/LiftCases.lean`,
+  **PD-HEAD's second half, as 42m** (opened and closed 2026-11-05 at the PI's word, §1;
+  `notes/Phase42m.md`): `-generic`, the eleven nodes as the chapter states them, the blueprint's
+  last red ones, so 42m's close is Phase 42's. Its recon pinned the eleven signatures, each
+  kernel-checked, and spiked three complete; seven builds landed them
+  (`Grade/LiftSmall.lean`, `Grade/LiftCases.lean`,
   `Grade/LiftCutEdge.lean`, `Grade/GoodEar.lean` with its core in `MainComponent/GoodEar.lean`,
   `Grade/LiftNoRigid.lean`, `Grade/EarFree.lean`, `Grade/Generic.lean`). Each case is
   `lift_transfer` then `liftAttains_of_holdsGenerally`; the ear's condition is one predicate,

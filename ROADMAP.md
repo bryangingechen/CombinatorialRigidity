@@ -10,8 +10,9 @@ Phase 6. The program then ran through the body-bar and body-hinge
 Tay–Whiteley theorems to Katoh–Tanigawa's proof of the **molecular
 conjecture** (Phases 17–26), and on to the **pencil realization theorem**
 (Phases 39–40), a strengthening of the molecular conjecture that this
-project posed and proved. The *Status* table and *Queued post-program
-phases* below give the current state.
+project posed and proved, and then proved in every dimension (Phase 42).
+The *Status* table and *Queued post-program phases* below give the
+current state.
 
 The work is expected to span multiple sessions. This file is the canonical
 hand-off document: it carries the directory layout, status, mathematical
@@ -180,7 +181,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (RECONCILE 3/3: the Lean outside the phase's footprint) | the Lean's dead code, signatures, docstrings and the pebble game's search, a non-vacuity witness per main result, and the blueprint pins they move (no main result's statement changes) | ✓ Complete — dead code deleted, unneeded hypotheses dropped and the blueprint statements they reached restated, the search re-proved, the docstrings checked and a non-vacuity witness per main result outside the next phase's rows, no main result's statement changed (see `notes/Reconcile-lean-cleanup.md`; plan `notes/Reconcile.md`; round manual: `CLEANUP.md`) |
 | ⋮ Toolchain bump to Lean v4.36.0-rc1 (maintenance, cross-phase) | `lean-toolchain`, `lake-manifest.json`, `lakefile.toml` (+ renames, imports and one-line fixes in 39 Lean files) | ✓ Complete — v4.34.0-rc2 → v4.36.0-rc1, mathlib → `930ae14`, `Matroid` → `8ece630`; every gate green, all 19 main results' axioms unchanged; pushed 2026-10-25, CI green at `4c892cb6` (see `notes/Bump-v4.36.0-rc1.md`; record `notes/ToolchainBumps.md`) |
 | 41. The panel-hinge carrier and its graph (post-program) — RECONCILE-FORMAL | `Molecular/` (structural edit; sub-lettered, 41a–41e) | ✓ Complete — each hinge at its own edge's ends, and the RECONCILE program closed (see `notes/Phase41e.md`; plan `notes/Phase41-design.md`) |
-| 42. The pencil realization theorem in every dimension (post-program) — PENCIL-D | research first, then `Molecular/`, `pencil-d.tex` (sub-lettered, 42a–42m) | In progress — 42a ✓ PD-RECON, 42b ✓ PD-STATE, 42c ✓ PD-STABLE, 42d ✓ PD-ALL, 42e ✓ PD-CARRIER, 42f ✓ PD-STEPS's cut, bridges and contraction, 42g ✓ PD-STEPS's cycles and long ears, 42h ✓ PD-STEPS's short ears with four or more interior bodies, 42i ✓ PD-STEPS's three-body ear, 42j ✓ PD-COVERAGE, 42k ✓ PD-REDUCTION, 42l ✓ PD-HEAD's nondegeneracy and lifts, 42m PD-HEAD's generic theorem and headline: builds 1 to 7 of 7 landed, all eleven nodes green; the close of 42m and Phase 42 under way, parts 1 to 3 of 4 landed (see `notes/Phase42m.md`; plan `notes/Phase42-design.md`) |
+| 42. The pencil realization theorem in every dimension (post-program) — PENCIL-D | research first, then `Molecular/`, `pencil-d.tex` (sub-lettered, 42a–42m) | ✓ Complete — the pencil realization theorem in every dimension, over every infinite field (see `notes/Phase42m.md`; plan `notes/Phase42-design.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1263,120 +1264,49 @@ standard ones. The loop stopped for the PI's push; PENCIL-D (queued 2026-10-29, 
 opened next, with the PI, as Phase 42 (§42). Detail →
 `notes/Phase41a.md` to `notes/Phase41e.md` + `notes/Phase41-design.md`.
 
-### Phase 42 — The pencil realization theorem in every dimension (PENCIL-D, post-program; sub-lettered)
+### Phase 42 — The pencil realization theorem in every dimension (PENCIL-D, post-program; sub-lettered 42a–42m) — ✓ Complete
 
-**In progress** (opened 2026-10-29 with the PI; plan, the PI's decisions and the layers
+**✓ Complete** (opened 2026-10-29 with the PI, closed 2026-11-05; thirteen sub-phases, work logs
+`notes/Phase42{a..m}.md`; plan, the PI's decisions (§1, verbatim) and the layers
 `notes/Phase42-design.md`; evidence `notes/Strata.md`). In `Pᵈ` the hinges at each body form a
 pencil when they contain a common `(d−3)`-flat and lie in a hyperplane, the bottom of the `2(d−1)`
-per-body flag conditions; a theorem there implies every one of them, Katoh–Tanigawa's all-`d`
-panel theorem among them. `d = 2` (Jackson–Jordán's pin-collinear theorem) and `d = 3` (Phase 40)
-are formalized; `d = 4, 5, 6` reach the generic rank at every graph measured (36 simple graphs with
-`n ≤ 12`, 8 past that cap), and every `d` follows from Phase 40 when `def_3(G) ≤ 3`. The phase ran
-research first: **PD-RECON** (42a, opened and closed 2026-10-29/30, `notes/Phase42a.md`) asked,
-step by step, whether Phase 40's induction runs in `Pᵈ`. Most of it, and Phase 39's reduction, is
-dimension-general given routine or formal work. The steps that break do so because in `P³` two
-bodies' planes always share a line and in `Pᵈ` they need not: the short ears from `d = 4`, the
-one-body and orbit ears from `d = 5`, and the generic statement's route B. Five test modes found
-every graph built to carry those configurations at the generic rank, so the obstruction is the
-proof's, not the statement's. The PI took the route: Phase 40's induction run once with `d − 2`
-heights, the embedding of a lower dimension as its base row. The coverage needs no one-body-ear
-mathematics (ONE-CLASS is Phase 40's), and its only new mathematics was the short ears with few
-interior bodies (3–5 at `d = 4`). An attack track (SHORT-CORE, closed 2026-10-30,
-`notes/attacks/short-core/state.md`) proved that step by hand at `d = 4`, the ears of 4 or more
-interior bodies in every `d`, and that from `d = 5` on the coverage never needs the 3-body short
-ear, given the long ears' certificates (CERT, since proved at every `d`, 42d). Beside the research
-ran **PD-STATE** (42b, opened and closed 2026-10-30, `notes/Phase42b.md`): the chapter `pencil-d.tex`, all 17 nodes formalized in
-`Pencil/Grade/`, states pencil realizations in dimension `d` in the polar form with each body's
-plane as data (the PI's reading, after the open found the plain polar form disagreeing with Phase
-39's), their agreement with Phases 39–40 at `d = 3`, and Phase 40's carrier in dimension `d`. The
-`def_3 ≤ 3` corollary then ran at the PI's word as **PD-STABLE** (42c, opened and closed
-2026-10-30, `notes/Phase42c.md`): a section of `pencil-d.tex`, all 9 nodes formalized, embeds
-a pencil realization of a lower dimension with the rank it gains, and proves that a connected
-graph's deficiency stops changing once `def_3 + 3 ≤ D`, a sharper range than planned, which the PI
-took to widen the corollary from `def_3 ≤ 1`. So Phase 40 gives every `Pᵈ` at `def_3 ≤ 3`
-(`Graph.x0AttainsGrade_of_deficiency_two_le_three`). The PI then put formalizing Tier 1 aside for
-an informal proof first: **PD-ALL** (42d, opened and closed 2026-10-30, `notes/Phase42d.md`)
-wrote Phase 40's induction and Phase 39's reduction at every `d`, all three conjuncts of the
-conditioned pair included, as red nodes of `pencil-d.tex` (headline
-`cor:pencil-d-conditioned-pair`), from one central session (`/coordinate-tracks`): two research
-tracks, CERT (the cycle and ear certificates at every `d`) and NONDEG (a `Pᵈ` nondegeneracy, the
-PI's choice, and the generic conjunct's route by lifts of `P³` realizations), and two Lean commits (COUNT)
-for the coverage's deficiency counting at every `D`. Two fresh reads checked the proof. Formalizing
-it (design doc §3: PD-CARRIER, PD-STEPS, PD-COVERAGE, PD-REDUCTION, PD-HEAD) began at the PI's word
-with **PD-CARRIER** (42e, opened and closed 2026-10-30, `notes/Phase42e.md`): Phase 40's setting
-and flat rank in `Pᵈ`, four nodes of `pencil-d.tex` formalized as written, their Lean at every
-`d ≥ 2` (`Grade/ConditionLinear.lean`, `Grade/Flat.lean`). The next layer, PD-STEPS (the
-induction's steps), began at the PI's word as **42f** (opened and closed 2026-10-30,
-`notes/Phase42f.md`): its cut-vertex, bridge and contraction steps, Phase 40e/40f/40k in `Pᵈ`,
-six nodes of `pencil-d.tex` formalized as written, their Lean at every `d ≥ 2`
-(`Grade/Cut.lean`, `Grade/ContractAdditive.lean`). Its open cut, at the same word, two steps the
-coverage does not use, the split-off and the open ear that assumes `def_d(G[V₁]) ≤ def_d(G)`,
-leaving PD-STEPS 25 nodes. Its second sub-phase, **42g** (opened 2026-10-30 and closed 2026-10-31
-at the PI's word, `notes/Phase42g.md`), took the cycle and the open ears with at least `D − 1`
-interior bodies: seven nodes of `pencil-d.tex` on CERT's closed polygons with independent joins,
-formalized, their Lean at every `d ≥ 2` (`Grade/Polygon.lean`, the five polygon nodes;
-`Grade/Chain.lean`, the cycle and the long ear). At the PI's word two of the chapter's polygon
-proofs now follow their Lean, and the proofs whose Lean departs from the chapter's are tracked for a
-cleanup after Phase 42 (`notes/Cleanup42.md`). The short ears, the rest of PD-STEPS, come in two
-halves. At the PI's word **42h** (opened and closed 2026-10-31, `notes/Phase42h.md`) took the open
-ears with four or more interior bodies: eight nodes of `pencil-d.tex` (SHORT-CORE's step there, with
-the tools both halves share), formalized, their Lean at every `d ≥ 2` (`Grade/Stars.lean`, the linear
-algebra; `Grade/EarData.lean`, the ear data; `Grade/Short.lean`, the step). At the PI's word one of
-their statements is worded on linear forms and one proof follows its Lean. At the PI's word
-**42i** (opened and closed 2026-10-31, `notes/Phase42i.md`) took the three-body ear at `d = 4` to
-`6`, the last of PD-STEPS: four nodes of `pencil-d.tex` that build on these, formalized
-(`Grade/StarsThree.lean`, `Grade/PlanesMeet.lean`, `Grade/GluedEnds.lean`,
-`Grade/ShortThree.lean`). Its recon found that 42h's step cannot take the three-body condition,
-which the chapter proves only at general base data and for the relative screws of `G[V₁]`, so the
-step gained a generalization that takes the condition only there. At the PI's word one of the
-four statements was restated to its Lean. PD-STEPS is complete. At the PI's word **42j** (opened
-and closed 2026-10-31, `notes/Phase42j.md`) took the next layer, PD-COVERAGE: four nodes of
-`pencil-d.tex` that count the edges along short chains, find a long chain or a core, and put the
-steps together into the coverage in every dimension and its distinct statement, formalized as the
-chapter states them (`Grade/Chains.lean`, `Grade/Coverage.lean`, on reductions of Phase 40 that
-now return their data). So, over an infinite field and in every `d ≥ 3`, the general
-configuration of every graph satisfying the standing hypotheses reaches the deficiency rank, which
-subsumes the `def_3 ≤ 3` case, and every simple 2-edge-connected graph on at least three bodies
-has an adjacent-distinct pencil realization at that rank. The chain count's Lean counts the
-bodies of degree two, not the chapter's segments, a route difference tracked for the cleanup.
-PD-COVERAGE is complete, and with it the induction. At the PI's word **42k** (opened and closed
-2026-11-04, `notes/Phase42k.md`) took the next layer, PD-REDUCTION: eight nodes of `pencil-d.tex`
-that run Phase 39's reduction in every dimension, formalized as the chapter states them
-(`Grade/TwoPencil.lean`, a hinge in two pencils and moving a realization or one side of a cut
-edge by a linear map; `Grade/Arms.lean`, the cases at a loop, on at most two bodies and at a cut
-edge; `Grade/Reduction.lean`, the case at parallel edges and the theorem). So, over an infinite
-field and in every `d ≥ 3`, every multigraph with a body has a pencil realization at the
-deficiency rank, and an adjacent-distinct one when it is simple
-(`Graph.graded_pencil_realization_theorem`), the headline's first two conjuncts. The cases on at
-most two bodies and at parallel edges count rows as the `d = 3` Lean does, where the chapter
-counts motions, a route difference tracked for the cleanup. PD-REDUCTION is complete. The last
-layer, PD-HEAD (the generic conjunct and the headline, 21 nodes), comes in two halves. At the PI's
-word **42l** (opened and closed 2026-11-04, `notes/Phase42l.md`) took the first: ten nodes of
-`pencil-d.tex`, formalized as the chapter states them (`Grade/Nondegenerate.lean`, nondegenerate
-pencil realizations in every dimension, their match with dimension three and injective linear
-maps; `Grade/Feasible.lean`, over an infinite field having one does not depend on the dimension;
-`Grade/Lift.lean`, a polynomial parametrization of those of dimension three and their lifts to
-dimension `d`, each a nondegenerate realization; `Grade/LiftWitness.lean`, one lift of the right
-rank at a suitable realization suffices, and lifts restrict to a subgraph). Three proofs take
-shorter or more direct routes than the chapter's, tracked for the cleanup; at the PI's word the
-parametrization's statement takes its Lean's six auxiliary vectors at every body, where five
-suffice. At the PI's word **42m** (opened 2026-11-05, `notes/Phase42m.md`) takes the second
-half, the last eleven nodes of `pencil-d.tex`: the generic theorem, by an induction on the bodies
-whose cases are few bodies, a cut edge, a body of degree one, a pendant triangle, no planar-rigid
-set and a body of degree two whose neighbours are hubs, with the lemmas that find that body in a
-minimal planar-rigid set and show that the lifts of the rest of the set are trivial; and the
-headline, the three claims together. A read at the open found their proofs sound; the recon then
-checked all eleven statements by machine, proved three of them in a draft and planned seven
-builds; builds 1 to 5 landed the few-bodies node (`lem:pencil-d-lift-small`), the
-pendant, ear and pendant-triangle nodes, the cut-edge node, the good-ear node and the node with no
-planar-rigid set, and build 6 the lemma that extends the points of the minimal planar-rigid set
-and the lemma that the rest of that set lifts only trivially, and build 7 the generic theorem and
-the headline (`Grade/Generic.lean`), so no node is red. Its
-close is Phase 42's, in four parts: the first three, the gates and the axioms on the final tree,
-the re-read and the compressions, and, at the PI's word, the headline as Phase 42's one row among
-the main results, with a witness in dimension four, landed. The targets are three
-tiers: every `d` at `def_3 ≤ 3` (proved and formalized, 42c), a `P⁴` theorem (every `d` at
-`def_3 ≤ 7`, by the sharp lemma), and every `d` (proved on paper, 42d).
+per-body flag conditions, so a theorem there implies every one of them, Katoh–Tanigawa's all-`d`
+panel theorem (KT Theorem 5.6) among them. `d = 2` (Jackson–Jordán's pin-collinear theorem) and
+`d = 3` (Phase 40) were formalized; the phase **proved the pencil realization theorem in every
+dimension `d ≥ 3` over every infinite field**, apparently new mathematics (no literature result was
+found), first on paper and then in Lean: `Graph.graded_pencil_conditioned_pair`
+(`Pencil/Grade/Generic.lean`, `cor:pencil-d-conditioned-pair`) gives every multigraph with a body a
+pencil realization at the deficiency rank in dimension `d`, an adjacent-distinct one when it is
+simple, and a generic one when it is simple and nondegeneracy-feasible, Phase 40's three conjuncts
+at `d = 3`. By stable code: **PD-RECON** (42a) found most of Phase 40's induction and Phase 39's
+reduction dimension-general, the steps that break doing so because two bodies' planes need not share
+a line in `Pᵈ`; the PI took the route, Phase 40's induction run once with `d − 2` heights and a
+lower dimension's embedding as its base row, and the attack track SHORT-CORE proved its one new
+step, the short ears with few interior bodies, by hand at `d = 4`
+(`notes/attacks/short-core/state.md`). Beside it **PD-STATE** (42b) stated pencil realizations in
+dimension `d` in the chapter `pencil-d.tex`, each body's plane as data (the PI's reading), and
+**PD-STABLE** (42c) embedded a lower dimension, so Phase 40 gives every `d` at `def_3 ≤ 3` (Tier 0,
+widened by the PI from `def_3 ≤ 1`). **PD-ALL** (42d), at the PI's word, wrote the proof at every
+`d`, all three conjuncts, as red nodes, from one central session over the research tracks CERT and
+NONDEG and the Lean of COUNT, checked by two fresh reads. Formalizing it took five layers, each
+opened at the PI's word: **PD-CARRIER** (42e) the setting and the flat rank; **PD-STEPS** (42f–42i)
+the cut-vertex, bridge, contraction, cycle and ear steps, two steps the coverage does not use cut at
+the PI's word; **PD-COVERAGE** (42j) the coverage and its distinct statement in every dimension
+(`Graph.IsX0Graph.x0AttainsGrade`, which subsumes Tier 0); **PD-REDUCTION** (42k) Phase 39's
+reduction, the headline's first two conjuncts (`Graph.graded_pencil_realization_theorem`); and
+**PD-HEAD** (42l–42m) nondegenerate realizations in every dimension, lifts of the `P³` ones, the
+generic theorem by an induction on the bodies (`hasGradedGenericPencilRealization_of_simple`) and
+the headline. All 99 nodes of `pencil-d.tex` are green, each pin at least as strong as its node,
+save that the two-body case of `lem:pencil-d-lift-small` assumes a nonempty body type, a carrier
+artifact with no body (ambient; reported to the PI as an encoding). Every Lean proof that departs
+from the chapter's is a row of the ledger in `notes/Cleanup42.md`, CLEANUP-42's input: 34 rows, 6
+aligned at the PI's word (the chapter now follows its Lean), 1 judged no departure, 27 open. At the
+PI's choice the headline is the phase's one `formalization.yaml` main result, its description naming
+the route, with a non-vacuity witness at the star `K₁,₃` in dimension four; the twenty earlier main
+results' axioms are unchanged and the new one's are the three standard ones. Of the three tiers,
+Tier 0 (42c) and Tier 2, every `d`, are formalized, which subsumes Tier 1's `P⁴` theorem. Next:
+CLEANUP-42, then ORIGAMI, each opening with the PI (*Queued post-program phases*). Detail →
+`notes/Phase42a.md` to `notes/Phase42m.md` + `notes/Phase42-design.md`.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 
@@ -1401,7 +1331,8 @@ initiative and closed 2026-09-29, proving the pencil realization theorem (§40 a
 queued five post-Phase-40 cleanup rounds ahead of ORIGAMI (2026-09-29), to run under
 autopilot, on 2026-10-07 **PROSE**'s five rounds after them, and on 2026-10-15 **RECONCILE**
 after PROSE, so **ORIGAMI opens after RECONCILE**; on 2026-10-29 the PI queued **PENCIL-D**
-ahead of ORIGAMI, and it opened the same day as Phase 42, §42 above; on 2026-10-30 the PI asked
+ahead of ORIGAMI, and it opened the same day as Phase 42 and closed 2026-11-05, §42 above; on
+2026-10-30 the PI asked
 for a cleanup after Phase 42, **CLEANUP-42**, which the coordinator proposed ahead of ORIGAMI.)
 A longer **unqueued**
 idea backlog from the same survey (KT-template subvariety questions,
@@ -1461,16 +1392,20 @@ research note of its own, `notes/Strata.md`, which holds PENCIL-D's evidence.
   restating twenty-two blueprint statements and no main result's. The phase, `RECONCILE-FORMAL`, ran
   as **Phase 41** (§41 above). The findings ledger `notes/Prose-findings.md` closed with 332
   entries, 307 `done` and 25 `left`, none `reported` (its header). **PENCIL-D**
-  opened next, as Phase 42; **CLEANUP-42** and then **ORIGAMI** follow, each opening with the PI
+  opened next, as Phase 42, and closed 2026-11-05; **CLEANUP-42** and then **ORIGAMI** follow, each
+  opening with the PI
   (CLEANUP-42's place ahead of ORIGAMI is the coordinator's proposal, below).
 - **PENCIL-D** — the pencil realization theorem in every dimension: opened 2026-10-29 with the PI
-  as Phase 42 (§42 above; plan `notes/Phase42-design.md`).
+  as Phase 42 and closed 2026-11-05, proving it in every dimension `d ≥ 3` (§42 above; plan
+  `notes/Phase42-design.md`).
 - **CLEANUP-42** — a cleanup of Phase 42's informal proofs that were difficult to formalize as
   written: the nodes of `pencil-d.tex` whose Lean proof departs from the chapter's, aligned one way
   or the other, or kept both ways. The PI asked for it on 2026-10-30 (42g); its place, right after
-  Phase 42 and ahead of ORIGAMI, is the coordinator's proposal, not yet answered. Queued, not open,
-  its rounds not yet planned; its opening recon compares every green node of `pencil-d.tex` with its
-  Lean. Plan, the PI's words and the proof-route ledger: `notes/Cleanup42.md`.
+  Phase 42 and ahead of ORIGAMI, is the coordinator's proposal, not yet answered, so its open, with
+  the PI, settles it. Queued, not open, its rounds not yet planned; its input, the proof-route
+  ledger, stands at Phase 42's close at 34 rows, 27 of them open; its opening recon compares every
+  green node of `pencil-d.tex` with its Lean. Plan, the PI's words and the ledger:
+  `notes/Cleanup42.md`.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

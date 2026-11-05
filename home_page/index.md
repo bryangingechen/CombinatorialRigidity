@@ -13,8 +13,8 @@ began with [**Laman's theorem**](https://en.wikipedia.org/wiki/Laman_graph)
 now covers Tay's body-bar theorem, the Tay–Whiteley body-hinge theorem,
 Katoh–Tanigawa's 2011 proof of the **molecular conjecture** with its
 application to molecules, and a strengthening of the molecular conjecture
-that appears to be new, the **pencil realization theorem**. The
-development carries no `sorry`s.
+that appears to be new, the **pencil realization theorem**, now proved in
+every dimension. The development carries no `sorry`s.
 
 ## The pencil realization theorem
 
@@ -43,6 +43,20 @@ a multigraph on the whole body set, and `pencilPair_of_nonempty` for every
 multigraph with at least one body. The proof is outlined
 [below](#how-the-pencil-realization-theorem-is-proved), and given in full
 in the [blueprint]({{ '/blueprint/' | relative_url }}).
+
+In projective $d$-space the hinges are $(d-2)$-flats, and the hinges at a
+body form a pencil when they lie in a hyperplane, the body's panel, and
+contain a common $(d-3)$-flat of it; at $d = 3$ this is the pencil above.
+Phase 42 (closed 2026-11-05) proved the theorem in every dimension
+$d \ge 3$: over every infinite field, every multigraph $G$ with at least
+one body has a pencil realization of rank
+$D(|V(G)| - 1) - \operatorname{def}(\tilde G)$, where $D = \binom{d+1}{2}$,
+the rank of a generic body-hinge realization of $G$. If $G$ is simple,
+adjacent bodies can be given distinct panels, and if $G$ has a
+nondegenerate pencil realization at all, it has one of that rank
+(`Graph.graded_pencil_conditioned_pair`). A pencil realization is in
+particular a panel realization, so this strengthens Katoh and Tanigawa's
+rank form of the molecular conjecture in every dimension.
 
 ## Resources
 
@@ -166,26 +180,9 @@ stated above. Phase 41 (closed 2026-10-29) ended a review of the
 blueprint against the Lean: the statements that claimed more or less
 than their Lean declarations were corrected, every main result has a
 closed witness that its hypotheses can all be met, and each claim the
-chapters made without a Lean declaration was given one. Phase 42, in
-progress, asks whether the pencil realization theorem holds in every
-dimension: in projective $d$-space the hinges at a body form a pencil when
-they contain a common $(d-3)$-flat and lie in a hyperplane. The theorem is
-formalized at $d = 2$ and $d = 3$. A paper check found most of the $d = 3$
-proof dimension-general, with one step needing new mathematics from
-dimension four; beside that research, a new blueprint chapter states
-pencil realizations in every dimension, their agreement with the
-three-dimensional ones, and the tools a proof in every dimension would
-use, all formalized. One of its sections embeds a lower dimension in a
-higher one, and so proves, in every dimension, that a simple connected
-graph of minimum degree at least two whose deficiency in the plane is at
-most three has a pencil realization at the deficiency rank. The chapter
-now also carries a proof on paper of the theorem in every dimension, its
-strongest form included. Formalizing that proof has reached the
-theorem's first two claims: in every dimension, every multigraph with at
-least one body has a pencil realization at the deficiency rank, and,
-when it is simple, one in which adjacent bodies have distinct
-hyperplanes. Its strongest form, on nondegenerate pencil realizations,
-is in progress.
+chapters made without a Lean declaration was given one. Phase 42
+(closed 2026-11-05) proved the pencil realization theorem in every
+dimension $d \ge 3$, stated above.
 
 ### How the pencil realization theorem is proved
 
@@ -210,6 +207,20 @@ member of it attains the deficiency rank, by an induction through
 cut-vertex, bridge, cycle, ear, split-off and contraction steps; this gives
 the first statement. The second does not follow this way, and is proved
 instead inside the reduction's own induction.
+
+In every dimension, phase 42 likewise formalized a proof first worked out
+on paper and independently checked. A paper check found most of the
+three-dimensional proof dimension-general, a few of its steps needing new
+arguments in higher dimensions. The proof runs the three-dimensional
+induction once with $d - 2$ heights in place of one, calling on the
+three-dimensional theorem, embedded in a higher dimension, at the graphs
+whose deficiency is the same in both. It needed one new step, at ears with
+few interior bodies, first proved by hand in dimension four. On top of the
+induction, the reduction to all multigraphs runs in every dimension, and
+the nondegenerate claim is proved by lifting nondegenerate
+three-dimensional realizations to dimension $d$. Where a formal proof
+takes a different route from the blueprint's, the difference is recorded
+for the cleanup that follows the phase.
 
 The table below and `ROADMAP.md` carry the fine-grained status.
 
@@ -244,7 +255,7 @@ The table below and `ROADMAP.md` carry the fine-grained status.
 |    39 | the pencil realization theorem: reduction to two main-component statements | `Molecular/Molecule/Pencil/` | ✓ |
 |    40 | the pencil realization theorem: the main-component proof of the two statements (and the plane case of Theorems 5.5/5.6) | `Molecular/` | ✓ |
 |    41 | each hinge at the ends of its own edge, built into the panel-hinge framework; the generic rank theorems at every graph; a Lean declaration for each claim the blueprint made without one | `Molecular/` | ✓ |
-|    42 | the pencil realization theorem in every dimension | research first; the statement in every dimension, the step up from a lower one and a proof on paper in every dimension, now being formalized, `pencil-d.tex` | in progress |
+|    42 | the pencil realization theorem in every dimension: a proof on paper, then its formalization | `Molecular/` | ✓ |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
 for the full mathematical and engineering plan,

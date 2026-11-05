@@ -120,13 +120,14 @@ attended = true
 done = true
 
 # Attended: new mathematics before its formalization. Queued by the PI on 2026-10-29, ahead of
-# ORIGAMI, and opened with the PI the same day as Phase 42; its plan is notes/Phase42-design.md.
+# ORIGAMI, and opened with the PI the same day as Phase 42, closed 2026-11-05; its plan is
+# notes/Phase42-design.md.
 [[item]]
 id = "PENCIL-D"
 title = "PENCIL-D: the pencil realization theorem in every dimension"
 note = "notes/Phase42-design.md"
 attended = true
-done = false
+done = true
 
 # Attended: the cleanup after Phase 42 the PI asked for on 2026-10-30 (42g), of the pencil-d.tex
 # proofs whose Lean departs from the chapter's. Its place ahead of ORIGAMI is the coordinator's
