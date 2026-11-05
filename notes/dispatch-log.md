@@ -239,6 +239,21 @@ from the coordinator's spike run, not a run on the landed tree (its return said
 so). The coordinator's `lake lean` on the landed names confirmed them before the
 next dispatch.
 
+**Phase 42k (PD-REDUCTION: Phase 39's reduction in every dimension) rows,
+2026-11-04: 2, written at 42k's close.** None BLOCKED, escalated or killed; six
+dispatches (open; recon, all eight nodes spiked complete at ~200k tokens; three
+builds landed by resuming the recon, F43, each clean, its context reaching ~370k;
+a fresh close). (1) The open's question to the PI put the `d = 3` cases at "about
+1,160 Lean lines", the `wc -l` of two whole files: about 250 of those lines serve
+only the generic conjunct, and it missed `X0.lean`'s nonsimple case and
+`Statement.lean`'s two-pencil lemma (about 1,310 in all). It also left out the
+theorem's infinite field, `d ≥ 3` and "at least one body". The open's check
+caught both and noted them beside the verbatim PI entry (F19). The estimate of
+4–8 builds was 3. (2) Two of the recon prompt's five API claims were false (the
+transport lemma exists only at grade 2; `exists_extensor_in_two_panels_grade`
+gives none of two-pencil (1)–(3)). The prompt had marked them as hypotheses, and
+the recon checked them (F14).
+
 ## Findings
 
 (Distill recurring lessons here — one entry per lesson, rows cite it.
