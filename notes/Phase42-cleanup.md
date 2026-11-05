@@ -7,11 +7,11 @@ from the chapter's route; its plan, the PI's words and the proof-route ledger ar
 and adds a ledger row for each departure, re-checking R-1 to R-34 at HEAD; it edits no prose,
 statement, pin or Lean. The open (task 1, docs only) sliced the nodes by layer into 14
 one-dispatch Opus recon tasks, the 47 never-checked nodes of 42b–42f first, then a planned stop
-(task 16) at which the PI picks a remedy per `open` row and plans rounds 2+. Tasks 2 to 8
-(PD-STATE, PD-STABLE, COUNT-A and COUNT-B, PD-CARRIER, 42f's and 42g's PD-STEPS) added R-35
-(`open`), R-36 to R-40 (`no departure`); task 8 found R-1 to R-6 accurate. **Next concrete task:**
-task 9, PD-STEPS (42h), the eight nodes of `sec:pencil-d-short` outside 42i's four, re-checking
-R-7 to R-12 (*Lemma checklist*). Round manual: `CLEANUP.md`.
+(task 16) at which the PI picks a remedy per `open` row and plans rounds 2+. Tasks 2 to 9
+(PD-STATE, PD-STABLE, COUNT-A and COUNT-B, PD-CARRIER, 42f's to 42h's PD-STEPS) added R-35
+(`open`), R-36 to R-42 (`no departure`); tasks 8 and 9 re-checked R-1 to R-12, correcting R-7, R-9
+and R-12 in place. **Next concrete task:** task 10, PD-STEPS (42i), the other four nodes of
+`sec:pencil-d-short`, re-checking R-13 to R-16 (*Lemma checklist*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -25,10 +25,10 @@ picks a remedy per `open` row and plans rounds 2+ (`notes/Cleanup42.md` §3). An
 
 ## Current state
 
-**Tasks 1 to 8 have landed** (task 8 this commit: one `no departure` row, R-40, the collapse
-lemma's index-level pins; R-1 to R-6 accurate at HEAD; the long ear no departure; no line under
-*Candidates* or *Moved to a later round*). The ledger has 40 rows, 28 `open`; the next row is
-R-41. Nothing is mid-stream; task 9 is next.
+**Tasks 1 to 9 have landed** (task 9 this commit: two `no departure` rows, R-41 and R-42; R-8,
+R-10 and R-11 accurate at HEAD, R-7, R-9 and R-12 corrected in place; the three fresh nodes no
+departure; no line under *Candidates* or *Moved to a later round*). The ledger has 42 rows, 28
+`open`; the next row is R-43. Nothing is mid-stream; task 10 is next.
 
 **Verified at the open** (2026-11-05, at `a3b80ac4`):
 - **The Lean baseline** is the coordinator's run this session, not repeated here: `lake build
@@ -172,11 +172,7 @@ the gate's forward weighting).
   particular" on heights vanishing off `V(G)`, R-6's restriction); `thm:pencil-d-flat-rank`'s first
   paragraph (the Lean's; its equivalence at every `n`, read at `2` and at `d`);
   `cor:pencil-d-flat-attains` and `cor:pencil-d-jj-flat` (the chapter's steps in its order). The
-  one missing edge is task 2's sweep. **For tasks 9 and 10:** the condition lemma's pins other than
-  `gradeSigma` are dead; the four nodes whose pins reach it (`lem:pencil-d-ear-data`,
-  `-planes-meet`, `thm:pencil-d-open-ear-four`, `-three`) use `σ_v` and its facts
-  (`gradeSigma_injective`, `pencilConfigPointGrade_eq_gradeSigma_iff`), not its equivalences: to
-  read against their proofs' citations of it.
+  one missing edge is task 2's sweep; a note for tasks 9 and 10 (now on task 10's line).
 - [x] **7. PD-STEPS (42f), the cut and the contraction** (`a6ea14b9`). `sec:pencil-d-cut` and
   `sec:pencil-d-contract`, 6 heavy nodes, against `Grade/Cut.lean`, `MainComponent/Cut.lean`
   (`eval_restrictPoly`) and `Grade/ContractAdditive.lean`. **No new row. No departure:**
@@ -193,7 +189,7 @@ the gate's forward weighting).
 
 **42g–42m, under the standing rule since 42g (52 nodes, 30 with a row).**
 
-- [x] **8. PD-STEPS (42g), `-long`** (this commit). `sec:pencil-d-long`, 7 heavy nodes, against
+- [x] **8. PD-STEPS (42g), `-long`** (`84e4d098`). `sec:pencil-d-long`, 7 heavy nodes, against
   `Grade/Polygon.lean` and `Grade/Chain.lean`. **New row:** R-40
   (`lem:pencil-d-polygon-collapse`'s pins at index level, no `Y` and no join, `no departure`; its
   distinctness pin dead, as independent joins need no distinct edges). **No departure:**
@@ -204,16 +200,24 @@ the gate's forward weighting).
   `⋀²g` the chapter's); R-4 (the three minors; the step and the move at `i = 0` the chapter's); R-5
   (`N = min(m, D)`, `polygonCollapse N m`); R-6 (`z` restricted to `V(G)`; the rest of the cycle
   the chapter's count, the singletons' value as a bound).
-- [ ] **9. PD-STEPS (42h), `-short-four`.** `sec:pencil-d-short` (2301–3422) less 42i's four, 8
-  heavy nodes. Re-checks R-7 and R-11 (`lem:pencil-d-two-stars`), R-8 (`-stars-four`), R-9
-  (`-kernel-curve`), R-10 (`lem:pencil-d-ear-data`), R-12 (`thm:pencil-d-open-ear-four`); fresh:
-  `lem:pencil-d-insertion`, `def:pencil-d-ear-data`, `lem:pencil-d-ear-data-open`. Reads
-  `Grade/Stars.lean`, `Grade/EarData.lean`, `Grade/Short.lean`.
+- [x] **9. PD-STEPS (42h), `-short-four`** (this commit). `sec:pencil-d-short` less 42i's four, 8
+  heavy nodes, against `Grade/Stars.lean`, `-EarData` and `-Short`. **New rows,** `no departure`:
+  R-41 (`lem:pencil-d-ear-data` (1) reads the base data at `q`, the move from `q₁` by
+  `lem:pencil-picture-local` its caller's); R-42 (the open ear's planes: `σ_v` at `z*`'s affine
+  coefficients, no span; the condition lemma's citation). **No departure:** `lem:pencil-d-insertion`
+  (its steps, the gain `lem:pencil-insertion`'s proof); `def:pencil-d-ear-data` (`σ_a` as
+  `gradeSigma`, the conditions where used); `lem:pencil-d-ear-data-open` (its steps, the minors
+  `normalsJoinPoly`). **Re-checks:** R-8 (aligned), R-10, R-11 accurate; corrected in place: R-7
+  (stars-three cites on forms since 42i), R-9 (a basis `M(y₀)u_j`, not columns of `A`), R-12 (the
+  stages in 42i's `_of_base`).
 - [ ] **10. PD-STEPS (42i), `-short-three`.** The other four nodes of `sec:pencil-d-short`, heavy,
   each with a row: re-checks R-13 (`lem:pencil-d-stars-three`), R-14
   (`thm:pencil-d-open-ear-three`), R-15 (`lem:pencil-d-planes-meet`), R-16
   (`lem:pencil-d-glued-ends`). Reads `Grade/StarsThree.lean`, `Grade/GluedEnds.lean`,
-  `Grade/PlanesMeet.lean`, `Grade/ShortThree.lean`.
+  `Grade/PlanesMeet.lean`, `Grade/ShortThree.lean`. Task 6's note: the condition lemma's pins
+  other than `gradeSigma` are dead; `-planes-meet` and the theorem reach it for `σ_v` and its facts
+  (`gradeSigma_injective`, `pencilConfigPointGrade_eq_gradeSigma_iff`), not its equivalences, so
+  their proofs' citations of it are read against those (task 9 did the four-body pair, R-42).
 - [ ] **11. PD-COVERAGE (42j).** `sec:pencil-d-chains` (2117–2299) and `sec:pencil-d-coverage`
   (3934–4139), 4 medium to heavy nodes (the coverage's proof is 131 lines). Re-checks R-17
   (`lem:pencil-d-chain-count`); fresh: `thm:pencil-d-chain-or-core`, `thm:pencil-d-coverage`,
@@ -265,14 +269,15 @@ the gate's forward weighting).
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 9, PD-STEPS (42h), `-short-four`. One Opus recon reads the eight
-heavy nodes of `sec:pencil-d-short` (lines 2301–3422) outside 42i's four against their pins in
-`Grade/Stars.lean`, `Grade/EarData.lean` and `Grade/Short.lean` under *The audit's criterion*: it
-re-checks R-7 to R-12 at HEAD (R-7 and R-8 `aligned`, by confirming that the chapter follows the
-Lean) and reads the three fresh nodes, `lem:pencil-d-insertion`, `def:pencil-d-ear-data` and
-`lem:pencil-d-ear-data-open`, with task 6's note on the condition lemma's citations, then lands one
-docs commit: any new rows in `notes/Cleanup42.md` §2 (from R-41), its **Status**, and task 9's
-line here with its verdicts and re-checks. Then tasks 10–15 in order, and the stop.
+**Next concrete task:** task 10, PD-STEPS (42i), `-short-three`. One Opus recon reads the other
+four heavy nodes of `sec:pencil-d-short` (`lem:pencil-d-stars-three`, `-glued-ends`,
+`-planes-meet`, `thm:pencil-d-open-ear-three`) against their pins in `Grade/StarsThree.lean`,
+`Grade/GluedEnds.lean`, `Grade/PlanesMeet.lean` and `Grade/ShortThree.lean` under *The audit's
+criterion*: it re-checks R-13 to R-16 at HEAD (R-13 `aligned`, by confirming that the chapter
+follows the Lean), and reads the citations of the condition lemma in `-planes-meet` and the
+theorem against task 6's note on its line, as R-42 did at four bodies, then lands one docs commit:
+any new rows in `notes/Cleanup42.md` §2 (from R-43), its **Status**, and task 10's line here with
+its re-checks. Then tasks 11–15 in order, and the stop.
 
 ## Decisions made during this round
 

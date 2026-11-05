@@ -9,10 +9,10 @@ row to §2 for each departure, with no prose or Lean edit, then a stop at which 
 remedy per `open` row and plans rounds 2+ (§3). `.claude/autopilot/queue.toml` carries it as
 `CLEANUP-42`, attended, between PENCIL-D (done) and ORIGAMI; ROADMAP *Queued post-program phases*
 lists it. Its input is the proof-route ledger (§2): 34 rows at Phase 42's close (2026-11-05), 27
-`open`, 6 `aligned`, 1 `no departure`, to which round 1 adds; after its task 8, 40 rows, 28 `open`,
-6 `aligned` and 6 `no departure` (R-35 `open`, R-36 to R-40 `no departure`; R-1 to R-6 re-checked
-accurate). **Next concrete task:** round 1's task 9, PD-STEPS (42h), `-short-four`
-(`notes/Phase42-cleanup.md` *Lemma checklist*).
+`open`, 6 `aligned`, 1 `no departure`, to which round 1 adds; after its task 9, 42 rows, 28 `open`,
+6 `aligned` and 8 `no departure` (R-35 `open`, R-36 to R-42 `no departure`; R-1 to R-12
+re-checked, R-7, R-9 and R-12 corrected in place). **Next concrete task:** round 1's task 10,
+PD-STEPS (42i), `-short-three` (`notes/Phase42-cleanup.md` *Lemma checklist*).
 
 ## 1. The PI's decisions (verbatim)
 
@@ -152,7 +152,7 @@ task in `notes/Phase42-cleanup.md`, and its re-checks of R-1 to R-34 are recorde
   *Remedies:* the prose to the Lean, taken at the PI's word (`notes/Phase42-design.md` §1,
   2026-10-31): parts (2) and (3) and the section's annihilator on forms, the `⋀^{d−1}` reading
   kept in one sentence; the `⋀^{d−1}` bridge declined. `lem:pencil-d-stars-three`'s proof cites
-  the restated parts through the pairing.
+  the restated parts, on forms since 42i (R-13).
 - **R-8** · `lem:pencil-d-stars-four` (`exists_mvPolynomial_starsFour`,
   `eq_zero_of_starsFour_firstOrder`) · **aligned, this commit** (42h).
   *Chapter (until then):* `M(y)` on `⋀^{d−3}`, `ζ ↦ y₁ ∧ y₃ ∧ ζ` modulo `ρ°` and paired with
@@ -168,9 +168,10 @@ task in `notes/Phase42-cleanup.md`, and its re-checks of R-1 to R-34 are recorde
   `exists_mulVec_add_mulVec_eq_zero`, 42h recon) · **open**.
   *Chapter:* Cramer's rule over `K(t)`: `ξ(t) = (−A(t)⁻¹B(t)ξ₀|_{C'}, ξ₀|_{C'})`, a power series,
   whose coefficient of `t` is `ξ₁`.
-  *Lean:* if no `ξ₁` exists, `M_wξ₀ ∉ range A`; `r` columns spanning `range A` with `M_wξ₀` are
-  independent at `t = 0`, hence at some `t ≠ 0`, and with `M(y₀ + tw)ξ₀ = t(M_wξ₀ + tM₂(t)ξ₀)`
-  give `M(y₀ + tw)` rank `r + 1`, against the generic rank. The generic minor is the same.
+  *Lean:* if no `ξ₁` exists, `M_wξ₀ ∉ range M(y₀)`. With `M(y₀)u_j` a basis of that range, of
+  dimension `r`, the family `M(y₀ + tw)u_j`, `M_wξ₀ + tM₂(t)ξ₀` is independent at `t = 0`, hence
+  at some `t ≠ 0`, and lies in the range of `M(y₀ + tw)`, which sends `t⁻¹ξ₀` to its last member;
+  so `M(y₀ + tw)` has rank `r + 1`, against the generic rank. The generic minor is the same.
   *Remedies:* the prose to the Lean (no power series), or keep both.
 - **R-10** · `lem:pencil-d-ear-data`, part (3) (`exists_mvPolynomial_earDataGrade_of_smul`, 42h
   recon) · **open**.
@@ -195,7 +196,9 @@ task in `notes/Phase42-cleanup.md`, and its re-checks of R-1 to R-34 are recorde
   *Chapter:* the ear datum is chosen twice (for `G″`, then for `G` after `x₂` is put back), the
   stars-four condition is shown at a general point by the third condition on the ear data, and the
   insertion is applied to the joins of the ear.
-  *Lean:* `Graph.X0AttainsGrade.of_openEar_splitOff` takes the put-back as a hypothesis `hins`;
+  *Lean:* `Graph.X0AttainsGrade.of_openEar_splitOff` (since 42i the corollary, at `Pq = Rz = 1`,
+  of `Graph.X0AttainsGrade.of_openEar_splitOff_of_base`, which carries the two stages) takes the
+  put-back as a hypothesis `hins`;
   `hins` is discharged by stars-four (as the condition `C`, with `pa`, `pb` the base points), then
   `exists_mvPolynomial_earDataGrade_of_smul` (its `hC` is `starsCond_of_smul`, the condition's
   scale invariance), then `exists_insertion_of_starGrade_sup` at `R = ρ ⊔` the joins of `G″` but the
@@ -630,6 +633,32 @@ task in `notes/Phase42-cleanup.md`, and its re-checks of R-1 to R-34 are recorde
   independent joins at a family of edges bound the span of its hinges whether or not an edge repeats
   (`card_le_finrank_of_linearIndependent_normalsJoin`, `Grade/Chain.lean`), and the ear's proof says
   "distinct" without its count using it.
+
+- **R-41** · `lem:pencil-d-ear-data`, part (1), the picture of the base data
+  (`Graph.earHeightGrade_mem_liftingSpaceGrade`, `Grade/EarData.lean`, round 1 task 9) · **no
+  departure**: the pin takes the base heights in `L_{G[V₁]}(q)^{d−2}` and the planes `la`, `lb` at
+  the admissible picture `q` it is applied at, where the definition fixes them at `q₁`. The move
+  from `q₁` to `q(s)`, equal on `V₁`, for which the proof cites `lem:pencil-picture-local`, is made
+  where the base data are built, for every ear datum (`Graph.liftingSpace_congr` in
+  `Graph.exists_earBase_splitOff_grade`, `Grade/Short.lean`, which `thm:pencil-d-open-ear-four`'s
+  pin reaches): the pin's hypotheses there are that lemma's conclusion, which is why
+  `scripts/blueprint-deps.py` calls the edge to it *unbacked*. The `d = 3` pin
+  (`Graph.earHeight_mem_liftingSpace`) has the same shape. The rest is the proof's: the `d = 3`
+  lemma height by height, the plane of height `i` the coefficients `la i` of `σ_a`.
+
+- **R-42** · `thm:pencil-d-open-ear-four`, the planes of its base data
+  (`Graph.exists_earBase_splitOff_grade`, `Grade/Short.lean`, round 1 task 9) · **no departure**:
+  the chapter takes `σ_a`, `σ_b` "whose images `Π_a` and `Π_b` are spanned by the points of
+  `(q*, z*)` at the closed neighbourhoods of `a` and `b` in `G″`", citing
+  `lem:pencil-d-condition-linear`. The Lean takes for `σ_a` that lemma's `σ_v` (`gradeSigma la`) at
+  the coefficients `la` of the affine functions `z*` agrees with on that neighbourhood, read off
+  `z* ∈ L_{G″}(q*)^{d−2}` (`def:pencil-lifting-space`), and never forms the span
+  (`Graph.IsAdmissiblePicture.span_pencilConfigPointGrade_closedNbhd_eq_range` is not called). What
+  the next sentence uses, that the points there are `σ_a(q*(w), 1)`, so that `(q*, z*)` is the
+  configuration of one ear datum, is those affine functions read through `σ_v`; the span is the
+  chapter's description of the plane (as before `def:pencil-d-ear-data`), true by the lemma's
+  second sentence. The pin reaches the lemma for `σ_v` and its injectivity alone (`Π_a ≠ 0`, for
+  stars-four's polynomial).
 
 ## 3. The cleanup's rounds
 
