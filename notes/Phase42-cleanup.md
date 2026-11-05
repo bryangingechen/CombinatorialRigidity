@@ -8,9 +8,10 @@ chapter's 99 green nodes with its pinned Lean in 14 Opus recon slices (tasks 2�
 ledger row for each departure, re-checking R-1 to R-34 at HEAD, with no prose, statement, pin or
 Lean edit. The ledger now has 54 rows: 34 `open`, 6 `aligned`, 14 `no departure`. Task 16, the stop,
 grouped the open rows by family (`notes/Cleanup42.md` §3 *Round 1's stop*) and asked the PI for a
-remedy per open row and the plan of rounds 2+ (*Autopilot: for the PI*). **Next concrete task:**
-none in this round; the PI's answer plans rounds 2+ (`notes/Cleanup42.md` §3). Round manual:
-`CLEANUP.md`.
+remedy per open row and the plan of rounds 2+ (*Autopilot: for the PI*); the PI answered the same
+day (`notes/Cleanup42.md` §1). **Next concrete task:** none in this round; the next is
+`notes/Cleanup42.md`'s **Status** (the B/C judgment recon, then a second short stop, then round 2).
+Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -21,6 +22,11 @@ here with the ledger's tally and a pointer to the `open` rows by family, each wi
 (`notes/Cleanup42.md` §3 *Round 1's stop*); the PI picks a remedy per `open` row and plans rounds
 2+. An unplanned `NEEDS_PI` entry also goes here, newest first, and the PI answers in an entry that
 starts `**PI, <date>:**`.
+
+**PI, 2026-11-05:** answered the stop below; the questions and the chosen options with their
+descriptions are verbatim in `notes/Cleanup42.md` §1 (*round 1's stop, the remedies and rounds
+2+*). The options chosen: "A: L; B/C judged per row"; "Reopen none (Recommended)"; "The proposal
+as written (Recommended)".
 
 ### 2026-11-05 — `NEEDS_PI`: round 1's stop, a remedy per open row and rounds 2+ (planned stop)
 
@@ -262,8 +268,10 @@ or *Moved* line. The reasons stay in the landing commit's message and in the led
 - **The four *Moved* lines** and §3's three *Also left to it* items, already in
   `notes/Cleanup42.md` §3, for rounds 2+.
 
-**Next concrete task:** none in round 1. After the PI answers, the coordinator records the answer
-and opens round 2 as the PI plans it.
+**The PI answered on 2026-11-05** (`notes/Cleanup42.md` §1): family A to the Lean, R-46 kept;
+families B and C judged per row by one Opus recon, then a short second stop; no close call
+reopened; rounds 2+ as proposed. **Next concrete task:** none in round 1; the B/C judgment recon,
+per `notes/Cleanup42.md`'s **Status** and §3.
 
 ## Decisions made during this round
 

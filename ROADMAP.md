@@ -182,7 +182,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Toolchain bump to Lean v4.36.0-rc1 (maintenance, cross-phase) | `lean-toolchain`, `lake-manifest.json`, `lakefile.toml` (+ renames, imports and one-line fixes in 39 Lean files) | ✓ Complete — v4.34.0-rc2 → v4.36.0-rc1, mathlib → `930ae14`, `Matroid` → `8ece630`; every gate green, all 19 main results' axioms unchanged; pushed 2026-10-25, CI green at `4c892cb6` (see `notes/Bump-v4.36.0-rc1.md`; record `notes/ToolchainBumps.md`) |
 | 41. The panel-hinge carrier and its graph (post-program) — RECONCILE-FORMAL | `Molecular/` (structural edit; sub-lettered, 41a–41e) | ✓ Complete — each hinge at its own edge's ends, and the RECONCILE program closed (see `notes/Phase41e.md`; plan `notes/Phase41-design.md`) |
 | 42. The pencil realization theorem in every dimension (post-program) — PENCIL-D | research first, then `Molecular/`, `pencil-d.tex` (sub-lettered, 42a–42m) | ✓ Complete — the pencil realization theorem in every dimension, over every infinite field (see `notes/Phase42m.md`; plan `notes/Phase42-design.md`) |
-| ⋮ Cleanup round (CLEANUP-42, round 1: the route audit) | `pencil-d.tex`'s 99 green nodes against their Lean (docs only: rows of the proof-route ledger) | ✓ Complete — every node audited, 54 ledger rows, 34 open, the Lean unchanged; the PI's remedies pending (see `notes/Phase42-cleanup.md`; plan `notes/Cleanup42.md`; round manual: `CLEANUP.md`) |
+| ⋮ Cleanup round (CLEANUP-42, round 1: the route audit) | `pencil-d.tex`'s 99 green nodes against their Lean (docs only: rows of the proof-route ledger) | ✓ Complete — every node audited, 54 ledger rows, 34 open, the Lean unchanged; the PI's remedies given (see `notes/Phase42-cleanup.md`; plan `notes/Cleanup42.md`; round manual: `CLEANUP.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1407,8 +1407,9 @@ research note of its own, `notes/Strata.md`, which holds PENCIL-D's evidence.
   2026-11-05 (`notes/Phase42-cleanup.md`): one Opus recon per slice of `pencil-d.tex`'s 99 green
   nodes, by layer and 42b–42f first, compared each node with its Lean and added ledger rows only,
   with no prose or Lean edit, for 54 rows, 34 of them open; it closed at its planned stop. Plan,
-  the PI's words and the ledger: `notes/Cleanup42.md`. **Next:** the PI's answer at round 1's stop
-  (the work log's *Autopilot: for the PI*), which picks a remedy per open row and plans rounds 2+.
+  the PI's words and the ledger: `notes/Cleanup42.md`. The PI answered the stop the same day
+  (family A to the Lean, families B and C judged per row first, rounds 2+ as proposed). **Next:**
+  `notes/Cleanup42.md`'s **Status**.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

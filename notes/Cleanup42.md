@@ -13,9 +13,11 @@ rows at Phase 42's close (2026-11-05), 27 `open`, 6 `aligned`, 1 `no departure`,
 added; at its close, 54 rows, 34 `open`, 6 `aligned` and 14 `no departure` (R-35, R-46, R-48 to R-51
 and R-53 `open`, R-36 to R-45, R-47, R-52 and R-54 `no departure`; R-1 to R-34 re-checked, R-7, R-9,
 R-12, R-15 to R-17, R-24 to R-27, R-31, R-32 and round 1's R-50 corrected in place). The open rows
-by family: §3 *Round 1's stop*. **Next concrete task:** the PI's answer at round 1's stop
-(`notes/Phase42-cleanup.md` *Autopilot: for the PI*), which picks a remedy per `open` row and plans
-rounds 2+ (§3).
+by family: §3 *Round 1's stop*. The PI answered the stop on 2026-11-05 (§1): family A to the Lean
+(R-46 kept), families B and C judged per row first, no close call reopened, rounds 2+ as proposed.
+**Next concrete task:** the B/C judgment recon, one Opus recon proposing L, K or H for each of the
+22 B/C rows of §3 *Round 1's stop*, then a short second stop for the PI's approval; round 2 opens
+after it (§3).
 
 ## 1. The PI's decisions (verbatim)
 
@@ -84,6 +86,44 @@ What follows from it:
   chapter's nodes per dispatch, by layer, 42b–42f first; each adds rows to §2 and re-checks the
   rows on its nodes, and edits no prose, statement, pin or Lean.
 - **Then the planned stop:** the PI picks a remedy per `open` row and plans rounds 2+ (§3).
+
+### 2026-11-05: round 1's stop, the remedies and rounds 2+
+
+From the coordinator's relay of round 1's `NEEDS_PI` entry (`notes/Phase42-cleanup.md` *Autopilot:
+for the PI*): each question, then the option the PI chose with its description.
+
+**PI, 2026-11-05:** (verbatim)
+- Q: "CLEANUP-42's audit left 34 open rows where the Lean departs from pencil-d.tex. Family A (12
+  rows): the pin drops a hypothesis the node states, such as G simple, K infinite or a nonzero
+  normal. Families B and C (22 rows): the Lean proves a step by another argument, or skips, adds or
+  reorders steps. The remedies are L (restate the chapter to the Lean), H (a Lean helper so the
+  Lean follows the chapter; offered for R-3, R-4, R-11, R-18 and R-19) and K (keep both). Which
+  remedies should round 2 apply?" — A: "A: L; B/C judged per row" — "Restate the 12 family-A
+  statements to their pins; R-46 is kept, as its recon recommends. Before round 2, one Opus recon
+  judges each of the 22 B/C rows (which route reads better) and proposes L, K or H per row, for you
+  to approve at a short second stop."
+- Q: "Four 'no departure' rows are close calls where the Lean drops a hypothesis judged vacuous,
+  recovered from the others, or part of the setting. R-36: no `r ∈ W`. R-38: no separate case
+  `Z = V(G)`. R-44: no `ℓ ≥ 1`, vacuous at `ℓ = 0`. R-54: the generic theorem reads less where its
+  case pins drop hypotheses. Reopen any of them as open rows?" — A: "Reopen none (Recommended)" —
+  "Leave all four as recorded. They are encodings or vacuous drops, with nothing to align."
+- Q: "How should the rounds after the audit run? The proposal: round 2 brings the chapter to the
+  Lean (blueprint and notes only, about 11 tasks, including the two prose slips and the 60 missing
+  \uses edges). Round 3 is Lean helpers, only if a row goes H (1–6 tasks). Round 4 is the 'also
+  left' items, Lean, about 5–7 tasks: the Theorem S fold, the d = 3 reduction fold, and non-vacuity
+  witnesses at K₂ and K_{2,3}." — A: "The proposal as written (Recommended)" — "Prose round first,
+  then helpers if any, then the folds and witnesses last, since they reverse imports and move d = 3
+  pins."
+
+What follows from it:
+
+- **Family A** (§3 *Round 1's stop*): each statement restated to its pin (L), except R-46, kept
+  (K) as its recon leans.
+- **Families B and C** (22 rows): one Opus recon proposes L, K or H per row, with which route reads
+  better; a short second stop, at which the PI approves or amends, precedes round 2.
+- **No close call reopened:** R-36, R-38, R-44 and R-54 stay `no departure`.
+- **Rounds 2+ as proposed** (§3): round 2 the chapter to the Lean (no Lean), round 3 Lean helpers if
+  any row goes H, round 4 the *Also left to it* items.
 
 ## 2. The proof-route ledger
 
@@ -913,9 +953,18 @@ task in `notes/Phase42-cleanup.md`, and its re-checks of R-1 to R-34 are recorde
   and corrected 13 rows in place. It closed at its planned stop, which grouped the 34 `open` rows
   by family (below, *Round 1's stop*) and asks the PI for a remedy per row and the plan of rounds
   2+ (`notes/Phase42-cleanup.md` *Autopilot: for the PI*).
-- **Rounds 2+** (planned with the PI at round 1's stop): the remedies the PI picks and the three
-  items *Also left to it* below. Round 1's *Candidates for the PI* and *Moved to a later round*
-  lines are mirrored here as they land:
+- **Between rounds 1 and 2: the B/C judgment** (the PI, 2026-11-05, §1). One Opus recon reads
+  each of the 22 rows of families B and C (*Round 1's stop*, below) against the chapter and the
+  Lean and proposes L, K or H with a one-line reason (which route reads better), in one docs commit
+  (a per-row table in this section, after *Round 1's stop*; read-only otherwise, no row's status
+  changed); a short second stop, at which the coordinator relays the proposals and the PI approves
+  or amends, then round 2 opens with its own work log.
+- **Rounds 2+** (planned with the PI at round 1's stop, §1: the proposal as written): round 2, the
+  chapter to the Lean (blueprint and notes, no Lean; family A's L rows, the B/C rows the PI sends
+  L, a remark for each K row, the *Moved* lines below and the `\uses` sweep; about 11 tasks);
+  round 3, Lean helpers, only if a row goes H; round 4, the three items *Also left to it* below.
+  Round 1's *Candidates for the PI* and *Moved to a later round* lines are mirrored here as they
+  land:
   - *Moved to a later round* (round 1 task 2): `lem:pencil-d-point-configuration`'s statement reads
     the closed neighbourhood (`Graph.closedNbhd`, pinned by `def:pencil-nondegenerate` in
     `pencil.tex`) with no `\uses` edge to it, which `scripts/blueprint-deps.py` reports *missing*.
