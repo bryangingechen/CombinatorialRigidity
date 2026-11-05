@@ -805,7 +805,8 @@ realizations and the headline. The Lean proofs that depart from the chapter's ar
 `notes/Cleanup42.md`. Summary: ROADMAP §42. **CLEANUP-42** (the `pencil-d.tex` proofs
 against their Lean, `notes/Cleanup42.md`) opened 2026-11-05 at the PI's word, ahead of ORIGAMI; its
 round 1, the route audit, closed the same day at a stop for the PI, who gave every open row its
-remedy; round 2, the chapter to the Lean (`notes/Phase42-align.md`), opened then. Still queued,
+remedy; round 2, the chapter to the Lean (`notes/Phase42-align.md`), opened and closed then; round 4 is
+next, with the PI. Still queued,
 codenamed:
 **ORIGAMI** (the planar-blocks / molecular-origami
 conjecture, `notes/Origami.md`, with the PI), **PIN** (a second,

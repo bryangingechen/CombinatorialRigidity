@@ -1,7 +1,7 @@
 # The post-Phase-42 cleanup (planning note)
 
 **Status:** open (2026-11-05, at the PI's word, §1), ahead of ORIGAMI; round 2, the chapter to the
-Lean, in progress (`notes/Phase42-align.md`). On 2026-10-30, during 42g, the PI asked for a cleanup
+Lean, closed 2026-11-05 (`notes/Phase42-align.md`). On 2026-10-30, during 42g, the PI asked for a cleanup
 phase after Phase 42 to address the informal proofs of `blueprint/src/chapter/pencil-d.tex` that
 were difficult to formalize as written (§1); on 2026-11-05 the PI opened it ahead of ORIGAMI.
 `.claude/autopilot/queue.toml` carries it as `CLEANUP-42`, attended, between PENCIL-D (done) and
@@ -11,10 +11,10 @@ closed 2026-11-05 at its planned stop): 34 `open`, 6 `aligned`, 14 `no departure
 every open row its remedy the same day, at round 1's stop and at a second stop on the B/C judgment
 (§1; §3 *Round 1's stop*, *The B/C judgment*): 17 rows go `aligned` (every part to the Lean) and 17
 `kept` (a part keeps both routes, with a formalization note); no row goes H, so round 3 is empty.
-Round 2, opened 2026-11-05, applies them to the chapter in eight slices by layer, then one `\uses`
-sweep (blueprint and notes, no Lean); each slice sets its rows' status, and the tally here. The
-ledger now: none `open`, 23 `aligned`, 17 `kept`, 14 `no departure`. **Next concrete task:**
-round 2's next open task (`notes/Phase42-align.md`'s **Status**); after round 2, round 4 (§3).
+Round 2, opened and closed 2026-11-05, applied them to the chapter in eight slices by layer, then
+one `\uses` sweep (blueprint and notes, no Lean); each slice set its rows' status, and the tally
+here. The ledger now: none `open`, 23 `aligned`, 17 `kept`, 14 `no departure`. **Next concrete
+task:** round 4's open, with the PI (§3); round 3 is empty.
 
 ## 1. The PI's decisions (verbatim)
 
@@ -193,8 +193,8 @@ naming the Lean's route after the node's proof; or `no departure` for a row rais
 carrier encoding of the chapter's own object, kept as a short row so that the cleanup's recon does
 not raise it again. A row is `aligned` only when every part of it went to the Lean; a row with any
 part kept is `kept`, its *Remedies* naming each part's remedy (R-15, R-28 and R-29 restate a
-statement and keep an argument). Round 2 writes `round 2 task <N>` for the commit, and its close
-replaces it with the sha (`notes/Phase42-align.md` *Scope and standing rules*). *Remedies* are the
+statement and keep an argument). Round 2 wrote `round 2 task <N>` for the commit, and its close
+replaced each by the sha (`notes/Phase42-align.md` *Scope and standing rules*). *Remedies* are the
 options: the prose to the Lean, a Lean helper so that the Lean can follow the chapter, or keep both
 routes, each valid. The cleanup chose one per `open` row, with the PI (§1, §3). Round 1's rows (from
 R-35) name their task in `notes/Phase42-cleanup.md`, and its re-checks of R-1 to R-34 are recorded
@@ -220,7 +220,7 @@ there.
   iff `J_i + t w ∉ A` (`w = u ∨ Y_{i+1}`); `J_i ∉ A`, so that line meets `A` once at most.
   *Remedies:* the prose to the Lean, taken.
 - **R-3** · `lem:pencil-d-polygon-normal`, part (2) (`exists_linearEquiv_polygon_normal`) ·
-  **kept, round 2 task 2**.
+  **kept, `5948b04c`**.
   *Chapter:* the explicit affine map `g(x̄, ω) = (M(x̄ − ω ȳ_i), ω)`, `M` sending a basis that
   extends `ȳ_{i−1} − ȳ_i`, `ȳ_{i+1} − ȳ_i` to the standard basis of `K^d`.
   *Lean:* extend the basis map `Y_{i−1}, Y_i, Y_{i+1} ↦ P_1, P_0, P_2` of part (1) to an
@@ -231,7 +231,7 @@ there.
   Keep both, taken: a formalization note after the proof names the Lean's route (the PI,
   2026-11-05).
 - **R-4** · `lem:pencil-d-polygons`, the base triangle (`linearIndependent_join_triangle`) ·
-  **kept, round 2 task 2**.
+  **kept, `5948b04c`**.
   *Chapter:* `P_0, …, P_d` is a basis of `K^{d+1}`, so the `P_α ∨ P_β` (`α < β`) form a basis of
   `⋀²`, of which the triangle's three joins are three, up to sign.
   *Lean:* three 2 × 2-minor functionals, on the coordinate pairs first–second, first–last and
@@ -241,7 +241,7 @@ there.
   the chapter; or the prose to the minors, which the star's proof now uses (R-1). Keep both, taken:
   a formalization note after the proof names the Lean's route (the PI, 2026-11-05).
 - **R-5** · `thm:pencil-d-cycle`, the placement (`Graph.X0AttainsGrade.of_cycle`,
-  `Pencil/Grade/Chain.lean`) · **kept, round 2 task 2**.
+  `Pencil/Grade/Chain.lean`) · **kept, `5948b04c`**.
   *Chapter:* two cases, CERT S6 (C1) and S7 (a): for `m ≤ D` the bodies at the vertices of a closed
   `m`-gon (`lem:pencil-d-polygons`); for `m > D` on a closed `D`-gon by part (1) of
   `lem:pencil-d-polygon-collapse`.
@@ -276,7 +276,7 @@ there.
   2026-10-31); its `\uses` are now two-stars, the kernel curve and
   `lem:pencil-x0-fibre-intersection`, what the Lean calls.
 - **R-9** · `lem:pencil-d-kernel-curve` (`exists_mvPolynomial_kernel_curve`,
-  `exists_mulVec_add_mulVec_eq_zero`, 42h recon) · **aligned, round 2 task 3**.
+  `exists_mulVec_add_mulVec_eq_zero`, 42h recon) · **aligned, `c3f237fe`**.
   *Chapter (until then):* Cramer's rule over `K(t)`: `ξ(t) = (−A(t)⁻¹B(t)ξ₀|_{C'}, ξ₀|_{C'})`, a
   power series, whose coefficient of `t` is `ξ₁`.
   *Lean:* if no `ξ₁` exists, `M_wξ₀ ∉ range M(y₀)`. With `M(y₀)u_j` a basis of that range, of
@@ -286,7 +286,7 @@ there.
   *Remedies:* the prose to the Lean (no power series), or keep both. The prose to the Lean, taken
   (the PI, 2026-11-05).
 - **R-10** · `lem:pencil-d-ear-data`, part (3) (`exists_mvPolynomial_earDataGrade_of_smul`, 42h
-  recon) · **kept, round 2 task 3**.
+  recon) · **kept, `c3f237fe`**.
   *Chapter:* a nonzero multihomogeneous component `f_α`; `g(s) = f_α(y(s))`, and at `g(s) ≠ 0` the
   polynomial `λ ↦ f((λ_x y_x)_x)` has coefficient `f_α(y) ≠ 0` at `λ^α`.
   *Lean:* `h(λ, s) = f((λ_x y_x(s))_x)` is nonzero (a point of the planes with nonzero last
@@ -295,7 +295,7 @@ there.
   *Remedies:* the prose to the Lean, or keep both (a toss-up). Keep both, taken: a formalization
   note after the proof names the Lean's route (the PI, 2026-11-05).
 - **R-11** · `lem:pencil-d-two-stars`, part (1) (`starGrade_sup_starGrade_eq_ker`,
-  `finrank_starGrade_sup_starGrade`, 42h build) · **kept, round 2 task 3**.
+  `finrank_starGrade_sup_starGrade`, 42h build) · **kept, `c3f237fe`**.
   *Chapter:* `e₁ = y`, `e₂ = y'` extended to a basis; the sum of the stars is spanned by the
   `e_i ∧ e_j` with `i ≤ 2`, and the `e_i ∧ e_j` with `3 ≤ i < j` go to a basis of `⋀²Q`.
   *Lean:* a linear section `s` of the quotient map, `P = s ∘ mkQ`:
@@ -306,7 +306,7 @@ there.
   prose to the Lean. Keep both, taken: a formalization note after the proof names the Lean's route
   (the PI, 2026-11-05).
 - **R-12** · `thm:pencil-d-open-ear-four` (`Graph.X0AttainsGrade.of_openEar_four`, 42h build) ·
-  **kept, round 2 task 3**.
+  **kept, `c3f237fe`**.
   *Chapter:* the ear datum is chosen twice (for `G″`, then for `G` after `x₂` is put back), the
   stars-four condition is shown at a general point by the third condition on the ear data, and the
   insertion is applied to the joins of the ear.
@@ -333,7 +333,7 @@ there.
   stage no longer takes its picture off the first coordinate of `q_a − q_b`.
 - **R-14** · `thm:pencil-d-open-ear-three` (`Graph.X0AttainsGrade.of_openEar_three`,
   `Grade/ShortThree.lean`, on `Graph.X0AttainsGrade.of_openEar_splitOff_of_base`, 42i) ·
-  **aligned, round 2 task 4**.
+  **aligned, `8bffb361`**.
   *Chapter (until then):* the proof of `thm:pencil-d-open-ear-four` with the first stage and the
   third condition changed. A span with both stars, not everything, gives `dim ρ ≥ 2d − 4`. Then
   `a`, `b` lie in one component (else `ρ` is everything), and a path joins them
@@ -352,7 +352,7 @@ there.
   prose to the Lean, taken (the PI, 2026-11-05): the common member at `r ≤ 2`; the variant stays
   R-12's factoring, named by `thm:pencil-d-open-ear-four`'s formalization note.
 - **R-15** · `lem:pencil-d-planes-meet` (`Graph.exists_mvPolynomial_planesMeet`, 42i, landed) ·
-  **kept, round 2 task 4**.
+  **kept, `8bffb361`**.
   *Chapter:* the functionals `λ^i_v`, the inverse of the lifting-planes isomorphism, linear in
   `z`. `Π_a ∩ Π_b` is `σ_a` of the common kernel of the rows of `L(z)`. `R` is a nonzero minor of
   `L(z)`, whose entries are linear in `z`.
@@ -370,7 +370,7 @@ there.
   `K` infinite), taken; for the argument, keep both, taken: a formalization note after the proof
   names the Lean's route (the PI, 2026-11-05).
 - **R-16** · `lem:pencil-d-glued-ends` (`Graph.exists_mvPolynomial_gluedEnds`,
-  `Grade/GluedEnds.lean`, 42i, landed) · **kept, round 2 task 4**.
+  `Grade/GluedEnds.lean`, 42i, landed) · **kept, `8bffb361`**.
   *Chapter:* `m = def₂(G; a, b)`, the merged deficiency, equal to `def₂(G')` by the partitions of
   `G'`; `g` a nonzero minor of `Z⁰(q)`'s matrix at the glued picture times the first coordinates
   of `q_u − q_v` over the edges, so that `dim Z⁰(q) = 3 + m`; a part `X` of value `m` refined into
@@ -393,7 +393,7 @@ there.
   `def:deficiency-merged`). Keep both, taken: a formalization note after the proof names the Lean's
   route (the PI, 2026-11-05).
 - **R-17** · `lem:pencil-d-chain-count` (`Graph.IsChain.partitionDef_induce_le`,
-  `Grade/Chains.lean`, 42j, landed) · **kept, round 2 task 4**.
+  `Grade/Chains.lean`, 42j, landed) · **kept, `8bffb361`**.
   *Chapter:* the segments (the chains and the edges joining two branch bodies) partition `E(G)`,
   each body of degree two interior to exactly one, so `|E(G)| = Σ L_j` and
   `|V(G)| = |B| + Σ (L_j − 1)`; the branch bodies' degrees sum to `2e`, so `3|B| ≤ 2e`; then
@@ -413,7 +413,7 @@ there.
   after the proof names the Lean's route (the PI, 2026-11-05).
 - **R-18** · `lem:pencil-d-base-case` (`hasGradedPencilRealization_of_ncard_le_two`,
   `finrank_span_rigidityRows_of_single_edge`, `Grade/Arms.lean`, 42k build 2, landed) ·
-  **kept, round 2 task 5**.
+  **kept, `3bf9d220`**.
   *Chapter:* the ranks are read off the motions, `D|U| − dim Z`: with one edge the motions are the
   `S` with `S(u) − S(v) ∈ K C₁`, so the rank is `D − 1`; with `m ≥ 2` edges the partition into
   singletons has value `D − (D − 1)m < 0`, so `def_d = 0`.
@@ -427,7 +427,7 @@ there.
   `D − 1`) so that the Lean follows the chapter, or keep both. Keep both, taken: a formalization
   note after the proof names the Lean's route (the PI, 2026-11-05).
 - **R-19** · `lem:pencil-d-nonsimple-case` (`hasGradedPencilRealization_of_not_simple`,
-  `Grade/Reduction.lean`, 42k build 3, landed) · **aligned, round 2 task 5**.
+  `Grade/Reduction.lean`, 42k build 3, landed) · **aligned, `3bf9d220`**.
   *Chapter (until then):* every edge joining `u` and `w` other than `e` gets `C_{B₂}`; the motions
   of `G` are those of `G/H` with `S(w) = S(u)`, of codimension `D` in them, so the rank is that of
   `G/H` plus `D`. Its closing remark cites the block-triangular count (KT eqs. (6.3)–(6.5),
@@ -444,7 +444,7 @@ there.
   the closing remark says the count of KT eqs. (6.3)–(6.5) holds at every `D`.
 - **R-20** · `lem:pencil-d-nondegenerate-feasible` (`gradedPencilNondegFeasible_iff`, `exists_rowsMap_two`, `exists_rowsMap_three`,
   `exists_injOn_finrank_iInf_map_le`; `Grade/Feasible.lean`, 42l build 2) ·
-  **aligned, round 2 task 6**.
+  **aligned, `cba4806c`**.
   *Chapter (until then):* for (b) at one body `v` and one set `S`, pass to `W = K^(d+1)/K b_v` and
   `A_w = Π_w/K b_v`, and find `π̄ : W → K³` by induction on `dim Σ A_w`, a quotient by `c` at each
   step, `c` off finitely many proper subspaces and at most one quadric (the case
@@ -464,7 +464,7 @@ there.
   above the node names S9's route.
 - **R-21** · `lem:pencil-d-lift-one-witness` (`liftAttains_of_least`,
   `liftAttains_of_holdsGenerally`; `Grade/LiftWitness.lean`, 42l build 4) ·
-  **aligned, round 2 task 6**.
+  **aligned, `cba4806c`**.
   *Chapter (until then):* (1) a basis `k_j(b⁰)` of `L̃(b⁰)` by Cramer's rule on a nonzero minor
   `M` of size `c − N`, the lifts by `Σ γ^i_j k_j`, `P(b⁰, γ)` a minor of size `t`, `Q₀ = M · P_α`
   for a coefficient `P_α` of `P` in `γ`. (2) the least `dim L̃` holds where `A(b⁰(s))` has the
@@ -502,7 +502,7 @@ there.
   `lem:pencil-d-ear-extend`'s proof (green) reads "the first three ..., those at the places left
   empty" to match.
 - **R-23** · `lem:pencil-d-lift-transfer` (`lift_transfer`, `Grade/LiftWitness.lean`, 42l build 4)
-  · **kept, round 2 task 6**.
+  · **kept, `cba4806c`**.
   *Chapter:* the maps `ζ ∈ L(b⁰|_(V′))^m` whose lift has rank `tgt_d(H)` form a nonempty
   Zariski-open set; by (T2) the restriction `𝓛(r⁰)^m → L(b⁰|_(V′))^m` is onto, and the preimage of a
   nonempty Zariski-open set under an onto linear map is nonempty and Zariski-open.
@@ -515,7 +515,7 @@ there.
 - **R-24** · the cases' (T1), `lem:pencil-d-lift-pendant` and `lem:pencil-d-lift-ear` (and the
   pendant triangle on their template) (`exists_minorPoly`, `liftAttains_of_pendant`,
   `liftAttains_of_ear`, `liftAttains_of_pendantTriangle`; 42m's recon spike, landed in
-  `Grade/LiftCases.lean` at 42m build 2) · **aligned, round 2 task 8**.
+  `Grade/LiftCases.lean` at 42m build 2) · **aligned, `6c082081`**.
   *Chapter (until then):* `E` is a product of minors, one for each condition of nondegeneracy of
   `G` that reads only bodies of `H` and is not a condition of `H`, nonzero at `r|_H`.
   *Lean (the recon's spike):* `E` is the product of one minor per closed hub-neighbourhood in `G`
@@ -529,7 +529,7 @@ there.
   independent; at the ear, times one of the two products; each (T1) then reads the third condition
   of `G` off `E(r_H) ≠ 0`, the removed bodies' vectors entering none.
 - **R-25** · `lem:pencil-d-lift-pendant`, (T1) (`pendant_T1`; 42m's recon spike, landed in
-  `Grade/LiftCases.lean` at 42m build 2) · **aligned, round 2 task 8**.
+  `Grade/LiftCases.lean` at 42m build 2) · **aligned, `6c082081`**.
   *Chapter (until then):* two cases, `u` with at least two neighbours in `H` (a hub of `G`: `b⁰_v` in `Π⁰_u` off
   `K b⁰_u`) or with one neighbour `w` (replace `Π⁰_u` by the span of `b⁰_u, b⁰_v, b⁰_w`); the
   statement asks that `u` have another neighbour.
@@ -545,7 +545,7 @@ there.
   `b⁰_v`), the second case covering `u` alone in `H`; `thm:pencil-d-generic`'s derived clause cut
   (R-54).
 - **R-26** · `lem:pencil-d-lift-pendant` and `lem:pencil-d-lift-ear`, (T2) (`pendant_T2`, `ear_T2`;
-  42m's recon spike, landed in `Grade/LiftCases.lean` at 42m build 2) · **aligned, round 2 task 8**.
+  42m's recon spike, landed in `Grade/LiftCases.lean` at 42m build 2) · **aligned, `6c082081`**.
   *Chapter (until then):* (T2) extends a lift `(ζ, φ)` of `r⁰|_H`: `ζ_v = φ_u(b⁰_v)` with `φ_v` on `Π⁰_v` by
   its values at a basis; at the ear, `ζ_x = φ_a(b⁰_x) = φ_b(b⁰_x)` and `φ_x` by its values at
   `b⁰_a, b⁰_x, b⁰_b`.
@@ -561,7 +561,7 @@ there.
   at the independent `b⁰_a, b⁰_x, b⁰_b`; both proofs `\uses` `lem:pencil-d-lift-realization`.
 - **R-27** · `lem:pencil-d-lift-small` (1), the triangle (`linearIndependent_normalsJoin_triangle`,
   `finrank_triangle`, `liftAttains_of_triangle`; 42m's recon spike, landed in `Grade/LiftSmall.lean`
-  at 42m build 1) · **kept, round 2 task 7**.
+  at 42m build 1) · **kept, `36ab7f53`**.
   *Chapter:* the three joins of independent normals are independent; the triangle has rank `2D`;
   its deficiency is zero, the singletons having value `2D − 3(D − 1) < 0` and two parts
   `D − 2(D − 1) < 0`.
@@ -575,7 +575,7 @@ there.
   formalization note after the proof names the Lean's route (the PI, 2026-11-05).
 
 - **R-28** · `lem:pencil-d-lift-small` (2) (`liftAttains_of_cutEdges_eq_empty`, `Grade/LiftSmall.lean`,
-  42m build 1) · **kept, round 2 task 7**.
+  42m build 1) · **kept, `36ab7f53`**.
   *Chapter:* a realization of `G` restricts to the sides and two glue; "the lift space of `G` is the
   product of those of the sides"; the ranks add by `lem:block-rank-cut-vertex` and the targets by
   `lem:cut-edge-decomposition`; the product of the sides' polynomials serves; `G` is simple.
@@ -592,7 +592,7 @@ there.
 
 - **R-29** · `lem:pencil-d-lift-pendant-triangle`, and the pins of `-lift-pendant` and `-lift-ear`
   (`liftAttains_of_pendantTriangle`, `pendantTri_*`, `Grade/LiftCases.lean`, 42m build 2) ·
-  **kept, round 2 task 8**.
+  **kept, `6c082081`**.
   *Chapter:* (T1) `b⁰_{x₁}, b⁰_{x₂}` in `Π⁰_c`, `Π⁰_{x_i} = Π⁰_c`; (T2) `ζ_{x_i} = φ_c(b⁰_{x_i})`,
   using `Π⁰_{x_i} = Π⁰_c` at every nondegenerate realization; the rank `2D` of the triangle, the
   ranks and the deficiencies add at `c`, the triangle's deficiency being zero; the pendant asks
@@ -613,7 +613,7 @@ there.
 
 - **R-30** · `lem:pencil-d-lift-cut-edge` (`liftAttains_of_cutEdge`, `exists_cutEdge_glue`,
   `cutEdge_T1`, `cutEdge_T2`, `cutEdge_rank`, `Grade/LiftCutEdge.lean`, 42m build 3) ·
-  **aligned, round 2 task 7**.
+  **aligned, `36ab7f53`**.
   *Chapter (until then):* (T1) glues `r₁` with the image of `r₂` under a general `g ∈ 𝒢` (`g b′_u = b_u`,
   `g b′_v = b_v`); the cross conditions at `u` and `v` hold on a nonempty Zariski-open subset of `𝒢`
   exactly when `P = {b_u, b_v}^⊥ ⊄ N`, which a case analysis on `|S|` reduces to
@@ -641,7 +641,7 @@ there.
   comparison and the TeX comment (S32's route) corrected.
 - **R-31** · `lem:pencil-d-good-ear` (`Graph.IsPencilGoodEar`, `exists_goodEar_or_pendantTriangle`,
   `exists_minimalRigid_ear_or_pendantTriangle`, `Grade/GoodEar.lean`, 42m build 4) ·
-  **kept, round 2 task 9**.
+  **kept, `900338bd`**.
   *Chapter:* the proof of `lem:pencil-rigid-good-ear` returns the pendant triangle or `x`; (iii)
   runs the triangle argument at `x` and `a`, then `s(X) = s(W₀) + 1` and the singleton bound for
   `def₂(G[X]) = 1`, and a disconnected `G[X]` has `s(X) ≥ 3`; (iv) at every `d ≥ 3` from
@@ -672,7 +672,7 @@ there.
 - **R-32** · `lem:pencil-d-lift-no-rigid` (`liftAttains_of_forall_deficiency_two_ne_zero`,
   `exists_planeDiff_ne_zero_poly`, `finrank_liftSpaceTilde_pencilConfigPoint` and its `_ker`,
   `exists_pencilConfigPoint_of_dotProduct`, `Grade/LiftNoRigid.lean`, 42m build 5) ·
-  **aligned, round 2 task 7**.
+  **aligned, `36ab7f53`**.
   *Chapter (until then):* `q` off Jackson and Jordán's polynomial, `dim L(q) = ℓ₀ = 3 + def₂(G)`; at `r*`,
   `dim L̃ = dim L(b⁰) + |V(G)|` by the spanning of the closed neighbourhoods; at a general spanning
   realization a map `g` of `K⁴` (`g b⁰_v` of nonzero last coordinate, `e₃ ∉ gΠ⁰_v`) and a rescaling
@@ -701,7 +701,7 @@ there.
 
 - **R-33** · `lem:pencil-d-ear-extend` (`exists_earExtend_poly`, `exists_earExtend_cond_poly`,
   `exists_linearIndepOn_of_finrank`, `Grade/EarFree.lean`, 42m build 6) ·
-  **aligned, round 2 task 9**.
+  **aligned, `900338bd`**.
   *Chapter (until then):* `G` simple and `W₀`, `x` as in `lem:pencil-d-good-ear`; `s ∈ Γ(G)` at
   `lem:pencil-d-steer`'s two assignments; a witness `t′` of (a) and (b) together, the `m_h` at
   distinct points of the moment curve (every four independent) and the auxiliary vectors
@@ -728,7 +728,7 @@ there.
 
 - **R-34** · `lem:pencil-d-ear-free` (`holdsGenerally_earFree`, `earFree_of_finrank_liftSpaceTilde_le`,
   `exists_earFree_config`, `exists_earFree_gammaL`, `Grade/EarFree.lean`, 42m build 6b) ·
-  **aligned, round 2 task 9**.
+  **aligned, `900338bd`**.
   *Chapter (until then):* (c) is `dim L̃_Y(b) ≤ |X| + 4`; under (a) `dim L̃_Y = dim L_Y(b) + |X|`,
   so `L_Y(b)` is the trivial maps; (a) is read with "rank at most three wherever it is read", argued on `Γ_L`, at
   `Γ(G)` and at the configuration; (b) at the configuration by "a vanishing form makes `z` globally
@@ -760,7 +760,7 @@ there.
   TeX comment names S36's count.
 
 - **R-35** · `lem:pencil-d-agrees-three`, its first sentence (`hasPencilPlaneRealization_two_iff`,
-  `Grade/Realization.lean`, round 1 task 2) · **aligned, round 2 task 2**.
+  `Grade/Realization.lean`, round 1 task 2) · **aligned, `5948b04c`**.
   *Chapter (until then):* the points `q_v` are nonzero, with `Π_v = q_v^⊥`. As the dot product is
   nondegenerate, `Π_v^⊥` is the span of `q_v`, so passing through `Π_v^⊥` is passing through `q_v`
   (`lem:extensor-through-flat-point`), and `b_v ∈ Π_v` is `q_v · b_v = 0`. That `Π_v` is
@@ -920,7 +920,7 @@ there.
 - **R-46** · `lem:pencil-d-two-pencil-extension`, the setting of parts (1) and (2)
   (`perpExtensor_two_pencils`, `exists_eq_smul_perpExtensor`,
   `exists_extensor_two_pencils_iff_grade`, `Grade/TwoPencil.lean`, round 1 task 12) ·
-  **kept, round 2 task 5**.
+  **kept, `3bf9d220`**.
   *Chapter:* the statement takes `b_u`, `b_v` nonzero and `Π_u ∋ b_u`, `Π_v ∋ b_v`
   three-dimensional for all three parts. The proof reads none of it, except `b_u ≠ 0` in the
   converse of (2)'s last claim (`B` the span of `b_u` and a vector independent of it); (3) has
@@ -957,7 +957,7 @@ there.
 
 - **R-48** · `lem:pencil-d-nondegenerate-maps`, the setting of parts (1) and (2)
   (`PencilNondegConditions.of_map`, `PencilNondegConditions.map`, `Grade/Nondegenerate.lean`,
-  round 1 task 13) · **aligned, round 2 task 6**.
+  round 1 task 13) · **aligned, `cba4806c`**.
   *Chapter (until then):* the statement takes, for both parts, a nonzero `b_v ∈ K^(d+1)` and
   a three-dimensional `Π_v ∋ b_v` at every body. The proof reads none of it: (1) a relation among
   vectors gives one among their images, and `⋂_{w ∈ S} Π_w` lies in each `Π_w`, where `p` is
@@ -983,7 +983,7 @@ there.
 - **R-49** · `lem:pencil-d-steer`, `lem:pencil-d-lift-one-witness` and `-lift-transfer`, their
   simple `G` (`isZariskiOpen_steerSet`, `exists_mem_steerSet_of_isNondeg`, `steerSet_nonempty_iff`,
   `Grade/Lift.lean`; `liftAttains_of_least`, `liftAttains_of_holdsGenerally`, `lift_transfer`,
-  `Grade/LiftWitness.lean`; round 1 task 13) · **aligned, round 2 task 6**.
+  `Grade/LiftWitness.lean`; round 1 task 13) · **aligned, `cba4806c`**.
   *Chapter (until then):* each statement takes `G` simple ("a finite simple multigraph whose
   closed hub-neighbourhoods have at most three members"; "simple and nondegeneracy-feasible"). No
   proof reads it: the parametrization reads the assignments of places, the other two the
@@ -1005,7 +1005,7 @@ there.
 - **R-50** · `lem:pencil-d-lift-realization`, the setting of parts (2) and (3)
   (`mem_liftMaps_iff`, `liftSmul_mem_liftSpace_iff`, `liftTransport_mem_liftSpace_iff`,
   `finrank_span_rigidityRows_ofNormals_smul`, `finrank_liftNormal_transport`, `Grade/Lift.lean`,
-  round 1 task 13) · **aligned, round 2 task 6**.
+  round 1 task 13) · **aligned, `cba4806c`**.
   *Chapter (until then):* the statement takes, for all three parts, a nondegenerate realization
   `(b⁰, Π⁰)` in dimension three and `λ ∈ 𝓛(b⁰, Π⁰)^m`. The proofs of (2) and (3) read only that `Π⁰_v` contains
   the points of the closed neighbourhood of `v` ((2): a form on `Π⁰_v` extends to `K⁴`, and one on
@@ -1034,7 +1034,7 @@ there.
 
 - **R-51** · `lem:pencil-d-lift-small`, its infinite `K` (`liftAttains_of_ncard_le_two`,
   `liftAttains_of_triangle`, `liftAttains_of_cutEdges_eq_empty`, `Grade/LiftSmall.lean`, round 1
-  task 14) · **aligned, round 2 task 7**.
+  task 14) · **aligned, `36ab7f53`**.
   *Chapter (until then):* the statement takes `K` infinite for both parts, as the section's other cases do.
   Neither proof reads it: (1) shows the target rank at every lift, so `Q = 1` serves; (2) takes
   the product of the sides' polynomials, nonzero at the glued realization.
@@ -1074,7 +1074,7 @@ there.
 - **R-53** · `lem:pencil-d-good-ear`, (iii)'s `|X| ≥ 3`
   (`Graph.IsX0Graph.exists_minimalRigid_ear_or_pendantTriangle`, `MainComponent/GoodEar.lean`;
   `exists_goodEar_or_pendantTriangle`, `Grade/GoodEar.lean`; round 1 task 15) ·
-  **kept, round 2 task 9**.
+  **kept, `900338bd`**.
   *Chapter:* (iii) shows that `a` and `b` keep two neighbours in `X` and the other bodies of `X`
   all of theirs, so `G[X]` has minimum degree at least two, "and `|X| ≥ 3` as `G` is simple".
   *Lean:* `|X| ≥ 3` is the core's output, by the argument of the last paragraph of
@@ -1098,7 +1098,7 @@ there.
   outcomes, the ear's condition from `holdsGenerally_earFree`), each smaller graph feasible by its
   case lemma, and the outer pin is the chapter's first and last steps
   (`gradedPencilNondegFeasible_iff`, `LiftAttains.hasGradedGenericPencilRealization`). Where a
-  case's pin drops a hypothesis of its node, it read less than the chapter until round 2 task 8,
+  case's pin drops a hypothesis of its node, it read less than the chapter until round 2 (`6c082081`),
   which restated the two nodes to their pins (R-25, R-29) and cut the proof's two derived clauses
   to them: it no longer derives that the pendant's neighbour `u` has another neighbour ("as `G` is
   connected with at least three bodies"), and gives the ear hub neighbours `a ≠ b`, as the Lean
@@ -1138,22 +1138,26 @@ there.
     slips below in their layers' slices. Then the `\uses` sweep (task 10) and the close (task 11).
     No Lean, pin or `\leanok` changes.
   - **Round 3** is empty: no row went H (§1, the second stop).
-  - **Round 4**, the *Also left to it* items below and round 1's stale docstring (Lean), opens after
-    round 2's close.
+  - **Round 4**, the *Also left to it* items below, round 1's stale docstring and round 2's *Moved*
+    lines (Lean, and two notes), is next: its open is with the PI.
+  - **Round 2 closed** 2026-11-05 (`notes/Phase42-align.md`): 11 tasks, 11 commits, the shas in §2's
+    statuses; 23 `aligned`, 17 `kept`, 14 `no departure`, none `open`; 17 formalization notes in
+    the chapter; `--chapter pencil-d` 99 nodes, 236 pins, 0 *missing*; no Lean, pin or `\leanok`
+    change.
 
   Round 1's and round 2's *Candidates for the PI* and *Moved to a later round* lines are mirrored
   here as they land, each with the task that takes it:
-  - *Moved to a later round* (round 1 task 2; round 2 task 10, the sweep):
+  - *Moved to a later round* (round 1 task 2; round 2 (`4d658702`), the sweep):
     `lem:pencil-d-point-configuration`'s statement reads the closed neighbourhood
     (`Graph.closedNbhd`, pinned by `def:pencil-nondegenerate` in `pencil.tex`) with no `\uses` edge
     to it, which `scripts/blueprint-deps.py` reports *missing*. The script reports 60 missing edges
     over the chapter (`--chapter pencil-d`), so a later round may take them in one sweep.
-  - *Moved to a later round* (round 1 task 10; round 2 task 3, taken: `s` in both places): a prose
+  - *Moved to a later round* (round 1 task 10; round 2 (`c3f237fe`), taken: `s` in both places): a prose
     slip. `thm:pencil-d-open-ear-four`'s proof calls an ear datum `y` ("Take an ear datum $y$ off
     all three zero sets", then "Keep the other points of $y$"), where `def:pencil-d-ear-data` and
     the same proof's first stage (`s^*`) write `s` for ear data, and the section writes `y` for
     points (`y_1`, `y_3`, …).
-  - *Moved to a later round* (round 1 task 13; round 2 task 6, taken: `p : K^{d′+1} → K^{d+1}`,
+  - *Moved to a later round* (round 1 task 13; round 2 (`cba4806c`), taken: `p : K^{d′+1} → K^{d+1}`,
     the embedding's direction, with R-48's statement): a prose slip.
     `lem:pencil-d-nondegenerate-maps` fixes `p : K^(d+1) → K^(d′+1)`, so (2)'s injective `p`
     has `d ≤ d′`, but its "in particular" embeds a realization in dimension `d′ ≤ d` into dimension
@@ -1164,37 +1168,37 @@ there.
     steps stated "for `lem:pencil-d-ear-free`" (`L(b⁰) = L(q)` in the maps), but its one caller is
     `liftAttains_of_forall_deficiency_two_ne_zero`: the Lean of `-ear-free` never reads `L(b⁰)`
     (R-34) and calls only the other two it names.
-  - *Moved to a later round* (round 2 task 3; round 4, as it edits Lean): a stale docstring.
+  - *Moved to a later round* (round 2 (`c3f237fe`); round 4, as it edits Lean): a stale docstring.
     `Grade/Stars.lean`'s `exists_mulVec_add_mulVec_eq_zero` ends "The chapter argues by Cramer's
     rule over `K(t)` instead" (R-9), and its first line's "without `K(t)`" contrasts it with that
     proof; since R-9's alignment the chapter's proof of `lem:pencil-d-kernel-curve` is the Lean's.
-  - *Moved to a later round* (round 2 task 4; round 4, as it edits Lean): a stale docstring.
+  - *Moved to a later round* (round 2 (`8bffb361`); round 4, as it edits Lean): a stale docstring.
     `Grade/ShortThree.lean`'s `Graph.X0AttainsGrade.of_openEar_three` ends "The chapter's proof of
     the case `r ≤ 2` goes instead through the components of `G[V₁]` and a path from `a` to `b`"
     (R-14); since R-14's alignment the chapter bounds `dim ρ ≤ 2` as the Lean does, by glued-ends
     or a common member of the closed neighbourhoods of `a` and `b`.
-  - *Moved to a later round* (round 2 task 6; round 4, as it edits Lean): a stale docstring.
+  - *Moved to a later round* (round 2 (`cba4806c`); round 4, as it edits Lean): a stale docstring.
     `Grade/LiftWitness.lean`'s `liftAttains_of_least` says the Lean takes the lift's maps through
     the polynomial section "in place of the chapter's Cramer basis and coefficients `γ`" (R-21);
     since R-21's alignment the chapter's proof of `lem:pencil-d-lift-one-witness` is that route.
-  - *Moved to a later round* (round 2 task 6; round 4, a note outside round 2's writes): a dated
+  - *Moved to a later round* (round 2 (`cba4806c`); round 4, a note outside round 2's writes): a dated
     sentence. `notes/BlueprintExposition.md`'s 42l entry (judged 2026-11-04) says that the nodes
     keep "the one-lift and restriction lemmas' unused simplicity and feasibility hypotheses";
     R-49 dropped the simplicity. Its list of route differences left (R-20, R-21, R-23) is dated
     likewise, as the 42h entry's is since R-9.
-  - *Moved to a later round* (round 2 task 7; round 4, as it edits Lean): three stale docstrings.
+  - *Moved to a later round* (round 2 (`36ab7f53`); round 4, as it edits Lean): three stale docstrings.
     `Grade/LiftSmall.lean`'s module docstring ends "It needs no `G.Simple` and no `[Infinite K]`,
     which the chapter assumes" (R-28, R-51); `Grade/LiftCutEdge.lean`'s `liftAttains_of_cutEdge`
     ends "The chapter's `|V₁|, |V₂| ≥ 2` is not needed" (R-30); `Grade/LiftNoRigid.lean`'s
     `exists_pencilConfigPoint_of_dotProduct` says "The chapter reaches the two nonzero coordinates
     by a map `g` of `K⁴`" (R-32). Since task 7 the chapter's statements and proofs are the Lean's.
-  - *Moved to a later round* (round 2 task 7; round 4, a note outside round 2's writes): a dated
+  - *Moved to a later round* (round 2 (`36ab7f53`); round 4, a note outside round 2's writes): a dated
     sentence. `notes/BlueprintExposition.md`'s 42m entry (judged 2026-11-05) lists "the cut edge's
     glue by one frame map and one minor" and "the least lift space through the lifting system
     without the chapter's map `g`" among the route differences left, and "the cut edge's side
     sizes" and "`-lift-small` (2)'s simplicity" among the hypotheses the pins drop; R-30, R-32 and
     R-28 put the chapter on those routes and statements.
-  - *Moved to a later round* (round 2 task 8; round 4, as it edits Lean, and a note outside round
+  - *Moved to a later round* (round 2 (`6c082081`); round 4, as it edits Lean, and a note outside round
     2's writes): a stale docstring and a dated sentence. `Grade/LiftCases.lean`'s module docstring
     ends "The chapter's two statements are kept in the pins' stronger form: the pendant drops
     "whose neighbour has another neighbour" and the ear drops "not adjacent"" (R-25, R-29); since
@@ -1203,7 +1207,7 @@ there.
     (T2)" among the route differences left, and "the pendant's other neighbour" and "the ear's
     non-adjacency" among the hypotheses the pins drop; R-24, R-26, R-25 and R-29 put the chapter on
     those routes and statements.
-  - *Moved to a later round* (round 2 task 9; round 4, as it edits Lean, and a note outside round
+  - *Moved to a later round* (round 2 (`900338bd`); round 4, as it edits Lean, and a note outside round
     2's writes): two stale docstrings and a dated sentence. `Grade/EarFree.lean`'s
     `exists_earExtend_poly` ends "The chapter's moment curve and its case analysis on `O_v` are not
     used" (R-33), and `isTrivialLift_of_finrank_liftSpaceTilde_le` ends "The chapter's count

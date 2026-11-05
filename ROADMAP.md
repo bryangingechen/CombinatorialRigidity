@@ -183,7 +183,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 41. The panel-hinge carrier and its graph (post-program) — RECONCILE-FORMAL | `Molecular/` (structural edit; sub-lettered, 41a–41e) | ✓ Complete — each hinge at its own edge's ends, and the RECONCILE program closed (see `notes/Phase41e.md`; plan `notes/Phase41-design.md`) |
 | 42. The pencil realization theorem in every dimension (post-program) — PENCIL-D | research first, then `Molecular/`, `pencil-d.tex` (sub-lettered, 42a–42m) | ✓ Complete — the pencil realization theorem in every dimension, over every infinite field (see `notes/Phase42m.md`; plan `notes/Phase42-design.md`) |
 | ⋮ Cleanup round (CLEANUP-42, round 1: the route audit) | `pencil-d.tex`'s 99 green nodes against their Lean (docs only: rows of the proof-route ledger) | ✓ Complete — every node audited, 54 ledger rows, 34 open, the Lean unchanged; the PI's remedies given (see `notes/Phase42-cleanup.md`; plan `notes/Cleanup42.md`; round manual: `CLEANUP.md`) |
-| ⋮ Cleanup round (CLEANUP-42, round 2: the chapter to the Lean) | `pencil-d.tex`'s statements, proofs and dependency edges at the 34 open ledger rows (blueprint and notes only, no Lean) | ◐ In progress (see `notes/Phase42-align.md`; plan `notes/Cleanup42.md`; round manual: `CLEANUP.md`) |
+| ⋮ Cleanup round (CLEANUP-42, round 2: the chapter to the Lean) | `pencil-d.tex`'s statements, proofs and dependency edges at the 34 open ledger rows (blueprint and notes only, no Lean) | ✓ Complete — the chapter restated or annotated at every open row, the Lean unchanged (see `notes/Phase42-align.md`; plan `notes/Cleanup42.md`; round manual: `CLEANUP.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1309,7 +1309,7 @@ results' axioms are unchanged and the new one's are the three standard ones. Of 
 Tier 0 (42c) and Tier 2, every `d`, are formalized, which subsumes Tier 1's `P⁴` theorem. Next:
 CLEANUP-42, opened 2026-11-05 at the PI's word ahead of ORIGAMI: round 1, the route audit
 (`notes/Phase42-cleanup.md`), closed; round 2, the chapter to the Lean (`notes/Phase42-align.md`),
-in progress; then ORIGAMI, with the PI (*Queued post-program phases*). Detail →
+closed; then round 4, with the PI, and ORIGAMI (*Queued post-program phases*). Detail →
 `notes/Phase42a.md` to `notes/Phase42m.md` + `notes/Phase42-design.md`.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
@@ -1414,9 +1414,10 @@ research note of its own, `notes/Strata.md`, which holds PENCIL-D's evidence.
   the per-row judgment of families B and C at a second stop. **Round 2**, the chapter to the Lean,
   opened the same day (`notes/Phase42-align.md`): eight slices by layer restate the rows sent to
   the Lean and add a formalization note for each kept one, then one sweep of the chapter's missing
-  dependency edges, blueprint and notes only. Round 3 is empty, as no row went to a Lean helper;
-  round 4, the folds and the non-vacuity witnesses, follows. **Next:** `notes/Cleanup42.md`'s
-  **Status**.
+  dependency edges, blueprint and notes only; it closed 2026-11-05 with 17 rows restated to the
+  Lean, 17 kept with a note and none open. Round 3 is empty, as no row went to a Lean helper;
+  round 4, the folds and the non-vacuity witnesses, is next, with the PI. **Next:**
+  `notes/Cleanup42.md`'s **Status**.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

@@ -1,15 +1,13 @@
 # CLEANUP-42 round 2 — the chapter to the Lean (work log)
 
-**Status:** in progress (opened 2026-11-05 at the PI's word, `notes/Cleanup42.md` §1). Round 2 of
-CLEANUP-42 applies to `blueprint/src/chapter/pencil-d.tex` the remedy the PI gave each of the 34
-`open` rows of the proof-route ledger (`notes/Cleanup42.md` §2; the remedies in §3 *Round 1's
-stop* and *The B/C judgment*): 11 statements and 14 proof routes restated to their Lean (L), and a
-formalization note naming the Lean's route for each of the 17 kept parts (K), with the two prose
-slips round 1 moved here; then one `\uses` sweep over the chapter's missing edges (60 at the open).
-Blueprint and notes only: no Lean, no pin, no `\leanok`. Eleven tasks, one commit each: the open,
-eight slices by layer, the sweep and the close. 17 rows end `aligned` and 17 `kept`. Tasks 2
-to 10 landed (17 `aligned`, 17 `kept`; none `open`; the sweep added all 52 *missing* edges, none left).
-**Next concrete task:** task 11, the close (docs only).
+**Status:** closed (2026-11-05; opened the same day at the PI's word, `notes/Cleanup42.md` §1).
+Round 2 of CLEANUP-42 applied to `blueprint/src/chapter/pencil-d.tex` the remedy the PI gave each
+of the 34 `open` rows of the proof-route ledger (`notes/Cleanup42.md` §2): 11 statements and 14
+proof routes restated to their Lean, a formalization note for each of the 17 kept parts, the two
+prose slips round 1 moved here, and one `\uses` sweep (52 edges, none left). Blueprint and notes
+only: no Lean, no pin, no `\leanok`. All eleven tasks landed: the ledger has 23 `aligned`, 17
+`kept`, 14 `no departure`, none `open`.
+**Next concrete task:** round 4's open, with the PI (`notes/Cleanup42.md` §3; round 3 is empty).
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -25,17 +23,16 @@ the PI answers in an entry that starts `**PI, <date>:**`.
 
 ## Current state
 
-**Task 10 landed** (this commit): the sweep added all 52 *missing* edges of `--chapter pencil-d`
-(on 33 nodes) to the `\uses` of the statement or proof the script named, none closing a cycle, so
-none left; two definitions with no proof environment (`def:pencil-d-ear-data`,
-`def:pencil-d-lift-attains`) took their proof-class edges in their own `\uses`, and two proofs
-(`lem:screw-embedding-rank`, `lem:pencil-d-polygon-normal`) got a new `\uses`. Gates: G3
-`lint.sh` green; G4 `verify.sh` green, 9 `WARNING:` lines, `print.log` rebuilt (0 `LaTeX Warning`);
-G5 after-dump `scratch/cleanup-42/round2/task10/dump-after.txt` (`1904 edges fe983ba0f4af8540`,
-`lean_decls` `28b0db9377d77782`), both consistency checks OK; its diff to task 9's is the 52 edges'
-drawn edges and the transitive reductions they induce; G7: `--chapter pencil-d` has 0 *missing*,
-645 *implied*, 17 *unbacked transitive*, 54 with no Lean basis, 31 dead pins. Task 11, the close,
-is next.
+**Task 11 landed** (this commit; docs only): `notes/Cleanup42.md` §2's `round 2 task <N>` is
+replaced by the task's sha in the 34 row statuses (`**aligned, `sha`**`, `**kept, `sha`**`) and, in
+the *Moved* mirror lines and one *Chapter* sentence, by `round 2 (`sha`)`; its **Status** and §3,
+ROADMAP's row, §42's *Next* and the CLEANUP-42 bullet, `notes/MolecularConjecture.md` and the
+queue's comment say round 2 closed (the queue row stays `done = false`). Counted over §2's 54 rows:
+23 `aligned`, 17 `kept`, 14 `no departure`, 0 `open`; the chapter has 17 `begin{fmlnote}` (the
+15 new notes and the two before the round). `python3 scripts/blueprint-deps.py --chapter pencil-d`:
+99 nodes, 99 pinned, 236 pins, 0 *missing*, 645 *implied*, 17 *unbacked transitive*, 54 with no
+Lean basis, 31 dead pins; a fresh `--dump` reads `1904 edges fe983ba0f4af8540` and `lean_decls`
+`28b0db9377d77782`, both as task 10's after-dump (the close edits no TeX). Gates: G1, G2.
 
 **Verified at the open** (2026-11-05, at `6eb7a2e6`):
 - **The ledger** (`notes/Cleanup42.md` §2): 54 rows, 34 `open` (R-3 to R-5, R-9 to R-12, R-14 to
@@ -199,22 +196,18 @@ statement, (T2) and other parts all in task 8).
 - [x] **8. The pendant, the pendant triangle and the ear** (`6c082081`). Aligned: R-24, R-25
   (no other neighbour of `u`), R-26. Kept: R-29 (a note; the ear's `a ≠ b` and the triangle's
   (T2) aligned). `\uses`: three proofs + `lem:pencil-d-lift-realization`. One *Moved* line (below).
-- [x] **9. The good ear and the ear's condition** (this commit). Aligned: R-33 (no `G` simple,
+- [x] **9. The good ear and the ear's condition** (`900338bd`). Aligned: R-33 (no `G` simple,
   (i)–(v), any hub assignment; one witness per condition, the `n_u` one at a time), R-34. Kept:
   R-31, R-53 (one note). No `\uses` change. One *Moved* line (below).
 
 **The sweep and the close.**
 
-- [x] **10. The `\uses` sweep** (this commit; 52 edges, no cycle left, 0 *missing* after). Every *missing* edge of `--chapter pencil-d` at its parent (60 at
-  the open on 31 nodes, round 1 task 2's `lem:pencil-d-point-configuration` →
-  `def:pencil-nondegenerate` among them), as the standing rule says; G7. *Expected:* the parent's
-  report, listed before editing.
-- [ ] **11. The close** (docs only). §2's `round 2 task <N>` replaced by shas; the tally re-counted
-  (54 rows: 23 `aligned`, 17 `kept`, 14 `no departure`, none `open`) and 17 formalization notes in
-  the chapter; `--chapter pencil-d` (99 nodes, 236 pins, task 10's leftover *missing*); the
-  `lean_decls` hash; the restated statements listed for the PI in *Hand-off*; the round closed in
-  this log, `notes/Cleanup42.md`'s **Status** and §3 (next: round 4's open), ROADMAP,
-  `notes/MolecularConjecture.md` and the queue's comment (the row stays `done = false`).
+- [x] **10. The `\uses` sweep** (`4d658702`). 52 *missing* edges of `--chapter pencil-d` added on 33
+  nodes, none closing a cycle, 0 *missing* after; two definitions took theirs in their own `\uses`,
+  two proofs gained a `\uses`. No *Candidates* or *Moved* line.
+- [x] **11. The close** (this commit; docs only). §2's statuses carry shas; the tally 23 / 17 / 14
+  / 0 and 17 formalization notes; `--chapter pencil-d` 0 *missing*, `lean_decls` unchanged; the
+  round closed here, in `notes/Cleanup42.md`, ROADMAP, `notes/MolecularConjecture.md`, the queue.
 
 ## Candidates for the PI
 
@@ -259,9 +252,27 @@ statement, (T2) and other parts all in task 8).
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 11, the close (docs only): `notes/Cleanup42.md` §2's `round 2 task <N>`
-replaced by shas; the tally re-counted (54 rows: 23 `aligned`, 17 `kept`, 14 `no departure`, none
-`open`); `--chapter pencil-d` (99 nodes, 236 pins, 0 *missing* after task 10); G1, G2.
+**Next concrete task:** open round 4 (`notes/Cleanup42.md` §3), with the PI: the *Also left to it*
+items, the stale Lean docstrings and the two `notes/BlueprintExposition.md` entries listed under
+*Moved to a later round* above. Round 3 is empty. The queue row stays `done = false` until round 4
+closes.
+
+**For the PI: the 11 statements restated to their Lean** (each to its pin, nothing beyond it; no
+main result's node changed). R-15, R-28 and R-29 also keep an argument, so they stay `kept`.
+- R-15 `lem:pencil-d-planes-meet`: without `K` infinite.
+- R-25 `lem:pencil-d-lift-pendant`: without the pendant's neighbour `u` having another neighbour.
+- R-28 `lem:pencil-d-lift-small` (2): without `G` simple (which (1) keeps).
+- R-29 `lem:pencil-d-lift-ear`: `a ≠ b` in place of `a ≁ b`; and the triangle's (T2) by one form
+  on `K⁴`, with no `Π⁰_{x_i} = Π⁰_c`.
+- R-30 `lem:pencil-d-lift-cut-edge`: without the sides' sizes (title too).
+- R-33 `lem:pencil-d-ear-extend`: without `G` simple; `W₀`, `x` satisfying (i) to (v) of the good ear,
+  any assignment of hub places.
+- R-35 `lem:pencil-d-agrees-three`: without "nonzero" (one dimension sentence in the proof).
+- R-48 `lem:pencil-d-nondegenerate-maps`: parts (1), (2) for any vectors and subspaces (and the slip
+  `p : K^(d′+1) → K^(d+1)`).
+- R-49 `lem:pencil-d-steer`, `-lift-one-witness`, `-lift-transfer`: without "simple".
+- R-50 `lem:pencil-d-lift-realization`: (2), (3) for any `(b⁰, Π⁰)` as in `def:pencil-d-lift`.
+- R-51 `lem:pencil-d-lift-small`: without "`K` infinite"; "`G` simple" in (1) alone.
 
 ## Decisions made during this round
 
