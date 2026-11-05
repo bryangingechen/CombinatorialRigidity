@@ -7,10 +7,10 @@ from the chapter's route; its plan, the PI's words and the proof-route ledger ar
 and adds a ledger row for each departure, re-checking R-1 to R-34 at HEAD; it edits no prose,
 statement, pin or Lean. The open (task 1, docs only) sliced the nodes by layer into 14
 one-dispatch Opus recon tasks, the 47 never-checked nodes of 42b–42f first, then a planned stop
-(task 16) at which the PI picks a remedy per `open` row and plans rounds 2+. Tasks 2 to 5
-(PD-STATE, PD-STABLE, COUNT-A and COUNT-B) added R-35 (`open`), R-36 to R-38 (`no departure`).
-**Next concrete task:** task 6, PD-CARRIER, the four nodes of `sec:pencil-d-induction` and
-`sec:pencil-d-flat` (*Lemma checklist*). Round manual: `CLEANUP.md`.
+(task 16) at which the PI picks a remedy per `open` row and plans rounds 2+. Tasks 2 to 6
+(PD-STATE, PD-STABLE, COUNT-A and COUNT-B, PD-CARRIER) added R-35 (`open`), R-36 to R-39 (`no
+departure`). **Next concrete task:** task 7, PD-STEPS (42f), the six nodes of `sec:pencil-d-cut`
+and `sec:pencil-d-contract` (*Lemma checklist*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -24,9 +24,9 @@ picks a remedy per `open` row and plans rounds 2+ (`notes/Cleanup42.md` §3). An
 
 ## Current state
 
-**Tasks 1 to 5 have landed** (task 5 this commit: one `no departure` row, R-38, the other ten
-nodes no departure, no line under *Candidates* or *Moved to a later round*). The ledger has 38
-rows, 28 `open`; the next row is R-39. Nothing is mid-stream; task 6 is next.
+**Tasks 1 to 6 have landed** (task 6 this commit: one `no departure` row, R-39, the four nodes
+no departure, no line under *Candidates* or *Moved to a later round*). The ledger has 39 rows, 28
+`open`; the next row is R-40. Nothing is mid-stream; task 7 is next.
 
 **Verified at the open** (2026-11-05, at `a3b80ac4`):
 - **The Lean baseline** is the coordinator's run this session, not repeated here: `lake build
@@ -117,7 +117,9 @@ One commit per task, in this order. Each recon task names its nodes (each read w
 a row included), the rows it re-checks and the pinned files it reads (under
 `CombinatorialRigidity/Molecular/Molecule/Pencil/` unless the path says otherwise); chapter lines
 are as at the open. On landing, its line gets its commit and its verdicts: the new rows, the
-re-checks (accurate or corrected) and the nodes judged no departure.
+re-checks (accurate or corrected) and the nodes judged no departure, a few words each; the landing
+commit's diff keeps the longer reasons (tasks 2–5's lines were cut to this register at task 6, for
+the gate's forward weighting).
 
 - [x] **1. Open** (`b753cace`; docs only): this log, the re-count, the criterion and the task
   list; `notes/Cleanup42.md`'s **Status**, §1 (the PI's entry of 2026-11-05) and §3; ROADMAP's
@@ -125,97 +127,54 @@ re-checks (accurate or corrected) and the nodes judged no departure.
 
 **42b–42f, never checked (47 nodes, no row).**
 
-- [x] **2. PD-STATE (42b), the realizations** (`def498ad`). `sec:pencil-d-realization` (lines
-  69–298), 8 light nodes, against `Grade/Realization.lean` (all 16 pins). No re-checks. **New row:**
-  R-35, `lem:pencil-d-agrees-three`'s first sentence (the pin drops the nonzero points and adds
-  `dim q^⊥ = 3 ⇔ q ≠ 0`). **No departure:** `def:extensor-through-flat` (the definition verbatim);
-  `lem:extensor-through-flat-point` (`span_singleton_le_iff_mem`, the proof's one line);
-  `def:pencil-d-realization` (its conditions on `V(G)`, `dotPerp` the section's `Π^⊥`, the `d = 2`
-  remark's pin at `Π_v = K³`); `lem:pencil-d-point-configuration` (the proof's steps: the join of
-  `lem:panel-support-extensor-join`, `lem:decomposable-extensor-span-unique`'s argument at `d − 1`
-  vectors, `lem:meet-two-hyperplanes`; "has the rows" as the row space, the carrier's reading
-  throughout; (2)'s second part without independence, as the proof says);
-  `def:pencil-d-rank-hypothesis` (the
-  deficiency's `n` a parameter read at `k + 1`, 42b's encoding); `def:pencil-d-distinct-motive`
-  (the rank hypothesis inlined, one realization with the independence);
-  `lem:pencil-d-rank-agrees-three` (one framework for the first; the point form, then the polarity
-  at one rank, for the second). One line under *Moved to a later round*.
-- [x] **3. PD-STATE (42b), the configurations** (`d5996bfd`). `sec:pencil-d-carrier` (300–525),
-  9 light nodes, against `Grade/Carrier.lean`, `Grade/Configuration.lean`,
-  `Grade/Collineation.lean`, `Grade/Witness.lean`, `Grade/Contract.lean` and
-  `Grade/JoinIndependence.lean` (all 20 pins). No re-checks. **New row:** R-36, **no departure**,
-  `lem:pencil-d-contract-magnified-rank`'s `r ∈ W` (the pin takes any `r`, the curve being total
-  in it; `r ∈ W` is the setting of `def:pencil-contract-lifting-system`, which the proof never
-  reads); its proof is otherwise the chapter's map, with its inverse, at the bodies of `W`. **No
-  departure:** `def:pencil-d-configuration` (the point `(x, y, z, 1)` by its blocks in `K^(m+3)`,
-  `m = d − 2` heights, the rank that of `ofNormals` at grade `m + 1`; the `d = 2` and `d = 3`
-  remarks pinned); `lem:pencil-d-config-realization` (the proof's steps: `dim Π_v ≤ 3` as the image
-  of `K³` under the affine lift, `≥ 3` by the projection to the kept coordinates, the chapter's
-  injectivity, on admissibility's three independent picture points; adjacent points independent as
-  at `d = 3`; then `lem:pencil-d-point-configuration` (1), on the patched framework of its note; the
-  normals nonzero by their last coordinate, which the proof leaves implicit);
-  `def:pencil-d-x0-attains` (`def:pencil-x0-attains` at `m` heights: `L(q)^m` column by column, the
-  Zariski-open set the non-roots in `L(q)^m` of one height polynomial, a selector `ends`, the
-  deficiency at `m + 2`); `lem:pencil-d-x0-attains-three` (one height, the same rank, the
-  polynomials renamed along `α × Fin 1 ≃ α`); `lem:pencil-d-rank-collineation` (the join under
-  `⋀²g`, the complement isomorphism's law giving `det g · Λ_h`, one automorphism at every link,
-  `lem:screw-map-rows`); `lem:pencil-d-rank-scale-shift` (the chapter's map, `a^i` read on `V(G)`
-  from its coefficients, `T` a linear automorphism); `lem:pencil-d-x0-one-witness` (the `d = 3`
-  proof with one section per height: `P = A · ∏ D_i · Q(q, Z(q))`, `R = Q(q, ·)`);
-  `lem:pencil-d-join-independence-open` (the `2 × 2` minors, polynomial in the picture or in the
-  heights, and a nonzero maximal minor). No line under *Candidates* or *Moved to a later round*:
-  the script's two missing edges on these nodes are in task 2's sweep.
-- [x] **4. PD-STABLE (42c)** (`6cd638f4`). `sec:pencil-d-stable` (527–841), 9 light to medium
-  nodes, against `CombinatorialRigidity/Molecular/Deficiency.lean` (its two pins),
-  `Grade/Embedding.lean`, `Grade/ZeroHeights.lean`, `Grade/Configuration.lean` (one pin) and
-  `Grade/Stable.lean` (all 22 pins). No re-checks. **New row:** R-37, **no departure**,
-  `lem:deficiency-stable` (the equality by antisymmetry, `lem:deficiency-antitone` for one half and
-  the chapter's case split on `c(P)` for the other, not as the common maximum over `c(P) = 0`; the
-  "in particular" by `D′ ≥ d′ + 1`). **No departure:** `def:pencil-d-embedding` (`ι` the extension
-  by zero along an index map fixing the last index, `φ = * ∘ ⋀²ι ∘ *⁻¹`, at every `k′ ≤ k`; `⋀²ι`
-  injective by mathlib's `exteriorPower.map_injective_field`, the chapter's argument with a chosen
-  left inverse of `ι` in place of the deletion `π`); `lem:pencil-d-embedding-join` (the proof's one
-  line: `*⁻¹ C(u, w) = u ∨ w`, then `⋀²ι (u ∨ w) = ιu ∨ ιw`); `lem:screw-embedding-rank` (the
-  chapter's `Z(G, φp) = φZ(G, p) + Z₀` with intersection `φZ₀′`, `Z₀` the motions of the framework
-  with zero hinges, then rank–nullity at both grades; no `d′ ≤ d`, which the injectivity of `φ`
-  forces); `lem:pencil-d-embed-realization` (the hinge `C(w₁, w₂)` for a basis of `A^⊥` by the
-  argument of `lem:pencil-d-point-configuration` (2), the scalar absorbed in `w₁`; `b_v ∈ A^⊥` and
-  `A^⊥ ⊆ Π_v` read as `b_v ∈ span {w₁, w₂}` and `w₁, w₂ ∈ Π_v`, at both grades; the per-link
-  independence `linearIndependent_gradeEmbed_pair`, a step of the third pin; the deficiency
-  parameter fixed, 42b's encoding); `lem:pencil-d-embed-config-rank` (the point of `(q, z)` is `ι`
-  of that of `(q, z′)` coordinate by coordinate, so the framework is `(q, z′)`'s mapped along `φ`;
-  `L(q)` a subspace); `lem:pencil-d-x0-attains-of-le` (the proof's steps: a non-root of `P`, so no
-  loop and three members in each closed neighbourhood, a main picture off the product, the padded
-  heights, `lem:pencil-d-x0-one-witness`); `lem:pencil-d-x0-attains-distinct` (a non-root `q`,
-  heights off `R`, `lem:pencil-d-config-realization`); `thm:pencil-d-deficiency-two-le-three` (the
-  dimension-three case through `x0AttainsGrade_one_iff`, `def₂ + 3 ≤ 6 = bodyBarDim 3`, `d′ = 3`,
-  `m ≥ 1` for `d ≥ 3`). No line under *Candidates* or *Moved to a later round*: the script's two
-  missing edges on these nodes are in task 2's sweep, and its *unbacked* edge from
-  `-embed-realization` to `-point-configuration` is to the argument the proof cites, whose helper
-  (`exists_smul_panelSupportExtensor_eq_of_extensorInPanel`) the Lean shares with that node's pin.
-- [x] **5. COUNT-A and COUNT-B (42d)** (this commit). `sec:pencil-d-deficiency` (843–1204), 11
-  medium nodes, against `CombinatorialRigidity/Molecular/Induction/SparseDeficiency.lean` (COUNT-A's
-  eight pins) and `Grade/TheoremS.lean` (all five). No re-checks. **New row:** R-38, **no
-  departure**, `lem:deficiency-tight-part`'s case `Z = V(G)` (no case split in the pin: the split's
-  pin takes an empty side, whose value `−D` its `+ D` cancels). **No departure:**
-  `lem:deficiency-planar-nonpos` (unfolding; `3 ≤ bodyBarDim n` the `d ≥ 2`);
-  `lem:deficiency-rigid-higher` (connected, antitone, nonnegative); `lem:deficiency-core-bound-d`
-  ((1) the merge, the singleton and planar bounds, sparsity read in `Y` only, as the proof reads it;
-  (2) the least counterexample, `d = 3`'s two cases); `lem:deficiency-one-body-chain-d` (refinements
-  of `Q` glued and split, then the insertion formula in the chapter's cases);
-  `lem:deficiency-two-body-chain-d` (`d = 3`'s steps, then `lem:deficiency-rigid-higher`);
-  `def:pencil-d-usable-chain` (verbatim, on the chain's data as at `d = 3`, so the script's
-  *unbacked* edge to the chain); `lem:pencil-d-maximal-rigid-core`, `thm:pencil-d-theorem-s` and
-  `lem:pencil-d-chain-core` (the chapter's steps, in its order);
-  `lem:pencil-d-core-positive-deficiency` (the chapter's steps; `v₃ = 2v₂ − d_G` by
-  `partitionDef_three_eq`, the planar identity at `D = 6`, and the count by the helpers of
-  `lem:pencil-x0-sparse-count`'s proof, as the chapter says, so its two *unbacked* edges). No line
-  under *Candidates* or *Moved to a later round*: no missing edge here, and the two dead pins
-  (Theorem S, the usable chain) are §3's fold.
-- [ ] **6. PD-CARRIER (42e).** `sec:pencil-d-induction` and `sec:pencil-d-flat` (1206–1551), 4
-  medium nodes (proofs of 13 to 46 lines): `lem:pencil-d-condition-linear`,
-  `thm:pencil-d-flat-rank`, `cor:pencil-d-flat-attains`, `cor:pencil-d-jj-flat`. Reads
-  `Grade/ConditionLinear.lean`, `Grade/Flat.lean`.
+- [x] **2. PD-STATE (42b), the realizations** (`def498ad`). `sec:pencil-d-realization`, 8 light
+  nodes, against `Grade/Realization.lean`. **New row:** R-35 (`lem:pencil-d-agrees-three`'s first
+  sentence, `open`). **No departure:** `def:extensor-through-flat` (verbatim);
+  `lem:extensor-through-flat-point` (the proof's one line); `def:pencil-d-realization` (on `V(G)`);
+  `lem:pencil-d-point-configuration` (the proof's steps, "has the rows" as the row space);
+  `def:pencil-d-rank-hypothesis` and `def:pencil-d-distinct-motive` (42b's encodings);
+  `lem:pencil-d-rank-agrees-three` (one framework; the point form, then the polarity). One line
+  under *Moved to a later round*.
+- [x] **3. PD-STATE (42b), the configurations** (`d5996bfd`). `sec:pencil-d-carrier`, 9 light
+  nodes, against `Grade/Carrier.lean`, `-Configuration`, `-Collineation`, `-Witness`, `-Contract`
+  and `-JoinIndependence`. **New row:** R-36 (`lem:pencil-d-contract-magnified-rank`'s `r ∈ W`,
+  `no departure`). **No departure:** `def:pencil-d-configuration` (the point by its blocks, `m`
+  heights); `lem:pencil-d-config-realization` (the proof's steps); `def:pencil-d-x0-attains` and
+  `lem:pencil-d-x0-attains-three` (`def:pencil-x0-attains` at `m` heights; one height);
+  `-rank-collineation` (the join under `⋀²g`); `-rank-scale-shift` (the chapter's map);
+  `-x0-one-witness` (the `d = 3` proof, one section per height); `-join-independence-open` (the
+  `2 × 2` minors).
+- [x] **4. PD-STABLE (42c)** (`6cd638f4`). `sec:pencil-d-stable`, 9 light to medium nodes,
+  against `Molecular/Deficiency.lean`, `Grade/Embedding.lean`, `-ZeroHeights`, `-Configuration`
+  and `-Stable`. **New row:** R-37 (`lem:deficiency-stable`'s equality, by antisymmetry, `no
+  departure`). **No departure:** `def:pencil-d-embedding` (`⋀²ι` injective by mathlib, a left
+  inverse of `ι` for `π`); `lem:pencil-d-embedding-join` (the one line); `lem:screw-embedding-rank`
+  (the chapter's split, then rank–nullity); `lem:pencil-d-embed-realization` (the argument of
+  `-point-configuration` (2), so the *unbacked* edge to it); `-embed-config-rank` (`ι` coordinate
+  by coordinate); `-x0-attains-of-le`, `-x0-attains-distinct` (the proofs' steps);
+  `thm:pencil-d-deficiency-two-le-three` (`d′ = 3`).
+- [x] **5. COUNT-A and COUNT-B (42d)** (`6cb0f5ad`). `sec:pencil-d-deficiency`, 11 medium nodes,
+  against `Molecular/Induction/SparseDeficiency.lean` and `Grade/TheoremS.lean`. **New row:** R-38
+  (`lem:deficiency-tight-part`'s case `Z = V(G)`, `no departure`). **No departure**, each the
+  chapter's steps in its order: `lem:deficiency-planar-nonpos`, `-rigid-higher`, `-core-bound-d`,
+  `-one-body-chain-d`, `-two-body-chain-d`; `def:pencil-d-usable-chain` (verbatim);
+  `lem:pencil-d-maximal-rigid-core`, `thm:pencil-d-theorem-s`, `lem:pencil-d-chain-core`,
+  `-core-positive-deficiency` (its two *unbacked* edges the helpers the chapter cites). The two
+  dead pins are §3's fold.
+- [x] **6. PD-CARRIER (42e)** (this commit). `sec:pencil-d-induction` and `sec:pencil-d-flat`, 4
+  medium nodes, against `Grade/ConditionLinear.lean` and `Grade/Flat.lean` (13 pins, 12 distinct).
+  **New row:** R-39 (`thm:pencil-d-flat-rank`'s second paragraph, a second proof no Lean follows,
+  `no departure`). **No departure:** `lem:pencil-d-condition-linear` (the chapter's steps: `π` an
+  isomorphism of `S` onto `K³` when `dim S ≤ 3`; the converse by `S ⊆ range σ_v` and three
+  independent points, where the chapter says `π(S) = K³`; `Π_v^⊥` by `finrank_dotPerp`; the "in
+  particular" on heights vanishing off `V(G)`, R-6's restriction); `thm:pencil-d-flat-rank`'s first
+  paragraph (the Lean's; its equivalence at every `n`, read at `2` and at `d`);
+  `cor:pencil-d-flat-attains` and `cor:pencil-d-jj-flat` (the chapter's steps in its order). The
+  one missing edge is task 2's sweep. **For tasks 9 and 10:** the condition lemma's pins other than
+  `gradeSigma` are dead; the four nodes whose pins reach it (`lem:pencil-d-ear-data`,
+  `-planes-meet`, `thm:pencil-d-open-ear-four`, `-three`) use `σ_v` and its facts
+  (`gradeSigma_injective`, `pencilConfigPointGrade_eq_gradeSigma_iff`), not its equivalences: to
+  read against their proofs' citations of it.
 - [ ] **7. PD-STEPS (42f), the cut and the contraction.** `sec:pencil-d-cut` and
   `sec:pencil-d-contract` (1553–2115), 6 heavy nodes (`thm:pencil-d-contract-additive`'s proof is
   149 lines): `lem:pencil-d-lifting-restrict`, `thm:pencil-d-cut`, `thm:pencil-d-bridge`,
@@ -290,11 +249,13 @@ re-checks (accurate or corrected) and the nodes judged no departure.
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 6, PD-CARRIER (42e). One Opus recon reads the four nodes of
-`sec:pencil-d-induction` and `sec:pencil-d-flat` (proofs of 13 to 46 lines) against their pins in
-`Grade/ConditionLinear.lean` and `Grade/Flat.lean` under *The audit's criterion*, then lands one
-docs commit: any new rows in `notes/Cleanup42.md` §2 (from R-39), its **Status** counts, and task
-6's line here with its verdicts. Then tasks 7–15 in order, and the stop.
+**Next concrete task:** task 7, PD-STEPS (42f), the cut and the contraction. One Opus recon reads
+the six heavy nodes of `sec:pencil-d-cut` and `sec:pencil-d-contract` (lines 1553–2115;
+`thm:pencil-d-contract-additive`'s proof is 149 lines) against their pins in `Grade/Cut.lean`,
+`MainComponent/Cut.lean` (`eval_restrictPoly`) and `Grade/ContractAdditive.lean` under *The
+audit's criterion*, then lands one docs commit: any new rows in `notes/Cleanup42.md` §2 (from
+R-40), its **Status** counts, and task 7's line here with its verdicts. Then tasks 8–15 in order,
+and the stop.
 
 ## Decisions made during this round
 

@@ -9,9 +9,10 @@ row to §2 for each departure, with no prose or Lean edit, then a stop at which 
 remedy per `open` row and plans rounds 2+ (§3). `.claude/autopilot/queue.toml` carries it as
 `CLEANUP-42`, attended, between PENCIL-D (done) and ORIGAMI; ROADMAP *Queued post-program phases*
 lists it. Its input is the proof-route ledger (§2): 34 rows at Phase 42's close (2026-11-05), 27
-`open`, 6 `aligned`, 1 `no departure`, to which round 1 adds; after its task 5, 38 rows, 28 `open`,
-6 `aligned` and 4 `no departure` (R-35 `open`, R-36 to R-38 `no departure`). **Next concrete
-task:** round 1's task 6, PD-CARRIER (`notes/Phase42-cleanup.md` *Lemma checklist*).
+`open`, 6 `aligned`, 1 `no departure`, to which round 1 adds; after its task 6, 39 rows, 28 `open`,
+6 `aligned` and 5 `no departure` (R-35 `open`, R-36 to R-39 `no departure`). **Next concrete
+task:** round 1's task 7, PD-STEPS (42f), the cut and the contraction (`notes/Phase42-cleanup.md`
+*Lemma checklist*).
 
 ## 1. The PI's decisions (verbatim)
 
@@ -600,6 +601,20 @@ task in `notes/Phase42-cleanup.md`, and its re-checks of R-1 to R-34 are recorde
   case, the refinement `R` of `Z` glued to `P` outside it (`exists_glue`) and split, covers every
   `Z`, and `{Z}` attains the bound (`deficiency_nonneg`). The pin is at every `n`, for the part of
   each body `u`.
+
+- **R-39** · `thm:pencil-d-flat-rank`, its proof's second paragraph
+  (`Graph.finrank_span_rigidityRows_ofNormals_flat_grade`, `Grade/Flat.lean`, round 1 task 6) ·
+  **no departure**: the proof gives the exact rank twice. Its first paragraph is the Lean's: with no
+  height the points are the homogeneous picture points
+  (`pencilConfigPointGrade_eq_pencilPicturePoint`), so the rank is the plane framework's
+  `3|V(G)| − dim L(q)` (`Graph.finrank_span_rigidityRows_ofNormals_pencilPicturePoint`), and the
+  `d − 2` zero heights add `(D − 3)(|V(G)| − 1)` (`lem:pencil-d-embed-config-rank` at `d′ = 2`:
+  `Graph.finrank_span_rigidityRows_ofNormals_pencilConfigPointGrade_padHeights` at `m′ = 0`, the
+  padding of no height being the zero heights). Its second paragraph carries the `d = 3` proof's
+  count of motions to every dimension (the component in a complement of `⋀²Ĥ` constant, that in
+  `⋀²Ĥ` a family of lifting planes, so `D − 3 + dim L(q)` motions, then rank–nullity). It is
+  sound, and no Lean follows it; the first paragraph is complete without it, so it stands as the
+  comparison with `d = 3` that the chapter's nodes close with, here written out as a second proof.
 
 ## 3. The cleanup's rounds
 
