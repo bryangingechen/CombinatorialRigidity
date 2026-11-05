@@ -12,12 +12,20 @@ nine lemma statements; seven builds planned. **Build 1 landed** (2026-11-05):
 `Grade/LiftSmall.lean`, `lem:pencil-d-lift-small` green. **Build 2 landed** (2026-11-05):
 `Grade/LiftCases.lean`, `lem:pencil-d-lift-pendant`, `-lift-ear` (with `EarLiftCondition`) and
 `-lift-pendant-triangle` green. **Build 3 landed** (2026-11-05): `Grade/LiftCutEdge.lean`,
-`lem:pencil-d-lift-cut-edge` green (five of the eleven red nodes; six remain).
-Next (*Hand-off*): build 4, `Grade/GoodEar.lean`.
+`lem:pencil-d-lift-cut-edge` green. **Build 4 landed** (2026-11-05): `Grade/GoodEar.lean`,
+`lem:pencil-d-good-ear` green, `Graph.IsPencilGoodEar` (six of the eleven red nodes; five remain).
+Next (*Hand-off*): build 5, `Grade/LiftNoRigid.lean`.
 
 ## Current state
 
-**Next: build 4** (*Hand-off*). In the tree: `Grade/LiftCutEdge.lean` (build 3:
+**Next: build 5** (*Hand-off*). In the tree: `Grade/GoodEar.lean` (build 4: `Graph.IsPencilGoodEar`,
+`Graph.IsX0Graph.exists_goodEar_or_pendantTriangle`, with `Graph.ncard_setOf_isLink_le_ncard_adj`,
+`Graph.preconnected_of_deficiency_two_lt`, `Graph.deficiency_two_induce_le_one_of_tight`,
+`three_le_bodyBarDim`; and in `MainComponent/GoodEar.lean` the core
+`Graph.IsX0Graph.exists_minimalRigid_ear_or_pendantTriangle` and `Graph.closedEar_two_of_triangle`,
+the old theorem and `exists_closedEar_two_of_triangle` now corollaries, statements unchanged; on the
+three standard axioms, whole-project build, `lake lint`, `blueprint/lint.sh` and
+`blueprint/verify.sh` clean), `Grade/LiftCutEdge.lean` (build 3:
 `liftAttains_of_cutEdge`, `cutEdge_T1`, `cutEdge_T2`, `cutEdge_rank`, the glue `exists_cutEdge_glue`
 with `cutEdge_glue`, `cutEdge_side`, `exists_frame_linearEquiv`, `exists_basis_frame`,
 `exists_dotProduct_eq_one_zero`, `exists_dotProduct_eq_zero_avoid`,
@@ -119,7 +127,7 @@ Build numbers are *Hand-off*'s. "Spiked" means sorry-free in `scratch/42m/Spike.
 - [x] `lem:pencil-d-lift-pendant`: sorry-free (build 2; R-24 to R-26).
 - [x] `lem:pencil-d-lift-pendant-triangle`: sorry-free, on the pendant's template (build 2; R-29).
 - [ ] `lem:pencil-d-lift-no-rigid`: new (build 5).
-- [ ] `lem:pencil-d-good-ear`, both outcomes, parts (i) to (v): a transcription (build 4).
+- [x] `lem:pencil-d-good-ear`, both outcomes, parts (i) to (v), sorry-free (build 4; R-31).
 - [x] `lem:pencil-d-lift-ear`: sorry-free, with `EarLiftCondition` (build 2; R-24, R-26).
 - [ ] `lem:pencil-d-ear-extend`: new (build 6).
 - [ ] `lem:pencil-d-ear-free`: new (build 6).
@@ -136,7 +144,7 @@ Build numbers are *Hand-off*'s. "Spiked" means sorry-free in `scratch/42m/Spike.
 
 ## Blockers / open questions
 
-- None blocking build 4. What the builds still carry:
+- None blocking build 5. What the builds still carry:
   - **Unspiked new math** (the routes are under *Hand-off*; the chapter's proofs were re-read
     against the carrier and none is false): the least `dim L̃` at the configuration
     (`-lift-no-rigid`), and `-ear-extend` with `-ear-free`. Each is one build; a
@@ -154,19 +162,13 @@ Build numbers are *Hand-off*'s. "Spiked" means sorry-free in `scratch/42m/Spike.
 
 ## Hand-off / next phase
 
-Builds 1 to 3 landed (`Grade/LiftSmall.lean`; `Grade/LiftCases.lean`, three nodes;
-`Grade/LiftCutEdge.lean`, the cut edge, its glue on the recon's frame-map route, R-30). What the
+Builds 1 to 4 landed (`Grade/LiftSmall.lean`; `Grade/LiftCases.lean`, three nodes;
+`Grade/LiftCutEdge.lean`, the cut edge, its glue on the recon's frame-map route, R-30;
+`Grade/GoodEar.lean`, the good ear on a `W₀`-returning core of the `d = 3` proof, R-31). What the
 spike still holds for later builds, each to land in its build's file: `bnPoint_zero`,
 `exists_holdsGenerally_finrank_liftSpaceTilde_le` (build 5, its `Grade/LiftWitness.lean` pin), and
 the assembly (build 7, whose call of `liftAttains_of_cutEdge` drops `h₁ h₂`). The next concrete
-commit is build 4. Then:
-- **Build 4**, `Grade/GoodEar.lean` (graph theory; may go first): `Graph.IsPencilGoodEar` and
-  `exists_goodEar_or_pendantTriangle`, re-opening `exists_oneEar_or_pendantTriangle`'s proof to
-  return `W₀`; (iii) by `Graph.exists_eq_triple_of_minimal` at `x` and `a`,
-  `partitionDef_two_induce_insert_id` and `Graph.partitionDef_add_partitionDef_induce_id_le`; (iv)
-  by `deficiency_three_induce_eq_zero_of_tight`, `deficiency_eq_zero_of_deficiency_eq_zero_of_le`
-  (`3 → n`), `deficiencyMerged_eq_deficiency_of_mem` and `IsOpenEar.deficiency_induce_le` at `n`,
-  and `partitionDef_induce_insert` for `≥`; (v) from (i) and `hF1`. One node.
+commit is build 5. Then:
 - **Build 5**, `Grade/LiftNoRigid.lean` (and the least-value lemma into `Grade/LiftWitness.lean`):
   the configuration as `GenericBase.lean`'s `d = 3` proof (`q` off `hatt`'s `P`, the
   Jackson–Jordán polynomial, `exists_det_poly`, `exists_planes_separate`; `z ∈ L(q)^{r+1}` with
@@ -210,7 +212,7 @@ commit is build 4. Then:
   `LiftWitness.lean`, and `Graph.graded_pencil_realization_theorem` (`Grade/Reduction.lean`).
 - **The standing rule** (design doc §3): every recon and build adds a `notes/Cleanup42.md` §2 row
   where its Lean departs from the chapter's proof, in the same commit. Open: R-3 to R-5, R-9 to
-  R-12, R-14 to R-21, R-23 to R-30; aligned: R-1, R-2, R-7, R-8, R-13, R-22; R-6 no departure.
+  R-12, R-14 to R-21, R-23 to R-31; aligned: R-1, R-2, R-7, R-8, R-13, R-22; R-6 no departure.
 
 ## Decisions made during this phase
 

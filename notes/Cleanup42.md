@@ -432,6 +432,28 @@ valid. The cleanup chooses one per `open` row, with the PI.
   maps' coordinates. `|V₁|, |V₂| ≥ 2` is unused, and the pin drops it (stronger than the node).
   *Remedies:* the prose to the Lean (one frame map, one minor, no replaced normal, no size
   hypothesis), or keep both.
+- **R-31** · `lem:pencil-d-good-ear` (`Graph.IsPencilGoodEar`, `exists_goodEar_or_pendantTriangle`,
+  `exists_minimalRigid_ear_or_pendantTriangle`, `Grade/GoodEar.lean`, 42m build 4) · **open** (the
+  Lean landed as below; the chapter stays as the prose).
+  *Chapter:* the proof of `lem:pencil-rigid-good-ear` returns the pendant triangle or `x`; (iii)
+  runs the triangle argument at `x` and `a`, then `s(X) = s(W₀) + 1` and the singleton bound for
+  `def₂(G[X]) = 1`, and a disconnected `G[X]` has `s(X) ≥ 3`; (iv) at every `d ≥ 3` from
+  `def_d(G[X]) = 0`, the merged deficiency and the ear's bound, and a partition of `V(G)` is at
+  most its restriction; (v) from (i) and `hF1`.
+  *Lean:* `exists_oneEar_or_pendantTriangle`'s proof is split at its core
+  (`exists_minimalRigid_ear_or_pendantTriangle`, returning `W₀`, the ear's data and the hubs; the
+  old theorem is now its corollary, statement unchanged), and `closedEar_two_of_triangle` states
+  the pendant triangle with its end explicit (the end's degree at least four). (iii)'s
+  `def₂(G[X]) = 1` is the partition case split at `n = 2` (`deficiency_two_induce_le_one_of_tight`,
+  beside `deficiency_three_induce_eq_zero_of_tight`'s at `n = 3`), connectivity is
+  `preconnected_of_deficiency_two_lt` (a component with no edge across adds `D = 3` by
+  `deficiency_eq_of_cutEdges_ncard_le_one`, not through `s`), and the two-neighbour step for
+  an end is the triangle lemma's hypothesis at `(x, a)`. (iv)'s lower bound is
+  `partitionDef_induce_insert` at `x` with two edges to the other labels. The index of
+  `deficiency n` is the chapter's `d` (`bodyBarDim 2 = 3`, `(i)`'s `s` is `partitionDef 2 id`).
+  The pin adds the first outcome as `∃ x₁ x₂ c` (the chapter's two adjacent bodies of degree two
+  with a common neighbour of degree at least four).
+  *Remedies:* the prose to the Lean (no `s(X)` for connectivity), or keep both.
 
 ## 3. The cleanup (not yet planned)
 

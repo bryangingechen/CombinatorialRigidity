@@ -5824,6 +5824,8 @@ the rest of $G$, and extending them to realizations of $G$
 % S29 (1) for (iii) and S24 (1) for (iv); part (v) is S31.
 \begin{lemma}[A body of degree two in a minimal planar-rigid set, or a pendant triangle]
   \label{lem:pencil-d-good-ear}
+  \lean{Graph.IsX0Graph.exists_goodEar_or_pendantTriangle, Graph.IsPencilGoodEar}
+  \leanok
   \uses{def:pencil-x0-standing, def:D-deficiency, def:cut-edges-2ec,
         def:pencil-nondegenerate}
   Let $G$ satisfy the standing hypotheses (\cref{def:pencil-x0-standing})
@@ -5853,6 +5855,7 @@ the rest of $G$, and extending them to realizations of $G$
   \end{enumerate}
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-rigid-good-ear, lem:deficiency-sparse,
         lem:deficiency-add-body, lem:deficiency-singleton-bound,
         lem:deficiency-tight-rigid, lem:deficiency-rigid-higher,

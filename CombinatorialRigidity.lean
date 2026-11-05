@@ -58,6 +58,7 @@ public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.GluedEnds
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.JoinIndependence
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Nondegenerate
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Feasible
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.GoodEar
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Lift
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.LiftCases
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.LiftCutEdge

@@ -129,14 +129,17 @@ with a common neighbour `w`. Then `w − y − u − w` is a closed ear on `V(G)
 interior bodies, in the form of the hypotheses of `Graph.X0Attains.of_closedEar`, and `w` has degree
 at least four: at least two links leave the triangle, as `G` is 2-edge-connected on at least four
 bodies, and all of them are at `w`. -/
-theorem _root_.Graph.exists_closedEar_two_of_triangle [Finite β]
+theorem _root_.Graph.closedEar_two_of_triangle [Finite β]
     {G : Graph α β} (hS : G.Simple) (htec : G.TwoEdgeConnected) (h4 : 4 ≤ V(G).ncard)
     {y u w : α} (hy2 : G.degree y = 2) (hu2 : G.degree u = 2) (hyw : G.Adj y w) (huw : G.Adj u w)
     (huy : G.Adj u y) :
-    ∃ (V₁ : Set α) (x : Fin 2 → α) (c : α) (e : Fin 3 → β),
-      V(G) = V₁ ∪ Set.range x ∧ Function.Injective x ∧ (∀ i, x i ∉ V₁) ∧ c ∈ V₁ ∧
-      (∀ i : Fin 3, G.IsLink (e i) (pathVertex c x c i.castSucc) (pathVertex c x c i.succ)) ∧
-      (∀ f u w, G.IsLink f u w → (∀ i, f ≠ e i) → u ∈ V₁ ∧ w ∈ V₁) ∧ 4 ≤ G.degree c := by
+    ∃ e : Fin 3 → β,
+      V(G) = V(G) \ {y, u} ∪ Set.range ![y, u] ∧ Function.Injective ![y, u] ∧
+      (∀ i, ![y, u] i ∉ V(G) \ {y, u}) ∧ w ∈ V(G) \ {y, u} ∧
+      (∀ i : Fin 3, G.IsLink (e i) (pathVertex w ![y, u] w i.castSucc)
+        (pathVertex w ![y, u] w i.succ)) ∧
+      (∀ f p q, G.IsLink f p q → (∀ i, f ≠ e i) → p ∈ V(G) \ {y, u} ∧ q ∈ V(G) \ {y, u}) ∧
+      4 ≤ G.degree w := by
   have := hS
   -- adjacent bodies of a simple graph are distinct
   have hyu : y ≠ u := huy.ne.symm
@@ -159,7 +162,7 @@ theorem _root_.Graph.exists_closedEar_two_of_triangle [Finite β]
   have hyV : y ∈ V(G) := hg₁.left_mem
   have huV : u ∈ V(G) := hg₂.left_mem
   have hwV : w ∈ V(G) := hg₁.right_mem
-  refine ⟨V(G) \ {y, u}, ![y, u], w, ![g₁, g₃, g₂], ?_, ?_, ?_,
+  refine ⟨![g₁, g₃, g₂], ?_, ?_, ?_,
     ⟨hwV, fun h => h.elim hwy hwu⟩, ?_, ?_, ?_⟩
   · ext v
     simp only [Set.mem_union, Set.mem_sdiff, Set.mem_insert_iff, Set.mem_singleton_iff,
@@ -235,40 +238,41 @@ theorem _root_.Graph.exists_closedEar_two_of_triangle [Finite β]
     have h3 := Set.ncard_le_ncard hsub1 (Set.toFinite _)
     omega
 
-/-- **A body of degree two with hub neighbours, or a pendant triangle**
-(`lem:pencil-rigid-good-ear`): let `G` satisfy the standing hypotheses and be 2-edge-connected on at
-least four bodies, with every closed hub-neighbourhood of at most three members, no triangle
-containing two pencil hubs, and a planar-rigid set. Then `G` has an open ear `a − x 0 − b` on `V₁`
-with one interior body, whose ends are pencil hubs, with `def₃(G[V₁]) ≤ def₃(G)`; or a closed ear
-`c − x 0 − x 1 − c` on `V₁` whose end `c` has degree at least four.
+/-- **A pendant triangle is a closed ear** (`lem:pencil-rigid-good-ear`), with the interior bodies
+and the end left existential: `Graph.closedEar_two_of_triangle` at `V₁ = V(G) \ {y, u}`. -/
+theorem _root_.Graph.exists_closedEar_two_of_triangle [Finite β]
+    {G : Graph α β} (hS : G.Simple) (htec : G.TwoEdgeConnected) (h4 : 4 ≤ V(G).ncard)
+    {y u w : α} (hy2 : G.degree y = 2) (hu2 : G.degree u = 2) (hyw : G.Adj y w) (huw : G.Adj u w)
+    (huy : G.Adj u y) :
+    ∃ (V₁ : Set α) (x : Fin 2 → α) (c : α) (e : Fin 3 → β),
+      V(G) = V₁ ∪ Set.range x ∧ Function.Injective x ∧ (∀ i, x i ∉ V₁) ∧ c ∈ V₁ ∧
+      (∀ i : Fin 3, G.IsLink (e i) (pathVertex c x c i.castSucc) (pathVertex c x c i.succ)) ∧
+      (∀ f u w, G.IsLink f u w → (∀ i, f ≠ e i) → u ∈ V₁ ∧ w ∈ V₁) ∧ 4 ≤ G.degree c := by
+  obtain ⟨e, h⟩ := Graph.closedEar_two_of_triangle hS htec h4 hy2 hu2 hyw huw huy
+  exact ⟨_, _, w, e, h⟩
 
-A planar-rigid set `W₀` with as few bodies as possible has `s(W₀) ≤ 0`, and its proper subsets of at
-least two bodies have singleton value at least `1`
-(`Graph.exists_deficiency_induce_eq_zero_of_partitionDef_id_nonpos`, `lem:deficiency-sparse`). Then
-`|W₀| ≥ 3`, and every body of `W₀` has at least two links into the rest of `W₀`
-(`Graph.partitionDef_two_induce_insert_id`, `lem:deficiency-add-body`). If every body of `W₀` were a
-pencil hub, each would have at most two hub neighbours, and `W₀` would be a triangle of hubs
-(`Graph.exists_eq_triple_of_minimal`), which is excluded. A body `y ∈ W₀` that is not a hub has
-degree two, with both neighbours `a` and `b` in `W₀`. If one of them is not a hub, it has degree two
-too, and `W₀` is a pendant triangle (`Graph.exists_eq_triple_of_minimal`,
-`Graph.exists_closedEar_two_of_triangle`). If both are hubs, `X = W₀ \ {y}` has `s(X) ≤ 1` and at
-least three bodies, as two would form with `y` a triangle with two hubs. So `X` is rigid
-(`Graph.deficiency_three_induce_eq_zero_of_tight`, `lem:deficiency-tight-rigid`), and
-`def₃(G − y; a, b) = def₃(G − y)` (`Graph.deficiencyMerged_eq_deficiency_of_mem`,
-`lem:deficiency-merge-rigid`) gives `def₃(G − y) ≤ def₃(G)`
-(`Graph.IsOpenEar.deficiency_induce_le`). -/
-theorem _root_.Graph.IsX0Graph.exists_oneEar_or_pendantTriangle [Finite α] [Finite β]
+/-- **The core of the good ear** (`lem:pencil-rigid-good-ear`, `lem:pencil-d-good-ear`): under the
+hypotheses of `Graph.IsX0Graph.exists_oneEar_or_pendantTriangle`, a planar-rigid set `W₀` with as
+few bodies as possible has `s(W₀) ≤ 0`, every proper subset of at least two bodies has singleton
+value at least `1`, and every body of `W₀` has two links into the rest of `W₀`. Then `G` has a body
+`y ∈ W₀` of degree two whose neighbours `a ≠ b` in `W₀` are pencil hubs, with `W₀ \ {y}` of at
+least three bodies and singleton value at most `1`; or a pendant triangle with its common neighbour
+of degree at least four. -/
+theorem _root_.Graph.IsX0Graph.exists_minimalRigid_ear_or_pendantTriangle [Finite α] [Finite β]
     {G : Graph α β} (hG : G.IsX0Graph) (htec : G.TwoEdgeConnected) (h4 : 4 ≤ V(G).ncard)
     (hF1 : ∀ v, (G.closedHubNbhd v).ncard ≤ 3)
     (hF2 : ∀ e₁ e₂ e₃ x y z, x ≠ y → y ≠ z → x ≠ z → G.IsLink e₁ x y → G.IsLink e₂ y z →
       G.IsLink e₃ z x → G.PencilHub y → G.PencilHub z → False)
     (hrig : ∃ Y ⊆ V(G), 2 ≤ Y.ncard ∧ (G.induce Y).deficiency 2 = 0) :
-    (∃ (V₁ : Set α) (x : Fin 1 → α) (a b : α) (e : Fin 2 → β), G.IsOpenEar V₁ x a b e ∧
-      G.PencilHub a ∧ G.PencilHub b ∧ (G.induce V₁).deficiency 3 ≤ G.deficiency 3) ∨
-    (∃ (V₁ : Set α) (x : Fin 2 → α) (c : α) (e : Fin 3 → β),
-      V(G) = V₁ ∪ Set.range x ∧ Function.Injective x ∧ (∀ i, x i ∉ V₁) ∧ c ∈ V₁ ∧
-      (∀ i : Fin 3, G.IsLink (e i) (pathVertex c x c i.castSucc) (pathVertex c x c i.succ)) ∧
-      (∀ f u w, G.IsLink f u w → (∀ i, f ≠ e i) → u ∈ V₁ ∧ w ∈ V₁) ∧ 4 ≤ G.degree c) := by
+    (∃ (W₀ : Set α) (y a b : α) (e₁ e₂ : β), W₀ ⊆ V(G) ∧
+      (G.induce W₀).partitionDef 2 id ≤ 0 ∧
+      (∀ Z ⊆ W₀, Z ≠ W₀ → 2 ≤ Z.ncard → 1 ≤ (G.induce Z).partitionDef 2 id) ∧
+      (∀ v ∈ W₀, 2 ≤ ({e | ∃ z ∈ W₀ \ {v}, G.IsLink e v z} : Set β).ncard) ∧
+      y ∈ W₀ ∧ G.degree y = 2 ∧ a ∈ W₀ \ {y} ∧ b ∈ W₀ \ {y} ∧ G.IsLink e₁ y a ∧
+      G.IsLink e₂ y b ∧ a ≠ b ∧ G.PencilHub a ∧ G.PencilHub b ∧ 3 ≤ (W₀ \ {y}).ncard ∧
+      (G.induce (W₀ \ {y})).partitionDef 2 id ≤ 1) ∨
+    (∃ y u w : α, G.degree y = 2 ∧ G.degree u = 2 ∧ G.Adj y u ∧ G.Adj y w ∧ G.Adj u w ∧
+      4 ≤ G.degree w) := by
   have := hG.simple
   -- `W₀`, a minimal planar-rigid set
   obtain ⟨W₀, ⟨hW₀V, hW₀2, hW₀d⟩, hmin⟩ := Set.exists_min_image
@@ -351,13 +355,8 @@ theorem _root_.Graph.IsX0Graph.exists_oneEar_or_pendantTriangle [Finite α] [Fin
         rw [Set.mem_singleton_iff] at hz
         rw [hz] at hg
         exact hF2 e₁ g e₂ y a b hya hab hyb h₁ hg h₂.symm ha hb
-      · have hXd := Graph.deficiency_three_induce_eq_zero_of_tight hSX hX3 hX1
-        have hear := hG.isOpenEar_one hy2 h₁.symm h₂ hab
-        have hXV : W₀ \ {y} ⊆ V(G) \ {y} := fun v hv => ⟨hW₀V hv.1, hv.2⟩
-        have hδ := Graph.deficiencyMerged_eq_deficiency_of_mem (G := G.induce (V(G) \ {y}))
-          (n := 3) (by decide) hXV
-          (by rw [Graph.induce_induce_of_subset G hXV]; exact hXd) haX hbX
-        exact ⟨_, _, a, b, _, hear, ha, hb, hear.deficiency_induce_le hδ⟩
+      · exact ⟨W₀, y, a, b, e₁, e₂, hW₀V, hW₀v, hS, ht2, hy, hy2, haX, hbX, h₁, h₂, hab, ha, hb,
+          hX3, hX1⟩
     · -- **the pendant triangle**, at a neighbour `u` of `y` that is not a hub
       right
       obtain ⟨u, hu, f, hf, huh⟩ : ∃ u ∈ W₀ \ {y}, ∃ f, G.IsLink f y u ∧ ¬ G.PencilHub u := by
@@ -391,7 +390,9 @@ theorem _root_.Graph.IsX0Graph.exists_oneEar_or_pendantTriangle [Finite α] [Fin
           (fun h => hc₁.2 (Or.inl h.symm)) (fun h => hc₂.2 (Or.inl h.symm)))
       obtain ⟨w, -, -, -, hyw, huw, huy⟩ :=
         Graph.exists_eq_triple_of_minimal hG.simple hS hW₀v hW₀3 hy hu.1 hyu hty htu
-      exact Graph.exists_closedEar_two_of_triangle hG.simple htec h4 hy2 hu2 hyw huw huy
+      obtain ⟨e, -, -, -, -, -, -, hc⟩ :=
+        Graph.closedEar_two_of_triangle hG.simple htec h4 hy2 hu2 hyw huw huy
+      exact ⟨y, u, w, hy2, hu2, ⟨f, hf⟩, hyw, huw, hc⟩
   · -- every body of `W₀` a hub: a triangle of hubs, which `hF2` excludes
     push Not at hnh
     exfalso
@@ -437,5 +438,57 @@ theorem _root_.Graph.IsX0Graph.exists_oneEar_or_pendantTriangle [Finite α] [Fin
     have hwW : w ∈ W₀ := by rw [hW]; exact Or.inr (Or.inr rfl)
     exact hF2 g₃ g₂ g₁ y u w hyu (Ne.symm hwu) (Ne.symm hwy) hg₃.symm hg₂ hg₁.symm (hnh u hu.1)
       (hnh w hwW)
+
+/-- **A body of degree two with hub neighbours, or a pendant triangle**
+(`lem:pencil-rigid-good-ear`): let `G` satisfy the standing hypotheses and be 2-edge-connected on at
+least four bodies, with every closed hub-neighbourhood of at most three members, no triangle
+containing two pencil hubs, and a planar-rigid set. Then `G` has an open ear `a − x 0 − b` on `V₁`
+with one interior body, whose ends are pencil hubs, with `def₃(G[V₁]) ≤ def₃(G)`; or a closed ear
+`c − x 0 − x 1 − c` on `V₁` whose end `c` has degree at least four.
+
+A planar-rigid set `W₀` with as few bodies as possible has `s(W₀) ≤ 0`, and its proper subsets of at
+least two bodies have singleton value at least `1`
+(`Graph.exists_deficiency_induce_eq_zero_of_partitionDef_id_nonpos`, `lem:deficiency-sparse`). Then
+`|W₀| ≥ 3`, and every body of `W₀` has at least two links into the rest of `W₀`
+(`Graph.partitionDef_two_induce_insert_id`, `lem:deficiency-add-body`). If every body of `W₀` were a
+pencil hub, each would have at most two hub neighbours, and `W₀` would be a triangle of hubs
+(`Graph.exists_eq_triple_of_minimal`), which is excluded. A body `y ∈ W₀` that is not a hub has
+degree two, with both neighbours `a` and `b` in `W₀`. If one of them is not a hub, it has degree two
+too, and `W₀` is a pendant triangle (`Graph.exists_eq_triple_of_minimal`,
+`Graph.exists_closedEar_two_of_triangle`). If both are hubs, `X = W₀ \ {y}` has `s(X) ≤ 1` and at
+least three bodies, as two would form with `y` a triangle with two hubs. So `X` is rigid
+(`Graph.deficiency_three_induce_eq_zero_of_tight`, `lem:deficiency-tight-rigid`), and
+`def₃(G − y; a, b) = def₃(G − y)` (`Graph.deficiencyMerged_eq_deficiency_of_mem`,
+`lem:deficiency-merge-rigid`) gives `def₃(G − y) ≤ def₃(G)`
+(`Graph.IsOpenEar.deficiency_induce_le`). -/
+theorem _root_.Graph.IsX0Graph.exists_oneEar_or_pendantTriangle [Finite α] [Finite β]
+    {G : Graph α β} (hG : G.IsX0Graph) (htec : G.TwoEdgeConnected) (h4 : 4 ≤ V(G).ncard)
+    (hF1 : ∀ v, (G.closedHubNbhd v).ncard ≤ 3)
+    (hF2 : ∀ e₁ e₂ e₃ x y z, x ≠ y → y ≠ z → x ≠ z → G.IsLink e₁ x y → G.IsLink e₂ y z →
+      G.IsLink e₃ z x → G.PencilHub y → G.PencilHub z → False)
+    (hrig : ∃ Y ⊆ V(G), 2 ≤ Y.ncard ∧ (G.induce Y).deficiency 2 = 0) :
+    (∃ (V₁ : Set α) (x : Fin 1 → α) (a b : α) (e : Fin 2 → β), G.IsOpenEar V₁ x a b e ∧
+      G.PencilHub a ∧ G.PencilHub b ∧ (G.induce V₁).deficiency 3 ≤ G.deficiency 3) ∨
+    (∃ (V₁ : Set α) (x : Fin 2 → α) (c : α) (e : Fin 3 → β),
+      V(G) = V₁ ∪ Set.range x ∧ Function.Injective x ∧ (∀ i, x i ∉ V₁) ∧ c ∈ V₁ ∧
+      (∀ i : Fin 3, G.IsLink (e i) (pathVertex c x c i.castSucc) (pathVertex c x c i.succ)) ∧
+      (∀ f u w, G.IsLink f u w → (∀ i, f ≠ e i) → u ∈ V₁ ∧ w ∈ V₁) ∧ 4 ≤ G.degree c) := by
+  rcases hG.exists_minimalRigid_ear_or_pendantTriangle htec h4 hF1 hF2 hrig with
+    ⟨W₀, y, a, b, e₁, e₂, hW₀V, hW₀v, hS, -, hy, hy2, haX, hbX, h₁, h₂, hab, ha, hb, hX3, hX1⟩ |
+    ⟨y, u, w, hy2, hu2, hyu, hyw, huw, -⟩
+  · left
+    have hyX : y ∉ W₀ \ {y} := fun h => h.2 rfl
+    have hSX : ∀ Z ⊆ W₀ \ {y}, 2 ≤ Z.ncard → 1 ≤ (G.induce Z).partitionDef 2 id :=
+      fun Z hZ hZ2 => hS Z (hZ.trans Set.sdiff_subset)
+        (fun h => hyX (hZ (by rw [h]; exact hy))) hZ2
+    have hXd := Graph.deficiency_three_induce_eq_zero_of_tight hSX hX3 hX1
+    have hear := hG.isOpenEar_one hy2 h₁.symm h₂ hab
+    have hXV : W₀ \ {y} ⊆ V(G) \ {y} := fun v hv => ⟨hW₀V hv.1, hv.2⟩
+    have hδ := Graph.deficiencyMerged_eq_deficiency_of_mem (G := G.induce (V(G) \ {y}))
+      (n := 3) (by decide) hXV
+      (by rw [Graph.induce_induce_of_subset G hXV]; exact hXd) haX hbX
+    exact ⟨_, _, a, b, _, hear, ha, hb, hear.deficiency_induce_le hδ⟩
+  · right
+    exact Graph.exists_closedEar_two_of_triangle hG.simple htec h4 hy2 hu2 hyw huw hyu.symm
 
 end CombinatorialRigidity.Molecular
