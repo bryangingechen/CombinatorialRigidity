@@ -5,25 +5,30 @@ Authors: Bryan Gin-ge Chen
 -/
 module
 
-public import CombinatorialRigidity.Molecular.Molecule.Pencil.Statement
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Arms
 
 /-!
-# The base case of the pencil reduction
+# The loop, base and cut-edge cases of the pencil reduction
 
-The base case of the induction of `sec:pencil-reduction` (`lem:pencil-base-case`): every loopless
-multigraph on one or two bodies has a pencil realization at the deficiency rank. Every body gets the
-same normal and the same point of its panel, and the edges get two independent hinges in that panel
-through that point (`lem:extensor-pair-through-point`). The loop and cut-edge cases are in
-`Arms.lean`.
+Three of the four cases of the induction of `sec:pencil-reduction`, for pencil realizations at the
+deficiency rank (`HasPencilRealization`) and, at a cut, for adjacent-distinct ones
+(`HasDistinctPencilRealization`): at a loop (`lem:pencil-loop-case`), on at most two bodies
+(`lem:pencil-base-case`), and at a cut crossed by at most one edge (`lem:pencil-cut-case`). Each is
+the case in every dimension (`Grade/Arms.lean`) at grade `2`, read through
+`hasGradedPencilRealization_two_iff` and `hasGradedDistinctPencilRealization_two_iff`
+(`lem:pencil-d-rank-agrees-three`). The fourth case, at parallel edges, is `X0.lean`.
 
 ## Main results
 
+* `hasPencilRealization_of_isLoopAt`: the loop case (`lem:pencil-loop-case`).
 * `hasPencilRealization_of_ncard_le_two`: the base case (`lem:pencil-base-case`).
+* `hasPencilRealization_of_not_twoEdgeConnected` and
+  `hasDistinctPencilRealization_of_not_twoEdgeConnected`: the cut-edge case, for pencil realizations
+  at the deficiency rank and for adjacent-distinct ones (`lem:pencil-cut-case`).
 -/
 
 @[expose] public section
 
-open scoped Matrix
 open scoped Graph
 
 namespace CombinatorialRigidity.Molecular
@@ -31,203 +36,102 @@ namespace CombinatorialRigidity.Molecular
 variable {K : Type*} [Field K]
 variable {α β : Type*}
 
+/-! ## The loop case -/
+
+/-- **The loop case** (`lem:pencil-loop-case`): let `e` be a loop of `G` at `v`. If `G ＼ {e}` has a
+pencil realization at the deficiency rank (`HasPencilRealization`), so does `G`. It is the loop case
+in every dimension (`hasGradedPencilRealization_of_isLoopAt`, `lem:pencil-d-loop-case`) at grade
+`2`, through `hasGradedPencilRealization_two_iff`: keep the realization of `G ＼ {e}` and give `e` a
+nonzero hinge in the panel of `v` through the point of `v`. The rows of a loop are zero, and
+deleting a loop changes neither the bodies nor the deficiency. -/
+theorem hasPencilRealization_of_isLoopAt {G : Graph α β} {n : ℕ} {e : β} {v : α}
+    (hloop : G.IsLoopAt e v)
+    (hrec : HasPencilRealization K n (G ＼ ({e} : Set β))) :
+    HasPencilRealization K n G := by
+  exact (hasGradedPencilRealization_two_iff n G).1 (hasGradedPencilRealization_of_isLoopAt hloop
+    ((hasGradedPencilRealization_two_iff n _).2 hrec))
+
 /-! ## The base case -/
 
 /-- **The base case** (`lem:pencil-base-case`): every loopless multigraph `G` on one or two bodies
 has a pencil realization at the deficiency rank, at `n = 3`, where
-`Graph.bodyBarDim 3 = screwDim 2 = 6`. Every body gets the normal `n₀ = Pi.single 0 1` and the point
-`q₀` of `exists_linearIndependent_extensor_pair_through_point` (`lem:extensor-pair-through-point`),
-which also gives two independent hinges `Ce` and `Cf` in that panel through `q₀`. By the edges:
-
-* No edge (one body or two): the deficiency is `D(|V(G)| - 1)`
-  (`Graph.deficiency_of_edgeSet_empty`), so the deficiency rank is `0`; every label gets `Ce`.
-* One edge `e`: the deficiency is `1` (`Graph.deficiency_of_single_edge`), and `e` gets `Ce`. The
-  rank is at least `D - 1`, as the nonzero hinge of an edge gives `D - 1` independent rows
-  (`BodyHingeFramework.exists_independent_rigidityRows_of_edge`, `lem:edge-rows-independent`), and
-  at most the deficiency rank (`BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le`,
-  `lem:relative-deficiency-rank-bound`).
-* Two edges or more, all joining the two bodies, as `G` is loopless: the deficiency is `0`, as that
-  of two of the edges `e ≠ f` is (`Graph.isKDof_zero_of_parallel_pair`, on `G ↾ {e, f}`) and adding
-  edges on the same bodies does not raise it (`Graph.deficiency_le_deficiency_of_le_vertexSet_eq`).
-  The edge `e` gets `Ce` and every other label `Cf`. The independent hinges at `e` and `f` make the
-  two bodies rigid (`BodyHingeFramework.theorem_55_base`, `lem:theorem-55-base`), so the rank is `D`
-  (`BodyHingeFramework.isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows`). -/
+`Graph.bodyBarDim 3 = screwDim 2 = 6`. It is the base case in every dimension
+(`hasGradedPencilRealization_of_ncard_le_two`, `lem:pencil-d-base-case`) at `m = 1`, through
+`hasGradedPencilRealization_two_iff`. Its construction gives every body the same normal, and the
+edges two independent hinges in that panel. With no edge the rank and the target are `0`; with one
+edge they are `D - 1`; with two edges or more the deficiency is `0` and the two bodies are rigid
+(`lem:theorem-55-base`), so the rank is `D`. -/
 theorem hasPencilRealization_of_ncard_le_two [Finite α] [Finite β] {G : Graph α β}
     (hloop : G.Loopless) (hne : V(G).Nonempty) (hV2 : V(G).ncard ≤ 2) :
     HasPencilRealization K 3 G := by
-  classical
-  have := hloop
-  have hb6 : Graph.bodyBarDim 3 = screwDim 2 := Graph.bodyBarDim_eq_screwDim_sub_one (by norm_num)
-  -- One nonzero normal `n₀` for every body, and two independent hinges `Ce`, `Cf` in its panel
-  -- through one point `q₀` of it.
-  set n₀ : Fin 4 → K := Pi.single 0 1 with hn₀
-  have hn₀_ne : n₀ ≠ 0 := by
-    intro h; have := congr_fun h 0; simp [hn₀, Pi.single_eq_same] at this
-  obtain ⟨q₀, Ce, Cf, hq₀_ne, hq₀_perp, hCe_in, hCf_in, hCe_thru, hCf_thru, hCEF_li⟩ :=
-    exists_linearIndependent_extensor_pair_through_point (K := K) n₀
-  have hCe_ne : Ce ≠ 0 := by simpa using hCEF_li.ne_zero 0
-  have hCf_ne : Cf ≠ 0 := by simpa using hCEF_li.ne_zero 1
-  by_cases hE : E(G) = ∅
-  · -- Edgeless: rank `0` against `def = D(|V|-1)`, for either `|V| = 1` or `|V| = 2`.
-    set F : BodyHingeFramework K 2 α β := { graph := G, supportExtensor := fun _ => Ce } with hF
-    have hFg : F.graph = G := rfl
-    have hnoLink : ∀ e u v, ¬ G.IsLink e u v := fun e u v hlink => by
-      have hmem : e ∈ E(G) := hlink.edge_mem; rw [hE] at hmem; exact hmem
-    have hrows : F.rigidityRows = ∅ := by
-      ext φ; simp only [Set.mem_empty_iff_false, iff_false]
-      rintro ⟨e, u, v, hlink, -⟩; exact hnoLink e u v (hFg ▸ hlink)
-    have hfinrank : Module.finrank K (Submodule.span K F.rigidityRows) = 0 := by
-      rw [hrows, Submodule.span_empty, finrank_bot]
-    refine ⟨F, fun _ => n₀, fun _ => q₀, ⟨⟨hFg, ?_, ?_, ?_⟩, ?_, ?_, ?_⟩, ?_⟩
-    · exact fun v _ => hn₀_ne
-    · exact fun _ => hCe_ne
-    · exact fun e u v hlink => absurd hlink (hnoLink e u v)
-    · exact fun v _ => hq₀_ne
-    · exact fun v _ => hq₀_perp
-    · exact fun e u v hlink => absurd hlink (hnoLink e u v)
-    · rw [hfinrank, Graph.deficiency_of_edgeSet_empty hE, hb6]
-      push_cast; ring
-  · -- Nonempty edges force `|V(G)| = 2` (a single vertex would be loop-free ⟹ edgeless).
-    have hE' : E(G).Nonempty := Set.nonempty_iff_ne_empty.mpr hE
-    have hVpos : 0 < V(G).ncard := hne.ncard_pos
-    have hV2eq : V(G).ncard = 2 := by
-      rcases (show V(G).ncard = 1 ∨ V(G).ncard = 2 by omega) with hV1 | hV2eq'
-      · exfalso
-        obtain ⟨v₀, hv₀⟩ := Set.ncard_eq_one.mp hV1
-        obtain ⟨e, he⟩ := hE'
-        obtain ⟨p, q, hlink⟩ := G.exists_isLink_of_mem_edgeSet he
-        have hpv : p ∈ V(G) := hlink.left_mem
-        have hqv : q ∈ V(G) := hlink.right_mem
-        rw [hv₀, Set.mem_singleton_iff] at hpv hqv
-        rw [hpv, hqv] at hlink
-        exact G.not_isLoopAt e v₀ hlink
-      · exact hV2eq'
-    obtain ⟨x, y, hxy, hVG⟩ := Set.ncard_eq_two.mp hV2eq
-    have hlinks : ∀ f, f ∈ E(G) → G.IsLink f x y := by
-      intro f hf
-      obtain ⟨p, q, hlink⟩ := G.exists_isLink_of_mem_edgeSet hf
-      have hpV : p ∈ V(G) := hlink.left_mem
-      have hqV : q ∈ V(G) := hlink.right_mem
-      rw [hVG] at hpV hqV
-      rcases Set.mem_insert_iff.mp hpV with rfl | rfl <;>
-      rcases Set.mem_insert_iff.mp hqV with rfl | rfl
-      · exact absurd rfl hlink.ne
-      · exact hlink
-      · exact hlink.symm
-      · exact absurd rfl hlink.ne
-    rcases (show E(G).ncard = 1 ∨ 2 ≤ E(G).ncard by have := hE'.ncard_pos; omega) with hE1 | hge2
-    · -- Single edge: rank `D - 1 = 5` against `def = 1`.
-      obtain ⟨e, hEe⟩ := Set.ncard_eq_one.mp hE1
-      have heE : e ∈ E(G) := by rw [hEe]; exact Set.mem_singleton e
-      have hl_e : G.IsLink e x y := hlinks e heE
-      set F : BodyHingeFramework K 2 α β :=
-        { graph := G, supportExtensor := fun e' => if e' = e then Ce else Cf } with hF
-      have hFg : F.graph = G := rfl
-      have hFe : F.supportExtensor e = Ce := by simp [hF]
-      have hlink_eq_e : ∀ e' u v, G.IsLink e' u v → e' = e := by
-        intro e' u v he'
-        have hmem : e' ∈ E(G) := he'.edge_mem
-        rw [hEe] at hmem; exact hmem
-      have hsupp_nz : ∀ e', F.supportExtensor e' ≠ 0 := by
-        intro e'; simp only [hF]; split
-        · exact hCe_ne
-        · exact hCf_ne
-      have hC : ∀ e' u v, G.IsLink e' u v → F.supportExtensor e' ≠ 0 :=
-        fun e' _ _ _ => hsupp_nz e'
-      refine ⟨F, fun _ => n₀, fun _ => q₀, ⟨⟨hFg, ?_, hsupp_nz, ?_⟩, ?_, ?_, ?_⟩, ?_⟩
-      · exact fun v _ => hn₀_ne
-      · intro e' u v hlink
-        have he'e := hlink_eq_e e' u v hlink; subst he'e
-        rw [hFe]; exact ⟨hCe_in, hCe_in⟩
-      · exact fun v _ => hq₀_ne
-      · exact fun v _ => hq₀_perp
-      · intro e' u v hlink
-        have he'e := hlink_eq_e e' u v hlink; subst he'e
-        rw [hFe]; exact ⟨hCe_thru, hCe_thru⟩
-      · -- The rank: at most the deficiency rank, and at least the `D - 1` independent rows of `e`.
-        have hdef : G.deficiency 3 = 1 :=
-          Graph.deficiency_of_single_edge hxy hl_e hVG hEe
-        have hub := F.finrank_span_rigidityRows_add_deficiency_le (n := 3) hb6 hne
-          (fun e u v h _ => hC e u v h)
-        rw [hFg] at hub
-        obtain ⟨r, hr_li, hr_mem⟩ :=
-          F.exists_independent_rigidityRows_of_edge (u := x) (v := y) hxy hl_e (hFe ▸ hCe_ne)
-        have hspan_le : Submodule.span K (Set.range r) ≤ Submodule.span K F.rigidityRows :=
-          Submodule.span_mono (Set.range_subset_iff.mpr hr_mem)
-        have hcard : Module.finrank K (Submodule.span K (Set.range r)) = 5 := by
-          rw [finrank_span_eq_card hr_li, Fintype.card_fin]; decide
-        have hmono : 5 ≤ Module.finrank K (Submodule.span K F.rigidityRows) := by
-          have hm := Submodule.finrank_mono hspan_le; rwa [hcard] at hm
-        have hscrew_nat : screwDim 2 = 6 := by decide
-        have htarget : screwDim 2 * ((V(G).ncard : ℤ) - 1) - G.deficiency 3 = 5 := by
-          rw [hV2eq, hdef, hscrew_nat]; norm_num
-        rw [htarget] at hub ⊢
-        exact le_antisymm hub (by exact_mod_cast hmono)
-    · -- Parallel class of `m ≥ 2` edges: rank `D = 6` against `def = 0`.
-      obtain ⟨t, htE, ht2⟩ := Set.exists_subset_card_eq (s := E(G)) (n := 2) hge2
-      obtain ⟨e, f, hef, hteq⟩ := Set.ncard_eq_two.mp ht2
-      have heE : e ∈ E(G) := htE (hteq ▸ Set.mem_insert e {f})
-      have hfE : f ∈ E(G) := htE (hteq ▸ Set.mem_insert_of_mem e (Set.mem_singleton f))
-      have hl_e : G.IsLink e x y := hlinks e heE
-      have hl_f : G.IsLink f x y := hlinks f hfE
-      set F : BodyHingeFramework K 2 α β :=
-        { graph := G, supportExtensor := fun e' => if e' = e then Ce else Cf } with hF
-      have hFg : F.graph = G := rfl
-      have hFe : F.supportExtensor e = Ce := by simp [hF]
-      have hFf : F.supportExtensor f = Cf := by simp [hF, hef.symm]
-      refine ⟨F, fun _ => n₀, fun _ => q₀, ⟨⟨hFg, ?_, ?_, ?_⟩, ?_, ?_, ?_⟩, ?_⟩
-      · exact fun v _ => hn₀_ne
-      · intro e'
-        simp only [hF]; split
-        · exact hCe_ne
-        · exact hCf_ne
-      · intro e' u v hlink
-        by_cases he' : e' = e
-        · subst he'; rw [hFe]; exact ⟨hCe_in, hCe_in⟩
-        · have hFe' : F.supportExtensor e' = Cf := by simp [hF, he']
-          rw [hFe']; exact ⟨hCf_in, hCf_in⟩
-      · exact fun v _ => hq₀_ne
-      · exact fun v _ => hq₀_perp
-      · intro e' u v hlink
-        by_cases he' : e' = e
-        · subst he'; rw [hFe]; exact ⟨hCe_thru, hCe_thru⟩
-        · have hFe' : F.supportExtensor e' = Cf := by simp [hF, he']
-          rw [hFe']; exact ⟨hCf_thru, hCf_thru⟩
-      · -- The rank: `D = 6`, as the two bodies are rigid (`theorem_55_base`).
-        have hdef0 : G.deficiency 3 = 0 := by
-          set H := G ↾ ({e, f} : Set β) with hH_def
-          have hHle : H ≤ G := Graph.restrict_le
-          have hHl_e : H.IsLink e x y := by
-            rw [hH_def, Graph.restrict_isLink]; exact ⟨Set.mem_insert e _, hl_e⟩
-          have hHl_f : H.IsLink f x y := by
-            rw [hH_def, Graph.restrict_isLink]; exact ⟨Set.mem_insert_of_mem _ rfl, hl_f⟩
-          have hVH : V(H) = {x, y} := by rw [hH_def, Graph.vertexSet_restrict, hVG]
-          have hEH : E(H) = {e, f} := by
-            rw [hH_def, Graph.edgeSet_restrict]
-            exact Set.inter_eq_right.mpr
-              (Set.insert_subset_iff.mpr ⟨heE, Set.singleton_subset_iff.mpr hfE⟩)
-          have hH0 : H.IsKDof 3 0 :=
-            Graph.isKDof_zero_of_parallel_pair (n := 3) (by decide) hxy hHl_e hHl_f hef hVH hEH
-          have hVHeq : V(H) = V(G) := by rw [hVH, hVG]
-          have hdle :=
-            Graph.deficiency_le_deficiency_of_le_vertexSet_eq (n := 3) (by decide) hHle hVHeq
-          have hdnn := G.deficiency_nonneg 3 hne
-          have hH0' : H.deficiency 3 = 0 := hH0.deficiency_eq
-          omega
-        have hgen : LinearIndependent K ![F.supportExtensor e, F.supportExtensor f] := by
-          rw [hFe, hFf]; exact hCEF_li
-        have hrig : F.IsInfinitesimallyRigidOn {x, y} := F.theorem_55_base hgen hl_e hl_f
-        have hrigV : F.IsInfinitesimallyRigidOn F.graph.vertexSet := by
-          rw [hFg, hVG]; exact hrig
-        have hB1 :=
-          (F.isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows hne).mp hrigV
-        rw [hFg] at hB1
-        have hscrew_nat : screwDim 2 = 6 := by decide
-        rw [hV2eq, hscrew_nat] at hB1
-        norm_num at hB1
-        have htarget : screwDim 2 * ((V(G).ncard : ℤ) - 1) - G.deficiency 3 = 6 := by
-          rw [hV2eq, hdef0, hscrew_nat]; norm_num
-        rw [htarget]
-        exact_mod_cast hB1
+  exact (hasGradedPencilRealization_two_iff 3 G).1
+    (hasGradedPencilRealization_of_ncard_le_two (m := 1) hloop hne hV2)
+
+/-! ## The cut-edge case -/
+
+/-- **The two sides of a cut** (a step of `lem:pencil-cut-case`): if `G` is not `2`-edge-connected,
+some nonempty `V₁ ⊂ V(G)` is crossed by at most one edge (`¬ G.TwoEdgeConnected` unfolded), and
+the two sides `G[V₁]` and `G[V(G) \ V₁]` are nonempty with fewer bodies than `G`. -/
+private theorem exists_cut_sides [Finite α] {G : Graph α β} (hntec : ¬ G.TwoEdgeConnected) :
+    ∃ V₁ : Set α, V₁ ⊂ V(G) ∧ V₁.Nonempty ∧ (G.cutEdges V₁).ncard ≤ 1 ∧
+      V(G.induce V₁).Nonempty ∧ V(G.induce V₁).ncard < V(G).ncard ∧
+      V(G.induce (V(G) \ V₁)).Nonempty ∧ V(G.induce (V(G) \ V₁)).ncard < V(G).ncard := by
+  simp only [Graph.TwoEdgeConnected, not_forall, not_le, exists_prop] at hntec
+  obtain ⟨V₁, hne, hssub, hcut⟩ := hntec
+  refine ⟨V₁, hssub, hne, Nat.lt_succ_iff.mp hcut, hne,
+    Set.ncard_lt_ncard hssub (Set.toFinite _), Set.nonempty_of_ssubset hssub, ?_⟩
+  have hVcard : V₁.ncard + (V(G) \ V₁).ncard = V(G).ncard := by
+    rw [← Set.ncard_union_eq Set.disjoint_sdiff_right (Set.toFinite V₁) (Set.toFinite _),
+      Set.union_sdiff_cancel hssub.subset]
+  have := hne.ncard_pos
+  change (V(G) \ V₁).ncard < V(G).ncard
+  omega
+
+/-- **The cut-edge case** (`lem:pencil-cut-case`; KT 2011 §6.1): if a multigraph `G` is not
+`2`-edge-connected, and every nonempty multigraph with fewer bodies than `G` has a pencil
+realization at the deficiency rank (`HasPencilRealization`), then so does `G`. Here `n = 3`
+(`Graph.eq_add_one_of_bodyBarDim_eq_screwDim`), and it is the cut-edge case in every dimension
+(`hasGradedPencilRealization_of_cutEdges`, `lem:pencil-d-cut-case`) at `m = 1`, through
+`hasGradedPencilRealization_two_iff`, at a cut crossed by at most one edge whose two sides have
+fewer bodies than `G`: realize both sides, move the second so that the crossing edge can be given a
+hinge in both panels through both points, and glue. -/
+theorem hasPencilRealization_of_not_twoEdgeConnected [Finite α] [Finite β] {n : ℕ}
+    (hn : Graph.bodyBarDim n = screwDim 2)
+    {G : Graph α β} (hntec : ¬ G.TwoEdgeConnected)
+    (hIH : ∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard →
+      HasPencilRealization K n G') :
+    HasPencilRealization K n G := by
+  have h3 : n = 3 := Graph.eq_add_one_of_bodyBarDim_eq_screwDim hn
+  subst h3
+  obtain ⟨V₁, hssub, hne, hcut, h₁ne, h₁lt, h₂ne, h₂lt⟩ := exists_cut_sides hntec
+  exact (hasGradedPencilRealization_two_iff 3 G).1
+    (hasGradedPencilRealization_of_cutEdges (m := 1) hssub hne hcut
+      ((hasGradedPencilRealization_two_iff 3 _).2 (hIH _ h₁ne h₁lt))
+      ((hasGradedPencilRealization_two_iff 3 _).2 (hIH _ h₂ne h₂lt)))
+
+/-- **The cut-edge case, adjacent-distinct form** (`lem:pencil-cut-case`): if a multigraph `G` is
+not `2`-edge-connected, and every nonempty `G' ≤ G` with fewer bodies than `G` has an
+adjacent-distinct pencil realization at the deficiency rank (`HasDistinctPencilRealization`), then
+so does `G`. It is `hasGradedDistinctPencilRealization_of_cutEdges` (`lem:pencil-d-cut-case`) at
+`m = 1`, through `hasGradedDistinctPencilRealization_two_iff`, whose polarity exchanges the
+independent points here with the independent normals there. The hypothesis is asked only at
+subgraphs of `G`, which both sides of the cut are, so that the conditioned pair
+(`pencilPair_of_not_twoEdgeConnected`, `Pair2.lean`), which gives adjacent-distinct realizations
+only of simple graphs, can supply it at a simple `G`: a subgraph of a simple graph is simple. -/
+theorem hasDistinctPencilRealization_of_not_twoEdgeConnected [Finite α] [Finite β] {n : ℕ}
+    (hn : Graph.bodyBarDim n = screwDim 2)
+    {G : Graph α β} (hntec : ¬ G.TwoEdgeConnected)
+    (hIH : ∀ G' : Graph α β, G' ≤ G → V(G').Nonempty → V(G').ncard < V(G).ncard →
+      HasDistinctPencilRealization K n G') :
+    HasDistinctPencilRealization K n G := by
+  have h3 : n = 3 := Graph.eq_add_one_of_bodyBarDim_eq_screwDim hn
+  subst h3
+  obtain ⟨V₁, hssub, hne, hcut, h₁ne, h₁lt, h₂ne, h₂lt⟩ := exists_cut_sides hntec
+  exact (hasGradedDistinctPencilRealization_two_iff 3 G).1
+    (hasGradedDistinctPencilRealization_of_cutEdges (m := 1) hssub hne hcut
+      ((hasGradedDistinctPencilRealization_two_iff 3 _).2
+        (hIH _ (Graph.induce_le hssub.subset) h₁ne h₁lt))
+      ((hasGradedDistinctPencilRealization_two_iff 3 _).2
+        (hIH _ (Graph.induce_le Set.sdiff_subset) h₂ne h₂lt)))
 
 end CombinatorialRigidity.Molecular

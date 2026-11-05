@@ -14,7 +14,7 @@ public import CombinatorialRigidity.Molecular.Molecule.Pencil.Motive
 Steps of `lem:pencil-pair-loop-base-cut` (`sec:pencil-nondegenerate`): the loop, base and cut-edge
 cases of the reduction of `sec:pencil-reduction` for the conditioned pair (`PencilPair`). In each
 case its pencil realization at the deficiency rank is that of the bare case (`lem:pencil-loop-case`,
-`lem:pencil-base-case`, `lem:pencil-cut-case`; `Arms.lean`, `ArmsAssembly.lean`). At a loop the
+`lem:pencil-base-case`, `lem:pencil-cut-case`; `ArmsAssembly.lean`). At a loop the
 other two conjuncts hold vacuously, as a graph with a loop is neither simple nor
 nondegeneracy-feasible. On at most two bodies a simple graph has at most one edge, and a direct
 construction gives it a generic realization. At a cut edge this file gives the generic conjunct when

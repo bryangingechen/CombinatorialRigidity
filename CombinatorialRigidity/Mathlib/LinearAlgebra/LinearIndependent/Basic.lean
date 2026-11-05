@@ -74,8 +74,8 @@ independent pair. Mathlib has the general-family form (`LinearIndependent.map'`,
 `f`), but only for `f ∘ v`, and there is no `f ∘ ![x, y] = ![f x, f y]` bridge in
 `Data/Fin/VecNotation.lean`, so the general form cannot be used on a `![·, ·]` goal without
 hand-rolling that step — which is exactly the friction this lemma removes. The rigidity
-project's cut arm (`Molecular/Molecule/Pencil/Arms.lean`) uses it to push one side's
-adjacent-point distinctness through the repositioning automorphism.
+project's cut arms (`Molecular/Molecule/Pencil/Grade/TwoPencil.lean`, `Grade/LiftCutEdge.lean`)
+use it to push one side's adjacent independence through the repositioning automorphism.
 
 Promotion to mathlib: copy-paste into `Mathlib/LinearAlgebra/LinearIndependent/Basic.lean`
 (it imports `linearIndependent_sum` there, `disjoint_span_singleton'` from `Span.Basic`,

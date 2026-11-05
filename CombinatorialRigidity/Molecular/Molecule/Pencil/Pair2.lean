@@ -481,9 +481,9 @@ nondegeneracy-feasible, so the case does not arise there. -/
 /-- **The conditioned pair at a cut edge** (a step of `lem:pencil-pair-loop-base-cut`, case (3)):
 over an infinite field, if `G` is not `2`-edge-connected and every nonempty graph on fewer bodies
 than `G` satisfies `PencilPair K n` (`hIH`), then so does `G`, by the cases of the section header.
-The hypothesis of `hasDistinctPencilRealization_of_not_twoEdgeConnected` (`Arms.lean`) at each
-`G' ≤ G` on fewer bodies is the adjacent-distinct conjunct of `hIH`, as `G'` is simple when `G` is
-(`Graph.Simple.mono`). -/
+The hypothesis of `hasDistinctPencilRealization_of_not_twoEdgeConnected` (`ArmsAssembly.lean`) at
+each `G' ≤ G` on fewer bodies is the adjacent-distinct conjunct of `hIH`, as `G'` is simple when `G`
+is (`Graph.Simple.mono`). -/
 theorem pencilPair_of_not_twoEdgeConnected [Finite α] [Finite β] [Infinite K] {n : ℕ}
     (hn : Graph.bodyBarDim n = screwDim 2)
     {G : Graph α β} (hntec : ¬ G.TwoEdgeConnected)

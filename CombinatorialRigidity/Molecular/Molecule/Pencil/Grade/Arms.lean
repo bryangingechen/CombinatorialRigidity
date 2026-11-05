@@ -18,9 +18,9 @@ the hinge `C_B` of a two-dimensional subspace (`perpExtensor`, `Grade/TwoPencil.
 `v`, of a `B ⊆ Π_v` through `b_v`; on two bodies, two independent ones through one normal; at a cut
 edge, of the span of `b_u` and `g b_v` once the second side has been moved by the `g` of
 `exists_reposition_planes`. The fourth case, at parallel edges, and the theorem are
-`Grade/Reduction.lean`. At grade `2` these are `hasPencilRealization_of_isLoopAt`,
-`hasPencilRealization_of_not_twoEdgeConnected{,_core}` (`Pencil/Arms.lean`) and
-`hasPencilRealization_of_ncard_le_two` (`Pencil/ArmsAssembly.lean`), in the point form.
+`Grade/Reduction.lean`. At grade `2` they give `hasPencilRealization_of_isLoopAt`,
+`hasPencilRealization_of_ncard_le_two` and `hasPencilRealization_of_not_twoEdgeConnected` with its
+adjacent-distinct form (`Pencil/ArmsAssembly.lean`), in the point form.
 
 ## Main results
 

@@ -17,9 +17,9 @@ one `\uses` sweep (blueprint and notes, no Lean); each slice set its rows' statu
 here. The ledger now: none `open`, 23 `aligned`, 17 `kept`, 14 `no departure`. Round 4 opened the
 same day at the PI's word (§1, all four items), in nine tasks: the stale docstrings and notes,
 Theorem S's fold, the reduction's fold and the witnesses at `K₂` and `K_{2,3}` (§3). **Next
-concrete task:** round 4's task 5, the reduction's fold: base, loop and cut-edge cases
-(`notes/Phase42-fold.md`); tasks 2 to 4, the stale docstrings, the `K₂` witness and Theorem S's fold,
-have landed.
+concrete task:** round 4's task 6, the reduction's fold: the nonsimple case
+(`notes/Phase42-fold.md`); tasks 2 to 5, the stale docstrings, the `K₂` witness, Theorem S's fold and
+the reduction's base, loop and cut-edge cases, have landed.
 
 ## 1. The PI's decisions (verbatim)
 
@@ -1194,7 +1194,7 @@ there.
     the chapter; `--chapter pencil-d` 99 nodes, 236 pins, 0 *missing*; no Lean, pin or `\leanok`
     change.
 
-  Round 1's and round 2's *Candidates for the PI* and *Moved to a later round* lines are mirrored
+  Rounds 1, 2 and 4's *Candidates for the PI* and *Moved to a later round* lines are mirrored
   here as they land, each with the task that takes it:
   - *Moved to a later round* (round 1 task 2; round 2 (`4d658702`), the sweep):
     `lem:pencil-d-point-configuration`'s statement reads the closed neighbourhood
@@ -1266,6 +1266,11 @@ there.
     embedding without the count of its maps" among the route differences left, and
     "`-ear-extend`'s simplicity" among the hypotheses the pins drop; R-33 and R-34 put the chapter
     on those routes and that statement.
+  - *Candidates for the PI* (round 4 task 5; round 4's close, task 9, with its line on the folds'
+    new edges): a stale formalization note. `fmlnote:pencil-cut-case` says the two forms "are one
+    Lean theorem whose parameter selects the form"; task 5 deleted that theorem (`…_core`), and each
+    form is now the `m = 1` case of 42k's cut case. The open keeps the `d = 3` chapter's notes, so
+    the PI chooses: reword it there, or delete it.
 - **The ledger at Phase 42's close:** the standing rule (§1) kept §2 current through PD-STEPS's
   rest, PD-COVERAGE, PD-REDUCTION and PD-HEAD (`notes/Phase42-design.md` §3), the last rows 42m's,
   R-24 to R-34; Phase 42 closed on 2026-11-05 with no row added after them. Round 1 adds from R-35.

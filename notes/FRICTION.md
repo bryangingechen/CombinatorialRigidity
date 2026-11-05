@@ -110,6 +110,20 @@ moment you resolve the entry) is what makes the sweep a pure
 to be re-derived by re-reading entries later.
 
 ## Open
+### [open] The two sides of a cut from `¬ G.TwoEdgeConnected` are unfolded at each cut case
+- **Where it bit:** CLEANUP-42 round 4, task 5: `Pencil/ArmsAssembly.lean`'s private
+  `exists_cut_sides` (a nonempty `V₁ ⊂ V(G)` crossed by at most one edge, both sides nonempty with
+  fewer bodies than `G`). The same unfolding (`simp only [Graph.TwoEdgeConnected, not_forall,
+  not_le, exists_prop]`) and the count `V₁.ncard + (V(G) \ V₁).ncard = V(G).ncard`
+  (`Set.ncard_union_eq Set.disjoint_sdiff_right`, `Set.union_sdiff_cancel`) sit inline in
+  `Graph.graded_pencil_realization_theorem` (`Grade/Reduction.lean`), `Grade/Generic.lean`,
+  `Pair.lean`, `Pair2.lean` and `Grade/LiftSmall.lean`.
+- **Friction:** none in the proofs; five copies of a fact about `Graph.TwoEdgeConnected` alone.
+- **Proposed fix:** a public `Graph.exists_cut_sides_of_not_twoEdgeConnected` beside
+  `Graph.TwoEdgeConnected` (`Molecular/Deficiency.lean`), and the copies rewritten through it, with
+  the next commit that edits `Deficiency.lean` (a declaration there rebuilds most of `Molecular/`).
+- **Status:** open.
+
 ### [idiom] 42m build 6b: a `pair_iff` applied to a `![…]` lemma inline times out, and four small traps
 - **Where it bit:** Phase 42m, `Pencil/Grade/EarFree.lean` (`span_pencilConfigPoint_eq_top`,
   `isTrivialLift_of_finrank_liftSpaceTilde_le`, `holdsGenerally_earFree`).
@@ -236,7 +250,10 @@ to be re-derived by re-reading entries later.
   `Pencil/Arms.lean` is upstream of `Grade/` (`Grade/Realization.lean` imports `Pencil/Motive.lean`,
   which imports it), so deriving the `d = 3` cases from the graded ones reverses the imports.
 - **Proposed fix:** at CLEANUP-42 (`notes/Cleanup42.md` §3), beside Theorem S's fold: the `d = 3`
-  cases as the `m = 1` case of 42k's, with the files reordered; not a route difference.
+  cases as the `m = 1` case of 42k's, with the files reordered; not a route difference. The loop,
+  base and cut-edge cases are done (round 4, task 5: `Pencil/ArmsAssembly.lean` imports
+  `Grade/Arms.lean` and derives them, and `…_core` and the two copies in `Pencil/Arms.lean` are
+  deleted); the nonsimple case is task 6.
 - **Status:** open.
 
 ### [open] 42k build 2: the one-edge count and the two-body edge lemma sit in `Pencil/Grade/Arms.lean`
@@ -245,15 +262,17 @@ to be re-derived by re-reading entries later.
   nonzero hinge has rank `D − 1`, its target) is about `BodyHingeFramework` rows and the
   deficiency, beside `BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le`
   (`AlgebraicInduction/GenericityDevice.lean`); the `d = 3` base case
-  (`hasPencilRealization_of_ncard_le_two`, `Pencil/ArmsAssembly.lean`) proves its `m = 1` case
-  inline. `exists_pair_of_ncard_le_two_of_edgeSet_nonempty` (a loopless graph with an edge and at
-  most two vertices has exactly two, joined by every edge) is a fact about `Graph` alone.
+  (`hasPencilRealization_of_ncard_le_two`, `Pencil/ArmsAssembly.lean`) proved its `m = 1` case
+  inline until CLEANUP-42 round 4, task 5, which made it the `m = 1` case of
+  `hasGradedPencilRealization_of_ncard_le_two`, so that copy is gone.
+  `exists_pair_of_ncard_le_two_of_edgeSet_nonempty` (a loopless graph with an edge and at most two
+  vertices has exactly two, joined by every edge) is a fact about `Graph` alone.
 - **Friction:** none in the proofs; both sit downstream because a declaration added to
   `GenericityDevice.lean` rebuilds most of `Molecular/`.
 - **Proposed fix:** the count beside `finrank_span_rigidityRows_add_deficiency_le`, stated at `k`
-  with `hn : bodyBarDim n = screwDim k`, and `ArmsAssembly.lean`'s inline count replaced by it,
-  with the next commit that edits `GenericityDevice.lean`; the graph lemma to a mirror of
-  `Mathlib/Combinatorics/Graph/Simple.lean` (mirror candidate), at a cleanup round.
+  with `hn : bodyBarDim n = screwDim k`, with the next commit that edits `GenericityDevice.lean`;
+  the graph lemma to a mirror of `Mathlib/Combinatorics/Graph/Simple.lean` (mirror candidate), at a
+  cleanup round.
 - **Status:** open (42k's deferral, `notes/Phase42k.md` *Hand-off*).
 
 ### [idiom] Three snags transcribing 42k's base and cut cases to `Grade/Arms.lean`
@@ -531,7 +550,9 @@ to be re-derived by re-reading entries later.
   open): a public `Graph.six_le_bodyBarDim` has been in `BodyBar/Framework.lean` since 2026-07-03
   (`33d6b2a6`; `Pencil/Pair2.lean` calls it), so the fourth site's private copy duplicates it and
   the fix deletes that copy (done at CLEANUP-42 round 4, task 4: `Grade/TheoremS.lean` now calls
-  the public lemma).
+  the public lemma). Not a site: round 4's spike for task 5 carried a private `n = 3` from
+  `bodyBarDim n = screwDim 2`, which `Graph.eq_add_one_of_bodyBarDim_eq_screwDim`
+  (`AlgebraicInduction/PanelLayer.lean`) already gives; task 5 calls it.
 - **Status:** open.
 
 ### [idiom] `Set.nonempty_of_ncard_ne_zero (by omega)` against `V(G.induce Y).Nonempty` needs `(s := Y)`
