@@ -274,6 +274,58 @@ valid. The cleanup chooses one per `open` row, with the PI.
   target (`lem:relative-deficiency-rank-bound`).
   *Remedies:* the prose to the Lean (the splice at every `D`, which also widens the remark), a
   Lean helper (the motions of `G` as those of `G/H` with `S(w) = S(u)`), or keep both.
+- **R-20** · `lem:pencil-d-nondegenerate-feasible` (`exists_rowsMap_two`, `exists_rowsMap_three`,
+  `exists_injOn_finrank_iInf_map_le`; `Grade/Feasible.lean`, 42l, the recon's spike) · **open**.
+  *Chapter:* for (b) at one body `v` and one set `S`, pass to `W = K^(d+1)/K b_v` and
+  `A_w = Π_w/K b_v`, and find `π̄ : W → K³` by induction on `dim Σ A_w`, a quotient by `c` at each
+  step, `c` off finitely many proper subspaces and at most one quadric (the case
+  `A₃ ⊆ A₁ ⊕ A₂`); `π` sends `b_v` to `e₄`.
+  *Lean (the recon's spike):* no quotient, induction or quadric. `π`'s rows are a form `f` with
+  `f(b_v) ≠ 0` and, for each `w ∈ S`, a form `μ_w` vanishing on `Π_w`, so `πΠ_w` lies in a
+  coordinate hyperplane and the images meet in `K e₀` (`|S| = 3`) or a plane (`|S| = 2`, with a
+  fourth form `g` vanishing at `b_v`). `π` is injective on `Π_w` when the forms vanishing on `Π_w`
+  and the other two rows span those vanishing at `b_v` (`injOn_rowsMap`); each `μ_w` (and `g`) is
+  chosen off at most two proper subspaces (`exists_forms_three`, `exists_mem_notMem_two`), over any
+  field. The combination over all bodies and sets is the chapter's (minors in the entries of `π`,
+  the `ν_w` as `cross₃`).
+  *Remedies:* the prose to the Lean (shorter, no quadric), or keep both.
+- **R-21** · `lem:pencil-d-lift-one-witness` (`liftAttains_of_least`,
+  `liftAttains_of_holdsGenerally`; `Grade/LiftWitness.lean`, 42l, the recon's spike) · **open**.
+  *Chapter:* (1) a basis `k_j(b⁰)` of `L̃(b⁰)` by Cramer's rule on a nonzero minor `M` of size
+  `c − N`, the lifts by `Σ γ^i_j k_j`, `P(b⁰, γ)` a minor of size `t`, `Q₀ = M · P_α` for a
+  coefficient `P_α` of `P` in `γ`. (2) the least `dim L̃` holds where `A(b⁰(s))` has the largest
+  rank.
+  *Lean (the recon's spike):* (1) one polynomial section `Z_i(b⁰) ∈ L̃(b⁰)` through the given lift's
+  `i`-th parameter (`Matrix.exists_mvPolynomial_section_mulVec_eq_zero`, as
+  `lem:pencil-d-x0-one-witness`), valid where its `D_i ≠ 0` and `dim L̃` is least;
+  `Q₀ = ∏ D_i · P(lift by Z(b⁰))`, `P` the rank polynomial at the given lift; no `γ`. The bodies off
+  `V(G)` are fixed at `b*` before homogenizing, so `Q` has its variables in `V(G)`. (2) `dim L̃ ≤`
+  its value at a least point off the zero set of that section's `D` at `z₀ = 0`. The
+  homogenization is the chapter's.
+  *Remedies:* the prose to the Lean (the section, as `lem:pencil-d-x0-one-witness` already reads),
+  or keep both.
+- **R-22** · `lem:pencil-d-steer` (`PencilSeed.ofGamma`, `steerPoint`, `steerNormal`, `steerSet`;
+  `Grade/Lift.lean`, 42l, the recon's spike) · **open**.
+  *Chapter:* `Γ(G)` has at each body `m_v` and five auxiliary vectors, the closed
+  (hub-)neighbourhood in a fixed order followed by as many of the first three, or of the last two,
+  as are needed.
+  *Lean (the recon's spike):* the `d = 3` chart's parameters (`PencilSeed`), `m_v` and six auxiliary
+  vectors, three per selector, the one at slot `i` read when the slot is empty; the fixed order is a
+  pair of selectors (`IsFin3SelectorOf`), parameters of the lemma. A neighbour selector of a body
+  that is not a hub always fills a slot, so one of its three vectors is never read. Every other
+  part, and the converse through `exists_pencilSeed_of_nondeg_of_selectors`, is the chapter's.
+  *Remedies:* the prose to the Lean (six vectors, read at the empty slots), a Lean chart on five
+  vectors with members-first selectors, or keep both.
+- **R-23** · `lem:pencil-d-lift-transfer` (`lift_transfer`, `Grade/LiftWitness.lean`, 42l, the
+  recon's spike) · **open**.
+  *Chapter:* the maps `ζ ∈ L(b⁰|_(V′))^m` whose lift has rank `tgt_d(H)` form a nonempty
+  Zariski-open set; by (T2) the restriction `𝓛(r⁰)^m → L(b⁰|_(V′))^m` is onto, and the preimage of a
+  nonempty Zariski-open set under an onto linear map is nonempty and Zariski-open.
+  *Lean (the recon's spike):* nonempty as the chapter (a lift of `r⁰|_H` of rank `tgt_d(H)`, through
+  (T2)); open directly, at each `λ` of the set, by the rank polynomial of the framework on `H` at
+  its normals, read in the coordinates of the maps `ζ^i`, with the bound
+  (`lem:relative-deficiency-rank-bound`); (T2) is not used for openness.
+  *Remedies:* the prose to the Lean, or keep both.
 
 ## 3. The cleanup (not yet planned)
 

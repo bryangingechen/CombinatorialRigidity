@@ -1357,10 +1357,11 @@ keep them under injective linear maps and show that, over an infinite field, hav
 depend on the dimension, then parametrize those of dimension three and lift them to dimension `d`:
 every lift is a nondegenerate realization, one lift of the right rank at a suitable realization
 suffices, and lifts restrict to a subgraph. A read at the open found their proofs sound, and a
-recon against the `d = 3` Lean comes first. The second half, the generic theorem and the headline
-(eleven nodes), opens after it at the PI's word, and its close is Phase 42's. The targets are three
-tiers: every `d` at `def_3 ≤ 3` (proved and formalized, 42c), a `P⁴` theorem (every `d` at
-`def_3 ≤ 7`, by the sharp lemma), and every `d` (proved on paper, 42d).
+recon checked all ten in Lean against the `d = 3` proofs, so four builds follow. Four proofs take
+shorter or more direct routes than the chapter's, tracked for the cleanup. The second half, the
+generic theorem and the headline (eleven nodes), opens after it at the PI's word, and its close is
+Phase 42's. The targets are three tiers: every `d` at `def_3 ≤ 3` (proved and formalized, 42c), a
+`P⁴` theorem (every `d` at `def_3 ≤ 7`, by the sharp lemma), and every `d` (proved on paper, 42d).
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 

@@ -1142,7 +1142,14 @@ marked `no departure` (R-6). The post-Phase-42 cleanup acts on the ledger (that 
   `Pencil/Motive.lean`'s definitions and `lem:pencil-generic-steer`'s chart (six files), which
   already pads the normals that the steer lemma's remark says the `d = 3` node does not; the lift
   and the feasibility lemma's projection have no `d = 3` Lean; and remarks with no node carry
-  claims that the ten and `thm:pencil-d-generic` cite.
+  claims that the ten and `thm:pencil-d-generic` cite. Its recon spiked all ten complete, with no
+  `sorry` (`notes/Phase42l.md` *Decisions made*), and pinned four builds: `Grade/Nondegenerate.lean`
+  (the definition, three, maps), `Grade/Feasible.lean` (feasibility, with the polynomial-function and
+  Zariski-open API), `Grade/Lift.lean` (steer, the lift, lifts are realizations, attaining) and
+  `Grade/LiftWitness.lean` (one lift suffices, transfer). The steer lemma is the `d = 3` chart at
+  `PencilSeed.ofGamma`; feasibility's map at one set has rows vanishing on the subspaces, chosen off
+  two proper subspaces each, with no quadric; one lift suffices through the polynomial section. Four
+  route differences go to the cleanup (`notes/Cleanup42.md` R-20 to R-23).
   **At Phase 42's close**, Tier 0 joins `formalization.yaml`'s
   `main_results` and `alignment` unless the headline subsumes it, with a closed non-vacuity witness
   in `CombinatorialRigidity/Nonvacuity.lean` (`PHASE-BOUNDARIES.md`); 42c's intermediate close

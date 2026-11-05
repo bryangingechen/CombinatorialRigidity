@@ -3,36 +3,49 @@
 **Status:** in progress, opened 2026-11-04 at the PI's word ("Nondegenerate + lift only", design
 doc §1), the first sub-phase of Phase 42's last layer, PD-HEAD. Forward mode, the Lean under
 `/coordinate-phase`: the ten red nodes of `blueprint/src/chapter/pencil-d.tex`'s
-`sec:pencil-d-nondegenerate` (the definition, its agreement at `d = 3`, linear maps, feasibility in
-every dimension) and `sec:pencil-d-lift` (a parametrization in dimension three, lifts, lifts are
-nondegenerate, the general lift attains, one lift suffices, lifts restrict to a subgraph), as the
-chapter states them. The eleven nodes of `sec:pencil-d-generic`, the generic theorem and the
-headline among them, stay red for a later sub-phase at the PI's word, so 42l's close does not close
-Phase 42. The open's consistency read passed all ten (*Decisions made*); its questions for the
-recon are under *Blockers*. Next (*Hand-off*): the pre-build recon of the ten nodes.
+`sec:pencil-d-nondegenerate` and `sec:pencil-d-lift`, as the chapter states them. The eleven nodes
+of `sec:pencil-d-generic` stay red for a later sub-phase at the PI's word, so 42l's close does not
+close Phase 42. The pre-build recon spiked all ten complete, with no `sorry`, and pinned four
+builds (*Current state*); four route differences go to the cleanup (`notes/Cleanup42.md` R-20 to
+R-23). Next (*Hand-off*): build 1, `Grade/Nondegenerate.lean`.
 
 ## Current state
 
-**Next: the pre-build recon** (*Hand-off*). Opened; no Lean yet. The ten targets, leaf-first, with
-the nodes outside them that they rest on:
-- *Nondegeneracy.* `def:pencil-d-nondegenerate` on `def:pencil-d-realization`,
-  `def:pencil-nondegenerate` and `def:pencil-d-rank-hypothesis`;
-  `lem:pencil-d-nondegenerate-three` on `def:pencil-generic-motive`, `lem:pencil-d-agrees-three`,
-  `lem:pencil-self-dual`, `lem:screw-map-rows` and `lem:pencil-d-rank-agrees-three`;
-  `lem:pencil-d-nondegenerate-maps` on `lem:pencil-d-embed-realization`;
-  `lem:pencil-d-nondegenerate-feasible` on those two lemmas, the embedded realization and
-  `lem:pencil-d-point-configuration`.
-- *The parametrization.* `lem:pencil-d-steer` on the definition, `-nondegenerate-three`,
-  `lem:pencil-generic-steer` and `lem:pencil-d-point-configuration`.
-- *Lifts.* `def:pencil-d-lift` on `def:pencil-d-embedding`, `def:panel-hinge-framework` and
-  `def:rigidity-matrix`; `lem:pencil-d-lift-realization` on point-configuration,
-  `-nondegenerate-maps` and `lem:pencil-d-rank-collineation`; `def:pencil-d-lift-attains` on
-  `def:D-deficiency`; `lem:pencil-d-lift-one-witness` on the steer lemma, lift-realization,
-  `lem:relative-deficiency-rank-bound` and `lem:pencil-x0-fibre-intersection`;
-  `lem:pencil-d-lift-transfer` on the steer lemma, lift-realization and fibre-intersection.
+**Next: build 1** (*Hand-off*). No Lean yet. The recon's spike, gitignored
+`scratch/42l/Spike.lean` (2610 lines), is `lake lean` clean with no error and no `sorry`; its 22
+checked declarations depend on the three standard axioms; it passes the `unusedArguments` and
+`docBlame` lints; its 33 warnings are style (deprecated names, long lines, a `show`). The builds
+transcribe it by section, leaf-first; namespace `CombinatorialRigidity.Molecular`, `r` the number
+of new coordinates (the chapter's `m = d − 3`, so grade `k = r + 2`, Lean's `m = r + 1`):
+1. **`Grade/Nondegenerate.lean`** (imports `Grade.Embedding`; 3 nodes, ~270 lines).
+   `def:pencil-d-nondegenerate`: `PencilNondegConditions G b Π` (the three conditions on `Fin N`,
+   the third `finrank (⨅ w ∈ S, Π w) + S.card ≤ 4` over `Finset`s `S`),
+   `IsNondegPencilPlaneRealization G F b Π` (`HasPencilPlaneRealization` and the conditions),
+   `GradedPencilNondegFeasible K k G`, `HasGradedGenericPencilRealization K k n G`.
+   `-three`: `finrank_iInf_dotPerp_add_card_le_iff`, `pencilNondegConditions_dotPerp_iff`,
+   `isNondegPencilPlaneRealization_two_iff` (with `finrank_span_rigidityRows_mapExtensor`, the
+   rank), `gradedPencilNondegFeasible_two_iff`, `hasGradedGenericPencilRealization_two_iff`.
+   `-maps`: `PencilNondegConditions.of_map` (1), `.map` (2),
+   `IsNondegPencilPlaneRealization.map_gradeEmbed` ("in particular").
+2. **`Grade/Feasible.lean`** (imports `Grade.Nondegenerate`, `Pencil.Steer`; 1 node, ~720
+   lines): the API `IsPolyFun`, `IsZariskiOpen` (pointwise, `Graph.X0AttainsGrade`'s form) and
+   their closure lemmas; `exists_hasPencilPlaneRealization` (point-configuration (1), any `α`);
+   `exists_rowsMap_two`/`_three` (one `π` per set), `exists_proj_of_pencilNondegConditions`;
+   `gradedPencilNondegFeasible_iff (hk : 2 ≤ k)` (`[Infinite K] [Finite α]`).
+3. **`Grade/Lift.lean`** (imports `Grade.Feasible`; 4 nodes, ~600 lines). `lem:pencil-d-steer`:
+   `PencilSeed.ofGamma`, `steerPoint`, `steerNormal`, `steerSet` (`U(G)`),
+   `isPolyFun_steerPoint`/`Normal`, `steerPoint_dotProduct_steerNormal`, `isZariskiOpen_steerSet`,
+   `exists_mem_steerSet_of_isNondeg`, `steerSet_nonempty_iff`, with `HoldsGenerally` (the remark's
+   "general"). `def:pencil-d-lift`: `liftVec`, `liftSpace`, `IsTrivialLift`, `liftMaps`,
+   `liftNormal`, `liftPlane`. `-lift-realization`: `IsNondegPencilPlaneRealization.lift` (1),
+   `mem_liftMaps_iff` (2), `liftSmul_mem_liftSpace_iff`, `liftTransport_mem_liftSpace_iff`,
+   `finrank_span_rigidityRows_ofNormals_smul`, `finrank_liftNormal_transport` (3).
+   `def:pencil-d-lift-attains`: `LiftAttains K r G`.
+4. **`Grade/LiftWitness.lean`** (imports `Grade.Lift`; 2 nodes, ~880 lines): `liftSpaceTilde`
+   (`L̃`), `liftMatrixPoly`, the homogenization, `liftAttains_of_least` (one-witness (1)),
+   `liftAttains_of_holdsGenerally` (2); `lift_transfer`.
 
-Every dependency outside the ten is green. Outside them only `sec:pencil-d-generic` uses any: ten of
-its eleven nodes (all but `lem:pencil-d-good-ear`). The chapter is the lemma index (forward mode).
+Every dependency outside the ten is green; outside them only `sec:pencil-d-generic` uses any.
 
 ## Architectural choices made up front
 
@@ -51,77 +64,35 @@ its eleven nodes (all but `lem:pencil-d-good-ear`). The chapter is the lemma ind
 
 ## Lemma checklist
 
-- [ ] **Pre-build recon**: the ten spiked against the `d = 3` Lean and the landed carrier, exact
-  Lean signatures, their files, and the questions under *Blockers*.
-- [ ] `def:pencil-d-nondegenerate`, with feasibility and the generic realization in dimension `d`.
-- [ ] `lem:pencil-d-nondegenerate-three`.
-- [ ] `lem:pencil-d-nondegenerate-maps`, parts (1) and (2).
-- [ ] `lem:pencil-d-nondegenerate-feasible`.
-- [ ] `lem:pencil-d-steer`.
-- [ ] `def:pencil-d-lift`, the lift space, its trivial lifts and `L(b⁰)`.
-- [ ] `lem:pencil-d-lift-realization`, parts (1) to (3).
-- [ ] `def:pencil-d-lift-attains`.
-- [ ] `lem:pencil-d-lift-one-witness`, parts (1) and (2).
-- [ ] `lem:pencil-d-lift-transfer`.
+- [x] **Pre-build recon**: all ten spiked complete, four builds pinned (*Current state*).
+- [ ] Build 1: `def:pencil-d-nondegenerate`, `lem:pencil-d-nondegenerate-three`, `-maps`.
+- [ ] Build 2: `lem:pencil-d-nondegenerate-feasible`.
+- [ ] Build 3: `lem:pencil-d-steer`, `def:pencil-d-lift`, `lem:pencil-d-lift-realization`,
+  `def:pencil-d-lift-attains`.
+- [ ] Build 4: `lem:pencil-d-lift-one-witness`, `lem:pencil-d-lift-transfer`.
 - [ ] **Close** 42l, an intermediate sub-phase close (`PHASE-BOUNDARIES.md`); `-generic` opens after
   it at the PI's word.
 
 ## Blockers / open questions
 
-- None blocking the recon. Its questions, from the open's read:
-  - **The `d = 3` Lean, file by file.** The definitions are `Pencil/Motive.lean`'s
-    `IsNondegPencilRealization` (on `BodyHingeFramework K 2` with normals and points `α → Fin 4 →
-    K`), `PencilNondegFeasible` and `HasGenericPencilRealization`; beside them the hub bound
-    (`ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`) and `maps` (2) for linear
-    equivalences (`IsNondegPencilRealization.mapExtensor_screwEquivOfLinearEquiv`). The
-    parametrization is `lem:pencil-generic-steer`'s Lean: `Chart.lean` (the chart), `Engine.lean`
-    (its coordinates as polynomials), `Reseed.lean` (the converse), `Steer.lean` (coordinate points,
-    a common seed, the chart's rank), `MainComponent/GenericSteer.lean` (parts (a), (b)) and
-    `Witness.lean` (part (a)). The
-    polarity is `hasPencilPanelRealization_mapExtensor_screwComplementIso` (`Statement.lean`) with
-    42b's `hasPencilPlaneRealization_two_iff` and `hasGradedPencilRealization_two_iff`
-    (`Grade/Realization.lean`). No `d = 3` Lean: `maps` (1), the feasibility lemma's projection, the
-    lift's four nodes, and the lift parts of one-witness and transfer. `Pair.lean` and `Pair2.lean`
-    serve `-generic`.
-  - **The chart.** The `d = 3` Lean already pads the normal of a body that is not a hub
-    (`pencilChartNormal`, `fillNbr`), which `lem:pencil-d-steer`'s comparison remark says the
-    `d = 3` node's proof does not. Its parameters are `hubNormal` and two padding triples a body,
-    and the coordinate form (`PencilSeed.ofCoord`) shares one triple between them, where `Γ(G)` has
-    `m_v` and five auxiliary vectors. Does the steer lemma pin the `d = 3` chart read through the
-    polarity, or a chart on `Γ(G)`? And "Zariski-open" and "general" as a polynomial nonzero
-    somewhere on `U(G)`, the form of the `exists_polynomial_ne_zero_of_*` lemmas?
-  - **The definition's form.** On a pencil realization at grade `m + 1`
-    (`HasPencilPlaneRealization`), whose hinges are multiples of `C(b_u, b_v)`
-    (`HasPencilPlaneRealization.supportExtensor_eq_smul_panelSupportExtensor`), or on `(b, Π)` with
-    the panel-hinge framework; the third condition as a bound on the dimension of `⨅ w ∈ S, Π_w`.
-    The remarks after the definition (the hub bound, openness) and after the steer lemma
-    ("general") have no node; their Lean lands with the nodes that cite them.
-  - **The lift.** `L(b⁰, Π⁰)` as a submodule, `L(b⁰)` and one-witness's `L̃(b⁰)`; the lift by `0`
-    as `gradeEmbed` from grade 2; the rank as that of the panel-hinge framework with normals `b`
-    (point-configuration, `finrank_span_rigidityRows_ofNormals_linearEquiv_grade`). The remark after
-    `def:pencil-d-lift-attains` that an attaining general lift gives a generic realization has no
-    node; `thm:pencil-d-generic` (`-generic`) cites it.
-  - **The consumers.** The ten have none outside `-generic`, so their signatures serve a later
-    sub-phase: lift-no-rigid reads `L(b⁰) = L(q)` at a configuration and its lift as a
-    configuration, ear-free uses the lift and one-witness, ear-extend the steer lemma. Spike each
-    signature against those statements too.
-  - **Steps the read found implicit** (none a repair): the feasibility lemma's open set for (b) at
-    `(v, S)` includes injectivity on the `Π_w`, `w ∈ S`, which its construction gives; one-witness
-    (2) applies the steer lemma under the hub bound that feasibility gives; and `maps` (2)'s "in
-    particular" is (2) with `d` and `d′` exchanged.
-  - **Files.** New `Grade/` file(s), at the recon's choice. A deferral naming a file a build edits
-    rides with it (design doc §3).
+- None blocking. The open's questions, settled by the recon (*Decisions made*): the `d = 3` Lean
+  reused, the chart, the definition's form, the lift's spaces, the remarks, the consumers.
+- **For `-generic`** (no node of the ten): the remark after `def:pencil-d-lift-attains` that an
+  attaining general lift gives a generic realization is `IsNondegPencilPlaneRealization.lift` with
+  `PanelHingeFramework.span_rigidityRows_toPatchedBodyHinge` at a realization with `Q ≠ 0`; it lands
+  with `thm:pencil-d-generic`, which cites it.
+- **Files.** A deferral naming a file a build edits rides with it (design doc §3); none of the four
+  new files is named by one.
 
 ## Hand-off / next phase
 
-The next concrete commit is the **pre-build recon** (a `recon-opus` dispatch, read-only or a
-design-pass commit at the coordinator's choice), as `661f0382` (42j) and `3c2f844a` (42k) were. It
-spikes the ten against the `d = 3` Lean (*Blockers*) and the landed carrier
-(`Pencil/Grade/Realization.lean`, `Embedding.lean`, `Collineation.lean`), pins the ten Lean
-signatures and the file plan, each spiked under `lake lean`, settles *Blockers*, and records the
-signatures here. Then build leaf-first, roughly 3–5 commits by the coordinator's estimate in the
-option the PI chose. Each build adds its node's `\lean{}` and `\leanok`.
-- **The standing rule** (*Architectural choices*): a row in `notes/Cleanup42.md` §2 per departure.
+The next concrete commit is **build 1**: `Grade/Nondegenerate.lean` transcribed from the spike's
+first section (to `IsNondegPencilPlaneRealization.map_gradeEmbed`), with `\lean{}` and `\leanok`
+on `def:pencil-d-nondegenerate`, `lem:pencil-d-nondegenerate-three` and `-maps`. Then builds 2–4
+(*Current state*), each one coherent file; the spike's style warnings are the builder's to clear.
+- **The standing rule** (*Architectural choices*): each build whose Lean departs from the chapter's
+  proof sets or keeps its `notes/Cleanup42.md` row (R-20 with build 2, R-22 with build 3, R-21 and
+  R-23 with build 4).
 - **Deferred, where it lands** (design doc §3; FRICTION's `[open]` entries): the home debts of
   42b–42k are unchanged, each riding with the next commit that edits its target file
   (`notes/Phase42k.md` *Hand-off* lists 42k's four).
@@ -131,6 +102,30 @@ option the PI chose. Each build adds its node's `\lean{}` and `\leanok`.
 
 ## Decisions made during this phase
 
+- **The recon (design pass):** all ten spiked complete on the landed carrier (*Current state*).
+  The `d = 3` Lean reused: the polarity and `IsNondegPencilRealization` (three), the chart
+  `pencilChartPoint`/`pencilChartNormal` and `exists_pencilSeed_of_nondeg_of_selectors` (steer),
+  `cross₃Poly`, the polynomial section `Matrix.exists_mvPolynomial_section_mulVec_eq_zero` and the
+  rank polynomial `exists_rankPolynomial_of_le_finrank_linking` (one-witness, transfer). Not reused:
+  `Steer.lean`, `Witness.lean`, `MainComponent/GenericSteer.lean`, `PencilSeed.ofCoord`.
+- **The chart** (steer): the `d = 3` chart at `PencilSeed.ofGamma s`, `s : α × Fin 7 × Fin 4 → K`
+  (`m_v`, three hub pads, three neighbour pads at the selectors' slots), so `ofGamma ∘ toGamma = id`
+  and every realization is a point; "the fixed order" is the selectors, parameters of the lemma.
+  `Γ(G)` has six auxiliary vectors where the chapter has five (R-22). "General" is
+  `HoldsGenerally` (a polynomial on `Γ(G)` nonzero somewhere on `U(G)`).
+- **The lift's spaces:** `𝓛(b⁰, Π⁰)` is `liftSpace`, forms on `Π⁰_v` (`Module.Dual`), its condition
+  asked when `b⁰_w ∈ Π⁰_v`; `L(b⁰)` is `liftMaps`; `L̃(b⁰)` is `liftSpaceTilde`, forms on `K⁴` by
+  coordinates, `= ker A(b⁰)` (`liftSpaceTilde_eq_ker`). The lift's normal is
+  `gradeMk b₁ b₂ (b₃ :: ζ) b₄`, so a lift of a configuration is one. `LiftAttains` asks
+  `Q.vars` in `V(G)` and `Q` weighted homogeneous for `p ↦ single p.1 1` (one degree per body).
+- **No pin is weaker than its node:** three takes no `n_v ≠ 0` (the realization gives it), maps no
+  `b_v ≠ 0` or `Π_v ∋ b_v`, one-witness and transfer neither simplicity nor feasibility (unused);
+  feasibility takes `[Finite α]`, the chapter's finite multigraph. Transfer's open set is open in
+  the maps' coordinates, polynomials on `𝓛(r⁰)^m` through `λ ↦ ζ`.
+- **The routes** (`notes/Cleanup42.md`): feasibility's set-by-set map by three forms chosen off two
+  proper subspaces each, no induction or quadric (R-20); one-witness through the polynomial section,
+  not a Cramer basis with coefficients `γ` (R-21); the chart's sixth vector (R-22); transfer's open
+  set by the rank polynomial at each `λ`, not as a preimage (R-23).
 - **PI, 2026-11-04 (42l's open):** the PI answered "Nondegenerate + lift only", whose option read:
   "Open on the 10 nodes of -nondegenerate and -lift (roughly 3–5 builds, my estimate). The 11
   generic nodes and the headline would wait for a later sub-phase." The question as put, the other
