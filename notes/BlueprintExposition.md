@@ -308,6 +308,12 @@ theirs contradicts the statement as it stands. No entry names one of the eight d
 round unpinned, and the seven labels the ledger names that the blueprint lacks are the open's.
 **Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
 
+**Phase-42 close (2026-11-05).** The chapter `pencil-d.tex` (99 dep-graph nodes over twelve
+sub-phases, 42b–42m) added no entry: its sources are the project's own, each node carries its
+argument in full, and no node decomposed or rerouted for difficulty. The verdicts, sub-phase by
+sub-phase, are the `pencil-d.tex` sections below, the last 42m's with the judgment for the phase.
+**Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
+
 ## Format
 
 One entry per node, grouped by destination blueprint chapter:
@@ -1940,6 +1946,41 @@ in full. The close restated the parametrization to its Lean's six auxiliary vect
 word (R-22, aligned), with a formalization note that five suffice; its end-to-end re-read found no
 other wording false (the Lean holds without the one-lift and restriction lemmas' unused simplicity
 and feasibility hypotheses; the nodes keep them).
+**Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
+
+### `pencil-d.tex` — Phase 42m (PD-HEAD's second half: the generic conjunct and the headline), and Phase 42
+
+**No new entries — judged at the close of 42m and Phase 42 (2026-11-05).** The source is the
+project's own (42d's write-up from the NONDEG workbook, its steps cited in TeX comments; the
+`d = 3` case split after `thm:pencil-generic-step`, judged with Phase 40p above, and the good ear
+after `lem:pencil-rigid-good-ear`, whose entry is Phase 40p's); the criterion transfers as in the
+`pencil.tex` section. The eleven nodes of `sec:pencil-d-generic` are green, in seven build
+commits from the recon's spikes (the sixth split in two by node, `-ear-extend` then `-ear-free`),
+and no node decomposed or rerouted. The recon's findings are project-side: the good ear's `d = 3`
+Lean returned the body alone, where the chapter already reads the other parts off its proof, and
+the ear's condition is one predicate at the same selectors on both sides. The route differences
+left (the cases' polynomials by one minor per closed hub-neighbourhood, one form per body in (T2),
+the cut edge's glue by one frame map and one minor, the least lift space through the lifting
+system without the chapter's map `g`, `E_L` by one witness per condition with the normals chosen
+greedily, every lift of the rest of the rigid set trivial by an embedding without the count of its
+maps; `notes/Cleanup42.md` R-24 to R-34) are a matter of presentation, tracked for the cleanup
+after Phase 42, not a compressed step; the chapter writes its own routes out in full. No pin is
+weaker than its node: five drop unused hypotheses (the pendant's other neighbour, the ear's
+non-adjacency, the cut edge's side sizes, `-ear-extend`'s simplicity, `-lift-small` (2)'s
+simplicity), and the two-body pin adds the ambient `[Nonempty α]`. The close's end-to-end re-read
+of `sec:pencil-d-generic`, and of the frame of the rest, found no step that fails and no
+formalization aside. It made the chapter's opening state the theorem as proved (it said that such
+a theorem "would strengthen" KT Theorem 5.6, and that the restated objects are those a proof
+"would use"), named the headline `cor:pencil-d-conditioned-pair` at the end of the chapter's
+overview and of the section's, and rewrapped three source lines.
+**Phase 42 as a whole** (42a–42m, the chapter's 99 dep-graph nodes): no node earned an entry. Its
+sources are the project's own (`notes/Strata.md`, the SHORT-CORE, CERT and NONDEG workbooks,
+Phases 39–40's chapters), and its one KT step, the parallel-edge case's block-triangular count, has
+its entry above; every node whose argument is new in dimension `d` (the short ears' stars, CERT's
+polygons, the lifts, the rest of the rigid set lifting trivially) carries it in full in its proof,
+with a closing paragraph naming where the `d = 3` proof used its dimension. The eleven earlier
+sub-phase closes (42b–42l) and this one re-read the chapter section by section and found no step
+that fails.
 **Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
 
 ## Retroactive coverage

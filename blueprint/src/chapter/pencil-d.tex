@@ -12,16 +12,18 @@ with collinear pins of Jackson and Jord\'an~\cite{jacksonJordan2008pin}.
 A pencil realization satisfies every weaker condition of this kind, the
 hinges at each body lying in a hyperplane or containing a common
 $j$-flat for some $j \le d - 3$. In particular it is a hinge-coplanar
-realization. So a theorem that every multigraph has a pencil realization
-at the deficiency rank in dimension $d$ would strengthen Katoh and
+realization. So the theorem of this chapter, that over an infinite
+field every multigraph with a body has a pencil realization at the
+deficiency rank in dimension $d \ge 3$
+(\cref{cor:pencil-d-conditioned-pair}), strengthens Katoh and
 Tanigawa's theorem in dimension $d$ (KT
 Theorem~5.6~\cite{katohTanigawa2011}), which gives a hinge-coplanar
 realization at that rank.
 
 This chapter states pencil realizations in every dimension, and the
-objects of \cref{sec:main-component-carrier} that a proof in dimension
-$d$ along the lines of \cref{sec:main-component} would use. At $d = 3$ each of
-them is the object of \cref{sec:pencil} or \cref{sec:main-component}
+objects of \cref{sec:main-component-carrier} that the proof in dimension
+$d$, along the lines of \cref{sec:main-component}, uses. At $d = 3$ each
+of them is the object of \cref{sec:pencil} or \cref{sec:main-component}
 that it restates. The third section embeds a lower dimension in a
 higher one. At the graphs of small deficiency it carries the attaining
 of the general configuration (\cref{thm:pencil-x0-coverage}) from
@@ -48,7 +50,8 @@ dimension $d$ (\cref{sec:pencil-d-nondegenerate}), lift the nondegenerate
 realizations in dimension three to dimension $d$
 (\cref{sec:pencil-d-lift}), and run the induction of
 \cref{sec:main-component-statements} on the lifts
-(\cref{sec:pencil-d-generic}).
+(\cref{sec:pencil-d-generic}). The chapter ends with the three conjuncts
+together (\cref{cor:pencil-d-conditioned-pair}).
 
 We describe a pencil realization by its polar. The polarity of
 \cref{def:meet-complement-iso} takes the panel with normal $b_v$ to the
@@ -5412,7 +5415,10 @@ agree only under one linear condition on the lifts of $G - x$
 $W_0$ lifts only trivially (\cref{lem:pencil-d-ear-free}). We prove this
 by choosing the points of $W_0 \setminus \{x\}$ first, without regard to
 the rest of $G$, and extending them to realizations of $G$
-(\cref{lem:pencil-d-ear-extend}).
+(\cref{lem:pencil-d-ear-extend}). With the reduction of
+\cref{sec:pencil-d-reduction}, the theorem gives the three conjuncts of
+the conditioned pair in every dimension
+(\cref{cor:pencil-d-conditioned-pair}).
 
 % Source: NONDEG workbook, S20.
 \begin{lemma}[Few bodies, a triangle, and a disconnected multigraph]
@@ -5520,8 +5526,9 @@ the rest of $G$, and extending them to realizations of $G$
   $g b'_v = b_v$. Likewise on $V_2$. So the incidences hold. The normals
   of the two ends of every link are independent, at $uv$ as in $r_1$. A
   body that is not a hub has the closed neighbourhood it has in its side,
-  with that side's normals, moved by $g$ on $V_2$. A closed hub-neighbourhood of a body of $V_1$ other than $u$ lies in
-  $V_1$, and is the one in $G_1$; likewise on $V_2$. So the only
+  with that side's normals, moved by $g$ on $V_2$. A closed
+  hub-neighbourhood of a body of $V_1$ other than $u$ lies in $V_1$, and
+  is the one in $G_1$; likewise on $V_2$. So the only
   conditions of nondegeneracy of $G$ that read both sides are those at
   $u$ and at $v$ at sets $S$ containing the far end of $uv$, which is
   then a hub of $G$.
@@ -5806,7 +5813,8 @@ the rest of $G$, and extending them to realizations of $G$
   of every closed neighbourhood span $\Pi^0_v$. Take an invertible linear
   map $g$ of $K^4$ with $g b^0_v$ of nonzero last coordinate and $g
   \Pi^0_v$ not containing $e_3$ at every body, which exists as $K$ is
-  infinite. Rescale the points to last coordinate $1$. Neither step changes $\dim \widetilde L$, as
+  infinite. Rescale the points to last coordinate $1$. Neither step
+  changes $\dim \widetilde L$, as
   $(\zeta, \psi) \mapsto ((c_v \zeta_v)_v, \psi)$ and
   $(\zeta, \psi) \mapsto (\zeta, (\psi_v \circ g^{-1})_v)$ are linear
   bijections, nor the nondegeneracy and the spanning. Then the projection
@@ -6016,10 +6024,11 @@ general picture, the maps of its lifts are the heights in $L(q)$, of
 dimension $3 + \operatorname{def}_2(Y) = 4$ (\cref{thm:pencil-jj-equality}),
 and so the lifts are trivial. That the lifts of $Y$ are trivial is an open
 condition on the points of $X$, and it remains to carry it to the points
-of $X$ in a general nondegenerate realization of $G$. A hub outside $W_0$ asks only that its
-subspace contain the points of its neighbours in $X$, of which there are
-at most two (\cref{lem:pencil-d-good-ear}). So its subspace can be chosen
-after the points of $X$ (\cref{lem:pencil-d-ear-extend}).
+of $X$ in a general nondegenerate realization of $G$. A hub outside
+$W_0$ asks only that its subspace contain the points of its neighbours
+in $X$, of which there are at most two (\cref{lem:pencil-d-good-ear}).
+So its subspace can be chosen after the points of $X$
+(\cref{lem:pencil-d-ear-extend}).
 
 % Source: NONDEG workbook, S35 (b), on S34's labelled family S_L(Y) (its setting, not its
 % dimension count), parametrized here as the parametrization of lem:pencil-d-steer is.

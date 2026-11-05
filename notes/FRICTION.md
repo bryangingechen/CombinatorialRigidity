@@ -620,21 +620,6 @@ to be re-derived by re-reading entries later.
   `PanelLayer.lean`, with the next commit that edits that file; both tracked under PD-CARRIER /
   PD-STEPS / PD-COVERAGE, `notes/Phase42-design.md` §3).
 
-### [resolved] A `∘ₗ` composite into `ScrewSpace K k` through `complementIso` elaborates, but `rw [LinearMap.comp_apply]` cannot match it
-- **Where it bit:** Phase 42c, `def:pencil-d-embedding` (`Pencil/Grade/Embedding.lean`,
-  `screwEmbed = complementIso ∘ₗ exteriorPower.map 2 ι ∘ₗ complementIso.symm`, typed
-  `ScrewSpace K k' →ₗ[K] ScrewSpace K k`). The definition elaborates by unfolding `ScrewSpace` and
-  `k + 2 - 2`, but a scratch proof of the next node, `rw [screwEmbed, LinearMap.comp_apply]`, failed:
-  "not type-correct under the `implicit` transparency level", `⋀^(k+2-2) … →ₗ` against
-  `→ₗ ScrewSpace K k` in the `comp`'s instance arguments.
-- **Fix:** `screwEmbed_apply`, by `rfl`, states `φ C = complementIso (map 2 ι (complementIso.symm C))`,
-  the form of `panelSupportExtensor`'s body; then `rw [screwEmbed_apply, panelSupportExtensor,
-  panelSupportExtensor, LinearEquiv.symm_apply_apply, exteriorPower_map_normalsJoin]` closes
-  `screwEmbed_panelSupportExtensor` (`lem:pencil-d-embedding-join`). Also: `omega` does not read
-  `hi : gradeEmbedIndex h (Fin.last _) = j` as a bound on `↑j`; `subst hi` first
-  (`gradeEmbed_apply_eq_zero`).
-- **Status:** resolved (project helper `screwEmbed_apply`).
-
 ### [mirror-candidate] Grade-general extensor and panel lemmas live in `Pencil/Grade/Realization.lean`
 - **Where it bit:** Phase 42b, `lem:pencil-d-point-configuration`. The project had only grade-2 or
   `K⁴` forms: `span_range_eq_of_extensor_eq` (`Meet.lean`, two vectors),
@@ -735,27 +720,6 @@ to be re-derived by re-reading entries later.
   defeq of closed terms (TACTICS-QUIRKS § 38, pin the heavy argument explicit).
 - **Status:** idiom.
 
-### [resolved] The link field: what `link_tac` cannot see, and what its proofs block
-- **Where it bit:** Phase 41a, items 4–5a, the field `PanelHingeFramework.isLink_ends` and its
-  autoParam and implicit record binders (`hlinks`), 123 declarations in 27 files; the spike took
-  15 build-and-fix rounds.
-- **Friction:** eight classes. An anonymous arrow antecedent is out of `link_tac`'s scope (three
-  `h622lb`s in `CaseIII/Realization.lean`, two `hcongr`s in `Cut.lean`, `Graph.exists_oneEar_base`);
-  a conjunct cannot serve an earlier one (the three R statements of `CaseIII/Realization.lean`,
-  `Graph.X0Attains`); an autoParam on a function-valued def swallows the applied argument
-  (`shiftBodyFrameworkAscTotal`); an implicit record binder is not inferred by `have := …`
-  (`ContractCurve.lean`, `ContractAdditive.lean`), by `rw [← lemma]` (`Modelling.lean`) or behind
-  `?_` holes (`chainData_dispatch_interior`), and `simp [ofNormals_supportExtensor_relabel_perm]`
-  stopped firing (`chainData_bottom_relabel`); `rw [← hQg]; rfl` and `▸` under an `ofNormals` term
-  give an ill-typed motive (ten sites); a `solve_by_elim` branch returned the unfolded predicate and
-  broke a later `rw`; the macro named the field before the structure existed; `mono`'s nested
-  `by link_base_tac` kept a framework's own field on the wrong graph, with no backtracking.
-- **Proposed fix:** as done: name the antecedent; make the record an `∃` binder first; take the
-  record explicitly; pass it by name (`(hlinks := by link_tac)`); `ofNormals_eq_self_of_graph_eq`
-  or `simp only`; `exact` in every branch; `syntax` before the structure and `macro_rules` after;
-  one `mono` alternative per base form.
-- **Status:** resolved. **Lifted to:** TACTICS-QUIRKS § 120.
-
 ### [open] `mulTilde` has no vertex-set lemma
 - **Where it bit:** Phase 41a, item P4: `mulTilde_removeVertex_le_splitOff`
   (`Molecular/Induction/ForestSurgery/EdgeSplitting.lean`) proved its vertex half by `exact hx`,
@@ -767,13 +731,6 @@ to be re-derived by re-reading entries later.
   `mem_edgeSet_mulTilde` (`Molecular/Deficiency.lean`). It changes a public `.olean`, so it rides
   a commit that rebuilds the tree anyway.
 - **Status:** open.
-
-### [resolved] A tactic macro's generated syntax kind trips `lake lint`'s `defsWithUnderscore`
-- **Where it bit:** Phase 41a, item 2: `macro "link_tac" : tactic` in
-  `Molecular/AlgebraicInduction/PanelHinge.lean`, whose kind `tacticLink_tac` the linter reported.
-- **Friction:** one lint iteration, and a second whole-tree rebuild below `PanelHinge.lean`.
-- **Proposed fix:** `macro (name := linkTac) "link_tac" : tactic`.
-- **Status:** resolved. **Lifted to:** TACTICS-QUIRKS § 119.
 
 ### [open] The tree's link hypotheses are in the form at links; `RecordsLinks` is the form on `E(G)`
 - **Where it bit:** Phase 41a, item 2: the callers of the four link lemmas gathered onto

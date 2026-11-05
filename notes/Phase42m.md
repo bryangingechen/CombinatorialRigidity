@@ -5,14 +5,15 @@ the second and last sub-phase of Phase 42's last layer, PD-HEAD. Forward mode, t
 `/coordinate-phase`: the eleven red nodes of `blueprint/src/chapter/pencil-d.tex`'s
 `sec:pencil-d-generic`, as the chapter states them. They were the blueprint's last red nodes, so
 42m's close is Phase 42's. The pre-build recon and **builds 1 to 7 landed** (2026-11-05): all
-eleven nodes green, the blueprint has none red. **The close runs in parts** (*Hand-off*): part 1
-landed (the gates and the axioms on the final tree, the docstring fix); next, part 2 (the re-read,
-the ledger, the compressions, the organization review), while the PI answers the question on
-Phase 42's `main_results` rows (*Blockers*), which part 3 needs.
+eleven nodes green, the blueprint has none red. **The close runs in parts** (*Hand-off*): parts 1
+(the gates and the axioms on the final tree) and 2 (the re-read, the ledger, the compressions, the
+organization review) landed; next, part 3, once the PI answers the question on Phase 42's
+`main_results` rows (*Blockers*), then part 4, the last.
 
 ## Current state
 
-**Next: the close's part 2** (*Hand-off*); part 1 landed (*Decisions made*). In the tree,
+**Next: the close's part 3, once the PI answers (*Blockers*), then part 4** (*Hand-off*); parts 1
+and 2 landed (*Decisions made*). In the tree,
 `Grade/Generic.lean` (build 7: `LiftAttains.hasGradedGenericPencilRealization`, the remark, pinned
 at `def:pencil-d-lift-attains`; `liftAttains_of_simple`, the strong induction;
 `hasGradedGenericPencilRealization_of_simple`, which is `thm:pencil-d-generic`;
@@ -140,8 +141,9 @@ Build numbers are *Hand-off*'s. "Spiked" means sorry-free in `scratch/42m/Spike.
   (*Hand-off* carries each part's checklist):
   - [x] Part 1: the gates and the 20 main results' axioms on the final tree, Phase 42's seven
     candidate declarations' axioms, `Grade/Generic.lean`'s docstring fix (*Decisions made*).
-  - [ ] Part 2: the chapter's end-to-end re-read and `notes/BlueprintExposition.md`; the design
-    doc's compression; the phase note's *Decisions made* tail; the project-organization review.
+  - [x] Part 2: the chapter's end-to-end re-read and `notes/BlueprintExposition.md`; the design
+    doc's compression; the phase note's *Decisions made* tail; the project-organization review
+    (*Decisions made*).
   - [ ] Part 3 (needs the PI's answer, *Blockers*): `formalization.yaml`'s `main_results` and
     `alignment` (Tier 0 unless the headline subsumes it, design doc §3: subsumed, so no Tier 0
     row), each new row's closed non-vacuity witness in `CombinatorialRigidity/Nonvacuity.lean`,
@@ -208,19 +210,8 @@ Builds 1 to 7 landed (`Grade/LiftSmall.lean`; `Grade/LiftCases.lean`, three node
 `Grade/EarFree.lean`, R-33 and R-34; `Grade/Generic.lean`, the theorem and the headline, no new row).
 No blueprint node is red. The close of 42m and Phase 42 together (`PHASE-BOUNDARIES.md` *When this
 commit closes a phase*, the full close) runs in parts, one commit each, on Phase 41's precedent;
-part 1 landed. **The next concrete commit is part 2**, which needs no answer from the PI:
-- **Part 2 (docs only):** (a) the end-to-end re-read of `pencil-d.tex` as a domain mathematician:
-  `sec:pencil-d-generic` in full (no close has re-read it), then the frame of the rest, which each
-  sub-phase's close re-read section by section (the chapter's opening, lines 1–65, each section's
-  introduction, and every sentence that calls a claim open, in progress or remaining), collapsing
-  per-commit formalization asides (`blueprint/AUTHORING.md` *Proof verbosity*); (b) a Phase 42m
-  section in `notes/BlueprintExposition.md` with the judgment for 42m and for Phase 42; (c) the
-  design doc's compression: first count its live Lean anchors (`grep -rc 'Phase42-design.md'
-  --include='*.lean' .`, with the heading each names), then collapse the closed arcs to cited
-  verdicts, §1's PI entries byte-identical, the stale header ("next, the first of seven builds")
-  rewritten; (d) this note's *Decisions made* to one-line verdicts, the PI entry verbatim; (e) the
-  project-organization review (the auto-loaded `CLAUDE.md` suite's sizes, FRICTION's status
-  sections, DESIGN's *Choices to revisit*, stale counts in ROADMAP and DESIGN).
+parts 1 and 2 landed (*Decisions made*). **The next concrete commit is part 3, once the PI answers
+the question under *Blockers***; part 4 flips the row, so it comes last and waits for part 3.
 - **Part 3 (Lean; after the PI's answer, *Blockers*):** the rows and `alignment` entries the PI
   picks, `review.notes`' count of main results ("all twenty"), each new row's witness in
   `CombinatorialRigidity/Nonvacuity.lean` (named `<declaration>_witness`; the module docstring's
@@ -238,19 +229,9 @@ part 1 landed. **The next concrete commit is part 2**, which needs no answer fro
   departures are `notes/Cleanup42.md` R-24 to R-34; `.claude/autopilot/queue.toml`'s PENCIL-D row
   `done = true`; this note and the design doc's header in closed form. Open no successor.
 - **The standing rule** (*Architectural choices*): a row in `notes/Cleanup42.md` §2 per departure.
-- **Deferred, where it lands** (design doc §3; FRICTION's `[open]` 42k and 42l entries): the six
-  `dotPerp` lemmas of `Grade/Feasible.lean` move to `Grade/Realization.lean` beside
-  `finrank_dotPerp`, with 42k's `dotPerp_map_eq`, riding the next commit that edits
-  `Grade/Realization.lean`; the home debts of 42b–42k ride with the next commit that edits their
-  files (`notes/Phase42k.md` *Hand-off*); build 6's helpers, each with the next commit that edits
-  its home (`isPolyFun_dotProduct` to `Grade/Feasible.lean`; `hubSlotPos` and its three lemmas and
-  `exists_steerPoint_eq_smul` to `Grade/Lift.lean`; the any-selector chart lemmas to `Chart.lean`;
-  `liftTildeOfTrivial` and its two lemmas to `Grade/LiftNoRigid.lean` beside `liftFreeCoords`;
-  `isZariskiOpen_finrank_liftSpaceTilde_le` to `Grade/LiftWitness.lean`;
-  `span_pencilConfigPoint_eq_top` and `linearIndepOn_planeNormal_of_subset` to
-  `MainComponent/GenericBase.lean` beside `planeNormal_pair`); at a cleanup round, the mirror
-  candidates `finrank_map_of_injOn`, `exists_mem_notMem_of_finrank` and
-  `finrank_span_image_of_linearIndepOn`.
+- **Deferred, where it lands:** design doc §3, the *Deferred to …* paragraphs of each layer, 42m's
+  build 6 helpers and mirror candidates now among them (*Deferred to CLEANUP-42 and after from
+  42m*); FRICTION's `[open]` entries for 42b–42l carry the same home debts.
 - **After 42m:** Phase 42 is closed; CLEANUP-42 (`notes/Cleanup42.md`) and then ORIGAMI follow,
   each opening with the PI (ROADMAP *Queued post-program phases*).
 
@@ -268,66 +249,30 @@ part 1 landed. **The next concrete commit is part 2**, which needs no answer fro
 
 ## Decisions made during this phase
 
+Compressed to one-line verdicts at the close's part 2 (the full entries are in git up to `e186a885`).
 - **PI, 2026-11-05 (42m's open):** the PI answered "All 11 as written (Recommended)", whose option
   read: "An Opus open commit, then a pre-build recon that spikes all 11 against Phase 39's d = 3
   Lean and 42l's Lean. Then roughly 4–7 builds (my estimate) and the close of 42m and Phase 42
   together." The question as put, the other options and a note on them: design doc §1.
-- **The open** (2026-11-05): the consistency read passed all eleven; their 46 outside `\uses`
-  dependencies (53 with the `\cref`s) are green, and they are the blueprint's only red nodes. The
-  open's questions for the recon are answered below.
-- **Recon: the `d = 3` Lean, file by file.** Reused directly: the steer lemma
-  (`exists_isNondegPencilRealization_restrict_of_demoted`, every case's (T1) realization),
-  `PencilNondegFeasible.mono`, `.induce_union_singleton`, `.hub_conditions`, the case split of
-  `pencilPair_of_not_twoEdgeConnected` and `hasGenericPencilRealization_of_IH`, and `GenericBase`'s
-  configuration. Re-opened: `GoodEar.lean`'s proof. Not transcribable: Pair.lean's reposition (it
-  fixes neither end's normal). New: every case's extension of a realization of `H` and its (T2).
-- **Recon: the induction and the cases.** `liftAttains_of_simple` is a strong induction on
-  `V(G).ncard` over simple feasible graphs with a body; a disconnected graph is a nonempty proper
-  cut with no crossing edge (no `Connected` test), a side of one body a pendant. Each case is
-  `lift_transfer` then `liftAttains_of_holdsGenerally`, the rank from the transferred one; (T1)'s `E`
-  is a product of `exists_minorPoly` minors over every closed hub-neighbourhood in `G` (times, at
-  the ear, one of `b_a·n_b`, `b_b·n_a`); (T2) is on the maps (`mem_liftMaps_iff`).
-- **Recon: the ear's condition** is one predicate, `EarLiftCondition`, at the same selectors on
-  both sides: `-lift-ear` takes it at any selectors of `G`, `-ear-free` proves it at every one, and
-  the theorem picks them by `exists_steer_selectors`. `-ear-extend`'s `Γ_L` is `Γ(G)`'s parameter
-  type read at a selector of `H_L[v]` (R-22's places left empty); no new chart. The good ear
-  returns `W₀` in `Graph.IsPencilGoodEar`. The headline is a three-conjunct theorem, no new `def`.
-- **Recon: shared steps.** `dim L̃`'s least value is exposed
-  (`exists_holdsGenerally_finrank_liftSpaceTilde_le`, spiked from `liftAttains_of_holdsGenerally`'s
-  proof); `-ear-free`'s two steps of `-lift-no-rigid`'s proof become one lemma each in build 5.
-  Departures: `notes/Cleanup42.md` R-24 to R-27.
-- **Build 3: the cut edge's glue** (`Grade/LiftCutEdge.lean`): the recon's frame map, re-derived
-  against the current bodies and kept: `t ∈ {b_u, b_v}^⊥` off `K n_u` and, when `v` is a hub, off
-  the span `N` of the rest of `u`'s closed hub-neighbourhood in `G`; `E₁` is one minor (that
-  hub-neighbourhood independent in `n`), whose non-roots put `r₁`'s own `n_v` off `N`, so the plane
-  is not in `N`. `E₁` and the fixed `r₂` are restrictions of one realization of `G`, so no normal is
-  changed. The bound `rank G_i ≤ rank G[V_i] + D − 1` was in the tree
-  (`BodyHingeFramework.finrank_span_rigidityRows_le_add_of_links_subset`). R-30.
-- **Build 5: the least `dim L̃` without a map `g`** (`Grade/LiftNoRigid.lean`): at every
-  configuration with `z ∈ L(q)`, `dim L̃ = dim L(q) + finrank (liftFreeCoords G)` (two injective
-  maps through the lifting system's kernel); a general realization has points of nonzero last
-  coordinate, normals of nonzero third coordinate and `q`'s admissible triples independent (each
-  open, witnessed at `r*`), so its rescaled points are a configuration over an admissible `q'`;
-  `q` off the main-picture polynomial, not Jackson and Jordán's (no `ℓ₀`). The chapter's `g` and
-  the transport lemma it would need are not used. R-32.
-- **Build 6a: `E_L` by one witness per condition, the `n_u` greedily** (`Grade/EarFree.lean`):
-  (a) and (b) are each open and witnessed where their slots are the standard basis at distinct
-  places of `Γ(G)`, `E_L` the product (no moment curve). Each `A_u` has dimension at least three,
-  or at least two and misses `m_v` (by (b) at a second neighbour of `u`, never adjacent to `v`: no
-  triangle with two hubs), so the normals of each closed hub-neighbourhood are chosen one at a time
-  in any order, and `exists_mem_forall_eval_ne_zero` takes one point of `∏ A_u` for all. Build 6
-  split; `-ear-free` is 6b. R-33.
-- **Build 6b: `-ear-free` in one session, every lift of `Y` trivial by an embedding**
-  (`Grade/EarFree.lean`): the trivial lifts and the free coordinates, each form's third coordinate
-  moved along a normal of its closed neighbourhood, embed in `L̃` when the points of `X` span, so
-  `dim L̃ ≤ 4 +` the free coordinates makes them all of it (no `L(b⁰)` count). Rank at most three is
-  used only in `U(G)`; (a) and (b) are carried as fixed independent triples and a fixed set of four
-  bodies, (c) open at every point by the section. Sub-lemmas landed in the hand-off's order; the
-  node closed, no 6c. R-34.
-- **Close, part 1 (2026-11-05): the final tree's gates and axioms.** The whole-project build, `lake
-  lint`, `blueprint/lint.sh` and `blueprint/verify.sh` clean; the 20 `main_results` rows'
-  `#print axioms` byte-identical to 41e's close net of the harness path; Phase 42's seven candidate
-  declarations (the headline, the generic theorem, `liftAttains_of_simple`, the reduction, the
-  coverage, Tier 0's two) on the three standard axioms. `Grade/Generic.lean`'s docstring credited the
-  induction to Jackson and Jordán; it now says what the chapter says, the case split of
-  `thm:pencil-conditioned-pair-nonempty` and `thm:pencil-generic-step`.
+- **The open:** all eleven nodes passed the consistency read; their 46 outside dependencies green.
+- **Recon, the `d = 3` Lean:** the steer lemma, `PencilNondegFeasible`'s API and the assembly's case
+  split reused; `GoodEar.lean`'s proof re-opened; Pair.lean's reposition not transcribable.
+- **Recon, the induction:** `liftAttains_of_simple`, strong induction on `V(G).ncard`; each case
+  `lift_transfer` then `liftAttains_of_holdsGenerally`, (T1)'s `E` by `exists_minorPoly` minors.
+- **Recon, the ear:** one predicate, `EarLiftCondition`, at the same selectors on both sides; the
+  good ear returns `W₀` (`Graph.IsPencilGoodEar`); the headline a three-conjunct theorem.
+- **Recon, shared steps:** `exists_holdsGenerally_finrank_liftSpaceTilde_le` exposed; R-24 to R-27.
+- **Build 3:** the cut edge's glue by one frame map and one minor, no normal changed (R-30).
+- **Build 5:** the least `dim L̃` through the lifting system's kernel, no map `g`, no `ℓ₀` (R-32).
+- **Build 6a:** `E_L` by one witness per condition, the `n_u` chosen greedily (R-33).
+- **Build 6b:** every lift of `Y` trivial by an embedding (`liftTildeOfTrivial`), no count of
+  `L(b⁰)` (R-34).
+- **Close, part 1:** every gate clean on the final tree; the 20 rows' axioms byte-identical to 41e's
+  close; the seven candidates on the three standard axioms; `Grade/Generic.lean`'s docstring fixed.
+- **Close, part 2 (2026-11-05, docs only):** the chapter's re-read found no step that fails and no
+  formalization aside; the opening now states the theorem as proved, naming
+  `cor:pencil-d-conditioned-pair`. The ledger's 42m section judges 42m and Phase 42: no entry. The
+  design doc 1304 → 1111 lines (one Lean anchor, into §2.3; §1 and §2 byte-identical, §2 frozen;
+  42m's deferrals moved to its §3). The organization review: the `CLAUDE.md` suite unchanged since
+  2026-10-25, no extraction due; FRICTION's three `[resolved]` entries swept to the archive; no
+  *Choices to revisit* entry answered; ROADMAP's directory layout names `Molecule/Pencil/`.

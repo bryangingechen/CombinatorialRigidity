@@ -1,69 +1,25 @@
 # Phase 42 — PENCIL-D: design (cross-phase plan and recon)
 
-**Status:** opened 2026-10-29 with the PI, sub-lettered, research first; **42m open**.
-**42m** (PD-HEAD's `-generic`, `notes/Phase42m.md`) **opened 2026-11-05** at the PI's word (§1): the
-eleven nodes of `pencil-d.tex`'s `-generic` (the cases of an induction on the bodies at few bodies,
-a cut edge, a body of degree one, a pendant triangle, no planar-rigid set and a body of degree two
-with hub neighbours; finding that body and its condition; the generic theorem and the headline) as
-the chapter states them (§3). They are the blueprint's last red nodes, so its close is Phase 42's.
-Its pre-build recon landed (§3): all eleven signatures kernel-checked, three nodes spiked complete
-and the theorem and headline assembled on the rest; builds 1 to 7 then landed, all eleven green.
-Its close, Phase 42's, runs in parts (`notes/Phase42m.md` *Hand-off*).
-**42l** (PD-HEAD's `-nondegenerate` and `-lift`, `notes/Phase42l.md`) **opened and closed
-2026-11-04** at the PI's word (§1): the ten nodes of `pencil-d.tex`'s `-nondegenerate` and `-lift`
-(nondegeneracy in dimension `d`, its agreement at `d = 3`, linear maps, feasibility in every
-dimension, a parametrization in dimension three, lifts, lifts are nondegenerate, the general lift
-attains, one lift suffices, lifts restrict to a subgraph), all green, as the chapter states them,
-in four builds from its recon's spikes (verdict §3; at the PI's word, §1, the parametrization's
-statement takes the Lean's six auxiliary vectors). PD-HEAD's other half, `-generic`, then opened
-as 42m.
-**42k** (PD-REDUCTION, `notes/Phase42k.md`) **opened and closed 2026-11-04** at the PI's word
-(§1): the eight nodes of `pencil-d.tex`'s `-reduction` (a hinge in two pencils, moving a
-realization by a linear map, moving one side of a cut edge, the cases at a loop, on at most two
-bodies, at a cut edge and at parallel edges, and the realization theorem in every dimension), all
-green, as the chapter states them, in three builds from its recon's spikes (verdict §3).
-**42j** (PD-COVERAGE, `notes/Phase42j.md`) **opened and closed 2026-10-31** at the PI's word (§1):
-the four nodes of `pencil-d.tex`'s `-chains` and `-coverage` (the chain count, a long chain or a
-core, the coverage in every dimension and the distinct statement), all green, as the chapter
-states them, in three builds from its recon's spikes (verdict §3).
-**42i** (the fourth and last sub-phase of PD-STEPS, `notes/Phase42i.md`) **opened and closed
-2026-10-31** at the PI's word (§1): the four nodes of `pencil-d.tex`'s `-short-three`, the open ear
-with three interior bodies, all green, the theorem at `d = 4` to `6` as the chapter states it, on
-a variant of 42h's factoring its recon pinned (verdict §3; at the PI's word, §1, stars-three's
-statement and proof follow its Lean).
-**42h** (the third sub-phase of PD-STEPS, `notes/Phase42h.md`) **opened and closed 2026-10-31** at
-the PI's word (§1): the eight nodes of `pencil-d.tex`'s `-short-four`, Phase 40's short-ear step in
-`Pᵈ` at four or more interior bodies, all green, their Lean in every `d` (verdict §3; at the PI's
-word, §1, two-stars is stated on forms and stars-four's proof follows its Lean).
-**42g** (the second sub-phase of PD-STEPS, `notes/Phase42g.md`) **opened 2026-10-30 and closed
-2026-10-31** at the PI's word (§1): the seven nodes of `pencil-d.tex`'s `-long`, Phase 40's cycle
-and long-ear steps in `Pᵈ` on CERT's closed polygons, all green (verdict §3).
-**42f** (the first sub-phase of PD-STEPS, `notes/Phase42f.md`) **opened and closed 2026-10-30** at
-the PI's word (§1): the six nodes of `pencil-d.tex`'s `-cut` and `-contract`, Phase 40e/40f/40k in
-`Pᵈ`, all green (verdict §3); its open also cut three step nodes no coverage step uses (§1, §3).
-**42e** (PD-CARRIER, `notes/Phase42e.md`) **opened and closed 2026-10-30** at the PI's word (§1):
-formalizing 42d's proof began with its setting and the flat rank, four nodes of `pencil-d.tex`,
-all green (verdict §3).
-**42a** (PD-RECON, `notes/Phase42a.md`) **closed 2026-10-30**: the step table (§2.1), the thresholds
-and the content `def[3] ≥ C(d,2) − 2` (§2.5), T1–T5 (§2.4), ONE-CLASS (§2.3, Result 27) and
-SHORT-CORE's attack track (§2.3; closed 2026-10-30, `notes/attacks/short-core/state.md`): the
-coverage's only new mathematics, the short ears at `d = 4`, is proved by hand, and from `d = 5` on
-the coverage never needs the 3-body short ear, given CERT's open ears (proved at every `d`, 42d).
-The route is the PI's (§1):
-R2's steps, Result 15's embedding as the base row, any induction on `d` left to Tier 2. **42b**
-(PD-STATE, `notes/Phase42b.md`) **closed 2026-10-30**: the statement layer in `Pᵈ`, its chapter
-`blueprint/src/chapter/pencil-d.tex` formalized (17 nodes), on the carrier the PI took (§1, option
-(a); §2.3 CARRIER). **42c** (PD-STABLE, `notes/Phase42c.md`) **closed 2026-10-30**: the embedding,
-the sharp deficiency lemma and `Pᵈ` at `def[3] ≤ 3` (Tier 0, which the PI widened from `≤ 1`, §1),
-`pencil-d.tex`'s section `sec:pencil-d-stable`, formalized (9 nodes; verdict §3). **42d** (PD-ALL,
-`notes/Phase42d.md`) **opened and closed 2026-10-30** at the PI's word (§1): an informal proof at
-every `d` of the conditioned pair's three conjuncts, the generic one included, as red nodes of
-`pencil-d.tex` (verdict §3), from three tracks (CERT, NONDEG, WRITE-UP) run by `/coordinate-tracks
-42d`. Evidence: `notes/Strata.md`, Results 12–27.
+**Status:** opened 2026-10-29 with the PI, sub-lettered, research first. **Every node of
+`pencil-d.tex` is green** (42m's build 7, 2026-11-05), and the close of 42m and Phase 42 together
+runs in parts (`notes/Phase42m.md` *Hand-off*). Each sub-phase opened at the PI's word (§1); its
+verdict is in §3 and its work log is `notes/Phase42<letter>.md`. **42a** PD-RECON (closed
+2026-10-30): the step table (§2.1), the routes (§2.2), ONE-CLASS and SHORT-CORE (§2.3), T1–T5
+(§2.4), the thresholds (§2.5); the route is the PI's (§1), R2's steps with Result 15's embedding as
+the base row. Beside it **42b** PD-STATE and **42c** PD-STABLE (both 2026-10-30): the statement
+layer, and Tier 0 (`def[3] ≤ 3`, widened by the PI from `≤ 1`). **42d** PD-ALL (2026-10-30): the
+informal proof at every `d` of the conditioned pair's three conjuncts, by `/coordinate-tracks`.
+Formalizing it: **42e** PD-CARRIER (2026-10-30); PD-STEPS as **42f** (2026-10-30), **42g**
+(2026-10-30/31), **42h** and **42i** (2026-10-31); **42j** PD-COVERAGE (2026-10-31); **42k**
+PD-REDUCTION (2026-11-04); PD-HEAD as **42l** (2026-11-04) and **42m** (opened 2026-11-05).
+Evidence: `notes/Strata.md`, Results 12–27.
 
-This file is the phase's entry point: the target (§0), the PI's decisions (§1), the recon (§2),
-the layers by stable code (§3) and the open questions (§4). Letters are minted when a sub-phase
-opens (`PHASE-BOUNDARIES.md`); until then the stable codes of §3 name the layers.
+This file is the phase's entry point: the target (§0), the PI's decisions (§1, verbatim), the recon
+(§2), the layers by stable code with their verdicts and deferrals (§3) and the settled questions
+(§4). **At the close** (2026-11-05) the header, §0's status, §3's arcs and §4 were compressed to
+verdicts (the full text is in git up to `e186a885`); §1 and §2 are byte-identical. §2 is **frozen**:
+the research corpus (`notes/Strata.md`, `notes/scripts/strata/`, the attack briefs and
+`Grade/TheoremS.lean`) cites its rows, tests and obligations by number.
 
 ## 0. Target
 
@@ -74,30 +30,25 @@ heights `z¹, …, z^{d−2} ∈ L(q)`. Then the hinges `b_u ∧ b_v`, with
 `D = C(d+1, 2)`. The headline is the multigraph form, Phase 39's `PencilPair` in dimension `d`,
 through Phase 39's reduction.
 
-Status: `d = 2, 3` are proved and formalized (Phases 40a, 40). Every `d` with `def_3 ≤ 1` is
-`Strata.md` Result 17, and every `d` at `def_3 ≤ 3` follows from Result 17's proof with the sharp
-deficiency lemma, proved and formalized (42c, `thm:pencil-d-deficiency-two-le-three`). Every `d` is
-proved on paper (42d, `cor:pencil-d-conditioned-pair`); formalizing it began with the setting and
-the flat rank (42e), then the induction's cut-vertex, bridge and contraction steps (42f), its
-cycle and long-ear steps (42g), its short-ear step at four or more interior bodies (42h) and at
-three, at `d = 4` to `6` (42i), which completes its steps, and the coverage, which puts them
-together, with the distinct statement (42j), which completes the induction, and Phase 39's
-reduction, which carries it to every multigraph (42k): the headline's bare and distinct conjuncts
-at every `d ≥ 3` (`Graph.graded_pencil_realization_theorem`). The generic conjunct (PD-HEAD)
-remains: its nondegeneracy and lifts in every dimension are formalized (42l), and the generic
-theorem and the headline (`-generic`) are open (42m).
-`d = 4, 5, 6` are measured (Results 11, 19), not found below target under the `--d4`
-population's cap (`n ≤ 12`, 36 simple graphs) and 8 graphs past it. Where the
-conjecture has content, that is 47 cells on 18 graphs, six of them cycles (§2.5).
+Status: `d = 2, 3` are proved and formalized (Phases 40a, 40). Every `d ≥ 3` is proved on paper
+(42d) and formalized (42e–42m), over every infinite field. At `d ≥ 3` the conjecture is the coverage
+(`thm:pencil-d-coverage`, `Graph.IsX0Graph.x0AttainsGrade`, 42j), which subsumes Tier 0
+(`thm:pencil-d-deficiency-two-le-three`, 42c). The headline is `cor:pencil-d-conditioned-pair`
+(`Graph.graded_pencil_conditioned_pair`, 42m): every multigraph with a body has a pencil realization
+at the deficiency rank, an adjacent-distinct one when it is simple (42k's
+`Graph.graded_pencil_realization_theorem`), and a generic one when it is simple and
+nondegeneracy-feasible (`thm:pencil-d-generic`, 42l–42m). Before any of it, `d = 4, 5, 6` were
+measured (Results 11, 19), not found below target under the `--d4` population's cap (`n ≤ 12`, 36
+simple graphs) and 8 graphs past it; where the conjecture has content, that is 47 cells on 18
+graphs, six of them cycles (§2.5).
 
 **What it implies.** By Result 12, every per-body flag stratum of `Pᵈ` attains, KT's panel
 theorem among them. That is a strengthening, not a new proof: Phase 40 itself uses KT Theorem 5.6
 at `d = 2` and KT Lemma 6.3.
 
-**What exists.** KT's chain is formalized in every `d` (Phases 21–23, 33, 41). The pencil layer is
-`P³` only. `IsNondegPencilRealization` takes a `BodyHingeFramework K 2` and points `Fin 4 → K`
-(`Pencil/Motive.lean`), and `main-component.tex` computes in `Λ²K⁴`'s flat coordinates. The
-planar carrier is the reusable part: pictures, `L(q)`, the one-witness lemma, the
+**What existed at the open.** KT's chain, formalized in every `d` (Phases 21–23, 33, 41); the
+pencil layer in `P³` only (`Pencil/Motive.lean`, `main-component.tex` in `Λ²K⁴`'s coordinates),
+whose planar carrier was the reusable part: pictures, `L(q)`, the one-witness lemma, the
 fibre-intersection lemma and Jackson–Jordán's equality.
 
 ## 1. The PI's decisions
@@ -965,159 +916,67 @@ marked `no departure` (R-6). The post-Phase-42 cleanup acts on the ledger (that 
 - **PD-RECON** (42a, **closed 2026-10-30**, `notes/Phase42a.md`): settle R1 or R2 on paper, or
   refute with a certificate (§2). Verdict: R2's steps with the embedding as base row (§1, §2.2);
   the coverage's new mathematics, SHORT-CORE, proved by hand at `d = 4` (§2.3).
-- **PD-STATE** (42b, **closed 2026-10-30**, `notes/Phase42b.md`): the `Pᵈ` statement layer,
-  formalized in `Pencil/Grade/`, agreeing with Phase 39's `P³` definitions. Its dep-graph is
-  `blueprint/src/chapter/pencil-d.tex`, 17 nodes: the carrier definitions (an extensor through a
-  subspace, pencil realizations in dimension `d` with each body's 3-space as data, their rank and
-  adjacent-distinct forms), the `d = 3` agreement, the dual form's bridge (independent adjacent
-  normals give the meet form, and configurations over admissible pictures are pencil
-  realizations), and CARRIER's restatements (configurations, attaining, the collineation, the
-  scale-shift, one witness, the magnified rank, join independence). Nondegeneracy's lift is
-  GENERIC's (§4).
+- **PD-STATE** (42b, **closed 2026-10-30**, `notes/Phase42b.md`): the `Pᵈ` statement layer, the 17
+  nodes of `pencil-d.tex`'s first two sections, formalized in `Pencil/Grade/` and agreeing with
+  Phase 39's `P³` definitions at `d = 3` (each body's 3-space as data: CARRIER, option (a), §1,
+  §2.3). Nondegeneracy's lift was left to the generic conjunct (§4), PD-HEAD's.
 - **PD-STABLE** (**42c**, opened and **closed 2026-10-30** at the PI's word, §1;
-  `notes/Phase42c.md`): Results 15–17, formally, as `pencil-d.tex` §`sec:pencil-d-stable` (9
-  nodes, all green), which is authoritative for the statements. `def[D_d]` is Lean's
-  `G.deficiency d`, so `def[3]` is `G.deficiency 2` and `def[6]` is `G.deficiency 3`; the Lean
-  encoding (grade `k = d − 1`, `m = d − 2` heights, the deficiency's `n` a parameter) is
-  `notes/Phase42b.md` *Architectural choices*. Verdicts:
-  1. *The embedding, at every `d′ ≤ d`* (Result 15; the route, §1). `ι` inserts zeros before the
-     last coordinate and `φ` is the screw map it induces. On a connected `G` any injective `φ`
-     adds `(D_d − D_{d′})(|V| − 1)` to the rank (`lem:screw-embedding-rank`, through the constant
-     motions rather than a complement). The statement form holds at a fixed deficiency parameter
-     (`lem:pencil-d-embed-realization`), and the configuration form from `d′ = 2`
-     (`Graph.X0AttainsGrade.of_le`). Its `d′ = 3` case is the form PD-COVERAGE consumes,
-     `def[6](G) = def[D](G)`, and settles ONE-CLASS (Result 27); its `d′ = 4` case takes Tier 1 to
-     every `d`. FRICTION's `normalsJoin` map lemma landed with it (`exteriorPower_map_normalsJoin`).
-  2. *The deficiency lemma* (Result 16, sharp form; `lem:deficiency-stable`): on a **connected**
-     `G` (corrected at the open: two bodies and no edge have `def[D] = D`), `def[3](G) + 3 ≤ D_{d′}`
-     and `d′ ≤ d` give `def[D_{d′}](G) = def[D_d](G)`; the first form, `2 + def[3](G) ≤ d′`, is
-     its "in particular".
-  3. *`Pᵈ` at `def[3] ≤ 3`* (Result 17 widened; Tier 0; `thm:pencil-d-deficiency-two-le-three`):
-     Phase 40 at `d′ = 3` with items 1–2 (`def[3] + 3 ≤ 6 = C(4, 2)`), which covers `def[3] = 0`
-     too. `Graph.x0AttainsGrade_of_deficiency_two_le_three` and
-     `Graph.hasGradedDistinctPencilRealization_of_deficiency_two_le_three` use the three standard
-     axioms.
+  `notes/Phase42c.md`): Results 15–17 formally, `sec:pencil-d-stable` (9 nodes). Verdicts: 1. the
+  embedding at every `d′ ≤ d` adds `(D_d − D_{d′})(|V| − 1)` to the rank on a connected `G`
+  (`lem:screw-embedding-rank`, through the constant motions), its `d′ = 3` case the form
+  PD-COVERAGE consumes; 2. the deficiency lemma in its sharp form, on a **connected** `G`:
+  `def[3] + 3 ≤ D_{d′}` and `d′ ≤ d` give `def[D_{d′}] = def[D_d]` (`lem:deficiency-stable`);
+  3. Tier 0, `Pᵈ` at `def[3] ≤ 3` (`thm:pencil-d-deficiency-two-le-three`:
+  `Graph.x0AttainsGrade_of_deficiency_two_le_three`,
+  `Graph.hasGradedDistinctPencilRealization_of_deficiency_two_le_three`). `def[D_d]` is Lean's
+  `G.deficiency d`; the encoding (grade `k = d − 1`, `m = d − 2` heights) is `notes/Phase42b.md`
+  *Architectural choices*.
 - **PD-ALL** (**42d**, opened and **closed 2026-10-30** at the PI's word, §1; `notes/Phase42d.md`):
-  an informal proof at every `d ≥ 3` of the conditioned pair's three conjuncts, as red nodes in the
-  sections of `pencil-d.tex` from `sec:pencil-d-induction` to `sec:pencil-d-generic`, which are
-  authoritative; headline `cor:pencil-d-conditioned-pair`. Verdicts:
-  1. *The coverage* (`thm:pencil-d-coverage`): R2's steps at every `d`, the embedding from `d = 3`
-     where `def[6] = def[D]`, and otherwise a long chain or a core by the chain count
-     (`lem:pencil-d-chain-count`, `thm:pencil-d-chain-or-core`). Its ear steps: SHORT-CORE's
-     (`k ≥ 4` at every `d`; `k = 3` at `4 ≤ d ≤ 6`, needed only at `d = 4`) and CERT's (cycles and
-     `k ≥ D − 1`; closed at review 1, `notes/attacks/cert/`).
-  2. *The reduction* (`thm:pencil-d-realization-theorem`): Phase 39's in `Pᵈ`; a hinge in two
-     pencils needs `dim(Π_u ∩ Π_v) ≥ 2`, so a cut edge moves one side (`lem:pencil-d-cut-reposition`).
-  3. *The generic conjunct* (`thm:pencil-d-generic`): NONDEG's C2-same (the PI's, §1; closed at
-     review 2, `notes/attacks/nondeg/`), feasible in `Pᵈ` exactly when in `P³`; proved through the
-     lifts of `P³` realizations, with (W) at a minimal planar-rigid set (`lem:pencil-d-ear-free`).
-  COUNT-A and COUNT-B formalized the counting at every `D` (11 green nodes, `sec:pencil-d-deficiency`).
-  The split-off and the ear step that assumes `def_d(G[V₁]) ≤ def_d(G)`, which no coverage step
-  uses, were cut at 42f's open (the PI, §1). Two fresh
-  reads checked the coverage and W10's generic conjunct; the close's end-to-end re-read found no gap.
+  an informal proof at every `d ≥ 3` of the conditioned pair's three conjuncts, as red nodes from
+  `sec:pencil-d-induction` to `sec:pencil-d-generic`; headline `cor:pencil-d-conditioned-pair`. The
+  coverage on R2's steps and a long chain or a core by the chain count, with SHORT-CORE's and CERT's
+  ear steps (`notes/attacks/cert/`); the reduction, a cut edge moving one side; the generic
+  conjunct, NONDEG's C2-same (the PI's, §1; `notes/attacks/nondeg/`) through lifts of `P³`
+  realizations. COUNT-A and COUNT-B formalized the counting at every `D` (11 nodes,
+  `sec:pencil-d-deficiency`). Two fresh reads checked the proof. The split-off and the ear step that
+  assumes `def_d(G[V₁]) ≤ def_d(G)`, which no coverage step uses, were cut at 42f's open (the PI,
+  §1).
 - **PD-CARRIER** (**42e**, opened and **closed 2026-10-30** at the PI's word, §1;
-  `notes/Phase42e.md`): Phase 40b–40d in `Pᵈ`, the first layer formalizing PD-ALL's write-up. The
-  four nodes of `pencil-d.tex` §`sec:pencil-d-induction` and §`sec:pencil-d-flat` are green,
-  formalized as written: `lem:pencil-d-condition-linear` (`Pencil/Grade/ConditionLinear.lean`) and
-  `thm:pencil-d-flat-rank`, `cor:pencil-d-flat-attains`, `cor:pencil-d-jj-flat`
-  (`Grade/Flat.lean`). Verdicts: the Lean holds at every `m`, so at every `d ≥ 2`, since no proof
-  uses `d ≥ 3` (the nodes keep the chapter's `d ≥ 3`); `σ_v` is a `def` (`gradeSigma`) and `Π_v` its
-  range, as PD-STEPS reads both (`def:pencil-d-ear-data`, `lem:pencil-d-planes-meet`); the flat rank
-  is the plane rank plus the zero heights' (`padHeights` at no height). It edited no file a deferral
-  below names. `rem:pencil-d-flat-class` is a remark, not a dep-graph node, so it was no target.
-- **PD-STEPS**, **PD-COVERAGE**: Phase 40e–40m in `Pᵈ`, on R2's steps (§1), formalizing PD-ALL's
-  write-up after PD-CARRIER. **PD-STEPS's first sub-phase, 42f, opened and closed 2026-10-30** at
-  the PI's word (§1; `notes/Phase42f.md`): `-cut` and `-contract`, six nodes (Phase 40e/40f/40k in
-  `Pᵈ`), all green, formalized as written: `lem:pencil-d-lifting-restrict`, `thm:pencil-d-cut` and
-  `thm:pencil-d-bridge` (`Pencil/Grade/Cut.lean`), `lem:pencil-contract-additive-kernel`,
-  `thm:pencil-d-contract-additive` and `cor:pencil-d-contract-rigid`
-  (`Grade/ContractAdditive.lean`). Verdicts: the Lean holds at every `m` (the nodes keep `d ≥ 3`);
-  the restriction of `m` heights is `Graph.liftingRestrict` at `α × Fin m`, no new definition; the
-  kernel lemma's lower bound needs only admissibility, so it holds at any admissible `q`. It edited
-  no file a deferral below names. The open cut `-splitoff` and `-ear-deficiency` (the PI, §1).
-  **PD-STEPS's second sub-phase, 42g, opened 2026-10-30 and closed 2026-10-31** at the PI's word
-  (§1; `notes/Phase42g.md`): `-long`, seven nodes (Phase 40's cycle and long-ear steps in `Pᵈ`, on
-  CERT's closed polygons with independent joins), all green: `lem:pencil-d-polygon-normal`,
-  `-polygon-star`, `-polygon-insert`, `lem:pencil-d-polygons` and `-polygon-collapse`
-  (`Pencil/Grade/Polygon.lean`), `thm:pencil-d-cycle` and `thm:pencil-d-open-ear-long`
-  (`Grade/Chain.lean`). Verdicts: the Lean holds at every `m`; a closed polygon is a function
-  `Fin n → K^{d+1}`, with no definition and no basis of `⋀²` (2 × 2-minor functionals); the
-  collapse is index-level; `|K| ≥ 4` is `4 ≤ ENat.card K`. At the PI's word the star's and the
-  insertion's proofs follow their Lean (§1); the other route differences are `notes/Cleanup42.md`'s
-  ledger (R-3 to R-5 open, R-6 no departure). Its open found that no `-long` node uses a `-short`
-  one. It edited no file a deferral below names.
-  **PD-STEPS's third sub-phase, 42h, opened and closed 2026-10-31** at the PI's word (§1;
-  `notes/Phase42h.md`): the half of `sec:pencil-d-short` for open ears with four or more interior
-  bodies, in every `d`. Codes: `-short` stays the section's, and its halves are **`-short-four`**,
-  eight nodes (`lem:pencil-d-two-stars`, `lem:pencil-d-insertion`, `lem:pencil-d-kernel-curve`,
-  `lem:pencil-d-stars-four`, `def:pencil-d-ear-data`, `lem:pencil-d-ear-data`,
-  `lem:pencil-d-ear-data-open`, `thm:pencil-d-open-ear-four`; 42h, all green), and
-  **`-short-three`**, four nodes (`lem:pencil-d-stars-three`, `lem:pencil-d-glued-ends`,
-  `lem:pencil-d-planes-meet`, `thm:pencil-d-open-ear-three`; the three-body ear at `d = 4` to `6`;
-  42i, all green), named after their theorems. 42h's Lean is three new files:
-  `Pencil/Grade/Stars.lean` (the linear algebra), `Grade/EarData.lean` (the ear data) and
-  `Grade/Short.lean` (the factoring through `G″`, `Graph.X0AttainsGrade.of_openEar_splitOff`, and
-  the theorem). Verdicts: the Lean holds at every `m`; annihilators are read on the forms on `⋀²`
-  (the chapter's pairing), so no exterior power past `⋀²` is used; at the PI's word two-stars is
-  stated so and stars-four's proof follows its Lean (§1); the other route differences are
-  `notes/Cleanup42.md`'s ledger (R-9 to R-12 open). It edited no file a deferral below names.
-  `-short-three`'s proofs use `-short-four`'s theorem and five of its lemmas, and no `-short-four`
-  node uses a `-short-three` one. The factoring applies at three interior bodies with
-  `splitOff_ear_succAbove` at `k = 0`, leaving only its insertion hypothesis (a type-check at 42h's
-  close, `notes/Phase42h.md` *Hand-off*).
-  **PD-STEPS's fourth and last sub-phase, 42i, opened and closed 2026-10-31** at the PI's word
-  (§1; `notes/Phase42i.md`): `-short-three`, the four nodes as the chapter states them, all green,
-  the theorem at `d = 4` to `6`. Verdicts: the insertion hypothesis 42h's factoring leaves, over
-  every base datum and every `ρ`, cannot be met at three bodies (the recon's kernel-checked
-  counterexample at every `m ≥ 2` takes `la = lb` and `ρ` the joins meeting `Π_a`), where the
-  chapter proves the condition only at its first stage's base data and, when `r ≤ 2`, at
-  `G[V₁]`'s own `ρ`. So `Grade/Short.lean` gained a variant that takes it only there,
-  `Graph.X0AttainsGrade.of_openEar_splitOff_of_base`, of which 42h's factoring is a corollary. The
-  rest is four new files, `Grade/StarsThree.lean`, `Grade/PlanesMeet.lean`,
-  `Grade/GluedEnds.lean` and `Grade/ShortThree.lean`, their Lean at every `m` but the theorem's
-  (`2 ≤ m ≤ 4`). Stars-three is on forms, as stars-four, and at the PI's word its statement and
-  proof follow its Lean (§1; R-13 aligned), so the theorem's first stage needs no independence of
-  `p_a`, `p_b`. The other route differences are `notes/Cleanup42.md`'s ledger (R-14 to R-16 open):
-  when `r ≤ 2` the theorem's Lean bounds `dim ρ` by a common member of the closed neighbourhoods
-  of `a` and `b`, or by glued-ends, with no component or path step. Of the files a deferral below
-  names it edited only `Grade/Stars.lean`, which took `starGrade_smul`. PD-STEPS is complete.
-  **PD-COVERAGE, as 42j, opened and closed 2026-10-31** at the PI's word (§1;
-  `notes/Phase42j.md`): `-chains` and `-coverage`, the four nodes as the chapter states them, all
-  green. Verdicts: the reductions of Phase 40 return their data (a chain of bridges, a cut vertex,
-  a cycle, a maximal planar-rigid set) from public forms in `MainComponent/`, each `d = 3` lemma
-  now their corollary, its name and signature kept; COUNT-C counts the chains' interior bodies,
-  which partition the bodies of degree two, not edge segments (`notes/Cleanup42.md` R-17 open);
-  the ear steps take a chain's fields; the distinct statement is a plain theorem, with no
-  dimension-`d` `X0Dist`. Its recon spiked all four complete, and three builds landed them: the
-  data forms (unpinned), `Grade/Chains.lean` and `Grade/Coverage.lean`. The coverage holds at
-  every `m ≥ 1`, as the chapter's `d ≥ 3`, and the chain count without `d ≥ 3` or `ℓ ≥ 1`, which
-  its other hypotheses force. It edited no file a deferral below names. Theorem S's fold goes to
-  CLEANUP-42, as it reverses an import. PD-COVERAGE is complete, and with it the induction.
-  **Handed on from PD-RECON** (42a's close; SHORT-CORE's workbook S56 has the detail):
-  - *PD-STEPS, the short-ear step (row 13).* At `d = 4`, `k = 3, 4, 5`: the `P³` factoring
-    (`Graph.X0Attains.of_openEar_splitOff`) with `D = 10`, its insertion hypothesis taken at base
-    data with (P) `p_a`, `p_b` independent and (B) `la ≠ lb` or `ρ ⊆ Λ²Π_a` (S19–S21), SHORT-CORE at
-    those base data (S1–S18, S35). At `k ≥ 4` in every `Pᵈ` the every-`ρ` insertion holds (S35), so
-    the factoring transcribes with `D` for 6 (written out at `d = 4` only, S20). At `k = 3`,
-    `d = 5, 6`: S28–S33. At `k = 3`, `d ≥ 7`: not needed (S53), given CERT's open ears.
-  - *PD-STEPS, the sparse estimates (row 17).* `lem:deficiency-core-bound` at every `D ≥ 3`, read
-    with "rigid" as `def[D] = 0` (S52 (iv)); formalized at every `D` by COUNT-A
-    (`lem:deficiency-core-bound-d`, `pencil-d.tex` `sec:pencil-d-deficiency`).
-  - *PD-COVERAGE.* Theorem S at `D` (§2.4 T5); ONE-CLASS (§2.3); and S53: from `d = 5` on, a graph
-    past rows 1–5 with a chain of two or three interior bodies has a chain with `k ≥ 4` or a core
-    at `D`, so the coverage there needs neither the `k = 3` short row nor row 15. Theorem S at `D`,
-    ONE-CLASS and S52 are formalized at every `D` by COUNT-B (`thm:pencil-d-theorem-s`,
-    `lem:pencil-d-core-positive-deficiency`, `lem:pencil-d-chain-core`, `pencil-d.tex`
-    `sec:pencil-d-deficiency`, `Pencil/Grade/TheoremS.lean`); S53's chain count (COUNT-C) by 42j
-    (`lem:pencil-d-chain-count`, `Grade/Chains.lean`).
-    Its Theorem S duplicates Phase 40's `n = 3` proof (`Graph.IsX0Graph.exists_additiveCore`), which
-    can become its `n = 3` case once the coverage reads `Graph.ChainUsable` as `ChainUsableAt 3`
-    (left to CLEANUP-42 by 42j's recon, as the fold reverses an import; `notes/Cleanup42.md` §3).
-    The coverage's informal proof is 42d's `thm:pencil-d-coverage` (W9; a fresh read found it holds).
-    Its Lean needs forms of `lem:pencil-x0-cut-reduces`, `-cycle-reduces` and
-    `-planar-rigid-reduces` that return the bridge, cut-vertex or cycle data, not only
-    `G.X0Reduces G.X0Below`: landed by 42j's build 1, with the maximal planar-rigid set's data
-    (`notes/Phase42j.md` *Current state*).
+  `notes/Phase42e.md`): Phase 40b–40d in `Pᵈ`, the four nodes of `sec:pencil-d-induction` and
+  `sec:pencil-d-flat` (`Grade/ConditionLinear.lean`, `Grade/Flat.lean`), as written, their Lean at
+  every `d ≥ 2`; `σ_v` is a `def` (`gradeSigma`) and `Π_v` its range.
+- **PD-STEPS**, **PD-COVERAGE**: Phase 40e–40m in `Pᵈ`, on R2's steps (§1). Each sub-phase took its
+  nodes as the chapter states them, from its recon's spikes, its Lean at every `m` unless noted and
+  its route differences in `notes/Cleanup42.md` §2. **42f** (opened and closed 2026-10-30,
+  `notes/Phase42f.md`): `-cut` and `-contract`, six nodes (`Grade/Cut.lean`,
+  `Grade/ContractAdditive.lean`); its open cut `-splitoff` and `-ear-deficiency` (the PI, §1).
+  **42g** (opened 2026-10-30, closed 2026-10-31, `notes/Phase42g.md`): `-long`, seven nodes on
+  CERT's closed polygons with independent joins (`Grade/Polygon.lean`, `Grade/Chain.lean`); at the
+  PI's word the star's and the insertion's proofs follow their Lean (§1); R-3 to R-6.
+  **42h** (opened and closed 2026-10-31, `notes/Phase42h.md`): **`-short-four`**, the eight nodes
+  of `sec:pencil-d-short` at four or more interior bodies (`Grade/Stars.lean`,
+  `Grade/EarData.lean`, `Grade/Short.lean`), annihilators read on the forms on `⋀²`; at the PI's
+  word two-stars is stated so and stars-four's proof follows its Lean (§1); R-9 to R-12. The
+  section's other four nodes are **`-short-three`**, the three-body ear at `d = 4` to `6`.
+  **42i** (opened and closed 2026-10-31, `notes/Phase42i.md`): `-short-three`
+  (`Grade/StarsThree.lean`, `Grade/PlanesMeet.lean`, `Grade/GluedEnds.lean`,
+  `Grade/ShortThree.lean`, the theorem at `2 ≤ m ≤ 4`). 42h's factoring asked its insertion
+  hypothesis at every base datum, which fails at three bodies (the recon's counterexample), so
+  `Grade/Short.lean` gained `Graph.X0AttainsGrade.of_openEar_splitOff_of_base`, which takes it
+  only where the chapter proves it; at the PI's word stars-three's statement and proof follow its
+  Lean (§1; R-13 aligned); R-14 to R-16. PD-STEPS is complete.
+  **PD-COVERAGE, as 42j** (opened and closed 2026-10-31, `notes/Phase42j.md`): `-chains` and
+  `-coverage`, four nodes (`Grade/Chains.lean`, `Grade/Coverage.lean`), on reductions of Phase 40
+  that now return their data (`MainComponent/`); the chain count counts the chains' interior
+  bodies (R-17). PD-COVERAGE is complete, and with it the induction.
+  **Handed on from PD-RECON** (42a's close; SHORT-CORE's workbook S56 has the detail), all
+  formalized: the short-ear step (row 13: the factoring with its insertion hypothesis at base data,
+  S1–S21 and S35 at `d = 4`, S28–S33 at `k = 3`, `d = 5, 6`, not needed at `d ≥ 7` by S53), the
+  sparse estimates at every `D` (row 17, COUNT-A), Theorem S at `D` and ONE-CLASS (§2.3, §2.4 T5;
+  COUNT-B, `Pencil/Grade/TheoremS.lean`) and S53's chain count (COUNT-C, 42j). Its Theorem S
+  duplicates Phase 40's `n = 3` proof (`Graph.IsX0Graph.exists_additiveCore`), which can become its
+  `n = 3` case once the coverage reads `Graph.ChainUsable` as `ChainUsableAt 3`; the fold reverses
+  an import, so it is CLEANUP-42's (`notes/Cleanup42.md` §3).
   **Deferred to them from PD-STATE**, each optional until a consumer needs it: Phase 40's `k = 2`
   collineation (`PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv`) re-proved
   as the grade lemma at `k := 2`, and its scale-shift
@@ -1171,22 +1030,16 @@ marked `no departure` (R-6). The post-Phase-42 cleanup acts on the ledger (that 
   `exists_insertion_earDataGrade_three` (`Grade/ShortThree.lean`), which repeats
   `of_openEar_four`'s inline tail (`Grade/Short.lean`) at three bodies: one insertion lemma for the
   ear of `G″` with `n + 2` interior bodies, called from both steps.
-- **PD-REDUCTION**, **PD-HEAD**: Phase 39's reduction in `Pᵈ`; the headline `PencilPair`, and the
-  flag strata as corollaries. Their informal proofs are 42d's `sec:pencil-d-reduction` and, for
-  the generic conjunct, `sec:pencil-d-nondegenerate` to `sec:pencil-d-generic`.
-  **PD-REDUCTION, as 42k, opened and closed 2026-11-04** at the PI's word (§1;
-  `notes/Phase42k.md`): `-reduction`, the eight nodes as the chapter states them, all green.
-  Verdicts: its recon spiked all eight on the landed carrier from Phase 39's `d = 3` Lean
-  (`Pencil/Arms.lean`, `ArmsAssembly.lean`, `X0.lean`, `Pair2.lean`), transcribed to grade `k`
-  with subspaces for points; new are `C_B` (`perpExtensor`) with the two-pencil lemma, and the base
-  case's adjacent-distinct form. Three builds landed them: `Grade/TwoPencil.lean`, `Grade/Arms.lean`
-  and `Grade/Reduction.lean`. The linear algebra and the loop hold at every grade, the cases at
-  every `m`, and the theorem at `1 ≤ m`, the chapter's `d ≥ 3`:
-  `Graph.graded_pencil_realization_theorem`, `Graph.pencil_reduction` at `n = m + 2`, whose two
-  conjuncts are the headline's first two (PD-HEAD). The base and nonsimple cases count rows as the
-  `d = 3` Lean does, where the chapter counts motions (`notes/Cleanup42.md` R-18, R-19, open). It
-  edited no file a deferral above names. The fold of the `d = 3` cases into its graded ones goes
-  to CLEANUP-42, as it reverses imports (`notes/Cleanup42.md` §3). PD-REDUCTION is complete.
+- **PD-REDUCTION**, **PD-HEAD**: Phase 39's reduction in `Pᵈ` (`sec:pencil-d-reduction`), and the
+  generic conjunct and the headline (`sec:pencil-d-nondegenerate` to `sec:pencil-d-generic`).
+  **PD-REDUCTION, as 42k** (opened and closed 2026-11-04 at the PI's word, §1;
+  `notes/Phase42k.md`): the eight nodes as the chapter states them, the `d = 3` Lean transcribed to
+  grade `k` with subspaces for points (`Grade/TwoPencil.lean`, `Grade/Arms.lean`,
+  `Grade/Reduction.lean`); new are `C_B` with the two-pencil lemma and the base case's
+  adjacent-distinct form. `Graph.graded_pencil_realization_theorem` at `1 ≤ m` gives the headline's
+  first two conjuncts. The base and nonsimple cases count rows as the `d = 3` Lean does (R-18,
+  R-19). The fold of the `d = 3` cases into the graded ones reverses imports, so it is CLEANUP-42's
+  (`notes/Cleanup42.md` §3).
   **Deferred to PD-HEAD and after from PD-REDUCTION (42k)**, each with the next commit that edits
   the file it names (FRICTION's open 42k entries): `exists_smul_extensor_eq_of_mem_span_range_grade`
   to `Meet.lean` (with `contragredientEquiv`), `ExtensorInPanel.smul` to
@@ -1194,51 +1047,38 @@ marked `no departure` (R-6). The post-Phase-42 cleanup acts on the ledger (that 
   `finrank_span_rigidityRows_of_single_edge` to `GenericityDevice.lean` (with `ArmsAssembly.lean`'s
   inline count); at a cleanup round, the mirror candidates `finrank_span_pair_eq_two`,
   `exists_mem_linearIndependent_pair` and `exists_pair_of_ncard_le_two_of_edgeSet_nonempty`.
-  **PD-HEAD's first half, as 42l, opened and closed 2026-11-04** at the PI's word (§1;
-  `notes/Phase42l.md`): `-nondegenerate` (4) and `-lift` (6), the ten nodes as the chapter states
-  them, all green. PD-HEAD stays the layer's code, and its halves are named by their sections:
-  `-nondegenerate` with `-lift` (42l) and `-generic` (11 nodes, `thm:pencil-d-generic` and the
-  headline among them; no letter), which opens at the PI's word and whose close is Phase 42's; ten
-  of its eleven nodes use one of the ten. Verdicts: its recon spiked all ten on the landed carrier,
-  reusing the `d = 3` Lean's polarity, `IsNondegPencilRealization`, the chart
-  (`pencilChartPoint`, `pencilChartNormal`, `exists_pencilSeed_of_nondeg_of_selectors`),
-  `cross₃Poly`, the polynomial section and the rank polynomial; the lift and the feasibility
-  lemma's projection are new. Four builds landed them: `Grade/Nondegenerate.lean` (the definition,
-  three, maps), `Grade/Feasible.lean` (feasibility, with the polynomial-function and Zariski-open
-  API), `Grade/Lift.lean` (steer, the lift, lifts are realizations, attaining) and
-  `Grade/LiftWitness.lean` (one lift suffices, transfer). No pin is weaker than its node. Three
-  route differences stay open for the cleanup (`notes/Cleanup42.md` R-20, R-21, R-23: feasibility's
-  map by forms vanishing on the subspaces, with no quadric; one lift through the polynomial section;
-  transfer's open set by the rank polynomial at each `λ`); R-22, the parametrization's sixth
-  auxiliary vector, is aligned at the PI's word (§1). No build edited a file a deferral above names.
+  **PD-HEAD's first half, as 42l** (opened and closed 2026-11-04 at the PI's word, §1;
+  `notes/Phase42l.md`): `-nondegenerate` (4) and `-lift` (6), as the chapter states them
+  (`Grade/Nondegenerate.lean`, `Grade/Feasible.lean`, `Grade/Lift.lean`,
+  `Grade/LiftWitness.lean`), reusing the `d = 3` polarity, chart, `cross₃Poly`, polynomial section
+  and rank polynomial; the lift and feasibility's projection are new. R-20, R-21 and R-23 stay open;
+  R-22, the parametrization's sixth auxiliary vector, is aligned at the PI's word (§1).
   **Deferred to `-generic` and after from 42l**, each with the next commit that edits the file it
   names (FRICTION's open 42l entry): the `dotPerp` lemmas of `Grade/Feasible.lean` (`dotPerp_sup`,
   `dotPerp_inf`, `dotPerp_antitone`, `dotPerp_top`, `finrank_dotPerp_add`,
   `finrank_dotPerp_span_singleton_of_ne_zero`) to `Grade/Realization.lean` beside
   `finrank_dotPerp`, with 42k's `dotPerp_map_eq`; at a cleanup round, the mirror candidate
   `finrank_map_of_injOn` (`Grade/Nondegenerate.lean`).
-  **PD-HEAD's second half, as 42m, opened 2026-11-05** at the PI's word (§1; `notes/Phase42m.md`):
-  `-generic` (11), the eleven nodes as the chapter states them. They are the blueprint's last red
-  nodes, so 42m's close is Phase 42's. The open's consistency read passed all eleven, their 46
-  outside dependencies green (53 with the `\cref`s), nine of them 42l's nodes. The open added
-  findings for the recon (that note's *Blockers*): Phase 39's `Pair.lean` and `Pair2.lean` carry
-  three of the six cases, and the rest of the `d = 3` Lean is five files of `MainComponent/`; the
-  good ear's `d = 3` Lean returns the body alone, its other parts read off the proof; the ear's
-  condition joins two nodes through `HoldsGenerally`, which depends on the selectors; `-ear-free`
-  re-runs two steps of `-lift-no-rigid`'s proof, which itself uses a step of one-witness's proof,
-  not its statement; and `-lift-cut-edge` `\cref`s the fibre-intersection lemma without `\uses`.
-  **Its recon** (2026-11-05, design pass; `notes/Phase42m.md` *Current state* and *Decisions made*)
-  pinned the eleven signatures, each kernel-checked, and spiked `-lift-small` (1), `-lift-pendant`
-  and `-lift-ear` complete, with the remark after `def:pencil-d-lift-attains` and the theorem's
-  induction and the headline on the other lemmas' statements (the headline a three-conjunct
-  theorem). Each case is `lift_transfer` and then `liftAttains_of_holdsGenerally`; the ear's
-  condition is one predicate at the same selectors on both sides, and the good ear returns `W₀`
-  (`Graph.IsPencilGoodEar`); `dim L̃`'s least value is exposed as a lemma. Phase 39's reposition at a
-  cut edge does not transcribe (it fixes neither end's normal); the glue is new, with the other
-  unspiked new math in `-lift-no-rigid`, `-ear-extend` and `-ear-free`. No pin is weaker than its
-  node (two unused hypotheses dropped; `[Nonempty α]` at two bodies, ambient). Seven builds:
-  `Grade/LiftSmall.lean`, `LiftCases.lean`, `LiftCutEdge.lean`, `GoodEar.lean`, `LiftNoRigid.lean`,
-  `EarFree.lean`, `Generic.lean`. Departures: `notes/Cleanup42.md` R-24 to R-27, open.
+  **PD-HEAD's second half, as 42m** (opened 2026-11-05 at the PI's word, §1; `notes/Phase42m.md`):
+  `-generic`, the eleven nodes as the chapter states them, the blueprint's last red ones, so 42m's
+  close is Phase 42's. Its recon pinned the eleven signatures, each kernel-checked, and spiked three
+  complete; seven builds landed them (`Grade/LiftSmall.lean`, `Grade/LiftCases.lean`,
+  `Grade/LiftCutEdge.lean`, `Grade/GoodEar.lean` with its core in `MainComponent/GoodEar.lean`,
+  `Grade/LiftNoRigid.lean`, `Grade/EarFree.lean`, `Grade/Generic.lean`). Each case is
+  `lift_transfer` then `liftAttains_of_holdsGenerally`; the ear's condition is one predicate,
+  `EarLiftCondition`, at the same selectors on both sides; Phase 39's reposition at a cut edge does
+  not transcribe, so the glue is new; the headline is the three-conjunct
+  `Graph.graded_pencil_conditioned_pair`. No pin is weaker than its node (five unused hypotheses
+  dropped; `[Nonempty α]` at two bodies, ambient). R-24 to R-34 stay open.
+  **Deferred to CLEANUP-42 and after from 42m**, each with the next commit that edits the file it
+  names: build 6's helpers, `isPolyFun_dotProduct` to `Grade/Feasible.lean`; `hubSlotPos` and its
+  three lemmas and `exists_steerPoint_eq_smul` to `Grade/Lift.lean`; the any-selector chart lemmas
+  (`dotProduct_pencilChartPoint_hubNormal_of_selector`, `linearIndepOn_hubNormal_of_selector`) to
+  `Chart.lean`; `liftTildeOfTrivial` and its two lemmas to `Grade/LiftNoRigid.lean` beside
+  `liftFreeCoords`; `isZariskiOpen_finrank_liftSpaceTilde_le` to `Grade/LiftWitness.lean`;
+  `span_pencilConfigPoint_eq_top` and `linearIndepOn_planeNormal_of_subset` to
+  `MainComponent/GenericBase.lean` beside `planeNormal_pair`; at a cleanup round, the mirror
+  candidates `exists_mem_notMem_of_finrank` and `finrank_span_image_of_linearIndepOn`.
   **At Phase 42's close**, Tier 0 joins `formalization.yaml`'s
   `main_results` and `alignment` unless the headline subsumes it, with a closed non-vacuity witness
   in `CombinatorialRigidity/Nonvacuity.lean` (`PHASE-BOUNDARIES.md`); 42c's intermediate close
@@ -1247,58 +1087,25 @@ marked `no departure` (R-6). The post-Phase-42 cleanup acts on the ledger (that 
   `Graph.IsX0Graph.x0AttainsGrade` with `def₂ ≤ 3` added, so Tier 0's distinct form also follows
   from the coverage (by `Graph.X0AttainsGrade.hasGradedDistinctPencilRealization`).
 
-**The red nodes by layer** (42e's open, by section of `pencil-d.tex`; a letter is minted only as
-a sub-phase opens). From `sec:pencil-d-induction` on the chapter has 62 dep-graph nodes, 11 of them
-red (recounted at 42l's close and again at 42m's open; the first red node is
-`lem:pencil-d-lift-small`): 65 at 42e's
-open, all red, 4 green at its close, 3 cut at 42f's open (the PI, §1), 6 green at 42f's close, 7
-at 42g's, 8 at 42h's, 4 at 42i's, 4 at 42j's, 8 at 42k's and 10 at 42l's. The count of 66 put to
-the PI at 42e's open (§1) included `rem:pencil-d-flat-class`, a remark, which the dependency graph
-does not draw (it draws definitions, lemmas, propositions, theorems and corollaries).
-- PD-CARRIER (42e, closed, all green): `-induction` (1) and `-flat` (3); 4.
-- PD-STEPS: `-cut` (3) and `-contract` (3), 42f, closed, all green; `-long` (7), 42g, closed, all
-  green; `-short` (12), as `-short-four` (8), 42h, closed, all green, and `-short-three` (4), 42i,
-  closed, all green; 25, all green.
-  `thm:pencil-d-splitoff`, `thm:pencil-d-open-ear-deficiency` and `lem:pencil-d-polygon-ear`, with
-  their sections `-splitoff` and `-ear-deficiency`, had no consumer in the coverage and were cut at
-  42f's open (the PI, §1).
-- PD-COVERAGE: `-chains` (2; `lem:pencil-d-chain-count` is COUNT-C) and `-coverage` (2, with
-  `lem:pencil-d-distinct-statement`, the coverage read as a realization); 4, as 42j, closed, all
-  green.
-- PD-REDUCTION: `-reduction` (8), Phase 39's reduction; 8, as 42k, closed, all green.
-- PD-HEAD: `-nondegenerate` (4) and `-lift` (6), as 42l, closed, all green; `-generic` (11, ending
-  in the headline `cor:pencil-d-conditioned-pair`), as 42m, open, all eleven green after its build 7;
-  21, the generic conjunct and the headline, the largest layer.
-
-PD-STATE and PD-STABLE do not depend on the route, so they ran beside PD-RECON (§1's defaults).
-PD-STATE opened and closed as 42b on 2026-10-30, and PD-STABLE as 42c the same day.
+**The nodes by layer.** `pencil-d.tex` has 99 dep-graph nodes, all green since 42m's build 7:
+PD-STATE 17 and PD-STABLE 9, COUNT-A and COUNT-B 11 (`sec:pencil-d-deficiency`), and from
+`sec:pencil-d-induction` on 62, written at 42d as 65 of which 42f's open cut 3 (the PI, §1):
+PD-CARRIER 4 (`-induction` 1, `-flat` 3); PD-STEPS 25 (`-cut` 3, `-contract` 3, `-long` 7,
+`-short-four` 8, `-short-three` 4); PD-COVERAGE 4 (`-chains` 2, `-coverage` 2); PD-REDUCTION 8;
+PD-HEAD 21 (`-nondegenerate` 4, `-lift` 6, `-generic` 11). The cut nodes,
+`thm:pencil-d-splitoff`, `thm:pencil-d-open-ear-deficiency` and `lem:pencil-d-polygon-ear`, had no
+consumer in the coverage. The count of 66 put to the PI at 42e's open (§1) included
+`rem:pencil-d-flat-class`, a remark, which the dependency graph does not draw.
 
 ## 4. Open questions
 
-The PI's planning defaults (§1) answer most of the calls put at the open. A session follows them
-unless a finding argues otherwise:
-- `d = 4` first, as Tier 1 of three. SHORT is attacked at `d = 4` and ONE-EAR at `d = 5`, as
-  attack tracks once T3 and T4 size them (§2.5). Both have: SHORT's attack was SHORT-CORE, `k = 3,
-  4, 5` at `d = 4`. ONE-EAR (the motive, the insertion and X2 at `d = 5`) has left the coverage
-  (Result 27, §2.3), so it waits for GENERIC. SHORT-CORE's scope does not shrink at `d = 4`: its
-  targets never occur at `def[3] ≤ 3`, and at every danger cell `def_3(G) ≥ 2d − 3` (SHORT-CORE's
-  review 2, workbook S50). The track closed 2026-10-30 with `d = 4` proved by hand (§2.3).
-- The headline ships the bare and distinct conjuncts first, GENERIC after (row 22). Nondegeneracy
-  enters `PencilPair` only in the generic conjunct (`Pencil/Motive.lean`), so with row 22's reading
-  its `Pᵈ` lift is deferred with it.
-- The carrier in dual form (CARRIER). Checked at 42b's open: it agrees with Phase 39's
-  definitions once each body's 3-space is data (§2.3), the reading the PI took (§1).
-- PD-STATE and PD-STABLE open beside the research once T1 and T2 land: they did, as 42b and 42c,
-  both closed 2026-10-30.
-- The generic conjunct at every `d` (rows 21–22): settled at 42d, C2-same (the PI's, §1), proved
-  on paper (§3 PD-ALL).
-
-Settled by the PI (§1): the route. R2's steps with Result 15's embedding as the base row; an outer
-induction on `d` is Tier 2's question, entering if at all through CERT's open ears at `d ≥ 7`.
-The carrier: each body's 3-space as data (§2.3 CARRIER, option (a)). 42d: PD-ALL, opened and closed (§1, §3). SHORT-CORE closed 2026-10-30 (§2.3), and the sharp deficiency range
-`def[3] + 3 ≤ D′` (tight on cycles) is settled: Tier 0 widened to `def[3] ≤ 3` (§1), §2.5's content range
-restated `def[3] ≥ C(d,2) − 2` and Tier 1's reach `def[3] ≤ 7` (the dated note under §1's planning entry).
-
-Settled by the table: Phase 39's reduction is `d`-general for the bare and distinct conjuncts,
-given CARRIER (row 19). Settled by the PI's call (§1) and Result 27: ONE-CLASS, not ONE-EAR. Its
-lemma is proved, so the coverage at `d ≥ 4` needs SHORT-CORE and no ONE-EAR (§2.3–2.4).
+None is open; each was settled as the phase ran. The route (the PI, §1): R2's steps with Result
+15's embedding as the base row; an outer induction on `d` is Tier 2's question, entering if at all
+through CERT's open ears at `d ≥ 7`. The carrier: each body's 3-space as data (§2.3 CARRIER,
+option (a); the PI, §1). The coverage at `d ≥ 4` needs SHORT-CORE (closed 2026-10-30, `d = 4`
+proved by hand, §2.3) and ONE-CLASS (Result 27), not ONE-EAR, which left the coverage (§2.3–2.4).
+The sharp deficiency range `def[3] + 3 ≤ D′` (tight on cycles) widened Tier 0 to `def[3] ≤ 3`
+(§1), restated §2.5's content range as `def[3] ≥ C(d,2) − 2` and put Tier 1's reach at
+`def[3] ≤ 7`. Phase 39's reduction is `d`-general given CARRIER (row 19; 42k). The generic
+conjunct (rows 21–22) is NONDEG's C2-same (the PI, §1), proved on paper at 42d and formalized at
+42l–42m.
