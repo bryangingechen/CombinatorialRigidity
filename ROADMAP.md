@@ -1408,8 +1408,9 @@ research note of its own, `notes/Strata.md`, which holds PENCIL-D's evidence.
   nodes, by layer and 42b–42f first, compared each node with its Lean and added ledger rows only,
   with no prose or Lean edit, for 54 rows, 34 of them open; it closed at its planned stop. Plan,
   the PI's words and the ledger: `notes/Cleanup42.md`. The PI answered the stop the same day
-  (family A to the Lean, families B and C judged per row first, rounds 2+ as proposed). **Next:**
-  `notes/Cleanup42.md`'s **Status**.
+  (family A to the Lean, families B and C judged per row first, rounds 2+ as proposed), and approved
+  the per-row judgment of families B and C at a second stop. **Next:** `notes/Cleanup42.md`'s
+  **Status**.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

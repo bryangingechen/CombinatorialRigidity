@@ -17,9 +17,9 @@ by family: §3 *Round 1's stop*. The PI answered the stop on 2026-11-05 (§1): f
 (R-46 kept), families B and C judged per row first, no close call reopened, rounds 2+ as proposed;
 and, asked the same day, the judgment also takes family A's 7 argument or step parts (§1). The B/C
 judgment landed 2026-11-05 (§3 *The B/C judgment*): of the 22 rows 9 L, 13 K, no H; of the 7 parts
-4 L, 2 K, R-29 split. **Next concrete task:** the second stop, at which the PI approves that table or
-amends it per row (`notes/Phase42-cleanup.md` *Autopilot: for the PI*); then round 2 opens with its
-own work log (§3).
+4 L, 2 K, R-29 split. The PI approved it as proposed at the second stop the same day (§1), so every
+open row has its remedy and no row goes H. **Next concrete task:** round 2's open, the chapter to
+the Lean (blueprint and notes, no Lean), with its own work log and task list (§3 *Rounds 2+*).
 
 ## 1. The PI's decisions (verbatim)
 
@@ -147,6 +147,46 @@ What follows from it:
   go L (§3 *The B/C judgment*).
 - **The second stop settles every proof route at once:** with family A's statements (L, R-46 K), it
   leaves no open row's remedy for round 2 to ask.
+
+### 2026-11-05: the second stop, the B/C judgment approved
+
+From the coordinator's relay of the B/C judgment (§3 *The B/C judgment*): the two questions, the
+PI's replies, the coordinator's answer to them, then the PI's decision.
+
+**PI, 2026-11-05:** (verbatim)
+- Q: "CLEANUP-42's second stop. The recon proposes, for the 22 family-B/C rows: L (restate the
+  chapter's proof to the Lean's route) for R-9, R-14, R-19, R-20, R-21, R-24, R-26, R-32, R-34; K
+  (keep both, add a one-sentence remark naming the Lean's route) for the other 13; no H (Lean
+  helper) anywhere. Its main close call is R-18 (the base case's rank, K): with R-19 at L, the
+  reduction section would read ranks by motions in the base case but by the block-triangular splice
+  for parallel edges, while at d = 3 both use the splice. Approve?" — options "Approve as proposed"
+  and "Approve, R-18 also L". The PI: "What are the criteria that were used?"
+- Q: "For the 7 argument/step parts of family-A rows (their statements already go L), the recon
+  proposes L for R-25, R-30, R-33, R-35 and R-29's (T2); K for R-15, R-28 and the rest of R-29. Only
+  R-25 and R-35 are forced: dropping the hypothesis breaks the chapter's argument (R-25's cases miss
+  `u` alone in H; R-35 needs the sentence that q^⊥ is 3-dimensional exactly when q ≠ 0). Approve?" —
+  options "Approve as proposed" and "Only the forced ones L". The PI: "Same question as before".
+- The coordinator's answer (a summary, not the PI's words): the recon's one question was which
+  proof reads better for a reader of the chapter, calibrated on the PI's call of 2026-10-30, and its
+  reasons apply six rules. (1) L where the Lean's proof is shorter in the chapter's own tools (R-9,
+  R-14, R-20, R-24, R-30, R-32 to R-34). (2) K where the chapter's is the explicit or standard
+  argument and the Lean's a formalization shortcut (R-3, R-4, R-11, R-17, R-27, R-31). (3) K where
+  the two are the same argument in other words (R-10, R-15, R-16, R-28). (4) L for consistency
+  within the chapter: a sibling node already on the Lean's route (R-21, R-26, R-29's (T2)), or the
+  proof's "we follow" sentence (R-19; the coordinator noted that the recon's reason overstates
+  this, as R-19's closing remark already says its count of motions departs from the `d = 3` one).
+  (5) Ties to K, the cheaper remedy (R-5, R-10, R-23); R-53 K as checked on the spot. (6) H only
+  where the reader gains, so none. For the 7 parts, also: whether the restated statement breaks
+  the chapter's proof (forced for R-25 and R-35 only).
+- The PI: "OK, I approve the table in that case"
+
+What follows from it:
+
+- **The table is approved as proposed** (§3 *The B/C judgment*): of the 22 rows, L for R-9, R-14,
+  R-19 to R-21, R-24, R-26, R-32, R-34 and K for the other 13 (R-18 stays K); of the 7 parts, L for
+  R-25, R-30, R-33, R-35 and R-29's (T2), K for R-15, R-28 and the rest of R-29; no H, so no round 3.
+- **Every open row has its remedy:** with family A's statements (L, R-46 K), round 2 opens on them,
+  with its own work log (§3).
 
 ## 2. The proof-route ledger
 
@@ -981,13 +1021,13 @@ task in `notes/Phase42-cleanup.md`, and its re-checks of R-1 to R-34 are recorde
   (§1), the 7 argument or step parts of family A rows, against the chapter and the Lean, and
   proposes L, K or H with a one-line reason (which route reads better), in one docs commit (a
   per-row table in this section, after *Round 1's stop*; read-only otherwise, no row's status
-  changed). Landed 2026-11-05 (*The B/C judgment*, below). Next a short second stop, at which the
-  coordinator relays the proposals and the PI approves or amends, then round 2 opens with its own
-  work log.
+  changed). Landed 2026-11-05 (*The B/C judgment*, below), and approved as proposed by the PI at
+  the second stop the same day (§1); round 2 opens next, with its own work log.
 - **Rounds 2+** (planned with the PI at round 1's stop, §1: the proposal as written): round 2, the
   chapter to the Lean (blueprint and notes, no Lean; family A's L rows, the B/C rows the PI sends
   L, a remark for each K row, the *Moved* lines below and the `\uses` sweep; about 11 tasks);
-  round 3, Lean helpers, only if a row goes H; round 4, the three items *Also left to it* below.
+  round 3, Lean helpers, only if a row goes H (none did, at the second stop, §1); round 4, the
+  three items *Also left to it* below.
   Round 1's *Candidates for the PI* and *Moved to a later round* lines are mirrored here as they
   land:
   - *Moved to a later round* (round 1 task 2): `lem:pencil-d-point-configuration`'s statement reads
@@ -1147,8 +1187,8 @@ Lean's route; **K**: keep both, round 2 adding a one-sentence formalization rema
 Lean's route (as R-22's note); **H**: a Lean helper so that the Lean follows the chapter. "Reads
 better" is calibrated on the PI's call of 2026-10-30 (§1): the Lean where it is the shorter
 elementary argument (the star, the insertion), the chapter where its argument is the explicit or
-the standard one (the affine map, the base triangle). These are proposals for the second stop; no
-row's status changes.
+the standard one (the affine map, the base triangle). Proposed for the second stop, and **approved
+as proposed** by the PI there (2026-11-05, §1); no row's status changes until round 2 applies it.
 
 **The 22 rows of families B and C.**
 
@@ -1201,4 +1241,7 @@ goes against its recon's L lean.
 
 **Corrections found.** None: each row's *Chapter* and *Lean* text matches the node and its pins'
 bodies at HEAD. One reading: R-29's "(T1) is in the polarity form" is the chapter's own construction
-in its notation (`Π⁰_v = n_v^⊥`), not a departure.
+in its notation (`Π⁰_v = n_v^⊥`), not a departure. The coordinator, at the second stop: R-19's
+reason overstates "makes that sentence true", as the node's closing remark already says its count
+of motions departs from the `d = 3` splice; its L stands on consistency with that proof and the
+Lean.
