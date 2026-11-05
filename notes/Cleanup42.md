@@ -9,10 +9,11 @@ row to §2 for each departure, with no prose or Lean edit, then a stop at which 
 remedy per `open` row and plans rounds 2+ (§3). `.claude/autopilot/queue.toml` carries it as
 `CLEANUP-42`, attended, between PENCIL-D (done) and ORIGAMI; ROADMAP *Queued post-program phases*
 lists it. Its input is the proof-route ledger (§2): 34 rows at Phase 42's close (2026-11-05), 27
-`open`, 6 `aligned`, 1 `no departure`, to which round 1 adds; after its task 11, 45 rows, 28
-`open`, 6 `aligned` and 11 `no departure` (R-35 `open`, R-36 to R-45 `no departure`; R-1 to R-17
-re-checked, R-7, R-9, R-12, R-15, R-16 and R-17 corrected in place). **Next concrete task:** round
-1's task 12, PD-REDUCTION (42k) (`notes/Phase42-cleanup.md` *Lemma checklist*).
+`open`, 6 `aligned`, 1 `no departure`, to which round 1 adds; after its task 12, 47 rows, 29
+`open`, 6 `aligned` and 12 `no departure` (R-35 and R-46 `open`, R-36 to R-45 and R-47 `no
+departure`; R-1 to R-19 re-checked, R-7, R-9, R-12, R-15, R-16 and R-17 corrected in place).
+**Next concrete task:** round 1's task 13, PD-HEAD's first half (42l) (`notes/Phase42-cleanup.md`
+*Lemma checklist*).
 
 ## 1. The PI's decisions (verbatim)
 
@@ -712,6 +713,42 @@ task in `notes/Phase42-cleanup.md`, and its re-checks of R-1 to R-34 are recorde
   `Graph.IsX0Graph.exists_cycle_of_forall_degree_eq_two`,
   `Graph.exists_rigidCore_of_deficiency_two_pos`), not their `X0Reduces` pins. The rest is the
   chapter's proof, case by case and in its order.
+
+- **R-46** · `lem:pencil-d-two-pencil-extension`, the setting of parts (1) and (2)
+  (`perpExtensor_two_pencils`, `exists_eq_smul_perpExtensor`,
+  `exists_extensor_two_pencils_iff_grade`, `Grade/TwoPencil.lean`, round 1 task 12) · **open**.
+  *Chapter:* the statement takes `b_u`, `b_v` nonzero and `Π_u ∋ b_u`, `Π_v ∋ b_v`
+  three-dimensional for all three parts. The proof reads none of it, except `b_u ≠ 0` in the
+  converse of (2)'s last claim (`B` the span of `b_u` and a vector independent of it); (3) has
+  `C_B ≠ 0` from the proof's first paragraph.
+  *Lean:* (1) and (2)'s first claim take no nonzero normal, no dimension of `Π_u`, `Π_v` and no
+  `b ∈ Π` (in (1) it follows from `b ∈ B ⊆ Π`); (2)'s last claim takes `b_u ≠ 0` alone. Each proof
+  is the chapter's, so the pins are stronger than their node. The drop is not vacuous (a zero
+  normal, or a `Π` of another dimension, meets the pins' hypotheses) and is not recovered from the
+  node's statement: (3)'s pin (`linearIndependent_perpExtensor_pair`, the argument of (2) applied
+  to `C_{B'} = a C_B`) calls (1) at `b_u = b_v = 0` and `Π_u = Π_v = B` for `C_B ≠ 0`, and at
+  `Π_u = Π_v = B` for the panel of each `w ∈ B`. The four cases call (1) and (3) only in the node's
+  setting; (2)'s two pins have no caller. `C_B` is `perpExtensor B`, the extensor of one fixed basis
+  of `B^⊥` (`0` off dimension two), an encoding of the chapter's notation; its "up to a nonzero
+  scalar" is `exists_smul_extensor_eq_of_mem_span_range_grade`, which (2)'s first pin uses and no
+  pin names.
+  *Remedies:* the prose to the Lean (parts (1) and (2) for any vectors and subspaces, `b_u ≠ 0` only
+  in (2)'s last claim; the proof and its `\uses` unchanged), or keep both (the statement in the
+  pencils' setting, the one every case uses). The recon leans to keeping both: the two routes agree
+  step by step, and the only call outside the setting is (3)'s, for a fact the chapter has from its
+  first paragraph.
+
+- **R-47** · `lem:pencil-d-loop-case`, its rank (`hasGradedPencilRealization_of_isLoopAt`,
+  `Grade/Arms.lean`, round 1 task 12) · **no departure**: the chapter reads the loop's hinge
+  constraint on the motions (`S(v) − S(v) = 0` lies in the span of any hinge, so the loop leaves the
+  motions and the rank unchanged); the pin reads it on the rows (`BodyHingeFramework.hingeRow_self`:
+  a row of the loop is `r(S(v) − S(v))`, zero), so the rows of `G` and of `G − e` span one space.
+  The rank is the dimension of that span and the motions are the rows' common kernel
+  (`def:rigidity-matrix`), so the step is one fact read from its other side, with no count on either
+  side: not the motions counted against bounds on the rows of R-18 and R-19. The rest is the
+  chapter's: `C_B` for `B` the span of `b_v` and a `c ∈ Π_v` independent of it
+  (`exists_mem_linearIndependent_pair`, `perpExtensor_two_pencils`), and the deficiency through a
+  loop crossing no partition (`Graph.deficiency_deleteEdges_singleton_eq_of_isLoopAt`).
 
 ## 3. The cleanup's rounds
 
