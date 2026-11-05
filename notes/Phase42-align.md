@@ -7,9 +7,9 @@ stop* and *The B/C judgment*): 11 statements and 14 proof routes restated to the
 formalization note naming the Lean's route for each of the 17 kept parts (K), with the two prose
 slips round 1 moved here; then one `\uses` sweep over the chapter's missing edges (60 at the open).
 Blueprint and notes only: no Lean, no pin, no `\leanok`. Eleven tasks, one commit each: the open,
-eight slices by layer, the sweep and the close. 17 rows end `aligned` and 17 `kept`. Task 2
-landed (1 `aligned`, 3 `kept`). **Next concrete task:** task 3, 42h (R-9 L; R-10, R-11, R-12 K;
-the ear-datum slip). Round manual: `CLEANUP.md`.
+eight slices by layer, the sweep and the close. 17 rows end `aligned` and 17 `kept`. Tasks 2
+and 3 landed (2 `aligned`, 6 `kept`). **Next concrete task:** task 4, 42i with 42j (R-14 L; R-15
+L statement and K note; R-16, R-17 K). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -24,11 +24,11 @@ the PI answers in an entry that starts `**PI, <date>:**`.
 
 ## Current state
 
-**Task 2 landed** (this commit): R-35 `aligned`; R-3, R-4, R-5 `kept`, with three formalization
-notes (five in the chapter). Nothing is mid-stream; task 3 is next. Task 2's gates: G4's
-`verify.sh` has 9 `WARNING:` lines at its parent and after (the count tasks 3–10 hold),
-`print.log` rebuilt with 0 `LaTeX Warning`; G5's after-dump is byte-identical to
-`dump-6eb7a2e6.txt`, which serves as task 3's parent dump (`1886 edges f539dcce186aa853`,
+**Task 3 landed** (this commit): R-9 `aligned`; R-10, R-11, R-12 `kept`, with three formalization
+notes (eight in the chapter); the ear-datum slip taken. Nothing is mid-stream; task 4 is next.
+Task 3's gates: G4's `verify.sh` has 9 `WARNING:` lines, task 2's nine (the count tasks 4–10
+hold), `print.log` rebuilt with 0 `LaTeX Warning`; G5's after-dump is byte-identical to
+`dump-6eb7a2e6.txt`, which serves as task 4's parent dump (`1886 edges f539dcce186aa853`,
 `lean_decls` `28b0db9377d77782`); `--chapter pencil-d` unchanged but for line numbers.
 
 **Verified at the open** (2026-11-05, at `6eb7a2e6`):
@@ -157,19 +157,15 @@ statement, (T2) and other parts all in task 8).
 
 **42b with 42g** (`sec:pencil-d-realization`, `sec:pencil-d-long`).
 
-- [x] **2. The agreement at `d = 3`, the polygons and the cycle** (this commit). Aligned: R-35
+- [x] **2. The agreement at `d = 3`, the polygons and the cycle** (`5948b04c`). Aligned: R-35
   (no "nonzero"; the dimension sentence). Kept: R-3, R-4, R-5 (a note each). No `\uses` change;
   no *Candidates* or *Moved* line.
 
 **42h** (`sec:pencil-d-short`, its first eight nodes).
 
-- [ ] **3. The kernel curve, the ear data, two stars and four interior bodies.** R-9, L proof:
-  `lem:pencil-d-kernel-curve` (l. 2550), the rank count at some `t ≠ 0` for Cramer's rule over
-  `K(t)` (`Grade/Stars.lean`). K notes: R-10, `lem:pencil-d-ear-data` (l. 2832) part (3), a
-  coefficient of `h(λ, s)` in `λ` (`Grade/EarData.lean`); R-11, `lem:pencil-d-two-stars` (l. 2426)
-  part (1), a linear section of the quotient and rank–nullity; R-12, `thm:pencil-d-open-ear-four`
-  (l. 2955), the factored order (`Grade/Short.lean`). The slip there: an ear datum `y` becomes `s`
-  (l. 3041, l. 3053). *Expected:* at most an edge from the kernel curve's proof, which has none.
+- [x] **3. The kernel curve, the ear data, two stars and four interior bodies** (this commit).
+  Aligned: R-9 (the rank bounded along the line, no `K(t)`). Kept: R-10, R-11, R-12 (a note
+  each); the ear-datum slip taken (`s`). No `\uses` change; one *Moved* line (below).
 
 **42i with 42j** (`sec:pencil-d-short`, its last four nodes; `sec:pencil-d-chains`).
 
@@ -263,8 +259,10 @@ statement, (T2) and other parts all in task 8).
 
 ## Moved to a later round
 
-- None yet. (Round 1's stale `Grade/LiftNoRigid.lean` docstring is round 4's, `notes/Cleanup42.md`
-  §3; this round edits no Lean.)
+- **Task 3, for round 4** (Lean; mirrored in `notes/Cleanup42.md` §3): `Grade/Stars.lean`'s
+  `exists_mulVec_add_mulVec_eq_zero` docstring still says the chapter argues by Cramer's rule over
+  `K(t)` (R-9), stale since task 3 put the chapter on the Lean's route. (Round 1's stale
+  `Grade/LiftNoRigid.lean` docstring is round 4's too, §3 there; this round edits no Lean.)
 
 ## Blockers / open questions
 
@@ -272,11 +270,11 @@ statement, (T2) and other parts all in task 8).
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 3, 42h: R-9's proof (L) and the K notes of R-10, R-11 and R-12, with
-the ear-datum slip in `thm:pencil-d-open-ear-four`'s proof, one Opus dispatch. Its G5 parent dump
-is still the open's (`scratch/cleanup-42/round2/dump-6eb7a2e6.txt`, byte-identical at task 2), and
-G4 holds `verify.sh` to 9 `WARNING:` lines. Re-`grep` its nodes' lines: task 2 moved them by up to
-32.
+**Next concrete task:** task 4, 42i with 42j: R-14's proof (L), R-15's statement (L) and note (K),
+and the K notes of R-16 and R-17, one Opus dispatch. Its G5 parent dump is still the open's
+(`scratch/cleanup-42/round2/dump-6eb7a2e6.txt`, byte-identical at tasks 2 and 3), and G4 holds
+`verify.sh` to 9 `WARNING:` lines. Re-`grep` its nodes' lines: tasks 2 and 3 moved them by up to
+47. R-15's statement change runs G6.
 
 ## Decisions made during this round
 

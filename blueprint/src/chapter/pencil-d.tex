@@ -2501,6 +2501,18 @@ $x \wedge \omega = 0$.
   single pairing detects the two stars.
 \end{proof}
 
+\begin{fmlnote}
+  The formalization proves (1) with a linear section $s$ of the quotient
+  map, not a basis: for $P(x) = s(\bar x)$ the identity
+  $u \vee w - Pu \vee Pw = (u - Pu) \vee w - (w - Pw) \vee Pu$, with
+  $u - Pu$ and $w - Pw$ in $\langle y, y' \rangle$, puts
+  $\omega - \bigwedge^2 P(\omega)$ in the sum of the stars for every
+  $\omega \in \bigwedge^2 K^{d+1}$, as the joins span, the map
+  $\bigwedge^2 P$ that $P$ induces factors through $\pi$ and so vanishes
+  on its kernel, and the dimensions follow by rank--nullity, as $\pi$ is
+  onto $\bigwedge^2 Q$.
+\end{fmlnote}
+
 % Source: SHORT-CORE workbook, S19 (c), parts I1 and I2. The Lean runs the proof of
 % lem:pencil-insertion at every d (exists_insertion_gain_grade).
 \begin{lemma}[Putting a body back next to a neighbour, in every dimension]
@@ -2547,10 +2559,10 @@ $x \wedge \omega = 0$.
 \end{proof}
 
 % Source: SHORT-CORE workbook, S6 (the tangent lemma, proved there by the Smith form
-% over K[[t]]) and S35 (its form for any target space). The proof here is by Cramer's rule;
-% the Lean (exists_mvPolynomial_kernel_curve, its parameters a subspace of a coordinate space)
-% bounds the rank on the curve instead, with exists_mulVec_add_mulVec_eq_zero
-% (notes/Cleanup42.md, R-9).
+% over K[[t]]) and S35 (its form for any target space). The proof follows the Lean
+% (exists_mvPolynomial_kernel_curve, its parameters a subspace of a coordinate space, with
+% exists_mulVec_add_mulVec_eq_zero): the rank bounded along the line, with no field K(t) and
+% no power series (notes/Cleanup42.md, R-9).
 \begin{lemma}[A kernel vector to first order along a line]
   \label{lem:pencil-d-kernel-curve}
   \lean{CombinatorialRigidity.Molecular.exists_mvPolynomial_kernel_curve}
@@ -2570,30 +2582,34 @@ $x \wedge \omega = 0$.
 \end{lemma}
 \begin{proof}
   \leanok
-  The largest rank of $M(y)$ is $n - m$. Every minor of $M$ of size
-  $n - m + 1$ vanishes at every $y \in Y$, so it is the zero polynomial,
-  as $K$ is infinite. Some minor of size $n - m$ is nonzero at a point of
-  rank $n - m$. Let $\mu$ be this minor, on the rows $I$ and the columns
-  $C$. Wherever $\mu(y) \neq 0$ the rank is $n - m$.
+  The largest rank of $M(y)$ is $n - m$. Some minor of size $n - m$ is
+  nonzero at a point of this rank; let $\mu$ be this minor. Wherever
+  $\mu(y) \neq 0$ the rank is at least $n - m$, hence equal to $n - m$,
+  and $\dim \ker M(y) = m$.
 
-  Let $\mu(y_0) \neq 0$ and $\xi_0 \in \ker M(y_0)$, and let $C'$ be the
-  columns outside $C$. Write $A(t)$ and $B(t)$ for the submatrices of
-  $M(y_0 + tw)$ on the rows $I$, and on the columns $C$ and $C'$. Their
-  entries are polynomials in $t$, and $\det A(0) = \mu(y_0) \neq 0$. Over
-  the field $K(t)$ of rational functions, $M(y_0 + tw)$ has rank
-  $n - m$, as its larger minors are zero and $\det A(t) \neq 0$. So each
-  of its rows is a combination over $K(t)$ of the rows in $I$. Let
-  $\xi(t)$ agree with $\xi_0$ at the columns $C'$, and be
-  $-A(t)^{-1} B(t)\, \xi_0|_{C'}$ at the columns $C$. Then the rows in
-  $I$ of $M(y_0 + tw)\,\xi(t)$ vanish, and hence so do all its rows.
-
-  Each entry of $\xi(t)$ is a polynomial in $t$ divided by $\det A(t)$,
-  whose value at $t = 0$ is nonzero, so it is a power series in $t$.
-  Write $\xi(t) = \xi(0) + t\,\xi_1 + t^2(\cdots)$. As the rows in $I$ of
-  $M(y_0)\,\xi_0$ vanish,
-  $\xi_0|_C = -A(0)^{-1} B(0)\, \xi_0|_{C'}$, so $\xi(0) = \xi_0$. The
-  coefficient of $t$ in $M(y_0 + tw)\,\xi(t) = 0$ is
-  $M(y_0)\,\xi_1 + M_w\,\xi_0$.
+  Let $\mu(y_0) \neq 0$ and $\xi_0 \in \ker M(y_0)$, let $r = n - m$ be
+  the rank of $M(y_0)$, and suppose that no $\xi_1$ exists. Then
+  $M_w\, \xi_0$ is not in the range of $M(y_0)$, for if
+  $M_w\, \xi_0 = M(y_0)\, \xi$, then $\xi_1 = -\xi$ would do. Choose
+  $u_1, \dots, u_r \in K^n$ such that $M(y_0)\, u_1, \dots, M(y_0)\, u_r$
+  is a basis of this range. For $t \in K$ consider the $r + 1$ vectors
+  \[
+    M(y_0 + tw)\, u_1,\ \dots,\ M(y_0 + tw)\, u_r,\quad
+    M_w\, \xi_0 + t\, M_2(t)\, \xi_0.
+  \]
+  Their coordinates are polynomials in $t$, and at $t = 0$ they are the
+  vectors $M(y_0)\, u_j$ and $M_w\, \xi_0$, which are linearly
+  independent. So some minor of size $r + 1$ of their coordinate matrix
+  is nonzero at $t = 0$. It is a nonzero polynomial in $t$, and as $K$
+  is infinite it has a non-root $t \neq 0$, at which the $r + 1$ vectors
+  are linearly independent. They lie in the range of $M(y_0 + tw)$: the
+  first $r$ by definition, and the last as
+  \[
+    M(y_0 + tw)\,(t^{-1} \xi_0) \;=\; t^{-1} M(y_0)\, \xi_0
+    + M_w\, \xi_0 + t\, M_2(t)\, \xi_0
+  \]
+  and $M(y_0)\, \xi_0 = 0$. So $M(y_0 + tw)$ has rank at least $r + 1$,
+  more than the largest rank $n - m$. This contradiction gives $\xi_1$.
 \end{proof}
 
 % Source: SHORT-CORE workbook, S35 (every d >= 3, every subspace rho); at d = 4 also S7, S8.
@@ -2917,6 +2933,18 @@ $(\xi, \eta, \omega) \mapsto (\xi, \eta, h_a \cdot (\xi, \eta, \omega),
   it holds at $y$.
 \end{proof}
 
+\begin{fmlnote}
+  The formalization proves (3) without the components $f_\alpha$: it
+  takes for $g$ a nonzero coefficient of
+  $h(\lambda, s) = f((\lambda_x y_x(s))_x)$, read as a polynomial in
+  $\lambda \in K^X$ whose coefficients are polynomials in $s$; $h$ is
+  nonzero, as it does not vanish where $\lambda$ holds the last
+  coordinates of a non-root of $f$ with nonzero last coordinates and $s$
+  is the ear datum whose points are its vectors divided by their last
+  coordinates (by (2)); and as the coefficient of $\lambda^\alpha$ in $h$
+  is $f_\alpha(y(s))$, the two proofs take the same polynomial.
+\end{fmlnote}
+
 \begin{lemma}[Openness along a polynomial parametrization, in every dimension]
   \label{lem:pencil-d-ear-data-open}
   \lean{CombinatorialRigidity.Molecular.exists_mvPolynomial_le_finrank_ofNormals_bind_grade,
@@ -3042,7 +3070,7 @@ $(\xi, \eta, \omega) \mapsto (\xi, \eta, h_a \cdot (\xi, \eta, \omega),
   multiplied by a nonzero scalar. So it holds off the zero set of a
   nonzero polynomial in the ear data (\cref{lem:pencil-d-ear-data} (3)).
 
-  Take an ear datum $y$ off all three zero sets. The joins of the ear of
+  Take an ear datum $s$ off all three zero sets. The joins of the ear of
   $G''$ are nonzero, as the points of adjacent bodies have distinct
   pictures and last coordinate $1$. The graph $G''$ has $|V_1| + k - 1$
   bodies and rank at least its target, and $G[V_1]$ has its target. So
@@ -3054,7 +3082,7 @@ $(\xi, \eta, \omega) \mapsto (\xi, \eta, h_a \cdot (\xi, \eta, \omega),
   \]
   that is, $\dim W \ge k + f - \operatorname{def}_d(G'')$.
 
-  \emph{Putting $x_2$ back.} Keep the other points of $y$ and give $x_2$
+  \emph{Putting $x_2$ back.} Keep the other points of $s$ and give $x_2$
   a point $x$ with last coordinate $1$. As $x_2$ is a middle body of the
   ear of $G$, this is an ear datum of $G$ (\cref{lem:pencil-d-ear-data}
   (2)). Let $\Lambda$ be the span of the $k + 1$ joins of its ear, and
@@ -3108,6 +3136,20 @@ $(\xi, \eta, \omega) \mapsto (\xi, \eta, h_a \cdot (\xi, \eta, \omega),
   and $k \ge 5$, \cref{thm:pencil-x0-open-ear} gives the same conclusion
   from the attainment at $G[V_1]$ alone.
 \end{proof}
+
+\begin{fmlnote}
+  The formalization proves this in a factored order, not in the one pass
+  above: a step it shares with \cref{thm:pencil-d-open-ear-three} makes
+  the two stages and the count for an ear with at least three interior
+  bodies, taking as a hypothesis that $x_2$ can be put back (at the base
+  data, some nonzero polynomial in the ear data has, at each non-root
+  whose picture is admissible for $G''$, a point $x$ with last
+  coordinate $1$ with $\dim(\rho + \Lambda) \ge \min(\dim W + 1, D)$),
+  and the hypothesis is discharged afterwards, for all base data and
+  every subspace $\rho$, by \cref{lem:pencil-d-stars-four}, moved to the
+  ear data by \cref{lem:pencil-d-ear-data} (3), and
+  \cref{lem:pencil-d-insertion}.
+\end{fmlnote}
 
 % Source: SHORT-CORE workbook, S28 (the gluing), S29 (the dichotomy) and S30 (Case 1);
 % S14 and S15 are the model at r = 0, and S25 gives the use of Jackson and Jordan's

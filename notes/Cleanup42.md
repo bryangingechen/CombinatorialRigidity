@@ -13,7 +13,7 @@ every open row its remedy the same day, at round 1's stop and at a second stop o
 `kept` (a part keeps both routes, with a formalization note); no row goes H, so round 3 is empty.
 Round 2, opened 2026-11-05, applies them to the chapter in eight slices by layer, then one `\uses`
 sweep (blueprint and notes, no Lean); each slice sets its rows' status, and the tally here. The
-ledger now: 30 `open`, 7 `aligned`, 3 `kept`, 14 `no departure`. **Next concrete task:** round 2's
+ledger now: 26 `open`, 8 `aligned`, 6 `kept`, 14 `no departure`. **Next concrete task:** round 2's
 next open task (`notes/Phase42-align.md`'s **Status**); after round 2, round 4 (§3).
 
 ## 1. The PI's decisions (verbatim)
@@ -276,24 +276,26 @@ there.
   2026-10-31); its `\uses` are now two-stars, the kernel curve and
   `lem:pencil-x0-fibre-intersection`, what the Lean calls.
 - **R-9** · `lem:pencil-d-kernel-curve` (`exists_mvPolynomial_kernel_curve`,
-  `exists_mulVec_add_mulVec_eq_zero`, 42h recon) · **open**.
-  *Chapter:* Cramer's rule over `K(t)`: `ξ(t) = (−A(t)⁻¹B(t)ξ₀|_{C'}, ξ₀|_{C'})`, a power series,
-  whose coefficient of `t` is `ξ₁`.
+  `exists_mulVec_add_mulVec_eq_zero`, 42h recon) · **aligned, round 2 task 3**.
+  *Chapter (until then):* Cramer's rule over `K(t)`: `ξ(t) = (−A(t)⁻¹B(t)ξ₀|_{C'}, ξ₀|_{C'})`, a
+  power series, whose coefficient of `t` is `ξ₁`.
   *Lean:* if no `ξ₁` exists, `M_wξ₀ ∉ range M(y₀)`. With `M(y₀)u_j` a basis of that range, of
   dimension `r`, the family `M(y₀ + tw)u_j`, `M_wξ₀ + tM₂(t)ξ₀` is independent at `t = 0`, hence
   at some `t ≠ 0`, and lies in the range of `M(y₀ + tw)`, which sends `t⁻¹ξ₀` to its last member;
   so `M(y₀ + tw)` has rank `r + 1`, against the generic rank. The generic minor is the same.
-  *Remedies:* the prose to the Lean (no power series), or keep both.
+  *Remedies:* the prose to the Lean (no power series), or keep both. The prose to the Lean, taken
+  (the PI, 2026-11-05).
 - **R-10** · `lem:pencil-d-ear-data`, part (3) (`exists_mvPolynomial_earDataGrade_of_smul`, 42h
-  recon) · **open**.
+  recon) · **kept, round 2 task 3**.
   *Chapter:* a nonzero multihomogeneous component `f_α`; `g(s) = f_α(y(s))`, and at `g(s) ≠ 0` the
   polynomial `λ ↦ f((λ_x y_x)_x)` has coefficient `f_α(y) ≠ 0` at `λ^α`.
   *Lean:* `h(λ, s) = f((λ_x y_x(s))_x)` is nonzero (a point of the planes with nonzero last
   coordinates, rescaled to an ear datum by part (2)); `g` is a nonzero coefficient of `h` as a
   polynomial in `λ` (`MvPolynomial.sumAlgEquiv`). Same coefficient argument, no `f_α`.
-  *Remedies:* the prose to the Lean, or keep both (a toss-up).
+  *Remedies:* the prose to the Lean, or keep both (a toss-up). Keep both, taken: a formalization
+  note after the proof names the Lean's route (the PI, 2026-11-05).
 - **R-11** · `lem:pencil-d-two-stars`, part (1) (`starGrade_sup_starGrade_eq_ker`,
-  `finrank_starGrade_sup_starGrade`, 42h build) · **open**.
+  `finrank_starGrade_sup_starGrade`, 42h build) · **kept, round 2 task 3**.
   *Chapter:* `e₁ = y`, `e₂ = y'` extended to a basis; the sum of the stars is spanned by the
   `e_i ∧ e_j` with `i ≤ 2`, and the `e_i ∧ e_j` with `3 ≤ i < j` go to a basis of `⋀²Q`.
   *Lean:* a linear section `s` of the quotient map, `P = s ∘ mkQ`:
@@ -301,9 +303,10 @@ there.
   `ω` is `⋀²P ω` modulo it, and `⋀²P` vanishes on the kernel; the dimension by rank–nullity.
   *Remedies:* keep both (the basis also carries the `⋀^{d−1}` reading of part (2) in the chapter);
   a Lean helper, mathlib's `Basis.exteriorPower`, so that the Lean follows the chapter; or the
-  prose to the Lean.
+  prose to the Lean. Keep both, taken: a formalization note after the proof names the Lean's route
+  (the PI, 2026-11-05).
 - **R-12** · `thm:pencil-d-open-ear-four` (`Graph.X0AttainsGrade.of_openEar_four`, 42h build) ·
-  **open**.
+  **kept, round 2 task 3**.
   *Chapter:* the ear datum is chosen twice (for `G″`, then for `G` after `x₂` is put back), the
   stars-four condition is shown at a general point by the third condition on the ear data, and the
   insertion is applied to the joins of the ear.
@@ -314,7 +317,8 @@ there.
   `exists_mvPolynomial_earDataGrade_of_smul` (its `hC` is `starsCond_of_smul`, the condition's
   scale invariance), then `exists_insertion_of_starGrade_sup` at `R = ρ ⊔` the joins of `G″` but the
   one at `1` (`span_joins_succAbove_two`). The order is the factored one, not the chapter's.
-  *Remedies:* the prose to the Lean (state the factoring), or keep both.
+  *Remedies:* the prose to the Lean (state the factoring), or keep both. Keep both, taken: a
+  formalization note after the proof names the Lean's route (the PI, 2026-11-05).
 - **R-13** · `lem:pencil-d-stars-three` (`exists_mvPolynomial_starsThree`, `Grade/StarsThree.lean`,
   42i) · **aligned, this commit** (42i, the theorem's build).
   *Chapter (until then):* annihilators read in `⋀^{d−1}`, `M(y₁, y₃)` on `⋀^{d−3}` and `ζ` in its
@@ -1045,18 +1049,18 @@ there.
   - **Round 4**, the *Also left to it* items below and round 1's stale docstring (Lean), opens after
     round 2's close.
 
-  Round 1's *Candidates for the PI* and *Moved to a later round* lines are mirrored here as they
-  land, each with the task that takes it:
+  Round 1's and round 2's *Candidates for the PI* and *Moved to a later round* lines are mirrored
+  here as they land, each with the task that takes it:
   - *Moved to a later round* (round 1 task 2; round 2 task 10, the sweep):
     `lem:pencil-d-point-configuration`'s statement reads the closed neighbourhood
     (`Graph.closedNbhd`, pinned by `def:pencil-nondegenerate` in `pencil.tex`) with no `\uses` edge
     to it, which `scripts/blueprint-deps.py` reports *missing*. The script reports 60 missing edges
     over the chapter (`--chapter pencil-d`), so a later round may take them in one sweep.
-  - *Moved to a later round* (round 1 task 10; round 2 task 3): a prose slip.
-    `thm:pencil-d-open-ear-four`'s proof calls an ear datum `y` ("Take an ear datum $y$ off all
-    three zero sets", then "Keep the other points of $y$"), where `def:pencil-d-ear-data` and the
-    same proof's first stage (`s^*`) write `s` for ear data, and the section writes `y` for points
-    (`y_1`, `y_3`, …).
+  - *Moved to a later round* (round 1 task 10; round 2 task 3, taken: `s` in both places): a prose
+    slip. `thm:pencil-d-open-ear-four`'s proof calls an ear datum `y` ("Take an ear datum $y$ off
+    all three zero sets", then "Keep the other points of $y$"), where `def:pencil-d-ear-data` and
+    the same proof's first stage (`s^*`) write `s` for ear data, and the section writes `y` for
+    points (`y_1`, `y_3`, …).
   - *Moved to a later round* (round 1 task 13; round 2 task 6): a prose slip.
     `lem:pencil-d-nondegenerate-maps` fixes `p : K^(d+1) → K^(d′+1)`, so (2)'s injective `p`
     has `d ≤ d′`, but its "in particular" embeds a realization in dimension `d′ ≤ d` into dimension
@@ -1067,6 +1071,10 @@ there.
     steps stated "for `lem:pencil-d-ear-free`" (`L(b⁰) = L(q)` in the maps), but its one caller is
     `liftAttains_of_forall_deficiency_two_ne_zero`: the Lean of `-ear-free` never reads `L(b⁰)`
     (R-34) and calls only the other two it names.
+  - *Moved to a later round* (round 2 task 3; round 4, as it edits Lean): a stale docstring.
+    `Grade/Stars.lean`'s `exists_mulVec_add_mulVec_eq_zero` ends "The chapter argues by Cramer's
+    rule over `K(t)` instead" (R-9), and its first line's "without `K(t)`" contrasts it with that
+    proof; since R-9's alignment the chapter's proof of `lem:pencil-d-kernel-curve` is the Lean's.
 - **The ledger at Phase 42's close:** the standing rule (§1) kept §2 current through PD-STEPS's
   rest, PD-COVERAGE, PD-REDUCTION and PD-HEAD (`notes/Phase42-design.md` §3), the last rows 42m's,
   R-24 to R-34; Phase 42 closed on 2026-11-05 with no row added after them. Round 1 adds from R-35.
