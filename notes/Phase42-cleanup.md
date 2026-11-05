@@ -7,10 +7,11 @@ from the chapter's route; its plan, the PI's words and the proof-route ledger ar
 and adds a ledger row for each departure, re-checking R-1 to R-34 at HEAD; it edits no prose,
 statement, pin or Lean. The open (task 1, docs only) sliced the nodes by layer into 14
 one-dispatch Opus recon tasks, the 47 never-checked nodes of 42b–42f first, then a planned stop
-(task 16) at which the PI picks a remedy per `open` row and plans rounds 2+. Tasks 2 to 6
-(PD-STATE, PD-STABLE, COUNT-A and COUNT-B, PD-CARRIER) added R-35 (`open`), R-36 to R-39 (`no
-departure`). **Next concrete task:** task 7, PD-STEPS (42f), the six nodes of `sec:pencil-d-cut`
-and `sec:pencil-d-contract` (*Lemma checklist*). Round manual: `CLEANUP.md`.
+(task 16) at which the PI picks a remedy per `open` row and plans rounds 2+. Tasks 2 to 7
+(PD-STATE, PD-STABLE, COUNT-A and COUNT-B, PD-CARRIER, 42f's PD-STEPS) added R-35 (`open`), R-36
+to R-39 (`no departure`); task 7 none. **Next concrete task:** task 8, PD-STEPS (42g), the seven
+nodes of `sec:pencil-d-long`, re-checking R-1 to R-6 (*Lemma checklist*). Round manual:
+`CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -24,9 +25,9 @@ picks a remedy per `open` row and plans rounds 2+ (`notes/Cleanup42.md` §3). An
 
 ## Current state
 
-**Tasks 1 to 6 have landed** (task 6 this commit: one `no departure` row, R-39, the four nodes
-no departure, no line under *Candidates* or *Moved to a later round*). The ledger has 39 rows, 28
-`open`; the next row is R-40. Nothing is mid-stream; task 7 is next.
+**Tasks 1 to 7 have landed** (task 7 this commit: no row, the six nodes no departure, no line
+under *Candidates* or *Moved to a later round*). The ledger has 39 rows, 28 `open`; the next row
+is R-40. Nothing is mid-stream; task 8 is next.
 
 **Verified at the open** (2026-11-05, at `a3b80ac4`):
 - **The Lean baseline** is the coordinator's run this session, not repeated here: `lake build
@@ -161,7 +162,7 @@ the gate's forward weighting).
   `lem:pencil-d-maximal-rigid-core`, `thm:pencil-d-theorem-s`, `lem:pencil-d-chain-core`,
   `-core-positive-deficiency` (its two *unbacked* edges the helpers the chapter cites). The two
   dead pins are §3's fold.
-- [x] **6. PD-CARRIER (42e)** (this commit). `sec:pencil-d-induction` and `sec:pencil-d-flat`, 4
+- [x] **6. PD-CARRIER (42e)** (`bc4d78c4`). `sec:pencil-d-induction` and `sec:pencil-d-flat`, 4
   medium nodes, against `Grade/ConditionLinear.lean` and `Grade/Flat.lean` (13 pins, 12 distinct).
   **New row:** R-39 (`thm:pencil-d-flat-rank`'s second paragraph, a second proof no Lean follows,
   `no departure`). **No departure:** `lem:pencil-d-condition-linear` (the chapter's steps: `π` an
@@ -175,12 +176,19 @@ the gate's forward weighting).
   `-planes-meet`, `thm:pencil-d-open-ear-four`, `-three`) use `σ_v` and its facts
   (`gradeSigma_injective`, `pencilConfigPointGrade_eq_gradeSigma_iff`), not its equivalences: to
   read against their proofs' citations of it.
-- [ ] **7. PD-STEPS (42f), the cut and the contraction.** `sec:pencil-d-cut` and
-  `sec:pencil-d-contract` (1553–2115), 6 heavy nodes (`thm:pencil-d-contract-additive`'s proof is
-  149 lines): `lem:pencil-d-lifting-restrict`, `thm:pencil-d-cut`, `thm:pencil-d-bridge`,
-  `lem:pencil-contract-additive-kernel`, `thm:pencil-d-contract-additive`,
-  `cor:pencil-d-contract-rigid`. Reads `Grade/Cut.lean`, `MainComponent/Cut.lean` (one pin,
-  `eval_restrictPoly`) and `Grade/ContractAdditive.lean`.
+- [x] **7. PD-STEPS (42f), the cut and the contraction** (this commit). `sec:pencil-d-cut` and
+  `sec:pencil-d-contract`, 6 heavy nodes, against `Grade/Cut.lean`, `MainComponent/Cut.lean`
+  (`eval_restrictPoly`) and `Grade/ContractAdditive.lean`. **No new row. No departure:**
+  `lem:pencil-d-lifting-restrict` (column by column; (3) one substitution at `α × Fin m`, its dead
+  pin the `rfl` bridge to the tuple); `thm:pencil-d-cut` (the three parts in order; the deficiency
+  identity's `≥` half, all the one-witness "at least" asks); `thm:pencil-d-bridge` (the same, with
+  `lem:block-rank-cut`'s pendant form and parts (3), (1) along the path; hinges by
+  `-config-realization`'s pair pin, at any heights); `lem:pencil-contract-additive-kernel` (its two
+  chains; `A` the product the proof names); `thm:pencil-d-contract-additive` (its six parts in
+  order; `N` the rank at `b′`, then `tgt_d(G/H)`; the *unbacked* edge to
+  `lem:pencil-contract-standing` the two lemmas its pin is built of, all JJ's equality asks, as at
+  `d = 3`); `cor:pencil-d-contract-rigid` (the steps in order). The `d = 3` inline kernel copy is
+  FRICTION's open fold (design doc §3), not raised again.
 
 **42g–42m, under the standing rule since 42g (52 nodes, 30 with a row).**
 
@@ -249,13 +257,13 @@ the gate's forward weighting).
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 7, PD-STEPS (42f), the cut and the contraction. One Opus recon reads
-the six heavy nodes of `sec:pencil-d-cut` and `sec:pencil-d-contract` (lines 1553–2115;
-`thm:pencil-d-contract-additive`'s proof is 149 lines) against their pins in `Grade/Cut.lean`,
-`MainComponent/Cut.lean` (`eval_restrictPoly`) and `Grade/ContractAdditive.lean` under *The
-audit's criterion*, then lands one docs commit: any new rows in `notes/Cleanup42.md` §2 (from
-R-40), its **Status** counts, and task 7's line here with its verdicts. Then tasks 8–15 in order,
-and the stop.
+**Next concrete task:** task 8, PD-STEPS (42g), `-long`. One Opus recon reads the seven heavy
+nodes of `sec:pencil-d-long` (lines 3424–3932) against their pins in `Grade/Polygon.lean` and
+`Grade/Chain.lean` under *The audit's criterion*: it re-checks R-1 to R-6 at HEAD (an `aligned`
+row by confirming that the chapter follows the Lean) and reads the two fresh nodes,
+`lem:pencil-d-polygon-collapse` and `thm:pencil-d-open-ear-long`, then lands one docs commit: any
+new rows in `notes/Cleanup42.md` §2 (from R-40), its **Status**, and task 8's line here with its
+verdicts and re-checks. Then tasks 9–15 in order, and the stop.
 
 ## Decisions made during this round
 

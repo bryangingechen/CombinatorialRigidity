@@ -9,9 +9,9 @@ row to §2 for each departure, with no prose or Lean edit, then a stop at which 
 remedy per `open` row and plans rounds 2+ (§3). `.claude/autopilot/queue.toml` carries it as
 `CLEANUP-42`, attended, between PENCIL-D (done) and ORIGAMI; ROADMAP *Queued post-program phases*
 lists it. Its input is the proof-route ledger (§2): 34 rows at Phase 42's close (2026-11-05), 27
-`open`, 6 `aligned`, 1 `no departure`, to which round 1 adds; after its task 6, 39 rows, 28 `open`,
-6 `aligned` and 5 `no departure` (R-35 `open`, R-36 to R-39 `no departure`). **Next concrete
-task:** round 1's task 7, PD-STEPS (42f), the cut and the contraction (`notes/Phase42-cleanup.md`
+`open`, 6 `aligned`, 1 `no departure`, to which round 1 adds; after its task 7, 39 rows, 28 `open`,
+6 `aligned` and 5 `no departure` (R-35 `open`, R-36 to R-39 `no departure`; task 7 added none).
+**Next concrete task:** round 1's task 8, PD-STEPS (42g), `-long` (`notes/Phase42-cleanup.md`
 *Lemma checklist*).
 
 ## 1. The PI's decisions (verbatim)
