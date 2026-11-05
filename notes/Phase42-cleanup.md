@@ -7,10 +7,10 @@ from the chapter's route; its plan, the PI's words and the proof-route ledger ar
 and adds a ledger row for each departure, re-checking R-1 to R-34 at HEAD; it edits no prose,
 statement, pin or Lean. The open (task 1, docs only) sliced the nodes by layer into 14
 one-dispatch Opus recon tasks, the 47 never-checked nodes of 42b–42f first, then a planned stop
-(task 16) at which the PI picks a remedy per `open` row and plans rounds 2+. Tasks 2 to 4
-(PD-STATE, PD-STABLE) added R-35 (`open`), R-36 and R-37 (`no departure`). **Next concrete task:**
-task 5, COUNT-A and COUNT-B, the eleven nodes of `sec:pencil-d-deficiency` (*Lemma checklist*).
-Round manual: `CLEANUP.md`.
+(task 16) at which the PI picks a remedy per `open` row and plans rounds 2+. Tasks 2 to 5
+(PD-STATE, PD-STABLE, COUNT-A and COUNT-B) added R-35 (`open`), R-36 to R-38 (`no departure`).
+**Next concrete task:** task 6, PD-CARRIER, the four nodes of `sec:pencil-d-induction` and
+`sec:pencil-d-flat` (*Lemma checklist*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -24,9 +24,9 @@ picks a remedy per `open` row and plans rounds 2+ (`notes/Cleanup42.md` §3). An
 
 ## Current state
 
-**Tasks 1 to 4 have landed** (task 4 this commit: one `no departure` row, R-37, the other eight
-nodes no departure, no line under *Candidates* or *Moved to a later round*). The ledger has 37
-rows, 28 `open`; the next row is R-38. Nothing is mid-stream; task 5 is next.
+**Tasks 1 to 5 have landed** (task 5 this commit: one `no departure` row, R-38, the other ten
+nodes no departure, no line under *Candidates* or *Moved to a later round*). The ledger has 38
+rows, 28 `open`; the next row is R-39. Nothing is mid-stream; task 6 is next.
 
 **Verified at the open** (2026-11-05, at `a3b80ac4`):
 - **The Lean baseline** is the coordinator's run this session, not repeated here: `lake build
@@ -165,7 +165,7 @@ re-checks (accurate or corrected) and the nodes judged no departure.
   `lem:pencil-d-join-independence-open` (the `2 × 2` minors, polynomial in the picture or in the
   heights, and a nonzero maximal minor). No line under *Candidates* or *Moved to a later round*:
   the script's two missing edges on these nodes are in task 2's sweep.
-- [x] **4. PD-STABLE (42c)** (this commit). `sec:pencil-d-stable` (527–841), 9 light to medium
+- [x] **4. PD-STABLE (42c)** (`6cd638f4`). `sec:pencil-d-stable` (527–841), 9 light to medium
   nodes, against `CombinatorialRigidity/Molecular/Deficiency.lean` (its two pins),
   `Grade/Embedding.lean`, `Grade/ZeroHeights.lean`, `Grade/Configuration.lean` (one pin) and
   `Grade/Stable.lean` (all 22 pins). No re-checks. **New row:** R-37, **no departure**,
@@ -193,14 +193,25 @@ re-checks (accurate or corrected) and the nodes judged no departure.
   missing edges on these nodes are in task 2's sweep, and its *unbacked* edge from
   `-embed-realization` to `-point-configuration` is to the argument the proof cites, whose helper
   (`exists_smul_panelSupportExtensor_eq_of_extensorInPanel`) the Lean shares with that node's pin.
-- [ ] **5. COUNT-A and COUNT-B (42d).** `sec:pencil-d-deficiency` (843–1204), 11 medium nodes
-  (Theorem S's proof is 42 lines). COUNT-A: `lem:deficiency-planar-nonpos`,
-  `lem:deficiency-rigid-higher`, `lem:deficiency-core-bound-d`, `lem:deficiency-one-body-chain-d`,
-  `lem:deficiency-two-body-chain-d`, `lem:deficiency-tight-part`. COUNT-B:
-  `def:pencil-d-usable-chain`, `lem:pencil-d-maximal-rigid-core`, `thm:pencil-d-theorem-s`,
-  `lem:pencil-d-core-positive-deficiency`, `lem:pencil-d-chain-core`. Reads
-  `CombinatorialRigidity/Molecular/Induction/SparseDeficiency.lean` (its six pins) and
-  `Grade/TheoremS.lean`.
+- [x] **5. COUNT-A and COUNT-B (42d)** (this commit). `sec:pencil-d-deficiency` (843–1204), 11
+  medium nodes, against `CombinatorialRigidity/Molecular/Induction/SparseDeficiency.lean` (COUNT-A's
+  eight pins) and `Grade/TheoremS.lean` (all five). No re-checks. **New row:** R-38, **no
+  departure**, `lem:deficiency-tight-part`'s case `Z = V(G)` (no case split in the pin: the split's
+  pin takes an empty side, whose value `−D` its `+ D` cancels). **No departure:**
+  `lem:deficiency-planar-nonpos` (unfolding; `3 ≤ bodyBarDim n` the `d ≥ 2`);
+  `lem:deficiency-rigid-higher` (connected, antitone, nonnegative); `lem:deficiency-core-bound-d`
+  ((1) the merge, the singleton and planar bounds, sparsity read in `Y` only, as the proof reads it;
+  (2) the least counterexample, `d = 3`'s two cases); `lem:deficiency-one-body-chain-d` (refinements
+  of `Q` glued and split, then the insertion formula in the chapter's cases);
+  `lem:deficiency-two-body-chain-d` (`d = 3`'s steps, then `lem:deficiency-rigid-higher`);
+  `def:pencil-d-usable-chain` (verbatim, on the chain's data as at `d = 3`, so the script's
+  *unbacked* edge to the chain); `lem:pencil-d-maximal-rigid-core`, `thm:pencil-d-theorem-s` and
+  `lem:pencil-d-chain-core` (the chapter's steps, in its order);
+  `lem:pencil-d-core-positive-deficiency` (the chapter's steps; `v₃ = 2v₂ − d_G` by
+  `partitionDef_three_eq`, the planar identity at `D = 6`, and the count by the helpers of
+  `lem:pencil-x0-sparse-count`'s proof, as the chapter says, so its two *unbacked* edges). No line
+  under *Candidates* or *Moved to a later round*: no missing edge here, and the two dead pins
+  (Theorem S, the usable chain) are §3's fold.
 - [ ] **6. PD-CARRIER (42e).** `sec:pencil-d-induction` and `sec:pencil-d-flat` (1206–1551), 4
   medium nodes (proofs of 13 to 46 lines): `lem:pencil-d-condition-linear`,
   `thm:pencil-d-flat-rank`, `cor:pencil-d-flat-attains`, `cor:pencil-d-jj-flat`. Reads
@@ -279,12 +290,11 @@ re-checks (accurate or corrected) and the nodes judged no departure.
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 5, COUNT-A and COUNT-B (42d). One Opus recon reads the eleven nodes
-of `sec:pencil-d-deficiency` (Theorem S's proof is 42 lines) against their pins in
-`CombinatorialRigidity/Molecular/Induction/SparseDeficiency.lean` (its six pins) and
-`Grade/TheoremS.lean` under *The audit's criterion*, then lands one docs commit: any new rows in
-`notes/Cleanup42.md` §2 (from R-38), its **Status** counts, and task 5's line here with its
-verdicts. Theorem S's fold is §3's, not raised again. Then tasks 6–15 in order, and the stop.
+**Next concrete task:** task 6, PD-CARRIER (42e). One Opus recon reads the four nodes of
+`sec:pencil-d-induction` and `sec:pencil-d-flat` (proofs of 13 to 46 lines) against their pins in
+`Grade/ConditionLinear.lean` and `Grade/Flat.lean` under *The audit's criterion*, then lands one
+docs commit: any new rows in `notes/Cleanup42.md` §2 (from R-39), its **Status** counts, and task
+6's line here with its verdicts. Then tasks 7–15 in order, and the stop.
 
 ## Decisions made during this round
 

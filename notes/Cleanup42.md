@@ -9,9 +9,9 @@ row to §2 for each departure, with no prose or Lean edit, then a stop at which 
 remedy per `open` row and plans rounds 2+ (§3). `.claude/autopilot/queue.toml` carries it as
 `CLEANUP-42`, attended, between PENCIL-D (done) and ORIGAMI; ROADMAP *Queued post-program phases*
 lists it. Its input is the proof-route ledger (§2): 34 rows at Phase 42's close (2026-11-05), 27
-`open`, 6 `aligned`, 1 `no departure`, to which round 1 adds; after its task 4, 37 rows, 28 `open`,
-6 `aligned` and 3 `no departure` (R-35 `open`, R-36 and R-37 `no departure`). **Next concrete
-task:** round 1's task 5, COUNT-A and COUNT-B (`notes/Phase42-cleanup.md` *Lemma checklist*).
+`open`, 6 `aligned`, 1 `no departure`, to which round 1 adds; after its task 5, 38 rows, 28 `open`,
+6 `aligned` and 4 `no departure` (R-35 `open`, R-36 to R-38 `no departure`). **Next concrete
+task:** round 1's task 6, PD-CARRIER (`notes/Phase42-cleanup.md` *Lemma checklist*).
 
 ## 1. The PI's decisions (verbatim)
 
@@ -589,6 +589,17 @@ task in `notes/Phase42-cleanup.md`, and its re-checks of R-1 to R-34 are recorde
   `|P| − 1 − (D − 1) c(P)` read with `c(P) ≥ 0`, so the steps are the chapter's. The "in particular"
   (`Graph.Connected.deficiency_eq_of_two_add_deficiency_two_le`) bounds `D′ ≥ d′ + 1 ≥ t + 3`
   (`d′ ≥ 2`), where the chapter goes through `binom(t + 3, 2)`: arithmetic.
+
+- **R-38** · `lem:deficiency-tight-part`, its case `Z = V(G)`
+  (`Graph.IsTightPartition.deficiency_induce_eq_zero`, `Molecular/Induction/SparseDeficiency.lean`,
+  round 1 task 5) · **no departure**: the chapter sets `Z = V(G)` apart (then `P = {V(G)}` has value
+  `0`, so `def_d(G) = 0`), as `lem:separated-partition-value` asks `∅ ≠ V′ ≠ V(G)`; the pin has no
+  case split. The pin of that lemma (`partitionDef_split_of_sides`) asks neither side nonempty: at
+  `V′ = V(G)` the side `G[∅]` has no part and no edge, so its value is `D(0 − 1) = −D` under every
+  labeling, which the split's `+ D` cancels (a `lake lean` probe at HEAD). So the chapter's other
+  case, the refinement `R` of `Z` glued to `P` outside it (`exists_glue`) and split, covers every
+  `Z`, and `{Z}` attains the bound (`deficiency_nonneg`). The pin is at every `n`, for the part of
+  each body `u`.
 
 ## 3. The cleanup's rounds
 
