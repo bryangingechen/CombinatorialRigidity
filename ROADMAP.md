@@ -1407,8 +1407,8 @@ research note of its own, `notes/Strata.md`, which holds PENCIL-D's evidence.
   (`notes/Phase42-cleanup.md`): one Opus recon per slice of `pencil-d.tex`'s 99 green nodes, by
   layer and 42b–42f first, compares each node with its Lean and adds ledger rows only, with no
   prose or Lean edit; then a planned stop, at which the PI picks a remedy per open row and plans
-  rounds 2+. Plan, the PI's words and the ledger: `notes/Cleanup42.md`. **Next:** round 1's task
-  2, PD-STATE's realizations.
+  rounds 2+. Plan, the PI's words and the ledger: `notes/Cleanup42.md`. **Next:** the work log's
+  **Status** (it names round 1's next task).
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid
