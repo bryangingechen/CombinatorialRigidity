@@ -1,25 +1,20 @@
 # The post-Phase-42 cleanup (planning note)
 
-**Status:** open (2026-11-05, at the PI's word, §1), ahead of ORIGAMI; round 1, the route audit,
-closed 2026-11-05 at its planned stop (`notes/Phase42-cleanup.md`). On 2026-10-30, during 42g, the
-PI asked for a cleanup phase after Phase 42 to address the informal proofs of
-`blueprint/src/chapter/pencil-d.tex` that were difficult to formalize as written (§1). On 2026-11-05
-the PI opened it ahead of ORIGAMI and shaped its first round: an audit of every green node of the
-chapter (99) against its Lean, adding a row to §2 for each departure, with no prose or Lean edit,
-then a stop at which the PI picks a remedy per `open` row and plans rounds 2+ (§3).
+**Status:** open (2026-11-05, at the PI's word, §1), ahead of ORIGAMI; round 2, the chapter to the
+Lean, in progress (`notes/Phase42-align.md`). On 2026-10-30, during 42g, the PI asked for a cleanup
+phase after Phase 42 to address the informal proofs of `blueprint/src/chapter/pencil-d.tex` that
+were difficult to formalize as written (§1); on 2026-11-05 the PI opened it ahead of ORIGAMI.
 `.claude/autopilot/queue.toml` carries it as `CLEANUP-42`, attended, between PENCIL-D (done) and
-ORIGAMI; ROADMAP *Queued post-program phases* lists it. Its input is the proof-route ledger (§2): 34
-rows at Phase 42's close (2026-11-05), 27 `open`, 6 `aligned`, 1 `no departure`, to which round 1
-added; at its close, 54 rows, 34 `open`, 6 `aligned` and 14 `no departure` (R-35, R-46, R-48 to R-51
-and R-53 `open`, R-36 to R-45, R-47, R-52 and R-54 `no departure`; R-1 to R-34 re-checked, R-7, R-9,
-R-12, R-15 to R-17, R-24 to R-27, R-31, R-32 and round 1's R-50 corrected in place). The open rows
-by family: §3 *Round 1's stop*. The PI answered the stop on 2026-11-05 (§1): family A to the Lean
-(R-46 kept), families B and C judged per row first, no close call reopened, rounds 2+ as proposed;
-and, asked the same day, the judgment also takes family A's 7 argument or step parts (§1). The B/C
-judgment landed 2026-11-05 (§3 *The B/C judgment*): of the 22 rows 9 L, 13 K, no H; of the 7 parts
-4 L, 2 K, R-29 split. The PI approved it as proposed at the second stop the same day (§1), so every
-open row has its remedy and no row goes H. **Next concrete task:** round 2's open, the chapter to
-the Lean (blueprint and notes, no Lean), with its own work log and task list (§3 *Rounds 2+*).
+ORIGAMI; ROADMAP *Queued post-program phases* lists it. Its input is the proof-route ledger (§2):
+34 rows at Phase 42's close, 54 at the close of round 1, the route audit (`notes/Phase42-cleanup.md`,
+closed 2026-11-05 at its planned stop): 34 `open`, 6 `aligned`, 14 `no departure`. The PI gave
+every open row its remedy the same day, at round 1's stop and at a second stop on the B/C judgment
+(§1; §3 *Round 1's stop*, *The B/C judgment*): 17 rows go `aligned` (every part to the Lean) and 17
+`kept` (a part keeps both routes, with a formalization note); no row goes H, so round 3 is empty.
+Round 2, opened 2026-11-05, applies them to the chapter in eight slices by layer, then one `\uses`
+sweep (blueprint and notes, no Lean); each slice sets its rows' status, and the tally here. The
+ledger now: 34 `open`, 6 `aligned`, 0 `kept`, 14 `no departure`. **Next concrete task:** round 2's
+next open task (`notes/Phase42-align.md`'s **Status**); after round 2, round 4 (§3).
 
 ## 1. The PI's decisions (verbatim)
 
@@ -191,13 +186,19 @@ What follows from it:
 ## 2. The proof-route ledger
 
 One row per node of `pencil-d.tex` whose Lean proof departs from the chapter's, in the chapter's
-notation. *Status* is `open`, or `aligned` with the commit that made the chapter and the Lean follow
-one route (`this commit` in that commit; a later edit may replace it with the sha), or `no
-departure` for a row raised and then judged a carrier encoding of the chapter's own object, kept as
-a short row so that the cleanup's recon does not raise it again. *Remedies* are the options: the
-prose to the Lean, a Lean helper so that the Lean can follow the chapter, or keep both routes, each
-valid. The cleanup chooses one per `open` row, with the PI. Round 1's rows (from R-35) name their
-task in `notes/Phase42-cleanup.md`, and its re-checks of R-1 to R-34 are recorded there.
+notation. *Status* is `open`; or `aligned` with the commit that made the chapter and the Lean follow
+one route (`this commit` in that commit; a later edit may replace it with the sha); or `kept` with
+the commit that kept both routes, each valid, at the PI's choice, and put a formalization note
+naming the Lean's route after the node's proof; or `no departure` for a row raised and then judged a
+carrier encoding of the chapter's own object, kept as a short row so that the cleanup's recon does
+not raise it again. A row is `aligned` only when every part of it went to the Lean; a row with any
+part kept is `kept`, its *Remedies* naming each part's remedy (R-15, R-28 and R-29 restate a
+statement and keep an argument). Round 2 writes `round 2 task <N>` for the commit, and its close
+replaces it with the sha (`notes/Phase42-align.md` *Scope and standing rules*). *Remedies* are the
+options: the prose to the Lean, a Lean helper so that the Lean can follow the chapter, or keep both
+routes, each valid. The cleanup chose one per `open` row, with the PI (§1, §3). Round 1's rows (from
+R-35) name their task in `notes/Phase42-cleanup.md`, and its re-checks of R-1 to R-34 are recorded
+there.
 
 - **R-1** · `lem:pencil-d-polygon-star` (`exists_normalsJoin_notMem_span_polygon`,
   `Pencil/Grade/Polygon.lean`) · **aligned, this commit** (42g).
@@ -1022,31 +1023,43 @@ task in `notes/Phase42-cleanup.md`, and its re-checks of R-1 to R-34 are recorde
   proposes L, K or H with a one-line reason (which route reads better), in one docs commit (a
   per-row table in this section, after *Round 1's stop*; read-only otherwise, no row's status
   changed). Landed 2026-11-05 (*The B/C judgment*, below), and approved as proposed by the PI at
-  the second stop the same day (§1); round 2 opens next, with its own work log.
+  the second stop the same day (§1); round 2 opened then, with its own work log (below).
 - **Rounds 2+** (planned with the PI at round 1's stop, §1: the proposal as written): round 2, the
   chapter to the Lean (blueprint and notes, no Lean; family A's L rows, the B/C rows the PI sends
   L, a remark for each K row, the *Moved* lines below and the `\uses` sweep; about 11 tasks);
   round 3, Lean helpers, only if a row goes H (none did, at the second stop, §1); round 4, the
   three items *Also left to it* below.
+  - **Round 2, the chapter to the Lean** (opened 2026-11-05, `notes/Phase42-align.md`): 11 tasks,
+    one commit each. After the open, eight slices by layer as round 1's (42b with 42g; 42h; 42i
+    with 42j; 42k; 42l; 42m in three) apply each open row's remedy: the 11 family-A statements
+    and 14 proof routes that go L restated to their Lean, each set `aligned`; a formalization note
+    after the proof for each of the 17 kept parts, its row set `kept` (§2's header); the two prose
+    slips below in their layers' slices. Then the `\uses` sweep (task 10) and the close (task 11).
+    No Lean, pin or `\leanok` changes.
+  - **Round 3** is empty: no row went H (§1, the second stop).
+  - **Round 4**, the *Also left to it* items below and round 1's stale docstring (Lean), opens after
+    round 2's close.
+
   Round 1's *Candidates for the PI* and *Moved to a later round* lines are mirrored here as they
-  land:
-  - *Moved to a later round* (round 1 task 2): `lem:pencil-d-point-configuration`'s statement reads
-    the closed neighbourhood (`Graph.closedNbhd`, pinned by `def:pencil-nondegenerate` in
-    `pencil.tex`) with no `\uses` edge to it, which `scripts/blueprint-deps.py` reports *missing*.
-    The script reports 60 missing edges over the chapter (`--chapter pencil-d`), so a later round
-    may take them in one sweep.
-  - *Moved to a later round* (round 1 task 10): a prose slip. `thm:pencil-d-open-ear-four`'s proof
-    calls an ear datum `y` ("Take an ear datum $y$ off all three zero sets", then "Keep the other
-    points of $y$"), where `def:pencil-d-ear-data` and the same proof's first stage (`s^*`) write
-    `s` for ear data, and the section writes `y` for points (`y_1`, `y_3`, …).
-  - *Moved to a later round* (round 1 task 13): a prose slip. `lem:pencil-d-nondegenerate-maps`
-    fixes `p : K^(d+1) → K^(d′+1)`, so (2)'s injective `p` has `d ≤ d′`, but its "in particular"
-    embeds a realization in dimension `d′ ≤ d` into dimension `d` (the letters of
-    `lem:pencil-d-embed-realization`), a map `K^(d′+1) → K^(d+1)`: `d` and `d′` swap roles within
-    one statement.
-  - *Moved to a later round* (round 1 task 15): a stale docstring. `Grade/LiftNoRigid.lean`'s
-    module docstring names `mem_liftMaps_pencilConfigPoint_iff` among the steps stated "for
-    `lem:pencil-d-ear-free`" (`L(b⁰) = L(q)` in the maps), but its one caller is
+  land, each with the task that takes it:
+  - *Moved to a later round* (round 1 task 2; round 2 task 10, the sweep):
+    `lem:pencil-d-point-configuration`'s statement reads the closed neighbourhood
+    (`Graph.closedNbhd`, pinned by `def:pencil-nondegenerate` in `pencil.tex`) with no `\uses` edge
+    to it, which `scripts/blueprint-deps.py` reports *missing*. The script reports 60 missing edges
+    over the chapter (`--chapter pencil-d`), so a later round may take them in one sweep.
+  - *Moved to a later round* (round 1 task 10; round 2 task 3): a prose slip.
+    `thm:pencil-d-open-ear-four`'s proof calls an ear datum `y` ("Take an ear datum $y$ off all
+    three zero sets", then "Keep the other points of $y$"), where `def:pencil-d-ear-data` and the
+    same proof's first stage (`s^*`) write `s` for ear data, and the section writes `y` for points
+    (`y_1`, `y_3`, …).
+  - *Moved to a later round* (round 1 task 13; round 2 task 6): a prose slip.
+    `lem:pencil-d-nondegenerate-maps` fixes `p : K^(d+1) → K^(d′+1)`, so (2)'s injective `p`
+    has `d ≤ d′`, but its "in particular" embeds a realization in dimension `d′ ≤ d` into dimension
+    `d` (the letters of `lem:pencil-d-embed-realization`), a map `K^(d′+1) → K^(d+1)`: `d` and `d′`
+    swap roles within one statement.
+  - *Moved to a later round* (round 1 task 15; round 4, as it edits Lean): a stale docstring.
+    `Grade/LiftNoRigid.lean`'s module docstring names `mem_liftMaps_pencilConfigPoint_iff` among the
+    steps stated "for `lem:pencil-d-ear-free`" (`L(b⁰) = L(q)` in the maps), but its one caller is
     `liftAttains_of_forall_deficiency_two_ne_zero`: the Lean of `-ear-free` never reads `L(b⁰)`
     (R-34) and calls only the other two it names.
 - **The ledger at Phase 42's close:** the standing rule (§1) kept §2 current through PD-STEPS's

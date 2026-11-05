@@ -10,9 +10,9 @@ Lean edit. The ledger now has 54 rows: 34 `open`, 6 `aligned`, 14 `no departure`
 grouped the open rows by family (`notes/Cleanup42.md` §3 *Round 1's stop*) and asked the PI for a
 remedy per open row and the plan of rounds 2+ (*Autopilot: for the PI*); the PI answered the same
 day (`notes/Cleanup42.md` §1), and the B/C judgment it asked for landed then too (§3 there), which
-the PI approved as proposed at a second stop. **Next concrete task:** none in this round; the next
-is `notes/Cleanup42.md`'s **Status** (round 2's open, the chapter to the Lean). Round manual:
-`CLEANUP.md`.
+the PI approved as proposed at a second stop. **Next concrete task:** none in this round; round 2,
+the chapter to the Lean, opened the same day (`notes/Phase42-align.md`), and the next is
+`notes/Cleanup42.md`'s **Status**. Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -289,8 +289,8 @@ or *Moved* line. The reasons stay in the landing commit's message and in the led
 R-46 kept; no close call reopened; rounds 2+ as proposed; and, at a second stop the same day, the B/C
 judgment's table approved as proposed (§3 there *The B/C judgment*: of the 22 B/C rows 9 L, 13 K;
 of family A's 7 argument or step parts 4 L, 2 K, R-29 split; no H, so no round 3). **Next concrete
-task:** none in round 1; round 2's open, the chapter to the Lean, with its own work log
-(`notes/Cleanup42.md`'s **Status**).
+task:** none in round 1; round 2, the chapter to the Lean, opened the same day with its own work
+log, `notes/Phase42-align.md` (`notes/Cleanup42.md`'s **Status**).
 
 ## Decisions made during this round
 
