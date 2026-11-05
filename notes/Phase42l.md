@@ -7,11 +7,11 @@ doc §1), the first sub-phase of Phase 42's last layer, PD-HEAD. Forward mode, t
 of `sec:pencil-d-generic` stay red for a later sub-phase at the PI's word, so 42l's close does not
 close Phase 42. The pre-build recon spiked all ten complete, with no `sorry`, and pinned four
 builds (*Current state*); four route differences go to the cleanup (`notes/Cleanup42.md` R-20 to
-R-23). Build 1 landed (3 nodes green, 7 red left). Next (*Hand-off*): build 2, `Grade/Feasible.lean`.
+R-23). Builds 1 and 2 landed (4 nodes green, 6 red left). Next (*Hand-off*): build 3, `Grade/Lift.lean`.
 
 ## Current state
 
-**Build 1 landed** (`Grade/Nondegenerate.lean`, 3 nodes green, 0 warnings; imports `Grade.Embedding` only; the spike's lines 16–278, its one `show` now `change`). **Next: build 2** (*Hand-off*). The recon's
+**Build 1 landed** (`Grade/Nondegenerate.lean`, 3 nodes green, 0 warnings; imports `Grade.Embedding` only; the spike's lines 16–278, its one `show` now `change`). **Build 2 landed** (`Grade/Feasible.lean`, `lem:pencil-d-nondegenerate-feasible` green, 0 warnings, `lake lint` clean; also imports `Mathlib.Algebra.MvPolynomial.Monad`, the project mirror, for `eval_bind₁`; the spike's polynomial and feasibility ranges, with `finrank_dotPerp_span_singleton_of_ne_zero` and `isZariskiOpen_linearIndependent_univ` pulled from its steer section, which build 3 therefore no longer carries; the node pins `gradedPencilNondegFeasible_iff`, `exists_rowsMap_two`, `exists_rowsMap_three`, `exists_injOn_finrank_iInf_map_le`). **Next: build 3** (*Hand-off*). The recon's
 spike, gitignored
 `scratch/42l/Spike.lean` (2610 lines), is `lake lean` clean with no error and no `sorry`; its 22
 checked declarations depend on the three standard axioms; it passes the `unusedArguments` and
@@ -67,7 +67,7 @@ Every dependency outside the ten is green; outside them only `sec:pencil-d-gener
 
 - [x] **Pre-build recon**: all ten spiked complete, four builds pinned (*Current state*).
 - [x] Build 1: `def:pencil-d-nondegenerate`, `lem:pencil-d-nondegenerate-three`, `-maps`.
-- [ ] Build 2: `lem:pencil-d-nondegenerate-feasible`.
+- [x] Build 2: `lem:pencil-d-nondegenerate-feasible`.
 - [ ] Build 3: `lem:pencil-d-steer`, `def:pencil-d-lift`, `lem:pencil-d-lift-realization`,
   `def:pencil-d-lift-attains`.
 - [ ] Build 4: `lem:pencil-d-lift-one-witness`, `lem:pencil-d-lift-transfer`.
@@ -87,10 +87,11 @@ Every dependency outside the ten is green; outside them only `sec:pencil-d-gener
 
 ## Hand-off / next phase
 
-The next concrete commit is **build 2**: `Grade/Feasible.lean` transcribed from the spike's
-feasibility section, with `\lean{}` and `\leanok` on `lem:pencil-d-nondegenerate-feasible`, and
-`notes/Cleanup42.md` row R-20. Then builds 3 and 4 (*Current state*); the spike's style warnings are
-the builder's to clear. Build 1 (`Grade/Nondegenerate.lean`) is done.
+The next concrete commit is **build 3**: `Grade/Lift.lean` (imports `Grade.Feasible`; the spike's lift
+section, lines 280–600, and its steer section, lines 740–934 minus the two helpers build 2 took), with
+`\lean{}` and `\leanok` on its four nodes and `notes/Cleanup42.md` row R-22. `IsPolyFun`/`IsZariskiOpen`,
+`exists_hasPencilPlaneRealization` and the two helpers are public in `Grade/Feasible.lean`. Then build 4
+(*Current state*). Builds 1 and 2 are done.
 - **The standing rule** (*Architectural choices*): each build whose Lean departs from the chapter's
   proof sets or keeps its `notes/Cleanup42.md` row (R-20 with build 2, R-22 with build 3, R-21 and
   R-23 with build 4).

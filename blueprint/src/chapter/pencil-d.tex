@@ -4810,6 +4810,11 @@ which is a condition on the minors of that size.
 % here: the bad centres lie in finitely many proper subspaces and at most one quadric.
 \begin{lemma}[Nondegeneracy-feasibility does not depend on the dimension]
   \label{lem:pencil-d-nondegenerate-feasible}
+  \lean{CombinatorialRigidity.Molecular.gradedPencilNondegFeasible_iff,
+        CombinatorialRigidity.Molecular.exists_rowsMap_two,
+        CombinatorialRigidity.Molecular.exists_rowsMap_three,
+        CombinatorialRigidity.Molecular.exists_injOn_finrank_iInf_map_le}
+  \leanok
   \uses{def:pencil-d-nondegenerate, def:pencil-nondegenerate}
   Let $K$ be infinite, $d \ge 3$ and $G$ a finite multigraph. Then $G$ is
   nondegeneracy-feasible in dimension $d$
@@ -4817,6 +4822,7 @@ which is a condition on the minors of that size.
   nondegeneracy-feasible (\cref{def:pencil-nondegenerate}).
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-d-nondegenerate-three, lem:pencil-d-nondegenerate-maps,
         lem:pencil-d-embed-realization, lem:pencil-d-point-configuration}
   At $d = 3$ this is \cref{lem:pencil-d-nondegenerate-three}. Let

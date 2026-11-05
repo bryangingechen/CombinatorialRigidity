@@ -274,8 +274,9 @@ valid. The cleanup chooses one per `open` row, with the PI.
   target (`lem:relative-deficiency-rank-bound`).
   *Remedies:* the prose to the Lean (the splice at every `D`, which also widens the remark), a
   Lean helper (the motions of `G` as those of `G/H` with `S(w) = S(u)`), or keep both.
-- **R-20** · `lem:pencil-d-nondegenerate-feasible` (`exists_rowsMap_two`, `exists_rowsMap_three`,
-  `exists_injOn_finrank_iInf_map_le`; `Grade/Feasible.lean`, 42l, the recon's spike) · **open**.
+- **R-20** · `lem:pencil-d-nondegenerate-feasible` (`gradedPencilNondegFeasible_iff`, `exists_rowsMap_two`, `exists_rowsMap_three`,
+  `exists_injOn_finrank_iInf_map_le`; `Grade/Feasible.lean`, 42l build 2) · **open** (the Lean landed
+  as below; the chapter's proof stays as the prose).
   *Chapter:* for (b) at one body `v` and one set `S`, pass to `W = K^(d+1)/K b_v` and
   `A_w = Π_w/K b_v`, and find `π̄ : W → K³` by induction on `dim Σ A_w`, a quotient by `c` at each
   step, `c` off finitely many proper subspaces and at most one quadric (the case
