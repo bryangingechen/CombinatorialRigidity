@@ -395,6 +395,21 @@ valid. The cleanup chooses one per `open` row, with the PI.
   is not needed, and the pin drops it.
   *Remedies:* the prose to the Lean (no product of lift spaces; no simplicity), or keep both.
 
+- **R-29** · `lem:pencil-d-lift-pendant-triangle`, and the pins of `-lift-pendant` and `-lift-ear`
+  (`liftAttains_of_pendantTriangle`, `pendantTri_*`, `Grade/LiftCases.lean`, 42m build 2) ·
+  **open** (the Lean landed as below; the chapter stays as the prose).
+  *Chapter:* (T1) `b⁰_{x₁}, b⁰_{x₂}` in `Π⁰_c`, `Π⁰_{x_i} = Π⁰_c`; (T2) `ζ_{x_i} = φ_c(b⁰_{x_i})`,
+  using `Π⁰_{x_i} = Π⁰_c` at every nondegenerate realization; the rank `2D` of the triangle, the
+  ranks and the deficiencies add at `c`, the triangle's deficiency being zero; the pendant asks
+  that `u` have another neighbour, the ear that `a` and `b` not be adjacent.
+  *Lean:* the same, on the pendant's template. (T1) is in the polarity form: two points of
+  `n_c^⊥` completing `b_c` to an independent triple, `n'_{x_i} = n_c`. (T2) puts one form `ψ_c` on
+  `K⁴` at `x₁`, `x₂` and `c`, so `Π⁰_{x_i} = Π⁰_c` is never used. The triangle's deficiency is not
+  computed: its rank `2D` (`finrank_triangle`) is at most the target (`finrank_liftNormal_le`) and
+  the deficiency is nonnegative. The pendant's and the ear's pins drop the hypotheses above (R-25;
+  the ear's rank needs no non-adjacency, `ear_rank`), each pin stronger than its node.
+  *Remedies:* the prose to the Lean (no `Π⁰_{x_i} = Π⁰_c`, no partition values), or keep both.
+
 ## 3. The cleanup (not yet planned)
 
 - **Until it opens:** the standing rule (§1) keeps §2 current through PD-STEPS's rest,

@@ -5608,6 +5608,8 @@ the rest of $G$, and extending them to realizations of $G$
 % Source: NONDEG workbook, S22.
 \begin{lemma}[A body of degree one]
   \label{lem:pencil-d-lift-pendant}
+  \lean{CombinatorialRigidity.Molecular.liftAttains_of_pendant}
+  \leanok
   \uses{def:pencil-d-lift-attains}
   Let $K$ be infinite and $d \ge 3$, and let $G$ be simple and
   nondegeneracy-feasible, with a body $v$ of degree one whose neighbour
@@ -5616,6 +5618,7 @@ the rest of $G$, and extending them to realizations of $G$
   $d$, so does that of $G$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-generic-steer, lem:pencil-d-nondegenerate-three,
         lem:pencil-d-lift-transfer, lem:pencil-d-lift-one-witness,
         lem:block-rank-cut, lem:cut-edge-decomposition,
@@ -5672,6 +5675,8 @@ the rest of $G$, and extending them to realizations of $G$
 % Source: NONDEG workbook, S23.
 \begin{lemma}[A pendant triangle]
   \label{lem:pencil-d-lift-pendant-triangle}
+  \lean{CombinatorialRigidity.Molecular.liftAttains_of_pendantTriangle}
+  \leanok
   \uses{def:pencil-d-lift-attains}
   Let $K$ be infinite and $d \ge 3$, and let $G$ be simple and
   nondegeneracy-feasible, with two adjacent bodies $x_1, x_2$ of degree
@@ -5680,6 +5685,7 @@ the rest of $G$, and extending them to realizations of $G$
   general lift attains in dimension $d$, so does that of $G$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-generic-steer, lem:pencil-d-nondegenerate-three,
         lem:pencil-d-lift-transfer, lem:pencil-d-lift-one-witness,
         lem:pencil-d-lift-small, lem:block-rank-cut-vertex,
@@ -5904,6 +5910,9 @@ the rest of $G$, and extending them to realizations of $G$
 % the kernel of mu is used here only in the direction that extends a lift of G - x.
 \begin{lemma}[A body of degree two with hub neighbours]
   \label{lem:pencil-d-lift-ear}
+  \lean{CombinatorialRigidity.Molecular.liftAttains_of_ear,
+        CombinatorialRigidity.Molecular.EarLiftCondition}
+  \leanok
   \uses{def:pencil-d-lift-attains}
   Let $K$ be infinite and $d \ge 3$, and let $G$ be simple and
   nondegeneracy-feasible, with a body $x$ of degree two whose neighbours
@@ -5916,6 +5925,7 @@ the rest of $G$, and extending them to realizations of $G$
   attains in dimension $d$, so does that of $G$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-generic-steer, lem:pencil-d-nondegenerate-three,
         lem:pencil-d-lift-transfer, lem:pencil-d-lift-one-witness,
         lem:block-rank-ear, def:panel-support-extensor,
