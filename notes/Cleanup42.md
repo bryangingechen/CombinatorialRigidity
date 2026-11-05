@@ -474,6 +474,21 @@ valid. The cleanup chooses one per `open` row, with the PI.
   *Remedies:* the prose to the Lean (no `g`, no `ℓ₀`, `dim L̃` through the lifting system), or keep
   both.
 
+- **R-33** · `lem:pencil-d-ear-extend` (`exists_earExtend_poly`, `exists_earExtend_cond_poly`,
+  `exists_linearIndepOn_of_finrank`, `Grade/EarFree.lean`, 42m build 6) · **open** (the Lean landed
+  as below; the chapter stays as the prose).
+  *Chapter:* a witness `t′` of (a) and (b) together, the `m_h` at distinct points of the moment
+  curve (every four independent) and the auxiliary vectors completing bases; the `n_u ∈ A_u` by
+  the case analysis on `O_v` (`{u}`, or `{u, u′}` with `n_{u′}` chosen before `n_u`).
+  *Lean:* one witness per condition, the slots of `b_v` (and `m_u`) the standard basis at
+  distinct places of `Γ(G)`, and `E_L` the product (no moment curve). (b) is asked at every `u`
+  off the selector of `v`, not only at the hubs. The `n_u` are chosen one closed
+  hub-neighbourhood at a time, greedily in any order: each `A_u` has dimension at least three
+  (`u`'s only neighbour in `X` is `v`), or at least two and misses `m_v` (by (b) at a second
+  neighbour), so it is never inside the span of at most two chosen vectors containing `m_v`. The
+  pin drops `G` simple and the neighbour selector (unused), stronger than the node.
+  *Remedies:* the prose to the Lean (one witness per condition, the greedy choice), or keep both.
+
 ## 3. The cleanup (not yet planned)
 
 - **Until it opens:** the standing rule (§1) keeps §2 current through PD-STEPS's rest,

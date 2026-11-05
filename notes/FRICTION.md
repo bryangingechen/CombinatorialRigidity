@@ -110,6 +110,20 @@ moment you resolve the entry) is what makes the sweep a pure
 to be re-derived by re-reading entries later.
 
 ## Open
+### [idiom] 42m build 6: a helper's `if h ∈ X` under `open Classical` does not meet a caller's `X := W₀ \ {x}`, and three small traps
+- **Where it bit:** Phase 42m, `Pencil/Grade/EarFree.lean` (`exists_linearIndepOn_of_finrank`,
+  called from `exists_earExtend_poly`).
+- **Friction:** (1) the helper stated `fun h => if h ∈ X then m h else …` under `open Classical in`;
+  the caller's `classical` with `set X := W₀ \ {x}` synthesized `h ∈ W₀ \ {x}`'s sdiff instance,
+  so `refine helper …` failed with *"Type mismatch"* (and, with the implicit arguments left to
+  unification, a `whnf` heartbeat timeout). **Fix:** the helper takes `[DecidablePred (· ∈ X)]`.
+  (2) `open Classical in` between a docstring and its `theorem` is a parse error: put it before
+  the docstring. (3) `Set.ncard_le_ncard (fun w hw => ⟨hw.1.1, hw.2⟩) _` on set-builder sets left
+  both sets as metavariables (*"Invalid projection"*): pass `(s := …) (t := …)`.
+  (4) `dif_pos`, `if_true`/`if_false` and `Set.inter_union_diff` are deprecated here:
+  `simp only [h, ↓reduceDIte]`, `ite_true`/`ite_false`, `Set.inter_union_sdiff`.
+- **Status:** idiom (resolved in-proof). **Lifted to:** `TACTICS-QUIRKS.md` § 121.
+
 ### [idiom] 42m build 5: a `set` does not abstract a defeq spelling, and three small traps
 - **Where it bit:** Phase 42m, `Pencil/Grade/LiftNoRigid.lean`
   (`liftAttains_of_forall_deficiency_two_ne_zero`, `exists_pencilConfigPoint_of_dotProduct`).

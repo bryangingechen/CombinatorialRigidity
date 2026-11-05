@@ -6024,6 +6024,10 @@ after the points of $X$ (\cref{lem:pencil-d-ear-extend}).
 % dimension count), parametrized here as the parametrization of lem:pencil-d-steer is.
 \begin{lemma}[Extending the points of the rigid set]
   \label{lem:pencil-d-ear-extend}
+  \lean{CombinatorialRigidity.Molecular.exists_earExtend_poly,
+        CombinatorialRigidity.Molecular.exists_earExtend_cond_poly,
+        CombinatorialRigidity.Molecular.exists_linearIndepOn_of_finrank}
+  \leanok
   \uses{lem:pencil-d-good-ear, lem:pencil-d-steer}
   Let $K$ be infinite, let $G$ be simple and nondegeneracy-feasible, let
   $W_0$ and $x$ be as in \cref{lem:pencil-d-good-ear}, let
@@ -6040,6 +6044,7 @@ after the points of $X$ (\cref{lem:pencil-d-ear-extend}).
   $b^0_v(s)$ of every $v \in X$ is a nonzero multiple of $b_v(t)$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-feasible-hub-conditions, lem:pencil-x0-fibre-intersection}
   The closed hub-neighbourhood of $v \in X$ in $G$ consists of $H_L[v]$
   and the set $O_v$ of the hubs outside $W_0$ adjacent to $v$, as $x$ is

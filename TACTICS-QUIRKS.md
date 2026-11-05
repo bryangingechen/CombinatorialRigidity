@@ -151,6 +151,7 @@ failing pattern and the working fix.
 - A `<;>`-chained flexible `simp`'s `linter.flexible` "Try this: simp only [...]" suggestion, substituted verbatim, leaves some branches of the chain unsolved or makes `norm_num`/a later tactic report *"no goals to be solved"* on others → § 116 (the suggestion is captured against one branch, not their union; run `simp?`/`lean_multi_attempt` at the chain's own position for the full per-goal set across every branch, then union them into one `simp only […]`)
 - `fun x hx => hx.1` (or `hx.2`, `hx.left`, `fun h => hnadj h.1`) given as a subset or non-membership argument fails with *"Invalid projection: Projection operates on types of the form `C ...`"* (or *"Invalid field notation"*), *"`hx` has type `?m.N.1 x`"*, where it compiled before the v4.36.0-rc1 bump → § 117 (`Set` is a structure now, so `x ∈ ?s` is a projection of a still-unassigned set, which the anonymous projection does not wait for; name the set: the named subset lemma, the set argument, or an ascribed binder)
 - A hypothesis that nothing in the proof needs (a copy without it elaborates with the same proof) is reported by neither `linter.unusedVariables` nor `lake lint`'s `unusedArguments`, so a cleanup's "`lake lint` to a fixed point" misses it, and the proof runs a `subst`, or an `rfl` pattern of `rcases`/`obtain`/`rintro`, on a variable its type mentions → § 118 (the substitution reverts the hypothesis and reintroduces it, so the proof term mentions it; both linters read it as used; screen such a binder by reading, and confirm by a copy without it)
+- *"Type mismatch"* (or a `whnf` timeout) applying a helper whose statement has `if a ∈ X then … else …` and was stated under `open Classical in`, at a caller whose `X` is a `set`/`let` for `W₀ \ {x}` (or any set with its own `Decidable` instance) → § 121 (take `[DecidablePred (· ∈ X)]` in the helper)
 - `lake lint`'s `defsWithUnderscore` reports *"`…tacticFoo_bar` contains an underscore"* on a `macro "foo_bar" : tactic` (or a `syntax`) the build accepted → § 119 (the syntax kind's generated name keeps the underscore; name it `macro (name := fooBar) "foo_bar"`)
 - *"could not synthesize default value for parameter `h` using tactics"* on a term whose proof argument a tactic fills in (a structure field's `:= by tac`, a constructor's autoParam), or a later *"motive is not type correct"*, *"don't know how to synthesize implicit argument"* or *"not type-correct under the `implicit` transparency level"* around such a term → § 120 (name the antecedent the tactic needs, put a conjunct it needs before it, pass an implicit proof binder by name, substitute rather than rewrite under the term)
 
@@ -4643,5 +4644,27 @@ whose target *"is not type-correct under the `implicit` transparency level"*.
 declarations in 27 files (`notes/Phase41a.md`, item 4; the spike's per-site record was local).
 The first case's witness, `h622lb` of `case_III_candidate_dispatch` cut down: anonymous, the
 default fails with *"could not synthesize default value"*; named, it elaborates.
+
+---
+
+## 121. A helper's `if a ∈ X` stated under `open Classical` does not match a caller's instance — take `[DecidablePred (· ∈ X)]`
+
+**Symptom.** `refine helper … ?_` (or `exact`) fails with *"Type mismatch"* whose two sides print
+the same `if h ∈ X then m h else …`, or times out at `whnf` when the helper's implicit arguments are
+left to unification. The helper was stated with `open Classical in`; the caller opened `classical`
+and has `set X := W₀ \ {x}`.
+
+**Cause.** The helper's `ite` carries `Classical.propDecidable (h ∈ X)`. At the caller, instance
+search sees through the local definition `X` and finds `Set`'s instance for `h ∈ W₀ \ {x}` (built
+from `classical` for `W₀` and `DecidableEq` for the singleton). The two `Decidable` terms are
+equal propositionally (`Subsingleton`) but not by unification.
+
+**Fix.** State the helper with `[DecidablePred (· ∈ X)]`, so the caller's instance is passed in, and
+open its proof with `classical` only for what else it needs (`Finset.induction_on`'s `DecidableEq`).
+Give the caller's implicit arguments explicitly if unification is still slow. Related to § 66 (a
+frozen `Classical.decEq` against a derived instance under `rw`).
+
+**Calibration.** Phase 42m build 6: `exists_linearIndepOn_of_finrank` (`Pencil/Grade/EarFree.lean`)
+under `open Classical in` failed at `exists_earExtend_poly`'s call; with the binder it closed.
 
 ---
