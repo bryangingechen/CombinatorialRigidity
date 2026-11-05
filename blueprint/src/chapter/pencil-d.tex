@@ -5415,6 +5415,10 @@ the rest of $G$, and extending them to realizations of $G$
 % Source: NONDEG workbook, S20.
 \begin{lemma}[Few bodies, a triangle, and a disconnected multigraph]
   \label{lem:pencil-d-lift-small}
+  \lean{CombinatorialRigidity.Molecular.liftAttains_of_ncard_le_two,
+        CombinatorialRigidity.Molecular.liftAttains_of_triangle,
+        CombinatorialRigidity.Molecular.liftAttains_of_cutEdges_eq_empty}
+  \leanok
   \uses{def:pencil-d-lift-attains}
   Let $K$ be infinite and $d \ge 3$, and let $G$ be simple and
   nondegeneracy-feasible.
@@ -5428,6 +5432,7 @@ the rest of $G$, and extending them to realizations of $G$
   \end{enumerate}
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-d-lift-realization, lem:cycle-realization-rigid,
         def:panel-support-extensor, lem:block-rank-cut-vertex,
         lem:cut-edge-decomposition, def:D-deficiency}

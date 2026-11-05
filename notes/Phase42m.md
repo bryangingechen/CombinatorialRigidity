@@ -8,11 +8,19 @@ lemmas that find the good ear and supply its condition, the generic theorem and 
 They are the blueprint's last red nodes, so 42m's close is Phase 42's. The pre-build recon landed
 (2026-11-05, *Decisions made*): all eleven signatures kernel-checked, `lem:pencil-d-lift-small`
 (1), `-lift-pendant` and `-lift-ear` spiked complete, and the theorem and headline assembled on the
-nine lemma statements; seven builds planned. Next (*Hand-off*): build 1, `Grade/LiftSmall.lean`.
+nine lemma statements; seven builds planned. **Build 1 landed** (2026-11-05):
+`Grade/LiftSmall.lean`, `lem:pencil-d-lift-small` green (one of the eleven red nodes; ten remain).
+Next (*Hand-off*): build 2, `Grade/LiftCases.lean`.
 
 ## Current state
 
-**Next: build 1** (*Hand-off*). No Lean in the tree yet. The recon's spike is the gitignored
+**Next: build 2** (*Hand-off*). In the tree: `Grade/LiftSmall.lean` (build 1: `liftAttains_of_forall`,
+`liftAttains_of_ncard_le_two`, `liftAttains_of_triangle`, `liftAttains_of_cutEdges_eq_empty` and
+their helpers `finrank_triangle`, `linearIndependent_normalsJoin_triangle`, `exists_dual_three`,
+`LinearIndepOn.triple`, `HasPencilPlaneRealization.restrict`, `PencilNondegConditions.congr_on`,
+`.of_induce`, `.induce`, `IsNondegPencilPlaneRealization.induce` and
+`exists_isNondegPencilPlaneRealization_glue`; whole-project build, `lake lint`, `blueprint/lint.sh`
+and `blueprint/verify.sh` clean). The recon's spike is the gitignored
 `scratch/42m/Spike.lean` (1726 lines, `lake lean` clean: no error, 45 warnings, 7 of them the
 `sorry`s of the seven unspiked lemma statements, the rest deprecations, long lines and unused
 names); `scratch/42m/SpikeAxioms.lean` is it plus `#print axioms`. Sorry-free, on the three
@@ -82,8 +90,8 @@ statements.
 rank by `lem:block-rank-ear`, which needs no non-adjacency); `-lift-small`'s two-body pin adds the
 ambient `[Nonempty α]`, as at no body over an empty `α` with labels the carrier's `LiftAttains` asks
 for a selector `β → α × α` that does not exist (the chapter's proof treats one and two bodies; the
-theorem always has a body); `-lift-small` (2) is pinned without `G.Simple` (unspiked: build 1 adds
-it back if its proof needs it, as the chapter states it); encodings: "a triangle" as three
+theorem always has a body); `-lift-small` (2) is pinned without `G.Simple` and without `[Infinite K]`
+(build 1's proof needs neither; `notes/Cleanup42.md` R-28); encodings: "a triangle" as three
 pairwise adjacent bodies, "at a general nondegenerate realization" as `HoldsGenerally` at the given
 selectors, `Γ_L` inside `Γ(G)`'s parameter type, "a nonzero polynomial" as one with a non-root.
 
@@ -91,7 +99,7 @@ selectors, `Γ_L` inside `Γ(G)`'s parameter type, "a nonzero polynomial" as one
 
 Build numbers are *Hand-off*'s. "Spiked" means sorry-free in `scratch/42m/Spike.lean`.
 - [x] **Pre-build recon** (this commit; *Decisions made*).
-- [ ] `lem:pencil-d-lift-small`: (1) spiked; (2) new (build 1).
+- [x] `lem:pencil-d-lift-small`: both parts, sorry-free (build 1; R-28).
 - [ ] `lem:pencil-d-lift-cut-edge`: new (build 3).
 - [ ] `lem:pencil-d-lift-pendant`: spiked (build 2).
 - [ ] `lem:pencil-d-lift-pendant-triangle`: new, the pendant's template (build 2).
@@ -113,7 +121,7 @@ Build numbers are *Hand-off*'s. "Spiked" means sorry-free in `scratch/42m/Spike.
 
 ## Blockers / open questions
 
-- None blocking build 1. What the builds still carry:
+- None blocking build 2. What the builds still carry:
   - **Unspiked new math** (the routes are under *Hand-off*; the chapter's proofs were re-read
     against the carrier and none is false): the cut edge's glue, the least `dim L̃` at the
     configuration (`-lift-no-rigid`), and `-ear-extend` with `-ear-free`. Each is one build; a
@@ -131,19 +139,18 @@ Build numbers are *Hand-off*'s. "Spiked" means sorry-free in `scratch/42m/Spike.
 
 ## Hand-off / next phase
 
-The next concrete commit is **build 1**, `Grade/LiftSmall.lean`: the spike's shared steps
-(`IsNondegPencilRealization.toPlane`, `HoldsGenerally.of_forall`, `.mono`, `.and`,
-`exists_minorPoly` with `mem_support_of_mem_vars_of_isWeightedHomogeneous`,
-`exists_mem_notMem_of_finrank_lt`, `exists_ne_zero_orth_three`,
-`IsNondegPencilPlaneRealization.dotProduct_eq_zero`, `bnPoint_one`, `closedHubNbhd_eq_empty_of_notMem`,
-`induce_isLink_ends`, `exists_dual_three`, `linearIndependent_normalsJoin_pair`, `_triangle`,
-`finrank_triangle`, `liftAttains_of_forall`), `-lift-small` (1) (`liftAttains_of_ncard_le_two`,
-`liftAttains_of_triangle`, transcribed), and (2) (`liftAttains_of_cutEdges_eq_empty`, new: sides
-feasible by `PencilNondegFeasible.mono`, as no degree changes; `Q = Q₁Q₂`; a realization restricts
-to each side and two glue, with `exists_hasPencilPlaneRealization`; lifts of the sides at the
-restrictions glue, the forms having the same types; ranks add by
-`finrank_span_rigidityRows_cutVertex_eq` with an empty overlap and `finrank_ofNormals_congr`;
-`deficiency_eq_of_cutEdges_ncard_le_one` at no crossing edge). One node green. Then:
+Build 1 landed (`Grade/LiftSmall.lean`, one node green). Of the spike's shared steps it took only
+those parts (1) and (2) use (`exists_dual_three`, `LinearIndepOn.triple`, `finrank_triangle` with
+`linearIndependent_normalsJoin_triangle`, `liftAttains_of_forall`); part (2) went by the conditions of
+nondegeneracy at each side (`PencilNondegConditions.of_induce`) and `exists_hasPencilPlaneRealization`
+for the glued framework, not by `Grade/Arms.lean`'s glue lemma (its rank lower bounds a bare
+realization lacks). The rest stay in the spike for the builds that use them, in each build's file
+(`IsNondegPencilRealization.toPlane`, `HoldsGenerally.of_forall`, `.mono`, `.and`, `exists_minorPoly`
+with `mem_support_of_mem_vars_of_isWeightedHomogeneous`, `exists_mem_notMem_of_finrank_lt`,
+`exists_ne_zero_orth_three`, `IsNondegPencilPlaneRealization.dotProduct_eq_zero`, `bnPoint_one`,
+`closedHubNbhd_eq_empty_of_notMem`, `induce_isLink_ends`, `linearIndependent_normalsJoin_pair`).
+Build 2 imports `LiftSmall` for `finrank_triangle`, `exists_dual_three` and `LinearIndepOn.triple`.
+Then:
 - **Build 2**, `Grade/LiftCases.lean`: `EarLiftCondition`, the pendant (`pendant_*`,
   `liftAttains_of_pendant`) and the ear (`ear_*`, `bnDotPoly`, `not_three_le_of_orth`,
   `liftAttains_of_ear`) transcribed, and the pendant triangle on their template: (T1) `b'_{xᵢ}` in
@@ -213,7 +220,7 @@ restrictions glue, the forms having the same types; ranks add by
   `LiftWitness.lean`, and `Graph.graded_pencil_realization_theorem` (`Grade/Reduction.lean`).
 - **The standing rule** (design doc §3): every recon and build adds a `notes/Cleanup42.md` §2 row
   where its Lean departs from the chapter's proof, in the same commit. Open: R-3 to R-5, R-9 to
-  R-12, R-14 to R-21, R-23 to R-27; aligned: R-1, R-2, R-7, R-8, R-13, R-22; R-6 no departure.
+  R-12, R-14 to R-21, R-23 to R-28; aligned: R-1, R-2, R-7, R-8, R-13, R-22; R-6 no departure.
 
 ## Decisions made during this phase
 

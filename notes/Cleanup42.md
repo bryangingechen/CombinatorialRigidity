@@ -381,6 +381,20 @@ valid. The cleanup chooses one per `open` row, with the PI.
   nonnegative, so they agree. The ear's two joins are the same argument (`ear_rank`).
   *Remedies:* the prose to the Lean (no partition values), or keep both.
 
+- **R-28** · `lem:pencil-d-lift-small` (2) (`liftAttains_of_cutEdges_eq_empty`, `Grade/LiftSmall.lean`,
+  42m build 1) · **open** (the Lean landed as below; the chapter stays as the prose).
+  *Chapter:* a realization of `G` restricts to the sides and two glue; "the lift space of `G` is the
+  product of those of the sides"; the ranks add by `lem:block-rank-cut-vertex` and the targets by
+  `lem:cut-edge-decomposition`; the product of the sides' polynomials serves; `G` is simple.
+  *Lean:* the same steps, but the lift space is never named as a product: the lifts of the two
+  sides at the restrictions are glued body by body (a form at a body of `V₁` or `V₂` reads only its
+  own closed neighbourhood, which stays on its side), and the conditions of nondegeneracy are
+  checked at the bodies of each side (`PencilNondegConditions.of_induce`). The glue of the
+  realizations needs no rank (`exists_hasPencilPlaneRealization`, not the glue lemma of
+  `Grade/Arms.lean`, whose lower bounds a bare nondegenerate realization does not have). `G.Simple`
+  is not needed, and the pin drops it.
+  *Remedies:* the prose to the Lean (no product of lift spaces; no simplicity), or keep both.
+
 ## 3. The cleanup (not yet planned)
 
 - **Until it opens:** the standing rule (§1) keeps §2 current through PD-STEPS's rest,

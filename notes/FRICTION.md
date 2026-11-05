@@ -110,6 +110,18 @@ moment you resolve the entry) is what makes the sweep a pure
 to be re-derived by re-reading entries later.
 
 ## Open
+### [idiom] 42m build 1: `ofNormals`'s `link_tac` finds no anonymous hypothesis, and a restricted lift's frameworks differ only up to `finrank_ofNormals_ends`
+- **Where it bit:** Phase 42m, `Pencil/Grade/LiftSmall.lean` (`liftAttains_of_cutEdges_eq_empty`).
+- **Friction:** in a `have side : ∀ S endsS lamS, (∀ e u v, … endsS …) → … → rank … = rank …`, the
+  hypotheses are anonymous binders, so `PanelHingeFramework.ofNormals`'s autoparam `hlinks` (proved
+  by `link_tac` from a hypothesis in scope) fails with *"could not synthesize default value for
+  parameter 'hlinks' using tactics"*. **Fix:** name the binders (`(hS : …) (hS' : …)`).
+- **Also:** a `BodyHingeFramework.finrank_span_rigidityRows_cutVertex_eq` at the framework
+  `(ofNormals G ends q).toBodyHinge` states the sides as `⟨F.graph.induce V₁, F.supportExtensor⟩`;
+  `exact`, with the stated type spelled `ofNormals (G.induce V₁) ends q`, unifies them where `rw`
+  would not (the 42m recon's tip).
+- **Status:** idiom (resolved in-proof).
+
 ### [open] 42l's home debts: six `dotPerp` lemmas sit in `Pencil/Grade/Feasible.lean`
 - **Where it bit:** Phase 42l, build 2 (`lem:pencil-d-nondegenerate-feasible`),
   `Pencil/Grade/Feasible.lean`: `dotPerp_sup`, `dotPerp_inf`, `dotPerp_antitone`, `dotPerp_top`,
