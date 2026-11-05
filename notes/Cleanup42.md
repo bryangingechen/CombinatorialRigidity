@@ -1,7 +1,8 @@
 # The post-Phase-42 cleanup (planning note)
 
 **Status:** open (2026-11-05, at the PI's word, §1), ahead of ORIGAMI; round 2, the chapter to the
-Lean, closed 2026-11-05 (`notes/Phase42-align.md`). On 2026-10-30, during 42g, the PI asked for a cleanup
+Lean, closed 2026-11-05 (`notes/Phase42-align.md`); round 4, the Lean round, open
+(`notes/Phase42-fold.md`). On 2026-10-30, during 42g, the PI asked for a cleanup
 phase after Phase 42 to address the informal proofs of `blueprint/src/chapter/pencil-d.tex` that
 were difficult to formalize as written (§1); on 2026-11-05 the PI opened it ahead of ORIGAMI.
 `.claude/autopilot/queue.toml` carries it as `CLEANUP-42`, attended, between PENCIL-D (done) and
@@ -13,8 +14,10 @@ every open row its remedy the same day, at round 1's stop and at a second stop o
 `kept` (a part keeps both routes, with a formalization note); no row goes H, so round 3 is empty.
 Round 2, opened and closed 2026-11-05, applied them to the chapter in eight slices by layer, then
 one `\uses` sweep (blueprint and notes, no Lean); each slice set its rows' status, and the tally
-here. The ledger now: none `open`, 23 `aligned`, 17 `kept`, 14 `no departure`. **Next concrete
-task:** round 4's open, with the PI (§3); round 3 is empty.
+here. The ledger now: none `open`, 23 `aligned`, 17 `kept`, 14 `no departure`. Round 4 opened the
+same day at the PI's word (§1, all four items), in nine tasks: the stale docstrings and notes,
+Theorem S's fold, the reduction's fold and the witnesses at `K₂` and `K_{2,3}` (§3). **Next
+concrete task:** round 4's task 2, the stale docstrings and dated notes (`notes/Phase42-fold.md`).
 
 ## 1. The PI's decisions (verbatim)
 
@@ -182,6 +185,45 @@ What follows from it:
   R-25, R-30, R-33, R-35 and R-29's (T2), K for R-15, R-28 and the rest of R-29; no H, so no round 3.
 - **Every open row has its remedy:** with family A's statements (L, R-46 K), round 2 opens on them,
   with its own work log (§3).
+
+### 2026-11-05: round 4's open
+
+From the coordinator's check-in after round 2's close: each question, then the options the PI
+chose with their descriptions, and the PI's note.
+
+**PI, 2026-11-05:** (verbatim)
+- Q: "Round 4 of CLEANUP-42 is Lean work, and you opened it with the PI. Its candidate items: (1)
+  Theorem S's fold: the d=3 core lemma as the n=3 case of the graded one, reversing an import. (2)
+  The d=3 reduction fold: Pencil/Arms.lean and X0.lean's non-simple case as the m=1 case of 42k's
+  graded ones, also reversing imports and possibly moving d=3 pins. (3) Two non-vacuity witnesses:
+  K₂ for the headline's generic conjunct and K_{2,3} for the good-ear predicates. (4) Eight stale
+  Lean docstrings plus dated sentences in BlueprintExposition.md, left over from rounds 1–2. Which
+  should round 4 take?" — A: "Theorem S fold", "d=3 reduction fold", "The two witnesses",
+  "Docstrings and notes", and the PI's note: "We should take all of these, but not necessarily all
+  in one session. If the context gets long, stop and handoff to a fresh session as usual."
+- Q: "How should round 4 open? The folds are cross-cutting (they reverse imports and may change
+  which declarations the d=3 blueprint nodes pin), so the plan is for an Opus recon to size them
+  and spike the witnesses before the task list is written." — A: "Recon, open, run (Recommended)"
+  — "One Opus recon sizes the chosen items and writes round 4's work log and task list; the loop
+  then runs to the close. It stops only if a fold would change a main result's statement or a
+  blueprint statement."
+
+The count (the coordinator's miscount, not the PI's words): the question's eight stale Lean
+docstrings are **ten, in eight files** (§3's *Moved* lines: two in `Grade/LiftNoRigid.lean`, two
+in `Grade/EarFree.lean`, one in each of six others), and the dated `notes/BlueprintExposition.md`
+entries are five, 42h, 42i, 42k, 42l and 42m, of which §3's lines name three (recounted at round
+4's open, `notes/Phase42-fold.md` *Scope*).
+
+What follows from it:
+
+- **Round 4 takes all four items**, over as many sessions as it needs, each handing off as usual
+  (the PI's note): Theorem S's fold, the `d = 3` reduction fold, the witnesses at `K₂` and
+  `K_{2,3}`, and the docstrings and notes.
+- **The open is one Opus recon's commit:** it sized the items by compiler spikes and wrote round
+  4's work log, `notes/Phase42-fold.md`, nine tasks; the loop then runs to the close.
+- **The one stop is the PI's:** a fold that would change a main result's statement or a blueprint
+  statement. The open's spikes found none: every `d = 3` declaration the folds re-prove keeps its
+  statement, and the folds move two pins (one added, one removed) and no blueprint statement.
 
 ## 2. The proof-route ledger
 
@@ -1138,8 +1180,13 @@ there.
     slips below in their layers' slices. Then the `\uses` sweep (task 10) and the close (task 11).
     No Lean, pin or `\leanok` changes.
   - **Round 3** is empty: no row went H (§1, the second stop).
-  - **Round 4**, the *Also left to it* items below, round 1's stale docstring and round 2's *Moved*
-    lines (Lean, and two notes), is next: its open is with the PI.
+  - **Round 4, the folds, the witnesses and the docstrings** (opened 2026-11-05 at the PI's word,
+    §1; `notes/Phase42-fold.md`): the three *Also left to it* items below and every *Moved* line
+    below marked round 4, in nine tasks, one commit each. Task 2 the ten stale Lean docstrings and
+    the five dated `notes/BlueprintExposition.md` entries; task 3 the `K₂` witness; task 4 Theorem
+    S's fold; tasks 5 and 6 the reduction's fold; tasks 7 and 8 the `K_{2,3}` witness; task 9 the
+    close. The open's spikes: no fold changes a statement, `d = 3` or graded, or a blueprint
+    statement.
   - **Round 2 closed** 2026-11-05 (`notes/Phase42-align.md`): 11 tasks, 11 commits, the shas in §2's
     statuses; 23 `aligned`, 17 `kept`, 14 `no departure`, none `open`; 17 formalization notes in
     the chapter; `--chapter pencil-d` 99 nodes, 236 pins, 0 *missing*; no Lean, pin or `\leanok`
@@ -1225,12 +1272,14 @@ there.
   `Graph.IsX0Graph.exists_additiveCoreAt` (`Grade/TheoremS.lean`, which imports that file), with a
   bridge `Graph.ChainUsable ↔ Graph.ChainUsableAt 3`. It reverses the import, so COUNT-B's
   lemmas move upstream of the `d = 3` coverage; no node of PD-COVERAGE uses Theorem S at `D` (42j's
-  recon, `notes/Phase42j.md`).
+  recon, `notes/Phase42j.md`). Round 4 task 4: the five `d = 3` lemmas Theorem S at `D` calls move
+  to a new `MainComponent/SparseCount.lean` upstream of both (spiked).
 - **Also left to it** (not a route row): the `d = 3` cases of the reduction (`Pencil/Arms.lean`,
   `hasPencilRealization_of_not_simple` in `Pencil/X0.lean`) as the `m = 1` case of 42k's graded
   ones (`Grade/Arms.lean`, `Grade/Reduction.lean`) through `hasGradedPencilRealization_two_iff`. It
   reverses the imports, as Theorem S's fold does (FRICTION *42k's cases repeat the `d = 3` cases'
-  proofs*).
+  proofs*). Round 4 tasks 5 and 6, with the base case (`Pencil/ArmsAssembly.lean`): the `d = 3`
+  cases become corollaries in `ArmsAssembly.lean`, which imports `Grade/Arms` (spiked).
 - **Also left to it** (not a route row): two instances no `main_results` witness exhibits. (1) The
   generic conjunct's hypothesis at a small graph. Phase 42's one `main_results` row, the headline
   `Graph.graded_pencil_conditioned_pair`, has a witness of its distinct conjunct only (the PI's
@@ -1242,7 +1291,9 @@ there.
   42m introduced, `Graph.IsPencilGoodEar` and `EarLiftCondition`; the candidate is `K_{2,3}`
   (`W₀` all five bodies, `x` a body of degree two; `s(W₀) = 3·4 − 2·6 = 0`, `X` a four-cycle with
   `s = 1`; `notes/Phase42m.md` *Blockers*). It would witness an inner arm of the induction, not a
-  hypothesis of the headline.
+  hypothesis of the headline. Round 4 tasks 3, 7 and 8, both in `Nonvacuity.lean`: (1) closes as
+  spiked; (2) composes through `Graph.IsX0Graph.exists_goodEar_or_pendantTriangle` and
+  `holdsGenerally_earFree`, with five leaves left.
 
 ### Round 1's stop: the open rows by family (2026-11-05)
 
