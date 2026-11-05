@@ -180,7 +180,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (RECONCILE 3/3: the Lean outside the phase's footprint) | the Lean's dead code, signatures, docstrings and the pebble game's search, a non-vacuity witness per main result, and the blueprint pins they move (no main result's statement changes) | ✓ Complete — dead code deleted, unneeded hypotheses dropped and the blueprint statements they reached restated, the search re-proved, the docstrings checked and a non-vacuity witness per main result outside the next phase's rows, no main result's statement changed (see `notes/Reconcile-lean-cleanup.md`; plan `notes/Reconcile.md`; round manual: `CLEANUP.md`) |
 | ⋮ Toolchain bump to Lean v4.36.0-rc1 (maintenance, cross-phase) | `lean-toolchain`, `lake-manifest.json`, `lakefile.toml` (+ renames, imports and one-line fixes in 39 Lean files) | ✓ Complete — v4.34.0-rc2 → v4.36.0-rc1, mathlib → `930ae14`, `Matroid` → `8ece630`; every gate green, all 19 main results' axioms unchanged; pushed 2026-10-25, CI green at `4c892cb6` (see `notes/Bump-v4.36.0-rc1.md`; record `notes/ToolchainBumps.md`) |
 | 41. The panel-hinge carrier and its graph (post-program) — RECONCILE-FORMAL | `Molecular/` (structural edit; sub-lettered, 41a–41e) | ✓ Complete — each hinge at its own edge's ends, and the RECONCILE program closed (see `notes/Phase41e.md`; plan `notes/Phase41-design.md`) |
-| 42. The pencil realization theorem in every dimension (post-program) — PENCIL-D | research first, then `Molecular/`, `pencil-d.tex` (sub-lettered, 42a–42m) | In progress — 42a ✓ PD-RECON, 42b ✓ PD-STATE, 42c ✓ PD-STABLE, 42d ✓ PD-ALL, 42e ✓ PD-CARRIER, 42f ✓ PD-STEPS's cut, bridges and contraction, 42g ✓ PD-STEPS's cycles and long ears, 42h ✓ PD-STEPS's short ears with four or more interior bodies, 42i ✓ PD-STEPS's three-body ear, 42j ✓ PD-COVERAGE, 42k ✓ PD-REDUCTION, 42l ✓ PD-HEAD's nondegeneracy and lifts, 42m PD-HEAD's generic theorem and headline: builds 1 to 7 of 7 landed, all eleven nodes green, the close of 42m and Phase 42 pending (see `notes/Phase42m.md`; plan `notes/Phase42-design.md`) |
+| 42. The pencil realization theorem in every dimension (post-program) — PENCIL-D | research first, then `Molecular/`, `pencil-d.tex` (sub-lettered, 42a–42m) | In progress — 42a ✓ PD-RECON, 42b ✓ PD-STATE, 42c ✓ PD-STABLE, 42d ✓ PD-ALL, 42e ✓ PD-CARRIER, 42f ✓ PD-STEPS's cut, bridges and contraction, 42g ✓ PD-STEPS's cycles and long ears, 42h ✓ PD-STEPS's short ears with four or more interior bodies, 42i ✓ PD-STEPS's three-body ear, 42j ✓ PD-COVERAGE, 42k ✓ PD-REDUCTION, 42l ✓ PD-HEAD's nondegeneracy and lifts, 42m PD-HEAD's generic theorem and headline: builds 1 to 7 of 7 landed, all eleven nodes green; the close of 42m and Phase 42 under way, part 1 of 4 landed (see `notes/Phase42m.md`; plan `notes/Phase42-design.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1372,7 +1372,8 @@ pendant, ear and pendant-triangle nodes, the cut-edge node, the good-ear node an
 planar-rigid set, and build 6 the lemma that extends the points of the minimal planar-rigid set
 and the lemma that the rest of that set lifts only trivially, and build 7 the generic theorem and
 the headline (`Grade/Generic.lean`), so no node is red. Its
-close is Phase 42's. The targets are three
+close is Phase 42's, in four parts: the first, the gates and the axioms on the final tree, landed;
+the third, Phase 42's rows among the main results, waits for the PI's answer. The targets are three
 tiers: every `d` at `def_3 ≤ 3` (proved and formalized, 42c), a `P⁴` theorem (every `d` at
 `def_3 ≤ 7`, by the sharp lemma), and every `d` (proved on paper, 42d).
 

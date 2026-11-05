@@ -7,7 +7,8 @@ a cut edge, a body of degree one, a pendant triangle, no planar-rigid set and a 
 with hub neighbours; finding that body and its condition; the generic theorem and the headline) as
 the chapter states them (§3). They are the blueprint's last red nodes, so its close is Phase 42's.
 Its pre-build recon landed (§3): all eleven signatures kernel-checked, three nodes spiked complete
-and the theorem and headline assembled on the rest; next, the first of seven builds.
+and the theorem and headline assembled on the rest; builds 1 to 7 then landed, all eleven green.
+Its close, Phase 42's, runs in parts (`notes/Phase42m.md` *Hand-off*).
 **42l** (PD-HEAD's `-nondegenerate` and `-lift`, `notes/Phase42l.md`) **opened and closed
 2026-11-04** at the PI's word (§1): the ten nodes of `pencil-d.tex`'s `-nondegenerate` and `-lift`
 (nondegeneracy in dimension `d`, its agreement at `d = 3`, linear maps, feasibility in every
@@ -1266,7 +1267,7 @@ does not draw (it draws definitions, lemmas, propositions, theorems and corollar
   green.
 - PD-REDUCTION: `-reduction` (8), Phase 39's reduction; 8, as 42k, closed, all green.
 - PD-HEAD: `-nondegenerate` (4) and `-lift` (6), as 42l, closed, all green; `-generic` (11, ending
-  in the headline `cor:pencil-d-conditioned-pair`), as 42m, open, nine green after its build 6b;
+  in the headline `cor:pencil-d-conditioned-pair`), as 42m, open, all eleven green after its build 7;
   21, the generic conjunct and the headline, the largest layer.
 
 PD-STATE and PD-STABLE do not depend on the route, so they ran beside PD-RECON (§1's defaults).

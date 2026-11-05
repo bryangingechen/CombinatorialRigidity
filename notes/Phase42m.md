@@ -3,26 +3,23 @@
 **Status:** in progress, opened 2026-11-05 at the PI's word ("All 11 as written", design doc §1),
 the second and last sub-phase of Phase 42's last layer, PD-HEAD. Forward mode, the Lean under
 `/coordinate-phase`: the eleven red nodes of `blueprint/src/chapter/pencil-d.tex`'s
-`sec:pencil-d-generic`, as the chapter states them (six cases of an induction on the bodies, the
-lemmas that find the good ear and supply its condition, the generic theorem and the headline).
-They are the blueprint's last red nodes, so 42m's close is Phase 42's. The pre-build recon landed
-(2026-11-05, *Decisions made*); seven builds planned, build 6 split. **Builds 1 to 7 landed**
-(2026-11-05): `Grade/LiftSmall.lean`, `Grade/LiftCases.lean` (three nodes), `Grade/LiftCutEdge.lean`,
-`Grade/GoodEar.lean`, `Grade/LiftNoRigid.lean`, `Grade/EarFree.lean` (`-ear-extend`, `-ear-free`)
-and `Grade/Generic.lean` (`thm:pencil-d-generic`, `cor:pencil-d-conditioned-pair`): all eleven red
-nodes green, the blueprint has none red. Next (*Hand-off*): the close of 42m and Phase 42 together,
-a separate dispatch.
+`sec:pencil-d-generic`, as the chapter states them. They were the blueprint's last red nodes, so
+42m's close is Phase 42's. The pre-build recon and **builds 1 to 7 landed** (2026-11-05): all
+eleven nodes green, the blueprint has none red. **The close runs in parts** (*Hand-off*): part 1
+landed (the gates and the axioms on the final tree, the docstring fix); next, part 2 (the re-read,
+the ledger, the compressions, the organization review), while the PI answers the question on
+Phase 42's `main_results` rows (*Blockers*), which part 3 needs.
 
 ## Current state
 
-**Next: the close** (*Hand-off*). In the tree, `Grade/Generic.lean` (build 7:
-`LiftAttains.hasGradedGenericPencilRealization`, the remark, pinned at `def:pencil-d-lift-attains`;
-`liftAttains_of_simple`, the strong induction; `hasGradedGenericPencilRealization_of_simple`, which is
-`thm:pencil-d-generic`; `Graph.graded_pencil_conditioned_pair`, `cor:pencil-d-conditioned-pair`, the
-three conjuncts, the first two `Graph.graded_pencil_realization_theorem`'s; the pins on the three
-standard axioms), and, each file on the three standard axioms with the
-whole-project build, `lake lint`, `blueprint/lint.sh` and `blueprint/verify.sh` clean at its commit: each file on the three standard axioms with the
-whole-project build, `lake lint`, `blueprint/lint.sh` and `blueprint/verify.sh` clean at its commit:
+**Next: the close's part 2** (*Hand-off*); part 1 landed (*Decisions made*). In the tree,
+`Grade/Generic.lean` (build 7: `LiftAttains.hasGradedGenericPencilRealization`, the remark, pinned
+at `def:pencil-d-lift-attains`; `liftAttains_of_simple`, the strong induction;
+`hasGradedGenericPencilRealization_of_simple`, which is `thm:pencil-d-generic`;
+`Graph.graded_pencil_conditioned_pair`, `cor:pencil-d-conditioned-pair`, the three conjuncts, the
+first two `Graph.graded_pencil_realization_theorem`'s; the pins on the three standard axioms), and,
+each file on the three standard axioms with the whole-project build, `lake lint`,
+`blueprint/lint.sh` and `blueprint/verify.sh` clean at its commit:
 `Grade/EarFree.lean` (build 6b: `holdsGenerally_earFree`, from its four steps
 `earFree_of_finrank_liftSpaceTilde_le` (the algebra at one realization, on
 `isTrivialLift_of_finrank_liftSpaceTilde_le`, `liftTildeOfTrivial`, `earLift_of_isTrivialLift`),
@@ -139,17 +136,46 @@ Build numbers are *Hand-off*'s. "Spiked" means sorry-free in `scratch/42m/Spike.
 - [x] `thm:pencil-d-generic`, with the remark after `def:pencil-d-lift-attains`: sorry-free (build 7;
   no departure from the chapter's proof, no new row).
 - [x] `cor:pencil-d-conditioned-pair`: sorry-free (build 7).
-- [ ] **Close** 42m and Phase 42 together, the full close (`PHASE-BOUNDARIES.md`): the ROADMAP row
-  to ✓ and §42 compressed; the user-facing surfaces re-summarized; `formalization.yaml`'s
-  `main_results` and `alignment` (Tier 0 unless the headline subsumes it, design doc §3), each new
-  row with a closed non-vacuity witness in `CombinatorialRigidity/Nonvacuity.lean`, and the
-  headline-axioms check; the chapter's end-to-end re-read and `notes/BlueprintExposition.md`; the
-  dispatch-log grooming; the design doc's compression; the project-organization review; and
-  `.claude/autopilot/queue.toml`'s PENCIL-D row `done = true`.
+- **Close** 42m and Phase 42 together, the full close (`PHASE-BOUNDARIES.md`), in parts
+  (*Hand-off* carries each part's checklist):
+  - [x] Part 1: the gates and the 20 main results' axioms on the final tree, Phase 42's seven
+    candidate declarations' axioms, `Grade/Generic.lean`'s docstring fix (*Decisions made*).
+  - [ ] Part 2: the chapter's end-to-end re-read and `notes/BlueprintExposition.md`; the design
+    doc's compression; the phase note's *Decisions made* tail; the project-organization review.
+  - [ ] Part 3 (needs the PI's answer, *Blockers*): `formalization.yaml`'s `main_results` and
+    `alignment` (Tier 0 unless the headline subsumes it, design doc §3: subsumed, so no Tier 0
+    row), each new row's closed non-vacuity witness in `CombinatorialRigidity/Nonvacuity.lean`,
+    and the headline-axioms check with the new rows.
+  - [ ] Part 4, the last: the ROADMAP row to ✓ and §42 compressed; the user-facing surfaces
+    re-summarized; `.claude/autopilot/queue.toml`'s PENCIL-D row `done = true`. (The
+    dispatch-log grooming is the coordinator's, after the close.)
 
 ## Blockers / open questions
 
-- None blocking the close. What the builds still carry:
+- **For the PI (blocks part 3 only): Phase 42's `main_results` rows.** Settled: no Tier 0 row
+  (design doc §3: the coverage subsumes it, and at the same `1 ≤ m` the headline's second conjunct
+  gives its distinct form, `IsX0Graph` being simple with a body); the headline
+  `Graph.graded_pencil_conditioned_pair` (`Grade/Generic.lean`) joins (`PHASE-BOUNDARIES.md`: the
+  phase's headline theorem). Not settled by the design doc or the PI's answers: whether it is the
+  only row, and how much its witness exercises. All seven candidates are on the three standard
+  axioms (part 1).
+  - **(A), recommended: one row, the headline.** Its description and a new `alignment` entry name
+    the route, the coverage `Graph.IsX0Graph.x0AttainsGrade`, the reduction
+    `Graph.graded_pencil_realization_theorem` and `hasGradedGenericPencilRealization_of_simple`, as
+    Phase 40's rows name `x0Dist` and `x0Gen`, which got no row. Witness as the `d = 3` rows':
+    the star `K₁,₃` in dimension four (`m = 2`), its distinct conjunct.
+  - **(B): two rows, the headline and the coverage.** The coverage is design doc §0's target (at
+    every simple connected graph of minimum degree two, a general picture with general heights
+    attains, which the headline's existence claims do not say) and what subsumes Tier 0's first
+    claim (`Graph.x0AttainsGrade_of_deficiency_two_le_three`). Its witness at the triangle `K₃`.
+  - **(C), with (A) or (B): the headline's witness also exercises the generic conjunct**, its one
+    hypothesis no input might meet (F-207, F-252): feasibility at a small simple graph, likely
+    `K₂` by `PencilNondegFeasible.mono` from `exists_isNondegPencilRealization_parallel_pair`
+    through `gradedPencilNondegFeasible_iff` (not spiked). The `d = 3` rows' witnesses do not.
+  - Recommendation: (A) with (C). The builds' `K_{2,3}` instance of `Graph.IsPencilGoodEar` and
+    `EarLiftCondition` (below) would witness an inner arm, not a hypothesis of the headline, so no
+    option needs it; CLEANUP-42's unless the PI wants it in part 3.
+- Nothing else blocks the close. What the builds still carry:
   - **`-ear-free`'s leaves, traced against their consumer (build 6b):** each step's hypotheses are
     what the assembly has: (1) `earFree_of_finrank_liftSpaceTilde_le` takes `G.Simple`, the good ear,
     points in subspaces of dimension at most three on every closed neighbourhood of `G` (at any
@@ -167,7 +193,7 @@ Build numbers are *Hand-off*'s. "Spiked" means sorry-free in `scratch/42m/Spike.
   - **Instances of the two new predicates**: none closed yet. `Graph.IsPencilGoodEar` is produced
     by build 4 and `EarLiftCondition` by build 6b (`holdsGenerally_earFree`); the candidate witness
     is `K_{2,3}` (`W₀` all five bodies, `x` a body of degree two; `s(W₀) = 3·4 − 2·6 = 0`, `X` a
-    four-cycle with `s = 1`), for the close's non-vacuity row.
+    four-cycle with `s = 1`); not a row's witness (the PI question above).
   - **Build 7's honesty gate** (read, not assumed): `liftAttains_of_simple`'s hypotheses are the
     node's (`G.Simple`, a body, feasibility, `[Infinite K]`, finiteness); `EarLiftCondition` comes
     from `holdsGenerally_earFree` at the selectors `exists_steer_selectors` gives and
@@ -180,11 +206,37 @@ Build numbers are *Hand-off*'s. "Spiked" means sorry-free in `scratch/42m/Spike.
 Builds 1 to 7 landed (`Grade/LiftSmall.lean`; `Grade/LiftCases.lean`, three nodes;
 `Grade/LiftCutEdge.lean`, R-30; `Grade/GoodEar.lean`, R-31; `Grade/LiftNoRigid.lean`, R-32;
 `Grade/EarFree.lean`, R-33 and R-34; `Grade/Generic.lean`, the theorem and the headline, no new row).
-No blueprint node is red. The next concrete commit is the **close of 42m and Phase 42 together**,
-the full close (`PHASE-BOUNDARIES.md` *When this commit closes a phase*), as the checklist's last
-item lists it. Its Lean-side inputs: the headline is `Graph.graded_pencil_conditioned_pair`; the
-candidate non-vacuity witness for `Graph.IsPencilGoodEar` and `EarLiftCondition` is `K_{2,3}`
-(*Blockers*).
+No blueprint node is red. The close of 42m and Phase 42 together (`PHASE-BOUNDARIES.md` *When this
+commit closes a phase*, the full close) runs in parts, one commit each, on Phase 41's precedent;
+part 1 landed. **The next concrete commit is part 2**, which needs no answer from the PI:
+- **Part 2 (docs only):** (a) the end-to-end re-read of `pencil-d.tex` as a domain mathematician:
+  `sec:pencil-d-generic` in full (no close has re-read it), then the frame of the rest, which each
+  sub-phase's close re-read section by section (the chapter's opening, lines 1–65, each section's
+  introduction, and every sentence that calls a claim open, in progress or remaining), collapsing
+  per-commit formalization asides (`blueprint/AUTHORING.md` *Proof verbosity*); (b) a Phase 42m
+  section in `notes/BlueprintExposition.md` with the judgment for 42m and for Phase 42; (c) the
+  design doc's compression: first count its live Lean anchors (`grep -rc 'Phase42-design.md'
+  --include='*.lean' .`, with the heading each names), then collapse the closed arcs to cited
+  verdicts, §1's PI entries byte-identical, the stale header ("next, the first of seven builds")
+  rewritten; (d) this note's *Decisions made* to one-line verdicts, the PI entry verbatim; (e) the
+  project-organization review (the auto-loaded `CLAUDE.md` suite's sizes, FRICTION's status
+  sections, DESIGN's *Choices to revisit*, stale counts in ROADMAP and DESIGN).
+- **Part 3 (Lean; after the PI's answer, *Blockers*):** the rows and `alignment` entries the PI
+  picks, `review.notes`' count of main results ("all twenty"), each new row's witness in
+  `CombinatorialRigidity/Nonvacuity.lean` (named `<declaration>_witness`; the module docstring's
+  list and its paragraph on dimensions gain it; the import `Grade.Generic`, and `Grade.Coverage`
+  under (B)); the headline-axioms harness `scratch/42m-close/Axioms.lean` (gitignored; the 20 rows,
+  byte-identical to 41e's close net of the path) re-run with the new rows; every gate.
+- **Part 4, the last (docs only; flips the row):** the ROADMAP row to ✓, re-thinned, and §42
+  compressed to one paragraph plus pointers (sub-phases by stable code); README *Project status*,
+  `home_page/index.md` (status and phase table), `intro.tex`'s *Organization* enumerate and
+  *Reading this blueprint* paragraph, `formalization.yaml`'s `status.scope` and
+  `fidelity.divergences` (each says Phase 42 is in progress), `notes/MolecularConjecture.md`'s
+  Phase 42 entry, all re-summarized, not appended to; what they carry on the pins: every pin equals
+  or is stronger than its node except build 1's two-body pin, whose ambient `[Nonempty α]` is a
+  carrier artifact at zero bodies (reported to the PI as an encoding, no objection), and the route
+  departures are `notes/Cleanup42.md` R-24 to R-34; `.claude/autopilot/queue.toml`'s PENCIL-D row
+  `done = true`; this note and the design doc's header in closed form. Open no successor.
 - **The standing rule** (*Architectural choices*): a row in `notes/Cleanup42.md` §2 per departure.
 - **Deferred, where it lands** (design doc §3; FRICTION's `[open]` 42k and 42l entries): the six
   `dotPerp` lemmas of `Grade/Feasible.lean` move to `Grade/Realization.lean` beside
@@ -272,3 +324,10 @@ candidate non-vacuity witness for `Graph.IsPencilGoodEar` and `EarLiftCondition`
   used only in `U(G)`; (a) and (b) are carried as fixed independent triples and a fixed set of four
   bodies, (c) open at every point by the section. Sub-lemmas landed in the hand-off's order; the
   node closed, no 6c. R-34.
+- **Close, part 1 (2026-11-05): the final tree's gates and axioms.** The whole-project build, `lake
+  lint`, `blueprint/lint.sh` and `blueprint/verify.sh` clean; the 20 `main_results` rows'
+  `#print axioms` byte-identical to 41e's close net of the harness path; Phase 42's seven candidate
+  declarations (the headline, the generic theorem, `liftAttains_of_simple`, the reduction, the
+  coverage, Tier 0's two) on the three standard axioms. `Grade/Generic.lean`'s docstring credited the
+  induction to Jackson and Jordán; it now says what the chapter says, the case split of
+  `thm:pencil-conditioned-pair-nonempty` and `thm:pencil-generic-step`.

@@ -17,8 +17,10 @@ public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Reduction
 * `LiftAttains.hasGradedGenericPencilRealization` (the remark): an attaining general lift is a
   generic realization in dimension `r + 3` (`IsNondegPencilPlaneRealization.lift`).
 * `liftAttains_of_simple`: the general lift attains at every simple nondegeneracy-feasible graph
-  with a body, by strong induction on the number of bodies (Jackson and Jordán's induction of the
-  planar pencil case, here on the general lift). The arms: at most two bodies, a cut with no
+  with a body, by strong induction on the number of bodies, following the case split of the
+  conditioned pair and the generic step in dimension three (`pencilPair_of_nonempty`,
+  `hasGenericPencilRealization_of_IH`; `thm:pencil-conditioned-pair-nonempty`,
+  `thm:pencil-generic-step`), here on the general lift. The arms: at most two bodies, a cut with no
   crossing edge, a cut edge or a pendant body (`Grade/LiftCutEdge.lean`, `Grade/LiftCases.lean`),
   a triangle, no rigid subgraph (`Grade/LiftNoRigid.lean`), and the good ear or pendant triangle
   of `Grade/GoodEar.lean`, whose ear arm gets its condition from `holdsGenerally_earFree`
