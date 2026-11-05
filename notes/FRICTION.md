@@ -530,7 +530,8 @@ to be re-derived by re-reading entries later.
   unfolds it for `12 ≤ bodyBarDim (m + 2)` at `m ≥ 3` (found at 42j's close). Correction (42k's
   open): a public `Graph.six_le_bodyBarDim` has been in `BodyBar/Framework.lean` since 2026-07-03
   (`33d6b2a6`; `Pencil/Pair2.lean` calls it), so the fourth site's private copy duplicates it and
-  the fix deletes that copy.
+  the fix deletes that copy (done at CLEANUP-42 round 4, task 4: `Grade/TheoremS.lean` now calls
+  the public lemma).
 - **Status:** open.
 
 ### [idiom] `Set.nonempty_of_ncard_ne_zero (by omega)` against `V(G.induce Y).Nonempty` needs `(s := Y)`

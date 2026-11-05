@@ -5,7 +5,7 @@ Authors: Bryan Gin-ge Chen
 -/
 module
 
-public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.CoverageTheoremS
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.SparseCount
 
 /-!
 # A core in every dimension
@@ -16,7 +16,7 @@ The deficiency counting of the structural coverage in every dimension `d = n ≥
 two bodies, rigid at `n`, with no body outside `W` adjacent to two bodies of `W`, and a body `r ∈ W`
 with `def₂(G[W]) + def₂(G / G[W]) ≤ def₂(G)`: rigidity is read at `D`, additivity in the plane. At
 `n = 3` it is the core of `Graph.IsX0Graph.exists_additiveCore` (`thm:pencil-x0-theorem-s`,
-`MainComponent/CoverageTheoremS.lean`).
+`MainComponent/CoverageTheoremS.lean`, which is the `n = 3` case of the theorem here).
 
 The proofs are those at `n = 3`, with the sparse estimates at `n`
 (`Molecular/Induction/SparseDeficiency.lean`: `lem:deficiency-core-bound-d`,
@@ -65,13 +65,6 @@ def _root_.Graph.ChainUsableAt (G : Graph α β) (n : ℕ) (V₁ : Set α) (k : 
 
 variable [Finite α] [Finite β]
 
-/-- `D ≥ 6` from `n ≥ 3` (`notes/FRICTION.md`: `bodyBarDim` has no monotonicity lemma). -/
-private theorem six_le_bodyBarDim {n : ℕ} (hn : 3 ≤ n) : 6 ≤ Graph.bodyBarDim n := by
-  have : Graph.bodyBarDim 3 ≤ Graph.bodyBarDim n := by
-    unfold Graph.bodyBarDim
-    exact Nat.div_le_div_right (Nat.mul_le_mul hn (Nat.succ_le_succ hn))
-  rwa [Graph.bodyBarDim_three] at this
-
 /-! ## A maximal rigid set is a core -/
 
 /-- **A maximal set rigid at `n` is a core at `n`** (`lem:pencil-d-maximal-rigid-core`): let
@@ -81,7 +74,7 @@ avoids `X₀`, and let `X₀` be nonempty when `def_n(G) = 0`. Let `Y` be a set 
 rigid at `n` and avoiding `X₀`. Then a maximal set `W` among those rigid at `n` that contain `Y` and
 avoid `X₀` is a core at `n` that avoids `X₀`, with any `r ∈ W` as the body of the contraction.
 
-The proof of `Graph.IsX0Graph.exists_additiveCore_of_rigid` at `n`: a body outside `W` and `X₀`
+A body outside `W` and `X₀`
 with two neighbours in `W` would enlarge it (`Graph.deficiency_induce_insert_eq_zero`,
 `lem:deficiency-add-body`); then `s(W) ≤ s(X)` for every `X ⊇ W`
 (`Graph.partitionDef_induce_id_le_of_maximal_of_three_le_bodyBarDim`,
@@ -158,7 +151,7 @@ theorem _root_.Graph.IsX0Graph.exists_additiveCoreAt {G : Graph α β} (hG : G.I
       (G.induce W).deficiency 2 + (G.rigidContract (G.induce W) r).deficiency 2 ≤
         G.deficiency 2 ∧
       ∀ u ∉ W, ∀ c₁ ∈ W, ∀ c₂ ∈ W, G.Adj u c₁ → G.Adj u c₂ → c₁ = c₂ := by
-  have hD : 3 ≤ Graph.bodyBarDim n := by have := six_le_bodyBarDim hn; omega
+  have hD : 3 ≤ Graph.bodyBarDim n := by have := Graph.six_le_bodyBarDim hn; omega
   have hSv := Graph.one_le_partitionDef_induce_id hS
   -- a set rigid at `n = 3` is rigid at `n`
   have hup : ∀ Y : Set α, 2 ≤ Y.ncard → (G.induce Y).deficiency 3 = 0 →
@@ -297,7 +290,7 @@ theorem _root_.Graph.IsX0Graph.exists_core_of_deficiency_three_pos {G : Graph α
       (G.induce W).deficiency 2 + (G.rigidContract (G.induce W) r).deficiency 2 ≤
         G.deficiency 2 ∧
       ∀ u ∉ W, ∀ c₁ ∈ W, ∀ c₂ ∈ W, G.Adj u c₁ → G.Adj u c₂ → c₁ = c₂ := by
-  have hD : 3 ≤ Graph.bodyBarDim n := by have := six_le_bodyBarDim hn; omega
+  have hD : 3 ≤ Graph.bodyBarDim n := by have := Graph.six_le_bodyBarDim hn; omega
   have hnn := Graph.partitionDef_induce_id_nonneg hSv
   obtain ⟨f, hf⟩ := G.exists_isTightPartition 3
   have hfv : G.partitionDef 3 f = G.deficiency 3 := hf

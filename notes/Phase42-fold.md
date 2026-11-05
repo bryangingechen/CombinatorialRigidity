@@ -6,7 +6,7 @@ round of CLEANUP-42: Theorem S's `d = 3` core and four `d = 3` cases of the redu
 `K_{2,3}`; and the ten stale Lean docstrings and five dated `notes/BlueprintExposition.md` entries
 left by rounds 1–2. The open's spikes: both folds keep every `d = 3` statement, no blueprint
 statement changes, so no `NEEDS_PI`. Nine tasks, one commit each.
-**Next concrete task:** task 4, Theorem S's fold (below); task 3 landed.
+**Next concrete task:** task 5, the reduction's fold: base, loop and cut-edge cases (below); tasks 3 and 4 landed.
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -21,7 +21,7 @@ entry here, newest first, and the loop stops; the PI answers in an entry that st
 
 ## Current state
 
-**Task 3 landed** (witness (1), `K₂`: `graded_pencil_conditioned_pair_generic_witness` in
+**Task 4 landed** (Theorem S's fold; its checklist line; gates: whole-tree `lake build` 6249 jobs, 0 warnings, `lake lint`, `blueprint/lint.sh`, `blueprint/verify.sh` with `checkdecls` silent, the three pencil results and the bridge on the three standard axioms). **Task 3 landed** (witness (1), `K₂`: `graded_pencil_conditioned_pair_generic_witness` in
 `Nonvacuity.lean`, three private helpers, axioms the three standard). **Task 2 landed** (Lean docstrings only, no statement or proof): the ten stale docstrings and the
 five dated `BlueprintExposition.md` entries (the checklist line). **Task 1 landed** (docs only): this log; `notes/Cleanup42.md`'s §1 (the PI's entry
 of 2026-11-05 for round 4), **Status** and §3; ROADMAP's Status row, §42's *Next* and the
@@ -149,22 +149,8 @@ three lines:** number, sha, what landed, lines deleted, its edges and any *Candi
 - [x] **3. Witness (1): `K₂` at the generic conjunct** (this commit). `graded_pencil_conditioned_pair_generic_witness`
   in `Nonvacuity.lean` after `graded_pencil_conditioned_pair_witness`, spike transcribed, three private
   helpers, a module bullet; `#print axioms`: `propext`, `Classical.choice`, `Quot.sound`. 47 lines added.
-- [ ] **4. Theorem S's fold** (Sonnet). New `Pencil/MainComponent/SparseCount.lean` (imports
-  `MainComponent/CoverageCut`, `Induction/SparseDeficiency`): CoverageTheoremS's lines 216–408
-  verbatim (`Graph.IsX0Graph.three_mul_sub_le_two_mul_ncard`, `…exists_degree_eq_two_notMem`,
-  `…two_mul_ncard_le_ncard_edgeSet`, `…partitionDef_three_induce_diff_nonpos`,
-  `Graph.IsOpenEar.deficiency_three_induce_cycle`). `Grade/TheoremS.lean` imports it in place of
-  CoverageTheoremS and drops its private `six_le_bodyBarDim` for `Graph.six_le_bodyBarDim` (FRICTION
-  *`bodyBarDim` has no monotonicity…*, its fourth site). `CoverageTheoremS.lean` imports
-  `Grade/TheoremS`; gains `Graph.chainUsable_iff_chainUsableAt_three` (spike; its lead names
-  `def:pencil-d-usable-chain`); `exists_additiveCore`, statement unchanged, is
-  `hG.exists_additiveCoreAt le_rfl …` with the bridge; `exists_additiveCore_of_rigid` (lines
-  412–461; unpinned, no other caller) is deleted. `Grade/Coverage.lean` imports CoverageTheoremS.
-  Module docstrings of the three files restated. Blueprint: `def:pencil-d-usable-chain`'s pin gains
-  the bridge, its statement's `\uses` `def:pencil-x0-usable-chain` (its last sentence). Sweep:
-  `exists_additiveCore_of_rigid` (live: `Grade/TheoremS.lean`'s docstring; kept:
-  `notes/Phase40-design.md`, `notes/Prose-findings.md`). About 150 lines deleted (CoverageTheoremS
-  673 → ~330, SparseCount ~215). G1–G7.
+- [x] **4. Theorem S's fold** (this commit). New `MainComponent/SparseCount.lean` (the five counting lemmas, 229 lines);
+  `Grade/TheoremS` imports it, drops its private `six_le_bodyBarDim` (FRICTION's fourth site); `CoverageTheoremS` imports `Grade/TheoremS`, gains the bridge, `exists_additiveCore` (statement `diff`ed, unchanged) is `exists_additiveCoreAt` at `3`, `exists_additiveCore_of_rigid` deleted (673 → 317). `pencil-d.tex`: `def:pencil-d-usable-chain` pins the bridge, `\uses` `def:pencil-x0-usable-chain`. Kept in the sweep: `Phase40-design.md`, `Prose-findings.md`. G7 `--chapter`, HEAD → after: `pencil` and `pencil-d` 0 *missing*; `main-component` *missing* 3 → 5 (`thm:pencil-x0-theorem-s` into `def:pencil-d-usable-chain`, `thm:pencil-d-theorem-s`), unbacked 24+36 → 32+39 (its proof's `\uses`: `lem:deficiency-*`, `lem:pencil-x0-chain-exists`, `lem:pencil-x0-sparse-count`), dead pins 11 → 14 (`partitionDef_induce_id_le_of_maximal`, `deficiencyMerged_three_add_five_le`, `deficiencyMerged_two_add_two_le`).
 - [ ] **5. The reduction's fold: base, loop and cut-edge cases** (Opus: three files, an import
   reversal, a deleted pin). `ArmsAssembly.lean` imports `Grade/Arms`;
   `hasPencilRealization_of_ncard_le_two` is the `m = 1` case, and it gains
@@ -220,7 +206,7 @@ three lines:** number, sha, what landed, lines deleted, its edges and any *Candi
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 4, Theorem S's fold (Sonnet; its line above). Then tasks 5–9 in order; the PI's stop applies to tasks 4–6.
+**Next concrete task:** task 5, the reduction's fold: base, loop and cut-edge cases (Opus; its line above). Then tasks 6–9 in order; the PI's stop applies to tasks 5–6.
 
 ## Decisions made during this round
 

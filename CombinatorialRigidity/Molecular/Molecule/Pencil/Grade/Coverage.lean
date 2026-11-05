@@ -7,6 +7,7 @@ module
 
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.ShortThree
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.ContractAdditive
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.CoverageTheoremS
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Chains
 
 /-!

@@ -1044,9 +1044,9 @@ bodies.
 
 \begin{definition}[Usable chains in every dimension]
   \label{def:pencil-d-usable-chain}
-  \lean{Graph.ChainUsableAt}
+  \lean{Graph.ChainUsableAt, Graph.chainUsable_iff_chainUsableAt_three}
   \leanok
-  \uses{def:pencil-x0-chain, def:deficiency-merged}
+  \uses{def:pencil-x0-chain, def:deficiency-merged, def:pencil-x0-usable-chain}
   Let $d \ge 2$ and $D = \binom{d+1}{2}$. A chain
   $a - x_1 - \cdots - x_k - b$ on $V_1$ (\cref{def:pencil-x0-chain}) is
   \emph{usable in dimension $d$} if $k \ge 3$; or $k = 2$ and either
