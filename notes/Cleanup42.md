@@ -1,19 +1,21 @@
 # The post-Phase-42 cleanup (planning note)
 
 **Status:** open (2026-11-05, at the PI's word, §1), ahead of ORIGAMI; round 1, the route audit,
-in progress (`notes/Phase42-cleanup.md`). On 2026-10-30, during 42g, the PI asked for a cleanup
-phase after Phase 42 to address the informal proofs of `blueprint/src/chapter/pencil-d.tex` that
-were difficult to formalize as written (§1). On 2026-11-05 the PI opened it ahead of ORIGAMI and
-shaped its first round: an audit of every green node of the chapter (99) against its Lean, adding a
-row to §2 for each departure, with no prose or Lean edit, then a stop at which the PI picks a
-remedy per `open` row and plans rounds 2+ (§3). `.claude/autopilot/queue.toml` carries it as
-`CLEANUP-42`, attended, between PENCIL-D (done) and ORIGAMI; ROADMAP *Queued post-program phases*
-lists it. Its input is the proof-route ledger (§2): 34 rows at Phase 42's close (2026-11-05), 27
-`open`, 6 `aligned`, 1 `no departure`, to which round 1 adds; after its task 15, the audit's last
-slice, 54 rows, 34 `open`, 6 `aligned` and 14 `no departure` (R-35, R-46, R-48 to R-51 and R-53
-`open`, R-36 to R-45, R-47, R-52 and R-54 `no departure`; R-1 to R-34 re-checked, R-7, R-9, R-12,
-R-15 to R-17, R-24 to R-27, R-31, R-32 and round 1's R-50 corrected in place). **Next concrete
-task:** round 1's task 16, the planned stop (`notes/Phase42-cleanup.md` *Lemma checklist*).
+closed 2026-11-05 at its planned stop (`notes/Phase42-cleanup.md`). On 2026-10-30, during 42g, the
+PI asked for a cleanup phase after Phase 42 to address the informal proofs of
+`blueprint/src/chapter/pencil-d.tex` that were difficult to formalize as written (§1). On 2026-11-05
+the PI opened it ahead of ORIGAMI and shaped its first round: an audit of every green node of the
+chapter (99) against its Lean, adding a row to §2 for each departure, with no prose or Lean edit,
+then a stop at which the PI picks a remedy per `open` row and plans rounds 2+ (§3).
+`.claude/autopilot/queue.toml` carries it as `CLEANUP-42`, attended, between PENCIL-D (done) and
+ORIGAMI; ROADMAP *Queued post-program phases* lists it. Its input is the proof-route ledger (§2): 34
+rows at Phase 42's close (2026-11-05), 27 `open`, 6 `aligned`, 1 `no departure`, to which round 1
+added; at its close, 54 rows, 34 `open`, 6 `aligned` and 14 `no departure` (R-35, R-46, R-48 to R-51
+and R-53 `open`, R-36 to R-45, R-47, R-52 and R-54 `no departure`; R-1 to R-34 re-checked, R-7, R-9,
+R-12, R-15 to R-17, R-24 to R-27, R-31, R-32 and round 1's R-50 corrected in place). The open rows
+by family: §3 *Round 1's stop*. **Next concrete task:** the PI's answer at round 1's stop
+(`notes/Phase42-cleanup.md` *Autopilot: for the PI*), which picks a remedy per `open` row and plans
+rounds 2+ (§3).
 
 ## 1. The PI's decisions (verbatim)
 
@@ -366,7 +368,7 @@ task in `notes/Phase42-cleanup.md`, and its re-checks of R-1 to R-34 are recorde
   hubs, the closed neighbourhood; `y_i` is the `i`-th of the first (last) three at an empty place.
   The converse chooses those at the empty places; a formalization note after the proof says that
   five suffice (a body that is not a hub fills its own place) and that the formalization takes six.
-  `lem:pencil-d-ear-extend`'s proof (red) reads "the first three ..., those at the places left
+  `lem:pencil-d-ear-extend`'s proof (green) reads "the first three ..., those at the places left
   empty" to match.
 - **R-23** · `lem:pencil-d-lift-transfer` (`lift_transfer`, `Grade/LiftWitness.lean`, 42l build 4)
   · **open** (the Lean landed as below; the chapter stays as the prose).
@@ -904,11 +906,13 @@ task in `notes/Phase42-cleanup.md`, and its re-checks of R-1 to R-34 are recorde
 
 ## 3. The cleanup's rounds
 
-- **Round 1, the route audit** (opened 2026-11-05, `notes/Phase42-cleanup.md`): every green node of
-  `pencil-d.tex` against its Lean, in 14 one-dispatch Opus recon slices by layer, the 47 nodes of
-  42b–42f first; each adds rows to §2 and re-checks the rows on its nodes at HEAD, with no prose,
-  statement, pin or Lean edit. Its last task is the planned stop, which closes it: the PI picks a
-  remedy per `open` row and plans rounds 2+.
+- **Round 1, the route audit** (opened and closed 2026-11-05, `notes/Phase42-cleanup.md`): every
+  green node of `pencil-d.tex` against its Lean, in 14 one-dispatch Opus recon slices by layer, the
+  47 nodes of 42b–42f first; each added rows to §2 and re-checked the rows on its nodes at HEAD,
+  with no prose, statement, pin or Lean edit. It added R-35 to R-54 (7 `open`, 13 `no departure`)
+  and corrected 13 rows in place. It closed at its planned stop, which grouped the 34 `open` rows
+  by family (below, *Round 1's stop*) and asks the PI for a remedy per row and the plan of rounds
+  2+ (`notes/Phase42-cleanup.md` *Autopilot: for the PI*).
 - **Rounds 2+** (planned with the PI at round 1's stop): the remedies the PI picks and the three
   items *Also left to it* below. Round 1's *Candidates for the PI* and *Moved to a later round*
   lines are mirrored here as they land:
@@ -957,3 +961,104 @@ task in `notes/Phase42-cleanup.md`, and its re-checks of R-1 to R-34 are recorde
   (`W₀` all five bodies, `x` a body of degree two; `s(W₀) = 3·4 − 2·6 = 0`, `X` a four-cycle with
   `s = 1`; `notes/Phase42m.md` *Blockers*). It would witness an inner arm of the induction, not a
   hypothesis of the headline.
+
+### Round 1's stop: the open rows by family (2026-11-05)
+
+The 34 `open` rows at round 1's close, by the kind of departure the audit's criterion names
+(`notes/Phase42-cleanup.md` *The audit's criterion*); each row's full text is in §2. A row with a
+statement part goes under A, its argument or step part marked (B) or (C) and named again under that
+family. The remedies, as the rows give them: **L**, the prose (under A, the statement) to the Lean;
+**H**, a Lean helper so that the Lean follows the chapter; **K**, keep both. *Lean:* the recon's or
+the coordinator's recorded lean, if any. The PI's questions are the `NEEDS_PI` entry of
+`notes/Phase42-cleanup.md` *Autopilot: for the PI*.
+
+**A. The pin is stronger than its node** (12): a hypothesis of the node the Lean does not take.
+- R-15 `lem:pencil-d-planes-meet`: no `K` infinite (the row's *Lean*; its remedies omit it); `R` by
+  rank openness, no `λ` (B). K, L (the argument). No lean.
+- R-25 `lem:pencil-d-lift-pendant` (T1): no "`u` has another neighbour"; the split on `u` a hub of
+  `G` (B). L (it also strikes `thm:pencil-d-generic`'s derived clause, R-54), K. No lean.
+- R-28 `lem:pencil-d-lift-small` (2): no `G` simple; the lift space never a product (C). L, K. No
+  lean.
+- R-29 `lem:pencil-d-lift-pendant-triangle`, with the pins of `-lift-pendant` and `-lift-ear`: the
+  ear's pin takes no `a ≁ b` (the pendant's drop is R-25); (T1) by polarity, (T2) one form `ψ_c`,
+  no deficiency of the triangle (B). L, K. No lean.
+- R-30 `lem:pencil-d-lift-cut-edge`: no `|V₁|, |V₂| ≥ 2`; one frame map, one minor, no case
+  analysis on `|S|`, no replaced normal (B). L, K. No lean.
+- R-33 `lem:pencil-d-ear-extend`: no `G` simple, no neighbour selector; one witness per condition,
+  the `n_u` chosen greedily (B). L, K. No lean.
+- R-35 `lem:pencil-d-agrees-three`, its first sentence: no `q_v ≠ 0`; a sentence added, `q^⊥`
+  three-dimensional exactly when `q ≠ 0` (C). L, K. Lean: the recon, L.
+- R-46 `lem:pencil-d-two-pencil-extension` (1), (2): no nonzero normals, dimension or `b ∈ Π`,
+  `b_u ≠ 0` in (2)'s last claim only; (3)'s pin calls (1) outside the setting. L, K. Lean: the
+  recon, K.
+- R-48 `lem:pencil-d-nondegenerate-maps` (1), (2): any vectors and subspaces (the nonzero normals
+  recovered, the dimension and `b_v ∈ Π_v` not). L, K. Lean: the recon, L.
+- R-49 `lem:pencil-d-steer`, `-lift-one-witness`, `-lift-transfer`: no `G` simple (the parallel
+  pair, feasible and not simple, meets the pins). L, K. Lean: the recon, L.
+- R-50 `lem:pencil-d-lift-realization` (2), (3): (2) takes only the incidences, (3) any
+  `(b⁰, Π⁰)`; four of (2)'s five callers are outside the node's setting. L, K. Lean: the recon, L.
+- R-51 `lem:pencil-d-lift-small`: no `K` infinite (the three pins apply over `ZMod 2`). L, K. Lean:
+  the recon, L.
+
+**B. A different argument for a step** (16). Also the argument parts of R-15, R-25, R-29, R-30 and
+R-33 (under A) and of R-14, R-17 and R-32 (under C).
+- R-3 `lem:pencil-d-polygon-normal` (2): a basis map extended, then a transvection, not the
+  explicit affine map. K, H (`K^{d+1}` as `K^d × K`, `g` a block map), L. Lean: the coordinator, K
+  (the chapter reads better).
+- R-4 `lem:pencil-d-polygons`, the base triangle: three 2 × 2 minors, no basis of `⋀²`. K, H (the
+  basis of `⋀²` a basis of `K^{d+1}` induces), L. Lean: the coordinator, K.
+- R-9 `lem:pencil-d-kernel-curve`: a rank count at some `t ≠ 0`, not Cramer's rule over `K(t)` (no
+  power series). L, K. No lean.
+- R-10 `lem:pencil-d-ear-data` (3): a coefficient of `h(λ, s)` in `λ`, no component `f_α`. L, K.
+  Lean: a toss-up.
+- R-11 `lem:pencil-d-two-stars` (1): a linear section of the quotient and rank–nullity, not a
+  basis. K, H (`Basis.exteriorPower`), L. No lean.
+- R-16 `lem:pencil-d-glued-ends`: no merged deficiency (a partition of `G′` pulled back),
+  Jackson–Jordán's polynomial for the edge coordinates, `X` split in two, not into its components
+  (C). K, L (the `\uses` drops `def:deficiency-merged`). No lean.
+- R-18 `lem:pencil-d-base-case`: the rank bounded below by a hinge's rows and above by the target,
+  not read off the motions. L, H (the motions of one edge), K. No lean.
+- R-19 `lem:pencil-d-nonsimple-case`: the rank by the splice at every `D`, not by the motions of
+  `G/H` with `S(w) = S(u)`. L (it also widens the closing remark), H (those motions), K. No lean.
+- R-20 `lem:pencil-d-nondegenerate-feasible`: forms chosen off at most two proper subspaces; no
+  quotient, induction or quadric. L, K. No lean.
+- R-21 `lem:pencil-d-lift-one-witness`: one polynomial section, no Cramer basis and no `γ`. L, K.
+  No lean.
+- R-23 `lem:pencil-d-lift-transfer`: openness by the rank polynomial at each `λ`, not through
+  (T2). L, K. No lean.
+- R-26 `lem:pencil-d-lift-pendant`, `-lift-ear` (T2): one form on `K⁴` per body, not `φ` on
+  `Π⁰`. L, K. No lean.
+- R-27 `lem:pencil-d-lift-small` (1), the triangle: the joins by minors at a dual triple; no
+  partition values, the rank at most the target and the deficiency nonnegative (C). L, K. No lean.
+- R-31 `lem:pencil-d-good-ear`: the proof split at a core; `def₂(G[X]) = 1` by a partition case
+  split, connectivity not through `s(X)`. L, K. No lean.
+- R-34 `lem:pencil-d-ear-free`: the trivial lifts embedded by dimension, rank at most three only in
+  `U(G)`, (b) by two plane normals. L, K. No lean.
+- R-53 `lem:pencil-d-good-ear` (iii): `|X| ≥ 3` from the core (`s(X) ≤ 1` needs the edge `ab`,
+  then `hF2`), not "as `G` is simple". L, K. Lean: the recon, L.
+
+**C. A step skipped, added or ordered otherwise** (6). Also the step parts of R-28 and R-35 (under
+A) and of R-16 and R-27 (under B).
+- R-5 `thm:pencil-d-cycle`, the placement: one path, a closed `N`-gon with `N = min(m, D)`, not two
+  cases. L, K. Lean: the coordinator, a toss-up.
+- R-12 `thm:pencil-d-open-ear-four`: the factored order (the put-back a hypothesis, discharged
+  after). L (state the factoring), K. No lean.
+- R-14 `thm:pencil-d-open-ear-three`: no component step and no path lemma; `r ≤ 2` gives
+  `dim ρ ≤ 2` by glued-ends or a common member (B). L, K. No lean.
+- R-17 `lem:pencil-d-chain-count`: classes of interior bodies and the handshake bound, no edge
+  segments (B). L (the `\uses` adds `lem:pencil-x0-sparse-count`), K. No lean.
+- R-24 the cases' (T1) (`-lift-pendant`, `-lift-ear`, the pendant triangle): one minor per closed
+  hub-neighbourhood, no case analysis of which conditions are new. L, K. No lean.
+- R-32 `lem:pencil-d-lift-no-rigid`: no map `g` and no `ℓ₀`; `dim L̃` through the lifting
+  system's kernel (B). L, K. No lean.
+
+**Close calls**, `no departure` rows on criterion (3) (a dropped hypothesis judged vacuous,
+recovered or the setting), so that the PI may reopen any:
+- R-36 `lem:pencil-d-contract-magnified-rank`: the pin takes any `r`, no `r ∈ W`, the setting of
+  `def:pencil-contract-lifting-system`, read by no proof.
+- R-38 `lem:deficiency-tight-part`: no case `Z = V(G)`, as the pin of the cited
+  `lem:separated-partition-value` (`deficiency.tex`, outside the audit) takes neither side nonempty.
+- R-44 `lem:pencil-d-chain-count`, `thm:pencil-d-chain-or-core`: no `ℓ ≥ 1`, vacuous for the count
+  (its hypotheses contradict at `ℓ = 0`), recovered for the theorem, the setting.
+- R-54 `thm:pencil-d-generic`: its proof reads less where a case's pin drops a hypothesis (R-25's
+  other neighbour; R-29's `a ≁ b`, passed as `a ≠ b`).

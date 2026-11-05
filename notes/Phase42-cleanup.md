@@ -1,36 +1,80 @@
 # CLEANUP-42 round 1 — the route audit (work log)
 
-**Status:** in progress (opened 2026-11-05 at the PI's word, `notes/Cleanup42.md` §1). Round 1
-of CLEANUP-42, the cleanup of `blueprint/src/chapter/pencil-d.tex`'s proofs whose Lean departs
-from the chapter's route; its plan, the PI's words and the proof-route ledger are
-`notes/Cleanup42.md`. The round compares each of the chapter's 99 green nodes with its pinned Lean
-and adds a ledger row for each departure, re-checking R-1 to R-34 at HEAD; it edits no prose,
-statement, pin or Lean. The open (task 1, docs only) sliced the nodes by layer into 14
-one-dispatch Opus recon tasks, the 47 never-checked nodes of 42b–42f first, then a planned stop
-(task 16) at which the PI picks a remedy per `open` row and plans rounds 2+. Tasks 2 to 15, the
-whole audit (PD-STATE, PD-STABLE, COUNT-A and COUNT-B, PD-CARRIER, PD-STEPS, PD-COVERAGE,
-PD-REDUCTION, PD-HEAD), added R-35, R-46, R-48 to R-51 and R-53 (`open`), R-36 to R-45, R-47,
-R-52 and R-54 (`no departure`); tasks 8 to 15 re-checked R-1 to R-34, correcting R-7, R-9, R-12,
-R-15 to R-17, R-24 to R-27, R-31 and R-32 in place, and task 15 corrected round 1's R-50.
-**Next concrete task:** task 16, the planned stop (*Lemma checklist*). Round manual: `CLEANUP.md`.
+**Status:** ✓ closed 2026-11-05 at its planned stop (opened 2026-11-05 at the PI's word,
+`notes/Cleanup42.md` §1). Round 1 of CLEANUP-42, the cleanup of
+`blueprint/src/chapter/pencil-d.tex`'s proofs whose Lean departs from the chapter's route; its plan,
+the PI's words and the proof-route ledger are `notes/Cleanup42.md`. The round compared each of the
+chapter's 99 green nodes with its pinned Lean in 14 Opus recon slices (tasks 2–15) and added a
+ledger row for each departure, re-checking R-1 to R-34 at HEAD, with no prose, statement, pin or
+Lean edit. The ledger now has 54 rows: 34 `open`, 6 `aligned`, 14 `no departure`. Task 16, the stop,
+grouped the open rows by family (`notes/Cleanup42.md` §3 *Round 1's stop*) and asked the PI for a
+remedy per open row and the plan of rounds 2+ (*Autopilot: for the PI*). **Next concrete task:**
+none in this round; the PI's answer plans rounds 2+ (`notes/Cleanup42.md` §3). Round manual:
+`CLEANUP.md`.
 
 ## Autopilot: for the PI
 
 CLEANUP-42's row of `.claude/autopilot/queue.toml` is attended, so the autopilot driver stops
 before it: the coordinator runs this round, which the PI opened (`notes/Cleanup42.md` §1,
 2026-11-05). **One planned stop**, after the audit's last slice: task 16 writes a `NEEDS_PI` entry
-here with the ledger's tally, each `open` row and its remedies, and the *Candidates* lines; the PI
-picks a remedy per `open` row and plans rounds 2+ (`notes/Cleanup42.md` §3). An unplanned
-`NEEDS_PI` entry also goes here, newest first, and the PI answers in an entry that starts
-`**PI, <date>:**`. No entries yet.
+here with the ledger's tally and a pointer to the `open` rows by family, each with its remedies
+(`notes/Cleanup42.md` §3 *Round 1's stop*); the PI picks a remedy per `open` row and plans rounds
+2+. An unplanned `NEEDS_PI` entry also goes here, newest first, and the PI answers in an entry that
+starts `**PI, <date>:**`.
+
+### 2026-11-05 — `NEEDS_PI`: round 1's stop, a remedy per open row and rounds 2+ (planned stop)
+
+**What happened.** The audit is done (tasks 2–15): 54 rows, 34 `open`, 6 `aligned`, 14 `no
+departure`, the Lean unchanged since `a3b80ac4`. The open rows by family, one line each with their
+remedies and any recorded lean, and the close calls are `notes/Cleanup42.md` §3 *Round 1's stop*:
+**A**, the pin stronger than its node, 12 rows; **B**, a different argument for a step, 16; **C**, a
+step skipped, added or ordered otherwise, 6; and 4 close calls among the `no departure` rows. No
+*Candidates* line. One finding of the stop: R-15's *Lean* records that its pin takes no `K`
+infinite, which `lem:pencil-d-planes-meet` states, but its remedies name only the argument; it is
+under A.
+
+**Questions for the PI.**
+1. A remedy per `open` row: **L**, the prose (under A, the statement) to the Lean; **H**, a Lean
+   helper so that the Lean follows the chapter (offered for R-3, R-4, R-11, R-18 and R-19 only); or
+   **K**, keep both. Per family with exceptions is enough, e.g. "A: L, except R-46 K; B and C: K".
+2. Reopen any close call (R-36, R-38, R-44, R-54)?
+3. The plan of rounds 2+: the proposal below, or another.
+
+**Coordinator proposal** (a proposal, not a decision; the task counts are rough):
+- **Round 2, the chapter to the Lean** (blueprint and notes, no Lean). Each row sent L restated (A:
+  the statement; B, C: the proof and its `\uses`), set `aligned`; each row sent K kept, with a
+  one-sentence formalization remark naming the Lean's route (as R-22's note), status `kept`. Slices
+  by layer as round 1's (42b with 42g; 42h; 42i with 42j; 42k; 42l; 42m in three), the two prose
+  slips in their layers' slices, then one `\uses` sweep (the *Moved* line: the script's 60 missing
+  edges); with the open and the close, about 11 tasks.
+- **Round 3, Lean** (only if a row goes H): one task per helper, its pin and its row `aligned`, and
+  the stale docstring of `Grade/LiftNoRigid.lean` (in round 4 if no row goes H). 1–6 tasks.
+- **Round 4, *Also left to it*** (Lean, §3): Theorem S's fold and the `d = 3` reduction's fold,
+  each an import reversal, then the two non-vacuity instances (`K₂` for the generic conjunct,
+  `K_{2,3}` for `IsPencilGoodEar` and `EarLiftCondition`), each task with a whole-project build and
+  the main results' axioms. About 5–7 tasks.
+
+Prose first, as it moves no Lean and shows the PI the restatements soonest; the folds last, as they
+reverse imports and move `d = 3` pins.
 
 ## Current state
 
-**Tasks 1 to 15 have landed: the audit is done** (task 15 this commit: R-53 `open`,
-`lem:pencil-d-good-ear`'s `|X| ≥ 3` by the `d = 3` proof's argument; R-54 `no departure`,
-`thm:pencil-d-generic`'s case split; R-33, R-34 accurate; R-31, R-32 and R-50 corrected in place).
-The ledger has 54 rows: 34 `open`, 6 `aligned`, 14 `no departure`; the next row is R-55. Nothing
-is mid-stream; task 16, the planned stop, is next.
+**Round 1 is closed** (task 16, this commit, docs only). All sixteen tasks have landed; nothing is
+mid-stream. What carried over is under *Hand-off*: the 34 `open` rows and the PI's answer at the
+stop.
+
+**Verified at the close** (2026-11-05, at `a3fdae5d` plus this commit):
+- **The tally**, re-counted from `notes/Cleanup42.md` §2: 54 rows, 34 `open`, 6 `aligned` (R-1,
+  R-2, R-7, R-8, R-13, R-22), 14 `no departure` (R-6, R-36 to R-45, R-47, R-52, R-54); the next row
+  is R-55. Round 1's 20 rows by task: 2, R-35; 3, R-36; 4, R-37; 5, R-38; 6, R-39; 7, none; 8,
+  R-40; 9, R-41, R-42; 10, R-43; 11, R-44, R-45; 12, R-46, R-47; 13, R-48 to R-50; 14, R-51, R-52;
+  15, R-53, R-54. Of them 7 `open` (R-35, R-46, R-48 to R-51, R-53), 13 `no departure`.
+- **The re-checks:** of R-1 to R-34, 22 accurate and 12 corrected in place (R-7, R-9, R-12, R-15,
+  R-16, R-17, R-24 to R-27, R-31, R-32), with round 1's R-50 (task 15): 13 corrections, no status
+  changed.
+- **No Lean edit:** `git diff --stat a3b80ac4.. -- CombinatorialRigidity/ blueprint/ lakefile.toml
+  lake-manifest.json lean-toolchain` prints nothing (run at this commit): the round touched no
+  Lean, no blueprint and no build file.
 
 **Verified at the open** (2026-11-05, at `a3b80ac4`):
 - **The Lean baseline** is the coordinator's run this session, not repeated here: `lake build
@@ -91,8 +135,8 @@ against its pins' statements and bodies at HEAD (`python3 scripts/blueprint-deps
   adds or orders otherwise (R-12's factored order, R-14's missing component step, R-17's classes
   for segments, R-32's missing map `g`); (3) a hypothesis of the node that the Lean does not use,
   so the pin is stronger than its node (R-25, R-28, R-30, R-33), or a pin that carries more than
-  its node states (R-31's explicit first outcome). A node's parts get a row each when their
-  remedies differ (R-7 and R-11, R-27 and R-28).
+  its node states. A node's parts get a row each when their remedies differ (R-7 and R-11, R-27
+  and R-28).
 - **Not a departure** (no row): a carrier encoding of the chapter's own object. An indexing or
   ordering; a restriction to `V(G)` (R-6); the phase's pinned encodings (each body's 3-space as
   data, the grade `k = d − 1` with `m = d − 2` heights, `def[D_d]` as `G.deficiency d`, `σ_v` a
@@ -171,18 +215,17 @@ or *Moved* line. The reasons stay in the landing commit's message and in the led
 - [x] **14. 42m, the cases** (`bd048052`). Open: R-51. No departure: R-52. Re-checks: R-28 to R-30
   accurate; R-24 to R-27 corrected (the spike's declarations, landed in `Grade/LiftSmall.lean` and
   `Grade/LiftCases.lean`).
-- [x] **15. 42m, the rest** (this commit). Open: R-53. No departure: R-54;
+- [x] **15. 42m, the rest** (`a3fdae5d`). Open: R-53. No departure: R-54;
   `cor:pencil-d-conditioned-pair`. Re-checks: R-33, R-34 accurate; R-31, R-32 corrected; R-50
   corrected (its five callers; its lean's clause to match). One *Moved* line.
-- [ ] **16. The stop** (docs only; the planned stop, *Autopilot: for the PI*). The ledger's tally
-  at the audit's end (rows by status, the new rows by task); the no-Lean-edit `git diff --stat`;
-  a `NEEDS_PI` entry with each `open` row and its remedies and the *Candidates* lines; round 1
-  closed (its whole scope is the audit), with ROADMAP's row, `notes/Cleanup42.md`'s **Status** and
-  §3 pointing at the PI's answer, which plans rounds 2+.
+- [x] **16. The stop** (this commit; docs only). The tally and the empty no-Lean-edit diff
+  (*Current state*); the open rows by family in `notes/Cleanup42.md` §3 *Round 1's stop*; the
+  `NEEDS_PI` entry (*Autopilot: for the PI*); round 1 closed. R-22's "(red)" and the criterion's
+  R-31 example corrected.
 
 ## Candidates for the PI
 
-- None yet.
+- None: no task raised one.
 
 ## Moved to a later round
 
@@ -210,17 +253,17 @@ or *Moved* line. The reasons stay in the landing commit's message and in the led
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 16, the planned stop (docs only; *Autopilot: for the PI*). One
-commit: the ledger's tally at the audit's end (54 rows: 34 `open`, 6 `aligned`, 14 `no
-departure`; round 1's 20 rows by task, from the *Lemma checklist*); the no-Lean-edit check, `git
-diff --stat a3b80ac4.. -- CombinatorialRigidity/ lakefile.toml lake-manifest.json lean-toolchain`
-empty; a `NEEDS_PI` entry under *Autopilot: for the PI* with each `open` row, its remedies and the
-recon's lean, and the *Candidates* lines (none so far); and round 1 closed, with ROADMAP's Status
-row and CLEANUP-42 bullet, `notes/Cleanup42.md`'s **Status** and §3 pointing at the PI's answer,
-which plans rounds 2+. Two links for the entry: R-25's remedy binds `thm:pencil-d-generic`'s proof
-too (R-54: the prose-to-Lean remedy strikes its derived "another neighbour" clause); and the
-criterion's example of a pin carrying more than its node, "R-31's explicit first outcome", no
-longer holds (R-31 corrected: that outcome is the node's).
+**Round 1 is closed; no task of it is left.** What carried over:
+- **The 34 `open` rows** of `notes/Cleanup42.md` §2, grouped by family in §3 *Round 1's stop*
+  (A 12, B 16, C 6, and 4 close calls), each awaiting the PI's remedy.
+- **The PI's answer** to the `NEEDS_PI` entry under *Autopilot: for the PI*: a remedy per open row,
+  any close call reopened, and the plan of rounds 2+ (a coordinator proposal is in the entry). It
+  goes to `notes/Cleanup42.md` §1 (verbatim) and §3, and the next round opens from it.
+- **The four *Moved* lines** and §3's three *Also left to it* items, already in
+  `notes/Cleanup42.md` §3, for rounds 2+.
+
+**Next concrete task:** none in round 1. After the PI answers, the coordinator records the answer
+and opens round 2 as the PI plans it.
 
 ## Decisions made during this round
 
@@ -230,3 +273,8 @@ longer holds (R-31 corrected: that outcome is the node's).
   layers. Within 42g–42m a node with a row is read whole, so a second departure gets its own row.
 - **Round 1 closes at its stop** (task 16): the audit is its whole scope, and the PI's answer and
   the plan of rounds 2+ go to `notes/Cleanup42.md` §1 and §3.
+- **The families at the stop** (task 16). A row with a statement part (a node hypothesis its pin
+  does not take) goes under A, its argument or step part cross-referenced under B or C, as the
+  statement part is the one that changes a node's strength. So R-25, R-28 to R-30 and R-33 are
+  under A, and R-15 too, on its *Lean* text (its pin takes no `K` infinite), though its remedies
+  name only the argument. B against C follows the criterion's own examples (R-17 and R-32 under C).
