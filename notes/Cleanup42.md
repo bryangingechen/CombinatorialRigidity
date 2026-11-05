@@ -9,9 +9,9 @@ row to §2 for each departure, with no prose or Lean edit, then a stop at which 
 remedy per `open` row and plans rounds 2+ (§3). `.claude/autopilot/queue.toml` carries it as
 `CLEANUP-42`, attended, between PENCIL-D (done) and ORIGAMI; ROADMAP *Queued post-program phases*
 lists it. Its input is the proof-route ledger (§2): 34 rows at Phase 42's close (2026-11-05), 27
-`open`, 6 `aligned`, 1 `no departure`, to which round 1 adds; after its task 2, 35 rows, 28 `open`
-(R-35). **Next concrete task:** round 1's task 3, PD-STATE's configurations
-(`notes/Phase42-cleanup.md` *Lemma checklist*).
+`open`, 6 `aligned`, 1 `no departure`, to which round 1 adds; after its task 3, 36 rows, 28 `open`,
+6 `aligned` and 2 `no departure` (R-35 `open`, R-36 `no departure`). **Next concrete task:** round
+1's task 4, PD-STABLE (`notes/Phase42-cleanup.md` *Lemma checklist*).
 
 ## 1. The PI's decisions (verbatim)
 
@@ -566,6 +566,16 @@ task in `notes/Phase42-cleanup.md`, and its re-checks of R-1 to R-34 are recorde
   *Remedies:* the prose to the Lean (the statement without "nonzero", the proof with the sentence
   on the dimension; its `\uses` unchanged), or keep both (the points of a pencil realization are
   nonzero). The recon leans to the prose: one word and one sentence.
+
+- **R-36** · `lem:pencil-d-contract-magnified-rank`, its `r ∈ W`
+  (`Graph.finrank_span_rigidityRows_induce_contractHeightGrade_eq`, `Grade/Contract.lean`, round 1
+  task 3) · **no departure**: the pin takes any `r`, with no `r ∈ W`, as the curve
+  `contractPicture` is total in `r`. The chapter's `r ∈ W` is the setting of
+  `def:pencil-contract-lifting-system` (the curve "defined for every `W` and every `r ∈ W`"), and
+  its proof never reads it; the `d = 3` pin
+  (`Graph.finrank_span_rigidityRows_induce_contractHeight_eq`) takes any `r` too. The rest is the
+  chapter's proof: its map of `K^(d+1)`, with its inverse, at the bodies of `W`, then the
+  collineation.
 
 ## 3. The cleanup's rounds
 

@@ -7,9 +7,9 @@ from the chapter's route; its plan, the PI's words and the proof-route ledger ar
 and adds a ledger row for each departure, re-checking R-1 to R-34 at HEAD; it edits no prose,
 statement, pin or Lean. The open (task 1, docs only) sliced the nodes by layer into 14
 one-dispatch Opus recon tasks, the 47 never-checked nodes of 42b–42f first, then a planned stop
-(task 16) at which the PI picks a remedy per `open` row and plans rounds 2+. Task 2 (PD-STATE's
-realizations) added R-35. **Next concrete task:** task 3, PD-STATE's configurations, the nine nodes
-of `sec:pencil-d-carrier` (*Lemma checklist*). Round manual: `CLEANUP.md`.
+(task 16) at which the PI picks a remedy per `open` row and plans rounds 2+. Tasks 2 and 3
+(PD-STATE) added R-35 (`open`) and R-36 (`no departure`). **Next concrete task:** task 4,
+PD-STABLE, the nine nodes of `sec:pencil-d-stable` (*Lemma checklist*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -23,9 +23,9 @@ picks a remedy per `open` row and plans rounds 2+ (`notes/Cleanup42.md` §3). An
 
 ## Current state
 
-**Tasks 1 and 2 have landed** (task 2 this commit: one row, R-35, seven nodes no departure, one
-line under *Moved to a later round*). The ledger has 35 rows, 28 `open`; the next row is R-36.
-Nothing is mid-stream; task 3 is next.
+**Tasks 1 to 3 have landed** (task 3 this commit: one `no departure` row, R-36, the other eight
+nodes no departure, no line under *Candidates* or *Moved to a later round*). The ledger has 36
+rows, 28 `open`; the next row is R-37. Nothing is mid-stream; task 4 is next.
 
 **Verified at the open** (2026-11-05, at `a3b80ac4`):
 - **The Lean baseline** is the coordinator's run this session, not repeated here: `lake build
@@ -118,13 +118,13 @@ a row included), the rows it re-checks and the pinned files it reads (under
 are as at the open. On landing, its line gets its commit and its verdicts: the new rows, the
 re-checks (accurate or corrected) and the nodes judged no departure.
 
-- [x] **1. Open** (this commit; docs only): this log, the re-count, the criterion and the task
+- [x] **1. Open** (`b753cace`; docs only): this log, the re-count, the criterion and the task
   list; `notes/Cleanup42.md`'s **Status**, §1 (the PI's entry of 2026-11-05) and §3; ROADMAP's
   Status row, §42's *Next* and the CLEANUP-42 bullet; the queue's comment on the row.
 
 **42b–42f, never checked (47 nodes, no row).**
 
-- [x] **2. PD-STATE (42b), the realizations** (this commit). `sec:pencil-d-realization` (lines
+- [x] **2. PD-STATE (42b), the realizations** (`def498ad`). `sec:pencil-d-realization` (lines
   69–298), 8 light nodes, against `Grade/Realization.lean` (all 16 pins). No re-checks. **New row:**
   R-35, `lem:pencil-d-agrees-three`'s first sentence (the pin drops the nonzero points and adds
   `dim q^⊥ = 3 ⇔ q ≠ 0`). **No departure:** `def:extensor-through-flat` (the definition verbatim);
@@ -139,13 +139,31 @@ re-checks (accurate or corrected) and the nodes judged no departure.
   (the rank hypothesis inlined, one realization with the independence);
   `lem:pencil-d-rank-agrees-three` (one framework for the first; the point form, then the polarity
   at one rank, for the second). One line under *Moved to a later round*.
-- [ ] **3. PD-STATE (42b), the configurations.** `sec:pencil-d-carrier` (300–525), 9 light nodes:
-  `def:pencil-d-configuration`, `lem:pencil-d-config-realization`, `def:pencil-d-x0-attains`,
-  `lem:pencil-d-x0-attains-three`, `lem:pencil-d-rank-collineation`,
-  `lem:pencil-d-rank-scale-shift`, `lem:pencil-d-x0-one-witness`,
-  `lem:pencil-d-contract-magnified-rank`, `lem:pencil-d-join-independence-open`. Reads
-  `Grade/Carrier.lean`, `Grade/Configuration.lean`, `Grade/Collineation.lean`, `Grade/Witness.lean`,
-  `Grade/Contract.lean`, `Grade/JoinIndependence.lean`.
+- [x] **3. PD-STATE (42b), the configurations** (this commit). `sec:pencil-d-carrier` (300–525),
+  9 light nodes, against `Grade/Carrier.lean`, `Grade/Configuration.lean`,
+  `Grade/Collineation.lean`, `Grade/Witness.lean`, `Grade/Contract.lean` and
+  `Grade/JoinIndependence.lean` (all 20 pins). No re-checks. **New row:** R-36, **no departure**,
+  `lem:pencil-d-contract-magnified-rank`'s `r ∈ W` (the pin takes any `r`, the curve being total
+  in it; `r ∈ W` is the setting of `def:pencil-contract-lifting-system`, which the proof never
+  reads); its proof is otherwise the chapter's map, with its inverse, at the bodies of `W`. **No
+  departure:** `def:pencil-d-configuration` (the point `(x, y, z, 1)` by its blocks in `K^(m+3)`,
+  `m = d − 2` heights, the rank that of `ofNormals` at grade `m + 1`; the `d = 2` and `d = 3`
+  remarks pinned); `lem:pencil-d-config-realization` (the proof's steps: `dim Π_v ≤ 3` as the image
+  of `K³` under the affine lift, `≥ 3` by the projection to the kept coordinates, the chapter's
+  injectivity, on admissibility's three independent picture points; adjacent points independent as
+  at `d = 3`; then `lem:pencil-d-point-configuration` (1), on the patched framework of its note; the
+  normals nonzero by their last coordinate, which the proof leaves implicit);
+  `def:pencil-d-x0-attains` (`def:pencil-x0-attains` at `m` heights: `L(q)^m` column by column, the
+  Zariski-open set the non-roots in `L(q)^m` of one height polynomial, a selector `ends`, the
+  deficiency at `m + 2`); `lem:pencil-d-x0-attains-three` (one height, the same rank, the
+  polynomials renamed along `α × Fin 1 ≃ α`); `lem:pencil-d-rank-collineation` (the join under
+  `⋀²g`, the complement isomorphism's law giving `det g · Λ_h`, one automorphism at every link,
+  `lem:screw-map-rows`); `lem:pencil-d-rank-scale-shift` (the chapter's map, `a^i` read on `V(G)`
+  from its coefficients, `T` a linear automorphism); `lem:pencil-d-x0-one-witness` (the `d = 3`
+  proof with one section per height: `P = A · ∏ D_i · Q(q, Z(q))`, `R = Q(q, ·)`);
+  `lem:pencil-d-join-independence-open` (the `2 × 2` minors, polynomial in the picture or in the
+  heights, and a nonzero maximal minor). No line under *Candidates* or *Moved to a later round*:
+  the script's two missing edges on these nodes are in task 2's sweep.
 - [ ] **4. PD-STABLE (42c).** `sec:pencil-d-stable` (527–841), 9 light to medium nodes:
   `lem:deficiency-stable`, `def:pencil-d-embedding`, `lem:pencil-d-embedding-join`,
   `lem:screw-embedding-rank`, `lem:pencil-d-embed-realization`, `lem:pencil-d-embed-config-rank`,
@@ -239,12 +257,12 @@ re-checks (accurate or corrected) and the nodes judged no departure.
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 3, PD-STATE's configurations. One Opus recon reads the nine nodes of
-`sec:pencil-d-carrier` against their pins in `Grade/Carrier.lean`, `Grade/Configuration.lean`,
-`Grade/Collineation.lean`, `Grade/Witness.lean`, `Grade/Contract.lean` and
-`Grade/JoinIndependence.lean` under *The audit's criterion*, then lands one docs commit: any new
-rows in `notes/Cleanup42.md` §2 (from R-36), its **Status** counts, and task 3's line here with its
-verdicts. Then tasks 4–15 in order, and the stop.
+**Next concrete task:** task 4, PD-STABLE (42c). One Opus recon reads the nine nodes of
+`sec:pencil-d-stable` against their pins in `CombinatorialRigidity/Molecular/Deficiency.lean` (the
+two `Graph.Connected.deficiency_eq_*` pins only), `Grade/Embedding.lean`, `Grade/ZeroHeights.lean`,
+`Grade/Configuration.lean` (one pin) and `Grade/Stable.lean` under *The audit's criterion*, then
+lands one docs commit: any new rows in `notes/Cleanup42.md` §2 (from R-37), its **Status** counts,
+and task 4's line here with its verdicts. Then tasks 5–15 in order, and the stop.
 
 ## Decisions made during this round
 
