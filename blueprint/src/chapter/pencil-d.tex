@@ -4653,6 +4653,11 @@ dimension three (\cref{lem:pencil-d-nondegenerate-feasible}).
 % definition at d = 3, with which this one agrees (lem:pencil-d-nondegenerate-three).
 \begin{definition}[Nondegenerate pencil realization in every dimension]
   \label{def:pencil-d-nondegenerate}
+  \lean{CombinatorialRigidity.Molecular.PencilNondegConditions,
+        CombinatorialRigidity.Molecular.IsNondegPencilPlaneRealization,
+        CombinatorialRigidity.Molecular.GradedPencilNondegFeasible,
+        CombinatorialRigidity.Molecular.HasGradedGenericPencilRealization}
+  \leanok
   \uses{def:pencil-d-realization, def:pencil-nondegenerate,
         def:pencil-d-rank-hypothesis}
   Let $d \ge 3$. A pencil realization of a multigraph $G$ in dimension
@@ -4710,6 +4715,12 @@ which is a condition on the minors of that size.
 % Source: NONDEG workbook, S7 (a).
 \begin{lemma}[Nondegeneracy in dimension three]
   \label{lem:pencil-d-nondegenerate-three}
+  \lean{CombinatorialRigidity.Molecular.finrank_iInf_dotPerp_add_card_le_iff,
+        CombinatorialRigidity.Molecular.pencilNondegConditions_dotPerp_iff,
+        CombinatorialRigidity.Molecular.isNondegPencilPlaneRealization_two_iff,
+        CombinatorialRigidity.Molecular.gradedPencilNondegFeasible_two_iff,
+        CombinatorialRigidity.Molecular.hasGradedGenericPencilRealization_two_iff}
+  \leanok
   \uses{def:pencil-d-nondegenerate, def:pencil-nondegenerate,
         def:pencil-generic-motive, lem:pencil-d-agrees-three}
   Let $d = 3$, and let $b_v, n_v \in K^4$ be nonzero with
@@ -4724,6 +4735,7 @@ which is a condition on the minors of that size.
   pencil realization (\cref{def:pencil-generic-motive}).
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-self-dual, lem:screw-map-rows,
         lem:pencil-d-rank-agrees-three}
   By \cref{lem:pencil-d-agrees-three}, a pencil realization in dimension
@@ -4757,6 +4769,10 @@ which is a condition on the minors of that size.
 % Source: NONDEG workbook, S14 (part (1)) and S7's embedding column (part (2)).
 \begin{lemma}[Nondegeneracy under linear maps]
   \label{lem:pencil-d-nondegenerate-maps}
+  \lean{CombinatorialRigidity.Molecular.PencilNondegConditions.of_map,
+        CombinatorialRigidity.Molecular.PencilNondegConditions.map,
+        CombinatorialRigidity.Molecular.IsNondegPencilPlaneRealization.map_gradeEmbed}
+  \leanok
   \uses{def:pencil-d-nondegenerate}
   Let $d, d' \ge 3$. At every body $v$ of $G$ let $b_v \in K^{d+1}$ be
   nonzero and let $\Pi_v \ni b_v$ be a three-dimensional subspace, and let
@@ -4772,6 +4788,7 @@ which is a condition on the minors of that size.
   \end{enumerate}
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-d-embed-realization}
   (1) A linear relation among vectors gives one among their images, so
   vectors with linearly independent images are linearly independent.
