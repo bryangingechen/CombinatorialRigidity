@@ -14,10 +14,12 @@ added; at its close, 54 rows, 34 `open`, 6 `aligned` and 14 `no departure` (R-35
 and R-53 `open`, R-36 to R-45, R-47, R-52 and R-54 `no departure`; R-1 to R-34 re-checked, R-7, R-9,
 R-12, R-15 to R-17, R-24 to R-27, R-31, R-32 and round 1's R-50 corrected in place). The open rows
 by family: §3 *Round 1's stop*. The PI answered the stop on 2026-11-05 (§1): family A to the Lean
-(R-46 kept), families B and C judged per row first, no close call reopened, rounds 2+ as proposed.
-**Next concrete task:** the B/C judgment recon, one Opus recon proposing L, K or H for each of the
-22 B/C rows of §3 *Round 1's stop*, then a short second stop for the PI's approval; round 2 opens
-after it (§3).
+(R-46 kept), families B and C judged per row first, no close call reopened, rounds 2+ as proposed;
+and, asked the same day, the judgment also takes family A's 7 argument or step parts (§1). The B/C
+judgment landed 2026-11-05 (§3 *The B/C judgment*): of the 22 rows 9 L, 13 K, no H; of the 7 parts
+4 L, 2 K, R-29 split. **Next concrete task:** the second stop, at which the PI approves that table or
+amends it per row (`notes/Phase42-cleanup.md` *Autopilot: for the PI*); then round 2 opens with its
+own work log (§3).
 
 ## 1. The PI's decisions (verbatim)
 
@@ -124,6 +126,27 @@ What follows from it:
 - **No close call reopened:** R-36, R-38, R-44 and R-54 stay `no departure`.
 - **Rounds 2+ as proposed** (§3): round 2 the chapter to the Lean (no Lean), round 3 Lean helpers if
   any row goes H, round 4 the *Also left to it* items.
+
+### 2026-11-05: the B/C judgment's scope, the argument parts of family A
+
+From the coordinator's question before the B/C judgment recon: the question, then the option the PI
+chose with its description.
+
+**PI, 2026-11-05:** (verbatim)
+- Q: "Your answer at round 1's stop sent family A's 12 statements to their pins (L) and the 22 B/C
+  rows to a per-row judgment. But 7 family-A rows also have an argument or step part (R-15, R-25,
+  R-28, R-29, R-30, R-33, R-35). Restating their statements doesn't touch their proofs, so those
+  parts are unjudged. Should the B/C recon also propose L/K/H for those 7 parts?" — A: "Yes, include
+  them (Recommended)" — "The recon judges the 22 B/C rows plus the 7 argument/step parts, the 7 in a
+  separate list, so the second stop settles every proof route at once."
+
+What follows from it:
+
+- **The B/C judgment covers 29 parts:** the 22 rows of families B and C, and, in a separate list,
+  the argument or step parts of R-15, R-25, R-28 to R-30, R-33 and R-35, whose statements already
+  go L (§3 *The B/C judgment*).
+- **The second stop settles every proof route at once:** with family A's statements (L, R-46 K), it
+  leaves no open row's remedy for round 2 to ask.
 
 ## 2. The proof-route ledger
 
@@ -954,11 +977,13 @@ task in `notes/Phase42-cleanup.md`, and its re-checks of R-1 to R-34 are recorde
   by family (below, *Round 1's stop*) and asks the PI for a remedy per row and the plan of rounds
   2+ (`notes/Phase42-cleanup.md` *Autopilot: for the PI*).
 - **Between rounds 1 and 2: the B/C judgment** (the PI, 2026-11-05, §1). One Opus recon reads
-  each of the 22 rows of families B and C (*Round 1's stop*, below) against the chapter and the
-  Lean and proposes L, K or H with a one-line reason (which route reads better), in one docs commit
-  (a per-row table in this section, after *Round 1's stop*; read-only otherwise, no row's status
-  changed); a short second stop, at which the coordinator relays the proposals and the PI approves
-  or amends, then round 2 opens with its own work log.
+  each of the 22 rows of families B and C (*Round 1's stop*, below), and, at the PI's later word
+  (§1), the 7 argument or step parts of family A rows, against the chapter and the Lean, and
+  proposes L, K or H with a one-line reason (which route reads better), in one docs commit (a
+  per-row table in this section, after *Round 1's stop*; read-only otherwise, no row's status
+  changed). Landed 2026-11-05 (*The B/C judgment*, below). Next a short second stop, at which the
+  coordinator relays the proposals and the PI approves or amends, then round 2 opens with its own
+  work log.
 - **Rounds 2+** (planned with the PI at round 1's stop, §1: the proposal as written): round 2, the
   chapter to the Lean (blueprint and notes, no Lean; family A's L rows, the B/C rows the PI sends
   L, a remark for each K row, the *Moved* lines below and the `\uses` sweep; about 11 tasks);
@@ -1111,3 +1136,69 @@ recovered or the setting), so that the PI may reopen any:
   (its hypotheses contradict at `ℓ = 0`), recovered for the theorem, the setting.
 - R-54 `thm:pencil-d-generic`: its proof reads less where a case's pin drops a hypothesis (R-25's
   other neighbour; R-29's `a ≁ b`, passed as `a ≠ b`).
+
+### The B/C judgment (2026-11-05)
+
+The recon the PI asked for at round 1's stop (§1), widened the same day to the argument and step
+parts of family A (§1, *the B/C judgment's scope*). Each verdict comes from the node's proof in
+`pencil-d.tex` and its pins' statements and bodies at `b9cf3c66` (the Lean unchanged since
+`a3b80ac4`), not from the row's text alone. **L**: the chapter's proof and its `\uses` to the
+Lean's route; **K**: keep both, round 2 adding a one-sentence formalization remark naming the
+Lean's route (as R-22's note); **H**: a Lean helper so that the Lean follows the chapter. "Reads
+better" is calibrated on the PI's call of 2026-10-30 (§1): the Lean where it is the shorter
+elementary argument (the star, the insertion), the chapter where its argument is the explicit or
+the standard one (the affine map, the base triangle). These are proposals for the second stop; no
+row's status changes.
+
+**The 22 rows of families B and C.**
+
+| Row | Node | Remedy | Reason |
+|---|---|---|---|
+| R-3 (B) | `lem:pencil-d-polygon-normal` (2) | **K** | The map `g(x̄, ω) = (M(x̄ − ω ȳ_i), ω)` is checked at sight; the basis extension and transvection are the API's route (the PI's 2026-10-30 call, the coordinator's K). No H: a `K^d × K` split would re-prove a green lemma. |
+| R-4 (B) | `lem:pencil-d-polygons`, the base triangle | **K** | `P_0, …, P_d` a basis, whose joins are a basis of `⋀²`, is the standard one-line reason (the PI's call). H would be cheap (mathlib's `Module.Basis.exteriorPower`, which `CombinatorialRigidity/Mathlib/LinearAlgebra/ExteriorPower/Basis.lean` already uses) but gains the reader nothing. |
+| R-9 (B) | `lem:pencil-d-kernel-curve` | **L** | The Lean's contradiction (no `ξ₁` puts `M_w ξ₀` off `range M(y₀)`; a basis of that range with it stays independent at some `t ≠ 0`, inside `range M(y₀ + tw)`, above the generic rank) is one paragraph in the chapter's own tools, a minor nonzero at a point over an infinite `K`, with no `K(t)` or power series, as the PI preferred the Lean's line for the insertion (R-2). |
+| R-10 (B) | `lem:pencil-d-ear-data` (3) | **K** | A toss-up: the chapter's `f_α(y(s))` is the coefficient of `λ^α` in the Lean's `h(λ, s)`, so the two proofs take the same polynomial, which the remark says in a sentence. |
+| R-11 (B) | `lem:pencil-d-two-stars` (1) | **K** | Extending `y, y'` to a basis is the standard proof of `ker ⋀²π`, and the same basis carries the proof's `⋀^{d−1}` paragraph; the Lean's linear section of the quotient is formalization economy. No H. |
+| R-16 (B, C) | `lem:pencil-d-glued-ends` | **K** | The steps agree one for one (`dim Z⁰(q) = 3 + m`, constant on the parts, a connected part, `⋀²π` injective on `ρ`); the merged deficiency is the chapter's name for `def₂(G′)`, equated at once, and the Lean's two-way split of `X` is the `c = 2` case of the chapter's count. |
+| R-18 (B) | `lem:pencil-d-base-case` | **K** | The motions give each case's rank exactly, with no upper-bound lemma; the Lean's bounds (a hinge's `D − 1` rows, at most the target) are `lem:pencil-base-case`'s `d = 3` count. Close (below). No H. |
+| R-19 (B) | `lem:pencil-d-nonsimple-case` | **L** | The proof says it follows `lem:pencil-nonsimple-case`, after KT Lemma 6.2, whose count is the block-triangular splice (KT eqs. (6.3)–(6.5), `lem:rigidityRows-splice-rank-add`), as the Lean's is at every `D`; L makes that sentence true, and the closing remark's third point becomes "the splice holds at every `D`". No H. |
+| R-20 (B) | `lem:pencil-d-nondegenerate-feasible` | **L** | The Lean's rows (a form nonzero at `b_v`, one vanishing on each `Π_w`, each chosen off at most two proper subspaces) replace two paragraphs of quotients, an induction on `dim Σ A_w` and a quadric, over any field. |
+| R-21 (B) | `lem:pencil-d-lift-one-witness` | **L** | One polynomial section through the given lift's parameters, with no Cramer basis, no `γ` and no coefficient `P_α`, is shorter, and is how `lem:pencil-d-x0-one-witness` already reads. |
+| R-23 (B) | `lem:pencil-d-lift-transfer` | **K** | Nonempty and open as the preimage under the onto restriction is two standard facts composed; the Lean's rank polynomial in `λ` is as short, so a change gains nothing. Close (below). |
+| R-26 (B) | `lem:pencil-d-lift-pendant`, `-lift-ear` (T2) | **L** | One form on `K⁴` per body (part (2) of `lem:pencil-d-lift-realization`) makes (T2) a reuse (`ψ_u` at `v`; at the ear, a form with three values at independent points), as the chapter's own (T2) of `lem:pencil-d-lift-cut-edge` already reads; R-29's (T2) follows it. |
+| R-27 (B, C) | `lem:pencil-d-lift-small` (1), the triangle | **K** | The partition values give `def_d = 0` outright, which the pendant triangle reuses ("the triangle's being zero"), and the joins' independence is R-4's fact; the Lean's sandwich (rigid, at most the target, `def_d ≥ 0`) is a formalization shortcut. |
+| R-31 (B) | `lem:pencil-d-good-ear` | **K** | (iii)'s computations in `s` (`s(X) = s(W₀) + 1`, the singleton bound, `s(X) ≥ 3` when `G[X]` splits) are a line each; the core split and the partition case split factor the same steps for the Lean. |
+| R-34 (B) | `lem:pencil-d-ear-free` | **L** | Carrying only rank `≥ 3` in (a), and filling `L̃` by (c) with the trivial lifts and one free coordinate per body, drops the paragraph that checks rank `≤ 3` on `Γ_L`, `Γ(G)` and the configuration, and the count `dim L̃ = dim L + |X|`; the arguments for (b) and the openness may stay. |
+| R-53 (B) | `lem:pencil-d-good-ear` (iii), its `\|X\| ≥ 3` | **K** | Minimum degree two in a simple graph forces three bodies, checked on the spot; reading it off `lem:pencil-rigid-good-ear`'s proof sends the reader to another chapter. Against the recon's L lean. |
+| R-5 (C) | `thm:pencil-d-cycle`, the placement | **K** | A toss-up (the PI's): the two cases use `lem:pencil-d-polygons` and part (1) of `lem:pencil-d-polygon-collapse` as stated (`m ≥ D`); one path at `N = min(m, D)` would first restate the collapse at every `N ≤ m`. |
+| R-12 (C) | `thm:pencil-d-open-ear-four` | **K** | The proof's one order (base data, three conditions, `x₂` put back, the count) reads in one pass; the factoring through `of_openEar_splitOff_of_base` is code shared with the three-body step, whose proof already says "only the first stage and the third condition on the ear data change". |
+| R-14 (C, B) | `thm:pencil-d-open-ear-three` | **L** | At `r ≤ 2`, `dim ρ ≤ 2` directly (glued-ends when the closed neighbourhoods of `a`, `b` are disjoint, else `ρ ⊆ span(b_a ∨ b_t, b_t ∨ b_b)` at a common member `t`), so `W`, of dimension `≤ 5 < 2d − 1`, holds no two stars: no contradiction, component step or four-edge path. The factoring stays R-12's. |
+| R-17 (C, B) | `lem:pencil-d-chain-count` | **K** | The segments are the classical exact count (`\|E(G)\| = Σ L_j`, `3\|B\| ≤ 2e`); the Lean's classes of interior bodies and the handshake bound reach the same last line by inequalities chosen for the formalization. |
+| R-24 (C) | the cases' (T1) | **L** | One minor per closed hub-neighbourhood of `G` (each inside `V(H)`, a removed body being no hub) spares all three cases the sorting of which conditions are new; the old ones are harmless factors. |
+| R-32 (C, B) | `lem:pencil-d-lift-no-rigid` | **L** | Only a main picture's minimality is used (`dim L(q) ≤ dim L(q′)`), so Jackson and Jordán's equality and `ℓ₀` leave the proof; the conditions that make the rescaled points a configuration hold generally, witnessed at `r*`, so no map `g`. |
+
+**The 7 argument or step parts of family A rows** (their statements go L, the PI's word). *Forced*:
+whether restating the statement to its pin forces the proof's hand.
+
+| Row | Node | Remedy | Forced | Reason |
+|---|---|---|---|---|
+| R-15 (B) | `lem:pencil-d-planes-meet` | **K** | No: the proof never reads `K` infinite. | The `λ` map through `lem:pencil-lifting-planes-dim`, and `R` a minor of `L(z)` at a height of independent first rows, are the Lean's fixed three-point inverse and its rank openness at that height, in other words. |
+| R-25 (B) | `lem:pencil-d-lift-pendant` (T1) | **L** | Yes: without "`u` has another neighbour", the two cases (two neighbours in `H`, or one, `w`) miss `u` alone in `H`. | The Lean's split, `u` a hub of `G` or not, with `b_v` off the span `W` (`dim W ≤ 2`) of the points of `u`'s closed neighbourhood in `H`, is the chapter's two cases, its second covering `u` alone; it also strikes `thm:pencil-d-generic`'s derived clause (R-54). |
+| R-28 (C) | `lem:pencil-d-lift-small` (2) | **K** | No: (2)'s proof never reads simplicity. | "The lift space of `G` is the product of those of the sides" is the one-line statement of the Lean's body-by-body glue. |
+| R-29 (B) | `lem:pencil-d-lift-pendant-triangle` | **L** (T2), **K** the rest | No: the ear's proof never reads `a ≁ b` (its rank is the ear formula, `ear_rank`). | (T2) as R-26: one form `ψ_c` at `x₁`, `x₂` and `c`, so `Π⁰_{x_i} = Π⁰_c` is not needed; the triangle's rank and deficiency as R-27; (T1) by polarity is the chapter's construction in its notation `Π⁰_v = n_v^⊥`. |
+| R-30 (B) | `lem:pencil-d-lift-cut-edge` | **L** | No: the argument never reads `\|V₁\|, \|V₂\| ≥ 2`. | One frame map and one minor (the independence on `u`'s closed hub-neighbourhood in `G`, whose non-roots put `r₁`'s own `n_v ∈ P` off `N`) replace the set `𝒢`, the case analysis on `\|S\|` and the replaced normal of `u`. |
+| R-33 (B) | `lem:pencil-d-ear-extend` | **L** | No: neither simplicity nor the selector is read. | One witness per condition replaces the moment curve, and the greedy choice of the `n_u` (each `A_u` of dimension three, or two and missing `m_v` by (b)) replaces the case analysis on `O_v`. |
+| R-35 (C) | `lem:pencil-d-agrees-three`, its first sentence | **L** | Yes: without "nonzero", the proof must match the dimension of `def:pencil-d-realization` with the nonzero point of `def:pencil-panel-realization`. | The added sentence, `q^⊥` three-dimensional exactly when `q ≠ 0`, is that match (`finrank_dotPerp`); the `\uses` unchanged. |
+
+**Tally.** The 22: 9 L, 13 K, no H (family B, 16: 6 L, 10 K; family C, 6: 3 L, 3 K). The 7 parts:
+4 L, 2 K and R-29 split ((T2) L, the rest K); two of them forced (R-25, R-35). No H anywhere: of the
+five rows offered it, R-3, R-4, R-11 and R-18 go K and R-19 L.
+
+**Close calls.** R-18: K, but with R-19 at L the reduction section reads the rank by motions in the
+base case and by the splice at parallel edges; L would follow `lem:pencil-base-case`'s `d = 3` count
+there too. R-23: both proofs short. R-5 and R-10: the toss-ups, kept as the cheaper remedy. R-53
+goes against its recon's L lean.
+
+**Corrections found.** None: each row's *Chapter* and *Lean* text matches the node and its pins'
+bodies at HEAD. One reading: R-29's "(T1) is in the polarity form" is the chapter's own construction
+in its notation (`Π⁰_v = n_v^⊥`), not a departure.

@@ -9,9 +9,10 @@ ledger row for each departure, re-checking R-1 to R-34 at HEAD, with no prose, s
 Lean edit. The ledger now has 54 rows: 34 `open`, 6 `aligned`, 14 `no departure`. Task 16, the stop,
 grouped the open rows by family (`notes/Cleanup42.md` §3 *Round 1's stop*) and asked the PI for a
 remedy per open row and the plan of rounds 2+ (*Autopilot: for the PI*); the PI answered the same
-day (`notes/Cleanup42.md` §1). **Next concrete task:** none in this round; the next is
-`notes/Cleanup42.md`'s **Status** (the B/C judgment recon, then a second short stop, then round 2).
-Round manual: `CLEANUP.md`.
+day (`notes/Cleanup42.md` §1), and the B/C judgment it asked for landed then too (§3 there).
+**Next concrete task:** none in this round; the next is `notes/Cleanup42.md`'s **Status** (the
+second stop: the PI approves or amends the B/C judgment's table; then round 2). Round manual:
+`CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -27,6 +28,20 @@ starts `**PI, <date>:**`.
 descriptions are verbatim in `notes/Cleanup42.md` §1 (*round 1's stop, the remedies and rounds
 2+*). The options chosen: "A: L; B/C judged per row"; "Reopen none (Recommended)"; "The proposal
 as written (Recommended)".
+
+### 2026-11-05 — `NEEDS_PI`: the B/C judgment, the second stop (planned stop)
+
+**What landed.** The B/C judgment recon, one docs commit: a remedy per part, with a one-line reason,
+for the 22 rows of families B and C and, at the PI's word of the same day (`notes/Cleanup42.md` §1),
+the 7 argument or step parts of family A rows, in `notes/Cleanup42.md` §3 *The B/C judgment*. The 22:
+9 L (R-9, R-14, R-19 to R-21, R-24, R-26, R-32, R-34), 13 K, no H. The 7: 4 L (R-25, R-30, R-33,
+R-35; R-25's and R-35's forced by their statements' restatement), 2 K (R-15, R-28), and R-29 split
+((T2) L, the rest K). No row's status changed; the Lean unchanged since `a3b80ac4`.
+
+**Question for the PI.** Approve the table, or amend it per row (L, K or H).
+
+**Close calls:** R-18 (K; L would read its rank as R-19's L does), R-23, the toss-ups R-5 and R-10
+(kept); R-53 goes K against its recon's L lean.
 
 ### 2026-11-05 — `NEEDS_PI`: round 1's stop, a remedy per open row and rounds 2+ (planned stop)
 
@@ -65,7 +80,7 @@ reverse imports and move `d = 3` pins.
 
 ## Current state
 
-**Round 1 is closed** (task 16, this commit, docs only). All sixteen tasks have landed; nothing is
+**Round 1 is closed** (task 16, `40c56cbf`, docs only). All sixteen tasks have landed; nothing is
 mid-stream. What carried over is under *Hand-off*: the 34 `open` rows and the PI's answer at the
 stop.
 
@@ -224,7 +239,7 @@ or *Moved* line. The reasons stay in the landing commit's message and in the led
 - [x] **15. 42m, the rest** (`a3fdae5d`). Open: R-53. No departure: R-54;
   `cor:pencil-d-conditioned-pair`. Re-checks: R-33, R-34 accurate; R-31, R-32 corrected; R-50
   corrected (its five callers; its lean's clause to match). One *Moved* line.
-- [x] **16. The stop** (this commit; docs only). The tally and the empty no-Lean-edit diff
+- [x] **16. The stop** (`40c56cbf`; docs only). The tally and the empty no-Lean-edit diff
   (*Current state*); the open rows by family in `notes/Cleanup42.md` §3 *Round 1's stop*; the
   `NEEDS_PI` entry (*Autopilot: for the PI*); round 1 closed. R-22's "(red)" and the criterion's
   R-31 example corrected.
@@ -269,9 +284,11 @@ or *Moved* line. The reasons stay in the landing commit's message and in the led
   `notes/Cleanup42.md` §3, for rounds 2+.
 
 **The PI answered on 2026-11-05** (`notes/Cleanup42.md` §1): family A to the Lean, R-46 kept;
-families B and C judged per row by one Opus recon, then a short second stop; no close call
-reopened; rounds 2+ as proposed. **Next concrete task:** none in round 1; the B/C judgment recon,
-per `notes/Cleanup42.md`'s **Status** and §3.
+families B and C judged per row by one Opus recon, with family A's 7 argument or step parts, then a
+short second stop; no close call reopened; rounds 2+ as proposed. The B/C judgment landed the same
+day (`notes/Cleanup42.md` §3 *The B/C judgment*; its `NEEDS_PI` entry above). **Next concrete
+task:** none in round 1; the second stop, at which the PI approves or amends that table, then round
+2 opens with its own work log (`notes/Cleanup42.md`'s **Status**).
 
 ## Decisions made during this round
 
