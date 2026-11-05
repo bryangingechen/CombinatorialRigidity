@@ -5201,7 +5201,8 @@ $(b^0, \Pi^0)$ itself.
 % Source: NONDEG workbook, S18 (iv), stated in S18 (v)'s pointwise form.
 \begin{definition}[The general lift attains]
   \label{def:pencil-d-lift-attains}
-  \lean{CombinatorialRigidity.Molecular.LiftAttains}
+  \lean{CombinatorialRigidity.Molecular.LiftAttains,
+  CombinatorialRigidity.Molecular.LiftAttains.hasGradedGenericPencilRealization}
   \leanok
   \uses{def:pencil-d-lift, def:D-deficiency}
   Let $d \ge 3$ and let $G$ be nondegeneracy-feasible
@@ -6244,12 +6245,16 @@ after the points of $X$ (\cref{lem:pencil-d-ear-extend}).
 % assembly; the coverage (A) is thm:pencil-d-coverage, of which it is a special case.
 \begin{theorem}[The generic conjunct, in every dimension]
   \label{thm:pencil-d-generic}
+  \lean{CombinatorialRigidity.Molecular.hasGradedGenericPencilRealization_of_simple,
+  CombinatorialRigidity.Molecular.liftAttains_of_simple}
+  \leanok
   \uses{def:pencil-d-nondegenerate}
   Let $K$ be infinite and $d \ge 3$. Every simple multigraph with at least
   one body that is nondegeneracy-feasible in dimension $d$ has a generic
   pencil realization in dimension $d$ (\cref{def:pencil-d-nondegenerate}).
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-d-nondegenerate-feasible, lem:pencil-d-nondegenerate-three,
         def:pencil-d-lift-attains, lem:pencil-d-lift-small,
         lem:pencil-d-lift-cut-edge, lem:pencil-d-lift-pendant,
@@ -6320,6 +6325,8 @@ after the points of $X$ (\cref{lem:pencil-d-ear-extend}).
 % thm:pencil-d-realization-theorem.
 \begin{corollary}[The conditioned pair, in every dimension]
   \label{cor:pencil-d-conditioned-pair}
+  \lean{Graph.graded_pencil_conditioned_pair}
+  \leanok
   \uses{def:pencil-d-rank-hypothesis, def:pencil-d-distinct-motive,
         def:pencil-d-nondegenerate}
   Let $K$ be an infinite field and $d \ge 3$. Every multigraph $G$ with at
@@ -6330,6 +6337,7 @@ after the points of $X$ (\cref{lem:pencil-d-ear-extend}).
   generic one (\cref{def:pencil-d-nondegenerate}).
 \end{corollary}
 \begin{proof}
+  \leanok
   \uses{thm:pencil-d-realization-theorem, thm:pencil-d-generic,
         lem:pencil-d-rank-agrees-three, lem:pencil-d-nondegenerate-three,
         thm:pencil-conditioned-pair-nonempty}

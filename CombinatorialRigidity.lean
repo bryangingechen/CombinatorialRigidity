@@ -55,6 +55,7 @@ public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.EarData
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.EarFree
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Embedding
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Flat
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Generic
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.GluedEnds
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.JoinIndependence
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Nondegenerate

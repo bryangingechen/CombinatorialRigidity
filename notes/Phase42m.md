@@ -6,15 +6,22 @@ the second and last sub-phase of Phase 42's last layer, PD-HEAD. Forward mode, t
 `sec:pencil-d-generic`, as the chapter states them (six cases of an induction on the bodies, the
 lemmas that find the good ear and supply its condition, the generic theorem and the headline).
 They are the blueprint's last red nodes, so 42m's close is Phase 42's. The pre-build recon landed
-(2026-11-05, *Decisions made*); seven builds planned, build 6 split. **Builds 1 to 6 landed**
+(2026-11-05, *Decisions made*); seven builds planned, build 6 split. **Builds 1 to 7 landed**
 (2026-11-05): `Grade/LiftSmall.lean`, `Grade/LiftCases.lean` (three nodes), `Grade/LiftCutEdge.lean`,
-`Grade/GoodEar.lean`, `Grade/LiftNoRigid.lean` and `Grade/EarFree.lean` (`-ear-extend`, `-ear-free`),
-nine of the eleven red nodes green; two remain. Next (*Hand-off*): build 7, the theorem and the
-headline in `Grade/Generic.lean`.
+`Grade/GoodEar.lean`, `Grade/LiftNoRigid.lean`, `Grade/EarFree.lean` (`-ear-extend`, `-ear-free`)
+and `Grade/Generic.lean` (`thm:pencil-d-generic`, `cor:pencil-d-conditioned-pair`): all eleven red
+nodes green, the blueprint has none red. Next (*Hand-off*): the close of 42m and Phase 42 together,
+a separate dispatch.
 
 ## Current state
 
-**Next: build 7** (*Hand-off*). In the tree, each file on the three standard axioms with the
+**Next: the close** (*Hand-off*). In the tree, `Grade/Generic.lean` (build 7:
+`LiftAttains.hasGradedGenericPencilRealization`, the remark, pinned at `def:pencil-d-lift-attains`;
+`liftAttains_of_simple`, the strong induction; `hasGradedGenericPencilRealization_of_simple`, which is
+`thm:pencil-d-generic`; `Graph.graded_pencil_conditioned_pair`, `cor:pencil-d-conditioned-pair`, the
+three conjuncts, the first two `Graph.graded_pencil_realization_theorem`'s; the pins on the three
+standard axioms), and, each file on the three standard axioms with the
+whole-project build, `lake lint`, `blueprint/lint.sh` and `blueprint/verify.sh` clean at its commit: each file on the three standard axioms with the
 whole-project build, `lake lint`, `blueprint/lint.sh` and `blueprint/verify.sh` clean at its commit:
 `Grade/EarFree.lean` (build 6b: `holdsGenerally_earFree`, from its four steps
 `earFree_of_finrank_liftSpaceTilde_le` (the algebra at one realization, on
@@ -129,9 +136,9 @@ Build numbers are *Hand-off*'s. "Spiked" means sorry-free in `scratch/42m/Spike.
 - [x] `lem:pencil-d-ear-extend`: sorry-free, `E_L` and the greedy choice (build 6a; R-33).
 - [x] `lem:pencil-d-ear-free`: sorry-free in one session, its four steps and the transfer (build 6b;
   R-34).
-- [ ] `thm:pencil-d-generic`, with the remark after `def:pencil-d-lift-attains`: spiked on the
-  lemma statements (build 7).
-- [ ] `cor:pencil-d-conditioned-pair`: spiked (build 7).
+- [x] `thm:pencil-d-generic`, with the remark after `def:pencil-d-lift-attains`: sorry-free (build 7;
+  no departure from the chapter's proof, no new row).
+- [x] `cor:pencil-d-conditioned-pair`: sorry-free (build 7).
 - [ ] **Close** 42m and Phase 42 together, the full close (`PHASE-BOUNDARIES.md`): the ROADMAP row
   to ✓ and §42 compressed; the user-facing surfaces re-summarized; `formalization.yaml`'s
   `main_results` and `alignment` (Tier 0 unless the headline subsumes it, design doc §3), each new
@@ -142,7 +149,7 @@ Build numbers are *Hand-off*'s. "Spiked" means sorry-free in `scratch/42m/Spike.
 
 ## Blockers / open questions
 
-- None blocking build 7. What the builds still carry:
+- None blocking the close. What the builds still carry:
   - **`-ear-free`'s leaves, traced against their consumer (build 6b):** each step's hypotheses are
     what the assembly has: (1) `earFree_of_finrank_liftSpaceTilde_le` takes `G.Simple`, the good ear,
     points in subspaces of dimension at most three on every closed neighbourhood of `G` (at any
@@ -161,36 +168,33 @@ Build numbers are *Hand-off*'s. "Spiked" means sorry-free in `scratch/42m/Spike.
     by build 4 and `EarLiftCondition` by build 6b (`holdsGenerally_earFree`); the candidate witness
     is `K_{2,3}` (`W₀` all five bodies, `x` a body of degree two; `s(W₀) = 3·4 − 2·6 = 0`, `X` a
     four-cycle with `s = 1`), for the close's non-vacuity row.
-  - **A call, for build 7:** the spike's assembly passes `h₁ h₂` to `liftAttains_of_cutEdge`,
-    which build 3 dropped (R-30); build 7 drops them from the call.
+  - **Build 7's honesty gate** (read, not assumed): `liftAttains_of_simple`'s hypotheses are the
+    node's (`G.Simple`, a body, feasibility, `[Infinite K]`, finiteness); `EarLiftCondition` comes
+    from `holdsGenerally_earFree` at the selectors `exists_steer_selectors` gives and
+    `liftAttains_of_ear` receives; `X0AttainsGrade` is `Graph.IsX0Graph.x0AttainsGrade` (42j's
+    coverage); the cut-edge call drops `h₁ h₂` (R-30) and they stay as local facts for `omega`.
+    The spike's `bnPoint_zero` is not needed.
 
 ## Hand-off / next phase
 
-Builds 1 to 6 landed (`Grade/LiftSmall.lean`; `Grade/LiftCases.lean`, three nodes;
-`Grade/LiftCutEdge.lean`, R-30; `Grade/GoodEar.lean`, R-31; `Grade/LiftNoRigid.lean`, the least
-`dim L̃` with no map `g`, R-32; `Grade/EarFree.lean`, `-ear-extend`, R-33, and `-ear-free`, R-34).
-What the spike still holds for build 7: `bnPoint_zero` and the assembly (whose call of
-`liftAttains_of_cutEdge` drops `h₁ h₂`; its ear arm is `scratch/42m/B6bChain.lean`'s). The next
-concrete commit is build 7:
-- **Build 7**, `Grade/Generic.lean`: the remark (`LiftAttains.hasGradedGenericPencilRealization`),
-  `liftAttains_of_simple` and the two statements (`hasGradedGenericPencilRealization_of_simple`,
-  `Graph.graded_pencil_conditioned_pair`), transcribed from `scratch/42m/Spike.lean` onto the landed
-  names. Two nodes, the last; then the close. Re-check the spike's assembly with `lake lean` against
-  the landed signatures first (R-30 dropped `h₁ h₂`, which its call passes).
-- **Build tips, from the spike:** in a `change` to `panelSupportExtensor (liftNormal b0 ζ …) …`,
-  give `ζ` explicitly (a `_` there ran `whnf` out of heartbeats); the frameworks
-  `(ofNormals (G.induce V') ends q).toBodyHinge` and `⟨F.graph.induce V', F.supportExtensor⟩` are
-  defeq, but `rw` against `Bricks.lean`'s lemmas needs the `F.graph.induce` spelling.
+Builds 1 to 7 landed (`Grade/LiftSmall.lean`; `Grade/LiftCases.lean`, three nodes;
+`Grade/LiftCutEdge.lean`, R-30; `Grade/GoodEar.lean`, R-31; `Grade/LiftNoRigid.lean`, R-32;
+`Grade/EarFree.lean`, R-33 and R-34; `Grade/Generic.lean`, the theorem and the headline, no new row).
+No blueprint node is red. The next concrete commit is the **close of 42m and Phase 42 together**,
+the full close (`PHASE-BOUNDARIES.md` *When this commit closes a phase*), as the checklist's last
+item lists it. Its Lean-side inputs: the headline is `Graph.graded_pencil_conditioned_pair`; the
+candidate non-vacuity witness for `Graph.IsPencilGoodEar` and `EarLiftCondition` is `K_{2,3}`
+(*Blockers*).
 - **The standing rule** (*Architectural choices*): a row in `notes/Cleanup42.md` §2 per departure.
 - **Deferred, where it lands** (design doc §3; FRICTION's `[open]` 42k and 42l entries): the six
   `dotPerp` lemmas of `Grade/Feasible.lean` move to `Grade/Realization.lean` beside
   `finrank_dotPerp`, with 42k's `dotPerp_map_eq`, riding the next commit that edits
-  `Grade/Realization.lean` (no build above plans to); the home debts of 42b–42k ride with the next
-  commit that edits their files (`notes/Phase42k.md` *Hand-off*); build 6's helpers, each with the
-  next commit that edits its home (`isPolyFun_dotProduct` to `Grade/Feasible.lean`; `hubSlotPos`
-  and its three lemmas and `exists_steerPoint_eq_smul` to `Grade/Lift.lean`; the any-selector chart
-  lemmas to `Chart.lean`; `liftTildeOfTrivial` and its two lemmas to `Grade/LiftNoRigid.lean` beside
-  `liftFreeCoords`; `isZariskiOpen_finrank_liftSpaceTilde_le` to `Grade/LiftWitness.lean`;
+  `Grade/Realization.lean`; the home debts of 42b–42k ride with the next commit that edits their
+  files (`notes/Phase42k.md` *Hand-off*); build 6's helpers, each with the next commit that edits
+  its home (`isPolyFun_dotProduct` to `Grade/Feasible.lean`; `hubSlotPos` and its three lemmas and
+  `exists_steerPoint_eq_smul` to `Grade/Lift.lean`; the any-selector chart lemmas to `Chart.lean`;
+  `liftTildeOfTrivial` and its two lemmas to `Grade/LiftNoRigid.lean` beside `liftFreeCoords`;
+  `isZariskiOpen_finrank_liftSpaceTilde_le` to `Grade/LiftWitness.lean`;
   `span_pencilConfigPoint_eq_top` and `linearIndepOn_planeNormal_of_subset` to
   `MainComponent/GenericBase.lean` beside `planeNormal_pair`); at a cleanup round, the mirror
   candidates `finrank_map_of_injOn`, `exists_mem_notMem_of_finrank` and
