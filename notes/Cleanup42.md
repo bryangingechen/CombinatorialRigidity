@@ -306,8 +306,8 @@ valid. The cleanup chooses one per `open` row, with the PI.
   *Remedies:* the prose to the Lean (the section, as `lem:pencil-d-x0-one-witness` already reads),
   or keep both.
 - **R-22** · `lem:pencil-d-steer` (`PencilSeed.ofGamma`, `steerPoint`, `steerNormal`, `steerSet`;
-  `Grade/Lift.lean`, 42l build 3) · **open** (the Lean landed as below; the chapter stays as the prose).
-  *Chapter:* `Γ(G)` has at each body `m_v` and five auxiliary vectors, the closed
+  `Grade/Lift.lean`, 42l build 3) · **aligned, this commit** (42l's close).
+  *Chapter (until then):* `Γ(G)` had at each body `m_v` and five auxiliary vectors, the closed
   (hub-)neighbourhood in a fixed order followed by as many of the first three, or of the last two,
   as are needed.
   *Lean (the recon's spike):* the `d = 3` chart's parameters (`PencilSeed`), `m_v` and six auxiliary
@@ -315,8 +315,16 @@ valid. The cleanup chooses one per `open` row, with the PI.
   pair of selectors (`IsFin3SelectorOf`), parameters of the lemma. A neighbour selector of a body
   that is not a hub always fills a slot, so one of its three vectors is never read. Every other
   part, and the converse through `exists_pencilSeed_of_nondeg_of_selectors`, is the chapter's.
-  *Remedies:* the prose to the Lean (six vectors, read at the empty slots), a Lean chart on five
-  vectors with members-first selectors, or keep both.
+  *Remedies:* the prose to the Lean, taken at the PI's word (2026-11-04, at 42l's close,
+  verbatim): "Yes, let's make it say six at the close. I guess we should make the wording clear
+  that there's some flexibility in the proof here and we decided to go with six in the
+  formalization even though five actually suffice." The statement takes six auxiliary vectors at
+  every body, with fixed assignments of places 1 to 3 to the closed hub-neighbourhood and, off the
+  hubs, the closed neighbourhood; `y_i` is the `i`-th of the first (last) three at an empty place.
+  The converse chooses those at the empty places; a formalization note after the proof says that
+  five suffice (a body that is not a hub fills its own place) and that the formalization takes six.
+  `lem:pencil-d-ear-extend`'s proof (red) reads "the first three ..., those at the places left
+  empty" to match.
 - **R-23** · `lem:pencil-d-lift-transfer` (`lift_transfer`, `Grade/LiftWitness.lean`, 42l build 4)
   · **open** (the Lean landed as below; the chapter stays as the prose).
   *Chapter:* the maps `ζ ∈ L(b⁰|_(V′))^m` whose lift has rank `tgt_d(H)` form a nonempty

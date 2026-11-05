@@ -110,6 +110,22 @@ moment you resolve the entry) is what makes the sweep a pure
 to be re-derived by re-reading entries later.
 
 ## Open
+### [open] 42l's home debts: six `dotPerp` lemmas sit in `Pencil/Grade/Feasible.lean`
+- **Where it bit:** Phase 42l, build 2 (`lem:pencil-d-nondegenerate-feasible`),
+  `Pencil/Grade/Feasible.lean`: `dotPerp_sup`, `dotPerp_inf`, `dotPerp_antitone`, `dotPerp_top`,
+  `finrank_dotPerp_add` and `finrank_dotPerp_span_singleton_of_ne_zero` are about `dotPerp`, which
+  `Pencil/Grade/Realization.lean` defines beside `finrank_dotPerp` and `dotPerp_dotPerp`.
+  `finrank_map_of_injOn` (`Pencil/Grade/Nondegenerate.lean`: a linear map injective on a subspace
+  keeps its dimension) is a fact about modules alone; `lean_loogle` finds no mathlib form
+  (`Set.InjOn, Module.finrank, Submodule.map`).
+- **Friction:** none in the proofs; the lemmas sit downstream because a declaration added to
+  `Grade/Realization.lean` rebuilds the whole `Grade/` stack. Found at 42l's close (the builds filed
+  no entry).
+- **Proposed fix:** the six beside `finrank_dotPerp`, with the next commit that edits
+  `Grade/Realization.lean` (with 42k's `dotPerp_map_eq`, the entry below); `finrank_map_of_injOn` to
+  a mirror under `Mathlib/LinearAlgebra/` (mirror candidate), at a cleanup round.
+- **Status:** open (42l's deferral, tracked in `notes/Phase42l.md` *Hand-off*).
+
 ### [open] 42k's cases repeat the `d = 3` cases' proofs at every grade
 - **Where it bit:** Phase 42k, builds 2 and 3: `hasGradedPencilRealization_of_isLoopAt`, the cut
   case's glue and core (`Pencil/Grade/Arms.lean`) and `hasGradedPencilRealization_of_not_simple`

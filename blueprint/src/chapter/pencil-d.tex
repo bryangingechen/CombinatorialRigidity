@@ -4955,6 +4955,10 @@ the points of the realization.
 
 % Source: NONDEG workbook, S18 (i); the auxiliary vectors at a body that is not a hub, for
 % its vector n_v, are S18 (i)'s reading of "any nonzero vector orthogonal to their points".
+% Six auxiliary vectors read at the empty places, as the Lean's parameters (PencilSeed.ofGamma:
+% fillHub and fillNbr, the vector of slot i read when the selector leaves slot i empty; the
+% assignments are the selectors, IsFin3SelectorOf). Five suffice (the note after the proof);
+% the PI chose six on 2026-11-04 (notes/Cleanup42.md R-22; notes/Phase42-design.md section 1).
 \begin{lemma}[A parametrization in dimension three]
   \label{lem:pencil-d-steer}
   \lean{CombinatorialRigidity.Molecular.PencilSeed.ofGamma,
@@ -4974,18 +4978,21 @@ the points of the realization.
   \uses{def:pencil-d-nondegenerate, lem:pencil-d-nondegenerate-three}
   Let $G$ be a finite simple multigraph whose closed hub-neighbourhoods
   have at most three members. Let $\Gamma(G)$ be the space of tuples $s$
-  of vectors of $K^4$, a vector $m_v$ and five auxiliary vectors at every
-  body $v$. At $s \in \Gamma(G)$ define, in this order:
+  of vectors of $K^4$, a vector $m_v$ and six auxiliary vectors at every
+  body $v$. At every body $v$ fix an assignment of distinct places among
+  $1, 2, 3$ to the members of its closed hub-neighbourhood, and, when $v$
+  is not a hub, another to the members of its closed neighbourhood. At
+  $s \in \Gamma(G)$ define, in this order:
   \begin{itemize}
     \item at every pencil hub $v$, $n_v = m_v$;
     \item at every body $v$, $b^0_v = y_1 \times y_2 \times y_3$, where
-      $y_1, y_2, y_3$ are the vectors $n_w$ for $w$ in the closed
-      hub-neighbourhood of $v$, in a fixed order, followed by as many of
-      the first three auxiliary vectors of $v$ as are needed;
+      $y_i$ is $n_w$ when $w$ is the member of the closed
+      hub-neighbourhood of $v$ in place $i$, and the $i$-th of the first
+      three auxiliary vectors of $v$ when no member is;
     \item at every body $v$ that is not a hub, $n_v = y_1 \times y_2
-      \times y_3$, where $y_1, y_2, y_3$ are the vectors $b^0_w$ for $w$
-      in the closed neighbourhood of $v$, in a fixed order, followed by as
-      many of the last two auxiliary vectors of $v$ as are needed.
+      \times y_3$, where $y_i$ is $b^0_w$ when $w$ is the member of the
+      closed neighbourhood of $v$ in place $i$, and the $i$-th of the last
+      three auxiliary vectors of $v$ when no member is.
   \end{itemize}
   Then the coordinates of $b^0_v$ and $n_v$ are polynomials in $s$, and
   $b^0_w \cdot n_v = 0$ for every body $v$ and every $w$ in its closed
@@ -5002,10 +5009,10 @@ the points of the realization.
   \leanok
   \uses{lem:pencil-generic-steer, lem:pencil-d-point-configuration}
   A body that is not a hub has at most three members in its closed
-  neighbourhood, and at least one, so at most two auxiliary vectors
-  complete them. The point $b^0_v$ is computed from the vectors $n_w$ of
-  hubs, which are parameters, and $n_v$ at a body that is not a hub from
-  the points. So all coordinates are polynomials in $s$. Let $w$ lie in
+  neighbourhood, so, like every closed hub-neighbourhood, it has an
+  assignment of places. The point $b^0_v$ is computed from the vectors
+  $n_w$ of hubs, which are parameters, and $n_v$ at a body that is not a
+  hub from the points. So all coordinates are polynomials in $s$. Let $w$ lie in
   the closed neighbourhood of $v$. If $v$ is a hub, it lies in the closed
   hub-neighbourhood of $w$, so $n_v$ is one of the vectors whose product
   is $b^0_w$, and $b^0_w \cdot n_v = 0$. Otherwise $b^0_w$ is one of the
@@ -5025,16 +5032,18 @@ the points of the realization.
   every hub. At every body $v$ the vectors $n'_w$, $w$ in the closed
   hub-neighbourhood of $v$, are linearly independent
   (\cref{lem:pencil-d-nondegenerate-three}) and orthogonal to $b^0_v$
-  (\cref{lem:pencil-d-point-configuration}). Choose the first auxiliary
-  vectors of $v$ to complete them to a basis of $b^{0\perp}_v$. Then
-  $y_1 \times y_2 \times y_3$ is nonzero and orthogonal to
-  $b^{0\perp}_v$, so it is a nonzero multiple of $b^0_v$. At a body $v$
+  (\cref{lem:pencil-d-point-configuration}). Choose the first three
+  auxiliary vectors of $v$ so that those at the places left empty complete
+  them to a basis of $b^{0\perp}_v$. Then $y_1 \times y_2 \times y_3$ is
+  nonzero and orthogonal to $b^{0\perp}_v$, so it is a nonzero multiple
+  of $b^0_v$. At a body $v$
   that is not a hub, the points of its closed neighbourhood are linearly
   independent: by the second condition of nondegeneracy, or, when the
   neighbourhood has one or two members, as $b^0_v \ne 0$ or by the first.
-  They are orthogonal to $n'_v$. Choose the last auxiliary vectors of $v$
-  to complete them to a basis of $n'^{\perp}_v$. As the points at $s$ are
-  nonzero multiples of these, $n_v(s)$ is a nonzero multiple of $n'_v$.
+  They are orthogonal to $n'_v$. Choose the last three auxiliary vectors
+  of $v$ so that those at the places left empty complete them to a basis
+  of $n'^{\perp}_v$. As the points at $s$ are nonzero multiples of these,
+  $n_v(s)$ is a nonzero multiple of $n'_v$.
   Rescaling the normals $b^0_v$ and the vectors $n_v$ changes none of the
   conditions, so $s \in U(G)$.
 
@@ -5047,6 +5056,17 @@ the points of the realization.
   with auxiliary vectors, so that $n_v$ is a polynomial in $s$ at every
   body. The construction stays in $K^4$, and so does not depend on $d$.
 \end{proof}
+
+\begin{fmlnote}
+  The parametrization leaves some freedom in the number of auxiliary
+  vectors: five at every body would suffice. A body $v$ that is not a hub
+  lies in its own closed neighbourhood. So in the product that defines
+  $n_v$ the place of $b^0_v$ is never left empty, and the auxiliary
+  vector of $v$ for that place is never used. The formalization
+  nevertheless takes six, one for each of the three places of each of the
+  two products. The vectors it does not use are free parameters of
+  $\Gamma(G)$, and none of the claims depends on them.
+\end{fmlnote}
 
 We say that a property holds at a \emph{general nondegenerate
 realization} of $G$ in dimension three if it holds at $r(s) = (b^0(s),
@@ -6048,8 +6068,9 @@ after the points of $X$ (\cref{lem:pencil-d-ear-extend}).
 
   Now let $s \in \Gamma(G)$ have $m_h$ at every hub $h \in L$ and $n_u$ at
   every hub $u$ outside $W_0$ adjacent to $X$, its other parameters
-  arbitrary, except the first auxiliary vectors of each $v \in X$. These
-  complete the independent vectors $m_h$, $h \in H_L[v]$, and $n_u$,
+  arbitrary, except the first three auxiliary vectors of each $v \in X$.
+  Those at the places left empty complete the independent vectors $m_h$,
+  $h \in H_L[v]$, and $n_u$,
   $u \in O_v$, all orthogonal to $b_v$, to a basis of $b_v^{\perp}$. Then
   $b^0_v(s)$ is a nonzero multiple of $b_v$.
 \end{proof}

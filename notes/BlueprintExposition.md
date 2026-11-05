@@ -1924,6 +1924,24 @@ the linear algebra and the loop, without the nodes' unused nonzero or dimension 
 nodes keep the chapter's `d ≥ 3`).
 **Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
 
+### `pencil-d.tex` — Phase 42l (PD-HEAD's first half: nondegenerate realizations and their lifts in every dimension)
+
+**No new entries — judged at the sub-phase close (2026-11-04).** The source is the project's own
+(42d's write-up from the NONDEG workbook, S7, S9, S14, S18, S19 and S25; the `d = 3`
+parametrization after `lem:pencil-generic-steer`, judged with Phase 40o above, no entry); the
+criterion transfers as in the `pencil.tex` section. The ten nodes of `sec:pencil-d-nondegenerate` and `sec:pencil-d-lift` are green, in four
+build commits from the recon's spikes, and no node decomposed or rerouted. The recon's findings are
+project-side: the `d = 3` chart reused through the polarity, the lift's spaces as forms on the
+subspaces. The three route differences left, feasibility's map by forms vanishing on the subspaces
+(no quadric), one lift through the polynomial section, and transfer's open set by the rank
+polynomial at each `λ` (`notes/Cleanup42.md` R-20, R-21, R-23), are a matter of presentation,
+tracked for the cleanup after Phase 42, not a compressed step; the chapter writes its own routes out
+in full. The close restated the parametrization to its Lean's six auxiliary vectors at the PI's
+word (R-22, aligned), with a formalization note that five suffice; its end-to-end re-read found no
+other wording false (the Lean holds without the one-lift and restriction lemmas' unused simplicity
+and feasibility hypotheses; the nodes keep them).
+**Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
+
 ## Retroactive coverage
 
 - **Molecular program (Phases 17–22a): scanned 2026-06-04** — candidates folded

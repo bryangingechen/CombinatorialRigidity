@@ -1,13 +1,15 @@
 # Phase 42 — PENCIL-D: design (cross-phase plan and recon)
 
-**Status:** opened 2026-10-29 with the PI, sub-lettered, research first; **42l open**.
-**42l** (PD-HEAD's `-nondegenerate` and `-lift`, `notes/Phase42l.md`) **opened 2026-11-04** at the
-PI's word (§1): the ten nodes of `pencil-d.tex`'s `-nondegenerate` and `-lift` (nondegeneracy in
-dimension `d`, its agreement at `d = 3`, linear maps, feasibility in every dimension, a
-parametrization in dimension three, lifts, lifts are nondegenerate, the general lift attains, one
-lift suffices, lifts restrict to a subgraph) as the chapter states them (§3). Its next step is the
-pre-build recon. PD-HEAD's other half, `-generic` (§3: eleven nodes, the headline among them), then
-opens at the PI's word; its close is Phase 42's.
+**Status:** opened 2026-10-29 with the PI, sub-lettered, research first; no sub-phase open;
+PD-HEAD's first half complete.
+**42l** (PD-HEAD's `-nondegenerate` and `-lift`, `notes/Phase42l.md`) **opened and closed
+2026-11-04** at the PI's word (§1): the ten nodes of `pencil-d.tex`'s `-nondegenerate` and `-lift`
+(nondegeneracy in dimension `d`, its agreement at `d = 3`, linear maps, feasibility in every
+dimension, a parametrization in dimension three, lifts, lifts are nondegenerate, the general lift
+attains, one lift suffices, lifts restrict to a subgraph), all green, as the chapter states them,
+in four builds from its recon's spikes (verdict §3; at the PI's word, §1, the parametrization's
+statement takes the Lean's six auxiliary vectors). PD-HEAD's other half, `-generic` (§3: eleven
+nodes, the headline among them), is next, at the PI's word; its close is Phase 42's.
 **42k** (PD-REDUCTION, `notes/Phase42k.md`) **opened and closed 2026-11-04** at the PI's word
 (§1): the eight nodes of `pencil-d.tex`'s `-reduction` (a hinge in two pencils, moving a
 realization by a linear map, moving one side of a cut edge, the cases at a loop, on at most two
@@ -75,7 +77,8 @@ three, at `d = 4` to `6` (42i), which completes its steps, and the coverage, whi
 together, with the distinct statement (42j), which completes the induction, and Phase 39's
 reduction, which carries it to every multigraph (42k): the headline's bare and distinct conjuncts
 at every `d ≥ 3` (`Graph.graded_pencil_realization_theorem`). The generic conjunct (PD-HEAD)
-remains: its nondegeneracy and lifts are open (42l).
+remains: its nondegeneracy and lifts in every dimension are formalized (42l), and the generic
+theorem and the headline (`-generic`) are next.
 `d = 4, 5, 6` are measured (Results 11, 19), not found below target under the `--d4`
 population's cap (`n ≤ 12`, 36 simple graphs) and 8 graphs past it. Where the
 conjecture has content, that is 47 cells on 18 graphs, six of them cycles (§2.5).
@@ -505,6 +508,16 @@ fibre-intersection lemma and Jackson–Jordán's equality.
   entry). No node of the ten uses or `\cref`s a node of `-generic`, so the split is consistent;
   one sentence of `-lift`'s prose, after `def:pencil-d-lift`, points ahead to
   `lem:pencil-d-lift-no-rigid`, which proves it, and no proof of the ten uses it.
+- **PI, 2026-11-04 (42l's close), the parametrization's auxiliary vectors:** on
+  `notes/Cleanup42.md` R-22 (`lem:pencil-d-steer` stated five auxiliary vectors at every body, its
+  Lean, `PencilSeed.ofGamma`, has six), the PI answered, verbatim: "Yes, let's make it say six at
+  the close. I guess we should make the wording clear that there's some flexibility in the proof
+  here and we decided to go with six in the formalization even though five actually suffice."
+  *Note (not the PI's text):* the rest of the exchange was the coordinator's and is not recorded
+  here. 42l's close restated the node to six vectors read at the places a fixed assignment leaves
+  empty, three for each product, with a formalization note after the proof that five suffice (a
+  body that is not a hub fills its own place) and that the formalization takes six; R-22 is
+  aligned.
 
 ## 2. PD-RECON (42a)
 
@@ -1131,25 +1144,29 @@ marked `no departure` (R-6). The post-Phase-42 cleanup acts on the ledger (that 
   `finrank_span_rigidityRows_of_single_edge` to `GenericityDevice.lean` (with `ArmsAssembly.lean`'s
   inline count); at a cleanup round, the mirror candidates `finrank_span_pair_eq_two`,
   `exists_mem_linearIndependent_pair` and `exists_pair_of_ncard_le_two_of_edgeSet_nonempty`.
-  **PD-HEAD's first sub-phase, 42l, opened 2026-11-04** at the PI's word (§1; `notes/Phase42l.md`):
-  `-nondegenerate` (4) and `-lift` (6), the ten nodes as the chapter states them. PD-HEAD stays the
-  layer's code, and its halves are named by their sections: `-nondegenerate` with `-lift` (42l) and
-  `-generic` (11 nodes, `thm:pencil-d-generic` and the headline among them; no letter), which opens
-  after 42l at the PI's word and whose close is Phase 42's. The open's consistency read passed all
-  ten, their 18 outside dependencies green; no node of the ten uses a `-generic` one, and ten of
-  `-generic`'s eleven use one of the ten. The open added findings for the recon (that note's
-  *Blockers*): Phase 39's `Pair.lean` and `Pair2.lean` serve `-generic`; the ten's `d = 3` Lean is
-  `Pencil/Motive.lean`'s definitions and `lem:pencil-generic-steer`'s chart (six files), which
-  already pads the normals that the steer lemma's remark says the `d = 3` node does not; the lift
-  and the feasibility lemma's projection have no `d = 3` Lean; and remarks with no node carry
-  claims that the ten and `thm:pencil-d-generic` cite. Its recon spiked all ten complete, with no
-  `sorry` (`notes/Phase42l.md` *Decisions made*), and pinned four builds: `Grade/Nondegenerate.lean`
-  (the definition, three, maps), `Grade/Feasible.lean` (feasibility, with the polynomial-function and
-  Zariski-open API), `Grade/Lift.lean` (steer, the lift, lifts are realizations, attaining) and
-  `Grade/LiftWitness.lean` (one lift suffices, transfer). The steer lemma is the `d = 3` chart at
-  `PencilSeed.ofGamma`; feasibility's map at one set has rows vanishing on the subspaces, chosen off
-  two proper subspaces each, with no quadric; one lift suffices through the polynomial section. Four
-  route differences go to the cleanup (`notes/Cleanup42.md` R-20 to R-23).
+  **PD-HEAD's first half, as 42l, opened and closed 2026-11-04** at the PI's word (§1;
+  `notes/Phase42l.md`): `-nondegenerate` (4) and `-lift` (6), the ten nodes as the chapter states
+  them, all green. PD-HEAD stays the layer's code, and its halves are named by their sections:
+  `-nondegenerate` with `-lift` (42l) and `-generic` (11 nodes, `thm:pencil-d-generic` and the
+  headline among them; no letter), which opens at the PI's word and whose close is Phase 42's; ten
+  of its eleven nodes use one of the ten. Verdicts: its recon spiked all ten on the landed carrier,
+  reusing the `d = 3` Lean's polarity, `IsNondegPencilRealization`, the chart
+  (`pencilChartPoint`, `pencilChartNormal`, `exists_pencilSeed_of_nondeg_of_selectors`),
+  `cross₃Poly`, the polynomial section and the rank polynomial; the lift and the feasibility
+  lemma's projection are new. Four builds landed them: `Grade/Nondegenerate.lean` (the definition,
+  three, maps), `Grade/Feasible.lean` (feasibility, with the polynomial-function and Zariski-open
+  API), `Grade/Lift.lean` (steer, the lift, lifts are realizations, attaining) and
+  `Grade/LiftWitness.lean` (one lift suffices, transfer). No pin is weaker than its node. Three
+  route differences stay open for the cleanup (`notes/Cleanup42.md` R-20, R-21, R-23: feasibility's
+  map by forms vanishing on the subspaces, with no quadric; one lift through the polynomial section;
+  transfer's open set by the rank polynomial at each `λ`); R-22, the parametrization's sixth
+  auxiliary vector, is aligned at the PI's word (§1). No build edited a file a deferral above names.
+  **Deferred to `-generic` and after from 42l**, each with the next commit that edits the file it
+  names (FRICTION's open 42l entry): the `dotPerp` lemmas of `Grade/Feasible.lean` (`dotPerp_sup`,
+  `dotPerp_inf`, `dotPerp_antitone`, `dotPerp_top`, `finrank_dotPerp_add`,
+  `finrank_dotPerp_span_singleton_of_ne_zero`) to `Grade/Realization.lean` beside
+  `finrank_dotPerp`, with 42k's `dotPerp_map_eq`; at a cleanup round, the mirror candidate
+  `finrank_map_of_injOn` (`Grade/Nondegenerate.lean`).
   **At Phase 42's close**, Tier 0 joins `formalization.yaml`'s
   `main_results` and `alignment` unless the headline subsumes it, with a closed non-vacuity witness
   in `CombinatorialRigidity/Nonvacuity.lean` (`PHASE-BOUNDARIES.md`); 42c's intermediate close
@@ -1159,13 +1176,12 @@ marked `no departure` (R-6). The post-Phase-42 cleanup acts on the ledger (that 
   from the coverage (by `Graph.X0AttainsGrade.hasGradedDistinctPencilRealization`).
 
 **The red nodes by layer** (42e's open, by section of `pencil-d.tex`; a letter is minted only as
-a sub-phase opens). From `sec:pencil-d-induction` on the chapter has 62 dep-graph nodes, 21 of them
-red (recounted at 42k's close and again at 42l's open; the first red node is
-`def:pencil-d-nondegenerate`): 65 at 42e's
+a sub-phase opens). From `sec:pencil-d-induction` on the chapter has 62 dep-graph nodes, 11 of them
+red (recounted at 42l's close; the first red node is `lem:pencil-d-lift-small`): 65 at 42e's
 open, all red, 4 green at its close, 3 cut at 42f's open (the PI, §1), 6 green at 42f's close, 7
-at 42g's, 8 at 42h's, 4 at 42i's, 4 at 42j's and 8 at 42k's. The count of 66 put to the PI at
-42e's open (§1) included `rem:pencil-d-flat-class`, a remark, which the dependency graph does not
-draw (it draws definitions, lemmas, propositions, theorems and corollaries).
+at 42g's, 8 at 42h's, 4 at 42i's, 4 at 42j's, 8 at 42k's and 10 at 42l's. The count of 66 put to
+the PI at 42e's open (§1) included `rem:pencil-d-flat-class`, a remark, which the dependency graph
+does not draw (it draws definitions, lemmas, propositions, theorems and corollaries).
 - PD-CARRIER (42e, closed, all green): `-induction` (1) and `-flat` (3); 4.
 - PD-STEPS: `-cut` (3) and `-contract` (3), 42f, closed, all green; `-long` (7), 42g, closed, all
   green; `-short` (12), as `-short-four` (8), 42h, closed, all green, and `-short-three` (4), 42i,
@@ -1177,9 +1193,9 @@ draw (it draws definitions, lemmas, propositions, theorems and corollaries).
   `lem:pencil-d-distinct-statement`, the coverage read as a realization); 4, as 42j, closed, all
   green.
 - PD-REDUCTION: `-reduction` (8), Phase 39's reduction; 8, as 42k, closed, all green.
-- PD-HEAD: `-nondegenerate` (4) and `-lift` (6), as 42l, open; `-generic` (11, ending in the
-  headline `cor:pencil-d-conditioned-pair`), no letter; 21, the generic conjunct and the headline,
-  the largest layer.
+- PD-HEAD: `-nondegenerate` (4) and `-lift` (6), as 42l, closed, all green; `-generic` (11, ending
+  in the headline `cor:pencil-d-conditioned-pair`), no letter, all red; 21, the generic conjunct and
+  the headline, the largest layer.
 
 PD-STATE and PD-STABLE do not depend on the route, so they ran beside PD-RECON (§1's defaults).
 PD-STATE opened and closed as 42b on 2026-10-30, and PD-STABLE as 42c the same day.
