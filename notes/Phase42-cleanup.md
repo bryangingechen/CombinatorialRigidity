@@ -7,9 +7,10 @@ from the chapter's route; its plan, the PI's words and the proof-route ledger ar
 and adds a ledger row for each departure, re-checking R-1 to R-34 at HEAD; it edits no prose,
 statement, pin or Lean. The open (task 1, docs only) sliced the nodes by layer into 14
 one-dispatch Opus recon tasks, the 47 never-checked nodes of 42b–42f first, then a planned stop
-(task 16) at which the PI picks a remedy per `open` row and plans rounds 2+. Tasks 2 and 3
-(PD-STATE) added R-35 (`open`) and R-36 (`no departure`). **Next concrete task:** task 4,
-PD-STABLE, the nine nodes of `sec:pencil-d-stable` (*Lemma checklist*). Round manual: `CLEANUP.md`.
+(task 16) at which the PI picks a remedy per `open` row and plans rounds 2+. Tasks 2 to 4
+(PD-STATE, PD-STABLE) added R-35 (`open`), R-36 and R-37 (`no departure`). **Next concrete task:**
+task 5, COUNT-A and COUNT-B, the eleven nodes of `sec:pencil-d-deficiency` (*Lemma checklist*).
+Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -23,9 +24,9 @@ picks a remedy per `open` row and plans rounds 2+ (`notes/Cleanup42.md` §3). An
 
 ## Current state
 
-**Tasks 1 to 3 have landed** (task 3 this commit: one `no departure` row, R-36, the other eight
-nodes no departure, no line under *Candidates* or *Moved to a later round*). The ledger has 36
-rows, 28 `open`; the next row is R-37. Nothing is mid-stream; task 4 is next.
+**Tasks 1 to 4 have landed** (task 4 this commit: one `no departure` row, R-37, the other eight
+nodes no departure, no line under *Candidates* or *Moved to a later round*). The ledger has 37
+rows, 28 `open`; the next row is R-38. Nothing is mid-stream; task 5 is next.
 
 **Verified at the open** (2026-11-05, at `a3b80ac4`):
 - **The Lean baseline** is the coordinator's run this session, not repeated here: `lake build
@@ -139,7 +140,7 @@ re-checks (accurate or corrected) and the nodes judged no departure.
   (the rank hypothesis inlined, one realization with the independence);
   `lem:pencil-d-rank-agrees-three` (one framework for the first; the point form, then the polarity
   at one rank, for the second). One line under *Moved to a later round*.
-- [x] **3. PD-STATE (42b), the configurations** (this commit). `sec:pencil-d-carrier` (300–525),
+- [x] **3. PD-STATE (42b), the configurations** (`d5996bfd`). `sec:pencil-d-carrier` (300–525),
   9 light nodes, against `Grade/Carrier.lean`, `Grade/Configuration.lean`,
   `Grade/Collineation.lean`, `Grade/Witness.lean`, `Grade/Contract.lean` and
   `Grade/JoinIndependence.lean` (all 20 pins). No re-checks. **New row:** R-36, **no departure**,
@@ -164,13 +165,34 @@ re-checks (accurate or corrected) and the nodes judged no departure.
   `lem:pencil-d-join-independence-open` (the `2 × 2` minors, polynomial in the picture or in the
   heights, and a nonzero maximal minor). No line under *Candidates* or *Moved to a later round*:
   the script's two missing edges on these nodes are in task 2's sweep.
-- [ ] **4. PD-STABLE (42c).** `sec:pencil-d-stable` (527–841), 9 light to medium nodes:
-  `lem:deficiency-stable`, `def:pencil-d-embedding`, `lem:pencil-d-embedding-join`,
-  `lem:screw-embedding-rank`, `lem:pencil-d-embed-realization`, `lem:pencil-d-embed-config-rank`,
-  `lem:pencil-d-x0-attains-of-le`, `lem:pencil-d-x0-attains-distinct`,
-  `thm:pencil-d-deficiency-two-le-three`. Reads `CombinatorialRigidity/Molecular/Deficiency.lean`
-  (the two `Graph.Connected.deficiency_eq_*` pins only), `Grade/Embedding.lean`,
-  `Grade/ZeroHeights.lean`, `Grade/Configuration.lean` (one pin), `Grade/Stable.lean`.
+- [x] **4. PD-STABLE (42c)** (this commit). `sec:pencil-d-stable` (527–841), 9 light to medium
+  nodes, against `CombinatorialRigidity/Molecular/Deficiency.lean` (its two pins),
+  `Grade/Embedding.lean`, `Grade/ZeroHeights.lean`, `Grade/Configuration.lean` (one pin) and
+  `Grade/Stable.lean` (all 22 pins). No re-checks. **New row:** R-37, **no departure**,
+  `lem:deficiency-stable` (the equality by antisymmetry, `lem:deficiency-antitone` for one half and
+  the chapter's case split on `c(P)` for the other, not as the common maximum over `c(P) = 0`; the
+  "in particular" by `D′ ≥ d′ + 1`). **No departure:** `def:pencil-d-embedding` (`ι` the extension
+  by zero along an index map fixing the last index, `φ = * ∘ ⋀²ι ∘ *⁻¹`, at every `k′ ≤ k`; `⋀²ι`
+  injective by mathlib's `exteriorPower.map_injective_field`, the chapter's argument with a chosen
+  left inverse of `ι` in place of the deletion `π`); `lem:pencil-d-embedding-join` (the proof's one
+  line: `*⁻¹ C(u, w) = u ∨ w`, then `⋀²ι (u ∨ w) = ιu ∨ ιw`); `lem:screw-embedding-rank` (the
+  chapter's `Z(G, φp) = φZ(G, p) + Z₀` with intersection `φZ₀′`, `Z₀` the motions of the framework
+  with zero hinges, then rank–nullity at both grades; no `d′ ≤ d`, which the injectivity of `φ`
+  forces); `lem:pencil-d-embed-realization` (the hinge `C(w₁, w₂)` for a basis of `A^⊥` by the
+  argument of `lem:pencil-d-point-configuration` (2), the scalar absorbed in `w₁`; `b_v ∈ A^⊥` and
+  `A^⊥ ⊆ Π_v` read as `b_v ∈ span {w₁, w₂}` and `w₁, w₂ ∈ Π_v`, at both grades; the per-link
+  independence `linearIndependent_gradeEmbed_pair`, a step of the third pin; the deficiency
+  parameter fixed, 42b's encoding); `lem:pencil-d-embed-config-rank` (the point of `(q, z)` is `ι`
+  of that of `(q, z′)` coordinate by coordinate, so the framework is `(q, z′)`'s mapped along `φ`;
+  `L(q)` a subspace); `lem:pencil-d-x0-attains-of-le` (the proof's steps: a non-root of `P`, so no
+  loop and three members in each closed neighbourhood, a main picture off the product, the padded
+  heights, `lem:pencil-d-x0-one-witness`); `lem:pencil-d-x0-attains-distinct` (a non-root `q`,
+  heights off `R`, `lem:pencil-d-config-realization`); `thm:pencil-d-deficiency-two-le-three` (the
+  dimension-three case through `x0AttainsGrade_one_iff`, `def₂ + 3 ≤ 6 = bodyBarDim 3`, `d′ = 3`,
+  `m ≥ 1` for `d ≥ 3`). No line under *Candidates* or *Moved to a later round*: the script's two
+  missing edges on these nodes are in task 2's sweep, and its *unbacked* edge from
+  `-embed-realization` to `-point-configuration` is to the argument the proof cites, whose helper
+  (`exists_smul_panelSupportExtensor_eq_of_extensorInPanel`) the Lean shares with that node's pin.
 - [ ] **5. COUNT-A and COUNT-B (42d).** `sec:pencil-d-deficiency` (843–1204), 11 medium nodes
   (Theorem S's proof is 42 lines). COUNT-A: `lem:deficiency-planar-nonpos`,
   `lem:deficiency-rigid-higher`, `lem:deficiency-core-bound-d`, `lem:deficiency-one-body-chain-d`,
@@ -257,12 +279,12 @@ re-checks (accurate or corrected) and the nodes judged no departure.
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 4, PD-STABLE (42c). One Opus recon reads the nine nodes of
-`sec:pencil-d-stable` against their pins in `CombinatorialRigidity/Molecular/Deficiency.lean` (the
-two `Graph.Connected.deficiency_eq_*` pins only), `Grade/Embedding.lean`, `Grade/ZeroHeights.lean`,
-`Grade/Configuration.lean` (one pin) and `Grade/Stable.lean` under *The audit's criterion*, then
-lands one docs commit: any new rows in `notes/Cleanup42.md` §2 (from R-37), its **Status** counts,
-and task 4's line here with its verdicts. Then tasks 5–15 in order, and the stop.
+**Next concrete task:** task 5, COUNT-A and COUNT-B (42d). One Opus recon reads the eleven nodes
+of `sec:pencil-d-deficiency` (Theorem S's proof is 42 lines) against their pins in
+`CombinatorialRigidity/Molecular/Induction/SparseDeficiency.lean` (its six pins) and
+`Grade/TheoremS.lean` under *The audit's criterion*, then lands one docs commit: any new rows in
+`notes/Cleanup42.md` §2 (from R-38), its **Status** counts, and task 5's line here with its
+verdicts. Theorem S's fold is §3's, not raised again. Then tasks 6–15 in order, and the stop.
 
 ## Decisions made during this round
 

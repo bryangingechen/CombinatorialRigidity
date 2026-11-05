@@ -9,9 +9,9 @@ row to §2 for each departure, with no prose or Lean edit, then a stop at which 
 remedy per `open` row and plans rounds 2+ (§3). `.claude/autopilot/queue.toml` carries it as
 `CLEANUP-42`, attended, between PENCIL-D (done) and ORIGAMI; ROADMAP *Queued post-program phases*
 lists it. Its input is the proof-route ledger (§2): 34 rows at Phase 42's close (2026-11-05), 27
-`open`, 6 `aligned`, 1 `no departure`, to which round 1 adds; after its task 3, 36 rows, 28 `open`,
-6 `aligned` and 2 `no departure` (R-35 `open`, R-36 `no departure`). **Next concrete task:** round
-1's task 4, PD-STABLE (`notes/Phase42-cleanup.md` *Lemma checklist*).
+`open`, 6 `aligned`, 1 `no departure`, to which round 1 adds; after its task 4, 37 rows, 28 `open`,
+6 `aligned` and 3 `no departure` (R-35 `open`, R-36 and R-37 `no departure`). **Next concrete
+task:** round 1's task 5, COUNT-A and COUNT-B (`notes/Phase42-cleanup.md` *Lemma checklist*).
 
 ## 1. The PI's decisions (verbatim)
 
@@ -576,6 +576,19 @@ task in `notes/Phase42-cleanup.md`, and its re-checks of R-1 to R-34 are recorde
   (`Graph.finrank_span_rigidityRows_induce_contractHeight_eq`) takes any `r` too. The rest is the
   chapter's proof: its map of `K^(d+1)`, with its inverse, at the bodies of `W`, then the
   collineation.
+
+- **R-37** · `lem:deficiency-stable`, its equality
+  (`Graph.Connected.deficiency_eq_of_deficiency_two_add_three_le`, `Molecular/Deficiency.lean`,
+  round 1 task 4) · **no departure**: the chapter shows that at every `D ≥ D′` the deficiency is the
+  largest `|P| − 1` over the partitions with `c(P) = 0`; the pin never forms that maximum. It proves
+  the equality by antisymmetry: `def_d ≤ def_{d′}` is `lem:deficiency-antitone`
+  (`Graph.Connected.deficiency_le_deficiency_of_le`), which the proof `\uses`, and for
+  `def_{d′} ≤ def_d` it bounds the value of each partition at `D′` by the chapter's case split, its
+  value at `D` when `c(P) = 0`, at most `t − (D′ − 3) ≤ 0 ≤ def_d` when `c(P) ≥ 1`
+  (`deficiency_nonneg`, the partition `{V(G)}`). The antitone lemma is the chapter's formula
+  `|P| − 1 − (D − 1) c(P)` read with `c(P) ≥ 0`, so the steps are the chapter's. The "in particular"
+  (`Graph.Connected.deficiency_eq_of_two_add_deficiency_two_le`) bounds `D′ ≥ d′ + 1 ≥ t + 3`
+  (`d′ ≥ 2`), where the chapter goes through `binom(t + 3, 2)`: arithmetic.
 
 ## 3. The cleanup's rounds
 
