@@ -4371,6 +4371,14 @@ $K^{d+1}$ chosen to meet it (\cref{lem:pencil-d-cut-reposition}).
   exist.
 \end{proof}
 
+\begin{fmlnote}
+  The formalization proves (1) and the first claim of (2) for any
+  vectors $b_u, b_v$ and any subspaces $\Pi_u, \Pi_v$ of $K^{d+1}$, and
+  the last claim of (2) for any such vectors and subspaces with
+  $b_u \neq 0$, by the proofs above, which read nothing more of the
+  setting of the statement.
+\end{fmlnote}
+
 \begin{lemma}[Moving a pencil realization by a linear map, in every dimension]
   \label{lem:pencil-d-projective-transport}
   \lean{CombinatorialRigidity.Molecular.hasPencilPlaneRealization_mapExtensor_screwEquivOfLinearEquiv}
@@ -4537,6 +4545,17 @@ $K^{d+1}$ chosen to meet it (\cref{lem:pencil-d-cut-reposition}).
   read $D$ in place of $6$.
 \end{proof}
 
+\begin{fmlnote}
+  The formalization reads the rank with one edge from two bounds, at
+  least the $D - 1$ linearly independent rows of the nonzero hinge
+  (\cref{lem:edge-rows-independent}) and at most the target
+  (\cref{lem:relative-deficiency-rank-bound}), and the deficiency $0$
+  with $m \ge 2$ edges from the subgraph of two of them
+  (\cref{lem:two-vertex-zero-dof}), as more edges on the same bodies do
+  not raise the deficiency and it is never negative, not from the
+  motions and the partition into singletons.
+\end{fmlnote}
+
 \begin{lemma}[The cut-edge case, in every dimension]
   \label{lem:pencil-d-cut-case}
   \lean{CombinatorialRigidity.Molecular.hasGradedPencilRealization_of_cutEdges,
@@ -4623,7 +4642,11 @@ $K^{d+1}$ chosen to meet it (\cref{lem:pencil-d-cut-reposition}).
   \uses{def:D-deficiency, def:rigid-subgraph, def:rigid-contraction,
         lem:pencil-contraction-deficiency, lem:reduction-measure,
         lem:pencil-d-two-pencil-extension, lem:theorem-55-base,
-        def:rigidity-matrix, def:hinge-constraint}
+        def:rigidity-matrix, def:hinge-constraint,
+        lem:rigidityRows-splice-rank-add,
+        lem:extProj-preserves-rank-of-inter,
+        lem:case-II-placement-old-rows-extract,
+        lem:relative-deficiency-rank-bound}
   We follow the proof of \cref{lem:pencil-nonsimple-case}, after KT
   Lemma~6.2~\cite[p.~673]{katohTanigawa2011}. Let
   $D = \binom{d+1}{2}$. As $G$ is loopless and not simple, two edges $e$
@@ -4646,30 +4669,57 @@ $K^{d+1}$ chosen to meet it (\cref{lem:pencil-d-cut-reposition}).
 
   \emph{The realization.} Give every body $x \neq w$ of $G$ the normal
   $b'_x$ and the subspace $\Pi'_x$, and give $w$ the normal $b'_u$ and
-  the subspace $\Pi'_u$. Every edge of $G$ that does not join $u$ and
-  $w$ keeps its hinge in $G/H$. Let $B_1 \neq B_2$ be two-dimensional
-  subspaces of $\Pi'_u$ containing $b'_u$. Give $e$ the hinge $C_{B_1}$,
-  and every other edge joining $u$ and $w$ the hinge $C_{B_2}$. These two
-  hinges lie in the panel of $b'_u$, pass through $\Pi'^{\perp}_u$, and
-  are linearly independent (\cref{lem:pencil-d-two-pencil-extension}).
-  An edge of $G$ with an end at $w$ has that end at $u$ in $G/H$, and $w$
-  now has the normal and the subspace of $u$. So every hinge lies in the
-  panels of its two ends and passes through the orthogonals of their
-  subspaces, and this is a pencil realization of $G$ in dimension $d$.
+  the subspace $\Pi'_u$. Let $B_1 \neq B_2$ be two-dimensional subspaces
+  of $\Pi'_u$ containing $b'_u$. Give $e$ the hinge $C_{B_1}$ and $f$ the
+  hinge $C_{B_2}$. These two hinges are nonzero, lie in the panel of
+  $b'_u$, pass through $\Pi'^{\perp}_u$, and are linearly independent
+  (\cref{lem:pencil-d-two-pencil-extension}). Every other edge of $G$
+  keeps its hinge in $G/H$, where an edge joining $u$ and $w$ is a loop
+  at $u$. An edge of $G$ with an end at $w$ has that end at $u$ in
+  $G/H$, and $w$ now has the normal and the subspace of $u$. So every
+  hinge is nonzero, lies in the panels of its two ends and passes
+  through the orthogonals of their subspaces, and this is a pencil
+  realization of $G$ in dimension $d$.
 
   \emph{The rank.} Let $U$ be the set of bodies, so that $w \in U$ lies
-  on no edge of $G/H$. A motion $S$ of $G$ has $S(u) = S(w)$, as the
-  hinges of $e$ and $f$ are independent (\cref{lem:theorem-55-base}).
-  Then the hinge constraint of every edge joining $u$ and $w$ holds, and
-  that of every other edge is its constraint in $G/H$
-  (\cref{def:hinge-constraint}). So the motions of $G$ are the motions
-  $S'$ of $G/H$ with $S'(w) = S'(u)$. In the motions of $G/H$ the value
-  at $w$ is free, so these have codimension $D$. The rank of $G$ is
-  therefore that of $G/H$ plus $D$ (\cref{def:rigidity-matrix}), which is
+  on no edge of $G/H$, and take the screw assignments on $U$. Let $F$ be
+  the realization of $G$ just built, $F_H$ the framework on $H$ with the
+  hinges of $F$, and $F_c$ the realization of $G/H$. Let $\pi$ delete
+  the columns of $u$ and $w$ from a linear form $\varphi$ on screw
+  assignments: $\pi(\varphi)$ is $S \mapsto \varphi(S')$, where $S'$
+  agrees with $S$ off $\{u, w\}$ and vanishes on it. The three
+  hypotheses of \cref{lem:rigidityRows-splice-rank-add} hold for $F$,
+  $F_H$, $F_c$ and $\pi$.
+  \begin{itemize}
+    \item The rows of $F_H$ are the rows of $e$ and $f$ in $F$. Each
+      reads only the screws at $u$ and $w$, so $\pi$ maps it to $0$.
+    \item An edge of $G/H$ is an edge of $G$ other than $e$ and $f$, with
+      the same hinge, and its ends $x', y'$ in $G/H$ are its ends $x, y$
+      in $G$ with $w$ replaced by $u$. For each of its rows
+      $S \mapsto r \cdot (S(x') - S(y'))$ in $F_c$, the form
+      $S \mapsto r \cdot (S(x) - S(y))$ is a row of $F$. The two differ
+      only in the columns of $u$ and $w$, so $\pi$ maps them to the same
+      form. Hence $\pi$ maps the row space of $F_c$ into the image of
+      that of $F$.
+    \item The bodies of $G/H$ meet $\{u, w\}$ only in $u$, so $\pi$ is
+      injective on the row space of $F_c$
+      (\cref{lem:extProj-preserves-rank-of-inter}).
+  \end{itemize}
+  Every motion of $F_H$ has $S(u) = S(w)$, as the hinges of $e$ and $f$
+  are linearly independent (\cref{lem:theorem-55-base}). So its motions
+  are constant on $V(H) = \{u, w\}$, and its rows have rank
+  $D(|V(H)| - 1) = D$ (\cref{lem:case-II-placement-old-rows-extract}).
+  The rows of $F_c$ have rank
+  $D(|V(G/H)| - 1) - \operatorname{def}_d(G/H) =
+  D(|V(G)| - 2) - \operatorname{def}_d(G)$. By the block-triangular
+  count (\cref{lem:rigidityRows-splice-rank-add}), the rank of $G$ is
+  therefore at least
   \[
-    D\bigl(|V(G)| - 2\bigr) - \operatorname{def}_d(G) + D \;=\;
+    D + D\bigl(|V(G)| - 2\bigr) - \operatorname{def}_d(G) \;=\;
     \operatorname{tgt}_d(G).
   \]
+  It is at most its target (\cref{lem:relative-deficiency-rank-bound}),
+  as every hinge is nonzero.
 
   At $d = 3$ this is \cref{lem:pencil-nonsimple-case}. There the
   dimension enters in three places. First, $H$ is rigid because
@@ -4677,10 +4727,10 @@ $K^{d+1}$ chosen to meet it (\cref{lem:pencil-d-cut-reposition}).
   Second, $e$ and $f$ get two independent lines through the point of the
   contracted body in its panel
   (\cref{lem:extensor-pair-through-given-point}). In dimension $d$ they
-  get the polars of two lines through $b'_u$ inside $\Pi'_u$. Third, the
-  rows of $e$ and $f$ add $D = 6$ to the rank, by the block-triangular
-  count of KT eqs.~(6.3)--(6.5) (\cref{lem:rigidityRows-splice-rank-add}).
-  The count of motions above adds $D$ in every dimension.
+  get the polars of two lines through $b'_u$ inside $\Pi'_u$. Third,
+  there the rows of $e$ and $f$ add $D = 6$ to the rank, by the
+  block-triangular count of KT eqs.~(6.3)--(6.5). That count holds at
+  every $D$, and here it adds $D$.
 \end{proof}
 
 \begin{theorem}[Pencil realizations at the deficiency rank, in every dimension]

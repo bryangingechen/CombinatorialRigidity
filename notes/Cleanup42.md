@@ -13,7 +13,7 @@ every open row its remedy the same day, at round 1's stop and at a second stop o
 `kept` (a part keeps both routes, with a formalization note); no row goes H, so round 3 is empty.
 Round 2, opened 2026-11-05, applies them to the chapter in eight slices by layer, then one `\uses`
 sweep (blueprint and notes, no Lean); each slice sets its rows' status, and the tally here. The
-ledger now: 22 `open`, 9 `aligned`, 9 `kept`, 14 `no departure`. **Next concrete task:** round 2's
+ledger now: 19 `open`, 10 `aligned`, 11 `kept`, 14 `no departure`. **Next concrete task:** round 2's
 next open task (`notes/Phase42-align.md`'s **Status**); after round 2, round 4 (§3).
 
 ## 1. The PI's decisions (verbatim)
@@ -412,7 +412,8 @@ there.
   then adds `lem:pencil-x0-sparse-count`), or keep both. Keep both, taken: a formalization note
   after the proof names the Lean's route (the PI, 2026-11-05).
 - **R-18** · `lem:pencil-d-base-case` (`hasGradedPencilRealization_of_ncard_le_two`,
-  `finrank_span_rigidityRows_of_single_edge`, `Grade/Arms.lean`, 42k build 2, landed) · **open**.
+  `finrank_span_rigidityRows_of_single_edge`, `Grade/Arms.lean`, 42k build 2, landed) ·
+  **kept, round 2 task 5**.
   *Chapter:* the ranks are read off the motions, `D|U| − dim Z`: with one edge the motions are the
   `S` with `S(u) − S(v) ∈ K C₁`, so the rank is `D − 1`; with `m ≥ 2` edges the partition into
   singletons has value `D − (D − 1)m < 0`, so `def_d = 0`.
@@ -423,12 +424,13 @@ there.
   subgraph of two of the edges has it (`Graph.isKDof_zero_of_parallel_pair`) and adding edges on
   the same bodies does not raise it; the rank `D` is the chapter's (`lem:theorem-55-base`).
   *Remedies:* the prose to the Lean, a Lean helper (the motions of one edge, of codimension
-  `D − 1`) so that the Lean follows the chapter, or keep both.
+  `D − 1`) so that the Lean follows the chapter, or keep both. Keep both, taken: a formalization
+  note after the proof names the Lean's route (the PI, 2026-11-05).
 - **R-19** · `lem:pencil-d-nonsimple-case` (`hasGradedPencilRealization_of_not_simple`,
-  `Grade/Reduction.lean`, 42k build 3, landed) · **open**.
-  *Chapter:* every edge joining `u` and `w` other than `e` gets `C_{B₂}`; the motions of `G` are
-  those of `G/H` with `S(w) = S(u)`, of codimension `D` in them, so the rank is that of `G/H` plus
-  `D`. Its closing remark cites the block-triangular count (KT eqs. (6.3)–(6.5),
+  `Grade/Reduction.lean`, 42k build 3, landed) · **aligned, round 2 task 5**.
+  *Chapter (until then):* every edge joining `u` and `w` other than `e` gets `C_{B₂}`; the motions
+  of `G` are those of `G/H` with `S(w) = S(u)`, of codimension `D` in them, so the rank is that of
+  `G/H` plus `D`. Its closing remark cites the block-triangular count (KT eqs. (6.3)–(6.5),
   `lem:rigidityRows-splice-rank-add`) only at `d = 3`.
   *Lean (landed, the recon's spike):* the `d = 3` Lean's route
   (`hasPencilRealization_of_not_simple`), at `D`. `e ↦ C_{B₁}`, `f ↦ C_{B₂}`, and the other edges
@@ -437,7 +439,9 @@ there.
   (`BodyHingeFramework.le_finrank_span_rigidityRows_of_splice`, at every grade), and at most the
   target (`lem:relative-deficiency-rank-bound`).
   *Remedies:* the prose to the Lean (the splice at every `D`, which also widens the remark), a
-  Lean helper (the motions of `G` as those of `G/H` with `S(w) = S(u)`), or keep both.
+  Lean helper (the motions of `G` as those of `G/H` with `S(w) = S(u)`), or keep both. The prose
+  to the Lean, taken (the PI, 2026-11-05): every edge but `e` and `f` keeps its hinge in `G/H`, and
+  the closing remark says the count of KT eqs. (6.3)–(6.5) holds at every `D`.
 - **R-20** · `lem:pencil-d-nondegenerate-feasible` (`gradedPencilNondegFeasible_iff`, `exists_rowsMap_two`, `exists_rowsMap_three`,
   `exists_injOn_finrank_iInf_map_le`; `Grade/Feasible.lean`, 42l build 2) · **open** (the Lean landed
   as below; the chapter's proof stays as the prose).
@@ -845,7 +849,8 @@ there.
 
 - **R-46** · `lem:pencil-d-two-pencil-extension`, the setting of parts (1) and (2)
   (`perpExtensor_two_pencils`, `exists_eq_smul_perpExtensor`,
-  `exists_extensor_two_pencils_iff_grade`, `Grade/TwoPencil.lean`, round 1 task 12) · **open**.
+  `exists_extensor_two_pencils_iff_grade`, `Grade/TwoPencil.lean`, round 1 task 12) ·
+  **kept, round 2 task 5**.
   *Chapter:* the statement takes `b_u`, `b_v` nonzero and `Π_u ∋ b_u`, `Π_v ∋ b_v`
   three-dimensional for all three parts. The proof reads none of it, except `b_u ≠ 0` in the
   converse of (2)'s last claim (`B` the span of `b_u` and a vector independent of it); (3) has
@@ -865,7 +870,8 @@ there.
   in (2)'s last claim; the proof and its `\uses` unchanged), or keep both (the statement in the
   pencils' setting, the one every case uses). The recon leans to keeping both: the two routes agree
   step by step, and the only call outside the setting is (3)'s, for a fact the chapter has from its
-  first paragraph.
+  first paragraph. Keep both, taken: a formalization note after the proof names the Lean's route
+  (the PI, 2026-11-05).
 
 - **R-47** · `lem:pencil-d-loop-case`, its rank (`hasGradedPencilRealization_of_isLoopAt`,
   `Grade/Arms.lean`, round 1 task 12) · **no departure**: the chapter reads the loop's hinge

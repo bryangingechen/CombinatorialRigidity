@@ -8,7 +8,8 @@ formalization note naming the Lean's route for each of the 17 kept parts (K), wi
 slips round 1 moved here; then one `\uses` sweep over the chapter's missing edges (60 at the open).
 Blueprint and notes only: no Lean, no pin, no `\leanok`. Eleven tasks, one commit each: the open,
 eight slices by layer, the sweep and the close. 17 rows end `aligned` and 17 `kept`. Tasks 2
-to 4 landed (3 `aligned`, 9 `kept`). **Next concrete task:** task 5, 42k (R-19 L; R-18, R-46 K).
+to 5 landed (4 `aligned`, 11 `kept`). **Next concrete task:** task 6, 42l (R-48, R-49, R-50,
+R-20, R-21 L; R-23 K).
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -24,14 +25,13 @@ the PI answers in an entry that starts `**PI, <date>:**`.
 
 ## Current state
 
-**Task 4 landed** (this commit): R-14 `aligned`; R-15 (its statement restated), R-16, R-17
-`kept`, with three formalization notes (eleven in the chapter). Nothing is mid-stream; task 5 is
-next. Task 4's gates: G4's `verify.sh` has 9 `WARNING:` lines, task 3's nine (the count tasks 5–10
-hold), `print.log` rebuilt with 0 `LaTeX Warning`; G5's after-dump,
-`scratch/cleanup-42/round2/task4/dump-after.txt`, differs from `dump-6eb7a2e6.txt` in one line,
-the theorem's proof without `lem:relative-screws-path` (no drawn edge: it stays reached through
-`lem:block-rank-ear`; `1886 edges f539dcce186aa853`, `lean_decls` `28b0db9377d77782`), and serves
-as task 5's parent dump; `--chapter pencil-d`: 60 *missing*, 18 *unbacked transitive* (was 19).
+**Task 5 landed** (this commit): R-19 `aligned`; R-18, R-46 `kept`, with two formalization notes
+(thirteen in the chapter). Nothing is mid-stream; task 6 is next. Task 5's gates: G4's `verify.sh`
+has 9 `WARNING:` lines, task 4's nine (the count tasks 6–10 hold), `print.log` rebuilt with 0
+`LaTeX Warning`; G5's after-dump, `scratch/cleanup-42/round2/task5/dump-after.txt`, differs from
+task 4's in the four proof edges of `lem:pencil-d-nonsimple-case` and their four drawn edges
+(`1890 edges 25926b560ac340d1`, `lean_decls` `28b0db9377d77782`), and serves as task 6's parent
+dump; `--chapter pencil-d`: 56 *missing* (was 60), 18 *unbacked transitive*.
 
 **Verified at the open** (2026-11-05, at `6eb7a2e6`):
 - **The ledger** (`notes/Cleanup42.md` §2): 54 rows, 34 `open` (R-3 to R-5, R-9 to R-12, R-14 to
@@ -171,20 +171,15 @@ statement, (T2) and other parts all in task 8).
 
 **42i with 42j** (`sec:pencil-d-short`, its last four nodes; `sec:pencil-d-chains`).
 
-- [x] **4. Three interior bodies, the planes, glued ends and the chain count** (this commit).
+- [x] **4. Three interior bodies, the planes, glued ends and the chain count** (`8bffb361`).
   Aligned: R-14. Kept: R-15 (statement without `K` infinite, G6 run), R-16, R-17 (a note each).
   `\uses`: the theorem's proof drops `lem:relative-screws-path`. One *Moved* line (below).
 
 **42k** (`sec:pencil-d-reduction`).
 
-- [ ] **5. Two pencils, the base case and parallel edges.** R-19, L proof:
-  `lem:pencil-d-nonsimple-case` (l. 4497), the rank by the splice at every `D` (at least `D` plus
-  that of `G/H`, at most the target), its closing remark's third point widened
-  (`Grade/Reduction.lean`). K notes: R-18, `lem:pencil-d-base-case` (l. 4365), a hinge's `D − 1`
-  rows below and the target above (`Grade/Arms.lean`); R-46, `lem:pencil-d-two-pencil-extension`
-  (l. 4175), parts (1) and (2) for any vectors and subspaces, `b_u ≠ 0` only in (2)'s last claim
-  (`Grade/TwoPencil.lean`). *Expected:* the parallel-edge proof gains `lem:rigidityRows-splice-rank-add`
-  and `lem:relative-deficiency-rank-bound` (both *missing* at the open).
+- [x] **5. Two pencils, the base case and parallel edges** (this commit). Aligned: R-19 (the
+  block-triangular count at every `D`). Kept: R-18, R-46 (a note each). `\uses`: the parallel-edge
+  proof gains four *missing* edges, the count's lemmas. No *Candidates* or *Moved* line.
 
 **42l** (`sec:pencil-d-nondegenerate`, `sec:pencil-d-lift`).
 
@@ -269,10 +264,11 @@ statement, (T2) and other parts all in task 8).
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 5, 42k: R-19's proof (L) and the K notes of R-18 and R-46, one Opus
-dispatch. Its G5 parent dump is task 4's after-dump
-(`scratch/cleanup-42/round2/task4/dump-after.txt`), and G4 holds `verify.sh` to 9 `WARNING:`
-lines. Re-`grep` its nodes' lines: tasks 2–4 moved them by 114. No statement changes, so no G6.
+**Next concrete task:** task 6, 42l: the statements of R-48, R-49 and R-50 (L, with R-48's slip),
+the proofs of R-20 and R-21 (L) and R-23's K note, one Opus dispatch. Its G5 parent dump is task 5's
+after-dump (`scratch/cleanup-42/round2/task5/dump-after.txt`), and G4 holds `verify.sh` to 9
+`WARNING:` lines. Re-`grep` its nodes' lines: tasks 2–5 moved them by 164. Five nodes' statements
+change (R-48; R-49 on three nodes; R-50), so G6 runs.
 
 ## Decisions made during this round
 
