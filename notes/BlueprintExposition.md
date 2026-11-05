@@ -1905,6 +1905,25 @@ the landed statements found no wording false and changed none (the chain count's
 nodes keep the chapter's hypotheses).
 **Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
 
+### `pencil-d.tex` — Phase 42k (PD-REDUCTION: the reduction on all multigraphs in every dimension)
+
+**No new entries — judged at the sub-phase close (2026-11-04).** The source is the project's own
+(42d's write-up of Phase 39's reduction in every dimension; the parallel-edge case after KT Lemma
+6.2, p. 673, whose block-triangular count has its entry above); the criterion transfers as in the
+`pencil.tex` section. The eight nodes of `sec:pencil-d-reduction` are green, in three build
+commits from the recon's spikes, and no node decomposed or rerouted. The recon's findings are
+project-side: the `d = 3` Lean transcribes to every grade with subspaces for points, and the two
+new arguments, the two-pencil lemma's `C_B` and the base case's adjacent-distinct form, are the
+chapter's own and written out in full. The two route differences left, the base and nonsimple
+cases' Lean counting rows (one edge's independent rows, the splice) where the chapter counts
+motions, are a matter of presentation, tracked for the cleanup after Phase 42
+(`notes/Cleanup42.md` R-18, R-19), not a compressed step; the chapter's count of motions is
+written out in full. The close's end-to-end re-read against the landed statements found no
+wording false and changed none (the Lean holds at every `m` for the cases and at every grade for
+the linear algebra and the loop, without the nodes' unused nonzero or dimension hypotheses; the
+nodes keep the chapter's `d ≥ 3`).
+**Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
+
 ## Retroactive coverage
 
 - **Molecular program (Phases 17–22a): scanned 2026-06-04** — candidates folded

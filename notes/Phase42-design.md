@@ -1,13 +1,13 @@
 # Phase 42 — PENCIL-D: design (cross-phase plan and recon)
 
-**Status:** opened 2026-10-29 with the PI, sub-lettered, research first; **42k open**.
-**42k** (PD-REDUCTION, `notes/Phase42k.md`) **opened 2026-11-04** at the PI's word (§1): the eight
-nodes of `pencil-d.tex`'s `-reduction` (a hinge in two pencils, moving a realization by a linear
-map, moving one side of a cut edge, the cases at a loop, on at most two bodies, at a cut edge and
-at parallel edges, and the realization theorem in every dimension) as the chapter states them
-(§3). Its pre-build recon spiked all eight complete, with no `sorry`, and pinned three builds;
-its three builds made all eight green, and the close is next (`notes/Phase42k.md` *Hand-off*).
-PD-HEAD (§3, which maps the remaining red nodes to it by section) then opens at the PI's word.
+**Status:** opened 2026-10-29 with the PI, sub-lettered, research first; no sub-phase open;
+PD-REDUCTION complete.
+**42k** (PD-REDUCTION, `notes/Phase42k.md`) **opened and closed 2026-11-04** at the PI's word
+(§1): the eight nodes of `pencil-d.tex`'s `-reduction` (a hinge in two pencils, moving a
+realization by a linear map, moving one side of a cut edge, the cases at a loop, on at most two
+bodies, at a cut edge and at parallel edges, and the realization theorem in every dimension), all
+green, as the chapter states them, in three builds from its recon's spikes (verdict §3). PD-HEAD
+(§3, which maps the remaining red nodes to it by section) is next, at the PI's word.
 **42j** (PD-COVERAGE, `notes/Phase42j.md`) **opened and closed 2026-10-31** at the PI's word (§1):
 the four nodes of `pencil-d.tex`'s `-chains` and `-coverage` (the chain count, a long chain or a
 core, the coverage in every dimension and the distinct statement), all green, as the chapter
@@ -67,8 +67,10 @@ proved on paper (42d, `cor:pencil-d-conditioned-pair`); formalizing it began wit
 the flat rank (42e), then the induction's cut-vertex, bridge and contraction steps (42f), its
 cycle and long-ear steps (42g), its short-ear step at four or more interior bodies (42h) and at
 three, at `d = 4` to `6` (42i), which completes its steps, and the coverage, which puts them
-together, with the distinct statement (42j), which completes the induction; Phase 39's reduction,
-which carries it to every multigraph, is open (42k).
+together, with the distinct statement (42j), which completes the induction, and Phase 39's
+reduction, which carries it to every multigraph (42k): the headline's bare and distinct conjuncts
+at every `d ≥ 3` (`Graph.graded_pencil_realization_theorem`). The generic conjunct (PD-HEAD)
+remains.
 `d = 4, 5, 6` are measured (Results 11, 19), not found below target under the `--d4`
 population's cap (`n ≤ 12`, 36 simple graphs) and 8 graphs past it. Where the
 conjecture has content, that is 47 cells on 18 graphs, six of them cycles (§2.5).
@@ -1055,18 +1057,26 @@ marked `no departure` (R-6). The post-Phase-42 cleanup acts on the ledger (that 
 - **PD-REDUCTION**, **PD-HEAD**: Phase 39's reduction in `Pᵈ`; the headline `PencilPair`, and the
   flag strata as corollaries. Their informal proofs are 42d's `sec:pencil-d-reduction` and, for
   the generic conjunct, `sec:pencil-d-nondegenerate` to `sec:pencil-d-generic`.
-  **PD-REDUCTION, as 42k, opened 2026-11-04** at the PI's word (§1; `notes/Phase42k.md`):
-  `-reduction`, the eight nodes as the chapter states them, its recon spiking them against Phase
-  39's `d = 3` Lean (`Pencil/Arms.lean`, `ArmsAssembly.lean`, `X0.lean`, `Statement.lean`,
-  `Pair2.lean`) and the landed carrier. Its open's consistency read passed all eight, their 23
-  outside dependencies green, and re-derived the cases' counts. The open added findings for the
-  recon (that note's *Blockers*): the cases use only parts (1) and (3) of the two-pencil lemma;
-  the base case's adjacent-distinct form has no direct `d = 3` Lean; and the chapter reads the
-  base case's one-edge rank and the nonsimple case's rank off the motions, where their `d = 3`
-  Lean counts rows.
-  **42k's recon** (design pass, 2026-11-04; `notes/Phase42k.md` *Decisions made*): all eight spiked
-  complete, three builds (`Grade/TwoPencil.lean`, `Grade/Arms.lean`, `Grade/Reduction.lean`); the
-  two rank counts keep the `d = 3` Lean's rows (`notes/Cleanup42.md` R-18, R-19).
+  **PD-REDUCTION, as 42k, opened and closed 2026-11-04** at the PI's word (§1;
+  `notes/Phase42k.md`): `-reduction`, the eight nodes as the chapter states them, all green.
+  Verdicts: its recon spiked all eight on the landed carrier from Phase 39's `d = 3` Lean
+  (`Pencil/Arms.lean`, `ArmsAssembly.lean`, `X0.lean`, `Pair2.lean`), transcribed to grade `k`
+  with subspaces for points; new are `C_B` (`perpExtensor`) with the two-pencil lemma, and the base
+  case's adjacent-distinct form. Three builds landed them: `Grade/TwoPencil.lean`, `Grade/Arms.lean`
+  and `Grade/Reduction.lean`. The linear algebra and the loop hold at every grade, the cases at
+  every `m`, and the theorem at `1 ≤ m`, the chapter's `d ≥ 3`:
+  `Graph.graded_pencil_realization_theorem`, `Graph.pencil_reduction` at `n = m + 2`, whose two
+  conjuncts are the headline's first two (PD-HEAD). The base and nonsimple cases count rows as the
+  `d = 3` Lean does, where the chapter counts motions (`notes/Cleanup42.md` R-18, R-19, open). It
+  edited no file a deferral above names. The fold of the `d = 3` cases into its graded ones goes
+  to CLEANUP-42, as it reverses imports (`notes/Cleanup42.md` §3). PD-REDUCTION is complete.
+  **Deferred to PD-HEAD and after from PD-REDUCTION (42k)**, each with the next commit that edits
+  the file it names (FRICTION's open 42k entries): `exists_smul_extensor_eq_of_mem_span_range_grade`
+  to `Meet.lean` (with `contragredientEquiv`), `ExtensorInPanel.smul` to
+  `RigidityMatrix/Basic.lean`, `dotPerp_map_eq` to `Grade/Realization.lean`, and
+  `finrank_span_rigidityRows_of_single_edge` to `GenericityDevice.lean` (with `ArmsAssembly.lean`'s
+  inline count); at a cleanup round, the mirror candidates `finrank_span_pair_eq_two`,
+  `exists_mem_linearIndependent_pair` and `exists_pair_of_ncard_le_two_of_edgeSet_nonempty`.
   **At Phase 42's close**, Tier 0 joins `formalization.yaml`'s
   `main_results` and `alignment` unless the headline subsumes it, with a closed non-vacuity witness
   in `CombinatorialRigidity/Nonvacuity.lean` (`PHASE-BOUNDARIES.md`); 42c's intermediate close
@@ -1076,12 +1086,12 @@ marked `no departure` (R-6). The post-Phase-42 cleanup acts on the ledger (that 
   from the coverage (by `Graph.X0AttainsGrade.hasGradedDistinctPencilRealization`).
 
 **The red nodes by layer** (42e's open, by section of `pencil-d.tex`; a letter is minted only as
-a sub-phase opens). From `sec:pencil-d-induction` on the chapter has 62 dep-graph nodes, 29 of them
-red (recounted at 42j's close and again at 42k's open): 65 at 42e's open, all red, 4 green at its
-close, 3 cut at 42f's open (the PI, §1), 6 green at 42f's close, 7 at 42g's, 8 at 42h's, 4 at
-42i's and 4 at 42j's. The count of 66 put to the PI at 42e's open (§1) included
-`rem:pencil-d-flat-class`, a remark, which the dependency graph does not draw (it draws
-definitions, lemmas, propositions, theorems and corollaries).
+a sub-phase opens). From `sec:pencil-d-induction` on the chapter has 62 dep-graph nodes, 21 of them
+red (recounted at 42k's close; the first red node is `def:pencil-d-nondegenerate`): 65 at 42e's
+open, all red, 4 green at its close, 3 cut at 42f's open (the PI, §1), 6 green at 42f's close, 7
+at 42g's, 8 at 42h's, 4 at 42i's, 4 at 42j's and 8 at 42k's. The count of 66 put to the PI at
+42e's open (§1) included `rem:pencil-d-flat-class`, a remark, which the dependency graph does not
+draw (it draws definitions, lemmas, propositions, theorems and corollaries).
 - PD-CARRIER (42e, closed, all green): `-induction` (1) and `-flat` (3); 4.
 - PD-STEPS: `-cut` (3) and `-contract` (3), 42f, closed, all green; `-long` (7), 42g, closed, all
   green; `-short` (12), as `-short-four` (8), 42h, closed, all green, and `-short-three` (4), 42i,
@@ -1092,7 +1102,7 @@ definitions, lemmas, propositions, theorems and corollaries).
 - PD-COVERAGE: `-chains` (2; `lem:pencil-d-chain-count` is COUNT-C) and `-coverage` (2, with
   `lem:pencil-d-distinct-statement`, the coverage read as a realization); 4, as 42j, closed, all
   green.
-- PD-REDUCTION: `-reduction` (8), Phase 39's reduction; 8, as 42k, open, all green (builds 1–3); the close is next.
+- PD-REDUCTION: `-reduction` (8), Phase 39's reduction; 8, as 42k, closed, all green.
 - PD-HEAD: `-nondegenerate` (4), `-lift` (6) and `-generic` (11, ending in the headline
   `cor:pencil-d-conditioned-pair`); 21, the generic conjunct and the headline, the largest layer.
 

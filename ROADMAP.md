@@ -180,7 +180,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (RECONCILE 3/3: the Lean outside the phase's footprint) | the Lean's dead code, signatures, docstrings and the pebble game's search, a non-vacuity witness per main result, and the blueprint pins they move (no main result's statement changes) | ✓ Complete — dead code deleted, unneeded hypotheses dropped and the blueprint statements they reached restated, the search re-proved, the docstrings checked and a non-vacuity witness per main result outside the next phase's rows, no main result's statement changed (see `notes/Reconcile-lean-cleanup.md`; plan `notes/Reconcile.md`; round manual: `CLEANUP.md`) |
 | ⋮ Toolchain bump to Lean v4.36.0-rc1 (maintenance, cross-phase) | `lean-toolchain`, `lake-manifest.json`, `lakefile.toml` (+ renames, imports and one-line fixes in 39 Lean files) | ✓ Complete — v4.34.0-rc2 → v4.36.0-rc1, mathlib → `930ae14`, `Matroid` → `8ece630`; every gate green, all 19 main results' axioms unchanged; pushed 2026-10-25, CI green at `4c892cb6` (see `notes/Bump-v4.36.0-rc1.md`; record `notes/ToolchainBumps.md`) |
 | 41. The panel-hinge carrier and its graph (post-program) — RECONCILE-FORMAL | `Molecular/` (structural edit; sub-lettered, 41a–41e) | ✓ Complete — each hinge at its own edge's ends, and the RECONCILE program closed (see `notes/Phase41e.md`; plan `notes/Phase41-design.md`) |
-| 42. The pencil realization theorem in every dimension (post-program) — PENCIL-D | research first, then `Molecular/`, `pencil-d.tex` (sub-lettered, 42a–42k) | In progress — 42a ✓ PD-RECON, 42b ✓ PD-STATE, 42c ✓ PD-STABLE, 42d ✓ PD-ALL, 42e ✓ PD-CARRIER, 42f ✓ PD-STEPS's cut, bridges and contraction, 42g ✓ PD-STEPS's cycles and long ears, 42h ✓ PD-STEPS's short ears with four or more interior bodies, 42i ✓ PD-STEPS's three-body ear, 42j ✓ PD-COVERAGE; 42k PD-REDUCTION open (see `notes/Phase42k.md`; plan `notes/Phase42-design.md`) |
+| 42. The pencil realization theorem in every dimension (post-program) — PENCIL-D | research first, then `Molecular/`, `pencil-d.tex` (sub-lettered, 42a–42k) | In progress — 42a ✓ PD-RECON, 42b ✓ PD-STATE, 42c ✓ PD-STABLE, 42d ✓ PD-ALL, 42e ✓ PD-CARRIER, 42f ✓ PD-STEPS's cut, bridges and contraction, 42g ✓ PD-STEPS's cycles and long ears, 42h ✓ PD-STEPS's short ears with four or more interior bodies, 42i ✓ PD-STEPS's three-body ear, 42j ✓ PD-COVERAGE, 42k ✓ PD-REDUCTION; PD-HEAD opens at the PI's word (see `notes/Phase42k.md`; plan `notes/Phase42-design.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1339,19 +1339,21 @@ configuration of every graph satisfying the standing hypotheses reaches the defi
 subsumes the `def_3 ≤ 3` case, and every simple 2-edge-connected graph on at least three bodies
 has an adjacent-distinct pencil realization at that rank. The chain count's Lean counts the
 bodies of degree two, not the chapter's segments, a route difference tracked for the cleanup.
-PD-COVERAGE is complete, and with it the induction. At the PI's word **42k** (opened 2026-11-04,
-`notes/Phase42k.md`) takes the next layer, PD-REDUCTION: eight nodes of `pencil-d.tex` that run
-Phase 39's reduction in every dimension, as the chapter states them. Three are linear algebra (a
-hinge in two pencils, moving a realization by a linear map, moving one side of a cut edge), four
-are the cases at a loop, on at most two bodies, at a cut edge and at parallel edges, and the last
-is the theorem: over an infinite field and in every `d ≥ 3`, every multigraph with a body has a
-pencil realization at the deficiency rank, and an adjacent-distinct one when it is simple. A read
-at the open found their proofs sound, and a recon checked all eight in Lean against Phase 39's
-`d = 3` proofs, so three builds follow. Two of the cases count ranks as the `d = 3` Lean does,
-not by the chapter's count of motions, a route difference tracked for the cleanup. PD-HEAD opens
-after it at the PI's word, as each layer before it did. The targets are three
-tiers: every `d` at `def_3 ≤ 3` (proved and formalized, 42c), a `P⁴` theorem (every `d` at
-`def_3 ≤ 7`, by the sharp lemma), and every `d` (proved on paper, 42d).
+PD-COVERAGE is complete, and with it the induction. At the PI's word **42k** (opened and closed
+2026-11-04, `notes/Phase42k.md`) took the next layer, PD-REDUCTION: eight nodes of `pencil-d.tex`
+that run Phase 39's reduction in every dimension, formalized as the chapter states them
+(`Grade/TwoPencil.lean`, a hinge in two pencils and moving a realization or one side of a cut
+edge by a linear map; `Grade/Arms.lean`, the cases at a loop, on at most two bodies and at a cut
+edge; `Grade/Reduction.lean`, the case at parallel edges and the theorem). So, over an infinite
+field and in every `d ≥ 3`, every multigraph with a body has a pencil realization at the
+deficiency rank, and an adjacent-distinct one when it is simple
+(`Graph.graded_pencil_realization_theorem`), the headline's first two conjuncts. The cases on at
+most two bodies and at parallel edges count rows as the `d = 3` Lean does, where the chapter
+counts motions, a route difference tracked for the cleanup. PD-REDUCTION is complete. The last
+layer, PD-HEAD (the generic conjunct and the headline, 21 nodes), opens at the PI's word, as each
+before it did. The targets are three tiers: every `d` at `def_3 ≤ 3` (proved and formalized,
+42c), a `P⁴` theorem (every `d` at `def_3 ≤ 7`, by the sharp lemma), and every `d` (proved on
+paper, 42d).
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 

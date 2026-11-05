@@ -298,13 +298,14 @@ status:
     three has a pencil realization at the deficiency rank
     (Graph.hasGradedDistinctPencilRealization_of_deficiency_two_le_three). The chapter now also
     carries a proof on paper of the theorem in every dimension, its strongest form included;
-    formalizing that proof has begun with its induction, now formalized: over any infinite field
-    and in every dimension, every simple connected graph of minimum degree at least two has a pencil
-    realization at the deficiency rank, whatever its deficiency in the plane
-    (Graph.IsX0Graph.x0AttainsGrade with Graph.X0AttainsGrade.hasGradedDistinctPencilRealization;
-    for the simple two-edge-connected graphs on at least three bodies,
-    Graph.hasGradedDistinctPencilRealization_of_twoEdgeConnected); the reduction from these graphs
-    to all multigraphs is in progress.
+    formalizing that proof has reached the theorem's first two claims, its induction and the
+    reduction to all multigraphs: over any infinite field and in every dimension d >= 3, every
+    multigraph with at least one body has a pencil realization at the deficiency rank, and, when it
+    is simple, one whose normals are linearly independent at adjacent bodies
+    (Graph.graded_pencil_realization_theorem; the induction alone, at every simple connected graph
+    of minimum degree at least two whatever its deficiency in the plane, is
+    Graph.IsX0Graph.x0AttainsGrade). Its strongest form, on nondegenerate pencil realizations, is
+    next.
   sorry_count: 0
   sorry_in_definitions: 0
   axioms: ["propext", "Classical.choice", "Quot.sound"]          # only Lean/mathlib standard axioms; no project-specific axioms

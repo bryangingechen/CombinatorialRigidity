@@ -227,10 +227,11 @@ simple connected graph of minimum degree at least two whose deficiency in
 the plane is at most three has a pencil realization at the deficiency
 rank. The chapter now also carries a proof on paper of the theorem in
 every dimension, its strongest form included. Formalizing that proof has
-begun with its induction, now formalized: in every dimension, every
-simple connected graph of minimum degree at least two has a pencil
-realization at the deficiency rank, whatever its deficiency in the
-plane. The reduction from these graphs to all multigraphs is in progress.
+reached the theorem's first two claims: in every dimension, every
+multigraph with at least one body has a pencil realization at the
+deficiency rank, and, when it is simple, one in which adjacent bodies
+have distinct hyperplanes. Its strongest form, on nondegenerate pencil
+realizations, is next.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries

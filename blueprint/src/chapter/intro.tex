@@ -362,11 +362,12 @@ so proves, in every dimension, that a graph satisfying the standing
 hypotheses of \cref{sec:main-component} whose deficiency in the plane is
 at most three has a pencil realization at the deficiency rank. Its later
 sections prove the theorem in every dimension, its strongest form
-included, on paper. Formalizing that proof has begun with its
-induction, now formalized: in every dimension, every graph satisfying
-the standing hypotheses of \cref{sec:main-component} has a pencil
-realization at the deficiency rank, whatever its deficiency in the
-plane. The reduction from these graphs to all multigraphs is in progress.
+included, on paper. Formalizing that proof has reached the first two
+claims of the theorem: in every dimension, every multigraph with at
+least one body has a pencil realization at the deficiency rank, and,
+when it is simple, one in which adjacent bodies have distinct
+hyperplanes (\cref{thm:pencil-d-realization-theorem}). Its strongest
+form, on nondegenerate pencil realizations, is next.
 
 \subsection*{Reading this blueprint}
 
@@ -385,8 +386,9 @@ and gave a Lean declaration to each claim the chapters made without one.
 Phase~42, in progress, has added the last chapter, on the pencil in
 every dimension (\cref{sec:pencil-d}). Its definitions, the tools a
 proof would use and the case of small deficiency stated above are
-formalized, as is the induction of its proof in every dimension; the
-rest of that proof enters the graph as nodes not yet formalized.
+formalized, as are the induction of its proof in every dimension and
+the reduction to all multigraphs; the rest of that proof, its strongest
+form, enters the graph as nodes not yet formalized.
 From phase~6 on, the graph is written forward: a chapter's nodes and
 their edges come first, and the statement and proof sketch of a node not
 yet formalized are the plan for its Lean declaration. So the graph is
