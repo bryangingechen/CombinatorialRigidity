@@ -9,10 +9,10 @@ row to §2 for each departure, with no prose or Lean edit, then a stop at which 
 remedy per `open` row and plans rounds 2+ (§3). `.claude/autopilot/queue.toml` carries it as
 `CLEANUP-42`, attended, between PENCIL-D (done) and ORIGAMI; ROADMAP *Queued post-program phases*
 lists it. Its input is the proof-route ledger (§2): 34 rows at Phase 42's close (2026-11-05), 27
-`open`, 6 `aligned`, 1 `no departure`, to which round 1 adds; after its task 9, 42 rows, 28 `open`,
-6 `aligned` and 8 `no departure` (R-35 `open`, R-36 to R-42 `no departure`; R-1 to R-12
-re-checked, R-7, R-9 and R-12 corrected in place). **Next concrete task:** round 1's task 10,
-PD-STEPS (42i), `-short-three` (`notes/Phase42-cleanup.md` *Lemma checklist*).
+`open`, 6 `aligned`, 1 `no departure`, to which round 1 adds; after its task 10, 43 rows, 28
+`open`, 6 `aligned` and 9 `no departure` (R-35 `open`, R-36 to R-43 `no departure`; R-1 to R-16
+re-checked, R-7, R-9, R-12, R-15 and R-16 corrected in place). **Next concrete task:** round 1's
+task 11, PD-COVERAGE (42j) (`notes/Phase42-cleanup.md` *Lemma checklist*).
 
 ## 1. The PI's decisions (verbatim)
 
@@ -242,9 +242,10 @@ task in `notes/Phase42-cleanup.md`, and its re-checks of R-1 to R-34 are recorde
   neighbourhoods, as the base data give them, and `Π_a ∩ Π_b` as
   `range (gradeSigma la) ⊓ range (gradeSigma lb)`. A fixed inverse three-point matrix
   (`exists_inv_of_isAdmissiblePicture`) makes the rows `lb i − la i` linear in `z`, and `R` comes by
-  rank openness (`exists_mvPolynomial_le_finrank_span_of_repr`) at a height whose rows are
-  independent. The proof extends a family of lifting planes of `G[V₁]` along the ear
-  (`exists_mem_liftingPlanes_extend_ear`), as the chapter does by `ℓ₁, ℓ₂, ℓ₃`; the Lean keeps
+  rank openness (`exists_mvPolynomial_le_finrank_span_of_repr`) at a height whose first `min(m, r)`
+  rows are independent and the others zero. The proof extends a family of lifting planes of
+  `G[V₁]` along the ear (`exists_mem_liftingPlanes_extend_ear`), as the chapter does by
+  `ℓ₁, ℓ₂, ℓ₃`; the Lean keeps
   `E = E(G[V₁])` as `Graph.liftingPlanesDiff` of the induced graph (so only `⊆` goes through
   `G`'s planes). `[Infinite K]` and `[Finite α]` are not taken.
   *Remedies:* keep both, or the prose names `R` by rank openness.
@@ -263,8 +264,11 @@ task in `notes/Phase42-cleanup.md`, and its re-checks of R-1 to R-34 are recorde
   for `G`, whose admissible pictures replace the edge coordinates. The planes constant on the
   parts are the plane framework's partition motions read through `screwOneEquiv`. The refinement
   splits `X` in two (the bodies `G[X]` joins to `a`, and the rest, `partitionDef_merge` read
-  backwards), counted by `dim F(q) ≥ 3|V(G)ᶜ| + 3 + def₂(G)` (`lem:pencil-lifting-space-deficiency`
-  with `lem:pencil-lifting-planes-dim`). The Lean takes every number of heights, not only `d ≥ 3`.
+  backwards), whose value is at most `def₂(G)`, counted by `dim F(q) = 3|V(G)ᶜ| + 3 + def₂(G)` at
+  the pictures of Jackson–Jordán's polynomial for `G` (`thm:pencil-jj-equality` with
+  `lem:pencil-lifting-planes-dim`; only its `≥` half, the bound of
+  `lem:pencil-lifting-space-deficiency`, is used, and that lemma is not called). The Lean takes
+  every number of heights, not only `d ≥ 3`.
   *Remedies:* keep both, or the prose to the Lean (the proof's `\uses` then drops
   `def:deficiency-merged`).
 - **R-17** · `lem:pencil-d-chain-count` (`Graph.IsChain.partitionDef_induce_le`,
@@ -660,6 +664,23 @@ task in `notes/Phase42-cleanup.md`, and its re-checks of R-1 to R-34 are recorde
   second sentence. The pin reaches the lemma for `σ_v` and its injectivity alone (`Π_a ≠ 0`, for
   stars-four's polynomial).
 
+- **R-43** · `lem:pencil-d-planes-meet`, its planes, and those of `thm:pencil-d-open-ear-three`'s
+  first stage (`Graph.exists_mvPolynomial_planesMeet`, `Grade/PlanesMeet.lean`;
+  `Graph.X0AttainsGrade.of_openEar_three`, `Grade/ShortThree.lean`; round 1 task 10) · **no
+  departure**: the lemma states `Π_a`, `Π_b` as the spans of the points of `(q, z)` at the closed
+  neighbourhoods, and its proof cites `lem:pencil-d-condition-linear` for `Π_a` the image of the
+  injective `σ_a`. The pin takes them as the ranges of `gradeSigma la` and `gradeSigma lb` at any
+  `la`, `lb` with which `z` agrees there (some exist, as `z ∈ L_G(q)^{d−2}`), the phase's pinned
+  encoding, and never forms the span
+  (`Graph.IsAdmissiblePicture.span_pencilConfigPointGrade_closedNbhd_eq_range`, the lemma's second
+  sentence, is not called). It reaches the lemma for `σ_v` and its injectivity
+  (`gradeSigma_injective`, in `finrank_inf_range_gradeSigma`: the proof's `σ_a` of a common kernel).
+  The theorem's planes are R-42's base data at three interior bodies (through
+  `Graph.X0AttainsGrade.of_openEar_splitOff_of_base`), its proof citing the lemma only through
+  `thm:pencil-d-open-ear-four`'s; it reads `p_a ∈ Π_a` and `p_b ∈ Π_b` by
+  `pencilConfigPointGrade_eq_gradeSigma_iff`, and stars-three's three dimensions by
+  `finrank_range_gradeSigma`.
+
 ## 3. The cleanup's rounds
 
 - **Round 1, the route audit** (opened 2026-11-05, `notes/Phase42-cleanup.md`): every green node of
@@ -675,6 +696,10 @@ task in `notes/Phase42-cleanup.md`, and its re-checks of R-1 to R-34 are recorde
     `pencil.tex`) with no `\uses` edge to it, which `scripts/blueprint-deps.py` reports *missing*.
     The script reports 60 missing edges over the chapter (`--chapter pencil-d`), so a later round
     may take them in one sweep.
+  - *Moved to a later round* (round 1 task 10): a prose slip. `thm:pencil-d-open-ear-four`'s proof
+    calls an ear datum `y` ("Take an ear datum $y$ off all three zero sets", then "Keep the other
+    points of $y$"), where `def:pencil-d-ear-data` and the same proof's first stage (`s^*`) write
+    `s` for ear data, and the section writes `y` for points (`y_1`, `y_3`, …).
 - **The ledger at Phase 42's close:** the standing rule (§1) kept §2 current through PD-STEPS's
   rest, PD-COVERAGE, PD-REDUCTION and PD-HEAD (`notes/Phase42-design.md` §3), the last rows 42m's,
   R-24 to R-34; Phase 42 closed on 2026-11-05 with no row added after them. Round 1 adds from R-35.
