@@ -7,12 +7,12 @@ from the chapter's route; its plan, the PI's words and the proof-route ledger ar
 and adds a ledger row for each departure, re-checking R-1 to R-34 at HEAD; it edits no prose,
 statement, pin or Lean. The open (task 1, docs only) sliced the nodes by layer into 14
 one-dispatch Opus recon tasks, the 47 never-checked nodes of 42b–42f first, then a planned stop
-(task 16) at which the PI picks a remedy per `open` row and plans rounds 2+. Tasks 2 to 12
-(PD-STATE, PD-STABLE, COUNT-A and COUNT-B, PD-CARRIER, PD-STEPS, PD-COVERAGE, PD-REDUCTION) added
-R-35 and R-46 (`open`), R-36 to R-45 and R-47 (`no departure`); tasks 8 to 12 re-checked R-1 to
-R-19, correcting R-7, R-9, R-12, R-15, R-16 and R-17 in place. **Next concrete task:** task 13,
-PD-HEAD's first half (42l), `sec:pencil-d-nondegenerate` and `sec:pencil-d-lift`, re-checking R-20
-to R-23 (*Lemma checklist*). Round manual: `CLEANUP.md`.
+(task 16) at which the PI picks a remedy per `open` row and plans rounds 2+. Tasks 2 to 13
+(PD-STATE, PD-STABLE, COUNT-A and COUNT-B, PD-CARRIER, PD-STEPS, PD-COVERAGE, PD-REDUCTION,
+PD-HEAD's first half) added R-35, R-46 and R-48 to R-50 (`open`), R-36 to R-45 and R-47 (`no
+departure`); tasks 8 to 13 re-checked R-1 to R-23, correcting R-7, R-9, R-12, R-15, R-16 and R-17
+in place. **Next concrete task:** task 14, PD-HEAD's second half (42m), the cases, re-checking R-24
+to R-30 (*Lemma checklist*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -26,11 +26,11 @@ picks a remedy per `open` row and plans rounds 2+ (`notes/Cleanup42.md` §3). An
 
 ## Current state
 
-**Tasks 1 to 12 have landed** (task 12 this commit: one `open` row, R-46, the nonzero normals and
-three-dimensional subspaces that the pins of `lem:pencil-d-two-pencil-extension`'s parts (1) and
-(2) drop, and one `no departure` row, R-47, the loop case's rank read on the rows; R-18 and R-19
-accurate at HEAD; no *Candidates* or *Moved* line). The ledger has 47 rows, 29 `open`; the next row
-is R-48. Nothing is mid-stream; task 13 is next.
+**Tasks 1 to 13 have landed** (task 13 this commit: three `open` rows on hypotheses the pins drop,
+R-48 the setting of `lem:pencil-d-nondegenerate-maps`, R-49 the simple `G` of `-steer`,
+`-lift-one-witness` and `-lift-transfer`, R-50 the setting of `-lift-realization`'s parts (2) and
+(3); R-20 to R-23 accurate at HEAD; one *Moved* line). The ledger has 50 rows, 32 `open`; the next
+row is R-51. Nothing is mid-stream; task 14 is next.
 
 **Verified at the open** (2026-11-05, at `a3b80ac4`):
 - **The Lean baseline** is the coordinator's run this session, not repeated here: `lake build
@@ -162,16 +162,12 @@ or *Moved* line. The reasons stay in the landing commit's message and in the led
   R-15, R-16 corrected. One *Moved* line.
 - [x] **11. 42j** (`1f20578c`). No departure: R-44, R-45; `lem:pencil-d-distinct-statement`.
   Re-checks: R-17 corrected.
-- [x] **12. 42k** (this commit). Open: R-46. No departure: R-47; `lem:pencil-d-projective-transport`,
+- [x] **12. 42k** (`017581bd`). Open: R-46. No departure: R-47; `lem:pencil-d-projective-transport`,
   `-cut-reposition`, `-cut-case`, `thm:pencil-d-realization-theorem`. Re-checks: R-18, R-19
   accurate.
-- [ ] **13. PD-HEAD's first half (42l).** `sec:pencil-d-nondegenerate` and `sec:pencil-d-lift`
-  (4631–5392), 10 nodes, heavy (feasibility's proof is 96 lines). Re-checks R-20
-  (`lem:pencil-d-nondegenerate-feasible`), R-21 (`-lift-one-witness`), R-22 (`-steer`), R-23
-  (`-lift-transfer`); fresh: `def:pencil-d-nondegenerate`, `lem:pencil-d-nondegenerate-three`,
-  `lem:pencil-d-nondegenerate-maps`, `def:pencil-d-lift`, `lem:pencil-d-lift-realization`,
-  `def:pencil-d-lift-attains`. Reads `Grade/Nondegenerate.lean`, `Grade/Feasible.lean`,
-  `Grade/Lift.lean`, `Grade/LiftWitness.lean`, `Grade/Generic.lean` (one pin).
+- [x] **13. 42l** (this commit). Open: R-48, R-49, R-50. No departure: `def:pencil-d-nondegenerate`,
+  `lem:pencil-d-nondegenerate-three`, `def:pencil-d-lift`, `-lift-attains`. Re-checks: R-20 to R-23
+  accurate (R-22 `aligned`). One *Moved* line.
 - [ ] **14. PD-HEAD's second half (42m), the cases.** `lem:pencil-d-lift-small`,
   `-lift-cut-edge`, `-lift-pendant`, `-lift-pendant-triangle` (5424–5742) and `-lift-ear`
   (5936–6013), 5 heavy nodes, each with rows: re-checks R-24 to R-30. Reads
@@ -202,6 +198,10 @@ or *Moved* line. The reasons stay in the landing commit's message and in the led
   proof calls an ear datum `y` ("Take an ear datum $y$ off all three zero sets", then "Keep the
   other points of $y$"), where `def:pencil-d-ear-data` and the same proof's first stage (`s^*`)
   write `s` for ear data, and the section writes `y` for points (`y_1`, `y_3`, …).
+- **A prose slip** (task 13; mirrored in `notes/Cleanup42.md` §3).
+  `lem:pencil-d-nondegenerate-maps` fixes `p : K^(d+1) → K^(d′+1)`, so (2)'s injective `p` has
+  `d ≤ d′`, but its "in particular" embeds a realization in dimension `d′ ≤ d` into dimension `d`
+  (`lem:pencil-d-embed-realization`'s letters): `d` and `d′` swap roles within one statement.
 
 ## Blockers / open questions
 
@@ -209,15 +209,15 @@ or *Moved* line. The reasons stay in the landing commit's message and in the led
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 13, PD-HEAD's first half (42l). One Opus recon reads the ten nodes of
-`sec:pencil-d-nondegenerate` and `sec:pencil-d-lift` against their pins in
-`Grade/Nondegenerate.lean`, `Grade/Feasible.lean`, `Grade/Lift.lean`, `Grade/LiftWitness.lean` and
-`Grade/Generic.lean` (one pin), under *The audit's criterion*: it re-checks R-20 to R-23 at HEAD
-(R-22 `aligned`) and reads the six fresh nodes whole (task 13's line), then lands one docs commit:
-any new rows in `notes/Cleanup42.md` §2 (from R-48), its **Status**, and task 13's line here,
-ticked in the checklist's three-line register. R-35 already names one of its nodes
-(`lem:pencil-d-nondegenerate-three`, through `isNondegPencilPlaneRealization_two_iff`). Then tasks
-14–15 in order, and the stop.
+**Next concrete task:** task 14, PD-HEAD's second half (42m), the cases. One Opus recon reads the
+five nodes `lem:pencil-d-lift-small`, `-lift-cut-edge`, `-lift-pendant`, `-lift-pendant-triangle`
+and `-lift-ear` against their pins in `Grade/LiftSmall.lean`, `Grade/LiftCutEdge.lean` and
+`Grade/LiftCases.lean`, under *The audit's criterion*: each node read whole, with R-24 to R-30
+re-checked at HEAD (task 14's line), then one docs commit: any new rows in `notes/Cleanup42.md` §2
+(from R-51), its **Status**, and task 14's line here, ticked in the checklist's three-line register.
+R-49 (task 13) is the simple `G` that `lift_transfer` drops; R-50 notes that the cut edge's (T2)
+calls `mem_liftMaps_iff` outside `lem:pencil-d-lift-realization`'s setting. Then task 15, and the
+stop.
 
 ## Decisions made during this round
 

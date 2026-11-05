@@ -9,11 +9,11 @@ row to §2 for each departure, with no prose or Lean edit, then a stop at which 
 remedy per `open` row and plans rounds 2+ (§3). `.claude/autopilot/queue.toml` carries it as
 `CLEANUP-42`, attended, between PENCIL-D (done) and ORIGAMI; ROADMAP *Queued post-program phases*
 lists it. Its input is the proof-route ledger (§2): 34 rows at Phase 42's close (2026-11-05), 27
-`open`, 6 `aligned`, 1 `no departure`, to which round 1 adds; after its task 12, 47 rows, 29
-`open`, 6 `aligned` and 12 `no departure` (R-35 and R-46 `open`, R-36 to R-45 and R-47 `no
-departure`; R-1 to R-19 re-checked, R-7, R-9, R-12, R-15, R-16 and R-17 corrected in place).
-**Next concrete task:** round 1's task 13, PD-HEAD's first half (42l) (`notes/Phase42-cleanup.md`
-*Lemma checklist*).
+`open`, 6 `aligned`, 1 `no departure`, to which round 1 adds; after its task 13, 50 rows, 32
+`open`, 6 `aligned` and 12 `no departure` (R-35, R-46 and R-48 to R-50 `open`, R-36 to R-45 and
+R-47 `no departure`; R-1 to R-23 re-checked, R-7, R-9, R-12, R-15, R-16 and R-17 corrected in
+place). **Next concrete task:** round 1's task 14, PD-HEAD's second half (42m), the cases
+(`notes/Phase42-cleanup.md` *Lemma checklist*).
 
 ## 1. The PI's decisions (verbatim)
 
@@ -750,6 +750,74 @@ task in `notes/Phase42-cleanup.md`, and its re-checks of R-1 to R-34 are recorde
   (`exists_mem_linearIndependent_pair`, `perpExtensor_two_pencils`), and the deficiency through a
   loop crossing no partition (`Graph.deficiency_deleteEdges_singleton_eq_of_isLoopAt`).
 
+- **R-48** · `lem:pencil-d-nondegenerate-maps`, the setting of parts (1) and (2)
+  (`PencilNondegConditions.of_map`, `PencilNondegConditions.map`, `Grade/Nondegenerate.lean`,
+  round 1 task 13) · **open**.
+  *Chapter:* the statement takes, for both parts, a nonzero `b_v ∈ K^(d+1)` and a
+  three-dimensional `Π_v ∋ b_v` at every body. The proof reads none of it: (1) a relation among
+  vectors gives one among their images, and `⋂_{w ∈ S} Π_w` lies in each `Π_w`, where `p` is
+  injective, and maps into `⋂ pΠ_w`; (2) an injective `p` keeps independence and maps `⋂ Π_w`
+  onto `⋂ pΠ_w`.
+  *Lean:* both pins take any vectors and subspaces (of any `K^N` and `K^(N′)`, the standing
+  generality), with `p` injective on each `Π_v`, `v ∈ V(G)`, in (1); each proof is the chapter's,
+  so the pins are stronger than their node. The nonzero normals are trivially recovered: the
+  conditions force `b_v ≠ 0` on `V(G)` (the closed neighbourhood of a body that is not a hub, a
+  link at a hub; checked with `lake lean`), in (1) through `p b_v ≠ 0`. The dimension and
+  `b_v ∈ Π_v` are not recovered, and their drop is not vacuous: with no hub the third condition
+  reads no subspace, so any `Π` meets the pins' hypotheses. Both callers are in the node's setting:
+  `IsNondegPencilPlaneRealization.lift` (`π`, part (1)) and
+  `IsNondegPencilPlaneRealization.map_gradeEmbed` (the "in particular", which takes a
+  nondegenerate realization).
+  *Remedies:* the prose to the Lean (parts (1) and (2) for any vectors `b_v` and subspaces `Π_v`;
+  the proof, the "in particular" and the `\uses` unchanged), or keep both (the pencils' setting,
+  the one both callers use). The recon leans to the prose: one clause, and the conditions read only
+  vectors and subspaces.
+
+- **R-49** · `lem:pencil-d-steer`, `lem:pencil-d-lift-one-witness` and `-lift-transfer`, their
+  simple `G` (`isZariskiOpen_steerSet`, `exists_mem_steerSet_of_isNondeg`, `steerSet_nonempty_iff`,
+  `Grade/Lift.lean`; `liftAttains_of_least`, `liftAttains_of_holdsGenerally`, `lift_transfer`,
+  `Grade/LiftWitness.lean`; round 1 task 13) · **open**.
+  *Chapter:* each statement takes `G` simple ("a finite simple multigraph whose closed
+  hub-neighbourhoods have at most three members"; "simple and nondegeneracy-feasible"). No proof
+  reads it: the parametrization reads the assignments of places, the other two the
+  parametrization and the lifts.
+  *Lean:* no pin takes `G.Simple` (their signatures, checked with `lake lean`); each proof is
+  otherwise the chapter's up to R-21 and R-23 (R-22 aligned), so the pins are stronger than their
+  nodes. Not vacuous: the parallel pair, two bodies and two edges between them, is
+  nondegeneracy-feasible (`exists_isNondegPencilRealization_parallel_pair`, `Pencil/Pair.lean`)
+  and not simple. Not recovered: no hypothesis of the pins implies it. The nodes' other hypotheses
+  are taken or recovered: the closed hub-neighbourhoods of at most three members as the selectors
+  (`IsFin3SelectorOf`, the statement's assignments of places); nondegeneracy-feasibility from a
+  realization the pins take (`hnd`, the nonempty `U(G)` under `HoldsGenerally`, (T1)'s realization
+  of `G`). The induction's pin, `liftAttains_of_simple` (`thm:pencil-d-generic`), takes it.
+  *Remedies:* the prose to the Lean (the three statements without "simple"; the proofs and their
+  `\uses` unchanged), or keep both (simple graphs, the setting of `thm:pencil-d-generic`'s
+  induction). The recon leans to the prose: one word in each statement, read by no proof.
+
+- **R-50** · `lem:pencil-d-lift-realization`, the setting of parts (2) and (3)
+  (`mem_liftMaps_iff`, `liftSmul_mem_liftSpace_iff`, `liftTransport_mem_liftSpace_iff`,
+  `finrank_span_rigidityRows_ofNormals_smul`, `finrank_liftNormal_transport`, `Grade/Lift.lean`,
+  round 1 task 13) · **open**.
+  *Chapter:* the statement takes, for all three parts, a nondegenerate realization `(b⁰, Π⁰)` in
+  dimension three and `λ ∈ 𝓛(b⁰, Π⁰)^m`. The proofs of (2) and (3) read only that `Π⁰_v` contains
+  the points of the closed neighbourhood of `v` ((2): a form on `Π⁰_v` extends to `K⁴`, and one on
+  `K⁴` restricts) or nothing ((3): `ζ_w = φ_v(b⁰_w)` exactly when `c_w ζ_w = φ_v(c_w b⁰_w)` and
+  when `ζ_w = (φ_v ∘ g⁻¹)(g b⁰_w)`; the hinges scale by `c_u c_v`; a collineation keeps the rank).
+  *Lean:* (2)'s pin takes only `b⁰_w ∈ Π⁰_v` on the closed neighbourhoods; (3)'s two membership
+  pins take any `b⁰` and `Π⁰` (and `c_v ≠ 0` on `V(G)`), and its two rank pins any normals, at any
+  maps `ζ` (the scaling at any grade). Each proof is the chapter's, so the pins are stronger than
+  their node. Not vacuous (`b⁰ = 0` meets (2)'s hypothesis; (3)'s pins have none beyond the
+  scalars) and not recovered. (1)'s pin, `IsNondegPencilPlaneRealization.lift`, takes the node's
+  setting. (2)'s one caller, the cut edge's (T2) (`Grade/LiftCutEdge.lean`), calls it at `G` and
+  at an induced subgraph with `G`'s chart points and subspaces, supplying only the incidences: in
+  `def:pencil-d-lift`'s setting, not the node's. (3)'s scaling is called in the setting
+  (`liftAttains_of_least`, at `c b⁰`); its transport has no caller (`scripts/blueprint-deps.py`
+  calls its two pins dead).
+  *Remedies:* the prose to the Lean ((2) and (3) for any `(b⁰, Π⁰)` as in `def:pencil-d-lift`,
+  (1) alone at a nondegenerate realization and `λ ∈ 𝓛^m`; the proofs and `\uses` unchanged), or
+  keep both (one setting for the three parts). The recon leans to the prose, as (2)'s caller is
+  outside the node's setting.
+
 ## 3. The cleanup's rounds
 
 - **Round 1, the route audit** (opened 2026-11-05, `notes/Phase42-cleanup.md`): every green node of
@@ -769,6 +837,11 @@ task in `notes/Phase42-cleanup.md`, and its re-checks of R-1 to R-34 are recorde
     calls an ear datum `y` ("Take an ear datum $y$ off all three zero sets", then "Keep the other
     points of $y$"), where `def:pencil-d-ear-data` and the same proof's first stage (`s^*`) write
     `s` for ear data, and the section writes `y` for points (`y_1`, `y_3`, …).
+  - *Moved to a later round* (round 1 task 13): a prose slip. `lem:pencil-d-nondegenerate-maps`
+    fixes `p : K^(d+1) → K^(d′+1)`, so (2)'s injective `p` has `d ≤ d′`, but its "in particular"
+    embeds a realization in dimension `d′ ≤ d` into dimension `d` (the letters of
+    `lem:pencil-d-embed-realization`), a map `K^(d′+1) → K^(d+1)`: `d` and `d′` swap roles within
+    one statement.
 - **The ledger at Phase 42's close:** the standing rule (§1) kept §2 current through PD-STEPS's
   rest, PD-COVERAGE, PD-REDUCTION and PD-HEAD (`notes/Phase42-design.md` §3), the last rows 42m's,
   R-24 to R-34; Phase 42 closed on 2026-11-05 with no row added after them. Round 1 adds from R-35.
