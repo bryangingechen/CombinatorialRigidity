@@ -1,13 +1,18 @@
 # Phase 42 — PENCIL-D: design (cross-phase plan and recon)
 
-**Status:** opened 2026-10-29 with the PI, sub-lettered, research first; no sub-phase open;
-PD-REDUCTION complete.
+**Status:** opened 2026-10-29 with the PI, sub-lettered, research first; **42l open**.
+**42l** (PD-HEAD's `-nondegenerate` and `-lift`, `notes/Phase42l.md`) **opened 2026-11-04** at the
+PI's word (§1): the ten nodes of `pencil-d.tex`'s `-nondegenerate` and `-lift` (nondegeneracy in
+dimension `d`, its agreement at `d = 3`, linear maps, feasibility in every dimension, a
+parametrization in dimension three, lifts, lifts are nondegenerate, the general lift attains, one
+lift suffices, lifts restrict to a subgraph) as the chapter states them (§3). Its next step is the
+pre-build recon. PD-HEAD's other half, `-generic` (§3: eleven nodes, the headline among them), then
+opens at the PI's word; its close is Phase 42's.
 **42k** (PD-REDUCTION, `notes/Phase42k.md`) **opened and closed 2026-11-04** at the PI's word
 (§1): the eight nodes of `pencil-d.tex`'s `-reduction` (a hinge in two pencils, moving a
 realization by a linear map, moving one side of a cut edge, the cases at a loop, on at most two
 bodies, at a cut edge and at parallel edges, and the realization theorem in every dimension), all
-green, as the chapter states them, in three builds from its recon's spikes (verdict §3). PD-HEAD
-(§3, which maps the remaining red nodes to it by section) is next, at the PI's word.
+green, as the chapter states them, in three builds from its recon's spikes (verdict §3).
 **42j** (PD-COVERAGE, `notes/Phase42j.md`) **opened and closed 2026-10-31** at the PI's word (§1):
 the four nodes of `pencil-d.tex`'s `-chains` and `-coverage` (the chain count, a long chain or a
 core, the coverage in every dimension and the distinct statement), all green, as the chapter
@@ -70,7 +75,7 @@ three, at `d = 4` to `6` (42i), which completes its steps, and the coverage, whi
 together, with the distinct statement (42j), which completes the induction, and Phase 39's
 reduction, which carries it to every multigraph (42k): the headline's bare and distinct conjuncts
 at every `d ≥ 3` (`Graph.graded_pencil_realization_theorem`). The generic conjunct (PD-HEAD)
-remains.
+remains: its nondegeneracy and lifts are open (42l).
 `d = 4, 5, 6` are measured (Results 11, 19), not found below target under the `--d4`
 population's cap (`n ≤ 12`, 36 simple graphs) and 8 graphs past it. Where the
 conjecture has content, that is 47 cells on 18 graphs, six of them cycles (§2.5).
@@ -451,6 +456,55 @@ fibre-intersection lemma and Jackson–Jordán's equality.
   `pencilPair_of_X0` in `X0.lean`). So the cases' `d = 3` Lean is about 1,310 lines, headers
   included, assembly aside. The adjacent-distinct base case has no direct `d = 3` Lean: there it
   comes from the generic conjunct (`pencilPair_of_ncard_le_two`, `Pair.lean`).
+- **PI, 2026-11-04 (42l's open):** asked "Phase 42l isn't open yet. 42k closed PD-REDUCTION, and the
+  last layer is PD-HEAD: 21 red nodes of pencil-d.tex. That's sec:pencil-d-nondegenerate (4: the
+  definition, agreement at d = 3, invariance under linear maps, feasibility independent of d),
+  sec:pencil-d-lift (6: a d = 3 parametrization, lifts of a P³ realization, lifts are
+  nondegenerate, the general lift attains, one lift suffices, lifts restrict to a subgraph) and
+  sec:pencil-d-generic (11: the reduction's cases for the generic conjunct, the generic theorem,
+  and the headline cor:pencil-d-conditioned-pair). The d = 3 template is Phase 39's
+  generic-conjunct Lean (Pair.lean 967, Pair2.lean 622, Steer.lean 592 lines). Closing PD-HEAD
+  closes Phase 42, which is also where the main_results row is decided. What should 42l open
+  as?", the PI answered "Nondegenerate + lift only", whose option read: "Open on the 10 nodes of
+  -nondegenerate and -lift (roughly 3–5 builds, my estimate). The 11 generic nodes and the headline
+  would wait for a later sub-phase." The other options put were "All 21 nodes as written
+  (Recommended)" ("Close PD-HEAD and with it Phase 42. An Opus open commit, a pre-build recon that
+  spikes the nodes against Phase 39's d = 3 generic Lean and the landed carrier, then roughly 6–10
+  builds (my estimate), and the Phase 42 close.") and "Recon first, scope after" ("Open on all 21,
+  but the recon sizes the lift and generic sections and comes back to you before any build.").
+  *Note (not the PI's text):* the question and the option text are the coordinator's words, so
+  "roughly 3–5 builds" and "roughly 6–10 builds" are the coordinator's estimates, and the line
+  counts are the coordinator's `wc -l` of the three whole files (they match at 42l's open). 42l's
+  open checked the rest against the chapter and the source. The counts hold: 4, 6 and 11, the 21
+  red nodes of the 62 from `sec:pencil-d-induction` on. The descriptions of `-nondegenerate` and
+  `-lift` hold, with qualifiers they leave out. "Invariance under linear maps" is
+  `lem:pencil-d-nondegenerate-maps`: the conditions are kept by an injective map and pulled back
+  along one injective on each subspace, not kept by every linear map. The feasibility, one-lift
+  and restriction lemmas assume an infinite field, and the restriction lemma assumes (T1) and (T2),
+  which its consumers in `-generic` discharge. "Lifts are nondegenerate" is part (1) of
+  `lem:pencil-d-lift-realization`; its parts (2) and (3) say that the lifts' normals and ranks
+  depend only on the points and the maps `ζ`, and that rescaling and collineations keep the rank.
+  "The reduction's cases" holds loosely: `thm:pencil-d-generic` is a strong induction of its own
+  on the number of bodies, on the case split of the `d = 3` conditioned pair and generic step
+  (`thm:pencil-conditioned-pair-nonempty`, `thm:pencil-generic-step`), not `Graph.pencil_reduction`.
+  Of the section's nine lemmas six are its cases, and three (`lem:pencil-d-good-ear`, `-ear-extend`,
+  `-ear-free`) find a pendant triangle or the ear and supply the ear case's condition. "Phase 39's generic-conjunct Lean" holds of the three files' origin, but they
+  are not the `d = 3` Lean the ten transcribe. `Pencil/Pair.lean` (the conditioned pair at a loop,
+  on at most two bodies and at a cut edge) and `Pair2.lean` (the pendant case and the assembly
+  through the reduction) are the `d = 3` counterparts of `-generic`'s lift-small, lift-cut-edge and
+  lift-pendant and of its assembly; no `d = 3` remark of the ten cites their nodes. `Steer.lean` is
+  one of six files of the Lean of `lem:pencil-generic-steer`, the parametrization
+  `lem:pencil-d-steer` transcribes through the polarity: `Chart.lean` 719, `Engine.lean` 646,
+  `Reseed.lean` 400, `Steer.lean` 592, `Witness.lean` 199 and `MainComponent/GenericSteer.lean`
+  825 lines. Its rank as a lower bound (`Steer.lean`, `Engine.lean`) and its part (b)
+  (`GenericSteer.lean`) are the `d = 3` steps that one-witness (2) and the restriction lemma cite.
+  The `d = 3` definitions are in `Pencil/Motive.lean` (`IsNondegPencilRealization`,
+  `PencilNondegFeasible`, `HasGenericPencilRealization`, lines 132, 148, 157). The lift's four
+  nodes, `maps` (1) and the feasibility lemma's projection have no `d = 3` Lean: at `d = 3` the
+  only lift is the realization. "Where the main_results row is decided" holds (§3, PD-REDUCTION's
+  entry). No node of the ten uses or `\cref`s a node of `-generic`, so the split is consistent;
+  one sentence of `-lift`'s prose, after `def:pencil-d-lift`, points ahead to
+  `lem:pencil-d-lift-no-rigid`, which proves it, and no proof of the ten uses it.
 
 ## 2. PD-RECON (42a)
 
@@ -1077,6 +1131,18 @@ marked `no departure` (R-6). The post-Phase-42 cleanup acts on the ledger (that 
   `finrank_span_rigidityRows_of_single_edge` to `GenericityDevice.lean` (with `ArmsAssembly.lean`'s
   inline count); at a cleanup round, the mirror candidates `finrank_span_pair_eq_two`,
   `exists_mem_linearIndependent_pair` and `exists_pair_of_ncard_le_two_of_edgeSet_nonempty`.
+  **PD-HEAD's first sub-phase, 42l, opened 2026-11-04** at the PI's word (§1; `notes/Phase42l.md`):
+  `-nondegenerate` (4) and `-lift` (6), the ten nodes as the chapter states them. PD-HEAD stays the
+  layer's code, and its halves are named by their sections: `-nondegenerate` with `-lift` (42l) and
+  `-generic` (11 nodes, `thm:pencil-d-generic` and the headline among them; no letter), which opens
+  after 42l at the PI's word and whose close is Phase 42's. The open's consistency read passed all
+  ten, their 18 outside dependencies green; no node of the ten uses a `-generic` one, and ten of
+  `-generic`'s eleven use one of the ten. The open added findings for the recon (that note's
+  *Blockers*): Phase 39's `Pair.lean` and `Pair2.lean` serve `-generic`; the ten's `d = 3` Lean is
+  `Pencil/Motive.lean`'s definitions and `lem:pencil-generic-steer`'s chart (six files), which
+  already pads the normals that the steer lemma's remark says the `d = 3` node does not; the lift
+  and the feasibility lemma's projection have no `d = 3` Lean; and remarks with no node carry
+  claims that the ten and `thm:pencil-d-generic` cite.
   **At Phase 42's close**, Tier 0 joins `formalization.yaml`'s
   `main_results` and `alignment` unless the headline subsumes it, with a closed non-vacuity witness
   in `CombinatorialRigidity/Nonvacuity.lean` (`PHASE-BOUNDARIES.md`); 42c's intermediate close
@@ -1087,7 +1153,8 @@ marked `no departure` (R-6). The post-Phase-42 cleanup acts on the ledger (that 
 
 **The red nodes by layer** (42e's open, by section of `pencil-d.tex`; a letter is minted only as
 a sub-phase opens). From `sec:pencil-d-induction` on the chapter has 62 dep-graph nodes, 21 of them
-red (recounted at 42k's close; the first red node is `def:pencil-d-nondegenerate`): 65 at 42e's
+red (recounted at 42k's close and again at 42l's open; the first red node is
+`def:pencil-d-nondegenerate`): 65 at 42e's
 open, all red, 4 green at its close, 3 cut at 42f's open (the PI, §1), 6 green at 42f's close, 7
 at 42g's, 8 at 42h's, 4 at 42i's, 4 at 42j's and 8 at 42k's. The count of 66 put to the PI at
 42e's open (§1) included `rem:pencil-d-flat-class`, a remark, which the dependency graph does not
@@ -1103,8 +1170,9 @@ draw (it draws definitions, lemmas, propositions, theorems and corollaries).
   `lem:pencil-d-distinct-statement`, the coverage read as a realization); 4, as 42j, closed, all
   green.
 - PD-REDUCTION: `-reduction` (8), Phase 39's reduction; 8, as 42k, closed, all green.
-- PD-HEAD: `-nondegenerate` (4), `-lift` (6) and `-generic` (11, ending in the headline
-  `cor:pencil-d-conditioned-pair`); 21, the generic conjunct and the headline, the largest layer.
+- PD-HEAD: `-nondegenerate` (4) and `-lift` (6), as 42l, open; `-generic` (11, ending in the
+  headline `cor:pencil-d-conditioned-pair`), no letter; 21, the generic conjunct and the headline,
+  the largest layer.
 
 PD-STATE and PD-STABLE do not depend on the route, so they ran beside PD-RECON (§1's defaults).
 PD-STATE opened and closed as 42b on 2026-10-30, and PD-STABLE as 42c the same day.

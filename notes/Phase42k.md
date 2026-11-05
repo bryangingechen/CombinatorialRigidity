@@ -59,7 +59,8 @@ index (forward mode), and the file map is under *Current state*.
 
 Phase 42 stays in progress with no sub-phase open, and PD-REDUCTION is complete (8 nodes, all
 green), which gives the headline's first two conjuncts at every `d ≥ 3`. The next step is
-**putting PD-HEAD's open to the PI** (design doc §3), no letter minted until it opens: the 21 red
+**putting PD-HEAD's open to the PI** (design doc §3), no letter minted until it opens (answered at
+42l's open: `-nondegenerate` and `-lift` only, design doc §1; `notes/Phase42l.md`): the 21 red
 nodes of `pencil-d.tex`'s `sec:pencil-d-nondegenerate` (4), `sec:pencil-d-lift` (6) and
 `sec:pencil-d-generic` (11), the generic conjunct and the headline `cor:pencil-d-conditioned-pair`
 (the first red node is `def:pencil-d-nondegenerate`). PD-HEAD is the last layer, so its close is

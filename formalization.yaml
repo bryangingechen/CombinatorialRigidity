@@ -305,7 +305,7 @@ status:
     (Graph.graded_pencil_realization_theorem; the induction alone, at every simple connected graph
     of minimum degree at least two whatever its deficiency in the plane, is
     Graph.IsX0Graph.x0AttainsGrade). Its strongest form, on nondegenerate pencil realizations, is
-    next.
+    in progress.
   sorry_count: 0
   sorry_in_definitions: 0
   axioms: ["propext", "Classical.choice", "Quot.sound"]          # only Lean/mathlib standard axioms; no project-specific axioms

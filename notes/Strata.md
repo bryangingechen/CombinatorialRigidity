@@ -12,7 +12,8 @@ closed 2026-10-30, `notes/Phase42f.md`), 42g (its cycle and long-ear steps, clos
 which completes PD-STEPS, and 42j (PD-COVERAGE, the coverage, closed 2026-10-31,
 `notes/Phase42j.md`), which completes the induction, and 42k (PD-REDUCTION, Phase 39's
 reduction, closed 2026-11-04, `notes/Phase42k.md`), which gives the headline's first two
-conjuncts; PD-HEAD opens next, at the PI's word (design doc §3). No Lean, no blueprint here.
+conjuncts; it continues as 42l (PD-HEAD's nondegeneracy and lifts, opened 2026-11-04,
+`notes/Phase42l.md`; design doc §3). No Lean, no blueprint here.
 Evidence drivers: `notes/scripts/strata/strata.py` (exact ℚ, seeded) and `oneclass.py` beside it.
 Editing discipline as for phase notes (≤ 8-line entries). `HARNESS.md` *Evidence* and
 *Reproducibility* bind this work; it is not an attack track.

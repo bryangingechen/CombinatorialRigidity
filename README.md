@@ -231,7 +231,7 @@ reached the theorem's first two claims: in every dimension, every
 multigraph with at least one body has a pencil realization at the
 deficiency rank, and, when it is simple, one in which adjacent bodies
 have distinct hyperplanes. Its strongest form, on nondegenerate pencil
-realizations, is next.
+realizations, is in progress.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries

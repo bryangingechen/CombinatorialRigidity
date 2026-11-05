@@ -811,8 +811,9 @@ the last of PD-STEPS, as 42i (opened and closed 2026-10-31, `notes/Phase42i.md`)
 `d = 4` to `6`, which completes PD-STEPS; and the coverage, PD-COVERAGE, as 42j (opened and closed
 2026-10-31, `notes/Phase42j.md`): formalized, which completes the induction in every dimension;
 and Phase 39's reduction, PD-REDUCTION, as 42k (opened and closed 2026-11-04, `notes/Phase42k.md`):
-formalized, which gives the headline's first two conjuncts in every dimension; PD-HEAD opens next,
-at the PI's word. Summary: ROADMAP §42.
+formalized, which gives the headline's first two conjuncts in every dimension; and PD-HEAD's first
+half, nondegeneracy and lifts in every dimension, as 42l (opened 2026-11-04, `notes/Phase42l.md`).
+Summary: ROADMAP §42.
 Still queued, codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
 conjecture, `notes/Origami.md` — the next phase to open after PENCIL-D, with the PI), **PIN** (a second,
 independent proof of the 2-d molecular conjecture by Jackson–Jordán 2008's

@@ -185,7 +185,7 @@ theorem's first two claims: in every dimension, every multigraph with at
 least one body has a pencil realization at the deficiency rank, and,
 when it is simple, one in which adjacent bodies have distinct
 hyperplanes. Its strongest form, on nondegenerate pencil realizations,
-is next.
+is in progress.
 
 ### How the pencil realization theorem is proved
 
