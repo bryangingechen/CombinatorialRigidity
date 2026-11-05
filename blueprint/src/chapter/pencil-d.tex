@@ -6236,6 +6236,24 @@ the conditioned pair in every dimension
   $D \ge 3$.
 \end{proof}
 
+\begin{fmlnote}
+  The formalization proves (iii) with $s(X) \le 1$ read off the proof of
+  \cref{lem:pencil-rigid-good-ear}, as the first paragraph reads (i) and
+  (ii) off it; with $\operatorname{def}_2(G[X]) \le 1$ by the case split
+  above on the partitions of $X$, stated as a lemma of its own beside
+  \cref{lem:deficiency-tight-rigid}, which runs the same split for
+  $\operatorname{def}_3$; and with $G[X]$ connected through the
+  deficiency, not the singleton value: were $G[X]$ the disjoint union of
+  $G[X_1]$ and $G[X_2]$ with no edge between, then
+  $\operatorname{def}_2(G[X]) = \operatorname{def}_2(G[X_1]) +
+  \operatorname{def}_2(G[X_2]) + 3 \ge 3$ (part~(1) of
+  \cref{lem:cut-edge-decomposition}, as a deficiency is never negative),
+  against $\operatorname{def}_2(G[X]) = 1$. It reads $|X| \ge 3$ off that
+  proof too, before the minimum degree, not as $G$ is simple: were
+  $X = \{a, b\}$, $s(X) \le 1$ would need the edge $ab$, and $x a b$
+  would be a triangle with two hubs.
+\end{fmlnote}
+
 % Source: NONDEG workbook, S24 (1)-(4). Part (3)'s identification of the lifts of G with
 % the kernel of mu is used here only in the direction that extends a lift of G - x. S24's
 % setting derives that a and b are not adjacent; the statement asks only a != b, as the
@@ -6356,7 +6374,11 @@ So its subspace can be chosen after the points of $X$
 (\cref{lem:pencil-d-ear-extend}).
 
 % Source: NONDEG workbook, S35 (b), on S34's labelled family S_L(Y) (its setting, not its
-% dimension count), parametrized here as the parametrization of lem:pencil-d-steer is.
+% dimension count), parametrized here as the parametrization of lem:pencil-d-steer is. S35 (b)
+% splits on the hubs O_v outside W_0. E_L and the extension follow the formalization
+% (exists_earExtend_cond_poly, exists_earExtend_poly, exists_linearIndepOn_of_finrank): one
+% witness per condition, and the n_u chosen one at a time at each v. The statement asks
+% neither G simple nor an assignment to closed neighbourhoods, as the formalization does.
 \begin{lemma}[Extending the points of the rigid set]
   \label{lem:pencil-d-ear-extend}
   \lean{CombinatorialRigidity.Molecular.exists_earExtend_poly,
@@ -6364,8 +6386,8 @@ So its subspace can be chosen after the points of $X$
         CombinatorialRigidity.Molecular.exists_linearIndepOn_of_finrank}
   \leanok
   \uses{lem:pencil-d-good-ear, lem:pencil-d-steer}
-  Let $K$ be infinite, let $G$ be simple and nondegeneracy-feasible, let
-  $W_0$ and $x$ be as in \cref{lem:pencil-d-good-ear}, let
+  Let $K$ be infinite, let $G$ be nondegeneracy-feasible, let $W_0$ and
+  $x$ satisfy (i) to (v) of \cref{lem:pencil-d-good-ear}, let
   $X = W_0 \setminus \{x\}$ and $Y = G[X]$, and let $L$ be the set of
   pencil hubs of $G$ in $X$. For $v \in X$ let $H_L[v]$ be the members
   of $L$ in the closed neighbourhood of $v$ in $Y$. Let $\Gamma_L$ be the
@@ -6373,10 +6395,13 @@ So its subspace can be chosen after the points of $X$
   $h \in L$ and three auxiliary vectors at every $v \in X$. At $t$ let
   $b_v(t) = y_1 \times y_2 \times y_3$, where $y_1, y_2, y_3$ are the
   vectors $m_h$, $h \in H_L[v]$, in a fixed order, followed by as many
-  auxiliary vectors of $v$ as are needed. There is a nonzero polynomial
-  $E_L$ on $\Gamma_L$ such that for every $t$ with $E_L(t) \ne 0$ there is
-  $s \in \Gamma(G)$ (\cref{lem:pencil-d-steer}) at which the normal
-  $b^0_v(s)$ of every $v \in X$ is a nonzero multiple of $b_v(t)$.
+  auxiliary vectors of $v$ as are needed. Fix an assignment of places to
+  the members of every closed hub-neighbourhood of $G$, as in
+  \cref{lem:pencil-d-steer}, which is all that the normals $b^0_v(s)$,
+  $s \in \Gamma(G)$, read. There is a nonzero polynomial $E_L$ on
+  $\Gamma_L$ such that for every $t$ with $E_L(t) \ne 0$ there is
+  $s \in \Gamma(G)$ at which the normal $b^0_v(s)$ of every $v \in X$ is a
+  nonzero multiple of $b_v(t)$.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -6387,55 +6412,50 @@ So its subspace can be chosen after the points of $X$
   met with $X$. It has at most three members
   (\cref{lem:pencil-feasible-hub-conditions}).
 
-  \emph{The polynomial.} Consider two conditions on $t$: (a) every
-  $b_v(t)$ is nonzero; (b) $b_{v'}(t) \cdot m_v \ne 0$ for every
-  $v \in L$ and every $v' \in X$ outside the closed neighbourhood of $v$
-  in $Y$. Both hold at some $t'$. Take the vectors $m_h$ with every four
-  of them linearly independent, for instance at distinct points of the
-  curve $\tau \mapsto (1, \tau, \tau^2, \tau^3)$. At $v' \in X$ the
-  vectors $m_h$, $h \in H_L[v']$, together with any one $m_v$,
-  $v \in L \setminus H_L[v']$, are then independent and can be completed
-  to a basis by auxiliary vectors of $v'$. Each requirement on the
-  auxiliary vectors of $v'$ is then a polynomial in them that is nonzero
-  somewhere, so, as $K$ is infinite, one choice meets them all. Each
-  condition holds off the zero set of a polynomial nonzero at $t'$, and
-  $E_L$ is their product.
+  \emph{The polynomial.} Consider two conditions on $t$: (a)
+  $b_v(t) \ne 0$ for every $v \in X$; (b) $b_v(t) \cdot m_u \ne 0$ for
+  every $v \in X$ and every $u \in L$ outside $H_L[v]$. The three vectors
+  whose product is $b_v(t)$ are three distinct parameters of $\Gamma_L$,
+  and $m_u$, for $u \notin H_L[v]$, is none of them. At a $t$ with the
+  standard basis vectors $e_1$, $e_2$ and $e_3$ of $K^4$ at those three
+  and $e_4$ at $m_u$, both the last coordinate $b_v(t) \cdot e_4$ of
+  $b_v(t)$ and $b_v(t) \cdot m_u$ equal $\det[e_1, e_2, e_3, e_4] = 1$.
+  So for each $v$ the polynomial $b_v(t) \cdot e_4$ in $t$, and for each
+  pair $v$, $u$ the polynomial $b_v(t) \cdot m_u$, is nonzero. Let $E_L$
+  be their product. It is nonzero, and off its zero set (a) and (b) hold.
 
-  \emph{The extension.} Let $E_L(t) \ne 0$ and write $b_v = b_v(t)$. For
-  every hub $u$ of $G$ outside $W_0$ with a neighbour in $X$, let
+  \emph{The extension.} Let $E_L(t) \ne 0$ and write $b_v = b_v(t)$. At
+  every $v \in X$ the vectors $m_h$, $h \in H_L[v]$, are linearly
+  independent, as $b_v \ne 0$, and orthogonal to $b_v$. For every hub $u$
+  of $G$ outside $W_0$ with a neighbour in $X$, let
   $A_u = \{y : y \cdot b_w = 0 \text{ for every neighbour } w \in X
-  \text{ of } u\}$. By part~(v) of \cref{lem:pencil-d-good-ear}, $u$ has
-  at most two neighbours in $X$, so $\dim A_u \ge 2$. We choose
-  $n_u \in A_u$ such that, at every $v \in X$, the vectors $m_h$,
-  $h \in H_L[v]$, and $n_u$, $u \in O_v$, are linearly independent. Each
-  of these finitely many requirements is a polynomial condition on
-  $(n_u)_u$ in the vector space $\prod_u A_u$, so it suffices that each
-  holds for some choice (\cref{lem:pencil-x0-fibre-intersection}). If
-  $O_v$ is empty, it holds by (a). Otherwise $v$ has a neighbour outside
-  $W_0$, so it is a hub (part~(v)), and $v \in H_L[v]$. All these vectors
-  are orthogonal to $b_v$.
-  \begin{itemize}
-    \item If $O_v = \{u\}$, let $N_v$ be the span of the $m_h$,
-      $h \in H_L[v]$, of dimension at most two. The requirement fails for
-      every choice only if $A_u \subseteq N_v$, so only if both have
-      dimension two. Then $H_L[v] = \{v, w\}$, and $u$ has a second
-      neighbour $v_2 \in X$ with $b_v$ and $b_{v_2}$ independent and
-      $m_v \in A_u$, so $b_{v_2} \cdot m_v = 0$.
-    \item If $O_v = \{u, u'\}$, then $H_L[v] = \{v\}$, and $m_v$, $A_u$
-      and $A_{u'}$ lie in the three-dimensional $b_v^{\perp}$. If
-      $K m_v + A_u + A_{u'}$ is all of $b_v^{\perp}$, choose
-      $n_{u'} \in A_{u'}$ with $K m_v + K n_{u'}$ two-dimensional and not
-      containing $A_u$, and then $n_u \in A_u$ outside it. Such
-      $n_{u'}$ exists: otherwise every such plane would be $A_u$, so
-      $A_{u'} \subseteq A_u \ni m_v$ and the sum would be $A_u$.
-      Otherwise the sum is $A_u = A_{u'}$, two-dimensional and containing
-      $m_v$, and as before $u$ has a second neighbour $v_2 \in X$ with
-      $b_{v_2} \cdot m_v = 0$.
-  \end{itemize}
-  In both exceptional cases $v_2$ is not adjacent to $v$, since $u v v_2$
-  would be a triangle with two hubs; so $v_2$ is outside the closed
-  neighbourhood of $v$ in $Y$, and (b) gives $b_{v_2} \cdot m_v \ne 0$.
-  So a choice of the $n_u$ exists.
+  \text{ of } u\}$. We choose $n_u \in A_u$ such that, at every
+  $v \in X$, the vectors $m_h$, $h \in H_L[v]$, and $n_u$, $u \in O_v$,
+  are linearly independent. Each of these finitely many requirements is a
+  polynomial condition on $(n_u)_u$ in the vector space $\prod_u A_u$, so
+  it suffices that each holds for some choice
+  (\cref{lem:pencil-x0-fibre-intersection}).
+
+  Let $v \in X$. If $O_v$ is empty, the requirement at $v$ holds by (a).
+  Otherwise $v$ has a neighbour outside $W_0$, so it is a hub (part~(v)
+  of \cref{lem:pencil-d-good-ear}), and $v \in H_L[v]$. We choose the
+  vectors $n_u$, $u \in O_v$, one at a time, in any order. When $n_u$ is
+  chosen, the vectors already there, the $m_h$ for $h \in H_L[v]$ and the
+  $n_{u'}$ chosen before, are linearly independent, belong to the other
+  members of the closed hub-neighbourhood of $v$, so that there are at
+  most two of them, and include $m_v$. Let $S$ be their span, of
+  dimension at most two. Some $n_u \in A_u$ outside $S$ keeps them
+  independent, unless $A_u \subseteq S$. By part~(v) of
+  \cref{lem:pencil-d-good-ear}, $u$ has at most two neighbours in $X$. If
+  $v$ is the only one, then $A_u = b_v^{\perp}$, of dimension three as
+  $b_v \ne 0$, so $A_u \not\subseteq S$. Otherwise $u$ has a second
+  neighbour $v_2 \in X$, and $\dim A_u \ge 2$. Then $v_2$ is not adjacent
+  to $v$, as $u v v_2$ would be a triangle with two hubs
+  (\cref{lem:pencil-feasible-hub-conditions}). So $v \notin H_L[v_2]$,
+  and (b) gives $b_{v_2} \cdot m_v \ne 0$, that is, $m_v \notin A_u$.
+  Were $A_u \subseteq S$, then $A_u = S$ by dimension, so $m_v \in A_u$.
+  So $A_u \not\subseteq S$ in both cases, and some choice meets the
+  requirement at $v$.
 
   Now let $s \in \Gamma(G)$ have $m_h$ at every hub $h \in L$ and $n_u$ at
   every hub $u$ outside $W_0$ adjacent to $X$, its other parameters
@@ -6448,7 +6468,11 @@ So its subspace can be chosen after the points of $X$
 
 % Source: NONDEG workbook, S36 by review 2's shorter route (its F2: the base-generic
 % witness lies in S_L(Y), so S35 (b)'s good set and the preimage of C_W meet in S_L(Y);
-% S34's count and S35 (c) are not used), with S29 (2)-(3) for the last claim.
+% S34's count and S35 (c) are not used), with S29 (2)-(3) for the last claim. S36 counts
+% dim L~ = dim L + |X| where every closed neighbourhood has rank three; the step at a
+% realization follows the formalization (isTrivialLift_of_finrank_liftSpaceTilde_le,
+% liftTildeOfTrivial): the trivial lifts with one free coordinate per body fill L~ by (c), and
+% rank at most three is read only at a realization.
 \begin{lemma}[The rest of the rigid set lifts only trivially]
   \label{lem:pencil-d-ear-free}
   \lean{CombinatorialRigidity.Molecular.holdsGenerally_earFree,
@@ -6480,30 +6504,31 @@ So its subspace can be chosen after the points of $X$
   (c) $\dim \widetilde L_Y(b) \le |X| + 4$, where $\widetilde L_Y$ is the
   space of \cref{lem:pencil-d-lift-one-witness} for $Y$. Each holds where
   some minor of a fixed size is nonzero, so it is open, and none changes
-  when the vectors are rescaled. By (b), $\psi \mapsto (\psi(b_v))_v$ is
-  injective, so the maps of the trivial lifts form a four-dimensional
-  subspace of $L_Y(b)$.
+  when the vectors are rescaled.
 
-  The vectors of every closed neighbourhood of $Y$ also have rank at most
-  three wherever (a) is read below. On $\Gamma_L$, a body $v \in L$ lies
-  in $H_L[w]$ for every $w$ in its closed neighbourhood in $Y$. So $m_v$
-  is one of the vectors whose product is $b_w(t)$. These vectors $b_w(t)$
-  are all zero if $m_v = 0$, and otherwise lie in the three-dimensional
-  $m_v^{\perp}$. A body of $X$ outside $L$ is not a hub, so its closed
-  neighbourhood has at most three members. The same holds at the normals
-  $b^0_v(s)$ for $s \in \Gamma(G)$, as $n_v = m_v$ at a hub $v$
-  (\cref{lem:pencil-d-steer}). At the points of a configuration of $Y$,
-  and at a realization whose subspaces contain the normals of the closed
-  neighbourhoods, the vectors of the closed neighbourhood of $v$ lie in
-  the plane of $v$, or in its subspace. So wherever it is read, (a) says
-  that the vectors of every closed neighbourhood span a three-dimensional
-  subspace. Where it holds, the linear forms vanishing on a closed
-  neighbourhood form a line, and
-  $\dim \widetilde L_Y(b) = \dim L_Y(b) + |X|$. So under (a), (b) and
-  (c), $L_Y(b)$ consists of the maps of the trivial lifts. At a
-  realization whose subspaces contain the normals of the closed
-  neighbourhoods, (a) makes each subspace the span of these normals, so
-  every lift of $Y$ is then trivial.
+  \emph{At a realization.} Let $r^0 = (b^0, \Pi^0)$, with
+  $\Pi^0_v = n_v^{\perp}$, be a realization of $G$ in dimension three
+  whose subspaces contain the normals of the closed neighbourhoods, and
+  let its normals $b^0_v$, $v \in X$, satisfy (a), (b) and (c). At every
+  $v \in X$ the normals of the closed neighbourhood of $v$ in $Y$ lie in
+  the three-dimensional $\Pi^0_v$, so by (a) they span it. For a linear
+  form $\psi$ on $K^4$ and $e \in K^X$, take the map
+  $w \mapsto \psi(b^0_w)$ on $X$ and, at every $v \in X$, the form
+  $p \mapsto \psi(p) + e_v\, (n_v \cdot p)$. As $n_v \cdot b^0_w = 0$ for
+  every $w$ in the closed neighbourhood of $v$, this pair lies in
+  $\widetilde L_Y(b^0)$. It depends linearly on $(\psi, e)$, and is zero
+  only at $(0, 0)$: if its map is zero, $\psi$ vanishes at the normals of
+  $X$, which span $K^4$ by (b), so $\psi = 0$, and then every $e_v$ is
+  zero, as $n_v \ne 0$. So these pairs, the trivial lifts and one free
+  coordinate at every body, form a subspace of dimension $|X| + 4$, and
+  by (c) they are all of $\widetilde L_Y(b^0)$. Now let
+  $(\zeta, \varphi)$ be a lift of $r^0|_Y$. Extending each $\varphi_v$ to
+  a linear form on $K^4$ gives a member of $\widetilde L_Y(b^0)$, so for
+  some $\psi$ and $e$, $\zeta_w = \psi(b^0_w)$ for every $w \in X$, and
+  $\varphi_v$ agrees with $\psi$ at the normals of the closed
+  neighbourhood of $v$ in $Y$. As these span $\Pi^0_v$,
+  $\varphi_v = \psi|_{\Pi^0_v}$ at every $v \in X$, and the lift is
+  trivial (\cref{def:pencil-d-lift}).
 
   \emph{A configuration of $Y$.} The graph $Y$ is simple, its closed
   neighbourhoods have at least three members, and
@@ -6521,8 +6546,9 @@ So its subspace can be chosen after the points of $X$
   $z \in L_Y(q)$. They satisfy (b): a linear form vanishing on all of them
   would make $z$ agree with one affine function everywhere, so that all
   the planes $h_v$ agree, or put all the picture points on a line. They
-  satisfy (c), as $L_Y(b) = L_Y(q)$ (as in the proof of
-  \cref{lem:pencil-d-lift-no-rigid}), of dimension four.
+  satisfy (c): the linear bijection in the proof of
+  \cref{lem:pencil-d-lift-no-rigid}, at the configuration $(q, z)$, gives
+  $\dim \widetilde L_Y(b) = \dim L_Y(q) + |X| = |X| + 4$.
 
   \emph{The configuration in $\Gamma_L$.} Let $n_h$ be the plane normal at
   $h \in L$, a nonzero multiple of $(\alpha, \beta, -1, \gamma)$ when the
@@ -6555,17 +6581,19 @@ So its subspace can be chosen after the points of $X$
   the normals $b^0_v(s)$, $v \in X$, hold for $s$ off the zero set of a
   polynomial on $\Gamma(G)$ nonzero at $s_1$. As $G$ is
   nondegeneracy-feasible, $U(G)$ is nonempty (\cref{lem:pencil-d-steer}),
-  so they hold at a general nondegenerate realization $r^0$ of $G$. There
-  the subspace of every $v \in X$ contains the normals of its closed
-  neighbourhood in $Y$, so every lift of $r^0|_Y$ is trivial.
+  and two nonempty Zariski-open subsets of $\Gamma(G)$ meet
+  (\cref{lem:pencil-x0-fibre-intersection}), so they hold at a general
+  nondegenerate realization $r^0$ of $G$. Its subspaces contain the
+  normals of the closed neighbourhoods (\cref{lem:pencil-d-steer}). So,
+  by the step at a realization, the normals of every closed neighbourhood
+  of $Y$ span its subspace, of dimension three, and every lift of
+  $r^0|_Y$ is trivial.
 
   \emph{The consequence.} Let $(\zeta, \varphi)$ be a lift of
-  $r^0|_{G - x}$. Its restriction to $X$ is a lift of $r^0|_Y$, so
-  $\zeta_w = \psi(b^0_w)$ on $X$ for a linear form $\psi$ on $K^4$. The
-  form $\varphi_a$ agrees with $\psi$ at the normals of the closed
-  neighbourhood of $a$ in $Y$, which span $\Pi^0_a$ by (a), so
-  $\varphi_a = \psi|_{\Pi^0_a}$; likewise $\varphi_b = \psi|_{\Pi^0_b}$.
-  As $b^0_x$ lies in both subspaces,
+  $r^0|_{G - x}$. Its restriction to $X$ is a lift of $r^0|_Y$, so it is
+  trivial: some linear form $\psi$ on $K^4$ has
+  $\varphi_v = \psi|_{\Pi^0_v}$ at every $v \in X$. The neighbours $a$ and
+  $b$ of $x$ lie in $X$, and $b^0_x$ lies in both of their subspaces, so
   $\varphi_a(b^0_x) = \psi(b^0_x) = \varphi_b(b^0_x)$.
 
   At $d = 3$ no lift is needed, and the step at $x$ holds at every body of

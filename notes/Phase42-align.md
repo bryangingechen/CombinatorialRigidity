@@ -8,8 +8,8 @@ formalization note naming the Lean's route for each of the 17 kept parts (K), wi
 slips round 1 moved here; then one `\uses` sweep over the chapter's missing edges (60 at the open).
 Blueprint and notes only: no Lean, no pin, no `\leanok`. Eleven tasks, one commit each: the open,
 eight slices by layer, the sweep and the close. 17 rows end `aligned` and 17 `kept`. Tasks 2
-to 8 landed (15 `aligned`, 15 `kept`). **Next concrete task:** task 9, 42m's third slice (one K
-note for R-31 and R-53; R-33 L statement and proof; R-34 L proof).
+to 9 landed (17 `aligned`, 17 `kept`; none `open`). **Next concrete task:** task 10, the `\uses`
+sweep (the 52 *missing* edges of `--chapter pencil-d` at task 9).
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -25,14 +25,14 @@ the PI answers in an entry that starts `**PI, <date>:**`.
 
 ## Current state
 
-**Task 8 landed** (this commit): R-24, R-25, R-26 `aligned`; R-29 `kept`, with a formalization
-note after the pendant triangle's proof (sixteen in the chapter). Nothing is mid-stream; task 9 is
-next. Task 8's gates: G4's `verify.sh` has 9 `WARNING:` lines, task 7's nine, `print.log` rebuilt
-with 0 `LaTeX Warning`; G5's after-dump, `scratch/cleanup-42/round2/task8/dump-after.txt`, differs
-from task 7's in the three proofs' `\uses` lines only, no drawn edge (`1893 edges
-de7615290e372b6b`, `lean_decls` `28b0db9377d77782`), and serves as task 9's parent dump;
-`--chapter pencil-d`: 52 *missing*, 645 *implied* (was 648), 17 *unbacked transitive*, 54 with no
-Lean basis.
+**Task 9 landed** (this commit): R-33, R-34 `aligned`; R-31, R-53 `kept`, with one formalization
+note after the good ear's proof (seventeen in the chapter, all the round plans). Every slice has
+landed and the ledger has no `open` row; task 10, the sweep, is next. Task 9's gates: G4's
+`verify.sh` has 9 `WARNING:` lines, task 8's nine, `print.log` rebuilt with 0 `LaTeX Warning`; G5's
+after-dump, `scratch/cleanup-42/round2/task9/dump-after.txt`, is byte-identical to task 8's (no
+`\uses` change; `1893 edges de7615290e372b6b`, `lean_decls` `28b0db9377d77782`) and serves as task
+10's parent dump; `--chapter pencil-d`: 52 *missing*, 645 *implied*, 17 *unbacked transitive*, 54
+with no Lean basis, as at task 8.
 
 **Verified at the open** (2026-11-05, at `6eb7a2e6`):
 - **The ledger** (`notes/Cleanup42.md` §2): 54 rows, 34 `open` (R-3 to R-5, R-9 to R-12, R-14 to
@@ -193,17 +193,12 @@ statement, (T2) and other parts all in task 8).
 - [x] **7. The small cases, the cut edge and no planar-rigid set** (`36ab7f53`). Aligned: R-51,
   R-30, R-32. Kept: R-27, R-28 (one note; R-28's statement aligned). `\uses`: the cut edge's proof
   +2 −1, no planar-rigid set's +3 −1 (`thm:pencil-jj-equality`). Two *Moved* lines (below).
-- [x] **8. The pendant, the pendant triangle and the ear** (this commit). Aligned: R-24, R-25
+- [x] **8. The pendant, the pendant triangle and the ear** (`6c082081`). Aligned: R-24, R-25
   (no other neighbour of `u`), R-26. Kept: R-29 (a note; the ear's `a ≠ b` and the triangle's
   (T2) aligned). `\uses`: three proofs + `lem:pencil-d-lift-realization`. One *Moved* line (below).
-- [ ] **9. The good ear and the ear's condition.** One K note on `lem:pencil-d-good-ear` (l. 5844)
-  for R-31 (the core split; `def₂(G[X]) = 1` by a partition case split; connectivity not through
-  `s(X)`) and R-53 (`|X| ≥ 3` from the core) (`Grade/GoodEar.lean`, `MainComponent/GoodEar.lean`).
-  R-33, L statement and L proof: `lem:pencil-d-ear-extend` (l. 6035) without `G` simple or the
-  neighbour selector; one witness per condition, no moment curve; the `n_u` chosen greedily, no
-  case analysis on `O_v`. R-34, L proof: `lem:pencil-d-ear-free` (l. 6127), the trivial lifts and
-  task 7's free coordinates fill `L̃` by (c); rank at most three only in `U(G)`; (b) and the
-  openness may stay (`Grade/EarFree.lean`). *Expected:* by the rule; none estimated.
+- [x] **9. The good ear and the ear's condition** (this commit). Aligned: R-33 (no `G` simple,
+  (i)–(v), any hub assignment; one witness per condition, the `n_u` one at a time), R-34. Kept:
+  R-31, R-53 (one note). No `\uses` change. One *Moved* line (below).
 
 **The sweep and the close.**
 
@@ -248,6 +243,12 @@ statement, (T2) and other parts all in task 8).
   `notes/BlueprintExposition.md` lists the cases' one minor per closed hub-neighbourhood and one
   form per body in (T2) as left, and the pendant's other neighbour and the ear's non-adjacency as
   dropped by the pins.
+- **Task 9, for round 4** (Lean, and a note; mirrored in `notes/Cleanup42.md` §3):
+  `Grade/EarFree.lean`'s `exists_earExtend_poly` and `isTrivialLift_of_finrank_liftSpaceTilde_le`
+  docstrings still say the chapter's moment curve, case analysis on `O_v` and count
+  `dim L̃ = dim L(b⁰) + |X|` are not used (R-33, R-34), stale since task 9; and the same 42m entry
+  of `notes/BlueprintExposition.md` lists `E_L`'s and the trivial lifts' routes as left and
+  `-ear-extend`'s simplicity as dropped by the pin.
 
 ## Blockers / open questions
 
@@ -255,12 +256,14 @@ statement, (T2) and other parts all in task 8).
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 9, 42m's third slice: the good ear and the ear's condition (one K
-note on `lem:pencil-d-good-ear` for R-31 and R-53; R-33, L statement and proof of
-`lem:pencil-d-ear-extend`; R-34, L proof of `lem:pencil-d-ear-free`); one Opus dispatch. Its G5
-parent dump is task 8's after-dump (`scratch/cleanup-42/round2/task8/dump-after.txt`), and G4
-holds `verify.sh` to 9 `WARNING:` lines. Re-`grep` its nodes' lines: tasks 2–8 moved them by 306
-to 326. One statement changes (`-ear-extend`, R-33), so G6 runs for it.
+**Next concrete task:** task 10, the `\uses` sweep: the 52 *missing* edges that `python3
+scripts/blueprint-deps.py --chapter pencil-d` reports at task 9 (`lem:pencil-d-point-configuration`
+→ `def:pencil-nondegenerate` among them), each into the statement's or the proof's `\uses` as the
+standing rule says, an edge closing a cycle left with its reason; G7. One Opus dispatch. Its G5
+parent dump is task 9's after-dump (`scratch/cleanup-42/round2/task9/dump-after.txt`, byte-identical
+to task 8's), G4 holds `verify.sh` to 9 `WARNING:` lines, and its *Expected* is the parent's
+*missing* list, written before editing; if the sweep does not fit one dispatch, the standing
+rule's split applies (*One task, one dispatch*).
 
 ## Decisions made during this round
 
@@ -273,3 +276,6 @@ to 326. One statement changes (`-ear-extend`, R-33), so G6 runs for it.
   four one-clause statements.
 - **The standing rules' decisions** (the open): the statuses, the K note's shape, the sweep and
   the gates, each under *Scope and standing rules*.
+- **R-33's "as in"** (task 9): `-ear-extend` now takes `W₀`, `x` satisfying (i) to (v) of the good
+  ear, its pin's `Graph.IsPencilGoodEar`, not "as in" it, so that the dropped simplicity does not
+  return through the good ear's standing hypotheses; `-ear-free` keeps "as in" with `G` simple.

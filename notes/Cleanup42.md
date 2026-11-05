@@ -13,8 +13,8 @@ every open row its remedy the same day, at round 1's stop and at a second stop o
 `kept` (a part keeps both routes, with a formalization note); no row goes H, so round 3 is empty.
 Round 2, opened 2026-11-05, applies them to the chapter in eight slices by layer, then one `\uses`
 sweep (blueprint and notes, no Lean); each slice sets its rows' status, and the tally here. The
-ledger now: 4 `open`, 21 `aligned`, 15 `kept`, 14 `no departure`. **Next concrete task:** round 2's
-next open task (`notes/Phase42-align.md`'s **Status**); after round 2, round 4 (§3).
+ledger now: none `open`, 23 `aligned`, 17 `kept`, 14 `no departure`. **Next concrete task:**
+round 2's next open task (`notes/Phase42-align.md`'s **Status**); after round 2, round 4 (§3).
 
 ## 1. The PI's decisions (verbatim)
 
@@ -640,8 +640,8 @@ there.
   `r₂` its restriction to `G₂`; (T2), the rank and the restriction unchanged; the closing
   comparison and the TeX comment (S32's route) corrected.
 - **R-31** · `lem:pencil-d-good-ear` (`Graph.IsPencilGoodEar`, `exists_goodEar_or_pendantTriangle`,
-  `exists_minimalRigid_ear_or_pendantTriangle`, `Grade/GoodEar.lean`, 42m build 4) · **open** (the
-  Lean landed as below; the chapter stays as the prose).
+  `exists_minimalRigid_ear_or_pendantTriangle`, `Grade/GoodEar.lean`, 42m build 4) ·
+  **kept, round 2 task 9**.
   *Chapter:* the proof of `lem:pencil-rigid-good-ear` returns the pendant triangle or `x`; (iii)
   runs the triangle argument at `x` and `a`, then `s(X) = s(W₀) + 1` and the singleton bound for
   `def₂(G[X]) = 1`, and a disconnected `G[X]` has `s(X) ≥ 3`; (iv) at every `d ≥ 3` from
@@ -662,7 +662,13 @@ there.
   The pin's first outcome is the node's, `∃ x₁ x₂ c` (two adjacent bodies of degree two with a
   common neighbour of degree at least four), as the core returns it; the `d = 3` pin's is a closed
   ear (`exists_closedEar_two_of_triangle`).
-  *Remedies:* the prose to the Lean (no `s(X)` for connectivity), or keep both.
+  *Remedies:* the prose to the Lean (no `s(X)` for connectivity), or keep both. Keep both, taken: a
+  formalization note after the proof names the Lean's route (the PI, 2026-11-05): `s(X) ≤ 1` read
+  off the proof of `lem:pencil-rigid-good-ear`; `def₂(G[X]) ≤ 1` by the chapter's own case split
+  (singletons, one part, a part `Z` with `2 ≤ |Z| < |X|` by the singleton bound), stated on its
+  own beside `lem:deficiency-tight-rigid`, which runs the same split for `def₃`; and `G[X]` connected
+  through the deficiency (part (1) of `lem:cut-edge-decomposition`, a split adding `3`), not `s`.
+  One note with R-53's.
 - **R-32** · `lem:pencil-d-lift-no-rigid` (`liftAttains_of_forall_deficiency_two_ne_zero`,
   `exists_planeDiff_ne_zero_poly`, `finrank_liftSpaceTilde_pencilConfigPoint` and its `_ker`,
   `exists_pencilConfigPoint_of_dotProduct`, `Grade/LiftNoRigid.lean`, 42m build 5) ·
@@ -694,11 +700,13 @@ there.
   comparison unchanged; the TeX comment names S25's route.
 
 - **R-33** · `lem:pencil-d-ear-extend` (`exists_earExtend_poly`, `exists_earExtend_cond_poly`,
-  `exists_linearIndepOn_of_finrank`, `Grade/EarFree.lean`, 42m build 6) · **open** (the Lean landed
-  as below; the chapter stays as the prose).
-  *Chapter:* a witness `t′` of (a) and (b) together, the `m_h` at distinct points of the moment
-  curve (every four independent) and the auxiliary vectors completing bases; the `n_u ∈ A_u` by
-  the case analysis on `O_v` (`{u}`, or `{u, u′}` with `n_{u′}` chosen before `n_u`).
+  `exists_linearIndepOn_of_finrank`, `Grade/EarFree.lean`, 42m build 6) ·
+  **aligned, round 2 task 9**.
+  *Chapter (until then):* `G` simple and `W₀`, `x` as in `lem:pencil-d-good-ear`; `s ∈ Γ(G)` at
+  `lem:pencil-d-steer`'s two assignments; a witness `t′` of (a) and (b) together, the `m_h` at
+  distinct points of the moment curve (every four independent) and the auxiliary vectors
+  completing bases; the `n_u ∈ A_u` by the case analysis on `O_v` (`{u}`, or `{u, u′}` with
+  `n_{u′}` chosen before `n_u`).
   *Lean:* one witness per condition, the slots of `b_v` (and `m_u`) the standard basis at
   distinct places of `Γ(G)`, and `E_L` the product (no moment curve). (b) is asked at every `u`
   off the selector of `v`, not only at the hubs. The `n_u` are chosen one closed
@@ -707,12 +715,22 @@ there.
   neighbour), so it is never inside the span of at most two chosen vectors containing `m_v`. The
   pin drops `G` simple and the neighbour selector (unused), stronger than the node.
   *Remedies:* the prose to the Lean (one witness per condition, the greedy choice), or keep both.
+  The prose to the Lean, taken (the PI, 2026-11-05): the statement without `G` simple, `W₀` and
+  `x` satisfying (i) to (v) of `lem:pencil-d-good-ear` (the pin's `Graph.IsPencilGoodEar`, so that
+  the good ear's standing hypotheses do not bring simplicity back), and `b⁰_v(s)` at any
+  assignment of places to the closed hub-neighbourhoods, the only one it reads; (b) per `v`, at
+  `u ∈ L` outside `H_L[v]`; each condition's polynomial nonzero at its own `t` (`e₁, e₂, e₃` at
+  the three places of `b_v`, `e₄` at `m_u`), `E_L` their product; at each `v`, the `n_u`,
+  `u ∈ O_v`, chosen one at a time off the span `S` (at most two vectors, `m_v` among them):
+  `A_u = b_v^⊥`, or `dim A_u ≥ 2` with `m_v ∉ A_u` by (b) at the second neighbour `v₂ ≁ v`; one
+  choice for all `v` by `lem:pencil-x0-fibre-intersection`; the completion unchanged; the TeX
+  comment names S35 (b)'s split on `O_v`.
 
 - **R-34** · `lem:pencil-d-ear-free` (`holdsGenerally_earFree`, `earFree_of_finrank_liftSpaceTilde_le`,
-  `exists_earFree_config`, `exists_earFree_gammaL`, `Grade/EarFree.lean`, 42m build 6b) · **open**
-  (the Lean landed as below; the chapter stays as the prose).
-  *Chapter:* (c) is `dim L̃_Y(b) ≤ |X| + 4`; under (a) `dim L̃_Y = dim L_Y(b) + |X|`, so `L_Y(b)` is
-  the trivial maps; (a) is read with "rank at most three wherever it is read", argued on `Γ_L`, at
+  `exists_earFree_config`, `exists_earFree_gammaL`, `Grade/EarFree.lean`, 42m build 6b) ·
+  **aligned, round 2 task 9**.
+  *Chapter (until then):* (c) is `dim L̃_Y(b) ≤ |X| + 4`; under (a) `dim L̃_Y = dim L_Y(b) + |X|`,
+  so `L_Y(b)` is the trivial maps; (a) is read with "rank at most three wherever it is read", argued on `Γ_L`, at
   `Γ(G)` and at the configuration; (b) at the configuration by "a vanishing form makes `z` globally
   affine (all planes agree) or puts the picture points on a line"; each condition open as "some
   minor of a fixed size is nonzero"; `t₁` a non-root of the product with `E_L`.
@@ -731,7 +749,15 @@ there.
   (`IsZariskiOpen.exists_mem_inter`). `H_L[v]` has three members only with `v` among them, as a
   body that is not a hub has at most three members in its closed neighbourhood.
   *Remedies:* the prose to the Lean (the embedding by dimension, rank at most three only in `U(G)`,
-  (b) by two plane normals), or keep both.
+  (b) by two plane normals), or keep both. The prose to the Lean, taken (the PI, 2026-11-05), with
+  (b) and the openness kept as the B/C judgment allows: a step *at a realization* `(b⁰, Π⁰)`,
+  `Π⁰_v = n_v^⊥` containing the normals of the closed neighbourhoods, where (a) makes them span
+  `Π⁰_v`, and the pairs of `w ↦ ψ(b⁰_w)` and the forms `ψ + e_v (n_v · ·)`, injective by (b), fill
+  `L̃_Y(b⁰)` by (c), so a lift, extended, is trivial; the rank-at-most-three paragraph and the
+  count `dim L̃ = dim L + |X|` gone; (c) at the configuration by `lem:pencil-d-lift-no-rigid`'s
+  bijection, `dim L̃_Y(b) = dim L_Y(q) + |X|`; into `G` with `lem:pencil-x0-fibre-intersection`
+  cited where `U(G)` meets the conditions; the consequence read off the trivial lift of `Y`; the
+  TeX comment names S36's count.
 
 - **R-35** · `lem:pencil-d-agrees-three`, its first sentence (`hasPencilPlaneRealization_two_iff`,
   `Grade/Realization.lean`, round 1 task 2) · **aligned, round 2 task 2**.
@@ -1047,7 +1073,8 @@ there.
 
 - **R-53** · `lem:pencil-d-good-ear`, (iii)'s `|X| ≥ 3`
   (`Graph.IsX0Graph.exists_minimalRigid_ear_or_pendantTriangle`, `MainComponent/GoodEar.lean`;
-  `exists_goodEar_or_pendantTriangle`, `Grade/GoodEar.lean`; round 1 task 15) · **open**.
+  `exists_goodEar_or_pendantTriangle`, `Grade/GoodEar.lean`; round 1 task 15) ·
+  **kept, round 2 task 9**.
   *Chapter:* (iii) shows that `a` and `b` keep two neighbours in `X` and the other bodies of `X`
   all of theirs, so `G[X]` has minimum degree at least two, "and `|X| ≥ 3` as `G` is simple".
   *Lean:* `|X| ≥ 3` is the core's output, by the argument of the last paragraph of
@@ -1059,7 +1086,9 @@ there.
   *Remedies:* the prose to the Lean ((iii) reads `|X| ≥ 3` off the proof of
   `lem:pencil-rigid-good-ear`, as the first paragraph reads (i) and (ii) off it; the statement and
   the `\uses` unchanged), or keep both (one line each). The recon leans to the prose: one clause,
-  and that proof states it.
+  and that proof states it. Keep both, taken: a formalization note after the proof names the
+  Lean's route (the PI, 2026-11-05), its second sentence, in R-31's note: `|X| ≥ 3` read off that
+  proof, before the minimum degree, not as `G` is simple.
 
 - **R-54** · `thm:pencil-d-generic`, its case split (`liftAttains_of_simple`,
   `hasGradedGenericPencilRealization_of_simple`, `Grade/Generic.lean`, round 1 task 15) · **no
@@ -1174,6 +1203,16 @@ there.
     (T2)" among the route differences left, and "the pendant's other neighbour" and "the ear's
     non-adjacency" among the hypotheses the pins drop; R-24, R-26, R-25 and R-29 put the chapter on
     those routes and statements.
+  - *Moved to a later round* (round 2 task 9; round 4, as it edits Lean, and a note outside round
+    2's writes): two stale docstrings and a dated sentence. `Grade/EarFree.lean`'s
+    `exists_earExtend_poly` ends "The chapter's moment curve and its case analysis on `O_v` are not
+    used" (R-33), and `isTrivialLift_of_finrank_liftSpaceTilde_le` ends "The chapter's count
+    `dim L̃ = dim L(b⁰) + |X|` is not used" (R-34); since task 9 the chapter's proofs are those
+    routes. `notes/BlueprintExposition.md`'s 42m entry lists "`E_L` by one witness per condition
+    with the normals chosen greedily" and "every lift of the rest of the rigid set trivial by an
+    embedding without the count of its maps" among the route differences left, and
+    "`-ear-extend`'s simplicity" among the hypotheses the pins drop; R-33 and R-34 put the chapter
+    on those routes and that statement.
 - **The ledger at Phase 42's close:** the standing rule (§1) kept §2 current through PD-STEPS's
   rest, PD-COVERAGE, PD-REDUCTION and PD-HEAD (`notes/Phase42-design.md` §3), the last rows 42m's,
   R-24 to R-34; Phase 42 closed on 2026-11-05 with no row added after them. Round 1 adds from R-35.
