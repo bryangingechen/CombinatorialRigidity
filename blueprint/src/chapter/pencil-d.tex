@@ -4940,9 +4940,9 @@ which is a condition on the minors of that size.
         CombinatorialRigidity.Molecular.IsNondegPencilPlaneRealization.map_gradeEmbed}
   \leanok
   \uses{def:pencil-d-nondegenerate}
-  Let $d, d' \ge 3$. At every body $v$ of $G$ let $b_v \in K^{d+1}$ be
-  nonzero and let $\Pi_v \ni b_v$ be a three-dimensional subspace, and let
-  $p \colon K^{d+1} \to K^{d'+1}$ be linear.
+  Let $d, d' \ge 3$. At every body $v$ of $G$ let $b_v$ be any vector and
+  $\Pi_v$ any subspace of $K^{d'+1}$, and let
+  $p \colon K^{d'+1} \to K^{d+1}$ be linear.
   \begin{enumerate}
     \item If $p$ is injective on every $\Pi_v$, and the vectors $p b_v$
       and subspaces $p\Pi_v$ satisfy the three conditions of
@@ -4972,8 +4972,9 @@ which is a condition on the minors of that size.
   (\cref{lem:pencil-d-embed-realization}).
 \end{proof}
 
-% Source: NONDEG workbook, S9. The transversal count of its |S| = 3 step is made explicit
-% here: the bad centres lie in finitely many proper subspaces and at most one quadric.
+% Source: NONDEG workbook, S9, for the reduction to one body and one set. At one set the
+% rows of the projection are chosen directly, as in the formalization (exists_rowsMap_two,
+% exists_rowsMap_three), where S9 projects from one centre at a time and counts transversals.
 \begin{lemma}[Nondegeneracy-feasibility does not depend on the dimension]
   \label{lem:pencil-d-nondegenerate-feasible}
   \lean{CombinatorialRigidity.Molecular.gradedPencilNondegFeasible_iff,
@@ -5031,57 +5032,59 @@ which is a condition on the minors of that size.
 
   For (b), fix $v$ and $S$. A nondegenerate realization has
   $|S| \le 3$, as noted after \cref{def:pencil-d-nondegenerate}. Every
-  $\Pi_w$, $w \in S$, contains $b_v$. Let $W = K^{d+1}/K b_v$ and
-  $A_w = \Pi_w / K b_v$, two-dimensional. The $A_w$ are pairwise
-  distinct, as $\dim(\Pi_w \cap \Pi_{w'}) \le 2$ for $w \ne w'$ in $S$,
-  and when $|S| = 3$ they meet only in $0$, as the three subspaces $\Pi_w$
-  meet in $K b_v$. Suppose a linear map $\bar\pi \colon W \to K^3$ is
-  injective on each $A_w$, with the images $\bar\pi A_w$ pairwise
-  distinct and, when $|S| = 3$, meeting only in $0$. Let $\pi$ map $b_v$
-  to $e_4$ and agree with $\bar\pi$, followed by the inclusion of $K^3$ as
-  the first three coordinates, on a complement of $K b_v$. Then
-  $\pi\Pi_w = K e_4 \oplus \bar\pi A_w$ is three-dimensional, and the
-  subspaces $\pi\Pi_w$, $w \in S$, meet in $K e_4$ plus the intersection
-  of the $\bar\pi A_w$, of dimension $2$ when $|S| = 2$ and $1$ when
-  $|S| = 3$.
+  $\Pi_w$, $w \in S$, contains $b_v$, and two of them meet in dimension
+  at most two, so they are distinct; when $|S| = 3$ the three meet in
+  $K b_v$. Let $H = b_v^{\perp}$, a hyperplane, and for $w \in S$ let
+  $L_w = \Pi_w^{\perp}$, of dimension $d - 2$, which lies in $H$ as
+  $b_v \in \Pi_w$. We take for $\pi$ the map
+  $x \mapsto (f \cdot x, r_1 \cdot x, r_2 \cdot x, r_3 \cdot x)$, with
+  rows $f \notin H$ and $r_1, r_2, r_3 \in H$, and use three facts. If
+  $L_w$ and two of $r_1, r_2, r_3$ span $H$, then $\pi$ is injective on
+  $\Pi_w$: with $f$ they span $K^{d+1}$, and a vector $x \in \Pi_w$ with
+  $\pi x = 0$ is orthogonal to all of them, so $x = 0$. Vectors
+  $\mu \in H$ off $L_w$ and $\mu' \in H$ off $L_w + K\mu$ span $H$ with
+  $L_w$, as $\dim L_w + 2 = \dim H$. And a subspace $T$ contained in
+  neither of two subspaces $A$ and $B$ has a vector in neither, over any
+  field: for $a \in T$ off $A$ and $a' \in T$ off $B$, one of $a$, $a'$
+  and $a + a'$ lies in neither, the last when $a \in B$ and $a' \in A$.
+  Let $e_1, \dots, e_4$ be the standard basis of $K^4$.
 
-  We find $\bar\pi$ by induction on the dimension of $U = \sum_w A_w$,
-  which is at least three. If $\dim U = 3$, take an isomorphism of $U$
-  onto $K^3$, extended to $W$ in any way. If $\dim U \ge 4$, we find a
-  nonzero $c \in U$ such that the quotient map $U \to U/Kc$ keeps the
-  three properties, and apply the induction to the images of the $A_w$.
-  The quotient map is injective on $A_w$ when $c \notin A_w$. It maps
-  $A_w$ and $A_{w'}$ to one subspace only if $A_w + Kc = A_{w'} + Kc$,
-  which needs $\dim(A_w + A_{w'}) = 3$ and $c \in A_w + A_{w'}$. When
-  $|S| = 3$, the three images meet in a nonzero vector exactly when $c$
-  lies in a two-dimensional subspace $B$ of $U$ that meets every $A_w$ in
-  a nonzero vector. The subspaces $A_w$ and the three-dimensional sums
-  $A_w + A_{w'}$ are proper subspaces of $U$. We show that the subspaces
-  $B$ lie in finitely many proper subspaces of $U$ and at most one
-  quadric, the zero set of a nonzero quadratic polynomial. As $K$ is
-  infinite, the product of the polynomials defining these sets has a
-  non-root $c$, which avoids them all.
+  Let $S = \{w_1, w_2\}$, and write $L_i = L_{w_i}$. As $\Pi_{w_1}$ and
+  $\Pi_{w_2}$ are distinct of one dimension, neither of $L_1$ and $L_2$
+  contains the other. Choose $\mu_1 \in L_1$ off $L_2$ and
+  $\mu_2 \in L_2$ off $L_1$. The subspaces $L_1 + K\mu_2$ and
+  $L_2 + K\mu_1$ of $H$ have dimension $d - 1 < \dim H$, so some
+  $g \in H$ lies in neither. Take the rows $f, \mu_1, \mu_2, g$. As
+  $\mu_2 \notin L_1$ and $g \notin L_1 + K\mu_2$, the map $\pi$ is
+  injective on $\Pi_{w_1}$, and likewise on $\Pi_{w_2}$. The row $\mu_i$
+  vanishes on $\Pi_{w_i}$, so $\pi\Pi_{w_1}$ and $\pi\Pi_{w_2}$ meet
+  inside the span of $e_1$ and $e_4$, of dimension $2 = 4 - |S|$.
 
-  Let $A_1, A_2, A_3$ be the three subspaces, and let $B$ contain nonzero
-  vectors $p_i \in A_i$. Suppose first that two of them meet, say
-  $A_1 \cap A_2 = K y$ with $y \ne 0$. If $p_1$ and $p_2$ are linearly
-  independent, then $B \subseteq A_1 + A_2$, of dimension three.
-  Otherwise $p_1 \in A_1 \cap A_2$, so $y \in B$. As $y \notin A_3$,
-  $B = K y + K p_3 \subseteq K y + A_3$, also of dimension three.
-  Suppose next that the three subspaces are pairwise independent. Then
-  $p_1$ and $p_2$ are linearly independent, and $B$ lies in the
-  four-dimensional $T = A_1 \oplus A_2$. If $A_3 \cap T = 0$, there is no
-  such $B$. If $A_3 \cap T = K p$, write $p = p^1 + p^2$ with
-  $p^i \in A_i$, both nonzero as $A_3$ meets neither $A_1$ nor $A_2$. As
-  $p \in B = K p_1 + K p_2$, the vector $p^i$ is a multiple of $p_i$, so
-  $B = K p^1 + K p^2$, a single subspace. If $A_3 \subseteq T$, then
-  $U = T$, and the components $f_i \colon A_3 \to A_i$ of the inclusion
-  are isomorphisms, as $A_3$ meets neither $A_1$ nor $A_2$. Each such $B$
-  is $K f_1(p) + K f_2(p)$ for a nonzero $p \in A_3$. Identify $A_3$ with
-  $K^2$, and $A_i$ with $K^2$ through $f_i$. The vectors of these
-  subspaces $B$ are then the pairs $(\alpha p, \beta p)$ in
-  $K^2 \times K^2$, which are the pairs $(u, u')$ with
-  $\det[u, u'] = 0$, a quadric.
+  Let $S = \{w_1, w_2, w_3\}$, with $L_i$ as before. As the three
+  subspaces meet in $K b_v$, $L_1 + L_2 + L_3 = (K b_v)^{\perp} = H$. As
+  two of them meet in dimension at most two, $L_i + L_j$ has dimension at
+  least $d - 1$ for $i \ne j$, and no $L_i$ contains another. We choose
+  $\mu_i \in L_i$, each off at most two proper subspaces of $L_i$:
+  \begin{itemize}
+    \item $\mu_3$ off $L_1$ and $L_2$, or, when $L_1 + L_2 \ne H$, off
+      $L_1 + L_2$, which then does not contain $L_3$;
+    \item $\mu_2$ off $L_1 + K\mu_3$ and $L_3$, or, when
+      $L_1 + L_3 \ne H$, off $L_1 + K\mu_3$ and $L_1 + L_3$, which then
+      does not contain $L_2$;
+    \item $\mu_1$ off $L_2 + K\mu_3$ and $L_3 + K\mu_2$.
+  \end{itemize}
+  These subspaces are proper. If $L_2 \subseteq L_1 + K\mu_3$, then
+  $L_1 + L_2 \subseteq L_1 + K\mu_3$, of dimension $d - 1$, so
+  $L_1 + L_2 \ne H$, and the two are equal, as
+  $\dim(L_1 + L_2) \ge d - 1$; this puts $\mu_3$ in $L_1 + L_2$, against
+  its choice. In the same way $L_1 \not\subseteq L_2 + K\mu_3$ by the
+  choice of $\mu_3$, and $L_1 \not\subseteq L_3 + K\mu_2$ by that of
+  $\mu_2$. Take the rows $f, \mu_1, \mu_2, \mu_3$. As $\mu_3 \notin L_1$
+  and $\mu_2 \notin L_1 + K\mu_3$, the map $\pi$ is injective on
+  $\Pi_{w_1}$; as $\mu_3 \notin L_2$ and $\mu_1 \notin L_2 + K\mu_3$, on
+  $\Pi_{w_2}$; as $\mu_2 \notin L_3$ and $\mu_1 \notin L_3 + K\mu_2$, on
+  $\Pi_{w_3}$. The row $\mu_i$ vanishes on $\Pi_{w_i}$, so the three
+  images meet inside $K e_1$, of dimension $1 = 4 - |S|$.
 \end{proof}
 
 \subsection{Lifts of nondegenerate realizations}
@@ -5142,8 +5145,8 @@ the points of the realization.
         CombinatorialRigidity.Molecular.HoldsGenerally}
   \leanok
   \uses{def:pencil-d-nondegenerate, lem:pencil-d-nondegenerate-three}
-  Let $G$ be a finite simple multigraph whose closed hub-neighbourhoods
-  have at most three members. Let $\Gamma(G)$ be the space of tuples $s$
+  Let $G$ be a finite multigraph whose closed hub-neighbourhoods have
+  at most three members. Let $\Gamma(G)$ be the space of tuples $s$
   of vectors of $K^4$, a vector $m_v$ and six auxiliary vectors at every
   body $v$. At every body $v$ fix an assignment of distinct places among
   $1, 2, 3$ to the members of its closed hub-neighbourhood, and, when $v$
@@ -5311,10 +5314,14 @@ $(b^0, \Pi^0)$ itself.
         CombinatorialRigidity.Molecular.finrank_liftNormal_transport}
   \leanok
   \uses{def:pencil-d-lift, def:pencil-d-nondegenerate}
-  Let $d \ge 3$, let $(b^0, \Pi^0)$ be a nondegenerate realization of $G$
-  in dimension three, and let $\lambda \in \mathcal{L}(b^0, \Pi^0)^m$.
+  Let $d \ge 3$, and at every body $v$ let $b^0_v \in K^4$ and let
+  $\Pi^0_v$ be a three-dimensional subspace of $K^4$, with
+  $b^0_w \in \Pi^0_v$ for every $w$ in the closed neighbourhood of $v$,
+  as in \cref{def:pencil-d-lift}.
   \begin{enumerate}
-    \item The lift by $\lambda$ (\cref{def:pencil-d-lift}), with the
+    \item If $(b^0, \Pi^0)$ is a nondegenerate realization of $G$ in
+      dimension three and $\lambda \in \mathcal{L}(b^0, \Pi^0)^m$, then
+      the lift by $\lambda$ (\cref{def:pencil-d-lift}), with the
       hinges $C(b_u, b_v)$, is a nondegenerate pencil realization of $G$
       in dimension $d$ (\cref{def:pencil-d-nondegenerate}), and its
       rigidity matrix has the rows of the panel-hinge framework with
@@ -5393,7 +5400,9 @@ realization in dimension $d$ (\cref{def:pencil-d-nondegenerate}): a lift
 of rank $\operatorname{tgt}_d(G)$ at a realization with $Q(b^0) \ne 0$ is
 one (\cref{lem:pencil-d-lift-realization}).
 
-% Source: NONDEG workbook, S18 (v).
+% Source: NONDEG workbook, S18 (v). Part (1) takes the maps of the lifts through a polynomial
+% section of A(b^0) at each parameter of the given lift, as in the formalization
+% (liftAttains_of_least), where S18 (v) takes a Cramer basis of the kernel and a coefficient.
 \begin{lemma}[One lift suffices]
   \label{lem:pencil-d-lift-one-witness}
   \lean{CombinatorialRigidity.Molecular.liftAttains_of_least,
@@ -5403,9 +5412,9 @@ one (\cref{lem:pencil-d-lift-realization}).
         CombinatorialRigidity.Molecular.liftSpaceTilde_eq_ker}
   \leanok
   \uses{def:pencil-d-lift-attains, lem:pencil-d-steer}
-  Let $K$ be infinite, $d \ge 3$, and let $G$ be simple and
-  nondegeneracy-feasible. For points $b^0$, let $\widetilde L(b^0)$ be
-  the space of pairs $(\zeta, \psi)$ of a map $\zeta \colon V(G) \to K$
+  Let $K$ be infinite, $d \ge 3$, and let $G$ be nondegeneracy-feasible.
+  For points $b^0$, let $\widetilde L(b^0)$ be the space of pairs
+  $(\zeta, \psi)$ of a map $\zeta \colon V(G) \to K$
   and linear forms $\psi_v$ on $K^4$ with $\zeta_w = \psi_v(b^0_w)$ for
   every body $v$ and every $w$ in its closed neighbourhood.
   \begin{enumerate}
@@ -5423,35 +5432,46 @@ one (\cref{lem:pencil-d-lift-realization}).
 \begin{proof}
   \leanok
   \uses{lem:pencil-d-lift-realization, lem:relative-deficiency-rank-bound,
-        lem:pencil-x0-fibre-intersection}
+        lem:pencil-x0-fibre-intersection, lem:pencil-polynomial-section,
+        lem:rank-polynomial-of-le-finrank}
   (1) The space $\widetilde L(b^0)$ is the kernel of the linear map
   $A(b^0) \colon (\zeta, \psi) \mapsto (\zeta_w - \psi_v(b^0_w))$, one
   coordinate for every body $v$ and every $w$ in its closed neighbourhood,
   whose matrix has the entries $0$, $1$ and the coordinates of the points.
   The maps $\zeta$ of its members form $L(b^0)$
-  (\cref{lem:pencil-d-lift-realization}). Let $N = \dim \widetilde
-  L(b^*)$, let $c$ be the number of columns, and let $M$ be a nonzero
-  minor of size $c - N$ of $A(b^*)$, on a set $I$ of rows and $J$ of
-  columns. Let $(b^0, \Pi^0)$ be a nondegenerate realization with
-  $M(b^0) \ne 0$. Then $A(b^0)$ has rank at least $c - N$, and at most
-  $c - N$ by the choice of $r^*$, so its kernel is that of the rows $I$.
-  Solving these rows by Cramer's rule gives, for each column $j \notin J$,
-  a kernel vector $k_j(b^0)$ with $M(b^0)$ at $j$, zero at the other
-  columns outside $J$, and minors of $A(b^0)$ at the columns of $J$. These
-  $N$ vectors, polynomial in $b^0$, are a basis of the kernel.
+  (\cref{lem:pencil-d-lift-realization}). Let
+  $t = \operatorname{tgt}_d(G)$, and let the lift of $r^*$ by
+  $\lambda^* = (\lambda^{*1}, \dots, \lambda^{*m})$ have rank $t$.
+  Extending the forms of $\lambda^{*i}$ to $K^4$ gives a member $x_i$ of
+  $\widetilde L(b^*)$ with the map of $\lambda^{*i}$.
+  \Cref{lem:pencil-polynomial-section}, applied to $A(b^0)$ at $b^*$ and
+  $x_i$, gives a polynomial $D_i$ in the points with $D_i(b^*) \ne 0$ and
+  a vector $Z_i(b^0)$ of polynomials with $Z_i(b^*) = x_i$, such that
+  $Z_i(b^0) \in \widetilde L(b^0)$ wherever $D_i(b^0) \ne 0$ and
+  $\dim \widetilde L(b^0) \ge \dim \widetilde L(b^*)$. Let $n(b^0)$ have
+  at every body $v$ the normal
+  $(b^0_{v,1}, b^0_{v,2}, b^0_{v,3}, \zeta^1_v, \dots, \zeta^m_v,
+  b^0_{v,4})$ of a lift, where $\zeta^i$ is the map of $Z_i(b^0)$; its
+  coordinates are polynomials in $b^0$. At $b^*$ these are the normals
+  of the lift by $\lambda^*$. Deleting the
+  inserted coordinates maps the normals of the two ends of a link to
+  those of $b^*$, which are linearly independent, so every hinge of the
+  panel-hinge framework with the normals $n(b^*)$ is nonzero. So
+  \cref{lem:rank-polynomial-of-le-finrank} gives a polynomial $P$ in the
+  normals with $P(n(b^*)) \ne 0$, such that the panel-hinge framework
+  with normals $n$ has rank at least $t$ wherever $P(n) \ne 0$. Let
+  $Q_0(b^0) = D_1(b^0) \cdots D_m(b^0)\, P(n(b^0))$, a polynomial in the
+  points with $Q_0(b^*) \ne 0$.
 
-  For $\gamma = (\gamma^i_j)$ in $K^{N \times m}$, let $\zeta^i$ be the
-  map of $\sum_j \gamma^i_j k_j(b^0)$. The rigidity matrix of the
-  panel-hinge framework with the normals of the lift by these maps has
-  entries polynomial in $(b^0, \gamma)$. Some lift of $r^*$ has rank
-  $t = \operatorname{tgt}_d(G)$, so some minor $P(b^0, \gamma)$ of size
-  $t$ is nonzero at $b^*$ and some $\gamma^*$. Write $P$ as a polynomial
-  in $\gamma$ with coefficients polynomial in $b^0$, and let $P_\alpha$ be
-  a coefficient with $P_\alpha(b^*) \ne 0$. Let
-  $Q_0 = M \cdot P_\alpha$. At a nondegenerate realization with
-  $Q_0(b^0) \ne 0$, the polynomial $P(b^0, \cdot)$ is nonzero, so it has
-  a non-root $\gamma$, as $K$ is infinite. The lift by $\gamma$ then has
-  rank at least $t$, and at most $t$
+  Let $(b^0, \Pi^0)$ be a nondegenerate realization with
+  $Q_0(b^0) \ne 0$. By the choice of $r^*$,
+  $\dim \widetilde L(b^0) \ge \dim \widetilde L(b^*)$. As
+  $D_i(b^0) \ne 0$, every $Z_i(b^0)$ lies in $\widetilde L(b^0)$, and its
+  map in $L(b^0)$. These maps are those of some
+  $\lambda \in \mathcal{L}(b^0, \Pi^0)^m$, and the lift by $\lambda$ has
+  the normals $n(b^0)$ (part~(2) of
+  \cref{lem:pencil-d-lift-realization}). As $P(n(b^0)) \ne 0$, its rank
+  is at least $t$, and at most $t$
   (\cref{lem:relative-deficiency-rank-bound}).
 
   It remains to make $Q_0$ homogeneous in each point. Let $Q$ be a sum of
@@ -5465,10 +5485,13 @@ one (\cref{lem:pencil-d-lift-realization}).
 
   (2) Rescaling each point does not change $\dim \widetilde L(b^0)$. By
   \cref{lem:pencil-d-steer}, the least value of $\dim \widetilde L$ over
-  the nondegenerate realizations is its least value on $U(G)$, where it is
-  the least exactly where $A(b^0(s))$ has the largest rank. That is a
-  nonempty Zariski-open subset of $U(G)$. It meets the subset where a lift
-  of rank $\operatorname{tgt}_d(G)$ exists
+  the nondegenerate realizations is its least value on $U(G)$, taken at
+  some $s_1 \in U(G)$. \Cref{lem:pencil-polynomial-section}, applied to
+  $A(b^0(s))$ at $s_1$ and the zero vector, gives a polynomial in $s$,
+  nonzero at $s_1$, off whose zero set $\dim \widetilde L(b^0(s))$ is at
+  most, and so equal to, this least value. Its non-roots in $U(G)$ form a
+  nonempty Zariski-open subset of $U(G)$. It meets the subset where a
+  lift of rank $\operatorname{tgt}_d(G)$ exists
   (\cref{lem:pencil-x0-fibre-intersection}), and a common point gives
   $r^*$.
 
@@ -5476,8 +5499,10 @@ one (\cref{lem:pencil-d-lift-realization}).
   proof of \cref{lem:pencil-generic-steer} that keeps the rank as a lower
   bound off the zero set of a polynomial. In dimension $d$ the lifts form
   the space $\mathcal{L}(b^0, \Pi^0)^m$, whose dimension can jump. The
-  basis $k_j$ is polynomial only where $\dim \widetilde L$ takes its
-  least value, and this is why (1) asks for the least value at $r^*$.
+  section $Z_i(b^0)$ lies in $\widetilde L(b^0)$ where
+  $\dim \widetilde L(b^0)$ does not fall below its value at $b^*$
+  (\cref{lem:pencil-polynomial-section}), and this is why (1) asks for
+  the least value at $r^*$.
 \end{proof}
 
 % Source: NONDEG workbook, S19.
@@ -5486,11 +5511,10 @@ one (\cref{lem:pencil-d-lift-realization}).
   \lean{CombinatorialRigidity.Molecular.lift_transfer}
   \leanok
   \uses{def:pencil-d-lift-attains, lem:pencil-d-steer}
-  Let $K$ be infinite and $d \ge 3$, let $G$ be simple and
-  nondegeneracy-feasible, and let $H = G[V']$ for a nonempty set $V'$ of
-  bodies. For a realization $r^0 = (b^0, \Pi^0)$ of $G$ in dimension
-  three, write $r^0|_H$ for the normals and subspaces of the bodies of
-  $H$. As every closed neighbourhood in $H$ lies in the one in $G$,
+  Let $K$ be infinite and $d \ge 3$, let $G$ be nondegeneracy-feasible,
+  and let $H = G[V']$ for a nonempty set $V'$ of bodies. For a
+  realization $r^0 = (b^0, \Pi^0)$ of $G$ in dimension three, write
+  $r^0|_H$ for the normals and subspaces of the bodies of $H$. As every closed neighbourhood in $H$ lies in the one in $G$,
   restricting $\zeta$ and $\varphi$ to $V'$ maps
   $\mathcal{L}(r^0)$ into $\mathcal{L}(r^0|_H)$. Suppose:
   \begin{itemize}
@@ -5553,6 +5577,18 @@ one (\cref{lem:pencil-d-lift-realization}).
   the rank is read at a lift, and the lifts of $G$ must restrict onto the
   lifts of $H$, which is (T2).
 \end{proof}
+
+\begin{fmlnote}
+  The formalization proves the openness by a rank polynomial at each
+  point of the set, not as a preimage under the restriction, and uses
+  (T2) only for the nonemptiness: at each $\lambda$ of the set, the
+  polynomial of \cref{lem:rank-polynomial-of-le-finrank} for the
+  panel-hinge framework on $H$ with the normals of the lift by
+  $\lambda$, read as a polynomial in the values of the maps $\zeta^i$,
+  is nonzero at $\lambda$, and off its zero set the rank on $H$ is at
+  least, and so equal to, $\operatorname{tgt}_d(H)$
+  (\cref{lem:relative-deficiency-rank-bound}).
+\end{fmlnote}
 
 \subsection{The generic conjunct in every dimension}
 \label{sec:pencil-d-generic}

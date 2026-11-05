@@ -8,8 +8,8 @@ formalization note naming the Lean's route for each of the 17 kept parts (K), wi
 slips round 1 moved here; then one `\uses` sweep over the chapter's missing edges (60 at the open).
 Blueprint and notes only: no Lean, no pin, no `\leanok`. Eleven tasks, one commit each: the open,
 eight slices by layer, the sweep and the close. 17 rows end `aligned` and 17 `kept`. Tasks 2
-to 5 landed (4 `aligned`, 11 `kept`). **Next concrete task:** task 6, 42l (R-48, R-49, R-50,
-R-20, R-21 L; R-23 K).
+to 6 landed (9 `aligned`, 12 `kept`). **Next concrete task:** task 7, 42m's first slice (R-51,
+R-28, R-30, R-32 L; R-27 and R-28 K).
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -25,13 +25,15 @@ the PI answers in an entry that starts `**PI, <date>:**`.
 
 ## Current state
 
-**Task 5 landed** (this commit): R-19 `aligned`; R-18, R-46 `kept`, with two formalization notes
-(thirteen in the chapter). Nothing is mid-stream; task 6 is next. Task 5's gates: G4's `verify.sh`
-has 9 `WARNING:` lines, task 4's nine (the count tasks 6–10 hold), `print.log` rebuilt with 0
-`LaTeX Warning`; G5's after-dump, `scratch/cleanup-42/round2/task5/dump-after.txt`, differs from
-task 4's in the four proof edges of `lem:pencil-d-nonsimple-case` and their four drawn edges
-(`1890 edges 25926b560ac340d1`, `lean_decls` `28b0db9377d77782`), and serves as task 6's parent
-dump; `--chapter pencil-d`: 56 *missing* (was 60), 18 *unbacked transitive*.
+**Task 6 landed** (this commit): R-20, R-21, R-48, R-49, R-50 `aligned`; R-23 `kept`, with one
+formalization note (fourteen in the chapter). Nothing is mid-stream; task 7 is next. Task 6's
+gates: G4's `verify.sh` has 9 `WARNING:` lines, task 5's nine (the count tasks 7–10 hold),
+`print.log` rebuilt with 0 `LaTeX Warning`; G5's after-dump,
+`scratch/cleanup-42/round2/task6/dump-after.txt`, differs from task 5's in the two proof edges of
+`lem:pencil-d-lift-one-witness` and their two drawn edges (`1892 edges 82a6b98ba66947ea`,
+`lean_decls` `28b0db9377d77782`), and serves as task 7's parent dump; `--chapter pencil-d`: 53
+*missing* (was 56; the node's `lem:genericity-device` is now reached through
+`lem:rank-polynomial-of-le-finrank`), 18 *unbacked transitive*.
 
 **Verified at the open** (2026-11-05, at `6eb7a2e6`):
 - **The ledger** (`notes/Cleanup42.md` §2): 54 rows, 34 `open` (R-3 to R-5, R-9 to R-12, R-14 to
@@ -177,26 +179,15 @@ statement, (T2) and other parts all in task 8).
 
 **42k** (`sec:pencil-d-reduction`).
 
-- [x] **5. Two pencils, the base case and parallel edges** (this commit). Aligned: R-19 (the
+- [x] **5. Two pencils, the base case and parallel edges** (`3bf9d220`). Aligned: R-19 (the
   block-triangular count at every `D`). Kept: R-18, R-46 (a note each). `\uses`: the parallel-edge
   proof gains four *missing* edges, the count's lemmas. No *Candidates* or *Moved* line.
 
 **42l** (`sec:pencil-d-nondegenerate`, `sec:pencil-d-lift`).
 
-- [ ] **6. Nondegeneracy, its feasibility and the lifts' setting.** R-48, L statement:
-  `lem:pencil-d-nondegenerate-maps` (l. 4773), parts (1) and (2) for any vectors and subspaces,
-  with the slip there (`p` runs `K^(d+1) → K^(d′+1)`, but the "in particular" embeds from `d′ ≤ d`
-  into `d`: one convention) (`Grade/Nondegenerate.lean`). R-20, L proof:
-  `lem:pencil-d-nondegenerate-feasible` (l. 4814), `π`'s rows a form nonzero at `b_v` and one
-  vanishing on each `Π_w`, chosen off at most two proper subspaces, for the quotient, the induction
-  and the quadric, and the TeX comment above it to match (`Grade/Feasible.lean`). R-49, L
-  statement: "simple" dropped from `lem:pencil-d-steer` (l. 4965), `-lift-one-witness` (l. 5234)
-  and `-lift-transfer` (l. 5321). R-50, L statement: `lem:pencil-d-lift-realization` (l. 5141), (2)
-  and (3) for any `(b⁰, Π⁰)` as in `def:pencil-d-lift`, (1) at a nondegenerate realization
-  (`Grade/Lift.lean`). R-21, L proof: `-lift-one-witness`, one polynomial section through the
-  given lift's parameters, no Cramer basis or `γ`. R-23, K note: `-lift-transfer`, openness by the
-  rank polynomial at each `λ` (`Grade/LiftWitness.lean`). *Expected:* `-lift-one-witness`'s proof
-  gains `lem:pencil-polynomial-section` (*missing* at the open).
+- [x] **6. Nondegeneracy, its feasibility and the lifts' setting** (this commit). Aligned: R-48
+  (the slip: `p : K^(d′+1) → K^(d+1)`), R-49, R-50, R-20, R-21. Kept: R-23 (a note). `\uses`: the
+  one-lift proof gains the polynomial section and the rank polynomial. Two *Moved* lines (below).
 
 **42m** (`sec:pencil-d-generic`), in three.
 
@@ -257,6 +248,11 @@ statement, (T2) and other parts all in task 8).
 - **Task 4, for round 4** (Lean; mirrored in `notes/Cleanup42.md` §3): `Grade/ShortThree.lean`'s
   `Graph.X0AttainsGrade.of_openEar_three` docstring still says the chapter's case `r ≤ 2` goes
   through the components of `G[V₁]` and a path (R-14), stale since task 4.
+- **Task 6, for round 4** (Lean, and a note; mirrored in `notes/Cleanup42.md` §3):
+  `Grade/LiftWitness.lean`'s `liftAttains_of_least` docstring still contrasts its section with "the
+  chapter's Cramer basis and coefficients `γ`" (R-21), stale since task 6. And
+  `notes/BlueprintExposition.md`'s 42l entry (dated 2026-11-04) says the one-lift and restriction
+  nodes keep their unused simplicity (R-49).
 
 ## Blockers / open questions
 
@@ -264,11 +260,12 @@ statement, (T2) and other parts all in task 8).
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 6, 42l: the statements of R-48, R-49 and R-50 (L, with R-48's slip),
-the proofs of R-20 and R-21 (L) and R-23's K note, one Opus dispatch. Its G5 parent dump is task 5's
-after-dump (`scratch/cleanup-42/round2/task5/dump-after.txt`), and G4 holds `verify.sh` to 9
-`WARNING:` lines. Re-`grep` its nodes' lines: tasks 2–5 moved them by 164. Five nodes' statements
-change (R-48; R-49 on three nodes; R-50), so G6 runs.
+**Next concrete task:** task 7, 42m's first slice: `lem:pencil-d-lift-small`'s statement (R-51,
+R-28, L) and one K note for R-27 and R-28; the cut edge's statement and proof (R-30, L); the proof
+of no planar-rigid set (R-32, L); one Opus dispatch. Its G5 parent dump is task 6's after-dump
+(`scratch/cleanup-42/round2/task6/dump-after.txt`), and G4 holds `verify.sh` to 9 `WARNING:`
+lines. Re-`grep` its nodes' lines: tasks 2–6 moved them by 199. Two nodes' statements change
+(`-lift-small`, R-51 and R-28; `-lift-cut-edge`, R-30), so G6 runs.
 
 ## Decisions made during this round
 
