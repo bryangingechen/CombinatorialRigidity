@@ -5209,6 +5209,11 @@ one (\cref{lem:pencil-d-lift-realization}).
 % Source: NONDEG workbook, S18 (v).
 \begin{lemma}[One lift suffices]
   \label{lem:pencil-d-lift-one-witness}
+  \lean{CombinatorialRigidity.Molecular.liftAttains_of_least,
+        CombinatorialRigidity.Molecular.liftAttains_of_holdsGenerally,
+        CombinatorialRigidity.Molecular.exists_weightedHomogeneousComponent_of_eval_ne_zero,
+        CombinatorialRigidity.Molecular.liftSpaceTilde_eq_ker}
+  \leanok
   \uses{def:pencil-d-lift-attains, lem:pencil-d-steer}
   Let $K$ be infinite, $d \ge 3$, and let $G$ be simple and
   nondegeneracy-feasible. For points $b^0$, let $\widetilde L(b^0)$ be
@@ -5228,6 +5233,7 @@ one (\cref{lem:pencil-d-lift-realization}).
   \end{enumerate}
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-d-lift-realization, lem:relative-deficiency-rank-bound,
         lem:pencil-x0-fibre-intersection}
   (1) The space $\widetilde L(b^0)$ is the kernel of the linear map
@@ -5289,6 +5295,8 @@ one (\cref{lem:pencil-d-lift-realization}).
 % Source: NONDEG workbook, S19.
 \begin{lemma}[Lifts restrict to a subgraph]
   \label{lem:pencil-d-lift-transfer}
+  \lean{CombinatorialRigidity.Molecular.lift_transfer}
+  \leanok
   \uses{def:pencil-d-lift-attains, lem:pencil-d-steer}
   Let $K$ be infinite and $d \ge 3$, let $G$ be simple and
   nondegeneracy-feasible, and let $H = G[V']$ for a nonempty set $V'$ of
@@ -5317,6 +5325,7 @@ one (\cref{lem:pencil-d-lift-realization}).
   form a nonempty Zariski-open subset of $\mathcal{L}(r^0)^m$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-d-lift-realization, lem:pencil-x0-fibre-intersection}
   Let $Q_H$ be the polynomial of \cref{def:pencil-d-lift-attains} for $H$.
   Both $E$ and $Q_H$ are nonzero at some nondegenerate realization of $H$,

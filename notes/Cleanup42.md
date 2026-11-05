@@ -291,7 +291,7 @@ valid. The cleanup chooses one per `open` row, with the PI.
   the `ν_w` as `cross₃`).
   *Remedies:* the prose to the Lean (shorter, no quadric), or keep both.
 - **R-21** · `lem:pencil-d-lift-one-witness` (`liftAttains_of_least`,
-  `liftAttains_of_holdsGenerally`; `Grade/LiftWitness.lean`, 42l, the recon's spike) · **open**.
+  `liftAttains_of_holdsGenerally`; `Grade/LiftWitness.lean`, 42l build 4) · **open** (the Lean landed as below; the chapter stays as the prose).
   *Chapter:* (1) a basis `k_j(b⁰)` of `L̃(b⁰)` by Cramer's rule on a nonzero minor `M` of size
   `c − N`, the lifts by `Σ γ^i_j k_j`, `P(b⁰, γ)` a minor of size `t`, `Q₀ = M · P_α` for a
   coefficient `P_α` of `P` in `γ`. (2) the least `dim L̃` holds where `A(b⁰(s))` has the largest
@@ -317,8 +317,8 @@ valid. The cleanup chooses one per `open` row, with the PI.
   part, and the converse through `exists_pencilSeed_of_nondeg_of_selectors`, is the chapter's.
   *Remedies:* the prose to the Lean (six vectors, read at the empty slots), a Lean chart on five
   vectors with members-first selectors, or keep both.
-- **R-23** · `lem:pencil-d-lift-transfer` (`lift_transfer`, `Grade/LiftWitness.lean`, 42l, the
-  recon's spike) · **open**.
+- **R-23** · `lem:pencil-d-lift-transfer` (`lift_transfer`, `Grade/LiftWitness.lean`, 42l build 4)
+  · **open** (the Lean landed as below; the chapter stays as the prose).
   *Chapter:* the maps `ζ ∈ L(b⁰|_(V′))^m` whose lift has rank `tgt_d(H)` form a nonempty
   Zariski-open set; by (T2) the restriction `𝓛(r⁰)^m → L(b⁰|_(V′))^m` is onto, and the preimage of a
   nonempty Zariski-open set under an onto linear map is nonempty and Zariski-open.
