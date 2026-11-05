@@ -155,10 +155,9 @@ realization, though their hinges do not form a pencil.
   \leanok
   \uses{def:pencil-d-realization, def:pencil-panel-realization,
         lem:extensor-through-flat-point}
-  Let $d = 3$, and let $q_v \in K^4$ be nonzero with
-  $\Pi_v = q_v^{\perp}$ at each body $v$. A hinge-coplanar panel
-  realization of $G$ with normals $b$ is a pencil realization in
-  dimension three with the subspaces $\Pi_v$
+  Let $d = 3$, and let $\Pi_v = q_v^{\perp}$ with $q_v \in K^4$ at each
+  body $v$. A hinge-coplanar panel realization of $G$ with normals $b$
+  is a pencil realization in dimension three with the subspaces $\Pi_v$
   (\cref{def:pencil-d-realization}) exactly when it is a pencil
   realization with normals $b$ and points $q$
   (\cref{def:pencil-panel-realization}). As every three-dimensional
@@ -169,9 +168,14 @@ realization, though their hinges do not form a pencil.
 \begin{proof}
   \leanok
   As the dot product of $K^4$ is nondegenerate, $\Pi_v^{\perp}$ is the
-  span of $q_v$. So passing through $\Pi_v^{\perp}$ is passing through
-  $q_v$ (\cref{lem:extensor-through-flat-point}), and $b_v \in \Pi_v$ is
-  the incidence $q_v \cdot b_v = 0$. Every three-dimensional subspace of
+  span of $q_v$, and the dimension of $\Pi_v$ is $4$ minus that of this
+  span. So $\Pi_v$ is three-dimensional exactly when $q_v \neq 0$, which
+  matches the dimension that \cref{def:pencil-d-realization} asks of
+  $\Pi_v$ with the nonzero point that
+  \cref{def:pencil-panel-realization} asks. Passing through
+  $\Pi_v^{\perp}$ is passing through $q_v$
+  (\cref{lem:extensor-through-flat-point}), and $b_v \in \Pi_v$ is the
+  incidence $q_v \cdot b_v = 0$. Every three-dimensional subspace of
   $K^4$ is $q^{\perp}$ for some nonzero $q$.
 \end{proof}
 
@@ -3528,6 +3532,16 @@ the point of a picture point and $d - 2$ heights.
   \cref{thm:pencil-x0-open-ear} places $x_k$, $a$ and $x_1$ there.
 \end{proof}
 
+\begin{fmlnote}
+  The formalization proves (2) by extending the linear map on the span
+  of $Y_{i-1}$, $Y_i$ and $Y_{i+1}$, independent by (1), that sends them
+  to $P_1$, $P_0$ and $P_2$, to an invertible linear map $g_1$ of
+  $K^{d+1}$, then correcting its last coordinate by the transvection
+  $v \mapsto v + \varphi(v)\, P_0$, where $\varphi(v)$ is the last
+  coordinate of $g_1^{-1}(v)$ minus that of $v$, not by the map
+  $(\bar x, \omega) \mapsto (M(\bar x - \omega\, \bar y_i), \omega)$.
+\end{fmlnote}
+
 % Source: CERT workbook, S4, stated without its choice of u among the vertices and the
 % standard basis vectors. The proof follows the Lean (exists_normalsJoin_notMem_span_polygon):
 % linearity in the first point, and a 2 x 2 minor, where S4 extends bases of the exterior square.
@@ -3669,6 +3683,16 @@ the point of a picture point and $d - 2$ heights.
   over every field. In dimension $d$ the polygons are built rather than
   written down, and the insertion asks $K$ to have four elements.
 \end{proof}
+
+\begin{fmlnote}
+  The formalization proves the joins of the triangle $(P_0, P_1, P_2)$
+  linearly independent by three $2 \times 2$ minors, the linear
+  functionals $\varphi$ on $\bigwedge^2 K^{d+1}$ of the proof of
+  \cref{lem:pencil-d-polygon-star} with $\psi_1$ and $\psi_2$ the
+  coordinates $1$ and $2$, $1$ and $d + 1$, and $2$ and $d + 1$, which
+  together force every linear relation among the three joins to be
+  trivial, not through a basis of $\bigwedge^2 K^{d+1}$.
+\end{fmlnote}
 
 % Source: CERT workbook, S7; part (2) is derived here from part (1) with m = k + 1.
 \begin{lemma}[A long cycle or ear on a closed $D$-gon]
@@ -3821,6 +3845,14 @@ the point of a picture point and $d - 2$ heights.
   So each of the $d - 2$ heights is taken from the placement as it
   stands.
 \end{proof}
+
+\begin{fmlnote}
+  The formalization makes the placement in one step, not in two cases:
+  with $N = \min(m, D)$, it puts each $c_j$ at $\pi_m(j)$ on a closed
+  $N$-gon with independent joins whose vertices have last coordinate
+  $1$, with $\pi_m$ and part~(1) of \cref{lem:pencil-d-polygon-collapse}
+  read with $N$ in place of $D$, so that $\pi_m(j) = Y_j$ when $N = m$.
+\end{fmlnote}
 
 % Source: CERT workbook, S6 (C1) with S2 (a), and S7 (b); the bodies of V_1 at P_0 is
 % S3's consumer reading (every height zero on V_1, x_1 and x_k).

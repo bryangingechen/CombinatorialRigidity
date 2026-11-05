@@ -13,7 +13,7 @@ every open row its remedy the same day, at round 1's stop and at a second stop o
 `kept` (a part keeps both routes, with a formalization note); no row goes H, so round 3 is empty.
 Round 2, opened 2026-11-05, applies them to the chapter in eight slices by layer, then one `\uses`
 sweep (blueprint and notes, no Lean); each slice sets its rows' status, and the tally here. The
-ledger now: 34 `open`, 6 `aligned`, 0 `kept`, 14 `no departure`. **Next concrete task:** round 2's
+ledger now: 30 `open`, 7 `aligned`, 3 `kept`, 14 `no departure`. **Next concrete task:** round 2's
 next open task (`notes/Phase42-align.md`'s **Status**); after round 2, round 4 (§3).
 
 ## 1. The PI's decisions (verbatim)
@@ -220,7 +220,7 @@ there.
   iff `J_i + t w ∉ A` (`w = u ∨ Y_{i+1}`); `J_i ∉ A`, so that line meets `A` once at most.
   *Remedies:* the prose to the Lean, taken.
 - **R-3** · `lem:pencil-d-polygon-normal`, part (2) (`exists_linearEquiv_polygon_normal`) ·
-  **open**.
+  **kept, round 2 task 2**.
   *Chapter:* the explicit affine map `g(x̄, ω) = (M(x̄ − ω ȳ_i), ω)`, `M` sending a basis that
   extends `ȳ_{i−1} − ȳ_i`, `ȳ_{i+1} − ȳ_i` to the standard basis of `K^d`.
   *Lean:* extend the basis map `Y_{i−1}, Y_i, Y_{i+1} ↦ P_1, P_0, P_2` of part (1) to an
@@ -228,24 +228,28 @@ there.
   by the transvection `v ↦ v + φ(v) P_0`, `φ = f ∘ g₁⁻¹ − f`, `f` the last coordinate.
   *Remedies:* keep both (the coordinator judged the chapter's the better read); a Lean helper, a
   split of `K^{d+1}` as `K^d × K` on which `g` is the chapter's block map; or the prose to the Lean.
+  Keep both, taken: a formalization note after the proof names the Lean's route (the PI,
+  2026-11-05).
 - **R-4** · `lem:pencil-d-polygons`, the base triangle (`linearIndependent_join_triangle`) ·
-  **open**.
+  **kept, round 2 task 2**.
   *Chapter:* `P_0, …, P_d` is a basis of `K^{d+1}`, so the `P_α ∨ P_β` (`α < β`) form a basis of
   `⋀²`, of which the triangle's three joins are three, up to sign.
   *Lean:* three 2 × 2-minor functionals, on the coordinate pairs first–second, first–last and
   second–last, separate the three joins; no basis of `⋀²`.
   *Remedies:* keep both (the coordinator judged the chapter's the better read); a Lean helper, the
   basis of `⋀²` induced by a basis of `K^{d+1}` (mathlib's, or a mirror), so that the Lean follows
-  the chapter; or the prose to the minors, which the star's proof now uses (R-1).
+  the chapter; or the prose to the minors, which the star's proof now uses (R-1). Keep both, taken:
+  a formalization note after the proof names the Lean's route (the PI, 2026-11-05).
 - **R-5** · `thm:pencil-d-cycle`, the placement (`Graph.X0AttainsGrade.of_cycle`,
-  `Pencil/Grade/Chain.lean`) · **open**.
+  `Pencil/Grade/Chain.lean`) · **kept, round 2 task 2**.
   *Chapter:* two cases, CERT S6 (C1) and S7 (a): for `m ≤ D` the bodies at the vertices of a closed
   `m`-gon (`lem:pencil-d-polygons`); for `m > D` on a closed `D`-gon by part (1) of
   `lem:pencil-d-polygon-collapse`.
   *Lean (the landed proof, rechecked at the Chain build; it is the spike's):* one path, a closed
   `N`-gon with `N = min(m, D)` and every `c_j` at `Y_{π(j)}`, `π = polygonCollapse N m`, the
   identity when `N = m`.
-  *Remedies:* a toss-up (the coordinator): the prose to the one path, or keep both.
+  *Remedies:* a toss-up (the coordinator): the prose to the one path, or keep both. Keep both,
+  taken: a formalization note after the proof names the Lean's route (the PI, 2026-11-05).
 - **R-6** · `thm:pencil-d-cycle`, the heights (`Graph.X0AttainsGrade.of_cycle_of_certificate`) ·
   **no departure** (42g's close): the Lean restricts `z` to `V(G)`, where the chapter's `z` lives.
 - **R-7** · `lem:pencil-d-two-stars`, parts (2) and (3) (`dualAnnihilator_starGrade_sup_starGrade`,
@@ -671,9 +675,9 @@ there.
   (b) by two plane normals), or keep both.
 
 - **R-35** · `lem:pencil-d-agrees-three`, its first sentence (`hasPencilPlaneRealization_two_iff`,
-  `Grade/Realization.lean`, round 1 task 2) · **open**.
-  *Chapter:* the points `q_v` are nonzero, with `Π_v = q_v^⊥`. As the dot product is nondegenerate,
-  `Π_v^⊥` is the span of `q_v`, so passing through `Π_v^⊥` is passing through `q_v`
+  `Grade/Realization.lean`, round 1 task 2) · **aligned, round 2 task 2**.
+  *Chapter (until then):* the points `q_v` are nonzero, with `Π_v = q_v^⊥`. As the dot product is
+  nondegenerate, `Π_v^⊥` is the span of `q_v`, so passing through `Π_v^⊥` is passing through `q_v`
   (`lem:extensor-through-flat-point`), and `b_v ∈ Π_v` is `q_v · b_v = 0`. That `Π_v` is
   three-dimensional and `q_v` nonzero is left to the hypothesis.
   *Lean:* no `q_v ≠ 0`: the hypothesis is `Π_v = q_v^⊥` on `V(G)` alone, and the two definitions
@@ -688,7 +692,8 @@ there.
   (`exists_hasPencilPlaneRealization_two_iff`) is the chapter's.
   *Remedies:* the prose to the Lean (the statement without "nonzero", the proof with the sentence
   on the dimension; its `\uses` unchanged), or keep both (the points of a pencil realization are
-  nonzero). The recon leans to the prose: one word and one sentence.
+  nonzero). The recon leaned to the prose: one word and one sentence. The prose to the Lean, taken
+  (the PI, 2026-11-05).
 
 - **R-36** · `lem:pencil-d-contract-magnified-rank`, its `r ∈ W`
   (`Graph.finrank_span_rigidityRows_induce_contractHeightGrade_eq`, `Grade/Contract.lean`, round 1

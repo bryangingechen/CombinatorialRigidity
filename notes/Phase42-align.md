@@ -7,8 +7,9 @@ stop* and *The B/C judgment*): 11 statements and 14 proof routes restated to the
 formalization note naming the Lean's route for each of the 17 kept parts (K), with the two prose
 slips round 1 moved here; then one `\uses` sweep over the chapter's missing edges (60 at the open).
 Blueprint and notes only: no Lean, no pin, no `\leanok`. Eleven tasks, one commit each: the open,
-eight slices by layer, the sweep and the close. 17 rows end `aligned` and 17 `kept`. **Next
-concrete task:** task 2, 42b with 42g (R-35 L; R-3, R-4, R-5 K). Round manual: `CLEANUP.md`.
+eight slices by layer, the sweep and the close. 17 rows end `aligned` and 17 `kept`. Task 2
+landed (1 `aligned`, 3 `kept`). **Next concrete task:** task 3, 42h (R-9 L; R-10, R-11, R-12 K;
+the ear-datum slip). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -23,7 +24,12 @@ the PI answers in an entry that starts `**PI, <date>:**`.
 
 ## Current state
 
-**Round 2 is open** (task 1, docs only). Nothing is mid-stream; task 2 is next.
+**Task 2 landed** (this commit): R-35 `aligned`; R-3, R-4, R-5 `kept`, with three formalization
+notes (five in the chapter). Nothing is mid-stream; task 3 is next. Task 2's gates: G4's
+`verify.sh` has 9 `WARNING:` lines at its parent and after (the count tasks 3–10 hold),
+`print.log` rebuilt with 0 `LaTeX Warning`; G5's after-dump is byte-identical to
+`dump-6eb7a2e6.txt`, which serves as task 3's parent dump (`1886 edges f539dcce186aa853`,
+`lean_decls` `28b0db9377d77782`); `--chapter pencil-d` unchanged but for line numbers.
 
 **Verified at the open** (2026-11-05, at `6eb7a2e6`):
 - **The ledger** (`notes/Cleanup42.md` §2): 54 rows, 34 `open` (R-3 to R-5, R-9 to R-12, R-14 to
@@ -145,19 +151,15 @@ new status, its `\uses` changes, and a pointer to any *Candidates* or *Moved* li
 **Count check:** tasks 2–9 take 4, 4, 4, 3, 6, 5, 4 and 4 rows: 34, each `open` row once (R-29's
 statement, (T2) and other parts all in task 8).
 
-- [x] **1. Open** (this commit; docs only): this log; `notes/Cleanup42.md`'s **Status**, §2's
+- [x] **1. Open** (`574907a3`; docs only): this log; `notes/Cleanup42.md`'s **Status**, §2's
   header (`kept`) and §3; ROADMAP's Status row, §42's *Next* and the CLEANUP-42 bullet;
   `notes/MolecularConjecture.md`; the queue's comment.
 
 **42b with 42g** (`sec:pencil-d-realization`, `sec:pencil-d-long`).
 
-- [ ] **2. The agreement at `d = 3`, the polygons and the cycle.** R-35, L statement and L proof:
-  `lem:pencil-d-agrees-three` (l. 151) without "nonzero" points, its proof gaining the sentence
-  that `q^⊥` is three-dimensional exactly when `q ≠ 0` (`Grade/Realization.lean`). K notes: R-3,
-  `lem:pencil-d-polygon-normal` (l. 3471) part (2), the basis map extended, then a transvection;
-  R-4, `lem:pencil-d-polygons` (l. 3636), the base triangle by three `2 × 2` minors; R-5,
-  `thm:pencil-d-cycle` (l. 3731), one closed `N`-gon at `N = min(m, D)` (`Grade/Polygon.lean`,
-  `Grade/Chain.lean`). *Expected:* no `\uses` change.
+- [x] **2. The agreement at `d = 3`, the polygons and the cycle** (this commit). Aligned: R-35
+  (no "nonzero"; the dimension sentence). Kept: R-3, R-4, R-5 (a note each). No `\uses` change;
+  no *Candidates* or *Moved* line.
 
 **42h** (`sec:pencil-d-short`, its first eight nodes).
 
@@ -270,10 +272,11 @@ statement, (T2) and other parts all in task 8).
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 2, 42b with 42g: R-35's statement and sentence (L) and the K notes of
-R-3, R-4 and R-5, one Opus dispatch. Its G5 parent dump is the open's
-(`scratch/cleanup-42/round2/dump-6eb7a2e6.txt`), and it first runs `blueprint/verify.sh` on its
-parent to count the `WARNING:` lines G4 holds.
+**Next concrete task:** task 3, 42h: R-9's proof (L) and the K notes of R-10, R-11 and R-12, with
+the ear-datum slip in `thm:pencil-d-open-ear-four`'s proof, one Opus dispatch. Its G5 parent dump
+is still the open's (`scratch/cleanup-42/round2/dump-6eb7a2e6.txt`, byte-identical at task 2), and
+G4 holds `verify.sh` to 9 `WARNING:` lines. Re-`grep` its nodes' lines: task 2 moved them by up to
+32.
 
 ## Decisions made during this round
 
