@@ -99,6 +99,10 @@ input (for an `iff`, the side the theorem derives there). Each is the closed dec
   dimension three, the condition first binds at the centre, of degree three. The star is simple,
   so it has a pencil realization at the deficiency rank whose adjacent bodies have linearly
   independent normals.
+* `graded_pencil_conditioned_pair_generic_witness`: the same theorem's generic conjunct at `K₂` in
+  dimension four, the least graph with an edge. Its simplicity and feasibility hypotheses are met:
+  feasibility (a nondegenerate pencil realization) passes from the double edge, which has one, to
+  its subgraph `K₂`, as no body of the double edge is a pencil hub, and from there to the grade.
 * `molecule_rank_formula_witness`: Jackson and Jordán's molecule rank formula (Katoh and
   Tanigawa's Corollary 5.7) at the triangle `K₃`, the least simple graph of minimum degree two.
   Its multigraph is a triangle, `0`-dof, so the square `K₃² = K₃` has generic rank `3 · 3 - 6 = 3`.
@@ -621,6 +625,50 @@ theorem graded_pencil_conditioned_pair_witness :
       (Graph.OfSimpleGraph (SimpleGraph.starGraph (0 : Fin 4))) :=
   (Graph.graded_pencil_conditioned_pair (K := ℝ) (m := 2) (by norm_num) ⟨0, by simp⟩).2.1
     (ofSimpleGraph_simple _)
+
+/-- The double edge has no pencil hub: each body has degree two. -/
+private theorem banana_pair_not_pencilHub (v : Fin 2) :
+    ¬ (Graph.banana (0 : Fin 2) 1 ({0, 1} : Set (Fin 2))).PencilHub v := by
+  rintro ⟨-, h3⟩
+  have h0 : (Graph.banana (0 : Fin 2) 1 ({0, 1} : Set (Fin 2))).degree 0 = 2 := by
+    rw [Graph.banana_degree_left (a := (0 : Fin 2)) (b := 1) (by decide),
+      Set.ncard_pair (by decide)]
+  have h1 : (Graph.banana (0 : Fin 2) 1 ({0, 1} : Set (Fin 2))).degree 1 = 2 := by
+    rw [Graph.banana_degree_right (a := (0 : Fin 2)) (b := 1) (by decide),
+      Set.ncard_pair (by decide)]
+  obtain rfl | rfl : v = 0 ∨ v = 1 := by fin_cases v <;> simp
+  · omega
+  · omega
+
+/-- `K₂` is simple. -/
+private theorem banana_single_simple : (Graph.banana (0 : Fin 2) 1 ({0} : Set (Fin 2))).Simple where
+  not_isLoopAt e x h := by
+    simp only [Graph.IsLoopAt, Graph.banana_isLink] at h
+    rcases h with ⟨-, h⟩
+    rcases h with ⟨rfl, h⟩ | ⟨rfl, h⟩ <;> exact absurd h (by decide)
+  eq_of_isLink e f x y he hf := by
+    simp only [Graph.banana_isLink, Set.mem_singleton_iff] at he hf
+    rw [he.1, hf.1]
+
+/-- `K₂` is nondegeneracy-feasible. -/
+private theorem banana_single_pencilNondegFeasible :
+    PencilNondegFeasible ℝ (Graph.banana (0 : Fin 2) 1 ({0} : Set (Fin 2))) := by
+  have h2 : PencilNondegFeasible ℝ (Graph.banana (0 : Fin 2) 1 ({0, 1} : Set (Fin 2))) :=
+    exists_isNondegPencilRealization_parallel_pair (x := 0) (y := 1) (e := 0) (f := 1)
+      (by decide) (by decide) (by simp) (by simp) (by simp) (by simp)
+  have hle : Graph.banana (0 : Fin 2) 1 ({0} : Set (Fin 2)) ≤
+      Graph.banana (0 : Fin 2) 1 ({0, 1} : Set (Fin 2)) := by
+    simp
+  exact h2.mono hle fun v _ hhub => absurd hhub (banana_pair_not_pencilHub v)
+
+/-- **The generic conjunct of the pencil realization theorem in every dimension, at `K₂` in
+dimension four**: `Graph.graded_pencil_conditioned_pair` at `m = 2`, third conjunct, at the single
+edge on two bodies, with its simplicity and feasibility hypotheses discharged. -/
+theorem graded_pencil_conditioned_pair_generic_witness :
+    HasGradedGenericPencilRealization ℝ 3 4 (Graph.banana (0 : Fin 2) 1 ({0} : Set (Fin 2))) :=
+  (Graph.graded_pencil_conditioned_pair (K := ℝ) (m := 2) (by norm_num) ⟨0, by simp⟩).2.2
+    banana_single_simple
+    ((gradedPencilNondegFeasible_iff (by norm_num) _).2 banana_single_pencilNondegFeasible)
 
 end
 

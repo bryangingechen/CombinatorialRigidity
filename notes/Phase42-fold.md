@@ -6,7 +6,7 @@ round of CLEANUP-42: Theorem S's `d = 3` core and four `d = 3` cases of the redu
 `K_{2,3}`; and the ten stale Lean docstrings and five dated `notes/BlueprintExposition.md` entries
 left by rounds 1–2. The open's spikes: both folds keep every `d = 3` statement, no blueprint
 statement changes, so no `NEEDS_PI`. Nine tasks, one commit each.
-**Next concrete task:** task 3, witness (1), `K₂` at the generic conjunct (below); task 2 landed.
+**Next concrete task:** task 4, Theorem S's fold (below); task 3 landed.
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -21,7 +21,8 @@ entry here, newest first, and the loop stops; the PI answers in an entry that st
 
 ## Current state
 
-**Task 2 landed** (Lean docstrings only, no statement or proof): the ten stale docstrings and the
+**Task 3 landed** (witness (1), `K₂`: `graded_pencil_conditioned_pair_generic_witness` in
+`Nonvacuity.lean`, three private helpers, axioms the three standard). **Task 2 landed** (Lean docstrings only, no statement or proof): the ten stale docstrings and the
 five dated `BlueprintExposition.md` entries (the checklist line). **Task 1 landed** (docs only): this log; `notes/Cleanup42.md`'s §1 (the PI's entry
 of 2026-11-05 for round 4), **Status** and §3; ROADMAP's Status row, §42's *Next* and the
 CLEANUP-42 bullet; `notes/MolecularConjecture.md`; the queue's comment.
@@ -145,14 +146,9 @@ three lines:** number, sha, what landed, lines deleted, its edges and any *Candi
   docstrings in eight `Grade/` files lose or restate the sentence contrasting them with a round-2-removed
   route or hypothesis; five `BlueprintExposition.md` entries (42h, 42i, 42k, 42l, 42m) gain a closing sentence.
   §3's *Moved* lines for round 4 are marked taken at the close (task 9). 11 lines deleted net.
-- [ ] **3. Witness (1): `K₂` at the generic conjunct** (Sonnet, or a resume of the open's recon:
-  the spike is the build). Transcribe `scratch/cleanup-42/round4/WitnessK2.lean` into
-  `Nonvacuity.lean` after `graded_pencil_conditioned_pair_witness`:
-  `graded_pencil_conditioned_pair_generic_witness : HasGradedGenericPencilRealization ℝ 3 4
-  (Graph.banana (0 : Fin 2) 1 ({0} : Set (Fin 2)))`, the headline's third conjunct at `m = 2`, its
-  feasibility from the double edge (`exists_isNondegPencilRealization_parallel_pair`,
-  `PencilNondegFeasible.mono`, no hub there) through `gradedPencilNondegFeasible_iff`; three private
-  helpers. A module-docstring bullet. Gates G1–G3, the witness's axioms.
+- [x] **3. Witness (1): `K₂` at the generic conjunct** (this commit). `graded_pencil_conditioned_pair_generic_witness`
+  in `Nonvacuity.lean` after `graded_pencil_conditioned_pair_witness`, spike transcribed, three private
+  helpers, a module bullet; `#print axioms`: `propext`, `Classical.choice`, `Quot.sound`. 47 lines added.
 - [ ] **4. Theorem S's fold** (Sonnet). New `Pencil/MainComponent/SparseCount.lean` (imports
   `MainComponent/CoverageCut`, `Induction/SparseDeficiency`): CoverageTheoremS's lines 216–408
   verbatim (`Graph.IsX0Graph.three_mul_sub_le_two_mul_ncard`, `…exists_degree_eq_two_notMem`,
@@ -224,8 +220,7 @@ three lines:** number, sha, what landed, lines deleted, its edges and any *Candi
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 3, witness (1), `K₂` at the generic conjunct (Sonnet, from
-`scratch/cleanup-42/round4/WitnessK2.lean`). Then tasks 4–9 in order; the PI's stop applies to tasks 4–6.
+**Next concrete task:** task 4, Theorem S's fold (Sonnet; its line above). Then tasks 5–9 in order; the PI's stop applies to tasks 4–6.
 
 ## Decisions made during this round
 
