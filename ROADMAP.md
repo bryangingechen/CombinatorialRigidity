@@ -1346,8 +1346,10 @@ hinge in two pencils, moving a realization by a linear map, moving one side of a
 are the cases at a loop, on at most two bodies, at a cut edge and at parallel edges, and the last
 is the theorem: over an infinite field and in every `d ≥ 3`, every multigraph with a body has a
 pencil realization at the deficiency rank, and an adjacent-distinct one when it is simple. A read
-at the open found their proofs sound, and a recon against Phase 39's `d = 3` Lean comes first.
-PD-HEAD opens after it at the PI's word, as each layer before it did. The targets are three
+at the open found their proofs sound, and a recon checked all eight in Lean against Phase 39's
+`d = 3` proofs, so three builds follow. Two of the cases count ranks as the `d = 3` Lean does,
+not by the chapter's count of motions, a route difference tracked for the cleanup. PD-HEAD opens
+after it at the PI's word, as each layer before it did. The targets are three
 tiers: every `d` at `def_3 ≤ 3` (proved and formalized, 42c), a `P⁴` theorem (every `d` at
 `def_3 ≤ 7`, by the sharp lemma), and every `d` (proved on paper, 42d).
 

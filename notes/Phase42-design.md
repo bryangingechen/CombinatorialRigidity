@@ -5,9 +5,9 @@
 nodes of `pencil-d.tex`'s `-reduction` (a hinge in two pencils, moving a realization by a linear
 map, moving one side of a cut edge, the cases at a loop, on at most two bodies, at a cut edge and
 at parallel edges, and the realization theorem in every dimension) as the chapter states them
-(§3). Its next step is the pre-build recon, which spikes the eight against Phase 39's `d = 3` Lean
-and the landed carrier. PD-HEAD (§3, which maps the remaining red nodes to it by section) then
-opens at the PI's word.
+(§3). Its pre-build recon spiked all eight complete, with no `sorry`, and pinned three builds;
+next, build 1 (`notes/Phase42k.md` *Hand-off*). PD-HEAD (§3, which maps the remaining red nodes
+to it by section) then opens at the PI's word.
 **42j** (PD-COVERAGE, `notes/Phase42j.md`) **opened and closed 2026-10-31** at the PI's word (§1):
 the four nodes of `pencil-d.tex`'s `-chains` and `-coverage` (the chain count, a long chain or a
 core, the coverage in every dimension and the distinct statement), all green, as the chapter
@@ -1064,6 +1064,9 @@ marked `no departure` (R-6). The post-Phase-42 cleanup acts on the ledger (that 
   the base case's adjacent-distinct form has no direct `d = 3` Lean; and the chapter reads the
   base case's one-edge rank and the nonsimple case's rank off the motions, where their `d = 3`
   Lean counts rows.
+  **42k's recon** (design pass, 2026-11-04; `notes/Phase42k.md` *Decisions made*): all eight spiked
+  complete, three builds (`Grade/TwoPencil.lean`, `Grade/Arms.lean`, `Grade/Reduction.lean`); the
+  two rank counts keep the `d = 3` Lean's rows (`notes/Cleanup42.md` R-18, R-19).
   **At Phase 42's close**, Tier 0 joins `formalization.yaml`'s
   `main_results` and `alignment` unless the headline subsumes it, with a closed non-vacuity witness
   in `CombinatorialRigidity/Nonvacuity.lean` (`PHASE-BOUNDARIES.md`); 42c's intermediate close

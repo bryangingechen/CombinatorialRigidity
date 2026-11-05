@@ -247,6 +247,33 @@ valid. The cleanup chooses one per `open` row, with the PI.
   used as an inequality. The same final count (`e − |B|` is `|E(G)| − |V(G)|`).
   *Remedies:* the prose to the Lean (classes of bodies, the handshake bound; the proof's `\uses`
   then adds `lem:pencil-x0-sparse-count`), or keep both.
+- **R-18** · `lem:pencil-d-base-case` (`hasGradedPencilRealization_of_ncard_le_two`,
+  `finrank_span_rigidityRows_of_single_edge`, 42k recon, to land in `Grade/Arms.lean`) · **open**.
+  *Chapter:* the ranks are read off the motions, `D|U| − dim Z`: with one edge the motions are the
+  `S` with `S(u) − S(v) ∈ K C₁`, so the rank is `D − 1`; with `m ≥ 2` edges the partition into
+  singletons has value `D − (D − 1)m < 0`, so `def_d = 0`.
+  *Lean (spiked complete, `scratch/42k/Spike.lean`):* the `d = 3` Lean's counts
+  (`hasPencilRealization_of_ncard_le_two`), at `D`. One edge: at least the `D − 1` independent rows
+  of a nonzero hinge (`lem:edge-rows-independent`), at most the target
+  (`lem:relative-deficiency-rank-bound`), with `def_d = 1`. At `m ≥ 2`: `def_d = 0` as the
+  subgraph of two of the edges has it (`Graph.isKDof_zero_of_parallel_pair`) and adding edges on
+  the same bodies does not raise it; the rank `D` is the chapter's (`lem:theorem-55-base`).
+  *Remedies:* the prose to the Lean, a Lean helper (the motions of one edge, of codimension
+  `D − 1`) so that the Lean follows the chapter, or keep both.
+- **R-19** · `lem:pencil-d-nonsimple-case` (`hasGradedPencilRealization_of_not_simple`, 42k recon,
+  to land in `Grade/Reduction.lean`) · **open**.
+  *Chapter:* every edge joining `u` and `w` other than `e` gets `C_{B₂}`; the motions of `G` are
+  those of `G/H` with `S(w) = S(u)`, of codimension `D` in them, so the rank is that of `G/H` plus
+  `D`. Its closing remark cites the block-triangular count (KT eqs. (6.3)–(6.5),
+  `lem:rigidityRows-splice-rank-add`) only at `d = 3`.
+  *Lean (spiked complete):* the `d = 3` Lean's route (`hasPencilRealization_of_not_simple`), at
+  `D`. `e ↦ C_{B₁}`, `f ↦ C_{B₂}`, and the other edges joining `u` and `w`, loops at `u` in `G/H`,
+  keep their hinges there. The rank is at least `D` (the rows of `e` and `f`,
+  `lem:theorem-55-base`) plus that of `G/H`, by the splice
+  (`BodyHingeFramework.le_finrank_span_rigidityRows_of_splice`, at every grade), and at most the
+  target (`lem:relative-deficiency-rank-bound`).
+  *Remedies:* the prose to the Lean (the splice at every `D`, which also widens the remark), a
+  Lean helper (the motions of `G` as those of `G/H` with `S(w) = S(u)`), or keep both.
 
 ## 3. The cleanup (not yet planned)
 

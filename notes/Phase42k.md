@@ -1,37 +1,32 @@
 # Phase 42k — PD-REDUCTION: Phase 39's reduction in every dimension (work log)
 
-**Status:** in progress, opened 2026-11-04 at the PI's word ("All 8 nodes as written
-(Recommended)", design doc §1), a sub-phase of Phase 42 that takes its layer PD-REDUCTION whole.
-Forward mode, the Lean under `/coordinate-phase`: the eight red nodes of
-`blueprint/src/chapter/pencil-d.tex`'s `sec:pencil-d-reduction`, three on linear algebra
-(`lem:pencil-d-two-pencil-extension`, `lem:pencil-d-projective-transport`,
-`lem:pencil-d-cut-reposition`), four cases (`lem:pencil-d-loop-case`, `lem:pencil-d-base-case`,
-`lem:pencil-d-cut-case`, `lem:pencil-d-nonsimple-case`) and the theorem
-`thm:pencil-d-realization-theorem`, on the `Pencil/Grade/` carrier, Phase 39's
-`Graph.pencil_reduction` and 42j's distinct statement. The open's consistency read found every
-proof routing through the argument its statement claims and every outside dependency green
-(*Decisions made*); its questions for the recon are under *Blockers*. Next (*Hand-off*): the
-pre-build recon of the eight nodes.
+**Status:** in progress, opened 2026-11-04 at the PI's word ("All 8 nodes as written (Recommended)",
+design doc §1), a sub-phase of Phase 42 that takes its layer PD-REDUCTION whole. Forward mode, the
+Lean under `/coordinate-phase`: the eight red nodes of `blueprint/src/chapter/pencil-d.tex`'s
+`sec:pencil-d-reduction`, three on linear algebra (`lem:pencil-d-two-pencil-extension`,
+`lem:pencil-d-projective-transport`, `lem:pencil-d-cut-reposition`), four cases
+(`lem:pencil-d-loop-case`, `lem:pencil-d-base-case`, `lem:pencil-d-cut-case`,
+`lem:pencil-d-nonsimple-case`) and the theorem `thm:pencil-d-realization-theorem`, on the
+`Pencil/Grade/` carrier, Phase 39's `Graph.pencil_reduction` and 42j's distinct statement. The
+pre-build recon spiked all eight complete, with no `sorry`, and pinned three builds (*Hand-off*).
+Next: build 1, `Grade/TwoPencil.lean`, the three linear-algebra nodes.
 
 ## Current state
 
-**Next: the pre-build recon** (*Hand-off*). Opened; no Lean yet. The eight targets, leaf-first:
-- *The linear algebra.* `lem:pencil-d-two-pencil-extension` rests on
-  `def:genuine-hinge-realization`, `def:extensor-through-flat`, `def:extensor` and
-  `lem:decomposable-extensor-span-unique`;
-  `lem:pencil-d-projective-transport` on `def:pencil-d-realization`, `def:induced-screw-map` and
-  `lem:screw-map-rows`; `lem:pencil-d-cut-reposition` on no node (no `\uses`: a choice of bases).
-- *The cases.* The loop case on two-pencil (1); the base case on two-pencil (1) and (3) and
-  `lem:theorem-55-base`; the cut case on the three linear-algebra nodes, `lem:block-rank-cut`,
-  `lem:cut-edge-decomposition` (1) and `lem:relative-deficiency-rank-bound`; the nonsimple case on
-  two-pencil (1) and (3), `lem:theorem-55-base`, `def:rigid-contraction`, `lem:reduction-measure`
-  and `lem:pencil-contraction-deficiency`.
-- *The theorem*, on `thm:pencil-reduction` (`Graph.pencil_reduction`), the four cases and
-  `lem:pencil-d-distinct-statement` (42j).
+**Next: build 1, `Grade/TwoPencil.lean`** (*Hand-off*). No Lean has landed yet. The pre-build
+recon (design pass, 2026-11-04) spiked the whole layer on the landed carrier, with no `sorry`:
+`scratch/42k/Spike.lean` (gitignored, 1167 lines; `lake lean` clean with no warning, the three
+standard axioms at the nine declarations checked, the `unusedArguments` and `docBlame` lints
+clean). Its sections are the three builds, in order, each a mechanical transcription:
+- the linear algebra (build 1): `C_B`, the two-pencil lemma's three parts, the transport and the
+  reposition, with their helpers;
+- the loop, base and cut-edge cases (build 2);
+- the nonsimple case and the theorem (build 3).
 
-Every dependency outside the eight is green. Outside them only `cor:pencil-d-conditioned-pair`
-(PD-HEAD) uses one, the theorem; `lem:pencil-d-lift-small`'s proof cites the base case's one-edge
-count without a `\uses` edge. The chapter is the lemma index (forward mode).
+Two `example`s at its end check, at `d = 4` over `ℚ`, that the adjacent-distinct form is
+satisfiable on one body and on two bodies with one edge (by the base case). The chapter is the
+lemma index (forward mode). The pinned signatures, the files and the build order are under
+*Hand-off*; the recon's verdicts under *Decisions made*.
 
 ## Architectural choices made up front
 
@@ -40,91 +35,94 @@ count without a `\uses` edge. The chapter is the lemma index (forward mode).
 - **Encoding** as 42b–42j: grade `k = d − 1`, so the targets are `HasGradedPencilRealization K
   (m + 1) (m + 2)` and `HasGradedDistinctPencilRealization K (m + 1) (m + 2)` at `m = d − 2`, with
   `d ≥ 3` as `1 ≤ m` and the deficiency at `n = m + 2`, `bodyBarDim (m + 2) = screwDim (m + 1)`,
-  the form of 42j's `Graph.hasGradedDistinctPencilRealization_of_twoEdgeConnected`.
+  the form of 42j's `Graph.hasGradedDistinctPencilRealization_of_twoEdgeConnected`. The linear
+  algebra and the loop case are at every grade `k` (and the loop at every `n`).
 - **What 42j hands on** (`notes/Phase42j.md` *Hand-off*): that distinct statement, at `1 ≤ m`, for
   the simple 2-edge-connected graphs on at least three bodies, the theorem's third case.
 - **The standing rule** (design doc §3): the recon and every build add a row to
   `notes/Cleanup42.md` §2 where their Lean departs from the chapter's proof, in the same commit
-  (R-9 to R-12 and R-14 to R-17 open; R-7, R-8 and R-13 aligned).
+  (R-9 to R-12 and R-14 to R-19 open; R-7, R-8 and R-13 aligned; R-18 and R-19 are 42k's recon's).
 
 ## Lemma checklist
 
-- [ ] **Pre-build recon**: the eight spiked against Phase 39's `d = 3` Lean and the landed carrier,
-  exact Lean signatures, their files, and the questions under *Blockers*.
-- [ ] `lem:pencil-d-two-pencil-extension`, parts (1) to (3).
-- [ ] `lem:pencil-d-projective-transport`.
-- [ ] `lem:pencil-d-cut-reposition`.
-- [ ] `lem:pencil-d-loop-case`.
-- [ ] `lem:pencil-d-base-case`, both forms.
-- [ ] `lem:pencil-d-cut-case`, both forms.
-- [ ] `lem:pencil-d-nonsimple-case`.
-- [ ] `thm:pencil-d-realization-theorem`, by `Graph.pencil_reduction`.
+- [x] **Pre-build recon** (design pass): all eight spiked complete; *Decisions made*.
+- [ ] `lem:pencil-d-two-pencil-extension`, parts (1) to (3), build 1, `Grade/TwoPencil.lean`.
+- [ ] `lem:pencil-d-projective-transport`, build 1, same file.
+- [ ] `lem:pencil-d-cut-reposition`, build 1, same file.
+- [ ] `lem:pencil-d-loop-case`, build 2, `Grade/Arms.lean`.
+- [ ] `lem:pencil-d-base-case`, both forms, build 2, same file.
+- [ ] `lem:pencil-d-cut-case`, both forms, build 2, same file.
+- [ ] `lem:pencil-d-nonsimple-case`, build 3, `Grade/Reduction.lean`.
+- [ ] `thm:pencil-d-realization-theorem`, by `Graph.pencil_reduction`, build 3, same file.
 - [ ] **Close** 42k, an intermediate sub-phase close that ends PD-REDUCTION (`PHASE-BOUNDARIES.md`).
 
 ## Blockers / open questions
 
-- None blocking the recon. Its questions, from the open's consistency read:
-  - **The `d = 3` Lean, file by file**, all at grade 2 with points (`BodyHingeFramework K 2`,
-    `Fin 4`), where the targets are at grade `m + 1` with planes (`HasPencilPlaneRealization`).
-    `Pencil/Arms.lean`: the loop case (`hasPencilRealization_of_isLoopAt`), the transport
-    (`hasPencilPanelRealization_mapExtensor_screwEquivOfLinearEquiv`), the reposition
-    (`exists_reposition_cross_incidences`) and the cut case
-    (`hasPencilRealization_of_not_twoEdgeConnected{,_core}`,
-    `hasDistinctPencilRealization_of_not_twoEdgeConnected`, the glue
-    `exists_hasPencilPanelRealization_glue`). Its lines 352–604
-    (`exists_reposition_cross_incidences_avoiding` and three dimension lemmas) serve only the
-    conditioned pair's generic cut case (`Pair.lean`). `ArmsAssembly.lean`: the base case
-    (`hasPencilRealization_of_ncard_le_two`). `X0.lean`: the nonsimple case
-    (`hasPencilRealization_of_not_simple`, lines 68–335) and the three-way split the theorem's
-    proof follows (`pencilPair_of_X0`). `Statement.lean`: the two-pencil lemma and its converse at
-    `Fin 4`, by cross-incidences (`exists_extensor_two_pencils{,_iff}`). `Pair2.lean`: the
-    reduction's assembly (`pencilPair_loop_base_cut`, `pencilPair_of_arms`). Which transcribe to
-    grade `k` with planes, and which are new.
-  - **The two-pencil lemma.** The cases use only parts (1) and (3): the loop and cut cases part
-    (1), the base and nonsimple cases both. Part (2), the converse, has no consumer among the eight
-    but is in the node as stated. Landed tools at every grade:
-    `span_range_eq_of_extensor_eq_grade` (`Grade/Realization.lean`, a nonzero extensor determines
-    its span), `exists_extensor_in_two_panels_grade` (`AlgebraicInduction/PanelLayer.lean`); `C_B`
-    as the extensor of a basis of `dotPerp B`.
-  - **The transport and the reposition.** At every grade:
-    `BodyHingeFramework.screwEquivOfLinearEquiv`,
-    `BodyHingeFramework.finrank_span_rigidityRows_mapExtensor` and
-    `exists_contragredient_linearEquiv` (`Arms.lean`, at every `n`); the plane goes to its image
-    under `g`. The reposition needs no contragredient, only two independent pairs extended to
-    bases. FRICTION's open `contragredientEquiv` (`Meet.lean`) rides with any commit that edits
-    `Meet.lean`.
-  - **Where the chapter's route is not the `d = 3` Lean's** (the standing rule decides the rows).
-    The base case's one-edge rank: the `d = 3` Lean counts `D − 1` independent rows
-    (`exists_independent_rigidityRows_of_edge`) under the deficiency bound, the chapter counts
-    motions. Its adjacent-distinct form: at `d = 3` it comes from the generic conjunct
-    (`pencilPair_of_ncard_le_two`, `Pair.lean`), with no direct Lean; the chapter builds it. The
-    nonsimple case: the `d = 3` Lean adds the rows by the splice
-    (`le_finrank_span_rigidityRows_of_splice`) under the deficiency bound and keeps the other
-    parallel edges' hinges from `G/H`; the chapter counts motions and gives them `C_{B_2}`.
-  - **The theorem's form.** `Graph.pencil_reduction` at `n = m + 2` (`hD` by the public
-    `Graph.six_le_bodyBarDim`, `BodyBar/Framework.lean`) or at `n = 3`: its property is
-    arbitrary, `n` enters only the proper rigid subgraph, and the proof reads neither that nor the
-    degree-two body, so `hcontract` and `hsplit` are one function, as in
-    `pencil_realization_theorem_of_X0`. The property (rank, and adjacent-distinct when simple), as
-    `cor:pencil-d-conditioned-pair` (PD-HEAD) will consume it.
-  - **Files.** New `Grade/` file(s), at the recon's choice. A deferral naming a file a build edits
-    rides with it (design doc §3).
+- None. The open's questions for the recon are settled (*Decisions made*, *The recon's verdicts*):
+  no node's statement is false against the carrier, each node's Lean is at least as strong as its
+  statement, and no choice waits on the PI. Two cases keep the `d = 3` Lean's rank counts where
+  the chapter counts motions (`notes/Cleanup42.md` R-18, R-19, open for the cleanup).
 
 ## Hand-off / next phase
 
-The next concrete commit is the **pre-build recon** (a `recon-opus` dispatch, read-only or a
-design-pass commit at the coordinator's choice), as `fe5baf0f` (42h), `3ab48a47` (42i) and
-`661f0382` (42j) were. It spikes the eight against Phase 39's `d = 3` Lean (*Blockers*) and the
-landed carrier (`Pencil/Grade/Realization.lean`, `Collineation.lean`, `Coverage.lean`), pins the
-eight Lean signatures and the file plan, each spiked under `lake lean`, settles *Blockers*, and
-records the signatures here. Then build leaf-first, roughly 4–8 commits by the coordinator's
-estimate in the option the PI chose. Each build adds its node's `\lean{}` and `\leanok`.
-- **The standing rule** (*Architectural choices*): a row in `notes/Cleanup42.md` §2 per departure.
-- **Deferred, where it lands** (design doc §3; FRICTION's `[open]` entries): the home debts of
-  42b–42i are unchanged, each riding with the next commit that edits its target file
-  (`notes/Phase42i.md` *Hand-off* lists 42i's; 42j added none).
+The next concrete commit is **build 1**: a new `Pencil/Grade/TwoPencil.lean`, importing
+`Grade/Realization`, transcribed from `scratch/42k/Spike.lean` (its sections *Helpers* to
+*`lem:pencil-d-cut-reposition`*, and `exists_two_planes_of_mem`; about 300 lines), with its line in
+`CombinatorialRigidity.lean` and the `\lean{}` and `\leanok` of three nodes. All in
+`CombinatorialRigidity.Molecular`, at `{k : ℕ}` with `K^(k+2)` as `Fin (k + 2) → K`:
+- `lem:pencil-d-two-pencil-extension` pins six names. `noncomputable def perpExtensor
+  (B : Submodule K (Fin (k + 2) → K)) : ScrewSpace K k` is `C_B`, the extensor of a basis of
+  `dotPerp B` (`0` unless that has dimension `k`); `exists_extensor_eq_perpExtensor (hB : finrank B
+  = 2) : ∃ p, LinearIndependent K p ∧ span (range p) = dotPerp B ∧ (perpExtensor B).val = extensor
+  p`. (1) `perpExtensor_two_pencils (hB) (hu : bu ∈ B) (hv : bv ∈ B) (hBu : B ≤ Pu) (hBv : B ≤ Pv)
+  : perpExtensor B ≠ 0 ∧ ExtensorInPanel _ bu ∧ ExtensorInPanel _ bv ∧ ExtensorThroughSubspace _
+  (dotPerp Pu) ∧ ExtensorThroughSubspace _ (dotPerp Pv)`. (2) `exists_eq_smul_perpExtensor (hC : C
+  ≠ 0)` and the four incidences of `C` `: ∃ B, finrank B = 2 ∧ bu ∈ B ∧ bv ∈ B ∧ B ≤ Pu ∧ B ≤ Pv ∧
+  ∃ c, c ≠ 0 ∧ C = c • perpExtensor B`; `exists_extensor_two_pencils_iff_grade (hbu : bu ≠ 0) : (∃
+  C, C ≠ 0 ∧` the four incidences`) ↔ bu ∈ Pu ⊓ Pv ∧ bv ∈ Pu ⊓ Pv ∧ 2 ≤ finrank ↥(Pu ⊓ Pv)`. (3)
+  `linearIndependent_perpExtensor_pair [NeZero k] (hB) (hB' : finrank B' = 2) (hne : B ≠ B') :
+  LinearIndependent K ![perpExtensor B, perpExtensor B']`.
+- `lem:pencil-d-projective-transport` pins `hasPencilPlaneRealization_mapExtensor_screwEquivOfLinearEquiv
+  (g h : (Fin (k + 2) → K) ≃ₗ[K] _) (hgh : ∀ x y, h x ⬝ᵥ g y = x ⬝ᵥ y) (hr :
+  HasPencilPlaneRealization G F normal plane)`, concluding the realization `(F.mapExtensor
+  (screwEquivOfLinearEquiv h), g ∘ normal, (plane ·).map g)`, the equal `finrank` of the rows, and
+  `∀ u v, LinearIndependent K ![normal u, normal v] → LinearIndependent K ![g (normal u), g (normal
+  v)]`.
+- `lem:pencil-d-cut-reposition` pins `exists_reposition_planes (hbu : bu ≠ 0) (hbv : bv ≠ 0) (hPu :
+  finrank Pu = 3) (hPv : finrank Pv = 3) (hu : bu ∈ Pu) (hv : bv ∈ Pv) : ∃ g, LinearIndependent K
+  ![bu, g bv] ∧ bu ∈ Pu ⊓ Pv.map g ∧ g bv ∈ Pu ⊓ Pv.map g`.
+- Unpinned helpers: `finrank_span_pair_eq_two` and `exists_mem_linearIndependent_pair` (on `Fin n →
+  K`; mirror candidates for the friction review), `ExtensorInPanel.smul`,
+  `exists_smul_extensor_eq_of_mem_span_range_grade` (`Meet.lean`'s
+  `exists_smul_extensor_eq_of_mem_span_range` at every `j`: a FRICTION home debt for the next
+  commit that edits `Meet.lean`), `dotPerp_map_eq`, `exists_two_planes_of_mem`.
+
+Then, each a transcription of its section of the spike:
+- **Build 2**, `Grade/Arms.lean` (imports `Grade/TwoPencil`; about 500 lines, splittable into the
+  loop and base cases, then the cut). `hasGradedPencilRealization_of_isLoopAt {k n} (hloop :
+  G.IsLoopAt e v) (hrec : HasGradedPencilRealization K k n (G ＼ {e})) : HasGradedPencilRealization
+  K k n G`. At `[Finite α] [Finite β] {m}`, to `HasGraded(Distinct)PencilRealization K (m + 1) (m +
+  2) G`: `hasGradedPencilRealization_of_ncard_le_two (hloop : G.Loopless) (hne : V(G).Nonempty)
+  (hV2 : V(G).ncard ≤ 2)`, `hasGradedDistinctPencilRealization_of_ncard_le_two (hS : G.Simple) (hne)
+  (hV2)`; `hasGradedPencilRealization_of_cutEdges (hssub : V₁ ⊂ V(G)) (hne : V₁.Nonempty) (hcut :
+  (G.cutEdges V₁).ncard ≤ 1) (h₁ : … (G.induce V₁)) (h₂ : … (G.induce (V(G) \ V₁)))` and its
+  `Distinct` twin, both from the core `exists_hasPencilPlaneRealization_of_cutEdges` and the glue
+  `exists_hasPencilPlaneRealization_glue` (at `k`, with `hk : 1 ≤ k`, `hn`).
+- **Build 3**, `Grade/Reduction.lean` (imports `Grade/Arms` and `Grade/Coverage`; about 310
+  lines). `hasGradedPencilRealization_of_not_simple (G) (hloop : G.Loopless) (hV : 3 ≤ V(G).ncard)
+  (hs : ¬ G.Simple) (hIH : ∀ G', V(G').Nonempty → V(G').ncard < V(G).ncard →
+  HasGradedPencilRealization K (m + 1) (m + 2) G')`, and `Graph.graded_pencil_realization_theorem
+  [Infinite K] [Finite α] [Finite β] {m} (hm : 1 ≤ m) {G} (hne : V(G).Nonempty) :
+  HasGradedPencilRealization K (m + 1) (m + 2) G ∧ (G.Simple → HasGradedDistinctPencilRealization K
+  (m + 1) (m + 2) G)`. Then the close.
+- **The standing rule**: builds 2 and 3 land R-18 and R-19's Lean as recorded; a build that aligns
+  one sets its status.
+- **Deferred, where it lands** (design doc §3; FRICTION's `[open]` entries): no build edits a file
+  that carries a home debt of 42b–42i (`notes/Phase42i.md` *Hand-off*), so none rides; 42j added
+  none, and build 1 adds the `Meet.lean` one above.
 - **After 42k:** PD-HEAD (`-nondegenerate`, `-lift`, `-generic`; 21 red nodes, ending in the
-  headline `cor:pencil-d-conditioned-pair`) opens at the PI's word (design doc §3).
+  headline `cor:pencil-d-conditioned-pair`, which takes its first two claims from the theorem's two
+  conjuncts) opens at the PI's word (design doc §3).
 
 ## Decisions made during this phase
 
@@ -147,3 +145,37 @@ estimate in the option the PI chose. Each build adds its node's `\lean{}` and `\
   `h(Π^⊥) = (gΠ)^⊥` by dimension. Base: one edge, rank `D − 1`, deficiency 1; `m ≥ 2` edges,
   `D − (D − 1)m < 0`, rank `D`. Cut: `tgt(G) = tgt(G₁) + tgt(G₂) + (D − 1)c`. Nonsimple: the
   motions are `G/H`'s with `S(w) = S(u)`, codimension `D`, so rank `tgt(G)`.
+
+### The recon's verdicts (2026-11-04, design pass)
+
+- **The `d = 3` Lean, file by file.** Transcribed to grade `k` with planes: from `Arms.lean` the
+  loop case, the transport (roles exchanged: `g` on the normals and planes, its contragredient `h`
+  on the hinges, with the new `dotPerp_map_eq`), the reposition (no contragredient) and the cut
+  case's glue and core (lines 352–604 unused, as the open found); from `ArmsAssembly.lean` the bare
+  base case; from `X0.lean` the nonsimple case (lines 68–335) and the three-way split
+  (`pencilPair_of_X0`); from `Pair2.lean` the reduction's assembly. New: `C_B` and the two-pencil
+  lemma (`Statement.lean`'s is at `Fin 4`, by cross-incidences) and the base case's
+  adjacent-distinct form (at `d = 3` from the generic conjunct).
+- **The two-pencil lemma** follows the chapter: `C_B` is literally the extensor of a basis of
+  `B^⊥`; (2)'s multiple is that of two bases of one subspace, by a graded
+  `exists_smul_extensor_eq_of_mem_span_range` (the top exterior power is a line), and (3) is (2)'s
+  span argument. Of the landed tools, `span_range_eq_of_extensor_eq_grade` carries the span steps
+  of (2) and (3); `exists_extensor_in_two_panels_grade` carries none of (1)–(3), as it controls no
+  subspace, and is unused. The `d = 3` `hasPencilPanelRealization_mapExtensor_screwEquivOfLinearEquiv`
+  is at grade 2 with points only; `BodyHingeFramework.screwEquivOfLinearEquiv`,
+  `finrank_span_rigidityRows_mapExtensor` and `exists_contragredient_linearEquiv` are at every grade.
+- **The routes** (the standing rule): two departures, both the `d = 3` Lean's rank counts where the
+  chapter counts motions: the base case's one-edge rank and `m ≥ 2` deficiency
+  (`notes/Cleanup42.md` R-18) and the nonsimple case's rank by the splice, with the other parallel
+  edges keeping their hinges in `G/H` (R-19). Every other proof is the chapter's: the transport's
+  "onto" by dimension, the base case's adjacent-distinct form (`b_u = e₀`, `b_v = e₁`, one
+  three-dimensional `Π`, `B = span {e₀, e₁}`), the cut case's counts (`lem:block-rank-cut`,
+  `lem:cut-edge-decomposition` (1), `lem:relative-deficiency-rank-bound`), the loop's zero rows.
+- **The theorem's form:** `Graph.pencil_reduction` at `n = m + 2` (`hD` from
+  `Graph.six_le_bodyBarDim`, `3 ≤ m + 2`), for `P G := HasGradedPencilRealization K (m + 1) (m + 2)
+  G ∧ (G.Simple → HasGradedDistinctPencilRealization K (m + 1) (m + 2) G)`; `hcut`, `hcontract` and
+  `hsplit` are one function (cut, distinct statement, nonsimple), as in `pencilPair_of_X0`.
+  `cor:pencil-d-conditioned-pair` takes its first two claims as the two conjuncts.
+- **Strength:** no pin is weaker than its node. The cases hold at every `m` (`d ≥ 2`), the linear
+  algebra and the loop at every grade, without the nodes' unused nonzero or dimension hypotheses
+  (part (3) takes `k ≥ 1`); only the theorem takes `1 ≤ m`, for `D ≥ 6` and the distinct statement.
