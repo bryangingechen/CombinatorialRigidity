@@ -8,8 +8,8 @@ formalization note naming the Lean's route for each of the 17 kept parts (K), wi
 slips round 1 moved here; then one `\uses` sweep over the chapter's missing edges (60 at the open).
 Blueprint and notes only: no Lean, no pin, no `\leanok`. Eleven tasks, one commit each: the open,
 eight slices by layer, the sweep and the close. 17 rows end `aligned` and 17 `kept`. Tasks 2
-to 9 landed (17 `aligned`, 17 `kept`; none `open`). **Next concrete task:** task 10, the `\uses`
-sweep (the 52 *missing* edges of `--chapter pencil-d` at task 9).
+to 10 landed (17 `aligned`, 17 `kept`; none `open`; the sweep added all 52 *missing* edges, none left).
+**Next concrete task:** task 11, the close (docs only).
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -25,14 +25,17 @@ the PI answers in an entry that starts `**PI, <date>:**`.
 
 ## Current state
 
-**Task 9 landed** (this commit): R-33, R-34 `aligned`; R-31, R-53 `kept`, with one formalization
-note after the good ear's proof (seventeen in the chapter, all the round plans). Every slice has
-landed and the ledger has no `open` row; task 10, the sweep, is next. Task 9's gates: G4's
-`verify.sh` has 9 `WARNING:` lines, task 8's nine, `print.log` rebuilt with 0 `LaTeX Warning`; G5's
-after-dump, `scratch/cleanup-42/round2/task9/dump-after.txt`, is byte-identical to task 8's (no
-`\uses` change; `1893 edges de7615290e372b6b`, `lean_decls` `28b0db9377d77782`) and serves as task
-10's parent dump; `--chapter pencil-d`: 52 *missing*, 645 *implied*, 17 *unbacked transitive*, 54
-with no Lean basis, as at task 8.
+**Task 10 landed** (this commit): the sweep added all 52 *missing* edges of `--chapter pencil-d`
+(on 33 nodes) to the `\uses` of the statement or proof the script named, none closing a cycle, so
+none left; two definitions with no proof environment (`def:pencil-d-ear-data`,
+`def:pencil-d-lift-attains`) took their proof-class edges in their own `\uses`, and two proofs
+(`lem:screw-embedding-rank`, `lem:pencil-d-polygon-normal`) got a new `\uses`. Gates: G3
+`lint.sh` green; G4 `verify.sh` green, 9 `WARNING:` lines, `print.log` rebuilt (0 `LaTeX Warning`);
+G5 after-dump `scratch/cleanup-42/round2/task10/dump-after.txt` (`1904 edges fe983ba0f4af8540`,
+`lean_decls` `28b0db9377d77782`), both consistency checks OK; its diff to task 9's is the 52 edges'
+drawn edges and the transitive reductions they induce; G7: `--chapter pencil-d` has 0 *missing*,
+645 *implied*, 17 *unbacked transitive*, 54 with no Lean basis, 31 dead pins. Task 11, the close,
+is next.
 
 **Verified at the open** (2026-11-05, at `6eb7a2e6`):
 - **The ledger** (`notes/Cleanup42.md` §2): 54 rows, 34 `open` (R-3 to R-5, R-9 to R-12, R-14 to
@@ -202,7 +205,7 @@ statement, (T2) and other parts all in task 8).
 
 **The sweep and the close.**
 
-- [ ] **10. The `\uses` sweep.** Every *missing* edge of `--chapter pencil-d` at its parent (60 at
+- [x] **10. The `\uses` sweep** (this commit; 52 edges, no cycle left, 0 *missing* after). Every *missing* edge of `--chapter pencil-d` at its parent (60 at
   the open on 31 nodes, round 1 task 2's `lem:pencil-d-point-configuration` →
   `def:pencil-nondegenerate` among them), as the standing rule says; G7. *Expected:* the parent's
   report, listed before editing.
@@ -256,26 +259,15 @@ statement, (T2) and other parts all in task 8).
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 10, the `\uses` sweep: the 52 *missing* edges that `python3
-scripts/blueprint-deps.py --chapter pencil-d` reports at task 9 (`lem:pencil-d-point-configuration`
-→ `def:pencil-nondegenerate` among them), each into the statement's or the proof's `\uses` as the
-standing rule says, an edge closing a cycle left with its reason; G7. One Opus dispatch. Its G5
-parent dump is task 9's after-dump (`scratch/cleanup-42/round2/task9/dump-after.txt`, byte-identical
-to task 8's), G4 holds `verify.sh` to 9 `WARNING:` lines, and its *Expected* is the parent's
-*missing* list, written before editing; if the sweep does not fit one dispatch, the standing
-rule's split applies (*One task, one dispatch*).
+**Next concrete task:** task 11, the close (docs only): `notes/Cleanup42.md` §2's `round 2 task <N>`
+replaced by shas; the tally re-counted (54 rows: 23 `aligned`, 17 `kept`, 14 `no departure`, none
+`open`); `--chapter pencil-d` (99 nodes, 236 pins, 0 *missing* after task 10); G1, G2.
 
 ## Decisions made during this round
 
-- **The log** (the open): `notes/Phase42-align.md`, a log per round as CLEANUP-40's
-  (`Phase40-cleanup.md`, `-factor`, `-exposition`, `-simplify`, `-docs`).
-- **The slicing** (the open): the PI's proposal as written (`notes/Cleanup42.md` §1), 11 tasks.
-  42m's three slices go by node group, about two proof rewrites each: the small cases, the cut edge
-  and no planar-rigid set; the template cases, whose (T1) and (T2) rows span three nodes and land
-  together; the good ear and the ear's condition. 42l stays whole: six rows, but two rewrites and
-  four one-clause statements.
-- **The standing rules' decisions** (the open): the statuses, the K note's shape, the sweep and
-  the gates, each under *Scope and standing rules*.
+- **The log and slicing** (the open): this log, as CLEANUP-40's; 11 tasks, the PI's proposal
+  (`notes/Cleanup42.md` §1); 42m's slices go by node group; 42l whole.
+- **The standing rules' decisions** (the open): statuses, K note, sweep, gates, under *Scope*.
 - **R-33's "as in"** (task 9): `-ear-extend` now takes `W₀`, `x` satisfying (i) to (v) of the good
   ear, its pin's `Graph.IsPencilGoodEar`, not "as in" it, so that the dropped simplicity does not
   return through the good ear's standing hypotheses; `-ear-free` keeps "as in" with `G` simple.
