@@ -110,6 +110,36 @@ moment you resolve the entry) is what makes the sweep a pure
 to be re-derived by re-reading entries later.
 
 ## Open
+### [open] 42k build 2: the one-edge count and the two-body edge lemma sit in `Pencil/Grade/Arms.lean`
+- **Where it bit:** Phase 42k, build 2 (`lem:pencil-d-base-case`), `Pencil/Grade/Arms.lean`:
+  `finrank_span_rigidityRows_of_single_edge` (a framework on two bodies and one edge with a
+  nonzero hinge has rank `D − 1`, its target) is about `BodyHingeFramework` rows and the
+  deficiency, beside `BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le`
+  (`AlgebraicInduction/GenericityDevice.lean`); the `d = 3` base case
+  (`hasPencilRealization_of_ncard_le_two`, `Pencil/ArmsAssembly.lean`) proves its `m = 1` case
+  inline. `exists_pair_of_ncard_le_two_of_edgeSet_nonempty` (a loopless graph with an edge and at
+  most two vertices has exactly two, joined by every edge) is a fact about `Graph` alone.
+- **Friction:** none in the proofs; both sit downstream because a declaration added to
+  `GenericityDevice.lean` rebuilds most of `Molecular/`.
+- **Proposed fix:** the count beside `finrank_span_rigidityRows_add_deficiency_le`, stated at `k`
+  with `hn : bodyBarDim n = screwDim k`, and `ArmsAssembly.lean`'s inline count replaced by it,
+  with the next commit that edits `GenericityDevice.lean`; the graph lemma to a mirror of
+  `Mathlib/Combinatorics/Graph/Simple.lean` (mirror candidate), at a cleanup round.
+- **Status:** open (42k's deferral, `notes/Phase42k.md` *Hand-off*).
+
+### [idiom] Three snags transcribing 42k's base and cut cases to `Grade/Arms.lean`
+- **Where it bit:** Phase 42k's recon spike of the base and cut cases (build 2).
+- **Friction:** (1) the glue's goal `finrank K ↥((fun v => if v ∈ V₁ then plane₁ v else plane₂ v)
+  v) = 3`: `simp only [h, ↓reduceIte]` reports `h` unused and `split_ifs` leaves the `if`, as the
+  `ite` sits under the dependent coercion `↥`. (2) `(hlinks f hf).eq (hlinks e he)` fails with
+  "Invalid field notation … has type `G.2 f x y`": the link type from an `obtain` is unfolded to the
+  structure projection. (3) `omega` missed `hH0.deficiency_eq` after `set H := G ↾ {e, f}`, whose
+  `H` atom differs from the `G ↾ {e, f}` in a lemma's conclusion (TACTICS-QUIRKS § 43).
+- **Fix:** (1) `beta_reduce`, then `rw [ite_eq_left h]` / `rw [ite_eq_right h]`; (2) the class
+  field, `hS.eq_of_isLink (hlinks f hf) (hlinks e he)`; (3) restate the fact at the literal term,
+  `have : (G ↾ ({e, f} : Set β)).deficiency (m + 2) = 0 := hH0.deficiency_eq`.
+- **Status:** idiom.
+
 ### [open] 42k's home debts: three helpers of `Pencil/Grade/TwoPencil.lean` belong upstream of it
 - **Where it bit:** Phase 42k, build 1 (`lem:pencil-d-two-pencil-extension`,
   `lem:pencil-d-projective-transport`), `Pencil/Grade/TwoPencil.lean`:

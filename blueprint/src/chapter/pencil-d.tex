@@ -4332,12 +4332,15 @@ $K^{d+1}$ chosen to meet it (\cref{lem:pencil-d-cut-reposition}).
 
 \begin{lemma}[The loop case, in every dimension]
   \label{lem:pencil-d-loop-case}
+  \lean{CombinatorialRigidity.Molecular.hasGradedPencilRealization_of_isLoopAt}
+  \leanok
   \uses{def:pencil-d-rank-hypothesis}
   Let $d \ge 3$, and let $e$ be a loop of $G$ at a body $v$. If $G - e$
   has a pencil realization at the deficiency rank in dimension $d$
   (\cref{def:pencil-d-rank-hypothesis}), then so does $G$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-d-two-pencil-extension, def:hinge-constraint,
         def:D-deficiency}
   Keep the realization of $G - e$, with normals $b$ and subspaces $\Pi$.
@@ -4358,6 +4361,9 @@ $K^{d+1}$ chosen to meet it (\cref{lem:pencil-d-cut-reposition}).
 
 \begin{lemma}[At most two bodies, in every dimension]
   \label{lem:pencil-d-base-case}
+  \lean{CombinatorialRigidity.Molecular.hasGradedPencilRealization_of_ncard_le_two,
+        CombinatorialRigidity.Molecular.hasGradedDistinctPencilRealization_of_ncard_le_two}
+  \leanok
   \uses{def:pencil-d-rank-hypothesis, def:pencil-d-distinct-motive}
   Let $d \ge 3$. Every loopless multigraph with one or two bodies has a
   pencil realization at the deficiency rank in dimension $d$
@@ -4365,6 +4371,7 @@ $K^{d+1}$ chosen to meet it (\cref{lem:pencil-d-cut-reposition}).
   adjacent-distinct one (\cref{def:pencil-d-distinct-motive}).
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-d-two-pencil-extension, lem:theorem-55-base,
         def:rigidity-matrix, def:hinge-constraint, def:D-deficiency}
   Let $D = \binom{d+1}{2}$. We read ranks off the motions: on a set $U$
@@ -4416,6 +4423,9 @@ $K^{d+1}$ chosen to meet it (\cref{lem:pencil-d-cut-reposition}).
 
 \begin{lemma}[The cut-edge case, in every dimension]
   \label{lem:pencil-d-cut-case}
+  \lean{CombinatorialRigidity.Molecular.hasGradedPencilRealization_of_cutEdges,
+        CombinatorialRigidity.Molecular.hasGradedDistinctPencilRealization_of_cutEdges}
+  \leanok
   \uses{def:pencil-d-rank-hypothesis, def:pencil-d-distinct-motive,
         def:cut-edges-2ec}
   Let $d \ge 3$, and let $G$ be a multigraph that is not
@@ -4427,6 +4437,7 @@ $K^{d+1}$ chosen to meet it (\cref{lem:pencil-d-cut-reposition}).
   dimension $d$ (\cref{def:pencil-d-distinct-motive}).
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-d-cut-reposition, lem:pencil-d-projective-transport,
         lem:pencil-d-two-pencil-extension, lem:block-rank-cut,
         lem:cut-edge-decomposition, lem:relative-deficiency-rank-bound}

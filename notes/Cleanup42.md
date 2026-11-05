@@ -248,11 +248,11 @@ valid. The cleanup chooses one per `open` row, with the PI.
   *Remedies:* the prose to the Lean (classes of bodies, the handshake bound; the proof's `\uses`
   then adds `lem:pencil-x0-sparse-count`), or keep both.
 - **R-18** · `lem:pencil-d-base-case` (`hasGradedPencilRealization_of_ncard_le_two`,
-  `finrank_span_rigidityRows_of_single_edge`, 42k recon, to land in `Grade/Arms.lean`) · **open**.
+  `finrank_span_rigidityRows_of_single_edge`, `Grade/Arms.lean`, 42k build 2, landed) · **open**.
   *Chapter:* the ranks are read off the motions, `D|U| − dim Z`: with one edge the motions are the
   `S` with `S(u) − S(v) ∈ K C₁`, so the rank is `D − 1`; with `m ≥ 2` edges the partition into
   singletons has value `D − (D − 1)m < 0`, so `def_d = 0`.
-  *Lean (spiked complete, `scratch/42k/Spike.lean`):* the `d = 3` Lean's counts
+  *Lean (landed, the recon's spike):* the `d = 3` Lean's counts
   (`hasPencilRealization_of_ncard_le_two`), at `D`. One edge: at least the `D − 1` independent rows
   of a nonzero hinge (`lem:edge-rows-independent`), at most the target
   (`lem:relative-deficiency-rank-bound`), with `def_d = 1`. At `m ≥ 2`: `def_d = 0` as the

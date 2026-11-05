@@ -40,6 +40,7 @@ public import CombinatorialRigidity.Molecular.Molecule.Dictionary
 public import CombinatorialRigidity.Molecular.Molecule.Duality
 public import CombinatorialRigidity.Molecular.Molecule.GeneralPosition4
 public import CombinatorialRigidity.Molecular.Molecule.Modelling
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Arms
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Carrier
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Chain
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Chains
