@@ -6,7 +6,8 @@ eleven nodes of `pencil-d.tex`'s `-generic` (the cases of an induction on the bo
 a cut edge, a body of degree one, a pendant triangle, no planar-rigid set and a body of degree two
 with hub neighbours; finding that body and its condition; the generic theorem and the headline) as
 the chapter states them (§3). They are the blueprint's last red nodes, so its close is Phase 42's.
-Its next step is the pre-build recon.
+Its pre-build recon landed (§3): all eleven signatures kernel-checked, three nodes spiked complete
+and the theorem and headline assembled on the rest; next, the first of seven builds.
 **42l** (PD-HEAD's `-nondegenerate` and `-lift`, `notes/Phase42l.md`) **opened and closed
 2026-11-04** at the PI's word (§1): the ten nodes of `pencil-d.tex`'s `-nondegenerate` and `-lift`
 (nondegeneracy in dimension `d`, its agreement at `d = 3`, linear maps, feasibility in every
@@ -1225,6 +1226,18 @@ marked `no departure` (R-6). The post-Phase-42 cleanup acts on the ledger (that 
   condition joins two nodes through `HoldsGenerally`, which depends on the selectors; `-ear-free`
   re-runs two steps of `-lift-no-rigid`'s proof, which itself uses a step of one-witness's proof,
   not its statement; and `-lift-cut-edge` `\cref`s the fibre-intersection lemma without `\uses`.
+  **Its recon** (2026-11-05, design pass; `notes/Phase42m.md` *Current state* and *Decisions made*)
+  pinned the eleven signatures, each kernel-checked, and spiked `-lift-small` (1), `-lift-pendant`
+  and `-lift-ear` complete, with the remark after `def:pencil-d-lift-attains` and the theorem's
+  induction and the headline on the other lemmas' statements (the headline a three-conjunct
+  theorem). Each case is `lift_transfer` and then `liftAttains_of_holdsGenerally`; the ear's
+  condition is one predicate at the same selectors on both sides, and the good ear returns `W₀`
+  (`Graph.IsPencilGoodEar`); `dim L̃`'s least value is exposed as a lemma. Phase 39's reposition at a
+  cut edge does not transcribe (it fixes neither end's normal); the glue is new, with the other
+  unspiked new math in `-lift-no-rigid`, `-ear-extend` and `-ear-free`. No pin is weaker than its
+  node (two unused hypotheses dropped; `[Nonempty α]` at two bodies, ambient). Seven builds:
+  `Grade/LiftSmall.lean`, `LiftCases.lean`, `LiftCutEdge.lean`, `GoodEar.lean`, `LiftNoRigid.lean`,
+  `EarFree.lean`, `Generic.lean`. Departures: `notes/Cleanup42.md` R-24 to R-27, open.
   **At Phase 42's close**, Tier 0 joins `formalization.yaml`'s
   `main_results` and `alignment` unless the headline subsumes it, with a closed non-vacuity witness
   in `CombinatorialRigidity/Nonvacuity.lean` (`PHASE-BOUNDARIES.md`); 42c's intermediate close

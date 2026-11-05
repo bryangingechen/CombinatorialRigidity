@@ -335,6 +335,51 @@ valid. The cleanup chooses one per `open` row, with the PI.
   its normals, read in the coordinates of the maps `ζ^i`, with the bound
   (`lem:relative-deficiency-rank-bound`); (T2) is not used for openness.
   *Remedies:* the prose to the Lean, or keep both.
+- **R-24** · the cases' (T1), `lem:pencil-d-lift-pendant` and `lem:pencil-d-lift-ear` (and the
+  pendant triangle on their template) (`exists_minorPoly`, `liftAttains_of_pendant`,
+  `liftAttains_of_ear`; 42m's recon spike, `scratch/42m/Spike.lean`) · **open** (spiked; the
+  chapter stays as the prose).
+  *Chapter:* `E` is a product of minors, one for each condition of nondegeneracy of `G` that reads
+  only bodies of `H` and is not a condition of `H`, nonzero at `r|_H`.
+  *Lean (the recon's spike):* `E` is the product of one minor per closed hub-neighbourhood in `G`
+  of every body (each lies in `V(H)`, as a removed body is no hub), so the conditions already of
+  `H` are included, harmlessly; at the ear, times one of `b_a · n_b`, `b_b · n_a`. One lemma
+  (`exists_minorPoly`) gives each minor with its homogeneity and variables.
+  *Remedies:* the prose to the Lean (shorter: no case analysis of which conditions are new), or
+  keep both.
+- **R-25** · `lem:pencil-d-lift-pendant`, (T1) (`pendant_T1`; 42m's recon spike) · **open** (spiked;
+  the chapter stays as the prose).
+  *Chapter:* two cases, `u` with at least two neighbours in `H` (a hub of `G`: `b⁰_v` in `Π⁰_u` off
+  `K b⁰_u`) or with one neighbour `w` (replace `Π⁰_u` by the span of `b⁰_u, b⁰_v, b⁰_w`); the
+  statement asks that `u` have another neighbour.
+  *Lean (the recon's spike):* the split is on whether `u` is a hub of `G`; in the second case `b'_v`
+  is off the span `W` of the normals of the closed neighbourhood of `u` in `H` (of dimension at
+  most two) and `n'_u = n'_v` is orthogonal to `W` and `b'_v`, which also covers `u` with no other
+  neighbour. So the hypothesis that `u` has another neighbour is unused, and the pin drops it.
+  *Remedies:* the prose to the Lean, and the statement without the hypothesis, or keep both.
+- **R-26** · `lem:pencil-d-lift-pendant` and `lem:pencil-d-lift-ear`, (T2) (`pendant_T2`, `ear_T2`;
+  42m's recon spike) · **open** (spiked; the chapter stays as the prose).
+  *Chapter:* (T2) extends a lift `(ζ, φ)` of `r⁰|_H`: `ζ_v = φ_u(b⁰_v)` with `φ_v` on `Π⁰_v` by
+  its values at a basis; at the ear, `ζ_x = φ_a(b⁰_x) = φ_b(b⁰_x)` and `φ_x` by its values at
+  `b⁰_a, b⁰_x, b⁰_b`.
+  *Lean (the recon's spike):* `lift_transfer`'s (T2) reads the maps `L(b⁰)`, a form `ψ_y` on `K⁴`
+  per body (`mem_liftMaps_iff`): the pendant puts `ζ_v = ψ_u(b⁰_v)` and reuses `ψ_u` at `u` and
+  `v`; the ear puts `ζ_x = φ_a(b⁰_x)` from a lift of `r⁰|_H`, extends `φ_a` and `φ_b` to `K⁴` at `a`
+  and `b` (the ear's condition at `b`), and at `x` takes a form with three prescribed values at the
+  independent `b⁰_a, b⁰_x, b⁰_b` (`exists_dual_three`).
+  *Remedies:* the prose to the Lean (one form per body), or keep both.
+- **R-27** · `lem:pencil-d-lift-small` (1), the triangle (`linearIndependent_normalsJoin_triangle`,
+  `finrank_triangle`, `liftAttains_of_triangle`; 42m's recon spike) · **open** (spiked; the chapter
+  stays as the prose).
+  *Chapter:* the three joins of independent normals are independent; the triangle has rank `2D`;
+  its deficiency is zero, the singletons having value `2D − 3(D − 1) < 0` and two parts
+  `D − 2(D − 1) < 0`.
+  *Lean (the recon's spike):* the joins by three `2 × 2` minors at a dual triple
+  (`exists_linearMap_normalsJoin_eq`, as `linearIndependent_join_triangle` does at fixed vectors),
+  each hinge `±` the join's image as the link selector orients it; the deficiency is never
+  computed: the rank `D(|V| − 1)` (rigidity) is at most the target, and the deficiency is
+  nonnegative, so they agree. The ear's two joins are the same argument (`ear_rank`).
+  *Remedies:* the prose to the Lean (no partition values), or keep both.
 
 ## 3. The cleanup (not yet planned)
 

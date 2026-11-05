@@ -1365,8 +1365,10 @@ half, the last eleven nodes of `pencil-d.tex`: the generic theorem, by an induct
 whose cases are few bodies, a cut edge, a body of degree one, a pendant triangle, no planar-rigid
 set and a body of degree two whose neighbours are hubs, with the lemmas that find that body in a
 minimal planar-rigid set and show that the lifts of the rest of the set are trivial; and the
-headline, the three claims together. A read at the open found their proofs sound, and a recon
-against the `d = 3` Lean and 42l's comes first. Its close is Phase 42's. The targets are three
+headline, the three claims together. A read at the open found their proofs sound; the recon then
+checked all eleven statements by machine, proved three of them in a draft and planned seven
+builds. Its
+close is Phase 42's. The targets are three
 tiers: every `d` at `def_3 ≤ 3` (proved and formalized, 42c), a `P⁴` theorem (every `d` at
 `def_3 ≤ 7`, by the sharp lemma), and every `d` (proved on paper, 42d).
 
