@@ -9,10 +9,10 @@ row to §2 for each departure, with no prose or Lean edit, then a stop at which 
 remedy per `open` row and plans rounds 2+ (§3). `.claude/autopilot/queue.toml` carries it as
 `CLEANUP-42`, attended, between PENCIL-D (done) and ORIGAMI; ROADMAP *Queued post-program phases*
 lists it. Its input is the proof-route ledger (§2): 34 rows at Phase 42's close (2026-11-05), 27
-`open`, 6 `aligned`, 1 `no departure`, to which round 1 adds; after its task 7, 39 rows, 28 `open`,
-6 `aligned` and 5 `no departure` (R-35 `open`, R-36 to R-39 `no departure`; task 7 added none).
-**Next concrete task:** round 1's task 8, PD-STEPS (42g), `-long` (`notes/Phase42-cleanup.md`
-*Lemma checklist*).
+`open`, 6 `aligned`, 1 `no departure`, to which round 1 adds; after its task 8, 40 rows, 28 `open`,
+6 `aligned` and 6 `no departure` (R-35 `open`, R-36 to R-40 `no departure`; R-1 to R-6 re-checked
+accurate). **Next concrete task:** round 1's task 9, PD-STEPS (42h), `-short-four`
+(`notes/Phase42-cleanup.md` *Lemma checklist*).
 
 ## 1. The PI's decisions (verbatim)
 
@@ -615,6 +615,21 @@ task in `notes/Phase42-cleanup.md`, and its re-checks of R-1 to R-34 are recorde
   `⋀²Ĥ` a family of lifting planes, so `D − 3 + dim L(q)` motions, then rank–nullity). It is
   sound, and no Lean follows it; the first paragraph is complete without it, so it stands as the
   comparison with `d = 3` that the chapter's nodes close with, here written out as a second proof.
+
+- **R-40** · `lem:pencil-d-polygon-collapse`, its pins at index level (`polygonCollapse`,
+  `polygonCollapseEdge` and five lemmas, `Grade/Polygon.lean`, round 1 task 8) · **no departure**:
+  no pin names the closed `D`-gon `Y` or a join. `polygonCollapse N M` is `π_M` read as vertex
+  indices (`j ↦ N − 1` at the last body, else `min(j, N − 2)`), and `polygonCollapseEdge N M` lists
+  the proof's `D` edges (`l ↦ l` for `l ≤ N − 3`, then `M − 2` and `M − 1`, the last from `c_{M−1}`
+  to the cyclic `c_0`). `polygonCollapse_polygonCollapseEdge` gives `π(e_l) = l` and
+  `π(e_l + 1) = l + 1` at every `2 ≤ N ≤ M`, so with `c_j` at `Y_{π(j)}` the join at `e_l` is
+  `Y_l ∨ Y_{l+1} = J_l`: the proof's computation, its last rewrite left to the two theorems. Part (2)
+  is part (1) at `M = k + 1` with `b` at the vertex of `c_0`, as the proof derives it
+  (`polygonCollapse_zero`, `_one`, `_neg_one` for `a`, `x_1`, `x_k`; `b` at `Y_0` is the ear
+  theorem's placement). The distinctness pin, `polygonCollapseEdge_injective`, is dead: `D`
+  independent joins at a family of edges bound the span of its hinges whether or not an edge repeats
+  (`card_le_finrank_of_linearIndependent_normalsJoin`, `Grade/Chain.lean`), and the ear's proof says
+  "distinct" without its count using it.
 
 ## 3. The cleanup's rounds
 

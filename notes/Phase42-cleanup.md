@@ -7,11 +7,11 @@ from the chapter's route; its plan, the PI's words and the proof-route ledger ar
 and adds a ledger row for each departure, re-checking R-1 to R-34 at HEAD; it edits no prose,
 statement, pin or Lean. The open (task 1, docs only) sliced the nodes by layer into 14
 one-dispatch Opus recon tasks, the 47 never-checked nodes of 42b–42f first, then a planned stop
-(task 16) at which the PI picks a remedy per `open` row and plans rounds 2+. Tasks 2 to 7
-(PD-STATE, PD-STABLE, COUNT-A and COUNT-B, PD-CARRIER, 42f's PD-STEPS) added R-35 (`open`), R-36
-to R-39 (`no departure`); task 7 none. **Next concrete task:** task 8, PD-STEPS (42g), the seven
-nodes of `sec:pencil-d-long`, re-checking R-1 to R-6 (*Lemma checklist*). Round manual:
-`CLEANUP.md`.
+(task 16) at which the PI picks a remedy per `open` row and plans rounds 2+. Tasks 2 to 8
+(PD-STATE, PD-STABLE, COUNT-A and COUNT-B, PD-CARRIER, 42f's and 42g's PD-STEPS) added R-35
+(`open`), R-36 to R-40 (`no departure`); task 8 found R-1 to R-6 accurate. **Next concrete task:**
+task 9, PD-STEPS (42h), the eight nodes of `sec:pencil-d-short` outside 42i's four, re-checking
+R-7 to R-12 (*Lemma checklist*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -25,9 +25,10 @@ picks a remedy per `open` row and plans rounds 2+ (`notes/Cleanup42.md` §3). An
 
 ## Current state
 
-**Tasks 1 to 7 have landed** (task 7 this commit: no row, the six nodes no departure, no line
-under *Candidates* or *Moved to a later round*). The ledger has 39 rows, 28 `open`; the next row
-is R-40. Nothing is mid-stream; task 8 is next.
+**Tasks 1 to 8 have landed** (task 8 this commit: one `no departure` row, R-40, the collapse
+lemma's index-level pins; R-1 to R-6 accurate at HEAD; the long ear no departure; no line under
+*Candidates* or *Moved to a later round*). The ledger has 40 rows, 28 `open`; the next row is
+R-41. Nothing is mid-stream; task 9 is next.
 
 **Verified at the open** (2026-11-05, at `a3b80ac4`):
 - **The Lean baseline** is the coordinator's run this session, not repeated here: `lake build
@@ -176,7 +177,7 @@ the gate's forward weighting).
   `-planes-meet`, `thm:pencil-d-open-ear-four`, `-three`) use `σ_v` and its facts
   (`gradeSigma_injective`, `pencilConfigPointGrade_eq_gradeSigma_iff`), not its equivalences: to
   read against their proofs' citations of it.
-- [x] **7. PD-STEPS (42f), the cut and the contraction** (this commit). `sec:pencil-d-cut` and
+- [x] **7. PD-STEPS (42f), the cut and the contraction** (`a6ea14b9`). `sec:pencil-d-cut` and
   `sec:pencil-d-contract`, 6 heavy nodes, against `Grade/Cut.lean`, `MainComponent/Cut.lean`
   (`eval_restrictPoly`) and `Grade/ContractAdditive.lean`. **No new row. No departure:**
   `lem:pencil-d-lifting-restrict` (column by column; (3) one substitution at `α × Fin m`, its dead
@@ -192,10 +193,17 @@ the gate's forward weighting).
 
 **42g–42m, under the standing rule since 42g (52 nodes, 30 with a row).**
 
-- [ ] **8. PD-STEPS (42g), `-long`.** `sec:pencil-d-long` (3424–3932), 7 heavy nodes. Re-checks
-  R-1 (`lem:pencil-d-polygon-star`), R-2 (`-polygon-insert`), R-3 (`-polygon-normal`), R-4
-  (`-polygons`), R-5 and R-6 (`thm:pencil-d-cycle`); fresh: `lem:pencil-d-polygon-collapse`,
-  `thm:pencil-d-open-ear-long`. Reads `Grade/Polygon.lean`, `Grade/Chain.lean`.
+- [x] **8. PD-STEPS (42g), `-long`** (this commit). `sec:pencil-d-long`, 7 heavy nodes, against
+  `Grade/Polygon.lean` and `Grade/Chain.lean`. **New row:** R-40
+  (`lem:pencil-d-polygon-collapse`'s pins at index level, no `Y` and no join, `no departure`; its
+  distinctness pin dead, as independent joins need no distinct edges). **No departure:**
+  `thm:pencil-d-open-ear-long` (the chapter's steps; the placement, then a certificate as at the
+  cycle; the rank's `≥` half, `D` independent hinges in `ρ + Λ`; the lift height by height).
+  **Re-checks, all accurate:** R-1, R-2 (`aligned`: the star's two cases, the insertion's line off
+  `A`, are the chapter's proofs); R-3 (`g₁`, then the transvection; part (1) and the joins under
+  `⋀²g` the chapter's); R-4 (the three minors; the step and the move at `i = 0` the chapter's); R-5
+  (`N = min(m, D)`, `polygonCollapse N m`); R-6 (`z` restricted to `V(G)`; the rest of the cycle
+  the chapter's count, the singletons' value as a bound).
 - [ ] **9. PD-STEPS (42h), `-short-four`.** `sec:pencil-d-short` (2301–3422) less 42i's four, 8
   heavy nodes. Re-checks R-7 and R-11 (`lem:pencil-d-two-stars`), R-8 (`-stars-four`), R-9
   (`-kernel-curve`), R-10 (`lem:pencil-d-ear-data`), R-12 (`thm:pencil-d-open-ear-four`); fresh:
@@ -257,13 +265,14 @@ the gate's forward weighting).
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 8, PD-STEPS (42g), `-long`. One Opus recon reads the seven heavy
-nodes of `sec:pencil-d-long` (lines 3424–3932) against their pins in `Grade/Polygon.lean` and
-`Grade/Chain.lean` under *The audit's criterion*: it re-checks R-1 to R-6 at HEAD (an `aligned`
-row by confirming that the chapter follows the Lean) and reads the two fresh nodes,
-`lem:pencil-d-polygon-collapse` and `thm:pencil-d-open-ear-long`, then lands one docs commit: any
-new rows in `notes/Cleanup42.md` §2 (from R-40), its **Status**, and task 8's line here with its
-verdicts and re-checks. Then tasks 9–15 in order, and the stop.
+**Next concrete task:** task 9, PD-STEPS (42h), `-short-four`. One Opus recon reads the eight
+heavy nodes of `sec:pencil-d-short` (lines 2301–3422) outside 42i's four against their pins in
+`Grade/Stars.lean`, `Grade/EarData.lean` and `Grade/Short.lean` under *The audit's criterion*: it
+re-checks R-7 to R-12 at HEAD (R-7 and R-8 `aligned`, by confirming that the chapter follows the
+Lean) and reads the three fresh nodes, `lem:pencil-d-insertion`, `def:pencil-d-ear-data` and
+`lem:pencil-d-ear-data-open`, with task 6's note on the condition lemma's citations, then lands one
+docs commit: any new rows in `notes/Cleanup42.md` §2 (from R-41), its **Status**, and task 9's
+line here with its verdicts and re-checks. Then tasks 10–15 in order, and the stop.
 
 ## Decisions made during this round
 
