@@ -7,9 +7,9 @@ from the chapter's route; its plan, the PI's words and the proof-route ledger ar
 and adds a ledger row for each departure, re-checking R-1 to R-34 at HEAD; it edits no prose,
 statement, pin or Lean. The open (task 1, docs only) sliced the nodes by layer into 14
 one-dispatch Opus recon tasks, the 47 never-checked nodes of 42b–42f first, then a planned stop
-(task 16) at which the PI picks a remedy per `open` row and plans rounds 2+. **Next concrete
-task:** task 2, PD-STATE's realizations, the eight nodes of `sec:pencil-d-realization`
-(*Lemma checklist*). Round manual: `CLEANUP.md`.
+(task 16) at which the PI picks a remedy per `open` row and plans rounds 2+. Task 2 (PD-STATE's
+realizations) added R-35. **Next concrete task:** task 3, PD-STATE's configurations, the nine nodes
+of `sec:pencil-d-carrier` (*Lemma checklist*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -23,7 +23,9 @@ picks a remedy per `open` row and plans rounds 2+ (`notes/Cleanup42.md` §3). An
 
 ## Current state
 
-**The round is open** (task 1, docs only; this commit). Nothing is mid-stream; task 2 is next.
+**Tasks 1 and 2 have landed** (task 2 this commit: one row, R-35, seven nodes no departure, one
+line under *Moved to a later round*). The ledger has 35 rows, 28 `open`; the next row is R-36.
+Nothing is mid-stream; task 3 is next.
 
 **Verified at the open** (2026-11-05, at `a3b80ac4`):
 - **The Lean baseline** is the coordinator's run this session, not repeated here: `lake build
@@ -122,11 +124,21 @@ re-checks (accurate or corrected) and the nodes judged no departure.
 
 **42b–42f, never checked (47 nodes, no row).**
 
-- [ ] **2. PD-STATE (42b), the realizations.** `sec:pencil-d-realization` (lines 69–298), 8 light
-  nodes: `def:extensor-through-flat`, `lem:extensor-through-flat-point`,
-  `def:pencil-d-realization`, `lem:pencil-d-agrees-three`, `lem:pencil-d-point-configuration`,
-  `def:pencil-d-rank-hypothesis`, `def:pencil-d-distinct-motive`, `lem:pencil-d-rank-agrees-three`.
-  Reads `Grade/Realization.lean` (all 16 pins).
+- [x] **2. PD-STATE (42b), the realizations** (this commit). `sec:pencil-d-realization` (lines
+  69–298), 8 light nodes, against `Grade/Realization.lean` (all 16 pins). No re-checks. **New row:**
+  R-35, `lem:pencil-d-agrees-three`'s first sentence (the pin drops the nonzero points and adds
+  `dim q^⊥ = 3 ⇔ q ≠ 0`). **No departure:** `def:extensor-through-flat` (the definition verbatim);
+  `lem:extensor-through-flat-point` (`span_singleton_le_iff_mem`, the proof's one line);
+  `def:pencil-d-realization` (its conditions on `V(G)`, `dotPerp` the section's `Π^⊥`, the `d = 2`
+  remark's pin at `Π_v = K³`); `lem:pencil-d-point-configuration` (the proof's steps: the join of
+  `lem:panel-support-extensor-join`, `lem:decomposable-extensor-span-unique`'s argument at `d − 1`
+  vectors, `lem:meet-two-hyperplanes`; "has the rows" as the row space, the carrier's reading
+  throughout; (2)'s second part without independence, as the proof says);
+  `def:pencil-d-rank-hypothesis` (the
+  deficiency's `n` a parameter read at `k + 1`, 42b's encoding); `def:pencil-d-distinct-motive`
+  (the rank hypothesis inlined, one realization with the independence);
+  `lem:pencil-d-rank-agrees-three` (one framework for the first; the point form, then the polarity
+  at one rank, for the second). One line under *Moved to a later round*.
 - [ ] **3. PD-STATE (42b), the configurations.** `sec:pencil-d-carrier` (300–525), 9 light nodes:
   `def:pencil-d-configuration`, `lem:pencil-d-config-realization`, `def:pencil-d-x0-attains`,
   `lem:pencil-d-x0-attains-three`, `lem:pencil-d-rank-collineation`,
@@ -215,7 +227,11 @@ re-checks (accurate or corrected) and the nodes judged no departure.
 
 ## Moved to a later round
 
-- None yet.
+- **A missing `\uses` edge** (task 2; mirrored in `notes/Cleanup42.md` §3).
+  `lem:pencil-d-point-configuration`'s statement reads the closed neighbourhood (`Graph.closedNbhd`,
+  pinned by `def:pencil-nondegenerate` in `pencil.tex`) and does not `\uses` it;
+  `scripts/blueprint-deps.py --label` reports the edge *missing*. The script reports 60 over the
+  chapter (`--chapter pencil-d`), so a later round may take them in one sweep.
 
 ## Blockers / open questions
 
@@ -223,11 +239,12 @@ re-checks (accurate or corrected) and the nodes judged no departure.
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 2, PD-STATE's realizations. One Opus recon reads the eight nodes of
-`sec:pencil-d-realization` against their 16 pins in `Grade/Realization.lean` under *The audit's
-criterion*, then lands one docs commit: any new rows in `notes/Cleanup42.md` §2 (from R-35), its
-**Status** counts, and task 2's line here with its verdicts. Then tasks 3–15 in order, and the
-stop.
+**Next concrete task:** task 3, PD-STATE's configurations. One Opus recon reads the nine nodes of
+`sec:pencil-d-carrier` against their pins in `Grade/Carrier.lean`, `Grade/Configuration.lean`,
+`Grade/Collineation.lean`, `Grade/Witness.lean`, `Grade/Contract.lean` and
+`Grade/JoinIndependence.lean` under *The audit's criterion*, then lands one docs commit: any new
+rows in `notes/Cleanup42.md` §2 (from R-36), its **Status** counts, and task 3's line here with its
+verdicts. Then tasks 4–15 in order, and the stop.
 
 ## Decisions made during this round
 

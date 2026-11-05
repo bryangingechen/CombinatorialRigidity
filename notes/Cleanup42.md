@@ -9,8 +9,9 @@ row to §2 for each departure, with no prose or Lean edit, then a stop at which 
 remedy per `open` row and plans rounds 2+ (§3). `.claude/autopilot/queue.toml` carries it as
 `CLEANUP-42`, attended, between PENCIL-D (done) and ORIGAMI; ROADMAP *Queued post-program phases*
 lists it. Its input is the proof-route ledger (§2): 34 rows at Phase 42's close (2026-11-05), 27
-`open`, 6 `aligned`, 1 `no departure`, to which round 1 adds. **Next concrete task:** round 1's task
-2, PD-STATE's realizations (`notes/Phase42-cleanup.md` *Lemma checklist*).
+`open`, 6 `aligned`, 1 `no departure`, to which round 1 adds; after its task 2, 35 rows, 28 `open`
+(R-35). **Next concrete task:** round 1's task 3, PD-STATE's configurations
+(`notes/Phase42-cleanup.md` *Lemma checklist*).
 
 ## 1. The PI's decisions (verbatim)
 
@@ -546,6 +547,26 @@ task in `notes/Phase42-cleanup.md`, and its re-checks of R-1 to R-34 are recorde
   *Remedies:* the prose to the Lean (the embedding by dimension, rank at most three only in `U(G)`,
   (b) by two plane normals), or keep both.
 
+- **R-35** · `lem:pencil-d-agrees-three`, its first sentence (`hasPencilPlaneRealization_two_iff`,
+  `Grade/Realization.lean`, round 1 task 2) · **open**.
+  *Chapter:* the points `q_v` are nonzero, with `Π_v = q_v^⊥`. As the dot product is nondegenerate,
+  `Π_v^⊥` is the span of `q_v`, so passing through `Π_v^⊥` is passing through `q_v`
+  (`lem:extensor-through-flat-point`), and `b_v ∈ Π_v` is `q_v · b_v = 0`. That `Π_v` is
+  three-dimensional and `q_v` nonzero is left to the hypothesis.
+  *Lean:* no `q_v ≠ 0`: the hypothesis is `Π_v = q_v^⊥` on `V(G)` alone, and the two definitions
+  are matched condition by condition (the hinge-coplanar realization, a condition of both, is not
+  assumed either). Two are the chapter's steps (`dotPerp_dotPerp`,
+  `extensorThroughSubspace_span_singleton_iff`, `mem_dotPerp_span_singleton`); the third is added:
+  `q^⊥` is three-dimensional exactly when `q ≠ 0` (`finrank_dotPerp`), which matches the dimension
+  of `def:pencil-d-realization` with the nonzero point of `def:pencil-panel-realization`. So the pin
+  is stronger than its node, and a caller reads `n_v ≠ 0` off it
+  (`isNondegPencilPlaneRealization_two_iff`, `Grade/Nondegenerate.lean`, on task 13's
+  `lem:pencil-d-nondegenerate-three`). The second sentence
+  (`exists_hasPencilPlaneRealization_two_iff`) is the chapter's.
+  *Remedies:* the prose to the Lean (the statement without "nonzero", the proof with the sentence
+  on the dimension; its `\uses` unchanged), or keep both (the points of a pencil realization are
+  nonzero). The recon leans to the prose: one word and one sentence.
+
 ## 3. The cleanup's rounds
 
 - **Round 1, the route audit** (opened 2026-11-05, `notes/Phase42-cleanup.md`): every green node of
@@ -556,7 +577,11 @@ task in `notes/Phase42-cleanup.md`, and its re-checks of R-1 to R-34 are recorde
 - **Rounds 2+** (planned with the PI at round 1's stop): the remedies the PI picks and the three
   items *Also left to it* below. Round 1's *Candidates for the PI* and *Moved to a later round*
   lines are mirrored here as they land:
-  - None yet.
+  - *Moved to a later round* (round 1 task 2): `lem:pencil-d-point-configuration`'s statement reads
+    the closed neighbourhood (`Graph.closedNbhd`, pinned by `def:pencil-nondegenerate` in
+    `pencil.tex`) with no `\uses` edge to it, which `scripts/blueprint-deps.py` reports *missing*.
+    The script reports 60 missing edges over the chapter (`--chapter pencil-d`), so a later round
+    may take them in one sweep.
 - **The ledger at Phase 42's close:** the standing rule (§1) kept §2 current through PD-STEPS's
   rest, PD-COVERAGE, PD-REDUCTION and PD-HEAD (`notes/Phase42-design.md` §3), the last rows 42m's,
   R-24 to R-34; Phase 42 closed on 2026-11-05 with no row added after them. Round 1 adds from R-35.
