@@ -60,6 +60,7 @@ public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Nondegenerat
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Feasible
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Lift
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.LiftCases
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.LiftCutEdge
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.LiftSmall
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.LiftWitness
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.PlanesMeet

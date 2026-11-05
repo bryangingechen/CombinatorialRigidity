@@ -410,6 +410,29 @@ valid. The cleanup chooses one per `open` row, with the PI.
   the ear's rank needs no non-adjacency, `ear_rank`), each pin stronger than its node.
   *Remedies:* the prose to the Lean (no `Π⁰_{x_i} = Π⁰_c`, no partition values), or keep both.
 
+- **R-30** · `lem:pencil-d-lift-cut-edge` (`liftAttains_of_cutEdge`, `exists_cutEdge_glue`,
+  `cutEdge_T1`, `cutEdge_T2`, `cutEdge_rank`, `Grade/LiftCutEdge.lean`, 42m build 3) · **open** (the
+  Lean landed as below; the chapter stays as the prose).
+  *Chapter:* (T1) glues `r₁` with the image of `r₂` under a general `g ∈ 𝒢` (`g b′_u = b_u`,
+  `g b′_v = b_v`); the cross conditions at `u` and `v` hold on a nonempty Zariski-open subset of `𝒢`
+  exactly when `P = {b_u, b_v}^⊥ ⊄ N`, which a case analysis on `|S|` reduces to
+  `E₁ = b_v · n_{w₁}` (`u`, `v` hubs, `{u, v, w₁}` the closed hub-neighbourhood of `u`), and `E₂`
+  likewise; `E₂ ≠ 0` at some realization of `G₂` by replacing the normal of `u`; `|V₁|, |V₂| ≥ 2`.
+  *Lean:* one `g`, a frame map with `g c_u = b_u`, `g c_v = b_v`, `gᵀ t = m_v`, `gᵀ n_u = t′`
+  (`exists_frame_linearEquiv`), `t ∈ P` off the line of `n_u` and, when `v` is a hub, off the span
+  `N` of the rest of the closed hub-neighbourhood of `u` (`exists_dotProduct_eq_zero_avoid`: no
+  space is the union of two proper subspaces), `t′` likewise at `v`. `E₁` is one minor, `n`
+  independent on the closed hub-neighbourhood of `u` in `G` (`exists_minorPoly`): its non-roots put
+  `r₁`'s own `n_v ∈ P` off `N`, so `P ⊄ N`, with no case analysis on `|S|`. `E₁ ≠ 0` and the fixed
+  `r₂` are the restrictions of one realization of `G`
+  (`IsNondegPencilRealization.induce_union_singleton`), so no normal is replaced. (T2) and the rank
+  follow the chapter; `rank G_i ≤ rank G[V_i] + D − 1` is
+  `BodyHingeFramework.finrank_span_rigidityRows_le_add_of_links_subset`, and the two sides' lifts
+  meet at one `λ` by `MvPolynomial.exists_mem_eval_ne_zero₂` on the image of `𝓛(r⁰)^m` in the
+  maps' coordinates. `|V₁|, |V₂| ≥ 2` is unused, and the pin drops it (stronger than the node).
+  *Remedies:* the prose to the Lean (one frame map, one minor, no replaced normal, no size
+  hypothesis), or keep both.
+
 ## 3. The cleanup (not yet planned)
 
 - **Until it opens:** the standing rule (§1) keeps §2 current through PD-STEPS's rest,

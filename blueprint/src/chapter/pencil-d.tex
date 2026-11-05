@@ -5479,6 +5479,8 @@ the rest of $G$, and extending them to realizations of $G$
 % the glue matches each side's point at the far end, and E_1 is the cross condition.
 \begin{lemma}[A cut edge between two sides of at least two bodies]
   \label{lem:pencil-d-lift-cut-edge}
+  \lean{CombinatorialRigidity.Molecular.liftAttains_of_cutEdge}
+  \leanok
   \uses{def:pencil-d-lift-attains, def:cut-edges-2ec}
   Let $K$ be infinite and $d \ge 3$, and let $G$ be simple and
   nondegeneracy-feasible. Let $uv$ be the only edge between $V_1 \ni u$
@@ -5488,10 +5490,11 @@ the rest of $G$, and extending them to realizations of $G$
   dimension $d$, so does that of $G$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-d-lift-transfer, lem:pencil-d-lift-one-witness,
         lem:pencil-d-lift-realization, lem:block-rank-cut,
         lem:cut-edge-decomposition, lem:relative-deficiency-rank-bound,
-        lem:pencil-feasible-hub-conditions}
+        lem:pencil-feasible-hub-conditions, lem:pencil-x0-fibre-intersection}
   \emph{Restriction.} In $G_1$ the bodies of $V_1$ keep their closed
   neighbourhoods and their degrees. The body $v$ has degree one, so it is
   not a hub of $G_1$, and its closed neighbourhood is $\{u, v\}$, whose

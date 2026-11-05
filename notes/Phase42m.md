@@ -11,12 +11,19 @@ They are the blueprint's last red nodes, so 42m's close is Phase 42's. The pre-b
 nine lemma statements; seven builds planned. **Build 1 landed** (2026-11-05):
 `Grade/LiftSmall.lean`, `lem:pencil-d-lift-small` green. **Build 2 landed** (2026-11-05):
 `Grade/LiftCases.lean`, `lem:pencil-d-lift-pendant`, `-lift-ear` (with `EarLiftCondition`) and
-`-lift-pendant-triangle` green (four of the eleven red nodes; seven remain).
-Next (*Hand-off*): build 3, `Grade/LiftCutEdge.lean`.
+`-lift-pendant-triangle` green. **Build 3 landed** (2026-11-05): `Grade/LiftCutEdge.lean`,
+`lem:pencil-d-lift-cut-edge` green (five of the eleven red nodes; six remain).
+Next (*Hand-off*): build 4, `Grade/GoodEar.lean`.
 
 ## Current state
 
-**Next: build 3** (*Hand-off*). In the tree: `Grade/LiftCases.lean` (build 2: `liftAttains_of_pendant`,
+**Next: build 4** (*Hand-off*). In the tree: `Grade/LiftCutEdge.lean` (build 3:
+`liftAttains_of_cutEdge`, `cutEdge_T1`, `cutEdge_T2`, `cutEdge_rank`, the glue `exists_cutEdge_glue`
+with `cutEdge_glue`, `cutEdge_side`, `exists_frame_linearEquiv`, `exists_basis_frame`,
+`exists_dotProduct_eq_one_zero`, `exists_dotProduct_eq_zero_avoid`,
+`IsNondegPencilPlaneRealization.exists_map`, `IsNondegPencilRealization.induce_union_singleton`,
+and `HoldsGenerally.and`; on the three standard axioms, whole-project build, `lake lint`,
+`blueprint/lint.sh` and `blueprint/verify.sh` clean), `Grade/LiftCases.lean` (build 2: `liftAttains_of_pendant`,
 `liftAttains_of_ear`, `liftAttains_of_pendantTriangle`, `EarLiftCondition`, with `pendant_*`, `ear_*`,
 `pendantTri_*`, `exists_minorPoly`, `HoldsGenerally.of_forall`, `.mono`,
 `IsNondegPencilRealization.toPlane`, `closedNbhd_induce_sdiff`, `LinearIndepOn.pair_of_mem`; all on
@@ -29,7 +36,7 @@ their helpers `finrank_triangle`, `linearIndependent_normalsJoin_triangle`, `exi
 `exists_isNondegPencilPlaneRealization_glue`; whole-project build, `lake lint`, `blueprint/lint.sh`
 and `blueprint/verify.sh` clean). The recon's spike is the gitignored
 `scratch/42m/Spike.lean` (1726 lines, `lake lean` clean: no error, 45 warnings, 7 of them the
-`sorry`s of the seven lemma statements unspiked then, six still to build, the rest deprecations,
+`sorry`s of the seven lemma statements unspiked then, four still to build, the rest deprecations,
 long lines and unused names); `scratch/42m/SpikeAxioms.lean` is it plus `#print axioms`. Sorry-free, on the three
 standard axioms: `liftAttains_of_ncard_le_two`, `liftAttains_of_triangle`, `liftAttains_of_pendant`,
 `liftAttains_of_ear`, `LiftAttains.hasGradedGenericPencilRealization` (the remark),
@@ -50,9 +57,9 @@ statements.
   (G.induce (V(G) \ V₁)) ∧ (LiftAttains K r (G.induce V₁) → LiftAttains K r (G.induce (V(G) \ V₁))
   → LiftAttains K r G)`.
 - `lem:pencil-d-lift-cut-edge`: `liftAttains_of_cutEdge (r) hS hfeas (he : G.IsLink e u v)
-  (hu : u ∈ V₁) (hv : v ∉ V₁) (hV₁ : V₁ ⊆ V(G)) (hcut : (G.cutEdges V₁).ncard ≤ 1)
-  (h₁ : 2 ≤ V₁.ncard) (h₂ : 2 ≤ (V(G) \ V₁).ncard)`, concluding the feasibility of
-  `G.induce (V₁ ∪ {v})` and `G.induce ((V(G) \ V₁) ∪ {u})` and that their `LiftAttains` give `G`'s.
+  (hu : u ∈ V₁) (hv : v ∉ V₁) (hV₁ : V₁ ⊆ V(G)) (hcut : (G.cutEdges V₁).ncard ≤ 1)`, concluding
+  the feasibility of `G.induce (V₁ ∪ {v})` and `G.induce ((V(G) \ V₁) ∪ {u})` and that their
+  `LiftAttains` give `G`'s (the spike's `h₁ h₂ : 2 ≤ …ncard` dropped by build 3, unused).
 - `lem:pencil-d-lift-pendant`: `liftAttains_of_pendant (r) hS hfeas (hv : G.degree v = 1)
   (hvu : G.Adj v u) : PencilNondegFeasible K (G.induce (V(G) \ {v})) ∧ (LiftAttains K r
   (G.induce (V(G) \ {v})) → LiftAttains K r G)`.
@@ -98,7 +105,8 @@ rank by `lem:block-rank-ear`, which needs no non-adjacency); `-lift-small`'s two
 ambient `[Nonempty α]`, as at no body over an empty `α` with labels the carrier's `LiftAttains` asks
 for a selector `β → α × α` that does not exist (the chapter's proof treats one and two bodies; the
 theorem always has a body); `-lift-small` (2) is pinned without `G.Simple` and without `[Infinite K]`
-(build 1's proof needs neither; `notes/Cleanup42.md` R-28); encodings: "a triangle" as three
+(build 1's proof needs neither; `notes/Cleanup42.md` R-28); `-lift-cut-edge` drops `|V₁|, |V₂| ≥ 2`
+(unused, R-30); encodings: "a triangle" as three
 pairwise adjacent bodies, "at a general nondegenerate realization" as `HoldsGenerally` at the given
 selectors, `Γ_L` inside `Γ(G)`'s parameter type, "a nonzero polynomial" as one with a non-root.
 
@@ -107,7 +115,7 @@ selectors, `Γ_L` inside `Γ(G)`'s parameter type, "a nonzero polynomial" as one
 Build numbers are *Hand-off*'s. "Spiked" means sorry-free in `scratch/42m/Spike.lean`.
 - [x] **Pre-build recon** (this commit; *Decisions made*).
 - [x] `lem:pencil-d-lift-small`: both parts, sorry-free (build 1; R-28).
-- [ ] `lem:pencil-d-lift-cut-edge`: new (build 3).
+- [x] `lem:pencil-d-lift-cut-edge`: sorry-free, the glue new (build 3; R-30).
 - [x] `lem:pencil-d-lift-pendant`: sorry-free (build 2; R-24 to R-26).
 - [x] `lem:pencil-d-lift-pendant-triangle`: sorry-free, on the pendant's template (build 2; R-29).
 - [ ] `lem:pencil-d-lift-no-rigid`: new (build 5).
@@ -128,48 +136,30 @@ Build numbers are *Hand-off*'s. "Spiked" means sorry-free in `scratch/42m/Spike.
 
 ## Blockers / open questions
 
-- None blocking build 3. What the builds still carry:
+- None blocking build 4. What the builds still carry:
   - **Unspiked new math** (the routes are under *Hand-off*; the chapter's proofs were re-read
-    against the carrier and none is false): the cut edge's glue, the least `dim L̃` at the
-    configuration (`-lift-no-rigid`), and `-ear-extend` with `-ear-free`. Each is one build; a
+    against the carrier and none is false): the least `dim L̃` at the configuration
+    (`-lift-no-rigid`), and `-ear-extend` with `-ear-free`. Each is one build; a
     build that finds it larger than one session splits it (a statement-level sub-lemma per step)
     and says so.
   - **Instances of the two new predicates**: none closed yet. `Graph.IsPencilGoodEar` is produced
     by build 4 and `EarLiftCondition` by build 6; the candidate witness is `K_{2,3}` (`W₀` all five
     bodies, `x` a body of degree two; `s(W₀) = 3·4 − 2·6 = 0`, `X` a four-cycle with `s = 1`),
     for build 6 or the close's non-vacuity row.
-  - **A dependency edge, for build 3:** `-lift-cut-edge`'s rank step `\cref`s
-    `lem:pencil-x0-fibre-intersection`, which its proof does not `\uses`; build 3 adds the edge.
+  - **A call, for build 7:** the spike's assembly passes `h₁ h₂` to `liftAttains_of_cutEdge`,
+    which build 3 dropped (R-30); build 7 drops them from the call.
   - **A pin, for build 5:** `exists_holdsGenerally_finrank_liftSpaceTilde_le` goes into
     `Grade/LiftWitness.lean` (and `liftAttains_of_holdsGenerally` can then use it); its node is
     `lem:pencil-d-lift-one-witness`, whose proof the chapter's `-lift-no-rigid` cites.
 
 ## Hand-off / next phase
 
-Builds 1 and 2 landed (`Grade/LiftSmall.lean`; `Grade/LiftCases.lean`, three nodes). Build 2
-transcribed the spike's pendant and ear sections and the shared steps they use; its pendant triangle
-is new, on the pendant's template (R-29): (T1) `pendantTri_T1`, `b'_{xᵢ}` in `n_c^⊥` completing `b_c`
-to an independent triple, `n'_{xᵢ} = n_c`; (T2) `pendantTri_T2`, one form `ψ_c` at `x₁`, `x₂`, `c`;
-the rank `pendantTri_rank` by `finrank_span_rigidityRows_cutVertex_eq` at `c`, `finrank_triangle` and
-`deficiency_eq_add_of_cutVertex`, the triangle's deficiency zero by `finrank_liftNormal_le`. What the
-spike still holds for later builds, each to land in its build's file: `HoldsGenerally.and`
-(build 3), `bnPoint_zero`, `exists_holdsGenerally_finrank_liftSpaceTilde_le` (build 5, its
-`Grade/LiftWitness.lean` pin), and the assembly (build 7). Build 3 imports `LiftCases` for
-`exists_minorPoly`, `HoldsGenerally.of_forall`, `.mono` and `closedNbhd_induce_sdiff`.
-Then:
-- **Build 3**, `Grade/LiftCutEdge.lean`: sides feasible by `PencilNondegFeasible.induce_union_singleton`;
-  two `lift_transfer`s, combined by `HoldsGenerally.and` and `MvPolynomial.exists_mem_eval_ne_zero₂`
-  on the image of the lifts in the maps' coordinates; the rank by
-  `le_finrank_span_rigidityRows_of_cut` and a bound `rank G_i ≤ rank G[V_i] + D − 1` (not found in
-  the tree; one edge's rows span at most `D − 1`); the deficiencies by
-  `deficiency_eq_of_cutEdges_ncard_le_one` and `deficiency_induce_union_singleton`. (T2): `ψ`
-  extending `φ_{1,v}`. (T1), the glue, is new: Phase 39's `exists_reposition_cross_incidences_avoiding`
-  does not transcribe (it fixes neither end's normal, where (T1) keeps `r₁`'s normals on
-  `V₁ ∪ {v}`). Proposed (not spiked): pick `t ∈ P = {b_u, b_v}^⊥` off `K n_u` and the subspaces
-  `N_S ∩ P`, proper when `E₁ ≠ 0`, and `t′ ∈ P′` likewise; then a frame map (`Module.Basis.equiv`,
-  as Arms.lean) with `g b′_u = b_u`, `g b′_v = b_v`, `gᵀ t = n′_v`, `gᵀ n_u = t′` exists, the four
-  pairings agreeing; the chapter's generic `g` is the alternative. `E₂ ≠ 0` at some realization of
-  `G₂` by the chapter's change of `u`'s normal. One node.
+Builds 1 to 3 landed (`Grade/LiftSmall.lean`; `Grade/LiftCases.lean`, three nodes;
+`Grade/LiftCutEdge.lean`, the cut edge, its glue on the recon's frame-map route, R-30). What the
+spike still holds for later builds, each to land in its build's file: `bnPoint_zero`,
+`exists_holdsGenerally_finrank_liftSpaceTilde_le` (build 5, its `Grade/LiftWitness.lean` pin), and
+the assembly (build 7, whose call of `liftAttains_of_cutEdge` drops `h₁ h₂`). The next concrete
+commit is build 4. Then:
 - **Build 4**, `Grade/GoodEar.lean` (graph theory; may go first): `Graph.IsPencilGoodEar` and
   `exists_goodEar_or_pendantTriangle`, re-opening `exists_oneEar_or_pendantTriangle`'s proof to
   return `W₀`; (iii) by `Graph.exists_eq_triple_of_minimal` at `x` and `a`,
@@ -220,7 +210,7 @@ Then:
   `LiftWitness.lean`, and `Graph.graded_pencil_realization_theorem` (`Grade/Reduction.lean`).
 - **The standing rule** (design doc §3): every recon and build adds a `notes/Cleanup42.md` §2 row
   where its Lean departs from the chapter's proof, in the same commit. Open: R-3 to R-5, R-9 to
-  R-12, R-14 to R-21, R-23 to R-29; aligned: R-1, R-2, R-7, R-8, R-13, R-22; R-6 no departure.
+  R-12, R-14 to R-21, R-23 to R-30; aligned: R-1, R-2, R-7, R-8, R-13, R-22; R-6 no departure.
 
 ## Decisions made during this phase
 
@@ -252,3 +242,10 @@ Then:
   (`exists_holdsGenerally_finrank_liftSpaceTilde_le`, spiked from `liftAttains_of_holdsGenerally`'s
   proof); `-ear-free`'s two steps of `-lift-no-rigid`'s proof become one lemma each in build 5.
   Departures: `notes/Cleanup42.md` R-24 to R-27.
+- **Build 3: the cut edge's glue** (`Grade/LiftCutEdge.lean`): the recon's frame map, re-derived
+  against the current bodies and kept: `t ∈ {b_u, b_v}^⊥` off `K n_u` and, when `v` is a hub, off
+  the span `N` of the rest of `u`'s closed hub-neighbourhood in `G`; `E₁` is one minor (that
+  hub-neighbourhood independent in `n`), whose non-roots put `r₁`'s own `n_v` off `N`, so the plane
+  is not in `N`. `E₁` and the fixed `r₂` are restrictions of one realization of `G`, so no normal is
+  changed. The bound `rank G_i ≤ rank G[V_i] + D − 1` was in the tree
+  (`BodyHingeFramework.finrank_span_rigidityRows_le_add_of_links_subset`). R-30.

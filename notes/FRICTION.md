@@ -110,6 +110,32 @@ moment you resolve the entry) is what makes the sweep a pure
 to be re-derived by re-reading entries later.
 
 ## Open
+### [idiom] 42m build 3: a pair-flip fed to a lemma generic in `{N}` times out, and three small traps
+- **Where it bit:** Phase 42m, `Pencil/Grade/LiftCutEdge.lean` (`exists_basis_frame`,
+  `exists_dotProduct_eq_zero_avoid`, `cutEdge_rank`).
+- **Friction:** (1) `exists_dotProduct_eq_one_zero (LinearIndependent.pair_symm_iff.1 hf)`, the
+  lemma generic in `{N : ℕ}` over `Fin N → K`, hit *"(deterministic) timeout at `whnf`"* at the
+  argument: the flip's module `M := Fin ?N → K` is elaborated before `?N` is known. **Fix:** bind the
+  flip first at the concrete type (`have hf' : LinearIndependent K ![f₁, f₀] := …`). (2)
+  `rw [← Matrix.range_cons_cons_empty]` on `{x, y}` leaves a side goal `Fin 0 → _` (the tail `u` is a
+  metavariable); give it: `Matrix.range_cons_cons_empty x y ![]`. (3) A `set P0 := fun y => …`
+  over a carried lift `lam₁` shadowed it (`TACTICS-QUIRKS` § 43; passing the literal fixed it).
+  (4) A lift's rank on `G[V']`, stated at `(ofNormals (G.induce V') ends q).toBodyHinge`, enters
+  `Bricks.lean`'s bounds (spelled `⟨G.induce V', F.supportExtensor⟩`) by a type-ascribed
+  `have h : (rank ⟨G.induce V', F.supportExtensor⟩ : ℤ) = _ := h₁`, as build 1's entry below.
+- **Status:** idiom (resolved in-proof).
+
+### [mirror-candidate] 42m build 3: a vector with pairings `1, 0` against two independent vectors
+- **Where it bit:** Phase 42m, `Pencil/Grade/LiftCutEdge.lean` (`exists_dotProduct_eq_one_zero`,
+  for the frame of `exists_basis_frame`).
+- **Friction:** mathlib has no packaged "for linearly independent `f₀, f₁ : Fin N → K` some `y`
+  has `y ⬝ᵥ f₀ = 1`, `y ⬝ᵥ f₁ = 0`" (the rows of a full-rank `2 × N` matrix give a surjective
+  `mulVec`); proved locally through `dotPerp` (`dotPerp_antitone`, `dotPerp_dotPerp`).
+- **Proposed fix:** a mirror in `Mathlib/LinearAlgebra/Matrix/DotProduct.lean` (or the general
+  `Matrix.mulVec_surjective` of a matrix with linearly independent rows); not mirrored now: one call
+  site, and the proof leans on the project's `dotPerp`.
+- **Status:** mirror-candidate (open; a cleanup round).
+
 ### [idiom] 42m build 1: `ofNormals`'s `link_tac` finds no anonymous hypothesis, and a restricted lift's frameworks differ only up to `finrank_ofNormals_ends`
 - **Where it bit:** Phase 42m, `Pencil/Grade/LiftSmall.lean` (`liftAttains_of_cutEdges_eq_empty`).
 - **Friction:** in a `have side : ∀ S endsS lamS, (∀ e u v, … endsS …) → … → rank … = rank …`, the
