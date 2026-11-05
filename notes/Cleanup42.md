@@ -1,16 +1,18 @@
 # The post-Phase-42 cleanup (planning note)
 
-**Status:** queued, not open; its rounds are not yet planned. On 2026-10-30, during 42g, the PI
-asked for a cleanup phase after Phase 42 to address the informal proofs of
-`blueprint/src/chapter/pencil-d.tex` that were difficult to formalize as written (§1). Its
-placement, right after Phase 42 and ahead of ORIGAMI, is the coordinator's proposal, which the PI
-has not answered. `.claude/autopilot/queue.toml` carries it as `CLEANUP-42`, attended, between
-PENCIL-D (done) and ORIGAMI; ROADMAP *Queued post-program phases* lists it. Its input is the
-proof-route ledger (§2), final since Phase 42 closed (2026-11-05): 34 rows, 27 `open`, 6 `aligned`,
-1 `no departure` (§3). The queue runs it next, attended, so its open goes to the PI, who settles
-its placement then.
+**Status:** open (2026-11-05, at the PI's word, §1), ahead of ORIGAMI; round 1, the route audit,
+in progress (`notes/Phase42-cleanup.md`). On 2026-10-30, during 42g, the PI asked for a cleanup
+phase after Phase 42 to address the informal proofs of `blueprint/src/chapter/pencil-d.tex` that
+were difficult to formalize as written (§1). On 2026-11-05 the PI opened it ahead of ORIGAMI and
+shaped its first round: an audit of every green node of the chapter (99) against its Lean, adding a
+row to §2 for each departure, with no prose or Lean edit, then a stop at which the PI picks a
+remedy per `open` row and plans rounds 2+ (§3). `.claude/autopilot/queue.toml` carries it as
+`CLEANUP-42`, attended, between PENCIL-D (done) and ORIGAMI; ROADMAP *Queued post-program phases*
+lists it. Its input is the proof-route ledger (§2): 34 rows at Phase 42's close (2026-11-05), 27
+`open`, 6 `aligned`, 1 `no departure`, to which round 1 adds. **Next concrete task:** round 1's task
+2, PD-STATE's realizations (`notes/Phase42-cleanup.md` *Lemma checklist*).
 
-## 1. The PI's decision (2026-10-30, verbatim)
+## 1. The PI's decisions (verbatim)
 
 From 42g, after the recon's acceptance and the `Grade/Polygon.lean` build. The record, as the
 coordinator gave it:
@@ -51,6 +53,33 @@ What follows from it:
   only the rows of §2. The nodes 42b–42f made green (PD-STATE, PD-STABLE, 42d's COUNT-A and COUNT-B,
   PD-CARRIER and 42f's six) were never checked for a departing route.
 
+### 2026-11-05: the open, ahead of ORIGAMI, and round 1
+
+From the coordinator's open check-in after Phase 42's close: each question, then the option the PI
+chose with its description.
+
+**PI, 2026-11-05:** (verbatim)
+- Q: "CLEANUP-42 is queued but not open. It covers the pencil-d.tex proofs whose Lean departs from
+  the chapter's route: 34 ledger rows, 27 still open, in notes/Cleanup42.md. Running it before
+  ORIGAMI was only the coordinator's proposal, and you never answered it. Open CLEANUP-42 now, ahead
+  of ORIGAMI?" — A: "Yes, open now (Recommended)" — "Open CLEANUP-42 now and record your answer as
+  the placement decision (ahead of ORIGAMI) in notes/Cleanup42.md §1."
+- Q: "How should the opening be shaped? The plan says the first step compares every green node of
+  pencil-d.tex (99 of them) with its Lean and adds a ledger row for each departure. The rounds, and
+  a fix for each open row, are then planned with you." — A: "Audit round, then stop (Recommended)"
+  — "Round 1 (notes/Phase42-cleanup.md) is the full-chapter audit: opus recons sliced by layer,
+  starting with 42b–42f, which were never checked, and adding ledger rows only, with no prose or
+  Lean edits. Then stop so you pick a fix per open row and plan the later rounds."
+
+What follows from it:
+
+- **The placement is the PI's decision:** CLEANUP-42 runs now, after Phase 42 and ahead of ORIGAMI.
+  It opened on 2026-11-05.
+- **Round 1 is the route audit** (`notes/Phase42-cleanup.md`): Opus recons, one slice of the
+  chapter's nodes per dispatch, by layer, 42b–42f first; each adds rows to §2 and re-checks the
+  rows on its nodes, and edits no prose, statement, pin or Lean.
+- **Then the planned stop:** the PI picks a remedy per `open` row and plans rounds 2+ (§3).
+
 ## 2. The proof-route ledger
 
 One row per node of `pencil-d.tex` whose Lean proof departs from the chapter's, in the chapter's
@@ -59,7 +88,8 @@ one route (`this commit` in that commit; a later edit may replace it with the sh
 departure` for a row raised and then judged a carrier encoding of the chapter's own object, kept as
 a short row so that the cleanup's recon does not raise it again. *Remedies* are the options: the
 prose to the Lean, a Lean helper so that the Lean can follow the chapter, or keep both routes, each
-valid. The cleanup chooses one per `open` row, with the PI.
+valid. The cleanup chooses one per `open` row, with the PI. Round 1's rows (from R-35) name their
+task in `notes/Phase42-cleanup.md`, and its re-checks of R-1 to R-34 are recorded there.
 
 - **R-1** · `lem:pencil-d-polygon-star` (`exists_normalsJoin_notMem_span_polygon`,
   `Pencil/Grade/Polygon.lean`) · **aligned, this commit** (42g).
@@ -516,11 +546,20 @@ valid. The cleanup chooses one per `open` row, with the PI.
   *Remedies:* the prose to the Lean (the embedding by dimension, rank at most three only in `U(G)`,
   (b) by two plane normals), or keep both.
 
-## 3. The cleanup (not yet planned)
+## 3. The cleanup's rounds
 
-- **The ledger is final:** the standing rule (§1) kept §2 current through PD-STEPS's rest,
-  PD-COVERAGE, PD-REDUCTION and PD-HEAD (`notes/Phase42-design.md` §3), the last rows 42m's, R-24
-  to R-34; Phase 42 closed on 2026-11-05 with no row added after them.
+- **Round 1, the route audit** (opened 2026-11-05, `notes/Phase42-cleanup.md`): every green node of
+  `pencil-d.tex` against its Lean, in 14 one-dispatch Opus recon slices by layer, the 47 nodes of
+  42b–42f first; each adds rows to §2 and re-checks the rows on its nodes at HEAD, with no prose,
+  statement, pin or Lean edit. Its last task is the planned stop, which closes it: the PI picks a
+  remedy per `open` row and plans rounds 2+.
+- **Rounds 2+** (planned with the PI at round 1's stop): the remedies the PI picks and the three
+  items *Also left to it* below. Round 1's *Candidates for the PI* and *Moved to a later round*
+  lines are mirrored here as they land:
+  - None yet.
+- **The ledger at Phase 42's close:** the standing rule (§1) kept §2 current through PD-STEPS's
+  rest, PD-COVERAGE, PD-REDUCTION and PD-HEAD (`notes/Phase42-design.md` §3), the last rows 42m's,
+  R-24 to R-34; Phase 42 closed on 2026-11-05 with no row added after them. Round 1 adds from R-35.
 - **Also left to it** (not a route row): Theorem S's fold, `Graph.IsX0Graph.exists_additiveCore`
   (`MainComponent/CoverageTheoremS.lean`) as the `n = 3` case of
   `Graph.IsX0Graph.exists_additiveCoreAt` (`Grade/TheoremS.lean`, which imports that file), with a
@@ -544,6 +583,3 @@ valid. The cleanup chooses one per `open` row, with the PI.
   (`W₀` all five bodies, `x` a body of degree two; `s(W₀) = 3·4 − 2·6 = 0`, `X` a four-cycle with
   `s = 1`; `notes/Phase42m.md` *Blockers*). It would witness an inner arm of the induction, not a
   hypothesis of the headline.
-- **At its open**, with the PI: the placement (§1), then the opening recon, which compares every
-  green node of `pencil-d.tex` with its Lean and adds a row for each departure; then the rounds,
-  and a remedy per `open` row, are planned with the PI.

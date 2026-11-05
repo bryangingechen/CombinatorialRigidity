@@ -130,8 +130,9 @@ attended = true
 done = true
 
 # Attended: the cleanup after Phase 42 the PI asked for on 2026-10-30 (42g), of the pencil-d.tex
-# proofs whose Lean departs from the chapter's. Its place ahead of ORIGAMI is the coordinator's
-# proposal, not yet answered; its rounds are planned at its open. Plan, ledger: notes/Cleanup42.md.
+# proofs whose Lean departs from the chapter's. The PI opened it on 2026-11-05, ahead of ORIGAMI:
+# round 1, the route audit, is notes/Phase42-cleanup.md, and its planned stop is where the PI plans
+# rounds 2+. Plan, the PI's words, ledger: notes/Cleanup42.md.
 [[item]]
 id = "CLEANUP-42"
 title = "CLEANUP-42: the pencil-d.tex proofs against their Lean (post-Phase-42 cleanup)"
