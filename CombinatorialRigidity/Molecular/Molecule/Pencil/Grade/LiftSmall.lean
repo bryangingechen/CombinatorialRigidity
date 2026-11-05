@@ -23,7 +23,7 @@ The node `lem:pencil-d-lift-small` of `blueprint/src/chapter/pencil-d.tex`, `sec
   the sides glue (`exists_isNondegPencilPlaneRealization_glue`); the lifts glue body by body, the
   ranks add (`finrank_span_rigidityRows_cutVertex_eq`, with the sides disjoint) and so do the
   targets (`deficiency_eq_of_cutEdges_ncard_le_one`). The polynomial is the product of the sides'.
-  It needs no `G.Simple` and no `[Infinite K]`, which the chapter assumes.
+  It needs no `G.Simple` and no `[Infinite K]`.
 -/
 
 @[expose] public section

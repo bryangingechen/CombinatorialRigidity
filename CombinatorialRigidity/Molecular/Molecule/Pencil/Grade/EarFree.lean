@@ -339,8 +339,7 @@ with two hubs), and `m_v ∉ A_u` by (b). So `exists_linearIndepOn_of_finrank` m
 each closed hub-neighbourhood independent at some point of `∏ A_u`, an open condition there, and
 `exists_mem_forall_eval_ne_zero` gives one point for every `v ∈ X`. The auxiliary vectors of `v`
 complete them to a triple whose `cross₃` is a nonzero multiple of `b_v(t)`
-(`exists_fill_cross₃_eq_smul_of_selector`). The chapter's moment curve and its case analysis on
-`O_v` are not used. -/
+(`exists_fill_cross₃_eq_smul_of_selector`). -/
 theorem exists_earExtend_poly [Infinite K] [Finite α] {G : Graph α β}
     (hfeas : PencilNondegFeasible K G) {W₀ : Set α} {x a b : α}
     (hW : G.IsPencilGoodEar W₀ x a b) {hubSel : α → Fin 3 → Option α}
@@ -554,8 +553,7 @@ nonzero normal `n_v`. By (b) the trivial lifts and the free coordinates, moved a
 embed in `L̃` (`liftTildeOfTrivial`), in dimension `4 +` the free coordinates, so by (c) they are
 all of `L̃`. A lift extends to a member of `L̃` (`exists_mem_liftSpaceTilde_of_mem_liftSpace`),
 whose maps are then `w ↦ c · b⁰_w`; its form at `v` agrees with `c` on the points of the closed
-neighbourhood, which span the subspace. The chapter's count `dim L̃ = dim L(b⁰) + |X|` is not
-used. -/
+neighbourhood, which span the subspace. -/
 theorem isTrivialLift_of_finrank_liftSpaceTilde_le [Finite α] {G : Graph α β}
     {b0 : α → Fin 4 → K} {P0 : α → Submodule K (Fin 4 → K)}
     (hP0 : ∀ v ∈ V(G), ∀ w ∈ G.closedNbhd v, b0 w ∈ P0 v)

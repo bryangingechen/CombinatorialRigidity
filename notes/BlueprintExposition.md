@@ -1873,7 +1873,7 @@ a matter of presentation, tracked for the cleanup after Phase 42 (`notes/Cleanup
 compressed step. The close's end-to-end re-read against the landed statements changed no
 statement and repaired one sentence of the section's overview, which said that `W` is everything
 at general points of the ear where stars-four gives "whenever it contains both stars" (the Lean
-also holds at `d = 2`; the nodes keep the chapter's `d ≥ 3`).
+also holds at `d = 2`; the nodes keep the chapter's `d ≥ 3`). CLEANUP-42 round 2 (2026-11-05) aligned the kernel curve's route to its Lean's (R-9, `c3f237fe`) and kept the other three differences (R-10 to R-12).
 **Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
 
 ### `pencil-d.tex` — Phase 42i (PD-STEPS: open ears with three interior bodies in dimensions four to six)
@@ -1891,7 +1891,7 @@ route differences left (the theorem's common member of the ends' neighbourhoods 
 and path step, planes-meet's fixed inverse for the functionals `λ`, glued-ends without the merged
 deficiency) are a matter of presentation, tracked for the cleanup after Phase 42
 (`notes/Cleanup42.md`), not a compressed step. The close's end-to-end re-read against the landed
-statements found no wording false and changed none.
+statements found no wording false and changed none. CLEANUP-42 round 2 (2026-11-05) aligned the theorem's step to its Lean's (R-14, `8bffb361`) and kept the other two differences (R-15, R-16).
 **Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
 
 ### `pencil-d.tex` — Phase 42j (PD-COVERAGE: the coverage in every dimension)
@@ -1927,7 +1927,7 @@ motions, are a matter of presentation, tracked for the cleanup after Phase 42
 written out in full. The close's end-to-end re-read against the landed statements found no
 wording false and changed none (the Lean holds at every `m` for the cases and at every grade for
 the linear algebra and the loop, without the nodes' unused nonzero or dimension hypotheses; the
-nodes keep the chapter's `d ≥ 3`).
+nodes keep the chapter's `d ≥ 3`). CLEANUP-42 round 2 (2026-11-05) kept the base case's count (R-18) and aligned the nonsimple case's to its Lean's (R-19, `3bf9d220`).
 **Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
 
 ### `pencil-d.tex` — Phase 42l (PD-HEAD's first half: nondegenerate realizations and their lifts in every dimension)
@@ -1945,7 +1945,7 @@ tracked for the cleanup after Phase 42, not a compressed step; the chapter write
 in full. The close restated the parametrization to its Lean's six auxiliary vectors at the PI's
 word (R-22, aligned), with a formalization note that five suffice; its end-to-end re-read found no
 other wording false (the Lean holds without the one-lift and restriction lemmas' unused simplicity
-and feasibility hypotheses; the nodes keep them).
+and feasibility hypotheses; the nodes keep them). CLEANUP-42 round 2 (2026-11-05) aligned feasibility's and the one-lift route's to their Lean's (R-20, R-21, `cba4806c`), kept transfer's (R-23), and dropped the simplicity from the nodes' hypotheses (R-49); the feasibility hypotheses stay.
 **Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
 
 ### `pencil-d.tex` — Phase 42m (PD-HEAD's second half: the generic conjunct and the headline), and Phase 42
@@ -1980,7 +1980,7 @@ its entry above; every node whose argument is new in dimension `d` (the short ea
 polygons, the lifts, the rest of the rigid set lifting trivially) carries it in full in its proof,
 with a closing paragraph naming where the `d = 3` proof used its dimension. The eleven earlier
 sub-phase closes (42b–42l) and this one re-read the chapter section by section and found no step
-that fails.
+that fails. CLEANUP-42 round 2 (2026-11-05) aligned the chapter to the Lean's routes for the cases' polynomials, (T2), the cut edge's glue, `g` and `E_L`, and for the rest of the rigid set (R-24, R-26, R-30, R-32 to R-34; `6c082081`, `36ab7f53`, `900338bd`) and its statements to the pins' for the pendant's neighbour, the ear's adjacency, the cut edge's sides, `-ear-extend`'s and `-lift-small` (2)'s simplicity (R-25, R-29, R-30, R-33, R-28), keeping the argument parts of R-27 to R-29 and R-31.
 **Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
 
 ## Retroactive coverage

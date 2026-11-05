@@ -663,7 +663,7 @@ attain, so does that of `G`. Each side is a `lift_transfer` ((T1) `cutEdge_T1`, 
 target rank on each side are the non-roots of a polynomial in the coordinates of their maps, and
 the image of the lift space in those coordinates, a subspace, holds a common non-root
 (`MvPolynomial.exists_mem_eval_ne_zero₂`), of the target rank on `G` (`cutEdge_rank`). One lift
-suffices (`liftAttains_of_holdsGenerally`). The chapter's `|V₁|, |V₂| ≥ 2` is not needed. -/
+suffices (`liftAttains_of_holdsGenerally`). -/
 theorem liftAttains_of_cutEdge [Infinite K] [Finite α] [Finite β] (r : ℕ) {G : Graph α β}
     (hS : G.Simple) (hfeas : PencilNondegFeasible K G) {V₁ : Set α} {e : β} {u v : α}
     (he : G.IsLink e u v) (hu : u ∈ V₁) (hv : v ∉ V₁) (hV₁ : V₁ ⊆ V(G))

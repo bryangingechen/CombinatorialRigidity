@@ -27,10 +27,6 @@ maps extend (`lift_transfer`), and the rank is the transferred one plus the dele
   the rank by `lem:block-rank-ear`.
 * `liftAttains_of_pendantTriangle`: adjacent bodies of degree two joined to a body of degree at
   least four; their lifts are read off that of `c`, and the triangle is rigid of rank `2D`.
-
-The chapter's two statements are kept in the pins' stronger form: the pendant drops "whose
-neighbour has another neighbour" and the ear drops "not adjacent" (`notes/Phase42m.md`
-*Statement faithfulness*).
 -/
 
 @[expose] public section

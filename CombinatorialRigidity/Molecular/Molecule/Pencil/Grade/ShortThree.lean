@@ -241,8 +241,7 @@ glued-ends otherwise. If `r = 3`, the planes meet in dimension `κ = 3 − min(m
 planes-meet, so `d + κ ≤ 6`. Either way `exists_mvPolynomial_earDataGrade_starsCond_three` gives
 the third condition, and `exists_insertion_earDataGrade_three` puts `x 1` back. The points `pa`,
 `pb` need not be independent, so the picture is not also taken off the first coordinate of
-`q_a − q_b`. The chapter's proof of the case `r ≤ 2` goes instead through the components of
-`G[V₁]` and a path from `a` to `b` (`notes/Cleanup42.md`, R-14). -/
+`q_a − q_b`. -/
 theorem _root_.Graph.X0AttainsGrade.of_openEar_three [Infinite K] [Finite α] [Finite β]
     {G : Graph α β} (hG : G.IsX0Graph) {V₁ : Set α} {x : Fin 3 → α} {a b : α}
     {e : Fin 4 → β} (hm : 2 ≤ m) (hm4 : m ≤ 4) (hcover : V(G) = V₁ ∪ Set.range x)

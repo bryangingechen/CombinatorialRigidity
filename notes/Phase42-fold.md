@@ -6,7 +6,7 @@ round of CLEANUP-42: Theorem S's `d = 3` core and four `d = 3` cases of the redu
 `K_{2,3}`; and the ten stale Lean docstrings and five dated `notes/BlueprintExposition.md` entries
 left by rounds 1–2. The open's spikes: both folds keep every `d = 3` statement, no blueprint
 statement changes, so no `NEEDS_PI`. Nine tasks, one commit each.
-**Next concrete task:** task 2, the stale docstrings and dated notes (below).
+**Next concrete task:** task 3, witness (1), `K₂` at the generic conjunct (below); task 2 landed.
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -21,9 +21,13 @@ entry here, newest first, and the loop stops; the PI answers in an entry that st
 
 ## Current state
 
-**Task 1 landed** (this commit; docs only): this log; `notes/Cleanup42.md`'s §1 (the PI's entry
+**Task 2 landed** (Lean docstrings only, no statement or proof): the ten stale docstrings and the
+five dated `BlueprintExposition.md` entries (the checklist line). **Task 1 landed** (docs only): this log; `notes/Cleanup42.md`'s §1 (the PI's entry
 of 2026-11-05 for round 4), **Status** and §3; ROADMAP's Status row, §42's *Next* and the
 CLEANUP-42 bullet; `notes/MolecularConjecture.md`; the queue's comment.
+
+**Task 2's gates** (the round's Lean baseline): whole-tree `lake build` green (6247 jobs, 0 warnings,
+0 cache failures), `lake lint` green, `blueprint/lint.sh` green, docstring-label total 0.
 
 **Verified at the open** (2026-11-05, at `8797f875`):
 - **The tree:** the coordinator's `lake build` of
@@ -137,13 +141,10 @@ numbers are at `8797f875`; re-`grep` before editing. **On landing, a task's line
 three lines:** number, sha, what landed, lines deleted, its edges and any *Candidates* line.
 
 - [x] **1. Open** (this commit; docs only).
-- [ ] **2. The stale docstrings and dated notes** (Sonnet). Each of the ten docstrings (*Scope*)
-  loses or restates the sentence contrasting the Lean with a chapter route or hypothesis that
-  round 2 removed, after reading the node at HEAD; its description of the Lean stays. No statement
-  or proof. `notes/BlueprintExposition.md` 42h–42m (lines 1861–1975): each dated judgment stays as
-  written, and the five dated entries gain one closing sentence each: what CLEANUP-42 did to the
-  route differences and dropped hypotheses they list (round 2's row statuses, `notes/Cleanup42.md`
-  §2). Gates G1–G3. The close marks §3's *Moved* lines for round 4 taken.
+- [x] **2. The stale docstrings and dated notes** (this commit; Lean docstrings and notes only). Ten
+  docstrings in eight `Grade/` files lose or restate the sentence contrasting them with a round-2-removed
+  route or hypothesis; five `BlueprintExposition.md` entries (42h, 42i, 42k, 42l, 42m) gain a closing sentence.
+  §3's *Moved* lines for round 4 are marked taken at the close (task 9). 11 lines deleted net.
 - [ ] **3. Witness (1): `K₂` at the generic conjunct** (Sonnet, or a resume of the open's recon:
   the spike is the build). Transcribe `scratch/cleanup-42/round4/WitnessK2.lean` into
   `Nonvacuity.lean` after `graded_pencil_conditioned_pair_witness`:
@@ -223,8 +224,8 @@ three lines:** number, sha, what landed, lines deleted, its edges and any *Candi
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 2, the ten stale docstrings and five dated notes entries (Sonnet;
-*Scope* lists them). Then tasks 3–9 in order; the PI's stop applies to tasks 4–6.
+**Next concrete task:** task 3, witness (1), `K₂` at the generic conjunct (Sonnet, from
+`scratch/cleanup-42/round4/WitnessK2.lean`). Then tasks 4–9 in order; the PI's stop applies to tasks 4–6.
 
 ## Decisions made during this round
 

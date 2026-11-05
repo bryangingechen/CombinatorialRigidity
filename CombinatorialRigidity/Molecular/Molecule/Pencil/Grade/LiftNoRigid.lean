@@ -28,8 +28,7 @@ points rescale to a configuration over an admissible picture
 (`exists_pencilConfigPoint_of_dotProduct`), and `q` is a main picture.
 
 Two steps are stated for any graph with no planar-rigid set, for `lem:pencil-d-ear-free`: the
-distinct planes (`exists_planeDiff_ne_zero_poly`) and `L(b⁰) = L(q)`, in the maps
-(`mem_liftMaps_pencilConfigPoint_iff`) and in dimension
+distinct planes (`exists_planeDiff_ne_zero_poly`) and `dim L̃` at a configuration
 (`finrank_liftSpaceTilde_pencilConfigPoint`).
 -/
 
@@ -394,8 +393,8 @@ neighbourhood, `b_v` of nonzero last coordinate and `n_v` of nonzero third coord
 the points of adjacent bodies independent, and at every body three members of its closed
 neighbourhood with independent points. Rescaled to last coordinate `1`, the points are those of a
 configuration `(q', z')` over an admissible picture with `z' ∈ L(q')`, and `dim L̃` is unchanged
-(`finrank_liftSpaceTilde_smul`). The chapter reaches the two nonzero coordinates by a map `g` of
-`K⁴`; the Lean asks for them, which hold at a general realization. -/
+(`finrank_liftSpaceTilde_smul`). The Lean asks for the two nonzero coordinates, which hold at a
+general realization. -/
 theorem exists_pencilConfigPoint_of_dotProduct {G : Graph α β} {b n : α → Fin 4 → K}
     (hbn : ∀ v ∈ V(G), ∀ w ∈ G.closedNbhd v, b w ⬝ᵥ n v = 0)
     (hb3 : ∀ v ∈ V(G), b v 3 ≠ 0) (hn2 : ∀ v ∈ V(G), n v 2 ≠ 0)

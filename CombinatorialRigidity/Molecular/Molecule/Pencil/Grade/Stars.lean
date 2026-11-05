@@ -379,14 +379,14 @@ theorem exists_mvPolynomial_le_finrank_span_of_repr {σ ι κ E : Type*} [Finite
         rintro _ ⟨i, rfl⟩; exact ⟨_, rfl⟩))
 
 open Polynomial in
-/-- The first-order step of `lem:pencil-d-kernel-curve`, without `K(t)`. Over an infinite field, if
+/-- The first-order step of `lem:pencil-d-kernel-curve`. Over an infinite field, if
 no matrix `A + t Mw + t² M₂(t)` has rank above that of `A`, every `ξ₀` with `A ξ₀ = 0` has `ξ₁`
 with `A ξ₁ + Mw ξ₀ = 0`. Otherwise `Mw ξ₀ ∉ range A`, so vectors `A u_j` forming a basis of
 `range A`, with `Mw ξ₀`, are independent; the family `(A + t Mw + t² M₂(t)) u_j`,
 `Mw ξ₀ + t M₂(t) ξ₀`, which is that one at `t = 0`, stays independent at some `t ≠ 0`
 (`LinearIndependent.exists_notMem_of_polynomial_repr`). It lies in the range of
 `A + t Mw + t² M₂(t)`, which sends `t⁻¹ ξ₀` to `Mw ξ₀ + t M₂(t) ξ₀`, so that rank is above
-`rank A`. The chapter argues by Cramer's rule over `K(t)` instead (`notes/Cleanup42.md`, R-9). -/
+`rank A`. -/
 theorem exists_mulVec_add_mulVec_eq_zero [Infinite K] {ι κ : Type*} [Finite ι] [Fintype κ]
     (A Mw : Matrix ι κ K) (M₂ : Matrix ι κ K[X])
     (hrank : ∀ t : K, (A + t • Mw + t ^ 2 • M₂.map (Polynomial.eval t)).rank ≤ A.rank)

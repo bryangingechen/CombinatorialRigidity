@@ -332,10 +332,9 @@ theorem finrank_liftNormal_le [Finite α] [Finite β] {r : ℕ} {G : Graph α β
 /-- **One lift suffices** (`lem:pencil-d-lift-one-witness`, part (1)): a nondegenerate realization
 `r* = (b*, Π*)` in dimension three at which `dim L̃(b*)` is least, with a lift of rank `tgt_d(G)`,
 makes the general lift attain. The Lean takes the lift's maps through `L̃` by the polynomial section
-of `A(b⁰)` (`Matrix.exists_mvPolynomial_section_mulVec_eq_zero`, one per lift parameter) in place
-of the chapter's Cramer basis and coefficients `γ`; the rank polynomial
-(`PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking`) and the homogenization
-(`exists_weightedHomogeneousComponent_of_eval_ne_zero`) are the chapter's. -/
+of `A(b⁰)` (`Matrix.exists_mvPolynomial_section_mulVec_eq_zero`, one per lift parameter); the rank
+polynomial (`PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking`) and the
+homogenization (`exists_weightedHomogeneousComponent_of_eval_ne_zero`) complete it. -/
 theorem liftAttains_of_least [Infinite K] [Finite α] [Finite β] {r : ℕ} {G : Graph α β}
     {F : BodyHingeFramework K 2 α β} {b : α → Fin 4 → K} {P : α → Submodule K (Fin 4 → K)}
     (hnd : IsNondegPencilPlaneRealization G F b P)
