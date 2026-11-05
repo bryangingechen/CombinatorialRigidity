@@ -9,11 +9,11 @@ row to §2 for each departure, with no prose or Lean edit, then a stop at which 
 remedy per `open` row and plans rounds 2+ (§3). `.claude/autopilot/queue.toml` carries it as
 `CLEANUP-42`, attended, between PENCIL-D (done) and ORIGAMI; ROADMAP *Queued post-program phases*
 lists it. Its input is the proof-route ledger (§2): 34 rows at Phase 42's close (2026-11-05), 27
-`open`, 6 `aligned`, 1 `no departure`, to which round 1 adds; after its task 13, 50 rows, 32
-`open`, 6 `aligned` and 12 `no departure` (R-35, R-46 and R-48 to R-50 `open`, R-36 to R-45 and
-R-47 `no departure`; R-1 to R-23 re-checked, R-7, R-9, R-12, R-15, R-16 and R-17 corrected in
-place). **Next concrete task:** round 1's task 14, PD-HEAD's second half (42m), the cases
-(`notes/Phase42-cleanup.md` *Lemma checklist*).
+`open`, 6 `aligned`, 1 `no departure`, to which round 1 adds; after its task 14, 52 rows, 33
+`open`, 6 `aligned` and 13 `no departure` (R-35, R-46 and R-48 to R-51 `open`, R-36 to R-45, R-47
+and R-52 `no departure`; R-1 to R-30 re-checked, R-7, R-9, R-12, R-15 to R-17 and R-24 to R-27
+corrected in place). **Next concrete task:** round 1's task 15, PD-HEAD's second half (42m), the
+rest (`notes/Phase42-cleanup.md` *Lemma checklist*).
 
 ## 1. The PI's decisions (verbatim)
 
@@ -380,8 +380,8 @@ task in `notes/Phase42-cleanup.md`, and its re-checks of R-1 to R-34 are recorde
   *Remedies:* the prose to the Lean, or keep both.
 - **R-24** · the cases' (T1), `lem:pencil-d-lift-pendant` and `lem:pencil-d-lift-ear` (and the
   pendant triangle on their template) (`exists_minorPoly`, `liftAttains_of_pendant`,
-  `liftAttains_of_ear`; 42m's recon spike, `scratch/42m/Spike.lean`) · **open** (spiked; the
-  chapter stays as the prose).
+  `liftAttains_of_ear`, `liftAttains_of_pendantTriangle`; 42m's recon spike, landed in
+  `Grade/LiftCases.lean` at 42m build 2) · **open** (spiked; the chapter stays as the prose).
   *Chapter:* `E` is a product of minors, one for each condition of nondegeneracy of `G` that reads
   only bodies of `H` and is not a condition of `H`, nonzero at `r|_H`.
   *Lean (the recon's spike):* `E` is the product of one minor per closed hub-neighbourhood in `G`
@@ -390,8 +390,8 @@ task in `notes/Phase42-cleanup.md`, and its re-checks of R-1 to R-34 are recorde
   (`exists_minorPoly`) gives each minor with its homogeneity and variables.
   *Remedies:* the prose to the Lean (shorter: no case analysis of which conditions are new), or
   keep both.
-- **R-25** · `lem:pencil-d-lift-pendant`, (T1) (`pendant_T1`; 42m's recon spike) · **open** (spiked;
-  the chapter stays as the prose).
+- **R-25** · `lem:pencil-d-lift-pendant`, (T1) (`pendant_T1`; 42m's recon spike, landed in
+  `Grade/LiftCases.lean` at 42m build 2) · **open** (spiked; the chapter stays as the prose).
   *Chapter:* two cases, `u` with at least two neighbours in `H` (a hub of `G`: `b⁰_v` in `Π⁰_u` off
   `K b⁰_u`) or with one neighbour `w` (replace `Π⁰_u` by the span of `b⁰_u, b⁰_v, b⁰_w`); the
   statement asks that `u` have another neighbour.
@@ -401,7 +401,8 @@ task in `notes/Phase42-cleanup.md`, and its re-checks of R-1 to R-34 are recorde
   neighbour. So the hypothesis that `u` has another neighbour is unused, and the pin drops it.
   *Remedies:* the prose to the Lean, and the statement without the hypothesis, or keep both.
 - **R-26** · `lem:pencil-d-lift-pendant` and `lem:pencil-d-lift-ear`, (T2) (`pendant_T2`, `ear_T2`;
-  42m's recon spike) · **open** (spiked; the chapter stays as the prose).
+  42m's recon spike, landed in `Grade/LiftCases.lean` at 42m build 2) · **open** (spiked; the
+  chapter stays as the prose).
   *Chapter:* (T2) extends a lift `(ζ, φ)` of `r⁰|_H`: `ζ_v = φ_u(b⁰_v)` with `φ_v` on `Π⁰_v` by
   its values at a basis; at the ear, `ζ_x = φ_a(b⁰_x) = φ_b(b⁰_x)` and `φ_x` by its values at
   `b⁰_a, b⁰_x, b⁰_b`.
@@ -412,8 +413,8 @@ task in `notes/Phase42-cleanup.md`, and its re-checks of R-1 to R-34 are recorde
   independent `b⁰_a, b⁰_x, b⁰_b` (`exists_dual_three`).
   *Remedies:* the prose to the Lean (one form per body), or keep both.
 - **R-27** · `lem:pencil-d-lift-small` (1), the triangle (`linearIndependent_normalsJoin_triangle`,
-  `finrank_triangle`, `liftAttains_of_triangle`; 42m's recon spike) · **open** (spiked; the chapter
-  stays as the prose).
+  `finrank_triangle`, `liftAttains_of_triangle`; 42m's recon spike, landed in `Grade/LiftSmall.lean`
+  at 42m build 1) · **open** (spiked; the chapter stays as the prose).
   *Chapter:* the three joins of independent normals are independent; the triangle has rank `2D`;
   its deficiency is zero, the singletons having value `2D − 3(D − 1) < 0` and two parts
   `D − 2(D − 1) < 0`.
@@ -421,7 +422,8 @@ task in `notes/Phase42-cleanup.md`, and its re-checks of R-1 to R-34 are recorde
   (`exists_linearMap_normalsJoin_eq`, as `linearIndependent_join_triangle` does at fixed vectors),
   each hinge `±` the join's image as the link selector orients it; the deficiency is never
   computed: the rank `D(|V| − 1)` (rigidity) is at most the target, and the deficiency is
-  nonnegative, so they agree. The ear's two joins are the same argument (`ear_rank`).
+  nonnegative, so they agree. The ear's two joins are the same argument
+  (`linearIndependent_normalsJoin_pair`, in `ear_rank`).
   *Remedies:* the prose to the Lean (no partition values), or keep both.
 
 - **R-28** · `lem:pencil-d-lift-small` (2) (`liftAttains_of_cutEdges_eq_empty`, `Grade/LiftSmall.lean`,
@@ -817,6 +819,43 @@ task in `notes/Phase42-cleanup.md`, and its re-checks of R-1 to R-34 are recorde
   (1) alone at a nondegenerate realization and `λ ∈ 𝓛^m`; the proofs and `\uses` unchanged), or
   keep both (one setting for the three parts). The recon leans to the prose, as (2)'s caller is
   outside the node's setting.
+
+- **R-51** · `lem:pencil-d-lift-small`, its infinite `K` (`liftAttains_of_ncard_le_two`,
+  `liftAttains_of_triangle`, `liftAttains_of_cutEdges_eq_empty`, `Grade/LiftSmall.lean`, round 1
+  task 14) · **open**.
+  *Chapter:* the statement takes `K` infinite for both parts, as the section's other cases do.
+  Neither proof reads it: (1) shows the target rank at every lift, so `Q = 1` serves; (2) takes
+  the product of the sides' polynomials, nonzero at the glued realization.
+  *Lean:* none of the three pins takes `[Infinite K]` (their signatures, checked with `lake lean`;
+  the pins of `-lift-cut-edge`, `-lift-pendant`, `-lift-pendant-triangle` and `-lift-ear` take it),
+  and each proof is the chapter's up to R-27, R-28 and R-52, so the pins are stronger than their
+  node. Not vacuous: all three apply over `ZMod 2` (the same `lake lean` probe), where simple
+  nondegeneracy-feasible graphs exist (`exists_isNondegPencilRealization_parallel_pair`,
+  `Pencil/Pair.lean`, holds over every field, and its one-edge subgraph `K₂` is feasible by
+  `PencilNondegFeasible.mono`, the pair having no hub). Not recovered: no hypothesis of the pins
+  implies it. R-28 names only the simple `G` of (2); `notes/Phase42m.md` *Statement faithfulness*
+  records this drop for (2) alone. The induction's pin, `liftAttains_of_simple`
+  (`thm:pencil-d-generic`), takes it.
+  *Remedies:* the prose to the Lean (the statement without "K infinite"; the proofs and their
+  `\uses` unchanged), or keep both (the section's setting, which the other cases and the theorem
+  take). The recon leans to the prose: one clause, read by neither proof.
+
+- **R-52** · `lem:pencil-d-lift-small`, part (1), its lifts and its cases on at most two bodies
+  (`liftAttains_of_forall`, `liftAttains_of_ncard_le_two`, `Grade/LiftSmall.lean`, round 1 task 14)
+  · **no departure**: the chapter shows that every lift of every nondegenerate realization has rank
+  `tgt_d(G)`, so that `Q = 1` serves; the pins show it of one lift, by the zero maps
+  (`liftAttains_of_forall`, `λ = 0`), which is what `def:pencil-d-lift-attains` asks. The argument
+  is the chapter's at any maps: the normals of a lift are independent where those of `b⁰` are, by
+  the projection `π` that deletes the inserted coordinates (`linearIndependent_liftNormal`, the step
+  of part (1) of `lem:pencil-d-lift-realization` the proof cites, unpinned, so
+  `scripts/blueprint-deps.py` calls that edge *unbacked*). One body and two bodies with no edge are
+  one case (no edge: rank `0`, and `def_d = D(|V(G)| − 1)` at the singletons,
+  `Graph.deficiency_of_edgeSet_empty`); two bodies with an edge are the base case's step
+  (`finrank_span_rigidityRows_of_single_edge`, `Grade/Arms.lean`, `def_d = 1` by the chapter's two
+  partitions, `Graph.deficiency_of_single_edge`), as the proof's "as in `lem:pencil-d-base-case`"
+  says; its rank is R-18's route. The two-body pin's `[Nonempty α]` is the carrier's: over an empty
+  `α` with edge labels, `LiftAttains` asks for a selector `β → α × α`, which does not exist
+  (reported to the PI at 42m as an encoding, `notes/Phase42m.md` *Statement faithfulness*).
 
 ## 3. The cleanup's rounds
 
