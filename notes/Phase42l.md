@@ -6,7 +6,7 @@ with no sub-phase open. Forward mode, the Lean under `/coordinate-phase`: the te
 `blueprint/src/chapter/pencil-d.tex`'s `sec:pencil-d-nondegenerate` and `sec:pencil-d-lift` are
 green, as the chapter states them, in seven commits with the open, the recon and the close. Three
 route differences wait for the cleanup after Phase 42 (`notes/Cleanup42.md` R-20, R-21, R-23); R-22
-is aligned at the PI's word. Next (*Hand-off*): `-generic`'s open goes to the PI.
+is aligned at the PI's word. Next: `-generic`, opened as 42m (`notes/Phase42m.md`).
 
 ## Current state
 
@@ -56,7 +56,8 @@ All ten nodes are green, each pinned in its section with its Lean names; the cha
 ## Hand-off / next phase
 
 Phase 42 stays in progress with no sub-phase open. The next step is **putting `-generic`'s open to
-the PI** (design doc §3), no letter minted until it opens: the eleven red nodes of `pencil-d.tex`'s
+the PI** (design doc §3), no letter minted until it opens (answered at 42m's open: all eleven,
+design doc §1; `notes/Phase42m.md`): the eleven red nodes of `pencil-d.tex`'s
 `sec:pencil-d-generic`, from `lem:pencil-d-lift-small` (the first red node) to
 `thm:pencil-d-generic` and the headline `cor:pencil-d-conditioned-pair`. Its close is Phase 42's,
 where Tier 0's `main_results` row is decided (design doc §3). What 42l hands on:

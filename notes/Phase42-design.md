@@ -1,15 +1,20 @@
 # Phase 42 — PENCIL-D: design (cross-phase plan and recon)
 
-**Status:** opened 2026-10-29 with the PI, sub-lettered, research first; no sub-phase open;
-PD-HEAD's first half complete.
+**Status:** opened 2026-10-29 with the PI, sub-lettered, research first; **42m open**.
+**42m** (PD-HEAD's `-generic`, `notes/Phase42m.md`) **opened 2026-11-05** at the PI's word (§1): the
+eleven nodes of `pencil-d.tex`'s `-generic` (the cases of an induction on the bodies at few bodies,
+a cut edge, a body of degree one, a pendant triangle, no planar-rigid set and a body of degree two
+with hub neighbours; finding that body and its condition; the generic theorem and the headline) as
+the chapter states them (§3). They are the blueprint's last red nodes, so its close is Phase 42's.
+Its next step is the pre-build recon.
 **42l** (PD-HEAD's `-nondegenerate` and `-lift`, `notes/Phase42l.md`) **opened and closed
 2026-11-04** at the PI's word (§1): the ten nodes of `pencil-d.tex`'s `-nondegenerate` and `-lift`
 (nondegeneracy in dimension `d`, its agreement at `d = 3`, linear maps, feasibility in every
 dimension, a parametrization in dimension three, lifts, lifts are nondegenerate, the general lift
 attains, one lift suffices, lifts restrict to a subgraph), all green, as the chapter states them,
 in four builds from its recon's spikes (verdict §3; at the PI's word, §1, the parametrization's
-statement takes the Lean's six auxiliary vectors). PD-HEAD's other half, `-generic` (§3: eleven
-nodes, the headline among them), is next, at the PI's word; its close is Phase 42's.
+statement takes the Lean's six auxiliary vectors). PD-HEAD's other half, `-generic`, then opened
+as 42m.
 **42k** (PD-REDUCTION, `notes/Phase42k.md`) **opened and closed 2026-11-04** at the PI's word
 (§1): the eight nodes of `pencil-d.tex`'s `-reduction` (a hinge in two pencils, moving a
 realization by a linear map, moving one side of a cut edge, the cases at a loop, on at most two
@@ -78,7 +83,7 @@ together, with the distinct statement (42j), which completes the induction, and 
 reduction, which carries it to every multigraph (42k): the headline's bare and distinct conjuncts
 at every `d ≥ 3` (`Graph.graded_pencil_realization_theorem`). The generic conjunct (PD-HEAD)
 remains: its nondegeneracy and lifts in every dimension are formalized (42l), and the generic
-theorem and the headline (`-generic`) are next.
+theorem and the headline (`-generic`) are open (42m).
 `d = 4, 5, 6` are measured (Results 11, 19), not found below target under the `--d4`
 population's cap (`n ≤ 12`, 36 simple graphs) and 8 graphs past it. Where the
 conjecture has content, that is 47 cells on 18 graphs, six of them cycles (§2.5).
@@ -518,6 +523,49 @@ fibre-intersection lemma and Jackson–Jordán's equality.
   empty, three for each product, with a formalization note after the proof that five suffice (a
   body that is not a hub fills its own place) and that the formalization takes six; R-22 is
   aligned.
+- **PI, 2026-11-05 (42m's open):** asked "Phase 42m isn't open yet. It would be PD-HEAD's second
+  half, -generic: 11 red nodes of pencil-d.tex. Nine are lemmas: the generic conjunct's cases (few
+  bodies, a cut edge, a pendant body, a pendant triangle, no planar-rigid set, the degree-2 ear) and
+  three helpers that find the ear and supply its condition. The other two are thm:pencil-d-generic
+  and the headline cor:pencil-d-conditioned-pair. 10 of the 11 use 42l's Lean. The d = 3 templates
+  are Pair.lean (967 lines) and Pair2.lean (622). Closing 42m closes Phase 42, and that close is
+  where Tier 0's main_results row gets decided. What should 42m open as?", the PI answered "All 11
+  as written (Recommended)", whose option read: "An Opus open commit, then a pre-build recon that
+  spikes all 11 against Phase 39's d = 3 Lean and 42l's Lean. Then roughly 4–7 builds (my estimate)
+  and the close of 42m and Phase 42 together." The other options put were "Recon first, scope
+  after" ("Open on all 11, but the recon sizes the section and comes back to you before any
+  build.") and "Cases now, headline later" ("Open on the 9 lemmas only. thm:pencil-d-generic and
+  the headline (Phase 42's close) wait for a further sub-phase.").
+  *Note (not the PI's text):* the question and the option text are the coordinator's words, so
+  "roughly 4–7 builds" is the coordinator's estimate, and the line counts are the coordinator's
+  recollection of the figures in the 42l entry above, not re-counted in that session. 42m's open
+  checked the rest against the chapter and the source. The counts hold: the eleven are the red
+  nodes of `sec:pencil-d-generic`, the only red nodes of the 62 from `sec:pencil-d-induction` on
+  and of the whole blueprint; nine are lemmas, six of them cases and three helpers, and the other
+  two are the theorem and the headline. The cases' short names hold, with qualifiers they leave
+  out: "few bodies" is `lem:pencil-d-lift-small`, which also takes a triangle and a disconnected
+  multigraph; "a cut edge" (`-lift-cut-edge`) has two sides of at least two bodies; "a pendant
+  body" (`-lift-pendant`) is a body of degree one whose neighbour has another; "no planar-rigid
+  set" (`-lift-no-rigid`) also asks that the general configuration attain, which the coverage
+  gives; "the degree-2 ear" (`-lift-ear`) is a body of degree two with non-adjacent hub neighbours,
+  under `def_d(G − x) ≤ def_d(G)` and a hypothesis on the lifts of `G − x`. The cases are those of
+  `thm:pencil-d-generic`'s own induction. "Three helpers that find the ear and supply its condition"
+  compresses the 42l entry above: `lem:pencil-d-good-ear` finds the ear or a pendant triangle, so it
+  serves the pendant-triangle case too; `-ear-free` supplies the ear's condition, and `-ear-extend`
+  serves `-ear-free` alone. "10 of the 11 use 42l's Lean" holds, as 42l's open found: every node
+  but `-good-ear` `\uses` a node of 42l, nine of 42l's ten between them (not
+  `lem:pencil-d-nondegenerate-maps`); `-ear-extend` uses only the steer lemma, and the headline the
+  definition and `-three`, with `thm:pencil-d-generic` in its proof. The line counts hold (`wc -l`
+  at 42m's open: `Pencil/Pair.lean` 967, `Pair2.lean` 622), but the two files are the `d = 3` Lean
+  of three of the six cases and of part of the assembly, not of all eleven: `Pair.lean` has the
+  two-body and no-crossing-edge parts of `-lift-small` and `-lift-cut-edge`, and `Pair2.lean`
+  `-lift-pendant` and the assembly's cut-edge step (`pencilPair_of_not_twoEdgeConnected`). The rest
+  of `-generic`'s `d = 3` Lean is in `Pencil/MainComponent/`: `GenericTriangle.lean` 1009 (the
+  triangle and the pendant triangle), `GenericBase.lean` 948 (no planar-rigid set), `GoodEar.lean`
+  441, `GenericEar.lean` 593 (the one-body ear) and `Statements.lean` 183 (the generic step's case
+  split and the conditioned pair). `-ear-extend` and `-ear-free` have no `d = 3` Lean, as at
+  `d = 3` no lift is needed. "Where Tier 0's main_results row gets decided" holds (§3, *At Phase
+  42's close*).
 
 ## 2. PD-RECON (42a)
 
@@ -1167,6 +1215,16 @@ marked `no departure` (R-6). The post-Phase-42 cleanup acts on the ledger (that 
   `finrank_dotPerp_span_singleton_of_ne_zero`) to `Grade/Realization.lean` beside
   `finrank_dotPerp`, with 42k's `dotPerp_map_eq`; at a cleanup round, the mirror candidate
   `finrank_map_of_injOn` (`Grade/Nondegenerate.lean`).
+  **PD-HEAD's second half, as 42m, opened 2026-11-05** at the PI's word (§1; `notes/Phase42m.md`):
+  `-generic` (11), the eleven nodes as the chapter states them. They are the blueprint's last red
+  nodes, so 42m's close is Phase 42's. The open's consistency read passed all eleven, their 46
+  outside dependencies green (53 with the `\cref`s), nine of them 42l's nodes. The open added
+  findings for the recon (that note's *Blockers*): Phase 39's `Pair.lean` and `Pair2.lean` carry
+  three of the six cases, and the rest of the `d = 3` Lean is five files of `MainComponent/`; the
+  good ear's `d = 3` Lean returns the body alone, its other parts read off the proof; the ear's
+  condition joins two nodes through `HoldsGenerally`, which depends on the selectors; `-ear-free`
+  re-runs two steps of `-lift-no-rigid`'s proof, which itself uses a step of one-witness's proof,
+  not its statement; and `-lift-cut-edge` `\cref`s the fibre-intersection lemma without `\uses`.
   **At Phase 42's close**, Tier 0 joins `formalization.yaml`'s
   `main_results` and `alignment` unless the headline subsumes it, with a closed non-vacuity witness
   in `CombinatorialRigidity/Nonvacuity.lean` (`PHASE-BOUNDARIES.md`); 42c's intermediate close
@@ -1177,7 +1235,8 @@ marked `no departure` (R-6). The post-Phase-42 cleanup acts on the ledger (that 
 
 **The red nodes by layer** (42e's open, by section of `pencil-d.tex`; a letter is minted only as
 a sub-phase opens). From `sec:pencil-d-induction` on the chapter has 62 dep-graph nodes, 11 of them
-red (recounted at 42l's close; the first red node is `lem:pencil-d-lift-small`): 65 at 42e's
+red (recounted at 42l's close and again at 42m's open; the first red node is
+`lem:pencil-d-lift-small`): 65 at 42e's
 open, all red, 4 green at its close, 3 cut at 42f's open (the PI, §1), 6 green at 42f's close, 7
 at 42g's, 8 at 42h's, 4 at 42i's, 4 at 42j's, 8 at 42k's and 10 at 42l's. The count of 66 put to
 the PI at 42e's open (§1) included `rem:pencil-d-flat-class`, a remark, which the dependency graph
@@ -1194,8 +1253,8 @@ does not draw (it draws definitions, lemmas, propositions, theorems and corollar
   green.
 - PD-REDUCTION: `-reduction` (8), Phase 39's reduction; 8, as 42k, closed, all green.
 - PD-HEAD: `-nondegenerate` (4) and `-lift` (6), as 42l, closed, all green; `-generic` (11, ending
-  in the headline `cor:pencil-d-conditioned-pair`), no letter, all red; 21, the generic conjunct and
-  the headline, the largest layer.
+  in the headline `cor:pencil-d-conditioned-pair`), as 42m, open, all red; 21, the generic conjunct
+  and the headline, the largest layer.
 
 PD-STATE and PD-STABLE do not depend on the route, so they ran beside PD-RECON (§1's defaults).
 PD-STATE opened and closed as 42b on 2026-10-30, and PD-STABLE as 42c the same day.
