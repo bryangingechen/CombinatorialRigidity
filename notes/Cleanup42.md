@@ -9,10 +9,10 @@ row to §2 for each departure, with no prose or Lean edit, then a stop at which 
 remedy per `open` row and plans rounds 2+ (§3). `.claude/autopilot/queue.toml` carries it as
 `CLEANUP-42`, attended, between PENCIL-D (done) and ORIGAMI; ROADMAP *Queued post-program phases*
 lists it. Its input is the proof-route ledger (§2): 34 rows at Phase 42's close (2026-11-05), 27
-`open`, 6 `aligned`, 1 `no departure`, to which round 1 adds; after its task 10, 43 rows, 28
-`open`, 6 `aligned` and 9 `no departure` (R-35 `open`, R-36 to R-43 `no departure`; R-1 to R-16
-re-checked, R-7, R-9, R-12, R-15 and R-16 corrected in place). **Next concrete task:** round 1's
-task 11, PD-COVERAGE (42j) (`notes/Phase42-cleanup.md` *Lemma checklist*).
+`open`, 6 `aligned`, 1 `no departure`, to which round 1 adds; after its task 11, 45 rows, 28
+`open`, 6 `aligned` and 11 `no departure` (R-35 `open`, R-36 to R-45 `no departure`; R-1 to R-17
+re-checked, R-7, R-9, R-12, R-15, R-16 and R-17 corrected in place). **Next concrete task:** round
+1's task 12, PD-REDUCTION (42k) (`notes/Phase42-cleanup.md` *Lemma checklist*).
 
 ## 1. The PI's decisions (verbatim)
 
@@ -281,8 +281,9 @@ task in `notes/Phase42-cleanup.md`, and its re-checks of R-1 to R-34 are recorde
   chains are the classes: two chains sharing an interior body have the same interior bodies
   (`Graph.IsChain.range_subset_of_mem`, walking along bodies of degree two), and every body of
   degree two lies on one (`lem:pencil-x0-chain-exists`). The edges at the interior bodies of a chain
-  number one more than those bodies, and are disjoint between chains. With `T` the bodies of degree
-  two and `c` the classes: `T + c ≤ |E(G)|` and `T + ℓ ≤ k + ℓc`; the handshake bound
+  number at least one more than those bodies (the chain's own `k + 1` edges,
+  `Graph.IsOpenEar.range_subset_inc`), and are disjoint between chains. With `T` the bodies of
+  degree two and `c` the classes: `T + c ≤ |E(G)|` and `T + ℓ ≤ k + ℓc`; the handshake bound
   `3|V(G)| − T ≤ 2|E(G)|` (`Graph.IsX0Graph.three_mul_sub_le_two_mul_ncard`, from the proof of
   `lem:pencil-x0-sparse-count`) replaces the branch degrees; `|E(G[V₁])| ≥ |E(G)| − (k + 1)` is
   used as an inequality. The same final count (`e − |B|` is `|E(G)| − |V(G)|`).
@@ -680,6 +681,37 @@ task in `notes/Phase42-cleanup.md`, and its re-checks of R-1 to R-34 are recorde
   `thm:pencil-d-open-ear-four`'s; it reads `p_a ∈ Π_a` and `p_b ∈ Π_b` by
   `pencilConfigPointGrade_eq_gradeSigma_iff`, and stars-three's three dimensions by
   `finrank_range_gradeSigma`.
+
+- **R-44** · `lem:pencil-d-chain-count` and `thm:pencil-d-chain-or-core`, their `ℓ ≥ 1`
+  (`Graph.IsChain.partitionDef_induce_le`, `Graph.IsX0Graph.exists_chain_or_core`,
+  `Grade/Chains.lean`, round 1 task 11) · **no departure**: both nodes take `ℓ ≥ 1` beside
+  `3(ℓ + 1) ≤ D`, and neither proof reads it; neither pin takes `1 ≤ ℓ`, only
+  `3 * (ℓ + 1) ≤ Graph.bodyBarDim n`. At `ℓ = 0` the count's hypotheses contradict each other, as a
+  chain has an interior body (`hshort` at `hC`, against `hC.one_le`). The theorem's outcomes at
+  `ℓ = 1`, admissible at every `d ≥ 3` (`D ≥ 6`; the pin takes `3 ≤ n`), give those at `ℓ = 0`: a
+  chain with more than one interior body has more than none, and the other two outcomes do not
+  read `ℓ`. The chapter's `ℓ ≥ 1` is the setting, read only by the count's closing remark (at
+  `d = 3` only `ℓ = 1` is allowed).
+
+- **R-45** · `thm:pencil-d-coverage`, `G″` in the chain case and the "proof of" citations
+  (`Graph.IsX0Graph.x0AttainsGrade`, `Grade/Coverage.lean`;
+  `Graph.IsOpenEar.isX0Graph_splitOff_succ`, `MainComponent/CoverageCut.lean`; round 1 task 11) ·
+  **no departure**: the chapter shows that `G″` (`x₂` suppressed) satisfies the standing
+  hypotheses at every chain with `k ≥ 3`, before it splits on `k`, reading the edges at `x₂` and
+  at `x₁` off the degree two of a chain's interior bodies (`def:pencil-x0-chain`). The pin settles
+  `screwDim (m + 1) - 1 ≤ k` first by the long ear, which needs only `G[V₁]`, and forms `G″` in
+  the other two branches only, by the `d = 3` helper `isX0Graph_splitOff_succ`. That helper reads
+  the same edges off the open ear (`Graph.IsOpenEar.isLink_interior`: every edge off the path lies
+  inside `V₁`), then calls part (2) of `lem:pencil-x0-chain-standing` (`Graph.IsX0Graph.splitOff`)
+  with the chapter's facts: the two edges at `x₂`, and `x₃` neither `a` nor `x₂`, so `x₁ ≠ x₃` and
+  the two are not adjacent. An order, and another definition cited for one clause. The three edges
+  `scripts/blueprint-deps.py` calls *unbacked* (`lem:pencil-x0-cut-reduces`, `-cycle-reduces`,
+  `-planar-rigid-reduces`) are the proof's "the proof of" citations: the pin calls the data lemmas
+  factored from those `d = 3` proofs (`Graph.IsX0Graph.exists_bridgePath_of_not_twoEdgeConnected`,
+  `Graph.IsX0Graph.exists_cutVertex_of_not_connected`,
+  `Graph.IsX0Graph.exists_cycle_of_forall_degree_eq_two`,
+  `Graph.exists_rigidCore_of_deficiency_two_pos`), not their `X0Reduces` pins. The rest is the
+  chapter's proof, case by case and in its order.
 
 ## 3. The cleanup's rounds
 

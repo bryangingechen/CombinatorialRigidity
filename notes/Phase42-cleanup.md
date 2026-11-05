@@ -7,11 +7,11 @@ from the chapter's route; its plan, the PI's words and the proof-route ledger ar
 and adds a ledger row for each departure, re-checking R-1 to R-34 at HEAD; it edits no prose,
 statement, pin or Lean. The open (task 1, docs only) sliced the nodes by layer into 14
 one-dispatch Opus recon tasks, the 47 never-checked nodes of 42b–42f first, then a planned stop
-(task 16) at which the PI picks a remedy per `open` row and plans rounds 2+. Tasks 2 to 10
-(PD-STATE, PD-STABLE, COUNT-A and COUNT-B, PD-CARRIER, PD-STEPS) added R-35 (`open`), R-36 to R-43
-(`no departure`); tasks 8 to 10 re-checked R-1 to R-16, correcting R-7, R-9, R-12, R-15 and R-16
-in place. **Next concrete task:** task 11, PD-COVERAGE (42j), `sec:pencil-d-chains` and
-`sec:pencil-d-coverage`, re-checking R-17 (*Lemma checklist*). Round manual: `CLEANUP.md`.
+(task 16) at which the PI picks a remedy per `open` row and plans rounds 2+. Tasks 2 to 11
+(PD-STATE, PD-STABLE, COUNT-A and COUNT-B, PD-CARRIER, PD-STEPS, PD-COVERAGE) added R-35 (`open`),
+R-36 to R-45 (`no departure`); tasks 8 to 11 re-checked R-1 to R-17, correcting R-7, R-9, R-12,
+R-15, R-16 and R-17 in place. **Next concrete task:** task 12, PD-REDUCTION (42k),
+`sec:pencil-d-reduction`, re-checking R-18 and R-19 (*Lemma checklist*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -25,11 +25,10 @@ picks a remedy per `open` row and plans rounds 2+ (`notes/Cleanup42.md` §3). An
 
 ## Current state
 
-**Tasks 1 to 10 have landed** (task 10 this commit: one `no departure` row, R-43, the planes of
-`-planes-meet` and of the theorem read as ranges of `σ_v`; R-13 and R-14 accurate at HEAD, R-15 and
-R-16 corrected in place; one line under *Moved to a later round*; the checklist's landed lines cut
-to a three-line register). The ledger has 43 rows, 28 `open`; the next row is R-44. Nothing is
-mid-stream; task 11 is next.
+**Tasks 1 to 11 have landed** (task 11 this commit: two `no departure` rows, R-44, the `ℓ ≥ 1`
+that neither chain pin takes, and R-45, the coverage's `G″`, formed after the long ear and read off
+the open ear; R-17 corrected in place; no *Candidates* or *Moved* line). The ledger has 45 rows, 28
+`open`; the next row is R-46. Nothing is mid-stream; task 12 is next.
 
 **Verified at the open** (2026-11-05, at `a3b80ac4`):
 - **The Lean baseline** is the coordinator's run this session, not repeated here: `lake build
@@ -157,13 +156,10 @@ or *Moved* line. The reasons stay in the landing commit's message and in the led
 - [x] **9. 42h** (`2d8a3fc4`). No departure: R-41, R-42; `lem:pencil-d-insertion`, `-ear-data-open`,
   `def:pencil-d-ear-data`. Re-checks: R-8 (`aligned`), R-10, R-11 accurate; R-7, R-9, R-12
   corrected.
-- [x] **10. 42i** (this commit). No departure: R-43. Re-checks: R-13 (`aligned`), R-14 accurate;
+- [x] **10. 42i** (`f64d5734`). No departure: R-43. Re-checks: R-13 (`aligned`), R-14 accurate;
   R-15, R-16 corrected. One *Moved* line.
-- [ ] **11. PD-COVERAGE (42j).** `sec:pencil-d-chains` (2117–2299) and `sec:pencil-d-coverage`
-  (3934–4139), 4 medium to heavy nodes (the coverage's proof is 131 lines). Re-checks R-17
-  (`lem:pencil-d-chain-count`); fresh: `thm:pencil-d-chain-or-core`, `thm:pencil-d-coverage`,
-  `lem:pencil-d-distinct-statement`. Reads `Grade/Chains.lean`, `Grade/Coverage.lean`, and the
-  `MainComponent/` reductions the coverage calls.
+- [x] **11. 42j** (this commit). No departure: R-44, R-45; `lem:pencil-d-distinct-statement`.
+  Re-checks: R-17 corrected.
 - [ ] **12. PD-REDUCTION (42k).** `sec:pencil-d-reduction` (4141–4629), 8 medium nodes. Re-checks
   R-18 (`lem:pencil-d-base-case`), R-19 (`lem:pencil-d-nonsimple-case`); fresh:
   `lem:pencil-d-two-pencil-extension`, `lem:pencil-d-projective-transport`,
@@ -214,14 +210,13 @@ or *Moved* line. The reasons stay in the landing commit's message and in the led
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 11, PD-COVERAGE (42j). One Opus recon reads the four nodes of
-`sec:pencil-d-chains` and `sec:pencil-d-coverage` (`lem:pencil-d-chain-count`,
-`thm:pencil-d-chain-or-core`, `thm:pencil-d-coverage`, `lem:pencil-d-distinct-statement`) against
-their pins in `Grade/Chains.lean`, `Grade/Coverage.lean` and the `MainComponent/` reductions the
-coverage calls, under *The audit's criterion*: it re-checks R-17 at HEAD and reads the three fresh
-nodes whole, then lands one docs commit: any new rows in `notes/Cleanup42.md` §2 (from R-44), its
-**Status**, and task 11's line here, cut to the checklist's three-line register. Then tasks 12–15
-in order, and the stop.
+**Next concrete task:** task 12, PD-REDUCTION (42k). One Opus recon reads the eight nodes of
+`sec:pencil-d-reduction` against their pins in `Grade/TwoPencil.lean`, `Grade/Arms.lean` and
+`Grade/Reduction.lean`, under *The audit's criterion*: it re-checks R-18 and R-19 at HEAD and reads
+the six fresh nodes whole (task 12's line), then lands one docs commit: any new rows in
+`notes/Cleanup42.md` §2 (from R-46), its **Status**, and task 12's line here, ticked in the
+checklist's three-line register. The fold of the `d = 3` reduction into 42k's cases is already in
+`notes/Cleanup42.md` §3 *Also left to it*. Then tasks 13–15 in order, and the stop.
 
 ## Decisions made during this round
 
