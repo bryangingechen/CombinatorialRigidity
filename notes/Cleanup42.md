@@ -13,7 +13,7 @@ every open row its remedy the same day, at round 1's stop and at a second stop o
 `kept` (a part keeps both routes, with a formalization note); no row goes H, so round 3 is empty.
 Round 2, opened 2026-11-05, applies them to the chapter in eight slices by layer, then one `\uses`
 sweep (blueprint and notes, no Lean); each slice sets its rows' status, and the tally here. The
-ledger now: 8 `open`, 18 `aligned`, 14 `kept`, 14 `no departure`. **Next concrete task:** round 2's
+ledger now: 4 `open`, 21 `aligned`, 15 `kept`, 14 `no departure`. **Next concrete task:** round 2's
 next open task (`notes/Phase42-align.md`'s **Status**); after round 2, round 4 (§3).
 
 ## 1. The PI's decisions (verbatim)
@@ -515,29 +515,38 @@ there.
 - **R-24** · the cases' (T1), `lem:pencil-d-lift-pendant` and `lem:pencil-d-lift-ear` (and the
   pendant triangle on their template) (`exists_minorPoly`, `liftAttains_of_pendant`,
   `liftAttains_of_ear`, `liftAttains_of_pendantTriangle`; 42m's recon spike, landed in
-  `Grade/LiftCases.lean` at 42m build 2) · **open** (spiked; the chapter stays as the prose).
-  *Chapter:* `E` is a product of minors, one for each condition of nondegeneracy of `G` that reads
-  only bodies of `H` and is not a condition of `H`, nonzero at `r|_H`.
+  `Grade/LiftCases.lean` at 42m build 2) · **aligned, round 2 task 8**.
+  *Chapter (until then):* `E` is a product of minors, one for each condition of nondegeneracy of
+  `G` that reads only bodies of `H` and is not a condition of `H`, nonzero at `r|_H`.
   *Lean (the recon's spike):* `E` is the product of one minor per closed hub-neighbourhood in `G`
   of every body (each lies in `V(H)`, as a removed body is no hub), so the conditions already of
   `H` are included, harmlessly; at the ear, times one of `b_a · n_b`, `b_b · n_a`. One lemma
   (`exists_minorPoly`) gives each minor with its homogeneity and variables.
   *Remedies:* the prose to the Lean (shorter: no case analysis of which conditions are new), or
-  keep both.
+  keep both. The prose to the Lean, taken (the PI, 2026-11-05): in all three cases `E` is the
+  product, over the closed hub-neighbourhoods of `G` (each inside `V(H)`, a removed body being no
+  hub), of a maximal minor of their vectors nonzero at `r|_H`, off whose zero set they are
+  independent; at the ear, times one of the two products; each (T1) then reads the third condition
+  of `G` off `E(r_H) ≠ 0`, the removed bodies' vectors entering none.
 - **R-25** · `lem:pencil-d-lift-pendant`, (T1) (`pendant_T1`; 42m's recon spike, landed in
-  `Grade/LiftCases.lean` at 42m build 2) · **open** (spiked; the chapter stays as the prose).
-  *Chapter:* two cases, `u` with at least two neighbours in `H` (a hub of `G`: `b⁰_v` in `Π⁰_u` off
+  `Grade/LiftCases.lean` at 42m build 2) · **aligned, round 2 task 8**.
+  *Chapter (until then):* two cases, `u` with at least two neighbours in `H` (a hub of `G`: `b⁰_v` in `Π⁰_u` off
   `K b⁰_u`) or with one neighbour `w` (replace `Π⁰_u` by the span of `b⁰_u, b⁰_v, b⁰_w`); the
   statement asks that `u` have another neighbour.
   *Lean (the recon's spike):* the split is on whether `u` is a hub of `G`; in the second case `b'_v`
   is off the span `W` of the normals of the closed neighbourhood of `u` in `H` (of dimension at
   most two) and `n'_u = n'_v` is orthogonal to `W` and `b'_v`, which also covers `u` with no other
   neighbour. So the hypothesis that `u` has another neighbour is unused, and the pin drops it.
-  *Remedies:* the prose to the Lean, and the statement without the hypothesis, or keep both.
+  *Remedies:* the prose to the Lean, and the statement without the hypothesis, or keep both. The
+  prose to the Lean and the statement without the hypothesis, taken (the PI, 2026-11-05): "with a
+  body `v` of degree one, adjacent to `u`"; (T1) split on `u` a hub of `G` (`b⁰_v` in `Π⁰_u` off
+  `K b⁰_u`) or not (`b⁰_v` off the span `W`, of dimension at most two, of the points of `u`'s
+  closed neighbourhood in `H`, and `Π⁰_u = Π⁰_v` a three-dimensional subspace containing `W` and
+  `b⁰_v`), the second case covering `u` alone in `H`; `thm:pencil-d-generic`'s derived clause cut
+  (R-54).
 - **R-26** · `lem:pencil-d-lift-pendant` and `lem:pencil-d-lift-ear`, (T2) (`pendant_T2`, `ear_T2`;
-  42m's recon spike, landed in `Grade/LiftCases.lean` at 42m build 2) · **open** (spiked; the
-  chapter stays as the prose).
-  *Chapter:* (T2) extends a lift `(ζ, φ)` of `r⁰|_H`: `ζ_v = φ_u(b⁰_v)` with `φ_v` on `Π⁰_v` by
+  42m's recon spike, landed in `Grade/LiftCases.lean` at 42m build 2) · **aligned, round 2 task 8**.
+  *Chapter (until then):* (T2) extends a lift `(ζ, φ)` of `r⁰|_H`: `ζ_v = φ_u(b⁰_v)` with `φ_v` on `Π⁰_v` by
   its values at a basis; at the ear, `ζ_x = φ_a(b⁰_x) = φ_b(b⁰_x)` and `φ_x` by its values at
   `b⁰_a, b⁰_x, b⁰_b`.
   *Lean (the recon's spike):* `lift_transfer`'s (T2) reads the maps `L(b⁰)`, a form `ψ_y` on `K⁴`
@@ -545,7 +554,11 @@ there.
   `v`; the ear puts `ζ_x = φ_a(b⁰_x)` from a lift of `r⁰|_H`, extends `φ_a` and `φ_b` to `K⁴` at `a`
   and `b` (the ear's condition at `b`), and at `x` takes a form with three prescribed values at the
   independent `b⁰_a, b⁰_x, b⁰_b` (`exists_dual_three`).
-  *Remedies:* the prose to the Lean (one form per body), or keep both.
+  *Remedies:* the prose to the Lean (one form per body), or keep both. The prose to the Lean, taken
+  (the PI, 2026-11-05): the pendant's (T2) on a map of `L(b⁰|_{V(H)})` with a form `ψ_y` on `K⁴`
+  per body (part (2) of `lem:pencil-d-lift-realization`), `ζ_v = ψ_u(b⁰_v)` and `ψ_u` at `u` and
+  `v`; the ear's extends each `φ_y` to `K⁴` and takes at `x` a form with the values `ζ_a, ζ_x, ζ_b`
+  at the independent `b⁰_a, b⁰_x, b⁰_b`; both proofs `\uses` `lem:pencil-d-lift-realization`.
 - **R-27** · `lem:pencil-d-lift-small` (1), the triangle (`linearIndependent_normalsJoin_triangle`,
   `finrank_triangle`, `liftAttains_of_triangle`; 42m's recon spike, landed in `Grade/LiftSmall.lean`
   at 42m build 1) · **kept, round 2 task 7**.
@@ -579,7 +592,7 @@ there.
 
 - **R-29** · `lem:pencil-d-lift-pendant-triangle`, and the pins of `-lift-pendant` and `-lift-ear`
   (`liftAttains_of_pendantTriangle`, `pendantTri_*`, `Grade/LiftCases.lean`, 42m build 2) ·
-  **open** (the Lean landed as below; the chapter stays as the prose).
+  **kept, round 2 task 8**.
   *Chapter:* (T1) `b⁰_{x₁}, b⁰_{x₂}` in `Π⁰_c`, `Π⁰_{x_i} = Π⁰_c`; (T2) `ζ_{x_i} = φ_c(b⁰_{x_i})`,
   using `Π⁰_{x_i} = Π⁰_c` at every nondegenerate realization; the rank `2D` of the triangle, the
   ranks and the deficiencies add at `c`, the triangle's deficiency being zero; the pendant asks
@@ -590,7 +603,13 @@ there.
   computed: its rank `2D` (`finrank_triangle`) is at most the target (`finrank_liftNormal_le`) and
   the deficiency is nonnegative. The pendant's and the ear's pins drop the hypotheses above (R-25;
   the ear's rank needs no non-adjacency, `ear_rank`), each pin stronger than its node.
-  *Remedies:* the prose to the Lean (no `Π⁰_{x_i} = Π⁰_c`, no partition values), or keep both.
+  *Remedies:* the prose to the Lean (no `Π⁰_{x_i} = Π⁰_c`, no partition values), or keep both. The
+  ear's statement to the Lean (its pin's `a ≠ b`, not `a ≁ b`; `thm:pencil-d-generic`'s
+  "non-adjacent" cut, R-54) and the triangle's (T2) to the Lean (one form `ψ_c` on `K⁴` at `x₁`,
+  `x₂` and `c`, by part (2) of `lem:pencil-d-lift-realization`, with no `Π⁰_{x_i} = Π⁰_c`), taken;
+  for the triangle's rank and deficiency, keep both, taken: a formalization note after the proof
+  names the Lean's route (the PI, 2026-11-05). (T1)'s polarity form is the chapter's own
+  construction, unchanged but for `E` (R-24).
 
 - **R-30** · `lem:pencil-d-lift-cut-edge` (`liftAttains_of_cutEdge`, `exists_cutEdge_glue`,
   `cutEdge_T1`, `cutEdge_T2`, `cutEdge_rank`, `Grade/LiftCutEdge.lean`, 42m build 3) ·
@@ -1049,11 +1068,12 @@ there.
   no planar-rigid set, with the coverage `Graph.IsX0Graph.x0AttainsGrade`; the good ear's two
   outcomes, the ear's condition from `holdsGenerally_earFree`), each smaller graph feasible by its
   case lemma, and the outer pin is the chapter's first and last steps
-  (`gradedPencilNondegFeasible_iff`, `LiftAttains.hasGradedGenericPencilRealization`). It reads
-  less than the chapter only where a case's pin drops a hypothesis of its node: it never derives
-  that the pendant's neighbour `u` has another neighbour (R-25), and passes `a ≠ b` to the ear,
-  not `a ≁ b` (R-29). Those are the rows': R-25's prose-to-Lean remedy also strikes the proof's
-  "and its neighbour `u` has another neighbour, as `G` is connected with at least three bodies".
+  (`gradedPencilNondegFeasible_iff`, `LiftAttains.hasGradedGenericPencilRealization`). Where a
+  case's pin drops a hypothesis of its node, it read less than the chapter until round 2 task 8,
+  which restated the two nodes to their pins (R-25, R-29) and cut the proof's two derived clauses
+  to them: it no longer derives that the pendant's neighbour `u` has another neighbour ("as `G` is
+  connected with at least three bodies"), and gives the ear hub neighbours `a ≠ b`, as the Lean
+  passes them, not non-adjacent ones. The pendant arm and the ear arm now read as the Lean's.
   `|V₁|, |V₂| ≥ 2`, which the cut edge's pin drops (R-30), still bound the sides' sizes, as in the
   chapter; R-28's and R-51's drops do not reach it, as the theorem takes `G` simple and `K`
   infinite. The rest are carrier readings: "say `V₂`" as two cases, the triangle from the degrees
@@ -1145,6 +1165,15 @@ there.
     without the chapter's map `g`" among the route differences left, and "the cut edge's side
     sizes" and "`-lift-small` (2)'s simplicity" among the hypotheses the pins drop; R-30, R-32 and
     R-28 put the chapter on those routes and statements.
+  - *Moved to a later round* (round 2 task 8; round 4, as it edits Lean, and a note outside round
+    2's writes): a stale docstring and a dated sentence. `Grade/LiftCases.lean`'s module docstring
+    ends "The chapter's two statements are kept in the pins' stronger form: the pendant drops
+    "whose neighbour has another neighbour" and the ear drops "not adjacent"" (R-25, R-29); since
+    task 8 the two statements are their pins'. `notes/BlueprintExposition.md`'s 42m entry lists
+    "the cases' polynomials by one minor per closed hub-neighbourhood" and "one form per body in
+    (T2)" among the route differences left, and "the pendant's other neighbour" and "the ear's
+    non-adjacency" among the hypotheses the pins drop; R-24, R-26, R-25 and R-29 put the chapter on
+    those routes and statements.
 - **The ledger at Phase 42's close:** the standing rule (§1) kept §2 current through PD-STEPS's
   rest, PD-COVERAGE, PD-REDUCTION and PD-HEAD (`notes/Phase42-design.md` §3), the last rows 42m's,
   R-24 to R-34; Phase 42 closed on 2026-11-05 with no row added after them. Round 1 adds from R-35.

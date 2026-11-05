@@ -5842,53 +5842,74 @@ the conditioned pair in every dimension
   $5$.
 \end{proof}
 
-% Source: NONDEG workbook, S22.
+% Source: NONDEG workbook, S22, which asks for three bodies, takes E from the conditions of G
+% that are not conditions of G - v, and splits (T1) on the neighbours of u in G - v. (T1) and
+% (T2) follow the formalization (liftAttains_of_pendant, pendant_T1, pendant_T2): E one minor
+% for each closed hub-neighbourhood of G, the split on u a hub of G, whose second case also
+% covers u with no neighbour in G - v, and one linear form on K^4 at every body.
 \begin{lemma}[A body of degree one]
   \label{lem:pencil-d-lift-pendant}
   \lean{CombinatorialRigidity.Molecular.liftAttains_of_pendant}
   \leanok
   \uses{def:pencil-d-lift-attains}
   Let $K$ be infinite and $d \ge 3$, and let $G$ be simple and
-  nondegeneracy-feasible, with a body $v$ of degree one whose neighbour
-  $u$ has another neighbour. Let $H = G - v$. Then $H$ is
-  nondegeneracy-feasible, and if its general lift attains in dimension
-  $d$, so does that of $G$.
+  nondegeneracy-feasible, with a body $v$ of degree one, adjacent to $u$.
+  Let $H = G - v$. Then $H$ is nondegeneracy-feasible, and if its general
+  lift attains in dimension $d$, so does that of $G$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:pencil-generic-steer, lem:pencil-d-nondegenerate-three,
         lem:pencil-d-lift-transfer, lem:pencil-d-lift-one-witness,
-        lem:block-rank-cut, lem:cut-edge-decomposition,
-        lem:relative-deficiency-rank-bound}
+        lem:pencil-d-lift-realization, lem:block-rank-cut,
+        lem:cut-edge-decomposition, lem:relative-deficiency-rank-bound}
   \emph{(T1).} The body $v$ is not a hub, and it is the only neighbour
   that a body of $H$ loses. By \cref{lem:pencil-generic-steer}(a), read
   through \cref{lem:pencil-d-nondegenerate-three}, $G$ has a nondegenerate
   realization $r$ in dimension three whose restriction to $H$ is
-  nondegenerate. Let $E$ be a product of polynomials, one for each
-  condition of nondegeneracy of $G$ that reads only bodies of $H$ and is
-  not a condition for $H$, each a minor nonzero at $r|_H$. These are the
-  conditions at sets containing $u$, when $u$ is a hub of $G$ but not of
-  $H$. Let $r_H$ be a nondegenerate realization of $H$ with
-  $E(r_H) \ne 0$. If $u$ has at least two neighbours in $H$, it is a hub
-  of $G$. Put $b^0_v$ in $\Pi^0_u$ outside $K b^0_u$, and let $\Pi^0_v$
-  be a three-dimensional subspace through $b^0_u$ and $b^0_v$. If $u$ has
-  one neighbour $w$ in $H$, put $b^0_v$ outside the span of $b^0_u$ and
-  $b^0_w$, and replace $\Pi^0_u$, the subspace of a body of degree one in
-  $H$, by the span of $b^0_u$, $b^0_v$ and $b^0_w$; let $\Pi^0_v$ be that
-  span too. In both cases the incidences hold, the normals at $uv$ are
-  independent, and so are those of the closed neighbourhood of $u$ when
-  $u$ is not a hub of $G$. The body $v$ is in no closed
-  hub-neighbourhood, and its closed neighbourhood is $\{u, v\}$. The
-  other conditions are those of $H$ and those of $E$. So this is a
-  nondegenerate realization of $G$ restricting to $r_H$, except at the
-  subspace of a body of degree one in $H$.
+  nondegenerate. Every closed hub-neighbourhood of $G$ lies in $V(H)$, as
+  $v$ is not a hub, and its vectors $n_w$ are linearly independent at $r$:
+  at $d = 3$ this is the third condition of nondegeneracy
+  (\cref{lem:pencil-d-nondegenerate-three}). Let $E$ be the product, over
+  the closed hub-neighbourhoods of $G$, of a maximal minor of the
+  coordinate matrix of their vectors that is nonzero at $r|_H$. It is a
+  polynomial in the vectors of the bodies of $H$, homogeneous in each,
+  and off its zero set the vectors of every closed hub-neighbourhood of
+  $G$ are linearly independent.
 
-  \emph{(T2).} Let $r^0$ be a nondegenerate realization of $G$ and
-  $(\zeta, \varphi)$ a lift of $r^0|_H$, whose subspace at $u$ is that of
-  $r^0$. Put $\zeta_v = \varphi_u(b^0_v)$, and let $\varphi_v$ be the
-  linear form on $\Pi^0_v$ with the values $\zeta_u$ and $\zeta_v$ at the
-  independent $b^0_u$ and $b^0_v$, extended in any way. This is a lift of
-  $r^0$: the new conditions are at $u$, for $w = v$, and at $v$.
+  Let $r_H$ be a nondegenerate realization of $H$ with $E(r_H) \ne 0$, with
+  normals $b^0$ and subspaces $\Pi^0_y = n_y^{\perp}$. If $u$ is a hub of
+  $G$, put $b^0_v$ in $\Pi^0_u$ outside $K b^0_u$, and let $\Pi^0_v$ be a
+  three-dimensional subspace through $b^0_u$ and $b^0_v$. Otherwise $u$
+  has degree at most two in $G$, so at most one neighbour in $H$, and the
+  points of its closed neighbourhood in $H$ span a subspace $W$ of
+  dimension at most two. Put $b^0_v$ outside $W$, and replace $\Pi^0_u$,
+  the subspace of a body of degree at most one in $H$, by a
+  three-dimensional subspace containing $W$ and $b^0_v$; let $\Pi^0_v$ be
+  that subspace too. In both cases the incidences hold, and the normals of
+  the closed neighbourhood $\{u, v\}$ of $v$, the two ends of $uv$, are
+  linearly independent, as $b^0_v \notin K b^0_u$. When $u$ is not a hub
+  of $G$, it is not a hub of $H$, so the points of its closed
+  neighbourhood in $H$ are linearly independent, and so are those of its
+  closed neighbourhood in $G$, which adds $b^0_v \notin W$. The vectors of
+  every closed hub-neighbourhood of $G$ are linearly independent, as
+  $E(r_H) \ne 0$ and the vectors of $v$, and of $u$ when its subspace is
+  replaced, enter none, neither being a hub. Every other condition is one
+  of $H$, at a link of $H$ or at a body that keeps its closed
+  neighbourhood and its degree. So this is a nondegenerate realization of
+  $G$ restricting to $r_H$, except at the subspace of a body of degree at
+  most one in $H$.
+
+  \emph{(T2).} Let $r^0$ be a nondegenerate realization of $G$, with
+  normals $b^0$, and let $\zeta$ be a map in $L(b^0|_{V(H)})$ for $H$. By
+  part~(2) of \cref{lem:pencil-d-lift-realization}, at every body $y$ of
+  $H$ some linear form $\psi_y$ on $K^4$ has $\zeta_w = \psi_y(b^0_w)$
+  for every $w$ in the closed neighbourhood of $y$ in $H$. Put
+  $\zeta_v = \psi_u(b^0_v)$. The closed neighbourhoods of $u$ and $v$ in
+  $G$ are that of $u$ in $H$ with $v$ added, and $\{u, v\}$, and
+  $\psi_u$ serves at both. Every other body keeps its closed
+  neighbourhood, and $\psi_y$ serves. So the extended map lies in
+  $L(b^0)$, by part~(2) again, and restricts to $\zeta$.
 
   \emph{The rank.} By \cref{lem:pencil-d-lift-transfer}, at a general
   nondegenerate realization of $G$ and a general $\lambda$, the
@@ -5909,7 +5930,10 @@ the conditioned pair in every dimension
   and the rank rises by $D - 1$.
 \end{proof}
 
-% Source: NONDEG workbook, S23.
+% Source: NONDEG workbook, S23, which takes E from the conditions of G at sets containing c,
+% and phi_{x_i} = phi_c on Pi^0_{x_i} = Pi^0_c in (T2). E and (T2) follow the formalization
+% (liftAttains_of_pendantTriangle, pendantTri_T2): one minor for each closed
+% hub-neighbourhood of G, and one linear form psi_c on K^4 at x_1, x_2 and c.
 \begin{lemma}[A pendant triangle]
   \label{lem:pencil-d-lift-pendant-triangle}
   \lean{CombinatorialRigidity.Molecular.liftAttains_of_pendantTriangle}
@@ -5925,29 +5949,46 @@ the conditioned pair in every dimension
   \leanok
   \uses{lem:pencil-generic-steer, lem:pencil-d-nondegenerate-three,
         lem:pencil-d-lift-transfer, lem:pencil-d-lift-one-witness,
-        lem:pencil-d-lift-small, lem:block-rank-cut-vertex,
-        lem:deficiency-cut-vertex, lem:relative-deficiency-rank-bound}
+        lem:pencil-d-lift-realization, lem:pencil-d-lift-small,
+        lem:block-rank-cut-vertex, lem:deficiency-cut-vertex,
+        lem:relative-deficiency-rank-bound}
   \emph{(T1).} Of the bodies of $H$ only $c$ can stop being a hub, and the
   neighbours it loses are not hubs. By \cref{lem:pencil-generic-steer}(a),
   read through \cref{lem:pencil-d-nondegenerate-three}, $G$ has a
   nondegenerate realization $r$ in dimension three whose restriction to
-  $H$ is nondegenerate. Let $E$ be a product of minors, nonzero at
-  $r|_H$, for the conditions of $G$ at sets containing $c$ that are not
-  conditions of $H$. Let $r_H$ be a nondegenerate realization of $H$ with
-  $E(r_H) \ne 0$. Put $b^0_{x_1}, b^0_{x_2}$ in $\Pi^0_c$ with $b^0_c$,
-  $b^0_{x_1}$ and $b^0_{x_2}$ linearly independent, and let
+  $H$ is nondegenerate. Every closed hub-neighbourhood of $G$ lies in
+  $V(H)$, as $x_1$ and $x_2$ are not hubs, and its vectors $n_w$ are
+  linearly independent at $r$, by the third condition of nondegeneracy
+  (\cref{lem:pencil-d-nondegenerate-three}). Let $E$ be the product, over
+  the closed hub-neighbourhoods of $G$, of a maximal minor of the
+  coordinate matrix of their vectors that is nonzero at $r|_H$. It is a
+  polynomial in the vectors of the bodies of $H$, homogeneous in each,
+  and off its zero set the vectors of every closed hub-neighbourhood of
+  $G$ are linearly independent.
+
+  Let $r_H$ be a nondegenerate realization of $H$ with $E(r_H) \ne 0$, with
+  normals $b^0$ and subspaces $\Pi^0_y = n_y^{\perp}$. Put
+  $b^0_{x_1}, b^0_{x_2}$ in $\Pi^0_c$ with $b^0_c$, $b^0_{x_1}$ and
+  $b^0_{x_2}$ linearly independent, and let
   $\Pi^0_{x_1} = \Pi^0_{x_2} = \Pi^0_c$. The incidences hold, the normals
   of the closed neighbourhood $\{x_1, x_2, c\}$ of each $x_i$ are
-  independent, and so are those of every link of the triangle. The closed
-  hub-neighbourhood of $x_i$ is $\{c\}$. The other conditions are those of
-  $H$ and of $E$. So this is a nondegenerate realization of $G$
-  restricting to $r_H$.
+  independent, and so are those of every link of the triangle. The
+  vectors of every closed hub-neighbourhood of $G$ are linearly
+  independent, as $E(r_H) \ne 0$ and the vectors of $x_1$ and $x_2$,
+  which are not hubs, enter none. The other conditions are those of $H$.
+  So this is a nondegenerate realization of $G$ restricting to $r_H$.
 
-  \emph{(T2).} Given a lift $(\zeta, \varphi)$ of $r^0|_H$, put
-  $\zeta_{x_i} = \varphi_c(b^0_{x_i})$ and $\varphi_{x_i} = \varphi_c$,
-  using that $\Pi^0_{x_i} = \Pi^0_c$ at every nondegenerate realization
-  of $G$: the normals of $x_1$, $x_2$ and $c$ are independent and lie in
-  both. The conditions at $c$ and at $x_1$, $x_2$ hold.
+  \emph{(T2).} Let $r^0$ be a nondegenerate realization of $G$, with
+  normals $b^0$, and let $\zeta$ be a map in $L(b^0|_{V(H)})$ for $H$. By
+  part~(2) of \cref{lem:pencil-d-lift-realization}, at every body $y$ of
+  $H$ some linear form $\psi_y$ on $K^4$ has $\zeta_w = \psi_y(b^0_w)$
+  for every $w$ in the closed neighbourhood of $y$ in $H$. Put
+  $\zeta_{x_i} = \psi_c(b^0_{x_i})$. The closed neighbourhoods of $x_1$,
+  $x_2$ and $c$ in $G$ are $\{x_1, x_2, c\}$, twice, and that of $c$ in
+  $H$ with $x_1$ and $x_2$ added, and $\psi_c$ serves at all three. Every
+  other body keeps its closed neighbourhood, and $\psi_y$ serves. So the
+  extended map lies in $L(b^0)$, by part~(2) again, and restricts to
+  $\zeta$.
 
   \emph{The rank.} At a lift, the normals of $c$, $x_1$ and $x_2$ are
   linearly independent, so the triangle is infinitesimally rigid, of rank
@@ -5965,6 +6006,14 @@ the conditioned pair in every dimension
   triangle has rank $12$. In dimension $d$ the lifts of $x_1$ and $x_2$
   are read off that of $c$, and the triangle has rank $2D$.
 \end{proof}
+
+\begin{fmlnote}
+  The formalization proves that the triangle's deficiency is zero
+  without the values of the partitions, as it does for the triangle of
+  \cref{lem:pencil-d-lift-small}: the rank $2D$ of the rigid triangle is
+  at most its target (\cref{lem:relative-deficiency-rank-bound}), which
+  is at most $2D$ as the deficiency is never negative, so the two agree.
+\end{fmlnote}
 
 % Source: NONDEG workbook, S25 (with S13 and S14's corollary). The fresh read of the
 % coverage notes that S25's points are a coordinate permutation of the chapter's; with the
@@ -6188,7 +6237,11 @@ the conditioned pair in every dimension
 \end{proof}
 
 % Source: NONDEG workbook, S24 (1)-(4). Part (3)'s identification of the lifts of G with
-% the kernel of mu is used here only in the direction that extends a lift of G - x.
+% the kernel of mu is used here only in the direction that extends a lift of G - x. S24's
+% setting derives that a and b are not adjacent; the statement asks only a != b, as the
+% formalization does (liftAttains_of_ear), whose proof never reads the adjacency. E and (T2)
+% follow the formalization (ear_T1, ear_T2): one minor for each closed hub-neighbourhood of G
+% with one of the two products, and one linear form on K^4 at every body.
 \begin{lemma}[A body of degree two with hub neighbours]
   \label{lem:pencil-d-lift-ear}
   \lean{CombinatorialRigidity.Molecular.liftAttains_of_ear,
@@ -6197,7 +6250,7 @@ the conditioned pair in every dimension
   \uses{def:pencil-d-lift-attains}
   Let $K$ be infinite and $d \ge 3$, and let $G$ be simple and
   nondegeneracy-feasible, with a body $x$ of degree two whose neighbours
-  $a$ and $b$ are pencil hubs, not adjacent, and with
+  $a \ne b$ are pencil hubs, and with
   $\operatorname{def}_d(G - x) \le \operatorname{def}_d(G)$. Let
   $H = G - x$. Then $H$ is nondegeneracy-feasible. Suppose that at a
   general nondegenerate realization $r^0$ of $G$ in dimension three, every
@@ -6209,8 +6262,8 @@ the conditioned pair in every dimension
   \leanok
   \uses{lem:pencil-generic-steer, lem:pencil-d-nondegenerate-three,
         lem:pencil-d-lift-transfer, lem:pencil-d-lift-one-witness,
-        lem:block-rank-ear, def:panel-support-extensor,
-        lem:relative-deficiency-rank-bound}
+        lem:pencil-d-lift-realization, lem:block-rank-ear,
+        def:panel-support-extensor, lem:relative-deficiency-rank-bound}
   \emph{(T1).} An end of degree three is not a hub of $H$, and the only
   neighbour it loses is $x$, which is not a hub. By
   \cref{lem:pencil-generic-steer}(a), read through
@@ -6219,29 +6272,45 @@ the conditioned pair in every dimension
   nondegenerate. At $r$, the products $b^0_a \cdot n_b$ and
   $b^0_b \cdot n_a$ are not both zero: otherwise the independent normals
   of $x$, $a$ and $b$ would lie in the two-dimensional
-  $\Pi^0_a \cap \Pi^0_b$. Let $E$ be the product of one of them nonzero
-  at $r$ and of minors, nonzero at $r|_H$, for the conditions of $G$ that
-  read only bodies of $H$ and are not conditions of $H$. These include
-  $\Pi^0_a \ne \Pi^0_b$, the condition at $x$. Let $r_H$ be a nondegenerate
-  realization of $H$ with $E(r_H) \ne 0$. Then $\Pi^0_a \cap \Pi^0_b$ is
-  two-dimensional, and $b^0_a$ and $b^0_b$ are linearly independent and
-  not both in it, as one of the two products is nonzero. So it meets
-  their span in dimension at most one. Put
+  $\Pi^0_a \cap \Pi^0_b$. Every closed hub-neighbourhood of $G$ lies in
+  $V(H)$, as $x$ is not a hub, and its vectors $n_w$ are linearly
+  independent at $r$, by the third condition of nondegeneracy
+  (\cref{lem:pencil-d-nondegenerate-three}). Let $E$ be the product of one
+  of the two products nonzero at $r$ and, over the closed
+  hub-neighbourhoods of $G$, of a maximal minor of the coordinate matrix
+  of their vectors that is nonzero at $r|_H$. It is a polynomial in the
+  normals and the vectors of the bodies of $H$, homogeneous in each, and
+  off its zero set the vectors of every closed hub-neighbourhood of $G$
+  are linearly independent. The closed hub-neighbourhood of $x$ is
+  $\{a, b\}$, so off that zero set $n_a$ and $n_b$ are linearly
+  independent, that is, $\Pi^0_a \ne \Pi^0_b$.
+
+  Let $r_H$ be a nondegenerate realization of $H$ with $E(r_H) \ne 0$.
+  Then $\Pi^0_a \cap \Pi^0_b$ is two-dimensional, and $b^0_a$ and $b^0_b$
+  are linearly independent and not both in it, as one of the two products
+  is nonzero. So it meets their span in dimension at most one. Put
   $b^0_x$ in $\Pi^0_a \cap \Pi^0_b$ outside that span, and let $\Pi^0_x$
   be the span of $b^0_a$, $b^0_x$ and $b^0_b$, which are linearly
-  independent. The incidences hold, the normals at $ax$ and $xb$ and on
-  the closed neighbourhood $\{x, a, b\}$ are independent, and the closed
-  hub-neighbourhood $\{a, b\}$ of $x$ asks $\Pi^0_a \ne \Pi^0_b$. The
-  other conditions are those of $H$ and of $E$. So this is a nondegenerate
+  independent. The incidences hold, and the normals at $ax$ and $xb$ and
+  on the closed neighbourhood $\{x, a, b\}$ are independent. The vectors
+  of every closed hub-neighbourhood of $G$ are linearly independent, as
+  $E(r_H) \ne 0$ and the vector of $x$, which is not a hub, enters none.
+  The other conditions are those of $H$. So this is a nondegenerate
   realization of $G$ restricting to $r_H$.
 
-  \emph{(T2).} At a general nondegenerate realization $r^0$ of $G$, let
-  $(\zeta, \varphi)$ be a lift of $r^0|_H$. Put
-  $\zeta_x = \varphi_a(b^0_x) = \varphi_b(b^0_x)$, and let $\varphi_x$ be
-  the linear form on $\Pi^0_x$ with the values $\zeta_a$, $\zeta_x$ and
-  $\zeta_b$ at its basis $b^0_a$, $b^0_x$, $b^0_b$. The new conditions,
-  at $a$ and at $b$ for $w = x$ and at $x$, hold, so this is a lift of
-  $r^0$.
+  \emph{(T2).} At a general nondegenerate realization $r^0$ of $G$, with
+  normals $b^0$, let $(\zeta, \varphi)$ be a lift of $r^0|_H$. Put
+  $\zeta_x = \varphi_a(b^0_x) = \varphi_b(b^0_x)$. At every body
+  $y \ne x$ extend $\varphi_y$ to a linear form $\psi_y$ on $K^4$, and at
+  $x$ let $\psi_x$ be a linear form on $K^4$ with the values $\zeta_a$,
+  $\zeta_x$ and $\zeta_b$ at $b^0_a$, $b^0_x$ and $b^0_b$, which are
+  linearly independent, as $x$ is not a hub. Then
+  $\zeta_w = \psi_y(b^0_w)$ for every body $y$ and every $w$ in its
+  closed neighbourhood in $G$: at $x$ by the choice of $\psi_x$, at $a$
+  and $b$ for $w = x$ by the choice of $\zeta_x$, and otherwise as
+  $(\zeta, \varphi)$ is a lift of $r^0|_H$. So the extended map lies in
+  $L(b^0)$ (part~(2) of \cref{lem:pencil-d-lift-realization}), and
+  restricts to the map of the given lift.
 
   \emph{The rank.} At a general nondegenerate realization and a general
   $\lambda$, the framework on $H$ has rank $\operatorname{tgt}_d(H)$
@@ -6546,8 +6615,7 @@ So its subspace can be chosen after the points of $X$
   (\cref{def:cut-edges-2ec}). If both sides have at least two bodies,
   $G[V_1 \cup \{v\}]$ and $G[V_2 \cup \{u\}]$ have fewer bodies than $G$,
   and \cref{lem:pencil-d-lift-cut-edge} applies. Otherwise one side, say
-  $V_2$, is the single body $v$, of degree one, and its neighbour $u$ has
-  another neighbour, as $G$ is connected with at least three bodies; then
+  $V_2$, is the single body $v$, of degree one, and
   \cref{lem:pencil-d-lift-pendant} applies.
 
   Let $G$ be two-edge-connected. Its bodies have degree at least two
@@ -6560,7 +6628,7 @@ So its subspace can be chosen after the points of $X$
   applies. Otherwise the hypotheses of \cref{lem:pencil-d-good-ear} hold,
   by \cref{lem:pencil-feasible-hub-conditions}. Its first outcome is a
   pendant triangle, and \cref{lem:pencil-d-lift-pendant-triangle} applies.
-  In its second, $x$ has non-adjacent hub neighbours and
+  In its second, $x$ has degree two and hub neighbours $a \ne b$, and
   $\operatorname{def}_d(G - x) = \operatorname{def}_d(G)$; the hypothesis
   of \cref{lem:pencil-d-lift-ear} holds by \cref{lem:pencil-d-ear-free},
   and \cref{lem:pencil-d-lift-ear} applies.
