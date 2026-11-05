@@ -6,7 +6,7 @@ round of CLEANUP-42: Theorem S's `d = 3` core and four `d = 3` cases of the redu
 `K_{2,3}`; and the ten stale Lean docstrings and five dated `notes/BlueprintExposition.md` entries
 left by rounds 1–2. The open's spikes: both folds keep every `d = 3` statement, no blueprint
 statement changes, so no `NEEDS_PI`. Nine tasks, one commit each.
-**Next concrete task:** task 6, the reduction's fold: the nonsimple case (below); tasks 3 to 5 landed.
+**Next concrete task:** task 7, witness (2), part 1: `K_{2,3}` is feasible (below); tasks 3 to 6 landed.
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -21,7 +21,7 @@ entry here, newest first, and the loop stops; the PI answers in an entry that st
 
 ## Current state
 
-**Task 5 landed** (the reduction's fold: base, loop and cut-edge cases; its checklist line; gates: whole-tree `lake build` 6249 jobs, 0 warnings, `lake lint`, `blueprint/lint.sh` with the docstring-label total 0, `blueprint/verify.sh` with `checkdecls` silent, the three pencil results and the four `d = 3` cases on the three standard axioms). **Task 4 landed** (Theorem S's fold; its checklist line; gates: whole-tree `lake build` 6249 jobs, 0 warnings, `lake lint`, `blueprint/lint.sh`, `blueprint/verify.sh` with `checkdecls` silent, the three pencil results and the bridge on the three standard axioms). **Task 3 landed** (witness (1), `K₂`: `graded_pencil_conditioned_pair_generic_witness` in
+**Task 6 landed** (the reduction's fold: the nonsimple case; its checklist line; gates: whole-tree `lake build` 6249 jobs, 0 warnings, `lake lint`, `blueprint/lint.sh`, `blueprint/verify.sh` with `checkdecls` silent, the three pencil results and `hasGradedPencilRealization_of_not_simple` on the three standard axioms). **Task 5 landed** (the reduction's fold: base, loop and cut-edge cases; its checklist line; gates: whole-tree `lake build` 6249 jobs, 0 warnings, `lake lint`, `blueprint/lint.sh` with the docstring-label total 0, `blueprint/verify.sh` with `checkdecls` silent, the three pencil results and the four `d = 3` cases on the three standard axioms). **Task 4 landed** (Theorem S's fold; its checklist line; gates: whole-tree `lake build` 6249 jobs, 0 warnings, `lake lint`, `blueprint/lint.sh`, `blueprint/verify.sh` with `checkdecls` silent, the three pencil results and the bridge on the three standard axioms). **Task 3 landed** (witness (1), `K₂`: `graded_pencil_conditioned_pair_generic_witness` in
 `Nonvacuity.lean`, three private helpers, axioms the three standard). **Task 2 landed** (Lean docstrings only, no statement or proof): the ten stale docstrings and the
 five dated `BlueprintExposition.md` entries (the checklist line). **Task 1 landed** (docs only): this log; `notes/Cleanup42.md`'s §1 (the PI's entry
 of 2026-11-05 for round 4), **Status** and §3; ROADMAP's Status row, §42's *Next* and the
@@ -154,12 +154,7 @@ three lines:** number, sha, what landed, lines deleted, its edges and any *Candi
 - [x] **5. The reduction's fold: base, loop and cut-edge cases** (this commit). `ArmsAssembly.lean` imports `Grade/Arms`; its four `d = 3` cases (statements `diff`ed, unchanged) are the `m = 1` cases, with one private helper, `exists_cut_sides` (`n = 3` by the existing `Graph.eq_add_one_of_bodyBarDim_eq_screwDim`, so no new FRICTION site); `…_core` deleted; `Arms.lean` 930 → 630, `ArmsAssembly.lean` 233 → 137 (396 Lean lines deleted net); docstrings in `Grade/Arms`, `Pair`, `Pair2`, the `pair_map` mirror; FRICTION: the 42k entries updated, a new *cut sides* entry.
   `pencil.tex`: `lem:pencil-cut-case`'s pin drops `…_core`. Kept in the sweep: `BlueprintExposition.md`, `Cleanup40.md`, `Phase40-cleanup.md`, `Phase39-design.md`, `Prose-findings.md`, the W4 workbook and archive, FRICTION's `pair_map` *Where it bit*.
   G7 `--chapter`, HEAD → after: `pencil` *missing* 0 → 10 (loop, base, cut into `def:pencil-d-rank-hypothesis`, `lem:pencil-d-rank-agrees-three` and their `pencil-d` case; the cut into `def:pencil-d-distinct-motive`), unbacked 2+5 → 12+9 (their proofs' `\uses`), dead pins 4 → 6 (`exists_reposition_cross_incidences`, `exists_perp_linearIndependent`); `pencil-d` 0 *missing*, dead 29 → 26 (the two `two_iff`s, `exists_hasPencilPlaneRealization_two_iff`); `main-component` unchanged. A *Candidates* line (below).
-- [ ] **6. The reduction's fold: the nonsimple case** (Sonnet).
-  `hasGradedPencilRealization_of_not_simple` (`Grade/Reduction.lean` lines 40–300) moves verbatim to
-  the end of `Grade/Arms.lean` (`Fold2NotSimpleOverArms.lean`); `Grade/Reduction.lean` keeps the
-  theorem. `X0.lean`'s `hasPencilRealization_of_not_simple` (lines 66–~335), statement unchanged, is
-  the `m = 1` case (`Fold2Statements.lean`). FRICTION *42k's cases repeat the `d = 3` cases' proofs*
-  resolved, to the archive. Module docstrings of the three files. About 265 lines deleted. G1–G7.
+- [x] **6. The reduction's fold: the nonsimple case** (this commit). `hasGradedPencilRealization_of_not_simple` moved verbatim to the end of `Grade/Arms.lean` (`Grade/Reduction.lean` 372 → 109 lines, `Arms.lean` 594 → 858); `X0.lean` imports `Grade/Arms`, its `hasPencilRealization_of_not_simple` (statement `diff`ed, unchanged) is the `m = 1` case (375 → 122; no orphaned helper in `X0.lean`); FRICTION *42k's cases repeat…* to the archive. Nothing deleted, so the sweep found only moves; no TeX. G7: `pencil` *missing* 10 → 13 (nonsimple into `def:pencil-d-rank-hypothesis`, `lem:pencil-d-rank-agrees-three`, `lem:pencil-d-nonsimple-case`), unbacked 12+9 → 21+10, dead pins 6 → 7 (`exists_linearIndependent_extensor_pair_through_given_point`, pinned by `lem:extensor-pair-through-point`, now unused); `pencil-d` and `main-component` unchanged. A *Candidates* line.
 - [ ] **7. Witness (2), part 1: `K_{2,3}` is feasible** (Opus: an explicit realization through the
   screw-space carrier). In `Nonvacuity.lean`, `Graph.OfSimpleGraph (completeBipartiteGraph (Fin 2)
   (Fin 3))` and `PencilNondegFeasible ℝ` of it, `WitnessK23.lean`'s RESIDUAL (b): points `e₀`,
@@ -189,6 +184,12 @@ three lines:** number, sha, what landed, lines deleted, its edges and any *Candi
   the PI chooses: reword it in that line's formalization note, or delete it. Mirrored in
   `notes/Cleanup42.md` §3.
 
+- **Dead pin and the nonsimple edges** (task 6; for task 9). `lem:extensor-pair-through-point`'s
+  Lean declaration (`Statement.lean`) has no user now that the `d = 3` nonsimple proof is gone;
+  its node is pinned, so it stays. `lem:pencil-nonsimple-case` gains the `d = 3` reach into
+  `pencil-d.tex` like task 5's nodes; leave or add edges and a formalization note. Mirrored in
+  `notes/Cleanup42.md` §3.
+
 ## Moved to a later round
 
 - None yet.
@@ -199,7 +200,7 @@ three lines:** number, sha, what landed, lines deleted, its edges and any *Candi
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 6, the reduction's fold: the nonsimple case (Sonnet; its line above). Then tasks 7–9 in order; the PI's stop applies to task 6.
+**Next concrete task:** task 7, witness (2) part 1, `K_{2,3}` is feasible (Opus; its line above). Then tasks 8–9 in order.
 
 ## Decisions made during this round
 

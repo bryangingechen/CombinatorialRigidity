@@ -238,24 +238,6 @@ to be re-derived by re-reading entries later.
   a mirror under `Mathlib/LinearAlgebra/` (mirror candidate), at a cleanup round.
 - **Status:** open (42l's deferral, tracked in `notes/Phase42l.md` *Hand-off*).
 
-### [open] 42k's cases repeat the `d = 3` cases' proofs at every grade
-- **Where it bit:** Phase 42k, builds 2 and 3: `hasGradedPencilRealization_of_isLoopAt`, the cut
-  case's glue and core (`Pencil/Grade/Arms.lean`) and `hasGradedPencilRealization_of_not_simple`
-  (`Pencil/Grade/Reduction.lean`) are the proofs of `hasPencilRealization_of_isLoopAt`,
-  `exists_hasPencilPanelRealization_glue`, `hasPencilRealization_of_not_twoEdgeConnected_core`
-  (`Pencil/Arms.lean`) and `hasPencilRealization_of_not_simple` (`Pencil/X0.lean`), transcribed to
-  grade `m + 1` with subspaces for points (about 600 lines).
-- **Friction:** none in the proofs; two copies of each argument. At `m = 1` the graded statements
-  are the `d = 3` ones through `hasGradedPencilRealization_two_iff` (`Grade/Realization.lean`), but
-  `Pencil/Arms.lean` is upstream of `Grade/` (`Grade/Realization.lean` imports `Pencil/Motive.lean`,
-  which imports it), so deriving the `d = 3` cases from the graded ones reverses the imports.
-- **Proposed fix:** at CLEANUP-42 (`notes/Cleanup42.md` §3), beside Theorem S's fold: the `d = 3`
-  cases as the `m = 1` case of 42k's, with the files reordered; not a route difference. The loop,
-  base and cut-edge cases are done (round 4, task 5: `Pencil/ArmsAssembly.lean` imports
-  `Grade/Arms.lean` and derives them, and `…_core` and the two copies in `Pencil/Arms.lean` are
-  deleted); the nonsimple case is task 6.
-- **Status:** open.
-
 ### [open] 42k build 2: the one-edge count and the two-body edge lemma sit in `Pencil/Grade/Arms.lean`
 - **Where it bit:** Phase 42k, build 2 (`lem:pencil-d-base-case`), `Pencil/Grade/Arms.lean`:
   `finrank_span_rigidityRows_of_single_edge` (a framework on two bodies and one edge with a

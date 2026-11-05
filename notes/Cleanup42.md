@@ -17,9 +17,9 @@ one `\uses` sweep (blueprint and notes, no Lean); each slice set its rows' statu
 here. The ledger now: none `open`, 23 `aligned`, 17 `kept`, 14 `no departure`. Round 4 opened the
 same day at the PI's word (§1, all four items), in nine tasks: the stale docstrings and notes,
 Theorem S's fold, the reduction's fold and the witnesses at `K₂` and `K_{2,3}` (§3). **Next
-concrete task:** round 4's task 6, the reduction's fold: the nonsimple case
-(`notes/Phase42-fold.md`); tasks 2 to 5, the stale docstrings, the `K₂` witness, Theorem S's fold and
-the reduction's base, loop and cut-edge cases, have landed.
+concrete task:** round 4's task 7, witness (2) part 1, `K_{2,3}` is feasible
+(`notes/Phase42-fold.md`); tasks 2 to 6, the stale docstrings, the `K₂` witness, Theorem S's fold and
+the reduction's folds, have landed.
 
 ## 1. The PI's decisions (verbatim)
 
@@ -1271,6 +1271,10 @@ there.
     Lean theorem whose parameter selects the form"; task 5 deleted that theorem (`…_core`), and each
     form is now the `m = 1` case of 42k's cut case. The open keeps the `d = 3` chapter's notes, so
     the PI chooses: reword it there, or delete it.
+  - *Candidates for the PI* (round 4 task 6): `lem:extensor-pair-through-point`'s Lean declaration
+    (`Statement.lean`) is unused now that the `d = 3` nonsimple proof is gone; its node is pinned,
+    so it stays. `lem:pencil-nonsimple-case` gains the `d = 3` reach into `pencil-d.tex`: leave, or
+    add edges and a formalization note (task 9's line).
 - **The ledger at Phase 42's close:** the standing rule (§1) kept §2 current through PD-STEPS's
   rest, PD-COVERAGE, PD-REDUCTION and PD-HEAD (`notes/Phase42-design.md` §3), the last rows 42m's,
   R-24 to R-34; Phase 42 closed on 2026-11-05 with no row added after them. Round 1 adds from R-35.
@@ -1285,7 +1289,7 @@ there.
   `hasPencilRealization_of_not_simple` in `Pencil/X0.lean`) as the `m = 1` case of 42k's graded
   ones (`Grade/Arms.lean`, `Grade/Reduction.lean`) through `hasGradedPencilRealization_two_iff`. It
   reverses the imports, as Theorem S's fold does (FRICTION *42k's cases repeat the `d = 3` cases'
-  proofs*). Round 4 tasks 5 and 6, with the base case (`Pencil/ArmsAssembly.lean`): the `d = 3`
+  proofs*). Round 4 tasks 5 and 6 (landed), with the base case (`Pencil/ArmsAssembly.lean`): the `d = 3`
   cases become corollaries in `ArmsAssembly.lean`, which imports `Grade/Arms` (spiked).
 - **Also left to it** (not a route row): two instances no `main_results` witness exhibits. (1) The
   generic conjunct's hypothesis at a small graph. Phase 42's one `main_results` row, the headline
