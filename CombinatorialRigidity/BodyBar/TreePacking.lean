@@ -478,7 +478,7 @@ lemma spanningVerts_edgeSet_induce_subset (G : Graph α β) (X : Set α) :
 
 /-- **Tightness forces connectivity** (the two-component sparsity count): a nonempty, `(k, k)`-tight
 multigraph with `k ≥ 1` is connected. With it a caller that knows only tightness supplies
-`isSpanningTreePacking_of_isTight`'s `hconn` (as `Molecular/Deficiency.lean` does).
+`isSpanningTreePacking_of_isTight`'s `hconn` (as `Molecular/Deficiency/Corank.lean` does).
 
 If `G` were disconnected, a `Separation` `S` (`Graph.Separation`) splits `V(G)` into two
 nonempty parts with no edge between them, so `E(G)` splits disjointly into the edges of the

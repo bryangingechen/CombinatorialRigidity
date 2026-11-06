@@ -1094,7 +1094,12 @@ Surveyed the other raised-budget decls and next-largest files:
    (`notes/Phase42-homes.md` *Moved to a later round*); it also grew
    `Deficiency.lean` (3864 → 3882), `Meet.lean` (1528 → 1560) and
    `RigidityMatrix/Basic.lean` (1633 → 1686), each already past the
-   cap.
+   cap. **ARREARS** (`notes/Phase42-arrears.md`) splits the four, one
+   task each. Task 6 split `Deficiency.lean` along its sections:
+   `Deficiency.lean` 851 lines, `Deficiency/Cut.lean` 1207,
+   `Deficiency/Corank.lean` 1371, `Deficiency/MinimalKDof.lean` 569
+   (a chain of imports in that order; `MinimalKDof` off the
+   `Induction/Operations.lean` path).
 4. **The three other CaseI budgets (:9142 400k, :9528 800k, :9896
    800k)** — in the cut-edge / Case-I-nonsimple producers
    (`case_cut_edge_realization{,_gp}`, `case_I_realization_nonsimple`).

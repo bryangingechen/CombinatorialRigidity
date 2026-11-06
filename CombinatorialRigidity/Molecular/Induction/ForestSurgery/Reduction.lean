@@ -5,6 +5,7 @@ Authors: Bryan Gin-ge Chen
 -/
 module
 
+public import CombinatorialRigidity.Molecular.Deficiency.MinimalKDof
 public import CombinatorialRigidity.Molecular.Induction.Contraction
 public import CombinatorialRigidity.Molecular.Induction.ForestSurgery.EdgeSplitting
 

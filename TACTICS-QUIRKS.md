@@ -544,7 +544,7 @@ Related traps:
   original hypothesis positionally — `IsKDof.exists_isBase_isForestPacking
   hdef hne` — letting ordinary argument-defeq (not dot-notation head lookup)
   bridge `G.deficiency n = 0` to the expected `H.IsKDof n 0`. Phase 34 Layer BH
-  (`deficiency_eq_zero_iff_exists_spanningTrees`, `Deficiency.lean`).
+  (`deficiency_eq_zero_iff_exists_spanningTrees`, `Deficiency/Corank.lean`).
 
 ---
 
@@ -2143,7 +2143,7 @@ so it leaves the ℕ coercion atom opaque, and `ring` treats it as distinct from
 ```
 General rule: in theorem statements mixing `ℕ` quantities and `ℤ` arithmetic, cast *before*
 subtracting (`(↑n - 1 : ℤ)`) rather than subtract-then-cast (`↑(n - 1 : ℕ)`). Phase 22i L1d
-(`Deficiency.lean`, `partitionDef_split_of_sides`). See FRICTION [resolved] *ℕ-subtraction
+(`Deficiency/Cut.lean`, `partitionDef_split_of_sides`). See FRICTION [resolved] *ℕ-subtraction
 in a theorem statement causes `ring` to fail*.
 
 **Variant (`linarith` atom mismatch; the ℕ-sub comes from an upstream lemma, not your
@@ -4534,8 +4534,8 @@ before `Set` did (FRICTION [idiom] *Two small elaboration traps re-proving the 2
    `linter.unusedVariables` then flags the point binder, write it `_`.
 3. **An ascribed binder**: `fun g' (hg' : g' ∈ G.crossingEdges id) => hg'.1` in
    `Graph.X0Attains.of_cycle_of_certificate` (`MainComponent/Chain.lean`), the same with `f` in
-   `Connected.numParts_le_ncard_crossingEdges_add_one` (`Molecular/Deficiency.lean`), and `fun (h :
-   w ∈ N(G, y) \ {v}) => hnadj h.1` with its `u` twin in `Graph.IsX0Graph.splitOff`
+   `Connected.numParts_le_ncard_crossingEdges_add_one` (`Molecular/Deficiency/Corank.lean`), and
+   `fun (h : w ∈ N(G, y) \ {v}) => hnadj h.1` with its `u` twin in `Graph.IsX0Graph.splitOff`
    (`MainComponent/CoverageCut.lean`).
 
 **Calibration.** These six sites were the bump's G4, each a blocker in turn (75 modules sat behind

@@ -715,7 +715,7 @@ of `G[V₁]` and `e₀` (`Graph.isLink_induce_union_singleton_of_isLink`), so th
 its rank by at most `D - 1` (`BodyHingeFramework.finrank_span_rigidityRows_le_add_of_links_subset`,
 `RigidityMatrix/Bricks.lean`), and its deficiency is that of `G[V₁]` plus one
 (`Graph.deficiency_induce_union_singleton`). A link of `G` crossing `V₁` is `e₀` by
-`Graph.eq_cutEdge_of_isLink_crossing` (`Molecular/Deficiency.lean`). -/
+`Graph.eq_cutEdge_of_isLink_crossing` (`Molecular/Deficiency/Cut.lean`). -/
 
 /-- **The closed neighbourhood of a body of `V₁` lies in `V₁ ∪ {w₀}`**: if `e₀` joins `u₀ ∈ V₁` to
 `w₀ ∉ V₁` and no other edge crosses `V₁`, a link from `v ∈ V₁` that leaves `V₁` crosses it, so it is

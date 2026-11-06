@@ -28,6 +28,9 @@ public import CombinatorialRigidity.MatroidIdentification
 public import CombinatorialRigidity.Molecular.AlgebraicInduction.Nonvacuity
 public import CombinatorialRigidity.Molecular.AlgebraicInduction.Theorem55
 public import CombinatorialRigidity.Molecular.Deficiency
+public import CombinatorialRigidity.Molecular.Deficiency.Corank
+public import CombinatorialRigidity.Molecular.Deficiency.Cut
+public import CombinatorialRigidity.Molecular.Deficiency.MinimalKDof
 public import CombinatorialRigidity.Molecular.Extensor
 public import CombinatorialRigidity.Molecular.GenericLift.HingeGeneric
 public import CombinatorialRigidity.Molecular.GenericLift.PanelGeneric

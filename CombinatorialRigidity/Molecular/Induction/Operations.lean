@@ -5,7 +5,7 @@ Authors: Bryan Gin-ge Chen
 -/
 module
 
-public import CombinatorialRigidity.Molecular.Deficiency
+public import CombinatorialRigidity.Molecular.Deficiency.Corank
 public import CombinatorialRigidity.Mathlib.GroupTheory.Perm.List
 
 /-!

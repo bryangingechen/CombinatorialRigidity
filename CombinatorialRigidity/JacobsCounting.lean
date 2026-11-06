@@ -9,7 +9,7 @@ Authors: Bryan Gin-ge Chen
 module
 
 public import CombinatorialRigidity.Jacobs
-public import CombinatorialRigidity.Molecular.Deficiency
+public import CombinatorialRigidity.Molecular.Deficiency.Corank
 public import CombinatorialRigidity.Molecular.Molecule.Carrier
 
 /-!
@@ -27,8 +27,8 @@ A tight partition of `V` at `D = 6` is a labeling `f : V → V` that is a tight 
 multigraph `G.shadowGraph` of `lem:molecule-graph-carrier` at `n = 3` (where
 `bodyBarDim 3 = 6`); the predicate is `SimpleGraph.IsSquareTightPartition`. That multigraph has
 vertex set `univ` and the adjacencies of `G` (`shadowGraph_adj_iff`), so the lemmas on tight
-partitions of `Molecular/Deficiency.lean`, stated for every `D` over `Graph α β`, transport to
-`SimpleGraph` and `f : V → V`: the uniqueness of a common neighbor
+partitions of `Molecular/Deficiency/Corank.lean`, stated for every `D` over `Graph α β`, transport
+to `SimpleGraph` and `f : V → V`: the uniqueness of a common neighbor
 (`IsSquareTightPartition.eq_of_common_nbr`), the parts (`IsSquareTightPartition.parts`), and the
 two consequences of `lem:tight-partition-cross-pair-mult` and `lem:tight-partition-subfamily`
 that `lem:singleton-part-neighborhood` uses (`IsSquareTightPartition.not_adj_adj_of_same_part`,

@@ -47,8 +47,8 @@ its other conditions on the picture.
 
 ## Main definitions
 
-* `Graph.embedEdges` (`Molecular/Deficiency.lean`): `def:pencil-embed-edges`, the graph `G` with its
-  edges relabelled along an embedding `β ↪ β'`.
+* `Graph.embedEdges` (`Molecular/Deficiency/MinimalKDof.lean`): `def:pencil-embed-edges`, the
+  graph `G` with its edges relabelled along an embedding `β ↪ β'`.
 
 ## Main results
 
@@ -65,7 +65,7 @@ its other conditions on the picture.
 * `Graph.liftingSpace_embedEdges`, `Graph.isAdmissiblePicture_embedEdges_iff` and
   `Graph.isMainPicture_embedEdges_iff`: `lem:pencil-jj-embed-edges`. Its companions
   `Graph.Simple.embedEdges` and `Graph.deficiency_embedEdges` (`lem:embed-edges-simple-deficiency`:
-  relabelling keeps simplicity and every deficiency) are in `Molecular/Deficiency.lean`.
+  relabelling keeps simplicity and every deficiency) are in `Molecular/Deficiency/MinimalKDof.lean`.
 * `Graph.exists_mvPolynomial_finrank_liftingSpace_eq`, `Graph.IsMainPicture.finrank_liftingSpace_eq`
   and `Graph.exists_isMainPicture_finrank_liftingSpace_eq`: `thm:pencil-jj-equality`, at a general
   picture, at every main picture (`ℓ₀ = 3 + def₂(G)`) and at one picture.
@@ -277,7 +277,7 @@ theorem _root_.Graph.exists_mvPolynomial_le_finrank_span_rigidityRows_pencilPict
 /-! ## Relabelling keeps the pictures (`lem:pencil-jj-embed-edges`)
 
 `Graph.embedEdges` itself (`def:pencil-embed-edges`), and that it keeps simplicity and every
-deficiency (`lem:embed-edges-simple-deficiency`), are in `Molecular/Deficiency.lean`. -/
+deficiency (`lem:embed-edges-simple-deficiency`), are in `Molecular/Deficiency/MinimalKDof.lean`. -/
 
 section embedEdges
 

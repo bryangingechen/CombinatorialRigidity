@@ -7,7 +7,7 @@ carried over (`notes/Phase42-homes.md` *Moved to a later round*, *Candidates for
 debt, the friction log's archive sweep, a dead pair of `have`s, the splits of the four molecular
 files past the ~1500-line tripwire, and `RecordsLinks` moved to `Graph` with its link hypotheses
 restated. Seventeen tasks; no main result's statement changes.
-**Next concrete task:** task 6, the split of `Deficiency.lean` (*Lemma checklist*).
+**Next concrete task:** task 7, the split of `RigidityMatrix/Basic.lean` (*Lemma checklist*).
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -22,7 +22,7 @@ stops; the PI answers in an entry that starts `**PI, <date>:**`.
 
 ## Current state
 
-**Tasks 1-5 landed.** Task 1 (`381dcae1`): the open. Task 2 (`0edd6e7e`): the friction log's
+**Tasks 1-6 landed.** Task 1 (`381dcae1`): the open. Task 2 (`0edd6e7e`): the friction log's
 archive sweep, 22 `[resolved]` entries to `FRICTION-archive.md`; FRICTION's counts now open 8,
 mirror-candidate 8, process 2, blueprint 0, resolved 0. Task 3 (`6f227b5e`): `hax`, `hbx` deleted
 from `X0AttainsGrade.of_openEar_four`. Task 4 (`a0b498a0`): HOMES's four missing edges closed
@@ -30,10 +30,11 @@ from `X0AttainsGrade.of_openEar_four`. Task 4 (`a0b498a0`): HOMES's four missing
 `lem:pencil-d-condition-linear` unbacked at `lem:pencil-d-ear-data`, `thm:pencil-d-open-ear-four`
 and `lem:pencil-d-planes-meet`, whose Lean reaches it only through `gradeSigma` (the new node, now
 implied through the lemma's statement); not defects (an unbacked edge is a check), left as they
-are. Task 5 (this commit): the twelve older missing edges (*Decisions*). Gates: G1, G2 (whole-tree
-`lake build` 0 warnings, 0 cache failures; `lake lint`), G3 (check 9 at 0, the docstring-label
-report unchanged), G4; G6 **0 missing**, unbacked 190, implied 3070, 802 nodes, consistency OK
-(the built graph's 1885 edges). G6 holds at 0 from task 6 on.
+are. Task 5 (`ca348e9d`): the twelve older missing edges (*Decisions*); G6 at 0 missing from it.
+Task 6 (this commit): `Deficiency.lean` split into four files, a pure move (*Decisions*). Gates:
+G1, G2 (whole-tree `lake build` 0 warnings, 0 cache failures; `lake lint`), G3 (check 9 at 0, the
+docstring-label report unchanged), G4 (`checkdecls` silent); G6 **0 missing**, unbacked 190,
+implied 3070, 802 nodes, consistency OK (the built graph's 1885 edges), as at task 5.
 
 **Verified at the open** (2026-11-05, at `6d75d694`; a whole-tree `lake build` replays clean, 0
 warnings, 0 cache failures):
@@ -136,16 +137,12 @@ resolved.
 - [x] **4. HOMES's dependency-graph debt** (`a0b498a0`; TeX, `Meet.lean`, one docstring in
   `Grade/Carrier.lean`). `def:pencil-d-affine-heights-map` pins `gradeSigma`; the three edges with
   their prose; `extensor_triple_eq_zero_iff` deleted. G6: 12 missing (*Decisions*).
-- [x] **5. The twelve older missing edges** (this commit; TeX, one docstring in
+- [x] **5. The twelve older missing edges** (`ca348e9d`; TeX, one docstring in
   `HingeGeneric.lean`). Eight `\uses` edges with their prose; `dof_eq_zero_iff` moved to
   `cor:bodyhinge-generic-rigid`; two edges implied. G6: 0 missing (*Decisions*).
-- [ ] **6. Split `Deficiency.lean`** (Lean; opus). Along its sections into about four files under
-  ~1500 lines: the file keeps its module name and its first sections (the deficiency, `k`-dof,
-  rigid subgraphs, the small `0`-dof graphs, minimality, the circuit, to line 868), and the rest go
-  to new files under `Molecular/Deficiency/` (suggested seams: the two-edge-connectivity and cut
-  sections, 869–1780; tight partitions to tree packing, 1781–3106; the two-vertex trichotomy to the
-  cut vertex, 3107–3881), each importing only what it uses, so the parts form a DAG where the
-  sections allow. Importers import the parts they use. A pure move.
+- [x] **6. Split `Deficiency.lean`** (this commit; Lean, a pure move). `Deficiency.lean` 851,
+  `Deficiency/Cut.lean` 1207 (with the merged deficiency, the cut vertex), `Deficiency/Corank.lean`
+  1371, `Deficiency/MinimalKDof.lean` 569; seven docstrings, three TACTICS-QUIRKS lines repointed.
 - [ ] **7. Split `RigidityMatrix/Basic.lean`** (Lean; sonnet). At the column-operation section
   (line 817): the rest to a new `RigidityMatrix/` file. A pure move.
 - [ ] **8. Split `Meet.lean`** (Lean; sonnet). At a seam near line 689 (the `a ∨ v` sections on),
@@ -195,9 +192,9 @@ resolved.
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 6, the split of `Deficiency.lean` along its sections (*Lemma
-checklist*; a pure move, G6 at 0 missing from here). After the close: ORIGAMI's open, with the PI
-(ROADMAP *Queued post-program phases*).
+**Next concrete task:** task 7, the split of `RigidityMatrix/Basic.lean` at its column-operation
+section (*Lemma checklist*; a pure move, G6 at 0 missing). After the close: ORIGAMI's open, with
+the PI (ROADMAP *Queued post-program phases*).
 
 ## Decisions made during this round
 
@@ -227,3 +224,11 @@ checklist*; a pure move, G6 at 0 missing from here). After the close: ORIGAMI's 
   `\cref` at the step (a formalization note at `lem:dof-tracking`, whose step is the label
   condition). (c) `thm:minimal-kdof-reduction`, `lem:chain-data-extract` reach
   `lem:splitoff-edge-substitution` only by the label condition: implied via `lem:reduction-step`.
+- **Task 6's shapes.** (a) The merged-deficiency and cut-vertex sections join the cut sections in
+  `Deficiency/Cut.lean`, not the open's last seam: they use the private `crossingEdges_induce` of
+  `partitionDef_split_of_sides` and nothing after the cuts, so no name changes visibility. (b) The
+  parts are a chain, `Deficiency` ← `Cut` ← `Corank` ← `MinimalKDof` (`Corank` uses
+  `partitionDef_congr`, `ConnBetween.eq_of_forall_isLink`; `MinimalKDof` KT eq. (2.4)); the
+  tight-partition and corank sections each need only `Cut`, one file to stay at four. (c) Imports
+  by use: `Operations`, `JacobsCounting` take `Corank`; `GenericityDevice` and
+  `ForestSurgery/Reduction` take `MinimalKDof` (every other user is downstream of one).

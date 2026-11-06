@@ -68,8 +68,8 @@ records the links of `G`; at one such selector it is the same condition
   `isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees`: the generic form of the
   Tay–Whiteley body-and-hinge theorem (Jackson–Jordán 2010, Cor 6.3, for every generic realization),
   composing the rigidity iff with the packing bridge
-  `Graph.deficiency_eq_zero_iff_exists_spanningTrees` (`Deficiency.lean`): every generic realization
-  is rigid iff `G̃ = (D-1)·G` packs `D` edge-disjoint spanning trees.
+  `Graph.deficiency_eq_zero_iff_exists_spanningTrees` (`Deficiency/Corank.lean`): every generic
+  realization is rigid iff `G̃ = (D-1)·G` packs `D` edge-disjoint spanning trees.
 * `def:dof-generic` — `dof` (the degree of freedom `D(|V(G)| − 1) − rank R(G,q)`) and
   `IsMaxRankHingePoints` (Katoh–Tanigawa 2011, §2.4: the rows of `R(G,q)` and of each edge-induced
   submatrix have the largest rank over the hinge-point realizations of `G`, nondegeneracy asked only
