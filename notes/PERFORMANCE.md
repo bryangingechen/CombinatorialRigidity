@@ -1086,7 +1086,15 @@ Surveyed the other raised-budget decls and next-largest files:
    (2027) / `GenericityDevice.lean` (1950) / `Pinning.lean` (1751) —
    low.** Each modestly over the cap; no raised budgets;
    single-consumer chain. Style-grounds splits only — not worth a
-   round on their own.
+   round on their own. **At HOMES's close (2026-11-05)** the four
+   stood at 3882 / 1805 / 1007 / 1232 lines. That round moved
+   declarations into their home files: it grew `PanelLayer.lean`
+   from 1705 lines (task 11, `98be141b`), and left its split, along
+   its three `/-! ##` sections, to a later round
+   (`notes/Phase42-homes.md` *Moved to a later round*); it also grew
+   `Deficiency.lean` (3864 → 3882), `Meet.lean` (1528 → 1560) and
+   `RigidityMatrix/Basic.lean` (1633 → 1686), each already past the
+   cap.
 4. **The three other CaseI budgets (:9142 400k, :9528 800k, :9896
    800k)** — in the cut-edge / Case-I-nonsimple producers
    (`case_cut_edge_realization{,_gp}`, `case_I_realization_nonsimple`).

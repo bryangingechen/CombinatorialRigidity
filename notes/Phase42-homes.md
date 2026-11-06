@@ -1,108 +1,73 @@
 # HOMES — Phase 42's deferred lemma homes and the friction log (work log)
 
-**Status:** in progress (opened 2026-11-05 at the PI's word, after a review of the 62 friction
-entries tagged `open`, `mirror-candidate`, `process` or `blueprint`). A cleanup round after
-CLEANUP-42 and ahead of ORIGAMI, in two parts: the friction log's docs and tooling fixes (tasks
-2–4), then the lemmas Phase 42 left outside their home files, one task per home file, with the
-mirror lemmas that now meet their entries' own bar (tasks 5–18). No statement changes. Phase 42
-deferred the moves because a declaration added to these files rebuilds most of `Molecular/`
-mid-phase; ORIGAMI will not edit them, so they are cheapest now. Tasks 1–18 landed
-(the docs part, the tree-wide basics, `Deficiency.lean`, the linear-independence mirrors and their
-sweep, `Meet.lean`, `RigidityMatrix/Basic.lean` with `GenericityDevice.lean`, `PanelLayer.lean`,
-`Realization.lean`, `Carrier.lean` with `Configuration.lean`, `Fin.val_succAbove` with
-`MainComponent/Cut.lean`, the glued-ends helpers, the additive kernel lemma, the ear insertion, two small lemmas):
-62 actionable entries down to 18 (heading tags, by `grep -c '^### \[<tag>\]'`: open 8,
-mirror-candidate 8, process 2, blueprint 0).
-**Next concrete task:** task 19, the close (coordinator; *Lemma checklist*).
+**Status:** closed (2026-11-05; opened the same day at the PI's word, after a review of the 62
+friction entries tagged `open`, `mirror-candidate`, `process` or `blueprint`). A cleanup round after
+CLEANUP-42 and ahead of ORIGAMI, in two parts: the friction log's docs and tooling fixes and its
+archive sweep (tasks 2–4), then the lemmas Phase 42 left outside their home files, one task per
+home file, with the mirror lemmas that now meet their entries' own bar (tasks 5–18). Nineteen
+tasks, twenty commits (task 8 had a corrective); no `NEEDS_PI` stop; no main result's statement,
+blueprint statement or public declaration's name changed, and `formalization.yaml` is unchanged.
+The friction log's actionable entries went from 62 to 18 (heading tags by
+`grep -c '^### \[<tag>\]'`, open / mirror-candidate / process / blueprint: 35 / 13 / 12 / 2 at the
+open, 8 / 8 / 2 / 0 at the close). Left for a later round: `PanelLayer.lean`'s split and, at the PI's word, the
+blueprint's dependency-graph debt (*Moved to a later round*).
+**Next concrete task:** ORIGAMI's open, with the PI (ROADMAP *Queued post-program phases*).
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
-HOMES's row of `.claude/autopilot/queue.toml` is attended (a decision below), so the driver stops
-before it; the PI may set `attended = false` to let `/coordinate-phase 42-homes` run it. **The one
-stop is the PI's:** a task that would change a main result's statement, a blueprint statement or a
-public declaration's name, or delete a pinned declaration, does not land that change: it writes a
-`NEEDS_PI` entry here, newest first, and the loop stops; the PI answers in an entry that starts
-`**PI, <date>:**`.
+HOMES's row of `.claude/autopilot/queue.toml` was attended (a decision below), so the driver
+stopped before it; the close set it `done = true`. **The one stop was the PI's:** a task that would
+change a main result's statement, a blueprint statement or a public declaration's name, or delete a
+pinned declaration, did not land that change: it wrote a `NEEDS_PI` entry here, newest first, and
+the loop stopped; the PI answered in an entry that starts `**PI, <date>:**`.
 
-- None yet.
+- None arose. The PI's one word in the round, how to close it, came at a coordinator check-in, not
+  a stop (*Decisions*, the close).
 
 ## Current state
 
-**Task 18 landed** (this commit; Lean; sonnet). `SimpleGraph.shadowGraph_isLink` (`@[simp]`,
-`Iff.rfl`, lint-clean) beside `shadowGraph_isLink_iff`; `Nonvacuity.lean`'s `hL` is deleted and its
-`simp` closes the six path goals by the lemma and `SimpleGraph.top_adj`. The new mirror
-`Mathlib/LinearAlgebra/Pi.lean` (in `CombinatorialRigidity.lean`) holds
-`LinearMap.pi_apply_eq_sum_univ_single` (`f x = ∑ i, x i • f (Pi.single i 1)`, over any target
-module), called by `mem_liftMaps_pencilConfigPoint_iff` (`Grade/LiftNoRigid.lean`) and
-`exists_mem_liftSpaceTilde_of_mem_liftSpace` (`Grade/LiftWitness.lean`), each now two lines shorter
-than its `congr 2`/`funext` tail. Gates: G2 `lake build` (6251 jobs, 0 warnings, 0 cache failures)
-and `lake lint`; G3 `blueprint/lint.sh`; G5 `#print axioms` of the 21 `formalization.yaml`
-declarations, no `sorryAx`; G1. G4 not run: no pinned name moved or went. FRICTION: both entries
-`[resolved]`.
+**Task 19 landed** (this commit; docs only; opus): the close. Each task's sha is in its line, and
+tasks 13, 15 and 18's lines are cut to three. The round is closed on the status surfaces that
+`python3 notes/phasenote.py Phase42-homes --surfaces` lists (this log's **Status**, *Current state*
+and *Hand-off*, and ROADMAP's row) and on the others the open touched: ROADMAP §42's *Next*,
+*Queued post-program phases*' intro, its program bullet and its CLEANUP-42 and HOMES bullets,
+`notes/MolecularConjecture.md`'s HOMES sentence, and the queue's `42-homes` row (`done = true`, its
+comment). The PI's word on the close is under *Decisions*. Of *Moved to a later round*,
+`PanelLayer.lean`'s split is mirrored into `notes/PERFORMANCE.md` *(C) Other molecular split
+candidates*, item 3; the dependency-graph debt has no round to take it and stays recorded there.
+FRICTION, by `grep -c '^### \[<tag>\]' notes/FRICTION.md` (open / mirror-candidate / process /
+blueprint): 35 / 13 / 12 / 2, 62 in all, at the open (`445d8069`); 8 / 8 / 2 / 0, 18 in all, at
+the close. The 22 entries tasks 5–18 resolved stay `[resolved]` in `FRICTION.md` until the next
+archive sweep (its filing rule). Seen at the close, not a task: besides `PanelLayer.lean`, the
+round grew three files already past the ~1500-line tripwire, `Deficiency.lean` (3864 → 3882),
+`Meet.lean` (1528 → 1560) and `RigidityMatrix/Basic.lean` (1633 → 1686); recorded beside
+`PanelLayer.lean` in `notes/PERFORMANCE.md`. Gates: G1, and the Lean and TeX diff empty.
 
-**Task 17 landed** (`834845db`; Lean; opus; one dispatch). `exists_insertion_earDataGrade`, in
-`Grade/Short.lean` after `span_joins_succAbove_two`, is `exists_insertion_earDataGrade_three`'s
-statement at `x : Fin (n + 3) → α` (the ear of `G″` has `n + 2` interior bodies), with the ear
-data's ends `xf`, `xl` implicit and free (`x 0`, `x (Fin.last _)` at four; `x 0`, `x 2` at three)
-and `hC` in the three-body `∀ Y, (∀ i j, Y i j = …) →` form; its proof is the old tail, `hP1` and
-`hP3` through `coe_succAbove_two` (four's form, not three's `rfl`). `of_openEar_four`'s tail, from
-`hC` to its end, is one call and an `obtain rfl : Y = _` from the applied form of
-`exists_mvPolynomial_earDataGrade_of_smul`; `of_openEar_three` calls it at `n = 0`.
-`exists_insertion_earDataGrade_three` (unpinned, one caller) is deleted; `ShortThree.lean`'s module
-doc and `of_openEar_three`'s docstring are repointed (closed notes and `Phase42-design.md` keep the
-name). Every surviving statement is
-unchanged (`git diff`: docstrings and proof bodies only). No `maxHeartbeats` override;
-`ShortThree.lean` builds in about 5 s. `blueprint-deps.py --label` on the two theorems' nodes:
-the same edges as at `63fd4e68`, only the reach chains differ. Gates: G2 `lake build` (6249 jobs,
-0 warnings) and `lake lint`; G3 `blueprint/lint.sh` (check 9 total 0); G5 `#print axioms` of the
-21 `formalization.yaml` declarations, no `sorryAx`; G1. G4 not run: no pinned name moved or went.
-FRICTION: *The insertion at three bodies…* `[resolved]`. `of_openEar_four`'s `hax` and `hbx` are
-dead (they were before), left for a golf.
+**The round's gates** (each task's own were in this section at its landing; git keeps them). The
+coordinator re-ran each Lean task's (5–18) gates: a warning-clean build of the touched modules,
+bare `lake lint`, `blueprint/lint.sh` and the sorry grep, all green. At `f97c681c`, `#print axioms`
+of the 21 `formalization.yaml` main results (`scratch/homes/coord_axioms.lean`) is `[propext,
+Classical.choice, Quot.sound]` each, as at the open. The coordinator's `scripts/blueprint-deps.py`
+audit at `834845db`, against the pre-round cache, shows exactly the debt under *Moved to a later
+round*, and task 18 replaced no pinned proof.
 
-**Task 16** (landed; `Graph.finrank_ker_contractLiftingMatrix_zero_eq_and_map_eq` sliced into
-`MainComponent/ContractAdditive.lean`, and `Graph.X0Attains.of_additiveContract` through it).
-
-**Task 15** (landed; the glued-ends helpers to `Pencil/Motive.lean`, `MainComponent/ContractCurve.lean`
-and `Grade/PlanesMeet.lean`, sliced verbatim).
-
-**Task 14** (landed;  Lean; sonnet; one dispatch). `Fin.val_succAbove` is in the
-`Mathlib/Data/Fin/Basic.lean` mirror (statement as the checklist, proved by the `val_succ_succAbove`
-pattern; `val_succ_succAbove` is left as it is, its `≤` form being a different statement);
-`coe_succAbove_one` and `coe_succAbove_two` stay in `Grade/Short.lean` (about 25 uses), each now
-`rw [Fin.val_succAbove, Fin.val_one]` (`Fin.val_two`), statements unchanged. In `MainComponent/Cut.lean`,
-after `pathVertex_eq_or_exists` and before `exists_liftingRestrict_eq_of_bridgePath`:
-`pathVertex_succ_castSucc`, `pathVertex_eq_of_val_eq`, `pathVertex_add_smul` (from `Grade/Stars.lean`),
-`pathVertex_smul_comp`, `pathVertex_map`, `pathVertex_comp_succAbove_one` (from `Grade/Short.lean`),
-sliced, except `pathVertex_comp_succAbove_one`, whose three `coe_succAbove_*` rewrites are now
-`Fin.val_succAbove` with `Fin.val_two`/`Fin.val_one` (Cut cannot import `Grade/Short.lean`); `Cut.lean`
-now imports the `Fin/Basic` mirror (18 importers, all already downstream). Binders unchanged (K,
-then the lemma's own). `pathVertex_zero_single` stays in `Grade/Stars.lean`. Gates: G2 `lake build`
-(6249 jobs) and `lake lint`; G3 `blueprint/lint.sh`; G5 `#print axioms` of the 21
-`formalization.yaml` declarations, no `sorryAx`; G1. G4 not run (no moved name is pinned: grep of
-`blueprint/src`). FRICTION: *The `pathVertex` lemmas of 42h…* `[resolved]`; *No `Fin.val_succAbove`
-or per-member…* stays `[mirror-candidate]` for `span_range_smul_eq`.
-
-**Task 13** (`Carrier.lean`, `Configuration.lean`) is one line below; its one binder change
-(`pencilConfigPointGrade_ofPoints` now `{K} {α} {m}`) stands.
-
-**Task 12** (`Realization.lean`) is one line below.
-
-**Task 11** (`PanelLayer.lean`) is one line below; its binder reorderings are in its commit.
-
-**Tasks 1-10** are in the checklist below, one line each. Details kept only where no line carries
-them: task 10 put `isInfinitesimalMotion_iff_of_supportExtensor_eq_zero` after
+**What the task lines do not carry** (the rest is in each task's commit). Task 18's
+`shadowGraph_isLink` has no `Sum.inl` (the carrier is `Graph V (Sym2 V)`). Task 17 left
+`of_openEar_four`'s `hax` and `hbx` dead (they were before), for a golf. Task 14 left
+`val_succ_succAbove` as it is (its `≤` form is a different statement), and `Cut.lean` now imports
+the `Fin/Basic` mirror. Task 13's one binder change: `pencilConfigPointGrade_ofPoints` is now
+`{K} {α} {m}`. Task 10 put `isInfinitesimalMotion_iff_of_supportExtensor_eq_zero` after
 `isInfinitesimalMotion_iff` (its proof calls it), and `Embedding.lean` keeps its
 `GenericityDevice` import; task 9's two `j = 2` statements are byte for byte as before, and
-`contragredient_toDual_pairing g` still fits the coerced `contragredientEquiv g` by defeq; task 7's
-`exists_extend_linearIndependent` is `[Fintype ι]` with `Fintype.card ι ≤ finrank K M` over a
-division ring and takes no `FiniteDimensional` hypothesis (the bound forces it once `ι` is
-nonempty); task 8 left `Pair.lean` (four), `Nonvacuity.lean` (two) and
-`MatroidIdentification.lean:125` in scalar form for its own sake, and its `Grade/LiftCases` sites
-(five) came in the corrective after `bb4c09d6` misfiled them. Task 5 proved `Set.ncard_range_le` by
-`ncard_image_le` on `univ` (the mirror's import closure lacks `Finite.card_range_le`); task 6
-dropped `Nonvacuity.lean`'s `hV` simp argument; task 4 moved 23 `[resolved]` entries to
-`FRICTION-archive.md` (pointer sweep: none needed), and tasks 2-3 are tooling and index fixes.
+`contragredient_toDual_pairing g` still fits the coerced `contragredientEquiv g` by defeq; task 8
+left `Pair.lean` (four), `Nonvacuity.lean` (two) and `MatroidIdentification.lean:125` in scalar
+form for its own sake, and its `Grade/LiftCases` sites (five) came in the corrective after
+`bb4c09d6` misfiled them; task 7's `exists_extend_linearIndependent` is `[Fintype ι]` with
+`Fintype.card ι ≤ finrank K M` over a division ring and takes no `FiniteDimensional` hypothesis.
+Task 5 proved `Set.ncard_range_le` by `ncard_image_le` on `univ` (the mirror's import closure
+lacks `Finite.card_range_le`); task 6 dropped `Nonvacuity.lean`'s `hV` simp argument; task 4
+moved 23 `[resolved]` entries to `FRICTION-archive.md` (pointer sweep: none needed).
 
 **Verified at the open** (2026-11-05, at `445d8069`):
 - **The review.** Of the 62 entries, about 30 can be fixed now (tasks 2–18). The rest are process
@@ -194,7 +159,7 @@ the entries it resolved.
 - [x] **1. Open** (`a0c236a6`; docs only).
 - [x] **2. The selftest between phases** (`c0bf555a`; tooling). `selftest()` fails on zero ACTIVE
   notes only while a ROADMAP Status row is in progress (new `roadmap_in_progress()`); tested on four
-  trees (*Current state*). FRICTION *`--selftest` fails when no phase note…* `[resolved]`.
+  trees (its commit). FRICTION *`--selftest` fails when no phase note…* `[resolved]`.
 - [x] **3. `TACTICS-GOLF.md`'s index** (`1b49081f`; docs only). Index entries for body §20–§24;
   the list-recursor idiom is body and index §30, its four pointers repointed (two in FRICTION, two
   in `notes/Phase23b.md`, G1 green). FRICTION *sections-index ↔ body drift* `[resolved]`.
@@ -224,45 +189,29 @@ the entries it resolved.
 - [x] **11. `PanelLayer.lean`** (`98be141b`; Lean; opus). Eleven moves, the new fold and `rfl`
   equation, the `Fin 4` case. Resolves *The `normalsJoin` linearity…*, *`complementScrew` sits
   in…*, *No linear-equivalence form…*, *Grade-general extensor…*.
-- [x] **12. `Grade/Realization.lean`** (this commit; Lean; sonnet). Seven `dotPerp` moves beside
+- [x] **12. `Grade/Realization.lean`** (`cb2f8db1`; Lean; sonnet). Seven `dotPerp` moves beside
   `finrank_dotPerp`. Resolves the `dotPerp` parts of *42l's home debts* and *42k's home debts*.
-- [x] **13. `Grade/Carrier.lean` and `Grade/Configuration.lean`** (this commit; Lean; sonnet). `gradeSigma` and
-  `gradeSigma_apply` (from `Grade/ConditionLinear.lean`) beside `gradeMk`, and
-  `finrank_span_pencilConfigPointGrade_closedNbhd_le`'s inline `let` through it; `pictureProj` and
-  `pictureProj_pencilConfigPointGrade` made public, and the two other projections through them
-  (`ConditionLinear.lean`'s local `funLeft`, `Grade/GluedEnds.lean`'s `gradePlanarProj`, with
-  `gradePiForm` and `gradePi` built on `pictureProj`); `pencilConfigPointGrade_ofPoints` (from
-  `Grade/Chain.lean`) beside `pencilConfigPointGrade_eq_gradeMk`. Resolves *`gradeSigma` and the
-  picture projection…*, *`pencilConfigPointGrade_ofPoints` sits in…*.
-- [x] **14. `MainComponent/Cut.lean`, after `Fin.val_succAbove`** (this commit; Lean; sonnet).
-  `Fin.val_succAbove` in the `Fin/Basic` mirror, `coe_succAbove_one`/`_two` through it; six
-  `pathVertex` lemmas into `Cut.lean` (`pathVertex_zero_single` stays). Resolves *The `pathVertex`
-  lemmas of 42h…*, the `Fin` part of *No `Fin.val_succAbove`…*.
-- [x] **15. The glued-ends helpers' homes** (this commit; Lean; sonnet), all from `Grade/GluedEnds.lean`:
-  `Graph.mem_closedNbhd_comm` to `Pencil/Motive.lean`, beside `closedNbhd`;
-  `Graph.edgeSet_induce_pair_eq_empty`, `rigidContract_pair_simple`,
-  `mem_vertexSet_rigidContract_pair`, `exists_isLink_of_rigidContract_pair`,
-  `partitionDef_rigidContract_pair` and `three_le_ncard_closedNbhd_rigidContract_pair` to
-  `MainComponent/ContractCurve.lean`, beside `rigidContract_induce_simple`;
-  `Graph.liftingPlanesDiff_eq_top_of_notMem` to `Grade/PlanesMeet.lean`, beside
-  `liftingPlanesDiff`. Resolves *Glued-ends' contraction and lifting-planes helpers…*.
+- [x] **13. `Grade/Carrier.lean` and `Grade/Configuration.lean`** (`d2d407f7`; Lean; sonnet).
+  `gradeSigma` beside `gradeMk`; `pictureProj` public, two projections through it; `…_ofPoints` in.
+  Resolves *`gradeSigma` and the picture projection…*, *`pencilConfigPointGrade_ofPoints` sits in…*.
+- [x] **14. `MainComponent/Cut.lean`, after `Fin.val_succAbove`** (`0e2da1be`; Lean; sonnet).
+  `Fin.val_succAbove` in the `Fin/Basic` mirror; six `pathVertex` lemmas into `Cut.lean`. Resolves
+  *The `pathVertex` lemmas of 42h…*, the `Fin` part of *No `Fin.val_succAbove`…*.
+- [x] **15. The glued-ends helpers' homes** (`bdc85fdc`; Lean; sonnet), from `Grade/GluedEnds.lean`
+  to `Pencil/Motive.lean` (one), `MainComponent/ContractCurve.lean` (six) and `Grade/PlanesMeet.lean`
+  (one). Resolves *Glued-ends' contraction and lifting-planes helpers…*.
 - [x] **16. The additive core's kernel argument, once** (`63fd4e68`; Lean; sonnet). The lemma
   into `MainComponent/ContractAdditive.lean`, `of_additiveContract` through it. Resolves *The kernel
   argument at an additive core is proved twice…*.
 - [x] **17. The ear insertion, once** (`834845db`; Lean; opus). `exists_insertion_earDataGrade`
   (`Grade/Short.lean`, `n + 2` bodies of `G″`), called by `of_openEar_four` and `of_openEar_three`;
   `exists_insertion_earDataGrade_three` deleted. Resolves *The insertion at three bodies repeats…*.
-- [x] **18. Two small lemmas** (this commit; Lean; sonnet). `@[simp] shadowGraph_isLink :
-  G.shadowGraph.IsLink e x y ↔ G.Adj x y ∧ s(x, y) = e` (no `Sum.inl`: the carrier is
-  `Graph V (Sym2 V)`) beside `shadowGraph_isLink_iff`
-  (`Molecular/Molecule/Carrier.lean`), with `Nonvacuity.lean`'s local `hL` through it.
-  `LinearMap.pi_apply_eq_sum_univ_single` at the mirror path of mathlib's
-  `LinearMap.pi_apply_eq_sum_univ`, with its two sites (`mem_liftMaps_pencilConfigPoint_iff`,
-  `Grade/LiftNoRigid.lean`; `exists_mem_liftSpaceTilde_of_mem_liftSpace`, `Grade/LiftWitness.lean`).
+- [x] **18. Two small lemmas** (`f97c681c`; Lean; sonnet). `@[simp] shadowGraph_isLink` beside
+  `shadowGraph_isLink_iff`; the mirror `LinearMap.pi_apply_eq_sum_univ_single`, with its two sites.
   Resolves *`SimpleGraph.shadowGraph` has no `IsLink`…*, *42m build 5…*.
-- [ ] **19. The close** (docs only; coordinator). Each task's sha in its line; the round closed on
-  the open's status surfaces and the queue row `done = true`; FRICTION's open count before and
-  after.
+- [x] **19. The close** (this commit; docs only; opus). Each task's sha in its line; the round
+  closed on its status surfaces and the queue row `done = true`; FRICTION's actionable entries 62
+  at the open, 18 at the close (*Current state*).
 
 ## Candidates for the PI
 
@@ -276,7 +225,8 @@ the entries it resolved.
 
 - **`PanelLayer.lean`'s split** (task 11): 1705 → 1805 lines, past the ~1500 tripwire
   (`CombinatorialRigidity/CLAUDE.md`) since before the round; its three `/-! ##` sections are the
-  seams. A split is not a home move, so not this round's.
+  seams. A split is not a home move, so not this round's. Mirrored at the close into
+  `notes/PERFORMANCE.md` *(C) Other molecular split candidates*, item 3, where splits are ranked.
 - **The blueprint's dependency graph is behind the round's Lean** (the coordinator's run at
   `63fd4e68` of `python3 scripts/blueprint-deps.py`, diffed against its cached pre-round run,
   `.lake/blueprint-deps/12e3e35a9ffe3111.jsonl`, written before task 5). The round's proof
@@ -290,9 +240,11 @@ the entries it resolved.
   `lem:decomposable-extensor-span-unique` (`meet.tex:577`) `\uses{def:join}`, which task 9's
   re-proof of `span_range_eq_of_extensor_eq` through the grade lemma no longer reaches; its Lean
   docstring still describes the `join_extensor` / `extensor_triple_eq_zero_iff` route. The other
-  twelve missing edges predate the round. The PI decides whether a TeX task joins HOMES or a later
-  round takes these. (Task 17 adds none: `--label` on its two theorems' nodes gives the same edges
-  as at `63fd4e68`.)
+  twelve missing edges predate the round. (Task 17 adds none: `--label` on its two theorems' nodes
+  gives the same edges as at `63fd4e68`; the coordinator's audit at `834845db` finds this list
+  exactly.) At the PI's word all five stay here (*Decisions*, the close). No round takes them yet:
+  none is queued, and ORIGAMI's chapters are others. This entry is their record until a later
+  round's open takes them; ROADMAP's HOMES bullet points here.
 
 ## Blockers / open questions
 
@@ -300,8 +252,17 @@ the entries it resolved.
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 19, the close (docs only; coordinator).
-After the round: ORIGAMI's open, with the PI (`notes/Origami.md`).
+**Next concrete task:** ORIGAMI's open, with the PI (ROADMAP *Queued post-program phases*;
+`notes/Origami.md`). HOMES is done: the round closed with this commit, and the queue's `42-homes`
+row is `done = true`. ORIGAMI, the queue's next row, is attended, so it opens with the PI and takes
+its phase number then.
+
+**What carries over:** *Moved to a later round*'s two entries, `PanelLayer.lean`'s split (ranked
+in `notes/PERFORMANCE.md`) and the blueprint's dependency-graph debt (four missing `\uses` edges,
+one of which would close a cycle, and one unbacked `def:join` edge), which no round yet takes.
+Also left: the `RecordsLinks` entries (*Candidates for the PI*, open in FRICTION), task 17's dead
+`hax`/`hbx` (a golf; *Current state*) and the 22 `[resolved]` FRICTION entries, for the next
+archive sweep.
 
 ## Decisions made during this round
 
@@ -319,4 +280,15 @@ After the round: ORIGAMI's open, with the PI (`notes/Origami.md`).
   order** (task 10). Keep the old order where a one-token `variable` edit does it (`{k' k : ℕ}` in
   `Basic.lean`); otherwise confirm no caller passes the name with `@`
   (`finrank_infinitesimalMotions_of_supportExtensor_eq_zero` now leads with `{k}`, as
-  `GenericityDevice.lean`'s declarations do; task 11's nine reorderings are in *Current state*).
+  `GenericityDevice.lean`'s declarations do; task 11's nine reorderings are in its commit, task
+  13's one in *Current state*).
+- **The close, at the PI's word** (task 19). The coordinator asked the PI how HOMES should close,
+  given the dependency-graph debt under *Moved to a later round*. The PI's choice, verbatim
+  (2026-11-05): **"Close now, defer all"**, whose option text read: "The close only (1 commit). All
+  five edge issues stay recorded under *Moved to a later round* in notes/Phase42-homes.md, and
+  ORIGAMI opens next."
+- **The deferred items' homes** (task 19). `PanelLayer.lean`'s split is mirrored into
+  `notes/PERFORMANCE.md` *(C)*, item 3, the list that ranks split candidates (where
+  `notes/Phase40-cleanup.md`'s close said a split would be ranked). The dependency-graph debt has
+  no round or plan to mirror into, so it stays under *Moved*, as the PI's word says, and ROADMAP's
+  HOMES bullet points at it.
