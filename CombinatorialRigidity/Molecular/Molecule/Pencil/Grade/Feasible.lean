@@ -175,36 +175,12 @@ theorem exists_hasPencilPlaneRealization {k : ℕ} [NeZero k] {G : Graph α β}
     exact ⟨_, PanelHingeFramework.hasPencilPlaneRealization_toPatchedBodyHinge
       (PanelHingeFramework.ofNormals G G.endsOf fun p => b p.1 p.2) hne hind hdim hmem⟩
 
-theorem finrank_dotPerp_span_singleton_of_ne_zero {n : ℕ} {q : Fin (n + 1) → K} (hq : q ≠ 0) :
-    Module.finrank K (dotPerp (K ∙ q)) = n := by
-  rw [finrank_dotPerp, finrank_span_singleton hq]; simp
-
 theorem isZariskiOpen_linearIndependent_univ {σ ι : Type*} [Finite ι] {n : ℕ}
     (f : (σ → K) → ι → Fin n → K) (hf : ∀ i j, IsPolyFun fun s => f s i j) :
     IsZariskiOpen {s | LinearIndependent K (f s)} := by
   convert isZariskiOpen_linearIndependent f hf Set.univ using 1
   ext s
   exact (linearIndepOn_univ_iff (R := K) (v := f s)).symm
-
-theorem dotPerp_sup {N : ℕ} (P Q : Submodule K (Fin N → K)) :
-    dotPerp (P ⊔ Q) = dotPerp P ⊓ dotPerp Q := by
-  ext x
-  simp only [Submodule.mem_inf, mem_dotPerp]
-  refine ⟨fun h => ⟨fun y hy => h y (Submodule.mem_sup_left hy),
-    fun y hy => h y (Submodule.mem_sup_right hy)⟩, fun ⟨hP, hQ⟩ y hy => ?_⟩
-  obtain ⟨p, hp, q, hq, rfl⟩ := Submodule.mem_sup.1 hy
-  rw [dotProduct_add, hP p hp, hQ q hq, add_zero]
-
-theorem dotPerp_inf {N : ℕ} (P Q : Submodule K (Fin N → K)) :
-    dotPerp (P ⊓ Q) = dotPerp P ⊔ dotPerp Q := by
-  conv_lhs => rw [← dotPerp_dotPerp P, ← dotPerp_dotPerp Q, ← dotPerp_sup, dotPerp_dotPerp]
-
-theorem dotPerp_antitone {N : ℕ} {P Q : Submodule K (Fin N → K)} (h : P ≤ Q) :
-    dotPerp Q ≤ dotPerp P :=
-  LinearMap.BilinForm.orthogonal_le h
-
-theorem dotPerp_top {N : ℕ} : dotPerp (⊤ : Submodule K (Fin N → K)) = ⊥ :=
-  LinearMap.BilinForm.orthogonal_top_eq_bot nondegenerate_dotProductBilin
 
 /-- A vector off two subspaces of a third that lies in neither. -/
 theorem exists_mem_notMem_two {V : Type*} [AddCommGroup V] [Module K V] {L A B : Submodule K V}
@@ -346,13 +322,6 @@ theorem exists_forms_three {V : Type*} [AddCommGroup V] [Module K V] [FiniteDime
       exact h2₁₃ hc (heq ▸ Submodule.mem_sup_right (Submodule.mem_span_singleton_self μ₂))
   obtain ⟨μ₁, hμ₁, h1a, h1b⟩ := exists_mem_notMem_two hA hB
   exact ⟨μ₁, hμ₁, μ₂, hμ₂, μ₃, hμ₃, h3₁, h2a, h3₂, h1a, h2₃, h1b⟩
-
-/-- The orthogonal of a subspace has the complementary dimension (`finrank_dotPerp`), as a sum. -/
-theorem finrank_dotPerp_add {N : ℕ} (P : Submodule K (Fin N → K)) :
-    Module.finrank K (dotPerp P) + Module.finrank K P = N := by
-  have := Submodule.finrank_le P
-  rw [finrank_dotPerp, Module.finrank_fin_fun] at *
-  omega
 
 theorem not_dotPerp_le_dotPerp {N : ℕ} {P Q : Submodule K (Fin N → K)}
     (hP : Module.finrank K P = 3) (hPQ : Module.finrank K (P ⊓ Q : Submodule K _) ≤ 2) :

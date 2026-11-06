@@ -6,11 +6,11 @@ CLEANUP-42 and ahead of ORIGAMI, in two parts: the friction log's docs and tooli
 2–4), then the lemmas Phase 42 left outside their home files, one task per home file, with the
 mirror lemmas that now meet their entries' own bar (tasks 5–18). No statement changes. Phase 42
 deferred the moves because a declaration added to these files rebuilds most of `Molecular/`
-mid-phase; ORIGAMI will not edit them, so they are cheapest now. Tasks 1–11 landed
+mid-phase; ORIGAMI will not edit them, so they are cheapest now. Tasks 1–12 landed
 (the docs part, the tree-wide basics, `Deficiency.lean`, the linear-independence mirrors and their
 sweep, `Meet.lean`, `RigidityMatrix/Basic.lean` with `GenericityDevice.lean`, `PanelLayer.lean`):
 62 actionable entries down to 27 (heading tags: open 17, mirror-candidate 8, process 2, blueprint
-0). **Next concrete task:** task 12, `Grade/Realization.lean` (*Lemma checklist*).
+0). **Next concrete task:** task 13, `Grade/Carrier.lean` and `Grade/Configuration.lean` (*Lemma checklist*).
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -26,33 +26,20 @@ public declaration's name, or delete a pinned declaration, does not land that ch
 
 ## Current state
 
-**Task 11 landed** (this commit; Lean; one dispatch, nothing split off). The eleven moved
-declarations are sliced, not retyped (each block, statement and proof, found verbatim in the new
-`PanelLayer.lean` against HEAD). After `normalsJoin_smul_left`: `normalsJoin_add_right`,
-`normalsJoin_smul_right`, `normalsJoin_zero_left`, `exists_linearMap_normalsJoin_eq` (from
-`Grade/Polygon.lean`), `normalsJoin_sub_left`, `normalsJoin_zero_right`,
-`normalsJoin_add_smul_add_smul`, `normalsJoinLin` (from `Grade/Stars.lean`) and
-`exteriorPower_map_normalsJoin` (from `Grade/Embedding.lean`; `Grade/Collineation.lean`'s inline
-`hjoin` is now its `.symm`). After `normalsJoin`, the new fold `ιMulti_pair_eq_normalsJoin` (by
-`rfl`): `starGrade_sup_starGrade_eq_ker`'s `rw` and `change` are one `rw [hv,
-ιMulti_pair_eq_normalsJoin, exteriorPower_map_normalsJoin]`. After `panelSupportExtensor` (itself
-unchanged): `complementScrew` (from `Grade/Short.lean`) and new
-`panelSupportExtensor_eq_complementScrew`, by `rfl`. Before the `Fin 4`
-`extensorInPanel_panelSupportExtensor`: `extensorInPanel_panelSupportExtensor_gen` (from
-`Grade/Realization.lean`), the `Fin 4` lemma now `extensorInPanel_panelSupportExtensor_gen (k := 2)
-h` (statement unchanged). Every import cone checked first by a scratch file importing only
-`PanelLayer`. **Binder order** (the task-10 decision below; `#check @…` after the build):
-`complementScrew` and `extensorInPanel_panelSupportExtensor_gen` bind their own `K`, `k` and keep
-their order; the seven `normalsJoin` lemmas and `normalsJoinLin` go from `{K} [Field K] {k}` to
-`{k} {K} [Field K]`, and `exteriorPower_map_normalsJoin` from `{K} [Field K] {k' k}` to `{k' k} {K}
-[Field K]` (`PanelLayer.lean`'s `variable {k : ℕ}` is now `{k' k : ℕ}`); no caller passes any of
-them with `@`. Docstring repoints: the module docs of `PanelLayer`, `Polygon`, `Stars`,
-`Embedding` and `Short`, `exists_extensor_eq_panelSupportExtensor`'s users, `Collineation`'s step.
-Gates: G2 `lake build` (6249 jobs, 0 warnings or errors, 0 cache failures) and `lake lint`; G3
-`blueprint/lint.sh` (check 9's total 0, the label report unchanged); G4 `blueprint/verify.sh`,
-`checkdecls` silent (`exteriorPower_map_normalsJoin` is pinned, `lem:pencil-d-embedding-join`);
-G5: `#print axioms` of the 63 `formalization.yaml` constants, each `[propext, Classical.choice,
-Quot.sound]`, as at task 10; G1. FRICTION: four entries `[resolved]`.
+**Task 12 landed** (this commit; Lean; sonnet; one dispatch). The seven `dotPerp` declarations are
+sliced, not retyped (48 lines out of `Feasible.lean` and `TwoPencil.lean`, the same 48 in): after
+`finrank_dotPerp` in `Grade/Realization.lean`, `finrank_dotPerp_add`,
+`finrank_dotPerp_span_singleton_of_ne_zero`, `dotPerp_sup`, `dotPerp_inf`, `dotPerp_antitone`,
+`dotPerp_top` (from `Feasible.lean`) and `dotPerp_map_eq` (from `TwoPencil.lean`). Import cone: all
+proofs use only `dotPerp_dotPerp`, `mem_dotPerp`, `finrank_dotPerp` and mathlib, so the cone is
+met (the build is the check). **Binders:** unchanged, as all seven sit under the same `variable
+{K} [Field K]` line in both files; no caller passes any with `@`. None pinned in the blueprint, so
+G4 is vacuous. Gates: G2 `lake build` (6249 jobs, 0 warnings or errors) and `lake lint`; G3
+`blueprint/lint.sh` (all static reference checks passed); G5 vacuous (no proof replaced); G1.
+FRICTION: *42k's home debts* `[resolved]`; *42l's home debts* retagged `[mirror-candidate]`
+(`finrank_map_of_injOn` remains).
+
+**Task 11** (`PanelLayer.lean`) is one line below; its binder reorderings are in its commit.
 
 **Tasks 1-10** are in the checklist below, one line each. Details kept only where no line carries
 them: task 10 put `isInfinitesimalMotion_iff_of_supportExtensor_eq_zero` after
@@ -185,14 +172,11 @@ the entries it resolved.
 - [x] **10. `RigidityMatrix/Basic.lean` and `GenericityDevice.lean`** (`47b63f92`; Lean). Seven
   moves, new `hingeRow_add_hingeRow`. Resolves *`BodyHingeFramework.map`…*, *`hingeRow` has no
   additive form…*, the count of *42k build 2…*, `ExtensorInPanel.smul` of *42k's home debts*.
-- [x] **11. `PanelLayer.lean`** (this commit; Lean; opus). Eleven moves, the new fold and `rfl`
+- [x] **11. `PanelLayer.lean`** (`98be141b`; Lean; opus). Eleven moves, the new fold and `rfl`
   equation, the `Fin 4` case. Resolves *The `normalsJoin` linearity…*, *`complementScrew` sits
   in…*, *No linear-equivalence form…*, *Grade-general extensor…*.
-- [ ] **12. `Grade/Realization.lean`** (Lean; sonnet). Beside `finrank_dotPerp`: `dotPerp_sup`,
-  `dotPerp_inf`, `dotPerp_antitone`, `dotPerp_top`, `finrank_dotPerp_add` and
-  `finrank_dotPerp_span_singleton_of_ne_zero` (from `Grade/Feasible.lean`), and `dotPerp_map_eq`
-  (from `Grade/TwoPencil.lean`). Resolves the `dotPerp` parts of *42l's home debts* and *42k's
-  home debts*.
+- [x] **12. `Grade/Realization.lean`** (this commit; Lean; sonnet). Seven `dotPerp` moves beside
+  `finrank_dotPerp`. Resolves the `dotPerp` parts of *42l's home debts* and *42k's home debts*.
 - [ ] **13. `Grade/Carrier.lean` and `Grade/Configuration.lean`** (Lean; sonnet). `gradeSigma` and
   `gradeSigma_apply` (from `Grade/ConditionLinear.lean`) beside `gradeMk`, and
   `finrank_span_pencilConfigPointGrade_closedNbhd_le`'s inline `let` through it; `pictureProj` and
@@ -261,8 +245,8 @@ the entries it resolved.
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 12, `Grade/Realization.lean` (*Lemma checklist*): seven `dotPerp`
-lemmas beside `finrank_dotPerp`, one commit.
+**Next concrete task:** task 13, `Grade/Carrier.lean` and `Grade/Configuration.lean` (*Lemma
+checklist*): `gradeSigma` and the picture projections, one commit.
 After the round: ORIGAMI's open, with the PI (`notes/Origami.md`).
 
 ## Decisions made during this round

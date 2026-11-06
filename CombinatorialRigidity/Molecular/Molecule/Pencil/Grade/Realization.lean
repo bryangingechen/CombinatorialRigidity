@@ -105,6 +105,53 @@ theorem finrank_dotPerp {n : ℕ} (P : Submodule K (Fin n → K)) :
   rw [dotPerp, LinearMap.BilinForm.finrank_orthogonal nondegenerate_dotProductBilin,
     Module.finrank_fin_fun]
 
+/-- The orthogonal of a subspace has the complementary dimension (`finrank_dotPerp`), as a sum. -/
+theorem finrank_dotPerp_add {N : ℕ} (P : Submodule K (Fin N → K)) :
+    Module.finrank K (dotPerp P) + Module.finrank K P = N := by
+  have := Submodule.finrank_le P
+  rw [finrank_dotPerp, Module.finrank_fin_fun] at *
+  omega
+
+theorem finrank_dotPerp_span_singleton_of_ne_zero {n : ℕ} {q : Fin (n + 1) → K} (hq : q ≠ 0) :
+    Module.finrank K (dotPerp (K ∙ q)) = n := by
+  rw [finrank_dotPerp, finrank_span_singleton hq]; simp
+
+theorem dotPerp_sup {N : ℕ} (P Q : Submodule K (Fin N → K)) :
+    dotPerp (P ⊔ Q) = dotPerp P ⊓ dotPerp Q := by
+  ext x
+  simp only [Submodule.mem_inf, mem_dotPerp]
+  refine ⟨fun h => ⟨fun y hy => h y (Submodule.mem_sup_left hy),
+    fun y hy => h y (Submodule.mem_sup_right hy)⟩, fun ⟨hP, hQ⟩ y hy => ?_⟩
+  obtain ⟨p, hp, q, hq, rfl⟩ := Submodule.mem_sup.1 hy
+  rw [dotProduct_add, hP p hp, hQ q hq, add_zero]
+
+theorem dotPerp_inf {N : ℕ} (P Q : Submodule K (Fin N → K)) :
+    dotPerp (P ⊓ Q) = dotPerp P ⊔ dotPerp Q := by
+  conv_lhs => rw [← dotPerp_dotPerp P, ← dotPerp_dotPerp Q, ← dotPerp_sup, dotPerp_dotPerp]
+
+theorem dotPerp_antitone {N : ℕ} {P Q : Submodule K (Fin N → K)} (h : P ≤ Q) :
+    dotPerp Q ≤ dotPerp P :=
+  LinearMap.BilinForm.orthogonal_le h
+
+theorem dotPerp_top {N : ℕ} : dotPerp (⊤ : Submodule K (Fin N → K)) = ⊥ :=
+  LinearMap.BilinForm.orthogonal_top_eq_bot nondegenerate_dotProductBilin
+
+/-- **A linear automorphism moves orthogonals by its inverse transpose** (a step of
+`lem:pencil-d-projective-transport`): if `h x ⬝ g y = x ⬝ y` for all `x, y`, then
+`(g P)^⊥ = h (P^⊥)`. The map `h` sends `P^⊥` into `(g P)^⊥`, as `h x ⬝ g y = x ⬝ y = 0`, and onto
+it, as both have the dimension of `P^⊥` (`finrank_dotPerp`, `LinearEquiv.finrank_map_eq`). -/
+theorem dotPerp_map_eq {n : ℕ} (g h : (Fin n → K) ≃ₗ[K] (Fin n → K))
+    (hgh : ∀ x y : Fin n → K, h x ⬝ᵥ g y = x ⬝ᵥ y) (P : Submodule K (Fin n → K)) :
+    dotPerp (P.map (g : (Fin n → K) →ₗ[K] (Fin n → K))) =
+      (dotPerp P).map (h : (Fin n → K) →ₗ[K] (Fin n → K)) := by
+  refine (Submodule.eq_of_le_of_finrank_eq ?_ ?_).symm
+  · rintro _ ⟨x, hx, rfl⟩
+    rw [mem_dotPerp]
+    rintro _ ⟨y, hy, rfl⟩
+    rw [LinearEquiv.coe_coe, LinearEquiv.coe_coe, hgh]
+    exact mem_dotPerp.1 hx y hy
+  · rw [LinearEquiv.finrank_map_eq, finrank_dotPerp, finrank_dotPerp, LinearEquiv.finrank_map_eq]
+
 /-- **A hyperplane is the orthogonal of a nonzero vector**: a subspace of `K^(n+1)` of dimension `n`
 is `q^⊥` for a nonzero `q`, which spans its one-dimensional orthogonal. -/
 theorem exists_eq_dotPerp_span_singleton {n : ℕ} (P : Submodule K (Fin (n + 1) → K))

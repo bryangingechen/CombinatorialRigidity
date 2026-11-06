@@ -258,7 +258,7 @@ to be re-derived by re-reading entries later.
   would not (the 42m recon's tip).
 - **Status:** idiom (resolved in-proof).
 
-### [open] 42l's home debts: six `dotPerp` lemmas sit in `Pencil/Grade/Feasible.lean`
+### [mirror-candidate] 42l's home debts: six `dotPerp` lemmas sit in `Pencil/Grade/Feasible.lean`
 - **Where it bit:** Phase 42l, build 2 (`lem:pencil-d-nondegenerate-feasible`),
   `Pencil/Grade/Feasible.lean`: `dotPerp_sup`, `dotPerp_inf`, `dotPerp_antitone`, `dotPerp_top`,
   `finrank_dotPerp_add` and `finrank_dotPerp_span_singleton_of_ne_zero` are about `dotPerp`, which
@@ -272,7 +272,9 @@ to be re-derived by re-reading entries later.
 - **Proposed fix:** the six beside `finrank_dotPerp`, with the next commit that edits
   `Grade/Realization.lean` (with 42k's `dotPerp_map_eq`, the entry below); `finrank_map_of_injOn` to
   a mirror under `Mathlib/LinearAlgebra/` (mirror candidate), at a cleanup round.
-- **Status:** open (42l's deferral, tracked in `notes/Phase42l.md` *Hand-off*).
+- **Status:** mirror-candidate, `finrank_map_of_injOn` only (retagged from `open` at HOMES task 12,
+  which moved the six `dotPerp` lemmas, unchanged, beside `finrank_dotPerp` in
+  `Grade/Realization.lean`).
 
 ### [mirror-candidate] 42k build 2: the one-edge count and the two-body edge lemma sit in `Pencil/Grade/Arms.lean`
 - **Where it bit:** Phase 42k, build 2 (`lem:pencil-d-base-case`), `Pencil/Grade/Arms.lean`:
@@ -309,7 +311,7 @@ to be re-derived by re-reading entries later.
   `have : (G ↾ ({e, f} : Set β)).deficiency (m + 2) = 0 := hH0.deficiency_eq`.
 - **Status:** idiom.
 
-### [open] 42k's home debts: three helpers of `Pencil/Grade/TwoPencil.lean` belong upstream of it
+### [resolved] 42k's home debts: three helpers of `Pencil/Grade/TwoPencil.lean` belong upstream of it
 - **Where it bit:** Phase 42k, build 1 (`lem:pencil-d-two-pencil-extension`,
   `lem:pencil-d-projective-transport`), `Pencil/Grade/TwoPencil.lean`:
   `exists_smul_extensor_eq_of_mem_span_range_grade` (extensors of two bases of one subspace are
@@ -324,7 +326,8 @@ to be re-derived by re-reading entries later.
   beside the pair form, which becomes its `j = 2` case (with FRICTION's `contragredientEquiv`, the
   other `Meet.lean` debt); `ExtensorInPanel.smul` beside `ExtensorInPanel`; `dotPerp_map_eq` beside
   `finrank_dotPerp`.
-- **Status:** open, `dotPerp_map_eq` only (HOMES task 12). HOMES task 9 moved the graded lemma
+- **Status:** resolved. HOMES task 12 moved `dotPerp_map_eq` beside `finrank_dotPerp`
+  (`Grade/Realization.lean`); HOMES task 9 moved the graded lemma
   into `Meet.lean`, with the pair form its `j = 2` case, and task 10 moved `ExtensorInPanel.smul`
   beside `ExtensorInPanel` (`RigidityMatrix/Basic.lean`).
 

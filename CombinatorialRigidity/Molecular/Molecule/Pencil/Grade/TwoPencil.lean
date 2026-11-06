@@ -241,22 +241,6 @@ theorem exists_two_planes_of_mem {n : ℕ} {P : Submodule K (Fin n → K)} {b : 
 
 /-! ## `lem:pencil-d-projective-transport` -/
 
-/-- **A linear automorphism moves orthogonals by its inverse transpose** (a step of
-`lem:pencil-d-projective-transport`): if `h x ⬝ g y = x ⬝ y` for all `x, y`, then
-`(g P)^⊥ = h (P^⊥)`. The map `h` sends `P^⊥` into `(g P)^⊥`, as `h x ⬝ g y = x ⬝ y = 0`, and onto
-it, as both have the dimension of `P^⊥` (`finrank_dotPerp`, `LinearEquiv.finrank_map_eq`). -/
-theorem dotPerp_map_eq {n : ℕ} (g h : (Fin n → K) ≃ₗ[K] (Fin n → K))
-    (hgh : ∀ x y : Fin n → K, h x ⬝ᵥ g y = x ⬝ᵥ y) (P : Submodule K (Fin n → K)) :
-    dotPerp (P.map (g : (Fin n → K) →ₗ[K] (Fin n → K))) =
-      (dotPerp P).map (h : (Fin n → K) →ₗ[K] (Fin n → K)) := by
-  refine (Submodule.eq_of_le_of_finrank_eq ?_ ?_).symm
-  · rintro _ ⟨x, hx, rfl⟩
-    rw [mem_dotPerp]
-    rintro _ ⟨y, hy, rfl⟩
-    rw [LinearEquiv.coe_coe, LinearEquiv.coe_coe, hgh]
-    exact mem_dotPerp.1 hx y hy
-  · rw [LinearEquiv.finrank_map_eq, finrank_dotPerp, finrank_dotPerp, LinearEquiv.finrank_map_eq]
-
 /-- **Moving a pencil realization by a linear map, in every dimension**
 (`lem:pencil-d-projective-transport`): let `g` be a linear automorphism of `K^(k+2)` and `h` its
 inverse transpose, `h x ⬝ g y = x ⬝ y`. A pencil realization `(F, b, Π)` of `G` moves to one with
