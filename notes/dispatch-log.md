@@ -204,6 +204,39 @@ ways (4–7 for 3, 4–8 for 3, 4–7 for 8). Tool: two rows (42g, 42h) record
 that `phasenote.py --surfaces` resolves no ROADMAP row for a sub-lettered
 log, as at 42f (F59).
 
+**HOMES (the cleanup round after CLEANUP-42) rows, 2026-11-05: 4, written
+at the close.** None BLOCKED or killed, no escalation, no `NEEDS_PI`. There
+were fifteen builder dispatches for tasks 5–19, one corrective resume (task
+8) and one resume to stop a stray build (task 14). Tasks 10, 11, 17 and the
+close ran at Opus where the checklist said Sonnet: the fragility-zone floor
+for 10 and 11, an extracted general lemma under a heartbeat budget for 17.
+(1) Three builders hand-wrote the work log's FRICTION tally wrong (39 for
+38; 34 for 36, where task 7 retagged two entries' Status lines but not the
+headings the tally counts; 25 for 24). The coordinator's `grep -c '^###
+\[<tag>\]'` recount caught each one, and the next prompt's hygiene block
+fixed it. A count a status surface carries is recounted by its defining
+grep, never derived from deltas; from task 14 the prompt named the grep.
+(2) Task 8's sweep (`bb4c09d6`) filed `Grade/LiftCases.lean`'s five
+two-step bridges, which go through the field-form siblings
+`linearIndepOn_pair_iff` and `LinearIndependent.pair_iff'`, as scalar-form
+uses. The coordinator read every kept site and caught it, and a resume of
+the same agent fixed all five (`a654dd56`). The return also skipped G3 and
+G5, so the coordinator ran `#print axioms` on all 21 main results. (3) In
+task 14 (`0e2da1be`), an early `lake build` called without the Bash
+`timeout` parameter auto-backgrounded and ran under the builder's
+foreground gates (F6). The return came back as "waiting on its own
+background work"; a resume stopped the build (TaskStop), and the
+coordinator re-ran the whole-tree build clean. (4) The re-proofs of tasks
+9, 11, 13 and 16, in a round that writes no TeX, left the blueprint's
+`\uses` graph behind the Lean: four missing edges, one of which would close
+a cycle, and one newly unbacked `def:join` edge. No gate compares Lean
+reach with `\uses`. The coordinator caught it by diffing `python3
+scripts/blueprint-deps.py` against the round's pre-open cache
+(`.lake/blueprint-deps/`, keyed by content; a cached run can be replayed by
+overriding `run_lean`). At the close the PI chose to defer all five. A
+round that replaces pinned proofs runs that diff at each such task, even
+when it writes no TeX.
+
 ## Findings
 
 (Distill recurring lessons here — one entry per lesson, rows cite it.
