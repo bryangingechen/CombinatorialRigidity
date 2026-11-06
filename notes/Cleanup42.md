@@ -17,9 +17,9 @@ one `\uses` sweep (blueprint and notes, no Lean); each slice set its rows' statu
 here. The ledger now: none `open`, 23 `aligned`, 17 `kept`, 14 `no departure`. Round 4 opened the
 same day at the PI's word (§1, all four items), in nine tasks: the stale docstrings and notes,
 Theorem S's fold, the reduction's fold and the witnesses at `K₂` and `K_{2,3}` (§3). **Next
-concrete task:** round 4's task 8, witness (2) part 2, the good ear and the ear's condition
-(`notes/Phase42-fold.md`); tasks 2 to 7, the stale docstrings, the `K₂` witness, Theorem S's fold,
-the reduction's folds and the feasibility of `K_{2,3}`, have landed.
+concrete task:** round 4's task 9, the close (`notes/Phase42-fold.md`); tasks 2 to 8, the stale
+docstrings, the `K₂` witness, Theorem S's fold, the reduction's folds and the `K_{2,3}` witness, have
+landed.
 
 ## 1. The PI's decisions (verbatim)
 
@@ -1304,7 +1304,8 @@ there.
   `s = 1`; `notes/Phase42m.md` *Blockers*). It would witness an inner arm of the induction, not a
   hypothesis of the headline. Round 4 tasks 3, 7 and 8, both in `Nonvacuity.lean`: (1) closes as
   spiked; (2) composes through `Graph.IsX0Graph.exists_goodEar_or_pendantTriangle` and
-  `holdsGenerally_earFree`, with five leaves left.
+  `holdsGenerally_earFree`, with five leaves left; tasks 7 and 8 closed them
+  (`holdsGenerally_earFree_witness`).
 
 ### Round 1's stop: the open rows by family (2026-11-05)
 

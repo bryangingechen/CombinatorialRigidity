@@ -6,7 +6,7 @@ round of CLEANUP-42: Theorem S's `d = 3` core and four `d = 3` cases of the redu
 `K_{2,3}`; and the ten stale Lean docstrings and five dated `notes/BlueprintExposition.md` entries
 left by rounds 1–2. The open's spikes: both folds keep every `d = 3` statement, no blueprint
 statement changes, so no `NEEDS_PI`. Nine tasks, one commit each.
-**Next concrete task:** task 8, witness (2), part 2: the good ear and the ear's condition (below); tasks 3 to 7 landed.
+**Next concrete task:** task 9, the close (below); tasks 2 to 8 landed.
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -21,7 +21,7 @@ entry here, newest first, and the loop stops; the PI answers in an entry that st
 
 ## Current state
 
-**Task 7 landed** (witness (2), part 1: `K_{2,3}` is feasible; its checklist line; gates: whole-tree `lake build` 6249 jobs, 0 warnings, `lake lint`, `blueprint/lint.sh` with the docstring-label total 0, `k23_pencilNondegFeasible` and `k23_degree` on the three standard axioms). **Task 6 landed** (the reduction's fold: the nonsimple case; its checklist line; gates: whole-tree `lake build` 6249 jobs, 0 warnings, `lake lint`, `blueprint/lint.sh`, `blueprint/verify.sh` with `checkdecls` silent, the three pencil results and `hasGradedPencilRealization_of_not_simple` on the three standard axioms). **Task 5 landed** (the reduction's fold: base, loop and cut-edge cases; its checklist line; gates: whole-tree `lake build` 6249 jobs, 0 warnings, `lake lint`, `blueprint/lint.sh` with the docstring-label total 0, `blueprint/verify.sh` with `checkdecls` silent, the three pencil results and the four `d = 3` cases on the three standard axioms). **Task 4 landed** (Theorem S's fold; its checklist line; gates: whole-tree `lake build` 6249 jobs, 0 warnings, `lake lint`, `blueprint/lint.sh`, `blueprint/verify.sh` with `checkdecls` silent, the three pencil results and the bridge on the three standard axioms). **Task 3 landed** (witness (1), `K₂`: `graded_pencil_conditioned_pair_generic_witness` in
+**Task 8 landed** (witness (2), part 2: the good ear and the ear's condition at `K_{2,3}`; its checklist line; gates: whole-tree `lake build` 6249 jobs, 0 warnings, 0 cache failures, `lake lint`, `blueprint/lint.sh` with the docstring-label total 0, `holdsGenerally_earFree_witness` on the three standard axioms). **Task 7 landed** (witness (2), part 1: `K_{2,3}` is feasible; its checklist line; gates: whole-tree `lake build` 6249 jobs, 0 warnings, `lake lint`, `blueprint/lint.sh` with the docstring-label total 0, `k23_pencilNondegFeasible` and `k23_degree` on the three standard axioms). **Task 6 landed** (the reduction's fold: the nonsimple case; its checklist line; gates: whole-tree `lake build` 6249 jobs, 0 warnings, `lake lint`, `blueprint/lint.sh`, `blueprint/verify.sh` with `checkdecls` silent, the three pencil results and `hasGradedPencilRealization_of_not_simple` on the three standard axioms). **Task 5 landed** (the reduction's fold: base, loop and cut-edge cases; its checklist line; gates: whole-tree `lake build` 6249 jobs, 0 warnings, `lake lint`, `blueprint/lint.sh` with the docstring-label total 0, `blueprint/verify.sh` with `checkdecls` silent, the three pencil results and the four `d = 3` cases on the three standard axioms). **Task 4 landed** (Theorem S's fold; its checklist line; gates: whole-tree `lake build` 6249 jobs, 0 warnings, `lake lint`, `blueprint/lint.sh`, `blueprint/verify.sh` with `checkdecls` silent, the three pencil results and the bridge on the three standard axioms). **Task 3 landed** (witness (1), `K₂`: `graded_pencil_conditioned_pair_generic_witness` in
 `Nonvacuity.lean`, three private helpers, axioms the three standard). **Task 2 landed** (Lean docstrings only, no statement or proof): the ten stale docstrings and the
 five dated `BlueprintExposition.md` entries (the checklist line). **Task 1 landed** (docs only): this log; `notes/Cleanup42.md`'s §1 (the PI's entry
 of 2026-11-05 for round 4), **Status** and §3; ROADMAP's Status row, §42's *Next* and the
@@ -158,15 +158,9 @@ three lines:** number, sha, what landed, lines deleted, its edges and any *Candi
 - [x] **7. Witness (2), part 1: `K_{2,3}` is feasible** (this commit). `Nonvacuity.lean`, a new header after the molecular rows: private `k23_degree` and `k23_pencilNondegFeasible`, the route's data
   unchanged (every conjunct holds; the hubs are the two bodies of degree three), hinges by `exists_extensor_two_pencils`; axioms the three standard (a scratch `module` with `import all`). The hygiene fix
   ("the least simple graph with an edge"). FRICTION: a new idiom entry, lifted to a TACTICS-QUIRKS symptom row. 147 Lean lines added net.
-- [ ] **8. Witness (2), part 2: the good ear and the ear's condition** (Opus). Transcribe
-  `WitnessK23.lean`'s `k23_goodEar_earLiftCondition` (`∃ W₀ x a b`, a good ear of `K_{2,3}`, and
-  selectors at which `EarLiftCondition (K := ℝ)` holds at `x`, `a`, `b`), through
-  `Graph.IsX0Graph.exists_goodEar_or_pendantTriangle` and `holdsGenerally_earFree`, discharging its
-  leaves: (a1) `IsX0Graph` (connected from the two-edge-connectivity the spike derives); (a2)
-  `0 ≤ s(Z)` for every nonempty `Z` (the one enumeration: `3(i + j − 1) − 2ij ≥ 0` at `i ≤ 2`,
-  `j ≤ 3`; route open); (a3) `s(V) = 0`; (a4) no two bodies of degree two adjacent. Its own header
-  and module-docstring bullet (the header landed with task 7). G1–G3, its axioms. If (a2) does not close, land the rest as lemmas
-  and append the assembly as task 8b.
+- [x] **8. Witness (2), part 2: the good ear and the ear's condition** (this commit). Public `holdsGenerally_earFree_witness` in `Nonvacuity.lean` under task 7's header (a `K₂₃` local notation, task 7's two statements on it), its module bullet; the
+  five leaves closed as eight private lemmas: (a2) by `|E(K_{2,3}[Z])| ≤ i·j` and `interval_cases`; selectors by the existing `exists_steer_selectors`. Axioms the three standard. FRICTION: a new
+  mirror-candidate entry (`ncard` of a set of a sum type), a line on 22i's `vertexSet_induce` entry. 135 Lean lines added net.
 - [ ] **9. The close** (Sonnet). Each task's sha in its line and in §3's mirrored lines; the
   *Candidates* line on the folds' new edges (*Scope*); the status surfaces of the open; the queue
   row's `done = true` only if CLEANUP-42 has nothing left.
@@ -192,12 +186,11 @@ three lines:** number, sha, what landed, lines deleted, its edges and any *Candi
 
 ## Blockers / open questions
 
-- None. Witness (2)'s leaf (a2) has no settled proof route (task 8).
+- None.
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 8, witness (2) part 2, the good ear and the ear's condition (Opus; its line above), under the `K_{2,3}` header task 7 left in
-`Nonvacuity.lean`: `k23_pencilNondegFeasible` is its (b), and `k23_degree` (degree three at `Sum.inl`, two at `Sum.inr`) serves (a1)'s minimum degree and (a4). Then task 9.
+**Next concrete task:** task 9, the close (Sonnet; its line above): each task's sha in its line and in §3's mirrored lines, the *Candidates* line on the folds' new edges, the status surfaces of the open, and the queue row. Round 4's Lean is done: tasks 2 to 8 landed, the last (`holdsGenerally_earFree_witness`) with no new *Candidates* or *Moved* line.
 
 ## Decisions made during this round
 

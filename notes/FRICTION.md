@@ -110,6 +110,24 @@ moment you resolve the entry) is what makes the sweep a pure
 to be re-derived by re-reading entries later.
 
 ## Open
+### [mirror-candidate] No `Set.ncard` of a set of a sum type by its two preimages; three traps counting `K_{2,3}`'s edges
+- **Where it bit:** CLEANUP-42 round 4, task 8: `Nonvacuity.lean`'s private
+  `ncard_eq_ncard_preimage_inl_add`, `k23_ncard_edgeSet_induce_le`, `k23_partitionDef_nonneg` and
+  `k23_partitionDef_id` (the singleton values of `K_{2,3}`).
+- **Friction:** (1) `|Z| = |Sum.inl ⁻¹' Z| + |Sum.inr ⁻¹' Z|` takes four rewrites
+  (`Set.image_preimage_inl_union_image_preimage_inr` under `conv_lhs`, `Set.ncard_union_eq`,
+  `Set.ncard_image_of_injective` twice); `lean_loogle` finds no `ncard` or `encard` form. (2) Three
+  traps: `V(G.induce X) = X` is `Graph.vertexSet_induce` (`Graph.induce_vertexSet` is
+  `G.induce V(G) = G`, the idiom entry below); `V(Graph.OfSimpleGraph H) = univ` is
+  `Graph.vertexSet_OfSimpleGraph`; `Sum.inl ⁻¹' Z ×ˢ Sum.inr ⁻¹' Z` misparses (an `SProd` failure),
+  so each preimage is parenthesized. (3) `3(i + j - 1) - 2ij ≥ 0` at `i ≤ 2`, `j ≤ 3`, `i + j ≥ 1`
+  is false over `ℝ` (at `i = j = 1/2`), so `interval_cases` on both counts, then `omega`.
+- **Proposed fix:** (1) `Set.ncard_eq_ncard_preimage_inl_add_ncard_preimage_inr [Finite α]
+  [Finite β] (s : Set (α ⊕ β)) : s.ncard = (Sum.inl ⁻¹' s).ncard + (Sum.inr ⁻¹' s).ncard` in
+  `Mathlib/Data/Set/Card.lean` (the private helper's statement); not mirrored now: one call site,
+  and the round writes only the files its tasks name.
+- **Status:** mirror-candidate (open; a cleanup round). (2) and (3) idiom.
+
 ### [idiom] A degree in `Graph.OfSimpleGraph`, and `#print axioms` of a `private` declaration
 - **Where it bit:** CLEANUP-42 round 4, task 7: `Nonvacuity.lean`'s private `k23_degree` and
   `k23_pencilNondegFeasible` (`K_{2,3}`), and the gate's `#print axioms` of the latter.
@@ -3411,6 +3429,8 @@ corresponding entry in [Mirrored](#mirrored) below.
   step via a `have hkey := Set.ncard_union_eq hdisj_img` then
   `rw [← Set.image_union, ← hVun] at hkey; exact hkey` — this avoids `simp` on the
   vertex set entirely.
+- **Later:** at the current mathlib the `simps` lemma is `Graph.vertexSet_induce`, and
+  `simp only [Graph.numParts, Graph.vertexSet_induce]` fires (CLEANUP-42 round 4, task 8).
 - **Status:** resolved.
 
 ### [idiom] `Set.ncard_union_eq` `toFinite_tac` auto-param fails for image sets

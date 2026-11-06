@@ -27,7 +27,8 @@ input (for an `iff`, the side the theorem derives there). Each is the closed dec
 `PHASE-BOUNDARIES.md`'s close checklist asks of a main result, named after its row with
 `_witness` (`tay_witness`'s, whose name already ends so, is `tay_witness_nonvacuous`).
 `molecular_conjecture_witness` (`Molecular/AlgebraicInduction/Nonvacuity.lean`) is the one for
-`molecular_conjecture`.
+`molecular_conjecture`. One theorem, `holdsGenerally_earFree_witness`, applies instead a lemma of
+a main result's induction, named after it in the same way.
 
 ## The witnesses
 
@@ -104,6 +105,11 @@ input (for an `iff`, the side the theorem derives there). Each is the closed dec
   are met: feasibility (a nondegenerate pencil realization) passes from the double edge, which has
   one, to its subgraph `K₂`, as no body of the double edge is a pencil hub, and from there to the
   grade.
+* `holdsGenerally_earFree_witness`: an inner arm of the same generic conjunct, not a main
+  result's hypothesis. The conjunct's induction removes a body of degree two at a good ear, whose
+  condition `holdsGenerally_earFree` gives at a simple, nondegeneracy-feasible graph. The complete
+  bipartite graph `K_{2,3}`, two bodies of degree three each linked to the three of degree two, is
+  such a graph, and it has a good ear, at which the ear's condition holds.
 * `molecule_rank_formula_witness`: Jackson and Jordán's molecule rank formula (Katoh and
   Tanigawa's Corollary 5.7) at the triangle `K₃`, the least simple graph of minimum degree two.
   Its multigraph is a triangle, `0`-dof, so the square `K₃² = K₃` has generic rank `3 · 3 - 6 = 3`.
@@ -124,7 +130,8 @@ each hinge is two bars (`bodyHingeMult 2 = 2`): at `n = 1` a hinge carries no ba
 Theorems 5.5 and 5.6, the rank formula at generic panel normals and the molecular conjecture for
 multigraphs, whose least dimension is `n = 2` (a panel is a line and a hinge a point); the pencil
 rows are stated at `n = 3`, the pencil row in every dimension at `d = 4` (Lean's `m = d - 2 = 2`,
-grade `3`), and the molecule and Jacobs rows, about the square of a graph, in 3-space.
+grade `3`), its good-ear arm in dimension three, and the molecule and Jacobs rows, about the square
+of a graph, in 3-space.
 -/
 
 @[expose] public section
@@ -681,22 +688,24 @@ nondegeneracy-feasible graph; `K₂` above meets both hypotheses. Its induction
 from `holdsGenerally_earFree`, at a simple, nondegeneracy-feasible graph with a good ear. The
 complete bipartite graph `K_{2,3}`, two bodies of degree three each linked to the three of degree
 two, is the instance here, of that arm and not of a main result's hypothesis: it is simple
-(`ofSimpleGraph_simple`) and nondegeneracy-feasible (`k23_pencilNondegFeasible`). -/
+(`ofSimpleGraph_simple`) and nondegeneracy-feasible (`k23_pencilNondegFeasible`), and it has a good
+ear, at which the ear's condition holds (`holdsGenerally_earFree_witness`). In this section `K₂₃`
+is local notation for the graph `Graph.OfSimpleGraph (completeBipartiteGraph (Fin 2) (Fin 3))`. -/
 
 section
 
 open scoped Matrix
 open Molecular
 
+local notation "K₂₃" => Graph.OfSimpleGraph (completeBipartiteGraph (Fin 2) (Fin 3))
+
 /-- In `K_{2,3}` the two bodies `Sum.inl i` have degree three and the three bodies `Sum.inr j` have
 degree two. The graph is simple, so the degree of a body is its number of neighbours
 (`Graph.degree_eq_ncard_adj`), the bodies of the other side. -/
 private theorem k23_degree (v : Fin 2 ⊕ Fin 3) :
-    (Graph.OfSimpleGraph (completeBipartiteGraph (Fin 2) (Fin 3))).degree v =
-      Sum.elim (fun _ => 3) (fun _ => 2) v := by
+    (K₂₃).degree v = Sum.elim (fun _ => 3) (fun _ => 2) v := by
   have := ofSimpleGraph_simple (completeBipartiteGraph (Fin 2) (Fin 3))
-  have hN : N(Graph.OfSimpleGraph (completeBipartiteGraph (Fin 2) (Fin 3)), v) =
-      {w | (completeBipartiteGraph (Fin 2) (Fin 3)).Adj v w} := by
+  have hN : N(K₂₃, v) = {w | (completeBipartiteGraph (Fin 2) (Fin 3)).Adj v w} := by
     ext w; simp [Graph.Neighbor, Graph.Adj]
   rw [Graph.degree_eq_ncard_adj, hN]
   rcases v with i | j
@@ -718,8 +727,7 @@ independent. The hubs are the two bodies of degree three (`k23_degree`), which a
 the closed hub-neighbourhood of a hub is the hub alone and that of any other body is the two hubs,
 with normals `e₁`, `e₀`. The closed neighbourhood of a body of degree two has the points `e₀`, `e₁`
 and the body's own, a nonzero vector of the span of `e₂`, `e₃`. -/
-private theorem k23_pencilNondegFeasible :
-    PencilNondegFeasible ℝ (Graph.OfSimpleGraph (completeBipartiteGraph (Fin 2) (Fin 3))) := by
+private theorem k23_pencilNondegFeasible : PencilNondegFeasible ℝ (K₂₃) := by
   set H := completeBipartiteGraph (Fin 2) (Fin 3) with hH
   set normal : Fin 2 ⊕ Fin 3 → Fin 4 → ℝ :=
     Sum.elim ![![0, 1, 0, 0], ![1, 0, 0, 0]] ![![0, 0, 0, 1], ![0, 0, 1, 0], ![0, 0, 1, -1]]
@@ -816,6 +824,133 @@ private theorem k23_pencilNondegFeasible :
         · fin_cases k <;> simp
         · simp [h]
         · simp [hH] at he
+
+/-- A finite set of a sum type has as many members as its left and right parts together,
+`|Z| = |Sum.inl ⁻¹' Z| + |Sum.inr ⁻¹' Z|`, as it is the disjoint union of their images. -/
+private theorem ncard_eq_ncard_preimage_inl_add {α β : Type*} [Finite α] [Finite β]
+    (Z : Set (α ⊕ β)) : Z.ncard = (Sum.inl ⁻¹' Z).ncard + (Sum.inr ⁻¹' Z).ncard := by
+  conv_lhs => rw [← Set.image_preimage_inl_union_image_preimage_inr Z]
+  rw [Set.ncard_union_eq (by simp [Set.disjoint_left]) (Set.toFinite _) (Set.toFinite _),
+    Set.ncard_image_of_injective _ Sum.inl_injective,
+    Set.ncard_image_of_injective _ Sum.inr_injective]
+
+/-- **`K_{2,3}[Z]` has at most `i · j` edges**, with `i` and `j` the numbers of bodies of `Z` of
+degree three and of degree two: each edge is a pair `s(Sum.inl i, Sum.inr j)` of a body of each
+kind in `Z`. -/
+private theorem k23_ncard_edgeSet_induce_le (Z : Set (Fin 2 ⊕ Fin 3)) :
+    E((K₂₃).induce Z).ncard ≤ (Sum.inl ⁻¹' Z).ncard * (Sum.inr ⁻¹' Z).ncard := by
+  rw [← Set.ncard_prod]
+  refine (Set.ncard_le_ncard (t := (fun p : Fin 2 × Fin 3 => s(Sum.inl p.1, Sum.inr p.2)) ''
+    ((Sum.inl ⁻¹' Z) ×ˢ (Sum.inr ⁻¹' Z))) ?_ (Set.toFinite _)).trans
+    (Set.ncard_image_le (Set.toFinite _))
+  intro e he
+  obtain ⟨x, y, ⟨hxy, rfl⟩, hx, hy⟩ := Graph.exists_isLink_of_mem_edgeSet he
+  rcases x with i | i <;> rcases y with j | j <;> simp at hxy
+  · exact ⟨(i, j), ⟨hx, hy⟩, rfl⟩
+  · exact ⟨(j, i), ⟨hy, hx⟩, Sym2.eq_swap⟩
+
+/-- **No nonempty set of bodies of `K_{2,3}` has a negative singleton value**: `s(Z) ≥ 0`, where
+at `D = bodyBarDim 2 = 3` the value of the singleton partition of `K_{2,3}[Z]` is
+`s(Z) = 3(|Z| - 1) - 2c`, with `c` its number of crossing edges. If `Z` has `i ≤ 2` bodies of degree
+three and `j ≤ 3` of degree two, then `c ≤ i · j` (`k23_ncard_edgeSet_induce_le`), and
+`3(i + j - 1) - 2ij ≥ 0` whenever `i + j ≥ 1`, case by case. -/
+private theorem k23_partitionDef_nonneg :
+    ∀ Z ⊆ V(K₂₃), Z.Nonempty → 0 ≤ ((K₂₃).induce Z).partitionDef 2 id := by
+  rintro Z - hne
+  have hc : (((K₂₃).induce Z).crossingEdges id).ncard ≤ E((K₂₃).induce Z).ncard :=
+    Set.ncard_le_ncard (fun e he => he.1) (Set.toFinite _)
+  have hE := k23_ncard_edgeSet_induce_le Z
+  have hZ := ncard_eq_ncard_preimage_inl_add Z
+  have hpos := (Set.ncard_pos (Set.toFinite Z)).mpr hne
+  have hi : (Sum.inl ⁻¹' Z).ncard ≤ 2 := by simpa using Set.ncard_le_card (Sum.inl ⁻¹' Z)
+  have hj : (Sum.inr ⁻¹' Z).ncard ≤ 3 := by simpa using Set.ncard_le_card (Sum.inr ⁻¹' Z)
+  simp only [Graph.partitionDef, Graph.numParts, Graph.bodyBarDim_two, Set.image_id,
+    Graph.vertexSet_induce]
+  generalize (Sum.inl ⁻¹' Z).ncard = i at *
+  generalize (Sum.inr ⁻¹' Z).ncard = j at *
+  interval_cases i <;> interval_cases j <;> omega
+
+/-- **The singleton value of all of `K_{2,3}` is zero**: `s(V) = 3 · (5 - 1) - 2 · 6 = 0`, as each
+of its six edges, the pairs `s(Sum.inl i, Sum.inr j)`, crosses the singleton partition. -/
+private theorem k23_partitionDef_id : (K₂₃).partitionDef 2 id = 0 := by
+  have hE : (K₂₃).crossingEdges id =
+      Set.range (fun p : Fin 2 × Fin 3 => s(Sum.inl p.1, Sum.inr p.2)) := by
+    ext e
+    constructor
+    · rintro ⟨-, x, y, ⟨hxy, rfl⟩, -⟩
+      rcases x with i | i <;> rcases y with j | j <;> simp at hxy
+      · exact ⟨(i, j), rfl⟩
+      · exact ⟨(j, i), Sym2.eq_swap⟩
+    · rintro ⟨⟨i, j⟩, rfl⟩
+      exact ⟨⟨_, _, by simp, rfl⟩, _, _, ⟨by simp, rfl⟩, by simp⟩
+  have hinj : Function.Injective (fun p : Fin 2 × Fin 3 => s(Sum.inl p.1, Sum.inr p.2)) := by
+    rintro ⟨a, b⟩ ⟨c, d⟩ h
+    simpa using h
+  simp only [Graph.partitionDef, Graph.numParts, Graph.bodyBarDim_two, Set.image_id, hE,
+    Set.ncard_range_of_injective hinj, Graph.vertexSet_OfSimpleGraph, Set.ncard_univ]
+  norm_num
+
+/-- **`K_{2,3}` has planar deficiency zero**: `def₂(K_{2,3}) = 0`. No singleton value is negative
+(`k23_partitionDef_nonneg`), so the singleton partition has the largest value
+(`lem:deficiency-singleton-bound`, `Graph.partitionDef_le_partitionDef_id`), which is zero
+(`k23_partitionDef_id`). -/
+private theorem k23_deficiency_two : (K₂₃).deficiency 2 = 0 := by
+  refine le_antisymm (ciSup_le fun f => ?_) ?_
+  · rw [← k23_partitionDef_id]
+    exact Graph.partitionDef_le_partitionDef_id k23_partitionDef_nonneg f
+  · exact Graph.deficiency_nonneg _ 2 ⟨Sum.inl 0, by simp⟩
+
+/-- **`K_{2,3}` satisfies the standing hypotheses** (`Graph.IsX0Graph`, `def:pencil-x0-standing`):
+it is simple, connected as a `0`-dof-graph with a body (`Graph.connected_of_isKDof_zero`), and each
+body has degree three or two (`k23_degree`). -/
+private theorem k23_isX0Graph : (K₂₃).IsX0Graph where
+  simple := ofSimpleGraph_simple _
+  connected := Graph.connected_of_isKDof_zero (n := 2) (by decide) k23_deficiency_two
+    ⟨Sum.inl 0, by simp⟩
+  two_le_degree v _ := by rw [k23_degree]; rcases v with i | j <;> simp
+
+/-- **No two bodies of degree two of `K_{2,3}` are adjacent**: they are the three bodies
+`Sum.inr j` (`k23_degree`), all on one side. -/
+private theorem k23_not_adj_of_degree_two {x₁ x₂ : Fin 2 ⊕ Fin 3} (h₁ : (K₂₃).degree x₁ = 2)
+    (h₂ : (K₂₃).degree x₂ = 2) : ¬ (K₂₃).Adj x₁ x₂ := by
+  rw [k23_degree] at h₁ h₂
+  rcases x₁ with i | i <;> rcases x₂ with j | j <;> simp at h₁ h₂
+  rintro ⟨e, he, -⟩
+  simp at he
+
+/-- **`K_{2,3}` has a good ear** (`Graph.IsPencilGoodEar`, by
+`Graph.IsX0Graph.exists_goodEar_or_pendantTriangle`, `lem:pencil-d-good-ear`): it satisfies the
+standing hypotheses (`k23_isX0Graph`), it is two-edge-connected as a `0`-dof-graph
+(`Graph.twoEdgeConnected_of_isKDof_zero`), it has five bodies, its closed hub-neighbourhoods and
+triangles meet the conditions of a nondegeneracy-feasible graph
+(`PencilNondegFeasible.hub_conditions`), and its own body set is planar-rigid
+(`k23_deficiency_two`). The other outcome, a pendant triangle, asks two adjacent bodies of degree
+two, which `K_{2,3}` lacks (`k23_not_adj_of_degree_two`). -/
+private theorem k23_exists_goodEar : ∃ W₀ x a b, (K₂₃).IsPencilGoodEar W₀ x a b := by
+  obtain ⟨hF1, hF2⟩ := k23_pencilNondegFeasible.hub_conditions
+  rcases k23_isX0Graph.exists_goodEar_or_pendantTriangle
+    (Graph.twoEdgeConnected_of_isKDof_zero (n := 2) (by decide) k23_deficiency_two) (by simp)
+    hF1 hF2 ⟨_, subset_rfl, by simp, by rw [Graph.induce_vertexSet]; exact k23_deficiency_two⟩ with
+    ⟨x₁, x₂, c, h₁, h₂, h₁₂, -⟩ | h
+  · exact absurd h₁₂ (k23_not_adj_of_degree_two h₁ h₂)
+  · exact h
+
+/-- **The good-ear arm of the generic conjunct, at `K_{2,3}`**: `holdsGenerally_earFree`
+(`lem:pencil-d-ear-free`) over `ℝ` at the complete bipartite graph `K_{2,3}`, with every hypothesis
+discharged. `K_{2,3}` is simple (`ofSimpleGraph_simple`) and nondegeneracy-feasible
+(`k23_pencilNondegFeasible`). It has a good ear `W₀`, `x`, `a`, `b` (`Graph.IsPencilGoodEar`), as it
+satisfies the standing hypotheses, has planar deficiency zero and has no two adjacent bodies of
+degree two; and feasibility gives selectors of its closed hub-neighbourhoods and closed
+neighbourhoods (`exists_steer_selectors`). At those selectors the ear's condition
+`EarLiftCondition` holds at `x`, `a`, `b`. This is an instance of an arm of the generic conjunct's
+induction (`liftAttains_of_simple`), not of a main result's hypothesis. -/
+theorem holdsGenerally_earFree_witness : ∃ W₀ x a b, (K₂₃).IsPencilGoodEar W₀ x a b ∧
+    ∃ hubSel nbrSel : (Fin 2 ⊕ Fin 3) → Fin 3 → Option (Fin 2 ⊕ Fin 3),
+      EarLiftCondition (K := ℝ) (K₂₃) hubSel nbrSel x a b := by
+  obtain ⟨W₀, x, a, b, hW⟩ := k23_exists_goodEar
+  obtain ⟨hubSel, nbrSel, hH, hN⟩ := exists_steer_selectors (K := ℝ) k23_pencilNondegFeasible
+  exact ⟨W₀, x, a, b, hW, hubSel, nbrSel,
+    (holdsGenerally_earFree (ofSimpleGraph_simple _) k23_pencilNondegFeasible hW hH hN).2⟩
 
 end
 
