@@ -1261,7 +1261,7 @@ Candidate levers (the PI scheduled 1 and a recon of 2 as Phase 41a's items P1–
   `V(G.splitOff v a b e₀)` are both `V(G) \ {v}`, but only by unfolding. In
   `ForestSurgery/Reduction` the two sites re-proved `Graph.removeVertex_le_splitOff` inline, and
   now use it. In `ForestSurgery/EdgeSplitting` the step is `simpa [mulTilde] using hx` (FRICTION
-  [open] *`mulTilde` has no vertex-set lemma*).
+  [open] *`mulTilde` has no vertex-set lemma*, since resolved and moved to `FRICTION-archive.md`).
 - **The full build after it rebuilt the 46 files left in 225 s** (189 s of user time), 0
   warnings; `lake lint` passed. The per-file `lake lint --` on the four P4 modules no other P4
   module imports took 64 s.

@@ -3520,3 +3520,428 @@ corresponding entry in [`FRICTION.md` *Mirrored*](FRICTION.md#mirrored).
   ℝ/ℚ-specific (the general countable→uncountable form crosses universes in
   `Algebra.cardinalMk_adjoin_le`, which is single-universe).
 - **Mirror file:** `Mathlib/RingTheory/AlgebraicIndependent/TranscendenceBasis.lean`.
+
+### [resolved] The two sides of a cut from `¬ G.TwoEdgeConnected` are unfolded at each cut case
+- **Where it bit:** CLEANUP-42 round 4, task 5: `Pencil/ArmsAssembly.lean`'s private
+  `exists_cut_sides` (a nonempty `V₁ ⊂ V(G)` crossed by at most one edge, both sides nonempty with
+  fewer bodies than `G`). The same unfolding (`simp only [Graph.TwoEdgeConnected, not_forall,
+  not_le, exists_prop]`) and the count `V₁.ncard + (V(G) \ V₁).ncard = V(G).ncard`
+  (`Set.ncard_union_eq Set.disjoint_sdiff_right`, `Set.union_sdiff_cancel`) sit inline in
+  `Graph.graded_pencil_realization_theorem` (`Grade/Reduction.lean`), `Grade/Generic.lean`,
+  `Pair.lean`, `Pair2.lean` and `Grade/LiftSmall.lean`.
+- **Friction:** none in the proofs; five copies of a fact about `Graph.TwoEdgeConnected` alone.
+- **Proposed fix:** a public `Graph.exists_cut_sides_of_not_twoEdgeConnected` beside
+  `Graph.TwoEdgeConnected` (`Molecular/Deficiency.lean`), and the copies rewritten through it, with
+  the next commit that edits `Deficiency.lean` (a declaration there rebuilds most of `Molecular/`).
+- **Status:** resolved in HOMES task 6: public `Graph.exists_cut_sides_of_not_twoEdgeConnected` beside `Graph.TwoEdgeConnected`; `ArmsAssembly.lean`'s private copy deleted, the inline unfoldings in `Pair2.lean`, `MainComponent/CoverageCut.lean`, `Grade/Reduction.lean` and `Grade/Generic.lean` now call it (`Pair.lean` and `Grade/LiftSmall.lean` had none left).
+
+### [resolved] 42m build 5: `LinearMap.pi_apply_eq_sum_univ` reads the basis as `fun j => if i = j …`, not `Pi.single`
+- **Where it bit:** Phase 42m, `Pencil/Grade/LiftNoRigid.lean` (`mem_liftMaps_pencilConfigPoint_iff`),
+  as in `Pencil/Grade/LiftWitness.lean` (`exists_mem_liftSpaceTilde_of_mem_liftSpace`).
+- **Friction:** expanding a form `ψ` on `Fin n → K` as `∑ i, p i * ψ (Pi.single i 1)` takes
+  `LinearMap.pi_apply_eq_sum_univ` and then `simp [Pi.single_apply, eq_comm]` under a `congr 2` at
+  each summand; `lean_loogle` finds no `Pi.single` form.
+- **Proposed fix:** a mirror `LinearMap.pi_apply_eq_sum_univ_single` in
+  `Mathlib/LinearAlgebra/Pi.lean`, and the two call sites on it; not now (two call sites, a
+  cleanup round).
+- **Status:** resolved (HOMES task 18): `LinearMap.pi_apply_eq_sum_univ_single` in the mirror
+  `Mathlib/LinearAlgebra/Pi.lean` (the `smul` form, any target module); both sites call it.
+
+### [resolved] 42k's home debts: three helpers of `Pencil/Grade/TwoPencil.lean` belong upstream of it
+- **Where it bit:** Phase 42k, build 1 (`lem:pencil-d-two-pencil-extension`,
+  `lem:pencil-d-projective-transport`), `Pencil/Grade/TwoPencil.lean`:
+  `exists_smul_extensor_eq_of_mem_span_range_grade` (extensors of two bases of one subspace are
+  proportional, at every `j`) is `Meet.lean`'s `exists_smul_extensor_eq_of_mem_span_range` with `j`
+  for `2`, the same proof; `ExtensorInPanel.smul` is about `ExtensorInPanel`
+  (`RigidityMatrix/Basic.lean`); `dotPerp_map_eq` (`(g P)^⊥ = h (P^⊥)` for an inverse transpose
+  `h`) is about `dotPerp` (`Grade/Realization.lean`).
+- **Friction:** none in the proofs; each sits downstream of its definition because a declaration
+  added to `Meet.lean` or `RigidityMatrix/Basic.lean` rebuilds most of `Molecular/`, and one added
+  to `Grade/Realization.lean` the whole `Grade/` stack.
+- **Proposed fix:** with the next commit that edits each file: the graded lemma into `Meet.lean`
+  beside the pair form, which becomes its `j = 2` case (with FRICTION's `contragredientEquiv`, the
+  other `Meet.lean` debt); `ExtensorInPanel.smul` beside `ExtensorInPanel`; `dotPerp_map_eq` beside
+  `finrank_dotPerp`.
+- **Status:** resolved. HOMES task 12 moved `dotPerp_map_eq` beside `finrank_dotPerp`
+  (`Grade/Realization.lean`); HOMES task 9 moved the graded lemma
+  into `Meet.lean`, with the pair form its `j = 2` case, and task 10 moved `ExtensorInPanel.smul`
+  beside `ExtensorInPanel` (`RigidityMatrix/Basic.lean`).
+
+### [resolved] No two-vector `finrank_span_pair` or "independent partner in a subspace" lemma
+- **Where it bit:** Phase 42k, build 1, `Pencil/Grade/TwoPencil.lean`: `finrank_span_pair_eq_two`
+  (`LinearIndependent K ![x, y] → finrank K (span K {x, y}) = 2`, by `finrank_span_eq_card` after
+  `Matrix.range_cons_cons_empty`) and `exists_mem_linearIndependent_pair` (`b ≠ 0` and
+  `2 ≤ finrank P` give `c ∈ P` with `LinearIndependent K ![b, c]`), both at `Fin n → K`; the
+  second serves part (2)'s criterion, the reposition, `exists_two_planes_of_mem` and build 2's loop
+  case.
+- **Friction:** `lean_loogle` finds neither (`Module.finrank _ ↥(Submodule.span _ {_, _}) = 2`); the
+  pair form of `finrank_span_eq_card` needs the `range ![x, y] = {x, y}` rewrite at each site.
+- **Proposed fix:** both for a vector space `V` over a division ring, in a new mirror
+  `Mathlib/LinearAlgebra/Dimension/...` (the second needs `P` finite-dimensional, which
+  `2 ≤ finrank P` gives), at a cleanup round or with a consumer outside `Grade/`. Not mirrored here:
+  the existing mirror `Mathlib/LinearAlgebra/LinearIndependent/Basic.lean` rebuilds most of the tree.
+- **Status:** resolved (HOMES task 7): both lemmas are in the mirror `Mathlib/LinearAlgebra/LinearIndependent/Basic.lean`,
+  for a vector space over a division ring; consumers repointed unchanged.
+
+### [resolved] `pencilConfigPointGrade_ofPoints` sits in `Pencil/Grade/Chain.lean`, not `Grade/Carrier.lean`
+- **Where it bit:** Phase 42g, `Pencil/Grade/Chain.lean`: `pencilConfigPointGrade_ofPoints` (a vector
+  with last coordinate `1` is the configuration point of its own picture and heights, by
+  `gradeMk_eta`) is about `pencilConfigPointGrade` and `gradeMk`, whose home is
+  `Grade/Carrier.lean`, beside `pencilConfigPointGrade_eq_gradeMk`.
+- **Proposed fix:** move it there, unchanged, with 42e's fold (the `gradeSigma` entry below), i.e.
+  with the next commit that edits `Grade/Configuration.lean` or `Grade/Carrier.lean`: a declaration
+  added to `Carrier.lean` rebuilds every `Grade/` file after it.
+- **Status:** resolved in HOMES task 13: moved unchanged to `Grade/Carrier.lean`.
+
+### [resolved] The `normalsJoin` linearity and minor lemmas sit in `Pencil/Grade/Polygon.lean`, not `PanelLayer.lean`
+- **Where it bit:** Phase 42g, `Pencil/Grade/Polygon.lean`: `normalsJoin_add_right`, `normalsJoin_smul_right`,
+  `normalsJoin_zero_left` and `exists_linearMap_normalsJoin_eq` (a `2 × 2` minor as a functional on `⋀²`)
+  are about `normalsJoin`, whose home is `AlgebraicInduction/PanelLayer.lean`. Phase 42h,
+  `Pencil/Grade/Stars.lean`, added four more: `normalsJoin_sub_left`, `normalsJoin_zero_right`,
+  `normalsJoinLin` (`w ∨ ·` as a linear map) and `normalsJoin_add_smul_add_smul` (the join along
+  two lines, expanded in `t`). There is also no fold lemma `ιMulti K 2 ![a, b] = normalsJoin a b`:
+  `starGrade_sup_starGrade_eq_ker` folds an `exteriorPower.map_apply_ιMulti` result by `change`.
+- **Proposed fix:** move them beside `normalsJoin` (with `exteriorPower_map_normalsJoin`, above) with the
+  next commit that edits `PanelLayer.lean` for another reason: a new declaration there rebuilds most of
+  `Molecular/`.
+- **Status:** resolved (HOMES task 11): the eight declarations beside `normalsJoin` in
+  `PanelLayer.lean`, unchanged, with `exteriorPower_map_normalsJoin`; the new fold
+  `ιMulti_pair_eq_normalsJoin` (by `rfl`) replaces `starGrade_sup_starGrade_eq_ker`'s `change`.
+
+### [resolved] The `pathVertex` lemmas of 42h sit in `Pencil/Grade/Stars.lean` and `Grade/Short.lean`, not `MainComponent/Cut.lean`
+- **Where it bit:** Phase 42h, `Pencil/Grade/Stars.lean`: `pathVertex_add_smul` (the path sequence
+  is affine in its interior bodies), `pathVertex_succ_castSucc`, `pathVertex_eq_of_val_eq` and
+  `pathVertex_zero_single` are about `pathVertex`, whose home is `MainComponent/Cut.lean`, beside
+  `pathVertex_cases`. `Grade/Short.lean` added three more: `pathVertex_comp_succAbove_one` (the
+  sequence without the second interior body), `pathVertex_smul_comp` (rescaled interior bodies) and
+  `pathVertex_map` (a function of the bodies commutes with the sequence).
+- **Proposed fix:** move them there, unchanged, with the next commit that edits `Cut.lean` for
+  another reason (a declaration added there rebuilds the `MainComponent/` and `Grade/` files after
+  it); `pathVertex_zero_single`, stars-four's one direction at `K^(k+2)`, may stay.
+  `pathVertex_comp_succAbove_one` needs the `Fin.succAbove` values of `Grade/Short.lean` (the
+  `Fin.val_succAbove` entry below): it moves with them, or after them.
+- **Status:** resolved (HOMES task 14): `pathVertex_add_smul`, `pathVertex_succ_castSucc`,
+  `pathVertex_eq_of_val_eq`, `pathVertex_smul_comp`, `pathVertex_map` and
+  `pathVertex_comp_succAbove_one` in `MainComponent/Cut.lean` (the last now through
+  `Fin.val_succAbove`); `pathVertex_zero_single` stays in `Grade/Stars.lean`.
+
+### [resolved] The insertion at three bodies repeats `of_openEar_four`'s inline tail
+- **Where it bit:** Phase 42i, `Pencil/Grade/ShortThree.lean`: `Graph.X0AttainsGrade.of_openEar_three`,
+  first written as one declaration like `of_openEar_four` (`Grade/Short.lean`), ran out of
+  heartbeats (200000, for the whole declaration; the error landed at a `by decide` deep in its third
+  condition). Split into `exists_mvPolynomial_earDataGrade_starsCond_three` (the third condition)
+  and `exists_insertion_earDataGrade_three` (the insertion), the theorem then well inside the budget.
+- **Friction:** `exists_insertion_earDataGrade_three` is `of_openEar_four`'s inline tail (`hcfa` to
+  `hL`, about 80 lines) at `n = 0`, as the four-body proof states nothing reusable. Smaller ones on
+  the way: `induce_splitOff_ear`'s implicit `w` is fixed by no explicit argument, so
+  `obtain ⟨-, hind⟩ := …` left a metavariable in `hind` until a later `rw` assigned it (pass
+  `(w := x 2)`); `finrank_range_le_card` states `Set.finrank`, which needs a `change` to
+  `finrank (span …)`; mathlib has no `finrank (span {u, v}) ≤ 2` (`finrank_span_le_card`, then
+  `simpa using Finset.card_le_two`).
+- **Proposed fix:** state the insertion once, for the ear of `G″` with `n + 2` interior bodies, and
+  call it from both steps, at a cleanup round; only `of_openEar_four`'s proof changes.
+- **Status:** resolved (HOMES task 17): `exists_insertion_earDataGrade` (`Grade/Short.lean`), the
+  insertion for the ear of `G″` with `n + 2` interior bodies (ear data ends `xf`, `xl` left free),
+  is called by `of_openEar_four` (at `n + 1`, its tail now four lines) and by `of_openEar_three`
+  (at `n = 0`); `exists_insertion_earDataGrade_three`, unpinned, was deleted.
+
+### [resolved] `complementScrew` sits in `Pencil/Grade/Short.lean`, not `PanelLayer.lean`
+- **Where it bit:** Phase 42h, `Pencil/Grade/Short.lean`: `complementScrew K k`, the complement
+  isomorphism `complementIso (j := 2)` of `⋀² K^(k+2)` onto `ScrewSpace K k` as a named
+  equivalence. `Graph.X0AttainsGrade.of_openEar_splitOff` moves the hinge span to the join span
+  through it, with `span_supportExtensor_comp_eq_map_normalsJoin` and
+  `finrank_sup_map_complementScrew` (the grade forms of `MainComponent/Ear.lean`'s
+  `screwComplementIso` lemmas). `panelSupportExtensor n₁ n₂` (`AlgebraicInduction/PanelLayer.lean`)
+  is `complementScrew K k (normalsJoin n₁ n₂)` by definition, so that file is its home.
+- **Friction:** none at the build, which kept the new file additive; the cost is the map built
+  twice, inline in `panelSupportExtensor`.
+- **Proposed fix:** move `complementScrew` beside `panelSupportExtensor`, which can then be stated
+  through it, with the `normalsJoin` moves above: the next commit that edits `PanelLayer.lean` for
+  another reason (a new declaration there rebuilds most of `Molecular/`). Its two companions stay
+  in `Grade/Short.lean`, their one consumer.
+- **Status:** resolved (HOMES task 11): `complementScrew` beside `panelSupportExtensor`, unchanged,
+  with `panelSupportExtensor_eq_complementScrew` by `rfl`; the definition of `panelSupportExtensor`
+  is not restated (the round moves, it does not restate). The two companions stay in
+  `Grade/Short.lean`.
+
+### [resolved] The kernel argument at an additive core is proved twice, inline at `d = 3` and in `Pencil/Grade/`
+- **Where it bit:** Phase 42f, `lem:pencil-contract-additive-kernel`
+  (`Graph.finrank_ker_contractLiftingMatrix_zero_eq_and_map_eq`,
+  `Pencil/Grade/ContractAdditive.lean`).
+  It states the two kernel bounds that `Graph.X0Attains.of_additiveContract`
+  (`MainComponent/ContractAdditive.lean`, 40k) proves inline as `hlow0`, `hup0` and `honto`, with
+  the lower bound's polynomial taken from admissibility
+  (`Graph.IsAdmissiblePicture.exists_mvPolynomial`) where the `d = 3` proof uses the main-picture
+  one.
+- **Friction:** none at the build: the 42f recon kept the lemma out of the `P³` file, as a
+  declaration added there rebuilds its 12 importers. The cost is the argument written twice.
+- **Proposed fix:** move the lemma, unchanged, into `MainComponent/ContractAdditive.lean` before
+  `Graph.X0Attains.of_additiveContract`, replace `hlow0`/`hup0`/`honto` by one call (admissibility
+  for `G` from the main picture), and give `Grade/ContractAdditive.lean` a `public import` of
+  `MainComponent.ContractAdditive`. Moving the lemma, not importing `Grade/` into the `P³` file,
+  which 42b's additive commits avoided: its every dependency is planar and already imported there
+  (a scratch copy compiled against that file alone at 42f's close). With the next commit that edits
+  `MainComponent/ContractAdditive.lean` (design doc `notes/Phase42-design.md` §3, *Deferred to them
+  from PD-STEPS (42f)*), not alone.
+- **Status:** resolved (HOMES task 16): the lemma sits before `Graph.X0Attains.of_additiveContract`, which calls it once (`hlow0`, `hup0` and the `honto` proof gone; admissibility for `G` is `(hmain q hPmq).1`); `Grade/ContractAdditive.lean` imports `MainComponent.ContractAdditive`.
+
+### [resolved] `gradeSigma` and the picture projection are each defined twice in `Pencil/Grade/`
+- **Where it bit:** Phase 42e, `lem:pencil-d-condition-linear`
+  (`Pencil/Grade/ConditionLinear.lean`). Its map `σ_h`, `gradeSigma h : (Fin 3 → K) →ₗ[K]
+  (Fin (m + 1 + 2) → K)`, `c ↦ gradeMk (c 0) (c 1) (fun i => h i ⬝ᵥ c) (c 2)`, is the linear map
+  `finrank_span_pencilConfigPointGrade_closedNbhd_le` builds inline as a `let`
+  (`Grade/Configuration.lean`, 42b). The "only if" half projects to the coordinates `0`, `1` and
+  the last by a local `LinearMap.funLeft K K ![0, 1, Fin.last (m + 2)]`, which is
+  `Configuration.lean`'s `private def pictureProj` (with
+  `pictureProj_pencilConfigPointGrade`) under another name.
+- **Friction:** none at the build: the 42e recon kept the new file additive, since a declaration
+  added to `Configuration.lean` or `Carrier.lean` rebuilds every `Grade/` file after it. The cost
+  is two definitions of each map and two proofs of linearity.
+- **Proposed fix:** `gradeSigma` and `gradeSigma_apply` beside `gradeMk` in `Grade/Carrier.lean`;
+  `finrank_span_pencilConfigPointGrade_closedNbhd_le` builds its map as `gradeSigma h`;
+  `pictureProj` public, and ConditionLinear's `π` replaced by it. With the next commit that edits
+  `Grade/Configuration.lean` or `Grade/Carrier.lean` (design doc `notes/Phase42-design.md` §3,
+  *Deferred to them from PD-CARRIER*), not alone.
+- **42i:** `Grade/GluedEnds.lean` (glued-ends) adds a third copy of the projection,
+  `gradePlanarProj` (with `gradePlanarProj_pencilConfigPointGrade`), under which its `⋀²π`
+  (`gradePiForm`, `gradePi`) is built. The same fold replaces it by the public `pictureProj`.
+- **Status:** resolved in HOMES task 13: `gradeSigma` and `gradeSigma_apply` in `Grade/Carrier.lean`, the
+  inline `let` is `gradeSigma h`, `pictureProj` is public, and `gradePlanarProj` (kept: `gradePi_normalsJoin`'s
+  statement names it) and ConditionLinear's `π` go through it.
+
+### [resolved] Glued-ends' contraction and lifting-planes helpers sit in `Pencil/Grade/GluedEnds.lean`
+- **Where it bit:** Phase 42i, `lem:pencil-d-glued-ends` (`Grade/GluedEnds.lean`). Its helpers
+  have homes upstream (three groups): `Graph.mem_closedNbhd_comm` (`w ∈ N[v] → v ∈ N[w]`; home
+  `Pencil/Motive.lean`, beside `closedNbhd`); the contraction of two bodies,
+  `Graph.edgeSet_induce_pair_eq_empty`, `rigidContract_pair_simple`,
+  `mem_vertexSet_rigidContract_pair`, `exists_isLink_of_rigidContract_pair`,
+  `partitionDef_rigidContract_pair` and `three_le_ncard_closedNbhd_rigidContract_pair` (home
+  `MainComponent/ContractCurve.lean`, beside `rigidContract_induce_simple`); and
+  `Graph.liftingPlanesDiff_eq_top_of_notMem` (home `Grade/PlanesMeet.lean`, beside
+  `liftingPlanesDiff`).
+- **Friction:** none at the build; the file stayed additive, as a declaration added to `Motive.lean`
+  or `ContractCurve.lean` rebuilds most of `Pencil/`.
+- **Proposed fix:** move each, unchanged, with the next commit that edits its home file for another
+  reason; `liftingPlanesDiff_eq_top_of_notMem` with any edit of `Grade/PlanesMeet.lean` (its only
+  importers are the root and `Grade/GluedEnds.lean`).
+- **Status:** resolved (HOMES task 15, bdc85fdc): the helpers moved to `Pencil/Motive.lean`, `MainComponent/ContractCurve.lean` and `Grade/PlanesMeet.lean`.
+
+### [resolved] `bodyBarDim` has no monotonicity or lower-bound lemma; each consumer unfolds it
+- **Where it bit:** Phase 42d, COUNT-A: `Graph.deficiencyMerged_two_add_two_le_of_three_le`
+  (`Molecular/Induction/SparseDeficiency.lean`, `lem:deficiency-two-body-chain-d`) gets
+  `1 ≤ bodyBarDim n` from `3 ≤ n` by `unfold bodyBarDim` and `Nat.le_div_iff_mul_le` with
+  `nlinarith`. `Connected.deficiency_le_deficiency_of_le` and
+  `Connected.deficiency_eq_of_deficiency_two_add_three_le` (`Molecular/Deficiency.lean`) each unfold
+  it for monotonicity (`Nat.div_le_div_right`), and COUNT-B's spike carries a `bodyBarDim_six_le`.
+- **Friction:** the `def` unfolded to `n * (n + 1) / 2` at each site.
+- **Proposed fix:** `Graph.bodyBarDim_mono : Monotone bodyBarDim` in `BodyBar/Framework.lean`,
+  beside `bodyBarDim_two` and `bodyBarDim_three`, then the three sites rewritten through it. Not
+  landed with COUNT-A, whose scope is one file: a new declaration in `BodyBar/Framework.lean`
+  rebuilds nearly every module. COUNT-B, which needs `6 ≤ bodyBarDim n` from `3 ≤ n`, is its
+  fourth site: a `private six_le_bodyBarDim` in `Pencil/Grade/TheoremS.lean`, not landed in
+  `BodyBar/Framework.lean` for the same rebuild cost. The fix replaces it with `bodyBarDim_mono`.
+  The fifth site is 42j's private `exists_chainBound` (`Pencil/Grade/Coverage.lean`), which
+  unfolds it for `12 ≤ bodyBarDim (m + 2)` at `m ≥ 3` (found at 42j's close). Correction (42k's
+  open): a public `Graph.six_le_bodyBarDim` has been in `BodyBar/Framework.lean` since 2026-07-03
+  (`33d6b2a6`; `Pencil/Pair2.lean` calls it), so the fourth site's private copy duplicates it and
+  the fix deletes that copy (done at CLEANUP-42 round 4, task 4: `Grade/TheoremS.lean` now calls
+  the public lemma). Not a site: round 4's spike for task 5 carried a private `n = 3` from
+  `bodyBarDim n = screwDim 2`, which `Graph.eq_add_one_of_bodyBarDim_eq_screwDim`
+  (`AlgebraicInduction/PanelLayer.lean`) already gives; task 5 calls it.
+- **Status:** resolved (Phase 42-homes task 5): `Graph.bodyBarDim_mono` in `BodyBar/Framework.lean`,
+  and the four sites (`Deficiency.lean`'s two, `SparseDeficiency.lean`'s, `Grade/Coverage.lean`'s)
+  go through it.
+
+### [resolved] `BodyHingeFramework.map` and the zero-hinge motion lemmas sit in `Pencil/Grade/Embedding.lean`, not beside `mapExtensor`
+- **Where it bit:** Phase 42c, `lem:screw-embedding-rank` (`Pencil/Grade/Embedding.lean`). The
+  grade-changing `BodyHingeFramework.map` (hinges `φ C(p(e))`) belongs beside `mapExtensor` in
+  `RigidityMatrix/Basic.lean`, `isInfinitesimalMotion_iff_of_supportExtensor_eq_zero` there too, and
+  `finrank_infinitesimalMotions_of_supportExtensor_eq_zero` in `GenericityDevice.lean`, beside the
+  rigid-on-`V(G)` count it specializes. A new declaration in either rebuilds most of `Molecular/`,
+  so they landed in the leaf file, which now imports `GenericityDevice.lean` for rank–nullity.
+- **Friction (minor, in-proof):** `Φ S' u` for `Φ := φ.compLeft α` needed `change φ (S' u) - …`
+  (`LinearMap.compLeft_apply` gives `φ ∘ S'`, then `comp_apply`); a link `he : F₀.graph.IsLink …`
+  of a `let`-bound zero-hinge `F₀ := ⟨F.graph, 0⟩` needed the ascription `(he : F.graph.IsLink …)`
+  before `simp [he.left_mem]` fired; and `linarith` over the `zify`d rank–nullity equations failed
+  until `rw [← hN]` put `D * (|V| + |Vᶜ|)` for `D * Nat.card α` (it reads `D * N` as an atom). In a
+  scratch under `open scoped Graph`, `linear_combination h1 - h2 - h3` hit TACTICS-QUIRKS § 48.
+- **Proposed fix:** move the three with the next commit that edits `Basic.lean` or
+  `GenericityDevice.lean` for another reason.
+- **Status:** resolved (HOMES task 10): `map`, `map_graph` and `map_supportExtensor` beside
+  `mapExtensor`, `isInfinitesimalMotion_iff_of_supportExtensor_eq_zero` after
+  `isInfinitesimalMotion_iff` (its proof needs it), both in `RigidityMatrix/Basic.lean`;
+  `finrank_infinitesimalMotions_of_supportExtensor_eq_zero` beside the rigid-on-`V(G)` count in
+  `GenericityDevice.lean`. `Embedding.lean` keeps its import of `GenericityDevice` for
+  rank–nullity.
+
+### [resolved] No linear-equivalence form of `contragredient`; the `normalsJoin` map lemma sits outside `PanelLayer.lean`
+- **Where it bit:** Phase 42b, `lem:pencil-d-rank-collineation` (`Pencil/Grade/Collineation.lean`,
+  `panelSupportExtensor_linearEquiv_eq_det_smul` and its caller). The screw map
+  `screwEquivOfLinearEquiv` takes a `LinearEquiv`, and `Meet.lean`'s `contragredient` is a `LinearMap`;
+  `exists_contragredient_linearEquiv` (`Pencil/Arms.lean`) is an equiv, but in the dot-product form
+  with `g` on the left (a five-step `rw` to `complementIso_map_contragredient_eq`'s `toDual` form),
+  and its pin is `lem:pencil-cut-nondegeneracy`, an edge `blueprint-deps.py` reports missing.
+- **Friction:** built inline, `toDualEquiv ≪≫ₗ g.symm.dualMap ≪≫ₗ toDualEquiv.symm`, which is
+  `contragredient g` by definition, so `contragredient_toDual_pairing g` types it. Also: the join of
+  `g n₁, g n₂` as `exteriorPower.map 2 g (normalsJoin n₁ n₂)` took `rw [normalsJoin, normalsJoin,
+  exteriorPower.map_apply_ιMulti]; congr 1; funext i; fin_cases i <;> rfl`; mathlib's
+  `LinearEquiv.smulOfUnit` has no `_apply` lemma (`smulOfNeZero` has one, so `M` uses it); and
+  `LinearMap.det ↑g ≠ 0` for an equiv is `LinearEquiv.coe_det g ▸ (LinearEquiv.det g).ne_zero`.
+- **Proposed fix:** `contragredientEquiv` beside `contragredient` in `Meet.lean`, landed with HOMES
+  task 9. The `normalsJoin` half landed with Phase 42c's `lem:pencil-d-embedding-join` as
+  `exteriorPower_map_normalsJoin` (any linear `f : K^(k'+2) → K^(k+2)`), in
+  `Pencil/Grade/Embedding.lean`. Its natural home is `PanelLayer.lean`, beside `normalsJoin`, where
+  `Collineation.lean`'s inline proof above could call it; the move is deferred, since a new
+  declaration there rebuilds most of `Molecular/`. The `k + 2 - 2` cast to `ScrewSpace K k` was no
+  friction: `rfl` closes `det g • ⋀^(k+2-2) h (complementIso _ X) = det g • screwEquivOfLinearEquiv h (…)`.
+- **Status:** resolved (HOMES tasks 9 and 11): `contragredientEquiv` beside `contragredient`, and
+  `Collineation.lean`'s inline equivalence calls it (task 9); `exteriorPower_map_normalsJoin`
+  beside `normalsJoin` in `PanelLayer.lean`, and `Collineation.lean`'s inline join is its `.symm`
+  (task 11).
+
+### [resolved] Grade-general extensor and panel lemmas live in `Pencil/Grade/Realization.lean`
+- **Where it bit:** Phase 42b, `lem:pencil-d-point-configuration`. The project had only grade-2 or
+  `K⁴` forms: `span_range_eq_of_extensor_eq` (`Meet.lean`, two vectors),
+  `extensorInPanel_panelSupportExtensor` (`PanelLayer.lean`, `Fin 4`) and
+  `dotProduct_eq_zero_of_mem_span` (`Pencil/Statement.lean`, two vectors of `K⁴`).
+- **Friction:** proved in every grade locally: `span_range_eq_of_extensor_eq_grade` (by
+  `ExteriorAlgebra.ιMulti_succ_apply` and `linearIndependent_finCons`, shorter than the grade-2
+  proof), `extensorInPanel_panelSupportExtensor_gen`, `dotProduct_eq_zero_of_mem_span_range`.
+- **Proposed fix:** move the first to `Meet.lean` and the second to `PanelLayer.lean`, each beside
+  its grade-2 form, which then becomes a one-line corollary. Not done here: both files are upstream
+  of most of the tree, and the commit stays on one file.
+- **Status:** resolved (HOMES tasks 9 and 11): `span_range_eq_of_extensor_eq_grade` in `Meet.lean`,
+  with `span_range_eq_of_extensor_eq` its `j = 2` case (task 9);
+  `extensorInPanel_panelSupportExtensor_gen` in `PanelLayer.lean`, with
+  `extensorInPanel_panelSupportExtensor` its `Fin 4` case, one line (task 11).
+
+### [resolved] `hingeRow` has no additive form through a third body
+- **Where it bit:** Phase 41e, item U12's spike (`case_II_placement_rank`, `CaseII.lean`, KT's column
+  operation as a row operation): writing `hingeRow a b ρ` as `hingeRow a v ρ + hingeRow v b ρ` took
+  `rw [← sub_add_cancel (hingeRow a b ρ) (hingeRow v b ρ), hingeRow_sub_hingeRow_eq a v b ρ]`,
+  after a first `rw [← hingeRow_sub_hingeRow_eq v a b ρ]` found no pattern.
+- **Friction:** one MCP iteration; the lemma's `u w − v w = u v` shape names the wrong side.
+- **Proposed fix:** `hingeRow_add_hingeRow (u v w) (r) : hingeRow u v r + hingeRow v w r =
+  hingeRow u w r` beside `hingeRow_sub_hingeRow_eq` in `RigidityMatrix/Basic.lean`; not added at
+  U12, to keep the commit off a deep zone file.
+- **Status:** resolved (HOMES task 10): `hingeRow_add_hingeRow` as proposed, proved through
+  `hingeRow_sub_hingeRow_eq` and `sub_add_cancel`; `case_II_placement_rank`'s site is one `rw`.
+
+### [resolved] `mulTilde` has no vertex-set lemma
+- **Where it bit:** Phase 41a, item P4: `mulTilde_removeVertex_le_splitOff`
+  (`Molecular/Induction/ForestSurgery/EdgeSplitting.lean`) proved its vertex half by `exact hx`,
+  a defeq through mathlib's `Graph.deleteVerts`, which a `module` does not see through.
+  `Contraction.lean`'s `simp [mulTilde]` is a second site.
+- **Friction:** the fix unfolds the definition, `simpa [mulTilde] using hx`, so that the
+  `@[simps!]` lemma `Graph.vertexSet_edgeMultiply` fires.
+- **Proposed fix:** `@[simp] lemma vertexSet_mulTilde : V(G.mulTilde n) = V(G) := rfl` beside
+  `mem_edgeSet_mulTilde` (`Molecular/Deficiency.lean`). It changes a public `.olean`, so it rides
+  a commit that rebuilds the tree anyway.
+- **Status:** resolved in HOMES task 6: `@[simp] vertexSet_mulTilde` beside `mem_edgeSet_mulTilde`; `EdgeSplitting.lean`'s `simpa using hx` and `Contraction.lean`'s `simp` use it.
+
+### [resolved] `SimpleGraph.shadowGraph` has no `IsLink` or edge-set lemma in the plain form
+- **Where it bit:** RECONCILE round 3, task 24: `molecule_rank_formula_witness` and
+  `molecule_generic_square_packing_witness` (`Nonvacuity.lean`) need the links and the edge set of
+  `K₃.shadowGraph` (the triangle's `isKDof_zero_of_triangle` arguments; the six trees' `IsPath` in
+  `K₃.shadowGraph.mulTilde 3`). `shadowGraph_isLink_iff` is the `∃ e` form only.
+- **Friction:** a local `hL : … IsLink e x y ↔ x ≠ y ∧ Sum.inl s(x, y) = e := Iff.rfl` fed to
+  `simp`; `simp [shadowGraph]` instead unfolds the structure, after which `V(_.mulTilde 3)` no
+  longer matches the local `hV : … = univ := rfl`. The edge set went through
+  `Graph.edgeSet_eq_setOfPred_exists_isLink` and an `ext`. `Fin (bodyHingeMult 3)` has no `NeZero`,
+  so its elements were `⟨c, by decide⟩`.
+- **Proposed fix:** `@[simp] shadowGraph_isLink : G.shadowGraph.IsLink e x y ↔ G.Adj x y ∧ Sum.inl
+  s(x, y) = e := Iff.rfl` beside `shadowGraph_isLink_iff` (`Molecular/Molecule/Carrier.lean`);
+  an edge-set lemma if a second caller appears.
+- **Status:** resolved (HOMES task 18): `SimpleGraph.shadowGraph_isLink` (`@[simp]`, the statement
+  `G.Adj x y ∧ s(x, y) = e`: the carrier has no `Sum.inl`) beside `shadowGraph_isLink_iff`;
+  `Nonvacuity.lean`'s local `hL` deleted. No edge-set lemma (still one caller).
+
+### [resolved] No `Set.ncard_range_le` — `(Set.range f).ncard ≤ Nat.card ι` takes `← Nat.card_coe_set_eq` then `Finite.card_range_le`
+- **Where it bit:** Phase 40g build 1, `Graph.deficiency_induce_add_le_of_ear`
+  (`Molecule/Pencil/MainComponent/Ear.lean`), bounding the crossing edges of the interior bodies by
+  `k − 1`. The spike carried a three-line local helper `ncard_range_le_of_fin` instead; the first
+  inline attempt named `Set.Nat.card_coe_set_eq`, which does not exist (the bridge is the root
+  `Nat.card_coe_set_eq`, as the `ncard_edgeSet_deleteIncidenceSet` entry below records).
+- **Friction:** one LSP round, and a two-step glue: `rw [← Nat.card_coe_set_eq]; exact
+  (Finite.card_range_le _).trans (by simp)`.
+- **Proposed fix:** `Set.ncard_range_le [Finite ι] (f : ι → α) : (Set.range f).ncard ≤ Nat.card ι`
+  in the `Mathlib/Data/Set/Card.lean` mirror. Not landed in build 1: that mirror sits under
+  `Framework.lean`, so landing it rebuilds nearly the whole tree for one call site. The second
+  call site landed in build 2 with the same inline glue: `Graph.X0Attains.of_cycle_of_certificate`
+  (`MainComponent/Chain.lean`), `(Set.range e).ncard ≤ k + 1`.
+- **Status:** resolved (Phase 42-homes task 5): `Set.ncard_range_le` in the `Set/Card` mirror, and
+  the three sites (`MainComponent/Ear.lean`, `MainComponent/Chain.lean`, `Grade/Chain.lean`) go
+  through it; the proof is `ncard_image_le` on `univ`, since `Finite.card_range_le` is outside the
+  mirror's import closure.
+
+### [resolved] No packaged "extend a `LinearIndepOn` partial family by filling the free slots" lemma
+- **Where it bit:** Phase 39 (PENCIL) W5-L5 L5-cut-v-d, the post-steering `fillNbr` re-choice
+  (`Molecular/Molecule/Pencil/Steer.lean`, `exists_fillNbr_pencilChartWF_of_standing`). Closing
+  `PencilChartWF`'s fourth conjunct at a non-hub body means: given the `nbrSel`-assigned slots' points
+  already independent, fill the unassigned slots to make the whole `Fin 3 → K⁴` triple independent.
+  **Second consumer:** Phase 40o (MOTIVES-EARS) T1, `exists_fill_linearIndependent_hubSlotOf`'s
+  hub-slot fill — the lemma itself moved to `Molecular/Molecule/Pencil/Reseed.lean` in that build
+  (B1), with `Steer.lean` now consuming it via that file's existing import.
+- **Friction:** needed the general fact "`g : Fin n → V` LI on a subset `s` of slots, `n ≤ finrank K
+  V` ⟹ `∃ g'` agreeing with `g` on `s` and LI on all of `Fin n`", which mathlib does not package in
+  this fill-the-free-slots shape (`LinearIndepOn.extend`/`Basis.extend` extend to a *subset* of a
+  spanning set, not by filling designated indices with fresh vectors). Proved it locally as
+  `exists_extend_linearIndependent` (induction on `(univ \ s).card`, `linearIndepOn_insert` +
+  "pick a vector outside a proper span" per step).
+- **Proposed fix:** upstream-eligible; mirror to `Mathlib/LinearAlgebra/LinearIndependent/Basic.lean`
+  (or `.../Lemmas.lean`) as a general `LinearIndepOn`-extension lemma over an arbitrary
+  finite-dimensional `V` and `Fintype ι`, then have `Reseed.lean` (now the lemma's home; `Steer.lean`
+  reaches it through that import) consume the mirror. Kept local because the Pencil files were
+  non-module and a mirror pulls a module-system import into the cone; that reason lapsed with Phase
+  41a's item P5, which made every file a `module`. Lift in a cleanup round or the next toucher.
+- **Status:** resolved (HOMES task 7): `exists_extend_linearIndependent` is in the mirror
+  `Mathlib/LinearAlgebra/LinearIndependent/Basic.lean`, for `Fintype ι` and a vector space over a
+  division ring, with `Fintype.card ι ≤ finrank K M` (no `FiniteDimensional` hypothesis).
+
+### [resolved] No `n`-ary (`n ≥ 3`) analogue of `LinearIndepOn.pair_iff` (`LinearIndepOn` on `{i,j}` ↔ `LinearIndependent ![f i, f j]`)
+- **Where it bit:** Phase 39 W5-L4 piece 3 (point-side global assembly),
+  `linearIndependent_triple_of_linearIndepOn` (`Pencil/Engine.lean`) — needed to convert
+  `LinearIndepOn K normal {x, y, z}` (from `Set.ncard_eq_three`'s witnesses) to the literal
+  `LinearIndependent K ![normal x, normal y, normal z]` the `cross₃` sweep lemmas consume.
+  Mathlib's `LinearIndepOn.pair_iff` covers exactly `n = 2`; no `n = 3` (or general `n`) sibling
+  exists, and the pair form's own proof (`Finset.coe_insert`/`Finset.sum_pair`-style) doesn't
+  obviously generalize without either an explicit `Fintype.equivFin`-style bijection or induction
+  via `LinearIndepOn.insert`/`linearIndepOn_insert`.
+- **Workaround:** proved the `n = 3` case directly and locally — build the (injective, since
+  pairwise-distinct) map `e : Fin 3 → ↥{x, y, z}` sending `0,1,2` to the three witnesses, transport
+  `LinearIndepOn`'s underlying `LinearIndependent (fun w : ↥{x,y,z} => f w)` along it via
+  `LinearIndependent.comp e heinj`, then rewrite `(fun w => f w) ∘ e = ![f x, f y, f z]` by
+  `funext`/`fin_cases`. ~10 lines, no induction needed for the fixed `n = 3` case.
+- **Proposed fix:** a general `n`-ary `linearIndepOn_iff_linearIndependent_comp_equiv`-style lemma
+  (`LinearIndepOn R f s ↔ LinearIndependent R (f ∘ e)` for any `e : Fin (s.ncard) ≃ s`, or phrased
+  via a supplied `Fintype`/`Finset` bijection) would subsume both the `n = 2` and `n = 3` cases and
+  every future fixed arity. Not attempted here — building the general bijection cleanly (handling
+  `s.ncard`/`Fintype.card ↥s` compatibly) looked like more work than the one fixed-arity instance
+  this commit needed.
+- **Reverse direction also now landed** (Phase 39 W5-L5 L5-cut-v-e, 2026-07-29,
+  `linearIndepOn_triple_of_linearIndependent`, `Pencil/Steer.lean`): the `n = 3` *indexed → set*
+  converse (`LinearIndependent K ![f x, f y, f z]` + distinctness → `LinearIndepOn K f {x, y, z}`),
+  needed to feed witness (i)'s indexed-triple output into the set-based common-seed primitive. Same
+  bijection `Fin 3 → ↥{x,y,z}` (`Equiv.ofBijective`), transported by `linearIndependent_equiv` (the
+  precompose-with-equiv invariance) rather than `LinearIndependent.comp`. So the `n = 3` iff is now
+  complete project-side (both directions), still bespoke rather than the general
+  `linearIndepOn_iff_linearIndependent_comp_equiv` below.
+- **Mathlib has the general form** (RECONCILE round 3, `F-304`): `linearIndepOn_range_iff` at an
+  injective `![x, y, z]`, whose range `{x, y, z}` is `simp only [Matrix.range_cons,
+  Matrix.range_empty, Set.union_empty, Set.singleton_union]` (`simp` with `Set.insert_eq` loops).
+  Both directions are that now: the forward one since task 38.20 (`F-304`), the converse since task
+  38.21 (`F-306`), so the `Equiv.ofBijective` route of the bullet above is gone. Since task 38.22
+  (`F-327`) the converse takes no distinctness hypotheses: `hLI.injective` gives them.
+- **`n = 2` is not fused either** (40-cleanup task 24). The title's gloss is loose: mathlib's
+  `LinearIndepOn.pair_iff` is the coefficient form (`∀ c d, c • f i + d • f j = 0 → c = 0 ∧ d = 0`),
+  not the `![f i, f j]` form. About 25 sites in 9 pencil files bridge the two through it and
+  `LinearIndependent.pair_iff` (e.g. `Base.lean`'s `hadj`: `rw [LinearIndepOn.pair_iff point huv]
+  at hpair; rwa [LinearIndependent.pair_iff]`). A fused `n = 2` mirror would make each one step;
+  it is a §B-style sweep, not part of task 24's screen.
+- **Status (resolved, HOMES task 8):** the `Fin 3` forms are two short lemmas on mathlib's general
+  one, forward in `Pencil/Motive.lean`, reverse in `Pencil/Steer.lean`. For `n = 2`, task 7 landed
+  the fused form `LinearIndepOn.pair_iff_linearIndependent`, and task 8 swept 22 two-step sites in
+  9 pencil files through it (`Pair2`, `Motive`, `GenericSteer`, `GenericEar`, `GenericBase`,
+  `GenericTriangle`, `Grade/EarFree`, `Grade/LiftCutEdge`, and all five of `Grade/LiftCases`, in
+  the corrective). The sites that use the scalar form for its own sake stay (`Pair.lean`,
+  `Nonvacuity.lean`, `MatroidIdentification.lean:125`).

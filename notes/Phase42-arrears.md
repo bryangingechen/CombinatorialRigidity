@@ -7,7 +7,7 @@ carried over (`notes/Phase42-homes.md` *Moved to a later round*, *Candidates for
 debt, the friction log's archive sweep, a dead pair of `have`s, the splits of the four molecular
 files past the ~1500-line tripwire, and `RecordsLinks` moved to `Graph` with its link hypotheses
 restated. Seventeen tasks; no main result's statement changes.
-**Next concrete task:** task 2, the friction log's archive sweep (*Lemma checklist*).
+**Next concrete task:** task 3, the dead `have`s (*Lemma checklist*).
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -22,8 +22,9 @@ stops; the PI answers in an entry that starts `**PI, <date>:**`.
 
 ## Current state
 
-**Task 1 landed** (this commit; docs only): the open. Work log, ROADMAP's row and bullets, the
-queue's attended row `42-arrears`, `notes/MolecularConjecture.md`'s sentence. Gates: G1.
+**Tasks 1-2 landed** (docs only). Task 1 (`381dcae1`): the open. Task 2 (this commit): the
+friction log's archive sweep, 22 `[resolved]` entries to `FRICTION-archive.md`; FRICTION's counts
+now open 8, mirror-candidate 8, process 2, blueprint 0, resolved 0. Gates: G1.
 
 **Verified at the open** (2026-11-05, at `6d75d694`; a whole-tree `lake build` replays clean, 0
 warnings, 0 cache failures):
@@ -117,10 +118,10 @@ One commit per task, in this order. Names are at `6d75d694`; re-`grep` before ed
 landing, a task's line is cut to at most three lines:** number, sha, what landed, the entries it
 resolved.
 
-- [x] **1. Open** (this commit; docs only).
-- [ ] **2. The friction log's archive sweep** (docs only; sonnet). The 22 `[resolved]` entries to
-  `FRICTION-archive.md`, verbatim, by `CLEANUP.md` §D's mechanical sweep; pointers to a moved
-  entry repointed.
+- [x] **1. Open** (`381dcae1`; docs only).
+- [x] **2. The friction log's archive sweep** (this commit; docs only). 22 `[resolved]` entries
+  moved verbatim (425 lines, non-blank lines equal as multisets; `FRICTION.md` 6110 to 5685). One
+  live pointer repointed (`PERFORMANCE.md`'s `mulTilde` mention); dated records stay.
 - [ ] **3. The dead `have`s** (Lean, proof only; sonnet). Delete `hax`, `hbx` from
   `X0AttainsGrade.of_openEar_four` (`Grade/Short.lean`). HOMES *Current state*, task 17.
 - [ ] **4. HOMES's dependency-graph debt** (TeX and `Meet.lean`; opus). (a) The cycle: give `σ_v`
@@ -200,7 +201,7 @@ resolved.
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 2, the friction log's archive sweep (*Lemma checklist*). After the
+**Next concrete task:** task 3, the dead `have`s (*Lemma checklist*). After the
 close: ORIGAMI's open, with the PI (ROADMAP *Queued post-program phases*).
 
 ## Decisions made during this round
