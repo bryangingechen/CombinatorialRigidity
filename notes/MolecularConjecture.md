@@ -809,7 +809,10 @@ remedy; round 2, the chapter to the Lean (`notes/Phase42-align.md`), opened and 
 the Lean round (the folds, the witnesses and the docstrings, `notes/Phase42-fold.md`), opened then
 at the PI's word and closed the same day, and CLEANUP-42 with it. **HOMES**, a cleanup round of the
 lemmas Phase 42 left outside their home files and of the friction log (`notes/Phase42-homes.md`),
-opened the same day at the PI's word, ahead of ORIGAMI, and closed then. Still queued,
+opened the same day at the PI's word, ahead of ORIGAMI, and closed then. **ARREARS**, a cleanup
+round of what HOMES left (the dependency-graph debt, four file splits, `RecordsLinks` moved to
+`Graph` with its link hypotheses restated; `notes/Phase42-arrears.md`), opened the same day at the
+PI's word. Still queued,
 codenamed:
 **ORIGAMI** (the planar-blocks / molecular-origami
 conjecture, `notes/Origami.md`, with the PI), **PIN** (a second,
