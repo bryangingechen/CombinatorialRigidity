@@ -153,16 +153,16 @@ note = "notes/Phase42-homes.md"
 attended = true
 done = true
 
-# Attended (the open's choice; the PI may set attended = false): the cleanup round the PI opened on
-# 2026-11-05 to take what HOMES left, ahead of ORIGAMI: the dependency-graph debt, the friction
-# log's archive sweep, four file splits, and RecordsLinks moved to Graph with its link hypotheses
+# Attended (the open's choice): the cleanup round the PI opened on 2026-11-05 to take what HOMES
+# left, ahead of ORIGAMI, and closed 2026-11-06: the dependency-graph debt, the friction log's
+# archive sweep, four file splits, and RecordsLinks moved to Graph with its link hypotheses
 # restated. Work log, tasks, gates: notes/Phase42-arrears.md.
 [[item]]
 id = "42-arrears"
 title = "ARREARS: what HOMES left (post-Phase-42 cleanup)"
 note = "notes/Phase42-arrears.md"
 attended = true
-done = false
+done = true
 
 # Attended, so the driver stops before it. ORIGAMI opens with the PI, and takes its phase number
 # then; afterwards the PI may replace this row with the opened phase's id and set attended = false.

@@ -186,7 +186,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (CLEANUP-42, round 2: the chapter to the Lean) | `pencil-d.tex`'s statements, proofs and dependency edges at the 34 open ledger rows (blueprint and notes only, no Lean) | ✓ Complete — the chapter restated or annotated at every open row, the Lean unchanged (see `notes/Phase42-align.md`; plan `notes/Cleanup42.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (CLEANUP-42, round 4: the folds, the witnesses and the docstrings) | the `d = 3` Lean that repeats the every-dimension Lean, two non-vacuity witnesses and stale Lean docstrings (Lean; two blueprint pins, the folded nodes' edges and notes, no statement) | ✓ Complete — the `d = 3` Lean proved as the every-dimension Lean's `d = 3` case, two witnesses, no statement changed; CLEANUP-42 complete (see `notes/Phase42-fold.md`; plan `notes/Cleanup42.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (HOMES: Phase 42's deferred lemma homes and the friction log) | the friction log's docs and tooling fixes, then the lemmas Phase 42 left outside their home files and the mirror lemmas that now meet their bar (Lean and notes, no statement) | ✓ Complete — the lemmas in their home files, the friction log's actionable entries 62 to 18, no statement changed (see `notes/Phase42-homes.md`; round manual: `CLEANUP.md`) |
-| ⋮ Cleanup round (ARREARS: what HOMES left) | the blueprint's dependency-graph debt, the friction log's archive sweep, the splits of four molecular files past the size cap, and `RecordsLinks` moved to `Graph` with its link hypotheses restated (Lean, blueprint edges and notes; no main result's statement) | In progress — opened 2026-11-05 at the PI's word (see `notes/Phase42-arrears.md`; round manual: `CLEANUP.md`) |
+| ⋮ Cleanup round (ARREARS: what HOMES left) | the blueprint's dependency-graph debt, the friction log's archive sweep, the splits of four molecular files past the size cap, and `RecordsLinks` moved to `Graph` with its link hypotheses restated (Lean, blueprint edges and notes; no main result's statement) | ✓ Complete — the blueprint's missing dependency edges 16 to 0, the four files split, the link hypotheses in `RecordsLinks` terms (three weakened at the PI's word), no main result's statement changed (see `notes/Phase42-arrears.md`; round manual: `CLEANUP.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1315,8 +1315,8 @@ CLEANUP-42, opened 2026-11-05 at the PI's word ahead of ORIGAMI: round 1, the ro
 closed; round 4, the folds, the witnesses and the docstrings (`notes/Phase42-fold.md`), closed the
 same day, and CLEANUP-42 with it; then HOMES, a cleanup round of Phase 42's deferred lemma homes
 and the friction log (`notes/Phase42-homes.md`), closed the same day; then ARREARS, a cleanup round
-of what HOMES left (`notes/Phase42-arrears.md`), open; then ORIGAMI, with the PI (*Queued
-post-program phases*). Detail →
+of what HOMES left (`notes/Phase42-arrears.md`), closed 2026-11-06; then ORIGAMI, with the PI
+(*Queued post-program phases*). Detail →
 `notes/Phase42a.md` to `notes/Phase42m.md` + `notes/Phase42-design.md`.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
@@ -1347,7 +1347,7 @@ ahead of ORIGAMI, and it opened the same day as Phase 42 and closed 2026-11-05, 
 for a cleanup after Phase 42, **CLEANUP-42**, and opened it on 2026-11-05, ahead of ORIGAMI; it
 closed the same day. The same day the PI opened **HOMES** ahead of ORIGAMI, a cleanup round of the
 lemmas Phase 42 left outside their home files and of the friction log; it closed the same day, and
-the PI opened **ARREARS**, a cleanup round of what HOMES left.)
+the PI opened **ARREARS**, a cleanup round of what HOMES left; it closed 2026-11-06.)
 A longer **unqueued**
 idea backlog from the same survey (KT-template subvariety questions,
 e.g. Tanigawa's identified-panel-hinge Problem 1, plus known-math
@@ -1408,7 +1408,7 @@ research note of its own, `notes/Strata.md`, which holds PENCIL-D's evidence.
   entries, 307 `done` and 25 `left`, none `reported` (its header). **PENCIL-D**
   opened next, as Phase 42, and closed 2026-11-05; **CLEANUP-42** opened next, at the PI's word
   (2026-11-05), and closed the same day; **HOMES** opened next and closed the same day (below);
-  **ARREARS** opened next (below); then **ORIGAMI**, with the PI.
+  **ARREARS** opened next and closed 2026-11-06 (below); **ORIGAMI** is next, with the PI.
 - **PENCIL-D** — the pencil realization theorem in every dimension: opened 2026-10-29 with the PI
   as Phase 42 and closed 2026-11-05, proving it in every dimension `d ≥ 3` (§42 above; plan
   `notes/Phase42-design.md`).
@@ -1432,17 +1432,22 @@ research note of its own, `notes/Strata.md`, which holds PENCIL-D's evidence.
   and an archive sweep, then the lemmas Phase 42 left outside their home files (deferred because a
   declaration added to those files rebuilds most of `Molecular/` mid-phase), one task per home
   file, with the mirror lemmas that now meet their entries' bar. The friction log's actionable
-  entries went from 62 to 18, and no statement changed. Left for a later round, with no round yet
-  to take them (`notes/Phase42-homes.md` *Moved to a later round*): `PanelLayer.lean`'s split
-  (ranked in `notes/PERFORMANCE.md`) and, at the PI's word, the blueprint's dependency-graph debt
-  the round's Lean left (four missing `\uses` edges, one unbacked); ARREARS takes both (below).
+  entries went from 62 to 18, and no statement changed. Left for a later round
+  (`notes/Phase42-homes.md` *Moved to a later round*): `PanelLayer.lean`'s split and, at the PI's
+  word, the blueprint's dependency-graph debt the round's Lean left (four missing `\uses` edges,
+  one unbacked); ARREARS took both (below).
 - **ARREARS** — a cleanup round after HOMES, opened 2026-11-05 at the PI's word to take what HOMES
-  left: the blueprint's dependency-graph debt (HOMES's five edges and twelve older missing ones),
-  the friction log's archive sweep, the splits of `Deficiency.lean`, `RigidityMatrix/Basic.lean`,
-  `Meet.lean` and `PanelLayer.lean`, and, at the PI's choice, `RecordsLinks` moved to `Graph` with
-  the link hypotheses restated in its terms (equivalent restatements, but for three hypotheses
-  weakened and two lemmas deleted at the PI's word; no main result's statement).
-  **Next:** `notes/Phase42-arrears.md`'s **Status**; then ORIGAMI's open, with the PI.
+  left, and closed 2026-11-06: the blueprint's dependency-graph debt (the missing `\uses` edges,
+  HOMES's four and twelve older ones, went from 16 to 0; HOMES's unbacked `def:join` edge stays, by
+  design), the friction log's archive sweep, the splits of `Deficiency.lean`,
+  `RigidityMatrix/Basic.lean`, `Meet.lean` and `PanelLayer.lean` (pure moves), and, at the PI's
+  choice, `RecordsLinks` moved to `Graph` (its old names kept as deprecated aliases) with the link
+  hypotheses, witnesses and conclusions restated in its terms. The restatements are equivalent but
+  for three: at the PI's word, three genericity-device lemmas' total-form hypotheses (every label an
+  edge) were weakened to `RecordsLinks` plus a new hypothesis that the rows they take are at edges,
+  and one blueprint node was repinned. Four lemmas left without a caller were deleted, one by the
+  open's scope and three at the PI's word. No main result's statement changed. **Next:** ORIGAMI's
+  open, with the PI.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

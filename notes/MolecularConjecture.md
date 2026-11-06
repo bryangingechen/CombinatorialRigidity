@@ -812,7 +812,7 @@ lemmas Phase 42 left outside their home files and of the friction log (`notes/Ph
 opened the same day at the PI's word, ahead of ORIGAMI, and closed then. **ARREARS**, a cleanup
 round of what HOMES left (the dependency-graph debt, four file splits, `RecordsLinks` moved to
 `Graph` with its link hypotheses restated; `notes/Phase42-arrears.md`), opened the same day at the
-PI's word. Still queued,
+PI's word and closed 2026-11-06. Still queued,
 codenamed:
 **ORIGAMI** (the planar-blocks / molecular-origami
 conjecture, `notes/Origami.md`, with the PI), **PIN** (a second,

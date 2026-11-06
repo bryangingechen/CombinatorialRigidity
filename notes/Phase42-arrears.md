@@ -1,66 +1,73 @@
 # ARREARS — what HOMES left: the dependency graph, four splits and `RecordsLinks` (work log)
 
-**Status:** open (2026-11-05, at the PI's word: "Let's take care of the items that were deferred by
-the last phase"). A cleanup round after HOMES and ahead of ORIGAMI. It takes what HOMES's close
-carried over (`notes/Phase42-homes.md` *Moved to a later round*, *Candidates for the PI*,
-*Hand-off*), with the scope the PI chose at the open (*Decisions*): the blueprint's dependency-graph
-debt, the friction log's archive sweep, a dead pair of `have`s, the splits of the four molecular
-files past the ~1500-line tripwire, and `RecordsLinks` moved to `Graph` with its link hypotheses
-restated. Seventeen tasks at the open; on 2026-11-06 the PI took the four *Candidates* left at task 16
-into the round (*Decisions*), so twenty, the close now task 20; no main result's statement changes.
-**Next concrete task:** task 20, the close (*Lemma checklist*; docs only; tasks 1-10 and 12-19
-landed, 11 reserved and unused).
+**Status:** closed (2026-11-06; opened 2026-11-05 at the PI's word: "Let's take care of the items
+that were deferred by the last phase"). A cleanup round after HOMES and ahead of ORIGAMI. It took
+what HOMES's close carried over, with the scope the PI chose at the open and the four *Candidates*
+the PI took into the round on 2026-11-06 (*Decisions*): the blueprint's dependency-graph debt (16
+missing edges to 0), the friction log's archive sweep, the splits of the four molecular files past
+the ~1500-line tripwire, and `RecordsLinks` moved to `Graph`, with the link hypotheses, witnesses
+and conclusions in its terms. Twenty tasks (10 a no-op, 11 unused), nineteen commits with the PI's
+record of the candidates; no `NEEDS_PI` stop. Tasks 13-18's restatements are equivalent; at the
+PI's word, task 19 weakened three total-form hypotheses to `RecordsLinks` plus a new `hs` and
+repinned one node. Four lemmas left without a caller were deleted, one by the open's scope and
+three at the PI's word (*Scope*). No main result's statement changed, and `formalization.yaml` is
+unchanged. FRICTION's actionable entries went from 18 to 16 (*Current state*).
+**Next concrete task:** ORIGAMI's open, with the PI (ROADMAP *Queued post-program phases*).
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
-ARREARS's row of `.claude/autopilot/queue.toml` is attended (the open's choice), so the driver
-stops before it. **The one stop is the PI's:** a task that would change a main result's statement,
-or a blueprint statement's strength, or rename a public declaration other than the `RecordsLinks`
-API, does not land that change: it writes a `NEEDS_PI` entry here, newest first, and the loop
-stops; the PI answers in an entry that starts `**PI, <date>:**`.
+ARREARS's row of `.claude/autopilot/queue.toml` was attended (the open's choice), so the driver
+stopped before it; the close set it `done = true`. **The one stop was the PI's:** a task that would
+change a main result's statement, or a blueprint statement's strength, or rename a public
+declaration other than the `RecordsLinks` API, did not land that change: it wrote a `NEEDS_PI`
+entry here, newest first, and the loop stopped; the PI answered in an entry that starts `**PI,
+<date>:**`.
 
-- None yet.
+- None arose. The PI's words in the round (the scope at the open, the four candidates, the total
+  form; *Decisions*) came at the coordinator's questions, not at stops.
 
 ## Current state
 
-**Tasks 1-10 and 12-19 landed.** Task 1 (`381dcae1`): the open. Task 2 (`0edd6e7e`): the friction log's
-archive sweep. Task 3 (`6f227b5e`): the dead `have`s. Tasks 4-5 (`a0b498a0`, `ca348e9d`): the
-sixteen missing edges (*Decisions*); G6 at 0 missing since. Unbacked 187 → 190 at task 4: the σ
-pin's move leaves `lem:pencil-d-condition-linear` unbacked at `lem:pencil-d-ear-data`,
+**Task 20 landed** (this commit; docs only; opus): the close. Each task's sha is in its line (task
+19's `ac1ab052`), and task 11's says it went unused. The round is closed on the status surfaces that
+`python3 notes/phasenote.py notes/Phase42-arrears.md --surfaces` lists (this log's **Status**,
+*Current state* and *Hand-off*, and ROADMAP's row) and on the others the open touched: ROADMAP
+§42's *Next*, *Queued post-program phases*' intro, its program bullet and its HOMES and ARREARS
+bullets, `notes/MolecularConjecture.md`'s ARREARS sentence, and the queue's `42-arrears` row
+(`done = true`, its comment). `README.md`, `home_page/index.md` and `intro.tex` never named the
+round, and `formalization.yaml` is unchanged (*Writes*). *Candidates* and *Moved* are empty, so
+nothing is mirrored. FRICTION, by `grep -c '^### \[<tag>\]' notes/FRICTION.md` (open /
+mirror-candidate / process / blueprint): 8 / 8 / 2 / 0, 18 in all, at the open (`6d75d694`); 6 / 8 /
+2 / 0, 16 in all, at the close. Task 12 took *`RecordsLinks` lives in `PanelHingeFramework`…* to
+`[mirrored]` (71 → 72) and task 18 resolved *The tree's link hypotheses are in the form at
+links…*; tasks 12, 14 and 19 filed one `[idiom]` each (248 → 251); task 2 archived the 22
+`[resolved]` entries HOMES left. Task 18's `[resolved]` entry waits for the next archive sweep. G6
+at the close (`scripts/blueprint-deps.py --summary`): 0 missing edges (16 at the open), unbacked
+190 (187 at the open; task 4's three, below), unbacked-transitive 140, implied 3068, both
+consistency lines OK. Gates: G1, G6, and the Lean and TeX diff empty.
+
+**The round's gates** (each task's are in its commit message). Tasks 4-9 and 12-19 record G2 (a
+whole-tree `lake build`, 0 warnings; bare `lake lint`) and G3 (`blueprint/lint.sh` green); tasks
+4-9 and 19, which moved a pin or a pinned declaration's module, G4 (`verify.sh`, `checkdecls`
+silent); tasks 13-19, G5 (`#print axioms` of the 21 `formalization.yaml` main results, `[propext,
+Classical.choice, Quot.sound]` each, as at the open); tasks 6-9 and 12-19, G6 at 0 missing
+edges. Task 3's message names no gate (two dead `have`s deleted, the statement unchanged); every
+later whole-tree build covers its file.
+
+**What the task lines do not carry** (the rest is in each task's commit). Unbacked 187 → 190 at task
+4: the σ pin's move leaves `lem:pencil-d-condition-linear` unbacked at `lem:pencil-d-ear-data`,
 `thm:pencil-d-open-ear-four` and `lem:pencil-d-planes-meet`, whose Lean reaches it only through
-`gradeSigma`; not defects (an unbacked edge is a check), left as they are. Tasks 6-9 (`7dc78901`,
-`175bcb33`, `0f6d16a8`, `a2d7fe04`): the four splits, pure moves, each with G1-G4 and G6; task 10
-a no-op. Task 12 (`651ecc60`): `RecordsLinks` moved to `Graph`. Tasks 13-15 (`03215eb1`,
-`d7f2d00c`, `c7449832`): 22, 23 and 28 binders restated. Task 16 (`74290376`): `Pencil/Grade/`'s 37
-(*Decisions*). **The PI's answers of 2026-11-06** (*Decisions*) add tasks 17-19 before the close
-(task 20). Task 17 (`44215b92`): the three defs' existentials and two conclusions read
-`RecordsLinks`, and `induce_isLink_ends` is gone (*Decisions*), so nothing of the open's scope is
-left in the form at links; Case III's pair forms were task 18's. **The grep**
-(`recordsLinks_iff_forall_isLink`, 60 Lean mentions → 21, the 39 conversions gone): the API's own 12
-(the mirror 6, `PanelHinge`'s alias and `link_tac` 4, `Operations` 2); records built link by link 8
-(`Theorem55` 5, `CaseIII/` 2, `Application` 1); one docstring (`Theorem55`). Task 17's gates: G1,
-G2 (whole-tree `lake build` 0 warnings, 0 cache failures; `lake lint`), G3 (`blueprint/lint.sh`
-green, docstring-label report total 0), G5 (21 × `[propext, Classical.choice, Quot.sound]`), G6 (0
-missing, unbacked 190, implied 3070, both consistency lines OK); no pin moved, so no G4; no TeX (5
-pinned nodes read). FRICTION: open 7 (the `RecordsLinks` entry stays open, narrowed to task 18).
-
-**Task 18 (`60204c00`):** `ofNormals_relabel`'s third conjunct reads `RecordsLinks` (the caller
-keeps the name `hrec`, which `link_tac` finds by `assumption`: a `-` pattern fails there);
-`fullLink_recording_of_splitOff_recording` concludes it; `rigidityRows_ofNormals_congr_ends_swap`
-drops `hagree` and takes `hlinks`, `hlinks'` **explicit** (implicit ones are not inferred from the
-goal; unpinned). No TeX. FRICTION: the link-form entry `[resolved]`; open 6, resolved 1.
-
-**Task 19 (this commit),** after its recon, at the PI's word (*Decisions*): the three device lemmas
-take `RecordsLinks` and `hs`; `lem:case-II-placement-old-rows-extract` pins
-`…_of_rigidOn_linking`; `exists_independent_panelRow_subfamily_of_rigidOn` and
-`span_panelRow_eq_rigidityRows` deleted, their docstring mentions repointed (`Pinning`'s header,
-`panelRow`, `span_panelRow_linking_eq_rigidityRows`, `finrank_span_rigidityRows_of_rigidOn`,
-`RecordsLinks.of_forall`, `PanelGeneric`'s two). No total-form binder is left in the tree. Gates:
-G1; G2 (whole-tree `lake build` 0 warnings, 0 cache failures; `lake lint`); G3 (`lint.sh` green,
-docstring-label report unchanged, total 0); G4 (`verify.sh`, `checkdecls` silent); G5 (21 ×
-`[propext, Classical.choice, Quot.sound]`); G6 (0 missing after the repin's one edge, unbacked 190,
-unbacked-transitive 137 → 140, both consistency lines OK). FRICTION: one `[idiom]` (masked rows).
+`gradeSigma`; not defects (an unbacked edge is a check), left as they are. Task 17's grep:
+`recordsLinks_iff_forall_isLink`'s Lean mentions 60 → 21, the API's own 12 (the mirror 6,
+`PanelHinge`'s alias and `link_tac` 4, `Operations` 2), records built link by link 8 (`Theorem55`
+5, `CaseIII/` 2, `Application` 1) and one docstring (`Theorem55`). Task 18: `ofNormals_relabel`'s
+caller keeps the name `hrec`, which `link_tac` finds by `assumption` (a `-` pattern fails there),
+and `rigidityRows_ofNormals_congr_ends_swap` takes `hlinks`, `hlinks'` explicit (implicit ones are
+not inferred from the goal; unpinned); its dropped `hagree` followed from them. Task 19 repointed
+the deleted lemmas' docstring mentions (`Pinning`'s header, `panelRow`,
+`span_panelRow_linking_eq_rigidityRows`, `finrank_span_rigidityRows_of_rigidOn`,
+`RecordsLinks.of_forall`, `PanelGeneric`'s two); no total-form binder is left in the tree.
 
 **Verified at the open** (2026-11-05, at `6d75d694`; a whole-tree `lake build` replays clean, 0
 warnings, 0 cache failures):
@@ -192,7 +199,8 @@ resolved.
   of `finrank_toDualPerp_single_eq` (`Statement.lean`).
 - [x] **10. `notes/PERFORMANCE.md` *(C)* item 3** (no-op, `a2d7fe04`): tasks 6-9 each recorded
   their sizes there, and task 9 closed the item.
-- [ ] **11. (reserved)** for a split that does not fit its task (*One task, one dispatch*).
+- [x] **11. (reserved; unused)** for a split that did not fit its task (*One task, one dispatch*):
+  each of tasks 6-9 fit, so no commit.
 - [x] **12. `RecordsLinks` to `Graph`** (`651ecc60`; Lean). The def and 11 lemmas in the new mirror
   `Graph/RecordsLinks.lean`, three in `Operations.lean`; 15 deprecated aliases; 33 callers renamed.
   Resolves FRICTION *`RecordsLinks` lives in `PanelHingeFramework`…* (now `[mirrored]`).
@@ -206,7 +214,7 @@ resolved.
   (*Decisions*); task 13's six conversions gone, 15 left, all from `X0Attains`'s existential and one
   conclusion (*Candidates*). FRICTION's `RecordsLinks` entry updated.
 - [x] **16. Restate: `Pencil/Grade/`** (`74290376`; Lean). 37 binders in 16 files; tasks 13 and
-  15's conversions there gone; the tree-wide grep classified (*Current state*). FRICTION *The tree's
+  15's conversions there gone; the tree-wide grep classified (in FRICTION's). FRICTION *The tree's
   link hypotheses are in the form at links…* stays open, narrowed to the PI's (*Candidates*).
 - [x] **17. The defs' link witnesses, two conclusions, `induce_isLink_ends`** (`44215b92`; Lean).
   `X0Attains`, `X0AttainsGrade`, `LiftAttains`, `Bridge`'s and `Modelling`'s conclusions read
@@ -214,11 +222,12 @@ resolved.
 - [x] **18. Case III's pair forms** (`60204c00`; Lean). `ofNormals_relabel`'s third conjunct and
   `fullLink_recording_of_splitOff_recording`'s conclusion read `RecordsLinks`;
   `rigidityRows_ofNormals_congr_ends_swap` drops `hagree`. Resolves FRICTION's link-form entry.
-- [x] **19. The total form** (this commit; recon, then Lean; the PI's word). The device trio takes
+- [x] **19. The total form** (`ac1ab052`; recon, then Lean; the PI's word). The device trio takes
   `RecordsLinks` and `hs`; `lem:case-II-placement-old-rows-extract` pins `…_of_rigidOn_linking`;
   `…_of_rigidOn` and `span_panelRow_eq_rigidityRows` deleted (*Decisions*). G1-G6.
-- [ ] **20. The close** (docs only; opus). Each task's sha; the status surfaces; the queue row
-  `done = true`; G6; FRICTION's counts.
+- [x] **20. The close** (this commit; docs only; opus). Each task's sha in its line; the round closed
+  on its status surfaces and the queue row `done = true`; G6 0 missing; FRICTION's actionable
+  entries 18 at the open, 16 at the close (*Current state*).
 
 ## Candidates for the PI
 
@@ -227,7 +236,7 @@ resolved.
 
 ## Moved to a later round
 
-- None yet.
+- None.
 
 ## Blockers / open questions
 
@@ -235,10 +244,14 @@ resolved.
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 20, the close (*Lemma checklist*; docs only): each task's sha, the
-status surfaces (`python3 notes/phasenote.py notes/Phase42-arrears.md --surfaces`), the queue row
-`done = true`, G6, FRICTION's counts. After the close: ORIGAMI's open, with the PI (ROADMAP
-*Queued post-program phases*).
+**Next concrete task:** ORIGAMI's open, with the PI (ROADMAP *Queued post-program phases*;
+`notes/Origami.md`). ARREARS is done: the round closed with this commit, and the queue's
+`42-arrears` row is `done = true`. ORIGAMI, the queue's next row, is attended, so it opens with the
+PI and takes its phase number then.
+
+**What carries over:** nothing of the round's scope (*Candidates*, *Moved*: none). Left: task 18's
+`[resolved]` FRICTION entry, for the next archive sweep; and, for the coordinator, the grooming of
+`notes/dispatch-log.md` (`PHASE-BOUNDARIES.md` *When this commit closes a phase*).
 
 ## Decisions made during this round
 
