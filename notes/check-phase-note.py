@@ -403,8 +403,8 @@ def selftest():
     is red certifies nothing, and the only way that stays fixed is a test that
     fails when it regresses. Zero ACTIVE notes is a failure only while a
     ROADMAP Status row is in progress: between phases it is the expected state
-    (FRICTION *`check-phase-note.py --selftest` fails when no phase note is in
-    progress*, fixed in HOMES task 2)."""
+    (`notes/FRICTION-archive.md` *`check-phase-note.py --selftest` fails when no
+    phase note is in progress*, fixed in HOMES task 2)."""
     fails = []
     notes = all_notes()
     parsed = [(n, parse(read_note(n))) for n in notes]

@@ -6,8 +6,9 @@ CLEANUP-42 and ahead of ORIGAMI, in two parts: the friction log's docs and tooli
 2–4), then the lemmas Phase 42 left outside their home files, one task per home file, with the
 mirror lemmas that now meet their entries' own bar (tasks 5–18). No statement changes. Phase 42
 deferred the moves because a declaration added to these files rebuilds most of `Molecular/`
-mid-phase; ORIGAMI will not edit them, so they are cheapest now. Tasks 1–3 landed.
-**Next concrete task:** task 4, the friction log's statuses and the archive sweep.
+mid-phase; ORIGAMI will not edit them, so they are cheapest now. Tasks 1–4 (the docs part)
+landed: 62 actionable entries down to 41.
+**Next concrete task:** task 5, the tree-wide basics (the round's first Lean task and baseline).
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -23,16 +24,21 @@ public declaration's name, or delete a pinned declaration, does not land that ch
 
 ## Current state
 
-**Task 3 landed** (this commit; docs only): `TACTICS-GOLF.md`'s index now runs §1–§30 in body
-order. Its index-only §20, the list-recursor idiom (`96c37025`, Phase 23b), had no body section;
-Phase 32 then added body §20 (iterated star `0`-extensions) unindexed, and §21–§24 followed. The
-idiom is now body and index §30. Its four pointers moved from §20 to §30: FRICTION's *`foldl`
-recurrence* sub-bullet and the *Lifted to* of *A `List.foldl` whose induction base case…*, and
-`notes/Phase23b.md`'s two (that closed note's G1 green); Phase 32's two §20 pointers already meant
-the body section. The FRICTION entry is `[resolved]`, for task 4's archive sweep.
-Earlier: task 2 (`c0bf555a`) made `--selftest` pass between phases, tested on four trees (HEAD;
-`445d8069`, between phases; a row in progress with no ACTIVE note, FAIL; ROADMAP unreadable,
-FAIL); task 1 (`a0c236a6`) opened the round.
+**Task 4 landed** (this commit; docs only): `notes/FRICTION.md`'s statuses, then the archive sweep.
+Retagged: 21 entries `[resolved]` (the `lean_local_search` entry, fixed upstream; nine `[process]`
+and `[blueprint]` entries already resolved, the un-instantiable lemma's gaining a **Lifted to:**
+`DESIGN.md`'s satisfiability corollaries; the two stale entries, whose two remaining shear sites
+are each one `simp only` and the shear `rw`; the nine struck-through headings, two of them deleted
+mirrors); the two don't-retry lists `[wontfix]` (already under *Anti-patterns*, not moved); five
+Phase 7–8 notes `[idiom]`. Then all 23 `[resolved]` entries (with tasks 2–3's) moved verbatim to
+`FRICTION-archive.md` (392 lines; the removed and appended non-blank lines equal as multisets),
+`FRICTION.md` 6477 → 6062 lines. One edit inside a moved entry: its `[Mirrored](#mirrored)` link
+now names `FRICTION.md`. Pointer sweep: no anchor link into a moved entry; the title pointers in
+`TACTICS-QUIRKS.md` (§56's) and in closed notes and design docs stay, as `88436c0b` and `fb61351f`
+left them (QUIRKS says to grep both files); `check-phase-note.py`'s docstring now names the archive.
+Tallies (open, mirror-candidate, process, blueprint): 35, 13, 12, 2 at the open; 27, 12, 2, 0 now.
+Earlier: task 3 (`1b49081f`) re-synced `TACTICS-GOLF.md`'s index (§1–§30, the list-recursor idiom
+now §30); task 2 (`c0bf555a`) made `--selftest` pass between phases; task 1 (`a0c236a6`) opened.
 
 **Verified at the open** (2026-11-05, at `445d8069`):
 - **The review.** Of the 62 entries, about 30 can be fixed now (tasks 2–18). The rest are process
@@ -125,26 +131,12 @@ the entries it resolved.
 - [x] **2. The selftest between phases** (`c0bf555a`; tooling). `selftest()` fails on zero ACTIVE
   notes only while a ROADMAP Status row is in progress (new `roadmap_in_progress()`); tested on four
   trees (*Current state*). FRICTION *`--selftest` fails when no phase note…* `[resolved]`.
-- [x] **3. `TACTICS-GOLF.md`'s index** (this commit; docs only). Index entries for body §20–§24;
+- [x] **3. `TACTICS-GOLF.md`'s index** (`1b49081f`; docs only). Index entries for body §20–§24;
   the list-recursor idiom is body and index §30, its four pointers repointed (two in FRICTION, two
   in `notes/Phase23b.md`, G1 green). FRICTION *sections-index ↔ body drift* `[resolved]`.
-- [ ] **4. The friction log's statuses and the archive sweep** (docs only; sonnet). In
-  `notes/FRICTION.md`, retag:
-  - `[resolved]`: the `lean_local_search` entry (*Verified at the open*); the nine `[process]` and
-    `[blueprint]` entries whose status already says resolved (the `verify.sh` silent skip, the
-    `blueprint/CLAUDE.md` size, the mirror ahead of its consumers, the pinned home across a
-    `module` boundary, the duplicate name at the import-merge, the un-instantiable lemma, which
-    gains a **Lifted to:** `DESIGN.md`'s satisfiability corollaries, the Claim-6.12 `\uses` cycle,
-    the 22e column operation, the 22c superseded-route rot); the two stale entries; and the nine
-    struck-through `### ~~[…]` headings;
-  - `[wontfix]`, moved to *Anti-patterns*: Phase 22a's splice glue and Phase 21b's four re-plans
-    (the two "don't retry" lists);
-  - `[idiom]`: five Phase 7–8 `[open]` notes that are inline techniques (the `insert _ ∅` chain,
-    `h ▸` oversubstitution, `nonempty_of_affineSpan_eq_top`'s explicit arguments, `fin_cases`'s
-    `⟨n, ⋯⟩`, the 2×2 rotation).
-
-  Then every `[resolved]` entry moves to `FRICTION-archive.md`, verbatim, after a `grep` for live
-  pointers to each (repointed to the archive, or none found and listed).
+- [x] **4. The friction log's statuses and the archive sweep** (this commit; docs only). 21
+  entries `[resolved]`, two `[wontfix]`, five `[idiom]`; the 23 `[resolved]` entries to
+  `FRICTION-archive.md`, verbatim (*Current state*). Open entries 62 → 41.
 - [ ] **5. The tree-wide basics** (Lean; sonnet). Baseline first (G2's build and lint, before
   editing). `Graph.bodyBarDim_mono : Monotone bodyBarDim` in `BodyBar/Framework.lean` beside
   `six_le_bodyBarDim`, and the four sites through it: `Connected.deficiency_le_deficiency_of_le`
@@ -278,8 +270,8 @@ the entries it resolved.
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 4, the friction log's statuses and the archive sweep (*Lemma
-checklist*). After the round:
+**Next concrete task:** task 5, the tree-wide basics (*Lemma checklist*): the round's first Lean
+task, which runs the baseline `lake build` and `lake lint` before editing. After the round:
 ORIGAMI's open, with the PI (`notes/Origami.md`).
 
 ## Decisions made during this round

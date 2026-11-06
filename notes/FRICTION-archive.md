@@ -3105,3 +3105,418 @@ rigidity-matrix row-functional plumbing). **Lifted to:** TACTICS-QUIRKS § 30.
   lines of proof deleted) are done.
 - **Status:** resolved. **Lifted to:** `hasGradedPencilRealization_of_not_simple` (`Grade/Arms.lean`)
   and its `m = 1` case in `Pencil/X0.lean`.
+
+### [resolved] `check-phase-note.py --selftest` fails when no phase note is in progress
+- **Where it bit:** Phase 42d's close (project-organization review). `notes/Phase23d.md`'s
+  `**Status:**` header still read "in progress" two phases after Phase 23 closed, so `--all`
+  marked it ACTIVE; the close fixed the header. With 42d closed too, no note is ACTIVE, and
+  `--selftest` reports "no ACTIVE note found; the active/closed split is broken" (exit 1). It had
+  passed between phases only because the stale Phase 23d note counted as active.
+- **Friction:** a self-test that is red whenever the program sits between (sub-)phases; no gate or
+  CI step runs it, so nothing broke.
+- **Proposed fix:** in `selftest()`, require an ACTIVE note only when one is expected (e.g. when
+  ROADMAP's Status table names an open sub-phase), or report zero ACTIVE notes as a note rather
+  than a failure. A tooling change, so not made inside the close.
+- **Status:** resolved (HOMES task 2): `selftest()` fails on zero ACTIVE notes only while a ROADMAP
+  Status row reads "in progress" (the new `roadmap_in_progress()`), and otherwise reports the
+  between-phases state; tested at HEAD, between phases, with a row in progress and no ACTIVE note,
+  and with ROADMAP unreadable.
+
+### [resolved] The Lean MCP's `lean_local_search` misses every declaration whose name ends its line
+- **Where it bit:** Phase 40n (2026-09-28): `not_isNondegPencilRealization_of_two_hubs_three_common`
+  (`Pencil/Motive.lean`, signature on the next line) returned no hit, while
+  `PencilNondegFeasible.hub_conditions` (binders on the name's line) was found.
+- **Friction:** lean-lsp-mcp's `search_utils.lean_local_search` builds the rg pattern
+  `…{re.escape(query)}[A-Za-z0-9_'.]*(?:\s|:)`. rg matches line by line, so `\s` never matches the
+  line end, and a name at end of line is invisible. About 325 declarations in `CombinatorialRigidity/`
+  are laid out that way. The server also checks for `rg` only at startup, so installing ripgrep
+  mid-session needs a `/mcp` reconnect.
+- **Proposed fix:** upstream, end the pattern with `(?:\s|:|$)`. Until then, a "not found" from
+  `lean_local_search` is not evidence of absence: search by bare declaration name with
+  `grep -rn "theorem <name>"` over the tree and `.lake/packages`.
+- **Status:** resolved upstream (HOMES task 4): lean-lsp-mcp 0.33.0 ends the pattern with
+  `(?:\s|:|$)`, and a live `lean_local_search` finds
+  `not_isNondegPencilRealization_of_two_hubs_three_common`. A miss is evidence of absence only when
+  the result's `index` field reads `consulted` (the server's own instructions); the results also
+  list copies under `scratch/`.
+
+### [resolved] `open scoped Matrix` inside `namespace CombinatorialRigidity.Molecular` opens the project's `Molecular.Matrix`, not `_root_.Matrix` — § 56's capture, second instance
+- **Where it bit:** Phase 40g build 2, `Graph.IsAdmissiblePicture.exists_dotProduct_of_ncard_closedNbhd_le_three`
+  (`MainComponent/Cut.lean`), spiked under a file-head `open scoped Graph Matrix`. Transcribed as
+  `open scoped Matrix in` before the theorem, `M⁻¹ *ᵥ v` failed with *"elaboration function for
+  `Mathlib.Tactic.subscriptTerm` has not been implemented"*, with an `ambiguousOpen` warning on the
+  `open`. `RigidityMatrix/Concrete.lean` declared `theorem Matrix.rank_of_coordEquiv`,
+  `Matrix.rank_of_dualCoord` and `Matrix.linearIndependent_row_of_coordEquiv` inside `namespace
+  CombinatorialRigidity.Molecular`, which created the sub-namespace that captured the `open`.
+- **Friction:** one failed build and a wrong first diagnosis (that `open … in` never activates a
+  scoped notation; a `lean_run_code` witness showed it does outside the namespace).
+- **Workaround:** spell `Matrix.mulVec`. An `open scoped Matrix` *before* the `namespace` line also
+  works (`Flat.lean`, `Carrier.lean` do this).
+- **Proposed fix:** ~~pin the three `Concrete.lean` theorems to `_root_.Matrix.` (§ 56's fix); they
+  are called by name from several files, so it is a small refactor round, not a side errand.~~
+  **Lifted to:** TACTICS-QUIRKS § 56 (symptom-index line and a *Second instance* paragraph).
+- **Status:** ~~open.~~ **Resolved 2026-10-24** (RECONCILE round 3, task 38.5): the cleanup round
+  deleted `Concrete.lean`, which nothing used, and with it the three theorems; no other declaration
+  is `Matrix.`-prefixed inside `namespace CombinatorialRigidity.Molecular`, so the sub-namespace is
+  gone.
+
+### [resolved] No packaged "inject a finite set into a no-smaller finite set" lemma (`Set.ncard` → `Set.InjOn` + `MapsTo`)
+- **Where it bit:** Phase 39 (PENCIL) W5-L6b-ii, the adjacent-pair direction map `idx`
+  (`Molecular/Molecule/Pencil/WitnessGeneral.lean`, `exists_idx_dtgt_pair`). Needed to inject a
+  `≤ 3`-cardinality closed-hub-neighbourhood into a chosen palette of `Fin 4` values.
+- **Friction:** wanted the plain fact "`T.ncard ≤ P.ncard` (both finite) ⟹ `∃ f, Set.InjOn f T ∧
+  ∀ x ∈ T, f x ∈ P`", which mathlib packages only as the *embedding* form
+  `Function.Embedding.nonempty_of_card_le` (over `Fintype`s, not `Set.ncard` with a total `f` and an
+  ambient junk value). Proved locally as `exists_injOn_mapsTo_of_ncard_le` (`Fintype` cards from
+  `Nat.card_coe_set_eq` + `Nat.card_eq_fintype_card`, then the embedding, extended by `default`).
+- **Proposed fix:** upstream-eligible; mirror to `Mathlib/Data/Set/Card.lean` as a general
+  `Set.ncard`-flavoured injection lemma. Kept local for the non-module import-cone reason of the
+  sibling entry, which lapsed with Phase 41a's item P5. Lift in a cleanup round.
+- **Status:** resolved, moot (found at HOMES's open): `exists_injOn_mapsTo_of_ncard_le` was deleted
+  with its route in Phase 40-simplify (`1e7d78a9`), and no consumer remains.
+
+### [resolved] `blueprint/verify.sh` reports "all gates passed" while `inv web` has silently skipped the `blueprint` plastex package — the local `checkdecls` has been vacuous since 2026-07-30
+- **Where it bit:** the Phase-39 Lean-track design pass (2026-09-15), running `verify.sh` on
+  the new red-node subsection of `pencil.tex`. `inv bp` was clean; `inv web` logged
+  `ERROR: Loading package "blueprint" raised exception ImportError : dlopen(…)` and went on
+  *without* the package (`\lean`/`\leanok`/`\uses` became "unrecognized command" warnings),
+  so `blueprint/lean_decls` and `web/dep_graph_document.html` were **not** regenerated — both
+  still carry a 2026-07-30 mtime — and `lake exe checkdecls` then passed against that stale
+  list. The script's final line was nevertheless `all gates passed`.
+- **Friction:** the cause is environmental — the venv's `pygraphviz` wheel is linked against
+  `libcgraph.8.dylib`, which the current Homebrew `graphviz` (16.0.0) no longer ships. The
+  `SETUP-AND-PITFALLS.md` reinstall recipe (`CPPFLAGS`/`LDFLAGS` + `pip install pygraphviz`,
+  here with `--force-reinstall --no-binary`) fails at `setup.py install` under the venv's
+  Python 3.9 / pip 21.2, leaving the old wheel in place (state unchanged). A commit that adds
+  no `\lean{}` pin is unaffected (the design pass added none); any commit that *does* pin has
+  had no local `checkdecls` since July — CI's `docgen-action` is the only real check.
+- **Proposed fix:** (1) `verify.sh` must fail hard when plastex's log contains
+  `ERROR: Loading package "blueprint"` (or when `lean_decls` is not newer than the newest
+  `src/chapter/*.tex`), so a skipped package can never read as green; (2) recreate the venv
+  with a current Python per `SETUP-AND-PITFALLS.md` (a machine-level repair — the user's
+  call, not an agent's side errand); (3) `blueprint/CLAUDE.md` *Static checks* should say that
+  `checkdecls` silence is meaningful only after a successful `inv web` (check the `lean_decls`
+  mtime). Until (2), the dep-graph spot-check of `blueprint/CLAUDE.md` cannot be run locally.
+- **Status:** resolved 2026-09-15. (1) landed in `verify.sh`: it fails on the
+  `ERROR: Loading package` log line and on a `lean_decls` older than any source `.tex`; (2) done
+  by the user: the venv rebuilt on Python 3.13 (`pygraphviz` 2.0.1 against graphviz 16.0.0's
+  `libcgraph.10`; `invoke` 3.x, since 1.7.1 fails at import on Python 3.11+ — `requirements.txt`
+  now pins `invoke>=2.2`; the field-recon's same-day `inv bp` failure was that import); (3) in
+  `blueprint/CLAUDE.md` *Static checks*. Root cause: Homebrew's graphviz 16.0.0 upgrade of
+  2026-09-13 dropped `libcgraph.8`. Recipe and symptom: `SETUP-AND-PITFALLS.md` *Pitfalls*.
+
+### [resolved] `blueprint/CLAUDE.md`, auto-loaded on every blueprint touch, is 664 lines — extract its long-form blocks to read-on-demand references
+- **Where it bit:** the Phase-40a close's project-organization review (`PHASE-BOUNDARIES.md`
+  *Audit the auto-loaded CLAUDE.md suite for bloat*). The suite was 1 695 lines then; at
+  `40-docs`' close (2026-10-05) it is 1 711 (root 381, `CombinatorialRigidity/` 456, `notes/`
+  210, `blueprint/` 664). `blueprint/CLAUDE.md` is the largest, and it loads on *any* read under
+  `blueprint/`, a one-line `\leanok` flip included.
+- **Friction:** its own header says the prose conventions moved to `AUTHORING.md` "so the
+  every-touch manual stays small", yet two long-form blocks remain. *The retrospective appendix
+  (Phase 29 exception)* is ~90 lines and matters only when editing `retrospective.tex`. The
+  honesty-gate family's calibration narratives (*Case hypotheses …* through the
+  definition-faithfulness gate) are ~105 lines.
+- **Proposed fix:** move the retrospective-appendix block to `blueprint/AUTHORING.md` and the
+  calibration narratives to `blueprint/DESIGN.md`, leaving each rule sentence plus a one-line
+  pointer (the `PHASE-BOUNDARIES.md` / `REFS.md` extraction pattern). Not applied at the close: a
+  CLAUDE.md-suite edit is the user's to direct, not a closing dispatch's.
+- **Status:** resolved 2026-10-05, at the PI's request: the whole suite trimmed, 1 717 → 1 090
+  lines, one file per commit, by extraction to read-on-demand references with every rule and
+  every cited heading kept. `blueprint/CLAUDE.md` 669 → 335 (the retrospective block to
+  `AUTHORING.md`; the calibration narratives to `blueprint/DESIGN.md` *Static-check
+  calibrations*, or to the root `DESIGN.md` postmortems that already held them); root
+  `CLAUDE.md` 381 → 264 (the citation detail to `REFS.md`); `CombinatorialRigidity/CLAUDE.md`
+  456 → 319 and `notes/CLAUDE.md` 212 → 172 (compressed in place).
+
+### [resolved] `TACTICS-GOLF.md` sections-index ↔ body drift around §20/§21 — reconcile in a nav-hygiene pass
+- **Where it bit:** noticed during the Phase-36 (AUTOMATE) close project-org review. Pre-existing (partly Phase-36-adjacent: §21 arrived with the pre-recon Meet.lean `maxHeartbeats` fix).
+- **Friction:** the numbered sections index (top of the file) and the `## N.` body headers diverged. Index entry **20 = "Match the list recursor to which end the fold's base case sits on"** is **orphaned** — no such `## 20.` body section exists (grep hits only the index line). The body actually carries **§20 = "Proving a fact about an explicit small graph via iterated `⊔`-with-star `0`-extensions"** and **§21 = "`simp_all` … heartbeat multiplier"**, *neither indexed*. So the index stops at a wrong 20 and the body runs to a real 21.
+- **Proposed fix:** a nav-hygiene pass — check git history for whether "Match the list recursor" was a real section that was deleted/renamed (repoint or drop its index entry accordingly), then re-sync the index to the true body sequence (add entries for the real §20 and §21). Deferred from the close as non-obvious (needs history investigation), not a hasty coordinator renumber.
+- **Status:** resolved (HOMES task 3). History: the index-only §20 came with `96c37025` (Phase 23b),
+  whose idiom never got a body section; Phase 32 then added body §20 without an index entry, and
+  §21–§24 followed unindexed. The index now lists the body's §20–§24, and the list-recursor idiom
+  is body and index §30, its four pointers repointed (two here, two in `notes/Phase23b.md`).
+
+### [resolved] A mirror landed ahead of its consumers is invisible to the build until imported
+- **Where it bit:** Phase 33 Slice 16 — `Mathlib/Data/Countable/Defs.lean`
+  (`Countable.exists_injective_of_infinite`) was landed at Slice 1 as the named
+  replacement route, but with **zero importers**: the first consuming build
+  (Slice 16, 5 files) failed with `Unknown constant` and each file needed the
+  `import CombinatorialRigidity.Mathlib.Data.Countable.Defs` line added.
+- **Friction:** one build-failure→fix cycle; nothing verified the mirror stayed
+  reachable during the 15 intervening slices (a rename would have gone unnoticed).
+- **Proposed fix:** none needed as a rule — but when landing a mirror *ahead* of
+  its consumer slice, note the pending import in the consuming slice's plan entry.
+- **Status:** resolved (imports added in the Slice-16 commit).
+
+### [resolved] A design doc's pinned lemma "home" can be unbuildable across a `module`/non-`module` boundary — the spike that validated it likely didn't exercise the real import graph
+- **Where it bit:** `Graph.bodyBarDim_eq_screwDim_sub_one` (Phase 23-cleanup E2, the consumer-surface reshape) — `notes/FreshEdgeSupply-design.md` §E.3 pinned its home as `Molecular/RigidityMatrix/Basic.lean` (the `screwDim` numeric-arithmetic kit, topically the right home), and the standalone proof was compile-spiked there successfully.
+- **Friction:** `RigidityMatrix/Basic.lean` is a `module` file, and `Graph.bodyBarDim` lives in `BodyBar/Framework.lean`, a non-`module` file (it transitively depends on the non-`module` `Matroid.Graph.Matrix`). Per `LEAN-OPS.md` *Module-system conversion*, a `module` file can only `import`/`public import` other `module` files — adding `public import CombinatorialRigidity.BodyBar.Framework` failed with *"cannot import non-`module` … from `module`"*. The design doc's spike (evidently run as an ad hoc snippet, not as an in-tree file build) never exercised this import-graph constraint, so the pinned home looked validated but wasn't.
+- **Resolution:** moved the lemma to `PanelLayer.lean` (non-`module`, already importing `RigidityMatrix.Basic` and transitively `BodyBar.Framework`), right next to its already-landed sibling `Graph.eq_add_one_of_bodyBarDim_eq_screwDim` — same name/signature/proof, different file. General rule: before trusting a design doc's pinned file location for a new lemma that crosses a definition boundary, check whether the target file is a `module` file and, if so, whether every definition the new lemma needs is reachable through the `module`-only import graph — a green isolated `lean_run_code`/scratch compile does not exercise this.
+- **Status:** resolved.
+
+### [resolved] A duplicate top-level decl name in the same namespace builds fine per-file but fails the WHOLE-PROJECT import-merge (`lake lint`/`runLinter`) with *"environment already contains 'Ns.foo' from <other module>"* — `lake build <single module>` never imports the sibling, so the clash is invisible until the linter loads all modules together
+- **Where it bit:** Phase 23d A4.5 added `screwBasis (k) : Basis (Fin (finrank …)) ℝ (ScrewSpace k)` to `Molecular/RigidityMatrix/Concrete.lean`, since deleted; `lake build Concrete` passed, but `lake lint` aborted — `Molecular.screwBasis` already exists in `AlgebraicInduction/PanelLayer.lean` (the powerset-indexed exterior-power basis, a *different* type but the *same* fully-qualified name).
+- **Friction:** the two modules are not in an import line with each other, so single-file build elaborates each happily; only the project-wide import-merge sees both. Renamed mine to `finScrewBasis` (the `Fin`-indexed variant). **General lesson → TACTICS-QUIRKS § 65: before naming a new top-level decl in a busy shared namespace (`Molecular`), `grep -rn "def <name>"` the subtree (or `lean_local_search`) first; `lake build` of your file alone is NOT proof the name is free.**
+- **Proposed fix:** process — name-check the namespace before adding; run `lake lint` (not just `lake build <module>`) before commit, since the clash is a lint-only failure.
+- **Status:** resolved · **Lifted to:** TACTICS-QUIRKS § 65
+
+### [resolved] A gate-clean lemma can be *un-instantiable*: a hypothesis set combining an edge-grouped row identity `g = hingeRow ab₁ ab₂ ρ` with the global column-vanishing `∀ a, g.comp (single a) = 0` is jointly CONTRADICTORY for a non-zero `ρ` — derive the per-vertex column-vanishing internally, don't assume `∀ a`
+- **Where it bit:** `Graph.ChainData.interior_group_eq_baseRedundancy` (`CaseIII/Relabel.lean`, the eq-(6.44) chain-induction LEAF 3, §(I.8.9-SETTLE)). The lemma landed gate-clean (build + lint + axiom-clean) taking BOTH `hcomb : (∑ⱼ cⱼ • hingeRow …) = hingeRow ab₁ ab₂ ρ₀` AND `hcol : ∀ a, (∑ⱼ …).comp (single a) = 0` (the global `acolumn_zero`). A screw functional on `α → ScrewSpace k` vanishing on every coordinate injection `single a` is itself `0` (`LinearMap.pi_ext`, `[Finite α]`), so `hcomb ∧ hcol ∀a ⟹ hingeRow ab₁ ab₂ ρ₀ = 0` — the lemma is **vacuous** (usable only at `ρ₀ = 0`, a useless `= 0` conclusion) and **un-instantiable** by the real `hρGv` caller (whose redundancy `r̂ = hingeRow (vtx 0)(vtx 2) ρ₀` has `vtx 2`-column `ρ₀ ≠ 0`). The defect rode a full landing commit because the gates (no-sorry / build / lint / `#print axioms`) check *internal soundness*, not *caller-satisfiability*.
+- **Friction:** the conflation was upstream in a design-settle note — KT eq-6.43 is the column-vanishing of the *global* base dependency `g`, but the lemma binds `g` *exposed edge-grouped as the candidate row* `hingeRow ab₁ ab₂ ρ₀`, which is NOT column-vanishing `∀ a`. The proof itself only used `hcol` at the deeper step vertices `vtx (i+1)` (`i+1 ≥ 3`), where `r̂` has a zero column — so the `∀ a` form was strictly over-broad relative to what the proof needs.
+- **Resolution:** replace `hcol ∀a` by the endpoint identification `hab₁ : ab₁ = vtx 0` / `hab₂ : ab₂ = vtx 2` (the redundant edge's endpoints) and DERIVE the column-vanishing at each deeper step vertex internally: `vtx (i+1) ≠ ab₁`, `≠ ab₂` (`vtx_ne`), then `g.comp (single (vtx (i+1))) = (hingeRow ab₁ ab₂ ρ₀).comp (single (vtx (i+1))) = 0` via `rw [hcomb, hingeRow_comp_single_off …]`. Same name, same conclusion, now caller-satisfiable for a non-zero `r̂`. (RECONCILE round 3, task 38.18: the variables `ab₁`, `ab₂` went, `vtx 0` and `vtx 2` in their place, as both callers passed `rfl`.) **General rule:** when a lemma carries *two* hypotheses about the same object (here an equation `g = …` and a vanishing `∀ a, g … = 0`), before landing it write a one-line instantiability check — instantiate it against the actual caller's bundle (`example … := cd.theLemma … rfl rfl …`) with the *non-degenerate* witness it will face. A passing gate is necessary, not sufficient; a vacuous lemma is a defect, not a stepping stone. Sibling of the `[Finite α]`/`Function.Injective` un-instantiability entry below.
+- **Recurred (Phase 23f, commit d5a2e1d → corrected; `Phase23-design.md` §(4.62)).** Same defect, *route-composition* flavor: the HA leaf `linearIndependent_toBlocks₁₁_sub_mul_toBlocks₂₁_row_of_corner_gate` discharged the wrapper's `hA` by proving `C = toBlocks₂₁ = 0` from a carried `hbot` (both bottom endpoints ≠ v). Gate-clean and internally sound — but `hbot` is **unsatisfiable for the consumer**: the wrapper feeds the SAME `re` to `hA` and `hD`, and `hD`'s producer needs `hrank = card m₂`, which forces v-incident `e_b`-fill rows into the bottom (so `C ≠ 0`). The two carried hyps are JOINTLY contradictory across the shared `re`. The commit's prose ("simpler than the recon / `ρ₀` over-engineered") was the propagated error. Settled by a 4-part compiler-checked spike (the designed `ρ₀`-route via leaf (iii) is correct); the dead leaf removed. **Reinforced rule:** for a leaf that discharges ONE of several hyps the consumer ties to a *shared* object (here `re`), the instantiability check must instantiate ALL the coupled hyps together — a per-leaf check passes while the joint constraint is infeasible. Compiler-check the route composition (a scratch spike against the real wrapper), never a prose verdict, in the defeq-fragile zone.
+- **Lifted to:** `DESIGN.md` *Constructibility recon before scheduling a producer build*, its
+  satisfiability corollaries (a standing hypothesis needs a satisfiability witness; a
+  conditional leaf's hypothesis must be satisfiable for the consumer's actual object).
+- **Status:** resolved (HOMES task 4, which named the rule's home).
+
+### [resolved] The eq.-(6.12) shear "support extensor at `q₀`'s `vb`-hinge = at `q`'s `ab`-hinge" is a 6-deep manual `rw` unfold chain in three Case-III producers
+- **Where it bit:** `case_II_placement_eq612` (`hnewne`/`hane`), `panelRow_vb_sub_panelRow_ab_eq_hingeRow_va`,
+  and the new `exists_candidate_row_eq612` (`hCeq`), all `CaseI.lean`/`PanelHinge.lean` (Phase 22c–22e).
+  Each needs `supportExtensor(ofNormals G ends q₀)(e_b) = panelSupportExtensor n_a n_b`
+  (resp. `= supportExtensor(ofNormals Gab ends q)(e₀)`) at the eq.-(6.12) seed, where
+  `q₀(v,·) = n_a + t•n_b`, `q₀(b,·) = n_b`, via the shear `panelSupportExtensor_add_smul_right`.
+- **Friction:** the proof is a hand-rolled `rw [toBodyHinge_supportExtensor (×1–2), ofNormals_ends (×1–2),
+  ofNormals_normal (×2–4), hends_*, hq₀v, hq₀b, panelSupportExtensor_add_smul_right]` chain — ~6 distinct
+  unfold lemmas for one mathematical step (the panel support extensor reads the two endpoint normals; at
+  `q₀` the `vb`-pair shears to the `ab`-pair). Reproduced ~3× across the strata.
+- **Candidate fix:** a fused `ofNormals_toBodyHinge_supportExtensor` simp/rewrite lemma
+  (`supportExtensor (ofNormals G ends q).toBodyHinge e = panelSupportExtensor (q (ends e).1) (q (ends e).2)`,
+  the `def`-collapse) would let the chain become `simp only [ofNormals_toBodyHinge_supportExtensor,
+  hends_*, hq₀v, hq₀b]; rw [panelSupportExtensor_add_smul_right]`. Not mirrored this commit (only one new
+  callsite); file for the next Case-III producer that hits it.
+- **Status:** resolved (found at HOMES's open, `445d8069`): the fused lemma exists,
+  `PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends` (`PanelHinge.lean`, Phase 23c);
+  `case_II_placement_eq612` is gone, and the two remaining sites (`exists_candidate_row_eq612`'s
+  `hCeq`, `panelRow_vb_sub_panelRow_ab_eq_hingeRow_va`, both `CaseIII/Candidate.lean`) are one
+  `simp only` and the shear `rw`.
+
+### [resolved] A Claim-6.12 leaf that `\uses` the *shared* candidate-completion assembly node closes a dep-graph cycle through the "green-modulo" conditional — `\cref` the assembly in prose, don't `\uses` it
+- **Where it bit:** N6 (`lem:case-III-claim612-p2-placement`, `case-iii.tex`, Phase 22e). The
+  Lean producer `linearIndependent_sum_p2_candidateRow` *calls*
+  `linearIndependent_sum_augment_candidateRow` (blueprint node `lem:case-III-candidate-row`), so a
+  `\uses{lem:case-III-candidate-row}` looked correct — but `lem:case-III-candidate-row`
+  `\uses lem:case-III-eq629-conditional` `\uses lem:case-III-claim612` `\uses` N6, closing a 4-node
+  cycle. `inv web`/`leanblueprint` then `RecursionError`s in `plastexdepgraph.ancestors` (a stack
+  blow-up, not a readable "cycle" error), so the cause is non-obvious from the trace.
+- **Friction:** one `verify.sh` round-trip lost to a `RecursionError` deep in plastex; the fix is to
+  drop the `\uses` edge and keep a prose `\cref` pointer to the assembly node instead.
+- **Lesson:** the abstract candidate-completion assembly is *shared infrastructure* whose blueprint
+  node bundles the still-red Claim-6.12 conditional via `\uses` (it is green-**modulo** that node). A
+  Claim-6.12 leaf therefore must **not** `\uses` it — that points "up" through the conditional into
+  Claim 6.12 and loops. The math dependency a leaf actually needs is the column op + the row-space
+  criterion + the placement; the assembly is reached *the other way* (Claim 6.12 → conditional →
+  assembly). General rule: when a "green-modulo-X" node bundles its unresolved conditional X via
+  `\uses`, the leaves discharging X may `\cref` the bundled node in prose but never `\uses` it.
+- **Status:** resolved (N6 keeps the `\cref` prose pointer; `\uses` = placement + column op +
+  block-iff-perp criterion only).
+
+### [resolved] No mathlib `Finset.univ.orderEmbOfFin = id` for `Fin n`
+- **Resolved by mirroring** (Phase 17-cleanup D2): the two callsites
+  (`pluckerCoord_univ`, `extensor_ne_zero_iff_linearIndependent`, both in
+  `Molecular/Extensor.lean`) hit the threshold the original entry named
+  ("if a third hits, mirror" — two same-shape callsites is the trigger).
+  Mirrored as `Finset.univ_orderEmbOfFin` (a `@[simp]` lemma); see
+  [Mirrored](#mirrored). Both callsites collapse from the two-step
+  `orderEmbOfFin_unique … strictMono_id` `have` to a one-line `rw`/`simp`.
+
+### [resolved] `simp [← smul_sub]` / `simp [add_sub_add_comm]` stalls on the graded-piece screw subtype (RingQuot ops not exposed)
+- **Migrated to `FRICTION-archive.md`** (post-Phase-18 cleanup round D3):
+  the general lesson ("over a `RingQuot`-built algebra subtype, prefer
+  explicit `rw` of the `AddCommGroup`/`Module` identity over
+  `simp [← lemma]`") was lifted to TACTICS-QUIRKS § 26; the worked
+  `infinitesimalMotions.smul_mem'` case study lives in the archive.
+
+### [resolved] No `Finset.pair_eq_pair_iff` (only the `Set` version)
+- **Resolved by mirroring** (Phase 17-cleanup D2): mirrored as
+  `Finset.pair_eq_pair_iff` next to the `Set` version; see
+  [Mirrored](#mirrored). Single callsite (the off-diagonal `hne` step of
+  `omitTwoExtensor_linearIndependent`, `Molecular/Extensor.lean`), but the
+  fact is a general `Finset`/`Set` glue lemma cleanly parallel to the
+  existing `Set.pair_eq_pair_iff`, and mirroring collapses the three glue
+  rewrites (`← coe_inj`, two `coe_pair`, `Set.pair_eq_pair_iff`) to a
+  single `rw [Finset.pair_eq_pair_iff]`.
+
+### [resolved] No dim-2 "vector orthogonal to two LI vectors is zero" helper
+
+- **Where it bit:** Three private helpers in `HennebergRigidity.lean`
+  (`exists_not_mem_span_singleton_dim_two`,
+  `inner_sub_perp_of_eq`, `eq_zero_of_orthogonal_dim_two`,
+  lines 75–118) supporting the typeI/typeII rigidity-preservation
+  proofs. The blueprint prose treats "orthogonal to two LI vectors
+  in `ℝ²` is zero" as a one-clause math step; the Lean walks
+  `Submodule.span_induction` on the orthogonal complement (~20 lines).
+- **Friction:** the existing helper rebuilds "orthogonal complement
+  of a spanning set is `⊥`" from scratch via `span_induction`
+  instead of routing through `Submodule.span_eq_top` +
+  `Submodule.top_orthogonal_eq_bot`. The combined dance is heavier
+  than necessary.
+- **Resolution:** `Submodule.isOrtho_span`
+  (`Mathlib.Analysis.InnerProductSpace.Orthogonal`) already packages
+  "two spans are orthogonal iff generators pairwise inner-zero", so
+  the `span_induction` is unnecessary. The rewritten proof routes
+  `span ![v₁, v₂] ⟂ span {u}` through `isOrtho_span` (generators-only
+  side-condition) then `h_span_top` + `isOrtho_top_left`
+  (`⊤ ⟂ V ↔ V = ⊥`) + `span_singleton_eq_bot` (`ℝ ∙ u = ⊥ ↔ u = 0`).
+  21-line body → 10 lines, no mirror lemma needed.
+- **Status:** resolved (2026-05-15). No mathlib mirror; pure rewrite
+  of the existing helper.
+- **Lifted to:** TACTICS-GOLF § 3 *Search mathlib before mirroring*
+  (the "spanning set ⇒ orthogonal-complement-trivial" bullet) —
+  general rule is *reach for `Submodule.isOrtho_span` before
+  `span_induction`*.
+
+### [resolved] No upstream "generic point off a line in `ℝ²`" helper
+
+- **Where it bit:** `exists_off_line_off_finite_dim_two`
+  (`HennebergRigidity.lean:195`).
+- **Resolution:** mirrored as `AffineSubspace.biUnion_ne_univ_of_top_notMem`.
+  See [Mirrored](#mirrored) for the full entry. The sibling
+  `exists_typeII_q_on_line_dim_two` (Type II shape) is **not** covered
+  by this approach — placing `q` *on* the line is a 1-parameter
+  excluded-finite-α argument, naturally `Set.Finite.exists_notMem` in
+  `ℝ`, not an affine-cover application — and stays project-internal.
+
+### [resolved] No `LinearIndepOn` "row-restriction transports LI through dual" helper
+
+Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
+`LinearIndepOn.dualMap_of_surjective` (the second since deleted, unused) — see the
+corresponding entry in [`FRICTION.md` *Mirrored*](FRICTION.md#mirrored).
+
+### [resolved] Phase 22e — a constructibility recon must verify the *mechanism* of a claimed vanishing, not just the count (a column op was silently elided)
+- **Where it bit:** the candidate-completion `lem:case-III-candidate-row` (KT §6.4.1,
+  eqs. (6.24)–(6.28)), Phase 22e. The node had been cut red over four green leaves (seam,
+  decomposition, `…_acolumn_zero` = eq. (6.43), vanish-off-column) with a recon verdict
+  "arithmetic closes, only the transport open." Working the actual `w` showed the route is
+  **mathematically wrong about the vanishing mechanism**: the transported row collapses (via
+  `g = 0`) to `w = hingeRow v a ρ_g` (`ρ_g = Σ λ_{(ab)j} r_j ≠ 0`), supported on columns `v`
+  AND `a`, so `w S = ρ_g(S v − S a) ≠ 0` at `S v = 0`. KT's off-`v` vanishing is the eqs.
+  (6.14)–(6.15) **column operation** `col_a += col_v` (`Φ S = update S v (S v + S a)`,
+  `w(Φ S) = ρ_g(S v)`), silently elided in the project's per-edge-seam plan. eq. (6.43) was
+  mis-wired: it is a Claim-6.12 fact (`g`'s `a`-column = 0, trivially `g = 0`, used in the
+  `M3`-case extensor-orthogonality), NOT the candidate-row vanishing input.
+- **Root cause:** the prior recon checked that the named green leaves *exist* and that the
+  per-edge seam transports the `E_v`-rows, then assumed the `(vb)↔(ab)` reconciliation was a
+  bounded mechanical step. It never substituted `g = 0` into the explicit `w` to see what `w`
+  *is*. A claimed "row vanishes off `v`" must be checked by computing the row, not by chaining
+  "seam + a-block-fact" boxes — KT's argument runs a column op that the box-chain hides.
+- **Don't retry:** the seam-only / eq.-(6.43) route for the candidate-row vanishing. The fix is
+  to model the column-operation automorphism `Φ` and restate the node (and the downstream
+  pin-block + `lem:case-II-realization`) in the column-operated frame (rank is column-op-inv).
+- **Status:** RESOLVED. The column op is now modelled (`BodyHingeFramework.columnOp` +
+  `hingeRow_comp_columnOp_*`, `RigidityMatrix.lean`; blueprint `lem:case-III-columnop`, green); the
+  candidate-row node (`lem:case-III-candidate-row`) stays red over the remaining `w`-assembly, but
+  the vanishing mechanism is now correctly the column op (`notes/Phase22e.md` *Decisions*).
+  Standing lesson: reuse `DESIGN.md` *Constructibility recon before scheduling a producer build*
+  (second half — the arithmetic) plus this sharpening: **also confirm the geometric/linear-algebra
+  *mechanism* the source uses (e.g. a column op) is reproduced, not elided** — a count that closes
+  over the wrong mechanism is the same trap as Phase 22a's structure mismatch.
+
+### [resolved] Phase 22c open — superseded-route rot survived in *red* blueprint nodes (a live node's proof routing through a struck dead-end)
+- **Where it bit:** opening Phase 22c, the live target nodes
+  `lem:case-II-realization` / `lem:case-II-realization-placement`
+  (`blueprint/src/chapter/algebraic-induction/`) had **statements saying
+  "M3 / N7b-4 superseded"** while their **proofs still routed through
+  those dead-ends** (the motion-side M3
+  `lem:case-II-placement-motion-side-assembly` and the unbuildable
+  row-side N7b-4 `lem:case-II-placement-e0-recovery`). The corrected
+  eq. (6.12) understanding had been settled phases earlier (KT,
+  `Phase21b.md` *Finding A*), but the live-node prose never followed.
+  Commit `7ba0266` reconciled both nodes; this entry records why it
+  survived and the process fix.
+- **Root cause:** the superseded-route prose lived in **red (deferred)
+  nodes**, which fall through every gate. (1) The honesty gate fires
+  only on `\leanok` additions — red nodes are never checked. (2) The
+  per-commit blueprint re-read checks only what the commit changed, not
+  downstream red nodes; when the route was first corrected, the fix
+  updated the live node's *statement* and marked the dead *leaf*, but
+  nothing forced re-reading the live node's *proof*. (3) The phase-close
+  re-read targets formalization *asides* (changelog narration), not
+  superseded *routes*. (4) "superseded" was free-text with no
+  machine-readable status, so nothing flagged a live node pointing at a
+  dead one.
+- **Don't repeat:** a commit that supersedes a route OWNS reconciling
+  *every* node on the old route — statement **and** proof — in the same
+  commit, not just the dead leaf + the live statement. Superseded nodes
+  carry a greppable title marker (`[… (superseded, …): …]`); no
+  live-route node may `\uses` or describe its live proof through one.
+- **Status:** resolved (process fix landed this commit). **Lifted to:**
+  `blueprint/CLAUDE.md` *Static checks before commit → the supersession
+  gate* (the ownership rule + the standardized title marker + the
+  scriptable `awk`/`comm` check) and root `CLAUDE.md` *When this commit
+  opens a phase → the red-node consistency gate* (read target red nodes
+  end-to-end before scoping). Not lifted to `DESIGN.md`: the lesson is
+  blueprint-bookkeeping hygiene, not a cross-cutting math/modelling
+  decision — the gates belong in the operating manuals.
+
+### [resolved] `MvPolynomial.eval_map_algebraMap` / `map_algebraMap_ne_zero_iff` — descend an `ℝ`-eval to a base-ring `aeval`, and transfer nonzero-ness
+- **Deleted** (Phase 30 RELAX slice (d), 2026-07-10, `notes/Phase30.md`): the
+  algebraically-independent-seed transfer this pair served was replaced by the
+  RELAX product route; the mirror file `Mathlib/RingTheory/MvPolynomial/Tower.lean`
+  is removed (zero remaining callers).
+- **Where it bit:** Phase 22d KT-Claim-6.11 analytic kernel, rationality bridge
+  (ii-b). Leaf (i) `AlgebraicIndependent.aeval_ne_zero` certifies non-root-ness
+  only for a polynomial *over* `ℚ` (`aeval q : MvPolynomial σ ℚ → ℝ`), but the
+  genericity device builds an `ℝ`-typed rank polynomial `Q : MvPolynomial σ ℝ`.
+  To apply (i) one exhibits `Q = map (algebraMap ℚ ℝ) Q₀` and needs both
+  `eval q Q = aeval q Q₀` and `Q ≠ 0 ↔ Q₀ ≠ 0`.
+- **Friction:** mathlib ships `MvPolynomial.aeval_map_algebraMap` (the `aeval`
+  form, in a scalar tower) and `map_injective`, but no `eval`-side descent for
+  the self-tower `A = B`, nor a packaged nonzero-transfer for an injective
+  `algebraMap` — the molecular tree had zero `algebraMap ℚ ℝ` / `map`
+  scaffolding.
+- **Resolution:** mirrored as the pair (any base ring `R`, `R`-algebra `A`):
+  - `eval_map_algebraMap (q : σ → A) (Q₀) : eval q (map (algebraMap R A) Q₀) =
+    aeval q Q₀` — `aeval_map_algebraMap` at `A = B`, through `aeval_eq_eval`.
+  - `map_algebraMap_ne_zero_iff [FaithfulSMul R A] : map (algebraMap R A) Q₀ ≠ 0
+    ↔ Q₀ ≠ 0` — `map_eq_zero_iff` of the injective faithful `algebraMap`.
+- **Consumed assembly (same file):** `eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent`
+  packages the pair with leaf (i) `AlgebraicIndependent.aeval_ne_zero` into the
+  shape the kernel consumes: `(Q.coeffs : Set A) ⊆ range (algebraMap R A)` + `Q ≠ 0`
+  + `AlgebraicIndependent R q` ⟹ `eval q Q ≠ 0`. The "coefficients in range ⟹ `Q
+  = map (algebraMap) Q₀`" descent is already in mathlib
+  (`MvPolynomial.mem_range_map_iff_coeffs_subset`, `…/Eval.lean` — found by search,
+  *not* re-mirrored), so the assembly is a 3-line `obtain`/`rw`/`exact`.
+- **Status:** mirrored. All axiom-clean; no geometry, true leaves. The assembly
+  takes the coefficient-rationality as a hypothesis; supplying it for the device's
+  `Q` (the `complementIso`-rational-entries leaf) is the next 22d build.
+- **Mirror file:** `Mathlib/RingTheory/MvPolynomial/Tower.lean`. The pair sits
+  directly below `MvPolynomial.aeval_map_algebraMap`; the assembly is project-glue
+  over the pair + the alg-independent mirror + the mathlib descent.
+
+### [resolved] `exists_injective_algebraicIndependent_real` (+ `infinite_index_of_transcendenceBasis_real`) — a finite algebraically independent family of reals over ℚ
+- **Deleted** (Phase 30 RELAX slice (d), 2026-07-10, `notes/Phase30.md`): the
+  seed-genericity sub-step this supplied was replaced by the RELAX product
+  route (a device-chosen seed off a product of base polynomials, no
+  transcendence-basis seed needed); the mirror file
+  `Mathlib/RingTheory/AlgebraicIndependent/TranscendenceBasis.lean` is removed
+  (zero remaining callers).
+- **Where it bit:** Phase 22d KT-Claim-6.11 analytic-kernel seed-genericity sub-step
+  (ii-a). The kernel needs the realizing seed `q : σ → ℝ` (finite `σ`)
+  *algebraically independent over ℚ* so that leaf (i)
+  `AlgebraicIndependent.aeval_ne_zero` certifies it a non-root of every nonzero
+  rational rank polynomial (KT footnote 6). The project's general-position witness,
+  the moment curve `q (a, i) = (param a) ^ i`, is **not** alg-indep (its coordinates
+  satisfy rational relations: `q (a, 0) = 1`, `q (a, 2) = q (a, 1) ^ 2`), so the
+  alg-indep seed must come from a transcendence basis instead.
+- **Friction:** mathlib has the *necessary* direction (`AlgebraicIndependent.cardinalMk_le_trdeg`)
+  and the transcendence-basis existence (`exists_isTranscendenceBasis'`), but not the
+  finite-family existence (`#σ` finite ⟹ ∃ alg-indep `σ → ℝ`), nor the fact that a
+  transcendence basis of ℝ over ℚ is infinite.
+- **Resolution:** mirrored as
+  - `infinite_index_of_transcendenceBasis_real (hx : IsTranscendenceBasis ℚ x) :
+    Infinite ι` — were `ι` finite, ℝ would be algebraic over the countable
+    `ℚ[range x]` and hence countable (`Algebra.cardinalMk_adjoin_le` +
+    `Algebra.IsAlgebraic.cardinalMk_le_max`), contradicting `Uncountable ℝ`.
+  - `exists_injective_algebraicIndependent_real (σ) [Finite σ] : ∃ q : σ → ℝ,
+    Function.Injective q ∧ AlgebraicIndependent ℚ q` — restrict a transcendence
+    basis along an embedding `σ ↪ ι` (`ι` infinite), `AlgebraicIndependent.comp`.
+  The strengthening of `Countable.exists_injective_of_infinite` (injectivity
+  only) below to algebraic independence.
+- **Lifted to:** TACTICS-QUIRKS § 37 (cross-universe `Nonempty (α ↪ β)` ⟹
+  `Cardinal.lift_mk_le'`, *not* `Cardinal.le_def`).
+- **Status:** mirrored. Both axiom-clean; the `infinite_index` lemma is kept
+  ℝ/ℚ-specific (the general countable→uncountable form crosses universes in
+  `Algebra.cardinalMk_adjoin_le`, which is single-universe).
+- **Mirror file:** `Mathlib/RingTheory/AlgebraicIndependent/TranscendenceBasis.lean`.
