@@ -75,7 +75,8 @@ theorem _root_.Graph.finrank_span_rigidityRows_ofNormals_flat_grade [Finite α] 
     funext fun p => congrFun (pencilConfigPointGrade_eq_pencilPicturePoint q _ p.1) p.2
   have h := Graph.finrank_span_rigidityRows_ofNormals_pencilConfigPointGrade_padHeights hG
     hends (Nat.zero_le m) q (0 : α × Fin 0 → K)
-  rw [hpad, hpic, Graph.finrank_span_rigidityRows_ofNormals_pencilPicturePoint hq hends] at h
+  rw [hpad, hpic, Graph.finrank_span_rigidityRows_ofNormals_pencilPicturePoint hq
+    (Graph.recordsLinks_iff_forall_isLink.mpr hends)] at h
   rw [h]
   simp only [zero_add, screwDim_one]
   push_cast

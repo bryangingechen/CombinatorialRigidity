@@ -93,7 +93,7 @@ theorem _root_.Graph.finrank_span_rigidityRows_splitOff_special {k : ℕ} [Finit
     (hpath : ∀ i : Fin 2,
       G.IsLink (e i) (pathVertex a x b i.castSucc) (pathVertex a x b i.succ))
     (hsep : ∀ f u w, G.IsLink f u w → (∀ i, f ≠ e i) → u ∈ V₁ ∧ w ∈ V₁)
-    {ends : β → α × α} (hends : ∀ f u w, G.IsLink f u w → G.IsLink f (ends f).1 (ends f).2)
+    {ends : β → α × α} (hends : Graph.RecordsLinks G ends)
     (n : α × Fin (k + 2) → K) {s : K} (hs₀ : s ≠ 0) (hs₁ : s ≠ 1)
     (hn : ∀ i, n (x 0, i) = (1 - s) * n (a, i) + s * n (b, i))
     (hab : LinearIndependent K ![fun i => n (a, i), fun i => n (b, i)])
@@ -116,9 +116,6 @@ theorem _root_.Graph.finrank_span_rigidityRows_splitOff_special {k : ℕ} [Finit
   have l1 : G.IsLink (e 1) (x 0) b := hpath 1
   have l'' : G''.IsLink (e 0) a b :=
     Or.inr ⟨rfl, hax, hbx, hV₁G ha, hV₁G hb, Or.inl ⟨rfl, rfl⟩⟩
-  have hends2 : ∀ f u w, G''.IsLink f u w → G''.IsLink f (ends'' f).1 (ends'' f).2 :=
-    fun _ _ _ =>
-      ((Graph.recordsLinks_iff_forall_isLink.mpr hends).update_splitOff l'').isLink
   set na : Fin (k + 2) → K := fun i => n (a, i)
   set nb : Fin (k + 2) → K := fun i => n (b, i)
   set C₀ := panelSupportExtensor (k := k) na nb with hC₀def
@@ -139,7 +136,7 @@ theorem _root_.Graph.finrank_span_rigidityRows_splitOff_special {k : ℕ} [Finit
       panelSupportExtensor_smul_left, ← Set.smul_set_singleton,
       Submodule.span_smul_eq_of_isUnit _ _ (isUnit_iff_ne_zero.mpr (sub_ne_zero.mpr hs₁.symm))]
   have hsp'' : Submodule.span K {F''.supportExtensor (e 0)} = K ∙ C₀ := by
-    rw [hF'', span_supportExtensor_ofNormals_eq hends2 n l'']
+    rw [hF'', span_supportExtensor_ofNormals_eq hlinks n l'']
   have hsame : ∀ f, f ≠ e 0 → F.supportExtensor f = F''.supportExtensor f := by
     intro f hf
     simp only [hF, hF'', PanelHingeFramework.toBodyHinge_supportExtensor,
@@ -631,8 +628,7 @@ theorem _root_.Graph.X0Attains.of_splitOff [Infinite K] [Finite α] [Finite β]
       ring
   -- the special configuration at `t = 0`: its hinges are nonzero
   set ends := G.endsOf with hendsdef
-  have hends : ∀ f u w, G.IsLink f u w → G.IsLink f (ends f).1 (ends f).2 :=
-    fun f _ _ hf => G.isLink_endsOf hf.edge_mem
+  have hends : Graph.RecordsLinks G ends := Graph.recordsLinks_endsOf G
   set n0 : α × Fin 4 → K := fun p => (cpoly p).eval 0 with hn0
   have hn0' : n0 = fun p => pencilConfigPoint (qt 0) (zt 0) p.1 p.2 := hc 0
   have hpp0a : pencilPicturePoint (qt 0) a = pa := hppv 0 a hax
@@ -691,15 +687,12 @@ theorem _root_.Graph.X0Attains.of_splitOff [Infinite K] [Finite α] [Finite β]
   have hLIab : LinearIndependent K ![fun i => n0 (a, i), fun i => n0 (b, i)] := by
     rw [hn0']
     exact linearIndependent_pencilConfigPoint_pair (zt 0) (by rw [hpp0a, hpp0b]; exact hpab)
+  have hends2 : Graph.RecordsLinks G'' (Function.update ends (e 0) (a, b)) :=
+    hends.update_splitOff l''
   have h28 := Graph.finrank_span_rigidityRows_splitOff_special hcover hxV₁ ha hb hpath hsep hends
-    n0 hs0 hs1 hnx hLIab
-    (hlinks := (Graph.recordsLinks_iff_forall_isLink.mpr hends).update_splitOff l'')
-  have hends2 : ∀ f u v, G''.IsLink f u v →
-      G''.IsLink f (Function.update ends (e 0) (a, b) f).1
-        (Function.update ends (e 0) (a, b) f).2 :=
-    fun _ _ _ =>
-      ((Graph.recordsLinks_iff_forall_isLink.mpr hends).update_splitOff l'').isLink
-  have hcongr := PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr G'' hends2 hends₁
+    n0 hs0 hs1 hnx hLIab (hlinks := hends2)
+  have hcongr := PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr G'' hends2
+    (Graph.recordsLinks_iff_forall_isLink.mpr hends₁)
     (q := n0) (q' := fun p => pencilConfigPoint q z₁ p.1 p.2) (fun v hv i => by
       rw [hn0']
       have hv0 : v ≠ x 0 := fun h => by rw [hVG''] at hv; exact hx0 (h ▸ hv)

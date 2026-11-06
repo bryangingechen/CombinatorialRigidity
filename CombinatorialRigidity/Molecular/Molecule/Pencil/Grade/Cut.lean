@@ -88,7 +88,9 @@ theorem PanelHingeFramework.finrank_span_rigidityRows_ofNormals_liftingRestrict_
           ).toBodyHinge.rigidityRows)
       = Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := m + 1) G' ends'
         (fun p => pencilConfigPointGrade q z p.1 p.2)).toBodyHinge.rigidityRows) :=
-  PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr G' hends hends'
+  PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr G'
+    (Graph.recordsLinks_iff_forall_isLink.mpr hends)
+    (Graph.recordsLinks_iff_forall_isLink.mpr hends')
     fun _ hx i => congrFun (pencilConfigPointGrade_liftingRestrict X q z (hX hx)) i
 
 /-- **A restriction onto at one height is onto at `m` heights** (the "height by height" of

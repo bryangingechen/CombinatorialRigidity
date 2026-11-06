@@ -340,8 +340,7 @@ theorem _root_.Graph.exists_oneEar_base [Infinite K] [Fintype α] [Finite β] {H
         MvPolynomial.eval xk A ≠ 0 →
         planeDiff a b xk ⬝ᵥ pencilPicturePoint q a ≠ 0 ∧
         planeDiff a b xk ⬝ᵥ pencilPicturePoint q b ≠ 0 ∧
-        ∀ ends : β → α × α, (hlinks : ∀ f u w, (H.induce V₁).IsLink f u w →
-            (H.induce V₁).IsLink f (ends f).1 (ends f).2) →
+        ∀ ends : β → α × α, (hlinks : Graph.RecordsLinks (H.induce V₁) ends) →
           (Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 2)
             (H.induce V₁) ends (fun p => pencilConfigPoint q (fun w => xk (Sum.inl w))
               p.1 p.2)).toBodyHinge.rigidityRows) : ℤ) =
@@ -557,7 +556,8 @@ theorem _root_.Graph.exists_oneEar_base [Infinite K] [Fintype α] [Finite β] {H
   have hz' := Graph.liftingRestrict_mem_liftingSpace (Graph.induce_le hV₁H) hmem
   rw [Graph.liftingSpace_congr (G := G') (q := q) (q' := q') hqV₁] at hz'
   have hr := hatt₁ _ hz' hR
-  rw [PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr G' hends₁ hends
+  rw [PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr G'
+    (Graph.recordsLinks_iff_forall_isLink.mpr hends₁) hends
     (q' := fun p => pencilConfigPoint q (fun w => xk' (Sum.inl w)) p.1 p.2) (fun w hw t => ?_)]
     at hr
   · exact hr
@@ -611,11 +611,8 @@ theorem _root_.Graph.X0Attains.of_openEar_one [Infinite K] [Finite α] [Finite �
   have hz : z ∈ G.liftingSpace q := by
     rw [← G.map_ker_liftingMatrix q]; exact ⟨xk, hxk, rfl⟩
   set ends := G.endsOf
-  have hends : ∀ f u w, G.IsLink f u w → G.IsLink f (ends f).1 (ends f).2 :=
-    fun f _ _ hf => G.isLink_endsOf hf.edge_mem
-  have hendsG := Graph.recordsLinks_iff_forall_isLink.mpr hends
-  have hr₁ := (hgood xk hxk hA).2.2 ends
-    (Graph.recordsLinks_iff_forall_isLink.mp (hendsG.induce V₁))
+  have hends : Graph.RecordsLinks G ends := Graph.recordsLinks_endsOf G
+  have hr₁ := (hgood xk hxk hA).2.2 ends (hends.induce V₁)
   -- the ear rank formula, with two independent joins of the ear
   set F := (PanelHingeFramework.ofNormals (k := 2) G ends
     (fun p => pencilConfigPoint q z p.1 p.2)).toBodyHinge
@@ -867,23 +864,17 @@ theorem _root_.Graph.X0Attains.of_openEar_two_of_splitOff [Infinite K] [Finite �
   have hzlb : ∀ w ∈ G₁.closedNbhd b, z w = lb ⬝ᵥ pencilPicturePoint q w := hxk2 b hbV₁
   -- the selectors
   set ends := G.endsOf with hendsdef
-  have hends : ∀ f u w, G.IsLink f u w → G.IsLink f (ends f).1 (ends f).2 :=
-    fun f _ _ hf => G.isLink_endsOf hf.edge_mem
-  have hendsG := Graph.recordsLinks_iff_forall_isLink.mpr hends
+  have hends : Graph.RecordsLinks G ends := Graph.recordsLinks_endsOf G
   set ends₁ := Function.update ends (e 1) (x 0, b) with hends₁def
-  have hends₁ : ∀ f u w, G₁.IsLink f u w → G₁.IsLink f (ends₁ f).1 (ends₁ f).2 :=
-    fun _ _ _ => (hendsG.update_splitOff (hpath₁ 1)).isLink
-  have hendsI := Graph.recordsLinks_iff_forall_isLink.mp (hendsG.induce V₁)
+  have hends₁ : Graph.RecordsLinks G₁ ends₁ := hends.update_splitOff (hpath₁ 1)
+  have hendsI := hends.induce V₁
   have hnot : ∀ f u w, (G.induce V₁).IsLink f u w → f ≠ e 1 := by
     rintro f u w ⟨hf, hu, hw⟩ rfl
     rcases he₁ u w hf with h | h
     exacts [h hu, h hw]
-  have hendsI₁ : ∀ f u w, (G₁.induce V₁).IsLink f u w →
-      (G₁.induce V₁).IsLink f (ends₁ f).1 (ends₁ f).2 := by
+  have hendsI₁ : Graph.RecordsLinks (G₁.induce V₁) ends₁ := by
     rw [hind]
-    intro f u w hf
-    rw [hends₁def, Function.update_of_ne (hnot f u w hf)]
-    exact hendsI f u w hf
+    exact hendsI.congr fun f u w hf => by rw [hends₁def, Function.update_of_ne (hnot f u w hf)]
   -- the ear rank formula at `G₁`: `rank G₁ = rank G[V₁] + 4 + s`
   set c₁ : α × Fin 4 → K := fun p => pencilConfigPoint q z p.1 p.2 with hc₁
   set F₁ := (PanelHingeFramework.ofNormals (k := 2) G₁ ends₁ c₁).toBodyHinge with hF₁
@@ -943,7 +934,7 @@ theorem _root_.Graph.X0Attains.of_openEar_two_of_splitOff [Infinite K] [Finite �
         screwDim 2 * ((V(G₁).ncard : ℤ) - 1) - G₁.deficiency 3 := by
       rw [← hr₂]
       exact_mod_cast PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr G₁ hends₁
-        hends₂ (fun _ _ _ => rfl)
+        (Graph.recordsLinks_iff_forall_isLink.mpr hends₂) (fun _ _ _ => rfl)
     rw [hear₁, hrk₁, hcount₁, hs6, ← hρJ] at h1
     push_cast at h1
     linarith
@@ -1087,7 +1078,7 @@ theorem _root_.Graph.X0Attains.of_openEar_two_of_splitOff [Infinite K] [Finite �
       (PanelHingeFramework.ofNormals (k := 2) G ends (cfg s)).toBodyHinge.supportExtensor f =
         F₁.supportExtensor f := by
     intro s f u w hf
-    obtain ⟨-, h1, h2⟩ := hendsI f u w hf
+    obtain ⟨-, h1, h2⟩ := hendsI.isLink hf
     simp only [hF₁, PanelHingeFramework.toBodyHinge_supportExtensor,
       PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_ends, hends₁def,
       Function.update_of_ne (hnot f u w hf)]

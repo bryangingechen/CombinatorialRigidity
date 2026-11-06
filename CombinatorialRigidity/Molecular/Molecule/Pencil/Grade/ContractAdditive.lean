@@ -181,7 +181,7 @@ theorem _root_.Graph.X0AttainsGrade.of_additiveContract [Infinite K] [Finite α]
   -- the surviving rows near the collapsed placement (`lem:pencil-contract-degenerate-rank`)
   obtain ⟨Qc, hQc₀, hQc⟩ :=
     PanelHingeFramework.exists_rankPolynomial_rigidContract_induce_proj (k := m + 1) G hr hW ends
-      hendsD (pencilConfigPointGrade q z')
+      (Graph.recordsLinks_iff_forall_isLink.mpr hendsD) (pencilConfigPointGrade q z')
       (fun e he => hqcadm.supportExtensor_ne_zero_grade hendsM z' he) le_rfl
   -- the kernel at the end of the curve (`lem:pencil-contract-additive-kernel`)
   set L := LinearMap.ker ((G.contractLiftingMatrix K W r q).map
@@ -385,8 +385,9 @@ theorem _root_.Graph.X0AttainsGrade.of_additiveContract [Infinite K] [Finite α]
       Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := m + 1)
         (G.rigidContract (G.induce W) r) endsc
           (fun p => pencilConfigPointGrade q z' p.1 p.2)).toBodyHinge.rigidityRows) :=
-    PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr _ hendsM hendsc
-      (fun _ _ _ => rfl)
+    PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr _
+      (Graph.recordsLinks_iff_forall_isLink.mpr hendsM)
+      (Graph.recordsLinks_iff_forall_isLink.mpr hendsc) (fun _ _ _ => rfl)
   rw [hrankM] at hproj
   have hcountZ : (V(G.rigidContract (G.induce W) r).ncard : ℤ) =
       ((V(G).ncard : ℤ) - (W.ncard : ℤ)) + 1 := by

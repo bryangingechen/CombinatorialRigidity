@@ -529,6 +529,10 @@ to be re-derived by re-reading entries later.
   `RecordsLinks`; the conversions there are gone, and `CaseII.lean`'s three pair sites read the
   lemma. Two pair-form *conclusions* stay (`ofNormals_relabel`'s third conjunct,
   `fullLink_recording_of_splitOff_recording`, whose one caller takes `.of_pair`).
+  ARREARS, task 15: the 28 link binders of `Pencil/MainComponent/` are `RecordsLinks`, and task
+  13's six conversions there are gone. Fifteen stay, all from the form at links of
+  `Graph.X0Attains`'s existential `hlinks` (13: one where it is built, twelve where it is
+  destructured) and of one conclusion (2); `Pencil/Grade/` converts at 13 sites until task 16.
 - **Proposed fix:** state such hypotheses as `RecordsLinks G ends` when the switch (Phase 41a, item
   5) or RESTATE touches their declarations; the conversions then go. For the field under
   `Q.graph = G`: a lemma `PanelHingeFramework.recordsLinks_of_graph_eq (hQg : Q.graph = G) :

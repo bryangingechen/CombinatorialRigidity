@@ -340,7 +340,7 @@ unknowns before the scaling by `t`, under the collineation
 theorem _root_.Graph.finrank_span_rigidityRows_induce_contractHeight_eq {G : Graph α β}
     {W : Set α} {r : α} (q : α × Fin 2 → K) {t : K} (ht : t ≠ 0) (x : α ⊕ (α × Fin 3) → K)
     {ends : β → α × α}
-    (hends : ∀ e u v, (G.induce W).IsLink e u v → (G.induce W).IsLink e (ends e).1 (ends e).2) :
+    (hends : Graph.RecordsLinks (G.induce W) ends) :
     Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 2) (G.induce W) ends
         (fun p => pencilConfigPoint (contractPicture W r q t) (contractHeight W t x) p.1 p.2)
           ).toBodyHinge.rigidityRows)
@@ -941,9 +941,7 @@ of them are independent there;
 nonzero there off whose zero set they stay independent. -/
 theorem PanelHingeFramework.exists_rankPolynomial_rigidContract_induce_proj [Finite α]
     [Finite β] (G : Graph α β) {W : Set α} {r : α} (hr : r ∈ W) (hW : W ⊆ V(G))
-    (ends : β → α × α)
-    (hends : ∀ e u v, (G.deleteEdges E(G.induce W)).IsLink e u v →
-      (G.deleteEdges E(G.induce W)).IsLink e (ends e).1 (ends e).2)
+    (ends : β → α × α) (hends : Graph.RecordsLinks (G.deleteEdges E(G.induce W)) ends)
     (nrm : α → Fin (k + 2) → K)
     (hne : ∀ e, (G.rigidContract (G.induce W) r).IsLink e
         (Graph.collapseTo r W (ends e).1) (Graph.collapseTo r W (ends e).2) →
@@ -966,17 +964,12 @@ theorem PanelHingeFramework.exists_rankPolynomial_rigidContract_induce_proj [Fin
   set endsM : β → α × α := fun e => (f (ends e).1, f (ends e).2) with hendsM
   set F' := (PanelHingeFramework.ofNormals (Gc.map f) endsM
     (fun p => nrm p.1 p.2)).toBodyHinge with hF'
-  have hendsF' : ∀ e u v, F'.graph.IsLink e u v → F'.graph.IsLink e (endsM e).1 (endsM e).2 := by
-    intro e u v hlink
-    rw [hF', PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph,
-      Graph.map_isLink] at hlink ⊢
-    obtain ⟨x, y, hxy, _, _⟩ := hlink
-    exact ⟨_, _, hends e x y hxy, rfl, rfl⟩
+  have hendsF' : Graph.RecordsLinks (Gc.map f) endsM := hends.map f
   have hinter : F'.graph.vertexSet ∩ W = {r} :=
     Graph.rigidContract_vertexSet_inter_eq_singleton G (G.induce W) hr hW
   obtain ⟨t, hsuppM, hcountM, hindepM⟩ :=
     F'.exists_independent_panelRow_subfamily_of_le_finrank_proj (ends := endsM) (proj := W)
-      (r := r) (Graph.recordsLinks_iff_forall_isLink.mpr hendsF') hne hinter hN
+      (r := r) hendsF' hne hinter hN
   have hsupp₀ : ∀ i ∈ t, Gc.IsLink (i : β × _ × _).1 (ends (i : β × _ × _).1).1
       (ends (i : β × _ × _).1).2 := by
     intro i hi
@@ -984,7 +977,7 @@ theorem PanelHingeFramework.exists_rankPolynomial_rigidContract_induce_proj [Fin
     rw [hF', PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph,
       Graph.map_isLink] at this
     obtain ⟨x, y, hxy, _, _⟩ := this
-    exact hends i.1 x y hxy
+    exact hends.isLink hxy
   have hVH : V(G.induce W) = W := rfl
   have hindep₀ : LinearIndependent K (fun i : t => (extProj (k := k) W).dualMap
       ((PanelHingeFramework.ofNormals Gc ends (degeneratePlacement r W nrm)).toBodyHinge.panelRow

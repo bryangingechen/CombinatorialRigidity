@@ -391,7 +391,7 @@ theorem _root_.Graph.exists_earBase_splitOff [Infinite K] [Finite α] {G : Graph
     (hl₀ : (G.splitOff v u w e₀).IsLink e₀ u w)
     (he₀ : ∀ p p', G.IsLink e₀ p p' → p ∉ V₁ ∨ p' ∉ V₁)
     (hind : (G.splitOff v u w e₀).induce V₁ = G.induce V₁)
-    {ends : β → α × α} (hends : ∀ f p p', G.IsLink f p p' → G.IsLink f (ends f).1 (ends f).2)
+    {ends : β → α × α} (hends : Graph.RecordsLinks G ends)
     {xf xl : α} {X : Set α} (hxf : xf ∈ (G.splitOff v u w e₀).closedNbhd a)
     (hxl : xl ∈ (G.splitOff v u w e₀).closedNbhd b) (hX : Set.range y ⊆ X)
     (h₁ : (G.induce V₁).X0Attains K) (h₂ : (G.splitOff v u w e₀).X0Attains K)
@@ -436,10 +436,8 @@ theorem _root_.Graph.exists_earBase_splitOff [Infinite K] [Finite α] {G : Graph
   set H := G.splitOff v u w e₀ with hH
   have hle : G.induce V₁ ≤ H := hind ▸ Graph.induce_le (hcover ▸ Set.subset_union_left)
   set ends'' := Function.update ends e₀ (u, w) with hends''def
-  have hendsG := Graph.recordsLinks_iff_forall_isLink.mpr hends
-  have hends'' : ∀ f p p', H.IsLink f p p' → H.IsLink f (ends'' f).1 (ends'' f).2 :=
-    fun _ _ _ => (hendsG.update_splitOff hl₀).isLink
-  have hendsI := Graph.recordsLinks_iff_forall_isLink.mp (hendsG.induce V₁)
+  have hends'' : Graph.RecordsLinks H ends'' := hends.update_splitOff hl₀
+  have hendsI := hends.induce V₁
   have hnot : ∀ f p p', (G.induce V₁).IsLink f p p' → f ≠ e₀ := by
     rintro f p p' ⟨hf, hp, hp'⟩ rfl
     rcases he₀ p p' hf with h | h
@@ -498,7 +496,7 @@ theorem _root_.Graph.exists_earBase_splitOff [Infinite K] [Finite α] {G : Graph
         (PanelHingeFramework.ofNormals (k := 2) G ends
           (cfg sstar)).toBodyHinge.supportExtensor f := by
     intro s f p p' hf
-    obtain ⟨-, h1, h2⟩ := hendsI f p p' hf
+    obtain ⟨-, h1, h2⟩ := hendsI.isLink hf
     simp only [PanelHingeFramework.toBodyHinge_supportExtensor,
       PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_ends]
     congr 1 <;> funext j
@@ -518,7 +516,8 @@ theorem _root_.Graph.exists_earBase_splitOff [Infinite K] [Finite α] {G : Graph
     intro s
     rw [BodyHingeFramework.finrank_span_rigidityRows_congr (G.induce V₁) (hCG s)]
     have := PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr (k := 2) (G.induce V₁)
-      hendsI hends₁ (q := cfg sstar) (q' := fun p => pencilConfigPoint q' z₁ p.1 p.2)
+      hendsI (Graph.recordsLinks_iff_forall_isLink.mpr hends₁) (q := cfg sstar)
+      (q' := fun p => pencilConfigPoint q' z₁ p.1 p.2)
       (fun w hw j => hcV₁ sstar w hw j)
     change (Module.finrank K ↥(Submodule.span K (PanelHingeFramework.ofNormals (k := 2)
       (G.induce V₁) ends (cfg sstar)).toBodyHinge.rigidityRows) : ℤ) = _
@@ -534,7 +533,7 @@ theorem _root_.Graph.exists_earBase_splitOff [Infinite K] [Finite α] {G : Graph
     fun s p hp => ?_, fun s => BodyHingeFramework.relScrews_congr (G.induce V₁) (hCG s) a b,
     fun s => ?_, hrk₁, fun s => ?_⟩
   · rw [← hcfgdef, hcfgstar, PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr (k := 2)
-      H hends'' hends₂ (fun _ _ _ => rfl)]
+      H hends'' (Graph.recordsLinks_iff_forall_isLink.mpr hends₂) (fun _ _ _ => rfl)]
     exact hr₂
   · rw [← hcfgdef, hcfgstar]
     exact fun f hf => hadm₂.supportExtensor_ne_zero hends'' zs hf
@@ -639,12 +638,9 @@ theorem _root_.Graph.X0Attains.of_openEar_splitOff [Infinite K] [Finite α] [Fin
   obtain ⟨Pm, hPm, hmain⟩ := G.exists_mvPolynomial_isMainPicture (K := K)
     hG.simple.toLoopless hG.three_le_ncard_closedNbhd
   set ends := G.endsOf
-  have hends : ∀ f p p', G.IsLink f p p' → G.IsLink f (ends f).1 (ends f).2 :=
-    fun f _ _ hf => G.isLink_endsOf hf.edge_mem
+  have hends : Graph.RecordsLinks G ends := Graph.recordsLinks_endsOf G
   set ends'' := Function.update ends e₀ (u, w)
-  have hends'' : ∀ f p p', G''.IsLink f p p' → G''.IsLink f (ends'' f).1 (ends'' f).2 :=
-    fun _ _ _ =>
-      ((Graph.recordsLinks_iff_forall_isLink.mpr hends).update_splitOff hl₀'').isLink
+  have hends'' : Graph.RecordsLinks G'' ends'' := hends.update_splitOff hl₀''
   obtain ⟨q', z₁, la, lb, sstar, ρM, hqm', hadm₂, hpicstar, hrk₂, hne₂, hz₁s, hlas, hlbs, hρG,
       hρ2, hrk₁, hrk₁''⟩ :=
     Graph.exists_earBase_splitOff hm hcover'' hinj'' hyV₁ ha hb hab hpath'' hsep'' hl₀'' he₀ hind

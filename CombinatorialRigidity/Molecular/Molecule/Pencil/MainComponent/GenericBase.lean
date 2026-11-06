@@ -636,7 +636,7 @@ theorem isNondeg_pencilConfig_of_planeDiff [Fintype α] [Finite β] {G : Graph �
     (hedge : ∀ e a b, G.IsLink e a b → G.PencilHub a → G.PencilHub b → planeDiff a b x ≠ 0)
     (hdeg2 : ∀ v ∈ V(G), ¬ G.PencilHub v → ∀ a ∈ G.closedHubNbhd v, ∀ b ∈ G.closedHubNbhd v,
       a ≠ b → planeDiff a b x ≠ 0)
-    {ends : β → α × α} (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
+    {ends : β → α × α} (hends : Graph.RecordsLinks G ends)
     {sel : α → Fin 3 → α} (hsel : ∀ v ∈ V(G), (∀ i, sel v i ∈ G.closedNbhd v) ∧
       LinearIndependent K (fun i => pencilPicturePoint q (sel v i))) :
     IsNondegPencilRealization G (pencilConfigFramework G ends q (fun a => x (Sum.inl a)))
@@ -938,7 +938,8 @@ theorem _root_.Graph.IsX0Graph.hasGenericPencilRealization_of_forall_deficiency_
     (fun v w₁ w₂ _ _ _ h1 h2 h12 => hDgp (v, w₁, w₂) (Ne.symm h1) (Ne.symm h2) h12 q
       (hq3 _ (Finset.mem_univ _)))
     hxL (fun e a b hl _ _ => hpd a b hl.ne hl.left_mem hl.right_mem)
-    (fun v hv _ a ha b hb hab => hpd a b hab ha.1.1 hb.1.1) hends hsel
+    (fun v hv _ a ha b hb hab => hpd a b hab ha.1.1 hb.1.1)
+    (Graph.recordsLinks_iff_forall_isLink.mpr hends) hsel
   refine ⟨pencilConfigFramework G ends q z, pencilNormalOfPicture q z sel, pencilConfigPoint q z,
     hnd, ?_⟩
   rw [finrank_span_rigidityRows_pencilConfigFramework]

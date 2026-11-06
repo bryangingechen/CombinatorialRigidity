@@ -1180,7 +1180,7 @@ of `thm:pencil-x0-open-ear-three`, `thm:pencil-x0-open-ear-four` and
 `lem:pencil-ear-hinge-span` and of `span_supportExtensor_comp_eq_map_pointJoin`): the hinge spans
 the meet's line (`span_supportExtensor_ofNormals_eq`). -/
 theorem panelSupportExtensor_mem_span_ofNormals {G : Graph α β} {ends : β → α × α}
-    (hends : ∀ f u w, G.IsLink f u w → G.IsLink f (ends f).1 (ends f).2)
+    (hends : Graph.RecordsLinks G ends)
     (p : α → Fin 4 → K) {f : β} {u w : α} (hf : G.IsLink f u w) :
     panelSupportExtensor (p u) (p w) ∈ Submodule.span K
       {(PanelHingeFramework.ofNormals (k := 2) G ends
@@ -1203,7 +1203,7 @@ at the labels `g i`, linking `u i` to `w i`, is the image under the polarity of 
 joins `c (u i, ·) ∧ c (w i, ·)`. Each hinge is the meet at its recorded ends, which is `±` the polar
 image of the join at `u i, w i` (`screwComplementIso_pointJoin`, `panelSupportExtensor_swap`). -/
 theorem span_supportExtensor_comp_eq_map_pointJoin {H : Graph α β} {ends : β → α × α}
-    (hends : ∀ f u w, H.IsLink f u w → H.IsLink f (ends f).1 (ends f).2)
+    (hends : Graph.RecordsLinks H ends)
     (c : α × Fin 4 → K) {ι : Type*} (g : ι → β) (u w : ι → α)
     (hg : ∀ i, H.IsLink (g i) (u i) (w i)) :
     Submodule.span K (Set.range ((PanelHingeFramework.ofNormals (k := 2) H ends
@@ -1214,7 +1214,7 @@ theorem span_supportExtensor_comp_eq_map_pointJoin {H : Graph α β} {ends : β 
   rw [Submodule.map_span, ← Set.range_comp]
   refine le_antisymm (Submodule.span_le.mpr ?_) (Submodule.span_le.mpr ?_)
   · rintro _ ⟨i, rfl⟩
-    have hl := hends _ _ _ (hg i)
+    have hl := hends.isLink (hg i)
     have hmem : ∀ v : ScrewSpace K 2, v ∈ Submodule.span K (Set.range
         ((screwComplementIso (K := K)).toLinearMap ∘ fun i =>
           pointJoin (fun j => c (u i, j)) (fun j => c (w i, j)))) →
@@ -1253,7 +1253,7 @@ theorem finrank_sup_map_screwComplementIso (ρ Λ : Submodule K (ScrewSpace K 2)
 claim): a submodule containing the hinges at `m` links with independent joins has dimension at least
 `m`. -/
 theorem card_le_finrank_of_linearIndependent_pointJoin {G : Graph α β} {ends : β → α × α}
-    (hends : ∀ f u w, G.IsLink f u w → G.IsLink f (ends f).1 (ends f).2)
+    (hends : Graph.RecordsLinks G ends)
     (p : α → Fin 4 → K) {ι : Type*} [Fintype ι] (u w : ι → α) (g : ι → β)
     (hg : ∀ i, G.IsLink (g i) (u i) (w i))
     (hli : LinearIndependent K (fun i => pointJoin (p (u i)) (p (w i))))
@@ -1279,7 +1279,7 @@ second claim): the hinges at any set of labels containing those links span `Scre
 their span has dimension at least six (`card_le_finrank_of_linearIndependent_pointJoin`), that of
 the screw space. -/
 theorem span_supportExtensor_eq_top_of_linearIndependent {G : Graph α β} {ends : β → α × α}
-    (hends : ∀ f u w, G.IsLink f u w → G.IsLink f (ends f).1 (ends f).2)
+    (hends : Graph.RecordsLinks G ends)
     (p : α → Fin 4 → K) (u w : Fin 6 → α) (f : Fin 6 → β) (hf : ∀ i, G.IsLink (f i) (u i) (w i))
     (hli : LinearIndependent K (fun i => pointJoin (p (u i)) (p (w i))))
     {ι : Type*} (E : ι → β) (hE : ∀ i, ∃ j, f i = E j) :
@@ -1337,9 +1337,7 @@ theorem _root_.Graph.X0Attains.of_openEar_of_cert [Infinite K] [Finite α] [Fini
   obtain ⟨Pm, hPm, hmain⟩ := G.exists_mvPolynomial_isMainPicture (K := K)
     hG.simple.toLoopless hG.three_le_ncard_closedNbhd
   set ends := G.endsOf
-  have hends : ∀ f u w, G.IsLink f u w → G.IsLink f (ends f).1 (ends f).2 :=
-    fun f _ _ hf => G.isLink_endsOf hf.edge_mem
-  have hendsG := Graph.recordsLinks_iff_forall_isLink.mpr hends
+  have hends : Graph.RecordsLinks G ends := Graph.recordsLinks_endsOf G
   -- the picture: generic for `G[V₁]`, main for `G`, the joins independent at `zs`
   obtain ⟨Plam, hPlam₀, hPlam⟩ :=
     exists_mvPolynomial_linearIndependent_pointJoin_picture zs u v hcert
@@ -1362,8 +1360,8 @@ theorem _root_.Graph.X0Attains.of_openEar_of_cert [Infinite K] [Finite α] [Fini
   have hr₁ := hatt₁ _ (Graph.liftingRestrict_mem_liftingSpace hle₁ hz) hz₁'
   have hli := hRlam z hzlam
   rw [Graph.vertexSet_induce G V₁] at hr₁
-  rw [PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr _ hends₁
-    (Graph.recordsLinks_iff_forall_isLink.mp (hendsG.induce V₁))
+  rw [PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr _
+    (Graph.recordsLinks_iff_forall_isLink.mpr hends₁) (hends.induce V₁)
     (q' := fun p => pencilConfigPoint q z p.1 p.2)
     (fun w hw t => pencilConfigPoint_liftingRestrict V₁ q z hw t)] at hr₁
   -- the ear rank formula at `ofNormals G ends`, with `n` independent ear hinges

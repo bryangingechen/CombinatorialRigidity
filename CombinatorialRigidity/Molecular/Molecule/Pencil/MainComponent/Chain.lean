@@ -222,8 +222,7 @@ theorem _root_.Graph.X0Attains.of_cycle_of_certificate [Infinite K] [Finite α] 
   have hqmain := hmain q (left_ne_zero_of_mul hq)
   have hliq := hPlam q (right_ne_zero_of_mul hq)
   set ends := G.endsOf with hendsdef
-  have hends : ∀ f u w, G.IsLink f u w → G.IsLink f (ends f).1 (ends f).2 :=
-    fun f _ _ hf => G.isLink_endsOf hf.edge_mem
+  have hends : Graph.RecordsLinks G ends := Graph.recordsLinks_endsOf G
   -- every height on `V(G)` is a lifting height of the cycle
   set z := Graph.liftingRestrict V(G) zs with hzdef
   have hz : z ∈ G.liftingSpace q := by

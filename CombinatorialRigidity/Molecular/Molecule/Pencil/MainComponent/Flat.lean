@@ -308,7 +308,7 @@ a linear equivalence from the motion space of the panel-hinge framework in the p
 picture points are independent (`linearIndependent_pencilPicturePoint_pair`). -/
 theorem _root_.Graph.finrank_infinitesimalMotions_ofNormals_pencilPicturePoint
     {G : Graph α β} {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) {ends : β → α × α}
-    (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2) :
+    (hends : Graph.RecordsLinks G ends) :
     Module.finrank K (PanelHingeFramework.ofNormals (k := 1) G ends
       (fun p => pencilPicturePoint q p.1 p.2)).toBodyHinge.infinitesimalMotions
       = Module.finrank K (G.liftingPlanes q) := by
@@ -321,7 +321,7 @@ theorem _root_.Graph.finrank_infinitesimalMotions_ofNormals_pencilPicturePoint
     intro S e u v he
     simp only [F, PanelHingeFramework.toBodyHinge_supportExtensor,
       PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_ends]
-    rcases (hends e u v he).eq_and_eq_or_eq_and_eq he with ⟨h1, h2⟩ | ⟨h1, h2⟩
+    rcases hends.eq_or_swap he with ⟨h1, h2⟩ | ⟨h1, h2⟩
     · rw [h1, h2, mem_span_panelSupportExtensor_one_iff
         (linearIndependent_pencilPicturePoint_pair (hq.1 e u v he)), map_sub]
     · rw [h1, h2, mem_span_panelSupportExtensor_one_iff
@@ -346,7 +346,7 @@ space is `F(q)` (`Graph.finrank_infinitesimalMotions_ofNormals_pencilPicturePoin
 assignments, and rank–nullity finishes. -/
 theorem _root_.Graph.finrank_span_rigidityRows_ofNormals_pencilPicturePoint [Finite α]
     {G : Graph α β} {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) {ends : β → α × α}
-    (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2) :
+    (hends : Graph.RecordsLinks G ends) :
     (Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 1) G ends
         (fun p => pencilPicturePoint q p.1 p.2)).toBodyHinge.rigidityRows) : ℤ)
       = 3 * (V(G).ncard : ℤ) - Module.finrank K (G.liftingSpace q) := by
@@ -371,14 +371,13 @@ theorem _root_.Graph.three_add_deficiency_le_finrank_liftingSpace [Finite α] [F
     {G : Graph α β} {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) (hV : V(G).Nonempty) :
     3 + G.deficiency 2 ≤ (Module.finrank K (G.liftingSpace q) : ℤ) := by
   have : Inhabited α := ⟨hV.some⟩
-  have hends : ∀ e u v, G.IsLink e u v → G.IsLink e (G.endsOf e).1 (G.endsOf e).2 :=
-    fun e _ _ he => G.isLink_endsOf he.edge_mem
+  have hends : Graph.RecordsLinks G G.endsOf := Graph.recordsLinks_endsOf G
   have hhub := (PanelHingeFramework.ofNormals (k := 1) G G.endsOf
       (fun p => pencilPicturePoint q p.1 p.2)).toBodyHinge
     |>.screwDim_mul_compl_add_deficiency_le_finrank_infinitesimalMotions (n := 2) rfl hV
       fun e u v he _ => by
         rw [PanelHingeFramework.toBodyHinge_supportExtensor_ne_zero_iff]
-        exact linearIndependent_pencilPicturePoint_pair (hq.1 e _ _ (hends e u v he))
+        exact linearIndependent_pencilPicturePoint_pair (hq.1 e _ _ (hends.isLink he))
   rw [Graph.finrank_infinitesimalMotions_ofNormals_pencilPicturePoint hq hends,
     Graph.finrank_liftingPlanes hq] at hhub
   simp only [PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph,
@@ -551,7 +550,7 @@ families equal across every link and `F(q)`, as at each link the hinge condition
 (`mem_span_extensor_flat_iff`). -/
 theorem _root_.Graph.finrank_infinitesimalMotions_pointJoinFramework_flat [Finite α]
     {G : Graph α β} (hG : G.Connected) {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q)
-    {ends : β → α × α} (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2) :
+    {ends : β → α × α} (hends : Graph.RecordsLinks G ends) :
     Module.finrank K (pointJoinFramework G ends (pencilConfigPoint q 0)).infinitesimalMotions
       = 3 * (V(G)ᶜ.ncard + 1) + Module.finrank K (G.liftingPlanes q) := by
   set F := pointJoinFramework G ends (pencilConfigPoint q 0)
@@ -569,7 +568,7 @@ theorem _root_.Graph.finrank_infinitesimalMotions_pointJoinFramework_flat [Finit
           planarProj (pencilConfigPoint q 0 b)] := fun hab => by
       rw [planarProj_pencilConfigPoint, planarProj_pencilConfigPoint]
       exact linearIndependent_pencilPicturePoint_pair (hq.1 e _ _ hab)
-    rcases (hends e u v he).eq_and_eq_or_eq_and_eq he with ⟨h1, h2'⟩ | ⟨h1, h2'⟩
+    rcases hends.eq_or_swap he with ⟨h1, h2'⟩ | ⟨h1, h2'⟩
     · rw [h1, h2', mem_span_extensor_flat_iff (h2 u) (h2 v) (hli he),
         planarProj_pencilConfigPoint, planarProj_pencilConfigPoint, map_sub, map_sub, sub_eq_zero]
     · rw [h1, h2', mem_span_extensor_flat_iff (h2 v) (h2 u) (hli he.symm),
@@ -611,7 +610,7 @@ rank of the point-join framework (`ofNormals_toBodyHinge_eq_mapExtensor_pointJoi
 the `6|α|`-dimensional space of screw assignments. -/
 theorem _root_.Graph.finrank_span_rigidityRows_ofNormals_flat [Finite α] {G : Graph α β}
     (hG : G.Connected) {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) {ends : β → α × α}
-    (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2) :
+    (hends : Graph.RecordsLinks G ends) :
     (Module.finrank K (Submodule.span K
         (PanelHingeFramework.ofNormals (k := 2) G ends
           (fun p => pencilConfigPoint q 0 p.1 p.2)).toBodyHinge.rigidityRows) : ℤ)
@@ -634,7 +633,7 @@ exact flat rank (`Graph.finrank_span_rigidityRows_ofNormals_flat`) with `3 + def
 (`Graph.three_add_deficiency_le_finrank_liftingSpace`). -/
 theorem _root_.Graph.finrank_span_rigidityRows_ofNormals_flat_le [Finite α] [Finite β]
     {G : Graph α β} (hG : G.Connected) {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q)
-    {ends : β → α × α} (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2) :
+    {ends : β → α × α} (hends : Graph.RecordsLinks G ends) :
     (Module.finrank K (Submodule.span K
         (PanelHingeFramework.ofNormals (k := 2) G ends
           (fun p => pencilConfigPoint q 0 p.1 p.2)).toBodyHinge.rigidityRows) : ℤ)
@@ -649,7 +648,7 @@ theorem _root_.Graph.finrank_span_rigidityRows_ofNormals_flat_le [Finite α] [Fi
 (`Graph.finrank_span_rigidityRows_ofNormals_flat`). -/
 theorem _root_.Graph.finrank_span_rigidityRows_ofNormals_flat_eq_iff [Finite α] {G : Graph α β}
     (hG : G.Connected) {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q)
-    {ends : β → α × α} (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
+    {ends : β → α × α} (hends : Graph.RecordsLinks G ends)
     (n : ℕ) :
     (Module.finrank K (Submodule.span K
         (PanelHingeFramework.ofNormals (k := 2) G ends
@@ -685,8 +684,7 @@ theorem _root_.Graph.x0Attains_of_finrank_liftingSpace_le [Finite α] [Finite β
     (hL : (Module.finrank K (G.liftingSpace q) : ℤ) ≤ 3 + G.deficiency 3) : G.X0Attains K := by
   have hV := hG.nonempty
   have : Inhabited α := ⟨hV.some⟩
-  have hends : ∀ e u v, G.IsLink e u v → G.IsLink e (G.endsOf e).1 (G.endsOf e).2 :=
-    fun e _ _ he => G.isLink_endsOf he.edge_mem
+  have hends : Graph.RecordsLinks G G.endsOf := Graph.recordsLinks_endsOf G
   have hdef := hG.deficiency_three_le_deficiency_two
   have hmain : G.IsMainPicture q := by
     refine ⟨hq, fun q' hq' => ?_⟩

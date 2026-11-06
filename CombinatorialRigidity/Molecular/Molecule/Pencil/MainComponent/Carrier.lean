@@ -411,12 +411,12 @@ every link: the extensor is nonzero exactly when the two endpoint points are ind
 (`linearIndependent_pencilConfigPoint_pair`). -/
 theorem _root_.Graph.IsAdmissiblePicture.supportExtensor_ne_zero {G : Graph α β}
     {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) {ends : β → α × α}
-    (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2) (z : α → K)
+    (hends : Graph.RecordsLinks G ends) (z : α → K)
     {e : β} {u v : α} (he : G.IsLink e u v) :
     (PanelHingeFramework.ofNormals (k := 2) G ends
       (fun p => pencilConfigPoint q z p.1 p.2)).toBodyHinge.supportExtensor e ≠ 0 := by
   rw [PanelHingeFramework.toBodyHinge_supportExtensor_ne_zero_iff]
-  exact linearIndependent_pencilConfigPoint_pair z (hq.1 e _ _ (hends e u v he))
+  exact linearIndependent_pencilConfigPoint_pair z (hq.1 e _ _ (hends.isLink he))
 
 /-! ## Admissibility is Zariski-open -/
 
@@ -872,8 +872,7 @@ at `(q, ·)`. The rank never exceeds the target once every hinge is nonzero
 (`BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le`,
 `lem:relative-deficiency-rank-bound`). -/
 theorem _root_.Graph.x0Attains_of_exists [Finite α] [Finite β] {G : Graph α β}
-    (hV : V(G).Nonempty) (ends : β → α × α)
-    (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
+    (hV : V(G).Nonempty) (ends : β → α × α) (hends : Graph.RecordsLinks G ends)
     {q₀ : α × Fin 2 → K} (hq₀ : G.IsMainPicture q₀) {z₀ : α → K} (hz₀ : z₀ ∈ G.liftingSpace q₀)
     (hrank : screwDim 2 * ((V(G).ncard : ℤ) - 1) - G.deficiency 3 ≤
       (Module.finrank K (Submodule.span K
@@ -883,8 +882,7 @@ theorem _root_.Graph.x0Attains_of_exists [Finite α] [Finite β] {G : Graph α �
   have : Fintype α := Fintype.ofFinite α
   -- The rank polynomial, nonzero at `(q₀, z₀)`.
   obtain ⟨Q, hQ₀, hQ⟩ := PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking G ends
-    (Graph.recordsLinks_iff_forall_isLink.mpr hends)
-    (q₀ := fun p => pencilConfigPoint q₀ z₀ p.1 p.2)
+    hends (q₀ := fun p => pencilConfigPoint q₀ z₀ p.1 p.2)
     (fun e he => hq₀.1.supportExtensor_ne_zero hends z₀ he) (Int.toNat_le.mpr hrank)
   -- Admissibility near `q₀`.
   obtain ⟨Padm, hPadm₀, hPadm⟩ := hq₀.1.exists_mvPolynomial
@@ -903,7 +901,8 @@ theorem _root_.Graph.x0Attains_of_exists [Finite α] [Finite β] {G : Graph α �
     congr 2
     funext ⟨w, j⟩
     fin_cases j <;> simp [pencilConfigPoint]
-  refine ⟨ends, Padm * D * Qsec, hends, fun h0 => ?_, fun q hq => ?_⟩
+  refine ⟨ends, Padm * D * Qsec, Graph.recordsLinks_iff_forall_isLink.mp hends, fun h0 => ?_,
+    fun q hq => ?_⟩
   · -- `P(q₀) ≠ 0`: the section passes through `z₀`.
     have hZz₀ : (fun w => MvPolynomial.eval q₀ (Z (Sum.inl w))) = z₀ := by
       rw [← hx₀z]

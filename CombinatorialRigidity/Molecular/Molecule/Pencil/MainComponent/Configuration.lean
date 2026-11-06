@@ -288,7 +288,7 @@ whose picture points differ, so their configuration points are independent at ev
 nonzero (`extensor_stdBasis_pair_ne_zero`). -/
 theorem _root_.Graph.IsAdmissiblePicture.pencilConfigFramework_supportExtensor_ne_zero
     {G : Graph α β} {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) {ends : β → α × α}
-    (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2) (z : α → K) (e : β) :
+    (hends : Graph.RecordsLinks G ends) (z : α → K) (e : β) :
     (pencilConfigFramework G ends q z).supportExtensor e ≠ 0 := by
   intro h0
   have hval := congrArg ScrewSpace.val h0
@@ -297,7 +297,7 @@ theorem _root_.Graph.IsAdmissiblePicture.pencilConfigFramework_supportExtensor_n
       ScrewSpace.val_zero] at hval
     obtain ⟨x, y, hxy⟩ := Graph.exists_isLink_of_mem_edgeSet he
     exact (extensor_ne_zero_iff_linearIndependent _).mpr
-      (linearIndependent_pencilConfigPoint_pair z (hq.1 _ _ _ (hends e x y hxy))) hval
+      (linearIndependent_pencilConfigPoint_pair z (hq.1 _ _ _ (hends.isLink hxy))) hval
   · rw [pencilConfigFramework_supportExtensor_of_not_mem_edgeSet ends q z he, ScrewSpace.val_mk,
       ScrewSpace.val_zero] at hval
     exact extensor_stdBasis_pair_ne_zero hval
@@ -316,7 +316,7 @@ its panel; each point has last coordinate `1`; and the join at a link passes thr
 both its ends by construction. -/
 theorem _root_.Graph.IsAdmissiblePicture.hasPencilPanelRealization_pencilConfigFramework
     {G : Graph α β} {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) {ends : β → α × α}
-    (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
+    (hends : Graph.RecordsLinks G ends)
     {z : α → K} (hz : z ∈ G.liftingSpace q) {sel : α → Fin 3 → α}
     (hsel : ∀ v ∈ V(G), (∀ i, sel v i ∈ G.closedNbhd v) ∧
       LinearIndependent K (fun i => pencilPicturePoint q (sel v i))) :
@@ -336,7 +336,7 @@ theorem _root_.Graph.IsAdmissiblePicture.hasPencilPanelRealization_pencilConfigF
           (extensor_mem_exteriorPower _) := by
     intro e u v he
     rw [pencilConfigFramework_supportExtensor_of_mem_edgeSet ends q z he.edge_mem]
-    rcases (hends e u v he).eq_and_eq_or_eq_and_eq he with ⟨h1, h2⟩ | ⟨h1, h2⟩
+    rcases hends.eq_or_swap he with ⟨h1, h2⟩ | ⟨h1, h2⟩
     · left; rw [h1, h2]
     · right; rw [h1, h2]
   -- The join of the two ends of a link, in either order, lies in both panels and passes through
@@ -385,7 +385,7 @@ independent as adjacent picture points differ (`linearIndependent_pencilConfigPo
 rank of `ofNormals` (`finrank_span_rigidityRows_pencilConfigFramework`). -/
 theorem _root_.Graph.IsAdmissiblePicture.hasDistinctPencilRealization {G : Graph α β}
     {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) {ends : β → α × α}
-    (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
+    (hends : Graph.RecordsLinks G ends)
     {z : α → K} (hz : z ∈ G.liftingSpace q)
     (hrank : (Module.finrank K (Submodule.span K
         (PanelHingeFramework.ofNormals (k := 2) G ends
@@ -444,7 +444,8 @@ theorem _root_.Graph.X0Attains.hasDistinctPencilRealization [Infinite K] {G : Gr
   obtain ⟨ends, P, hends, hP, hgood⟩ := h
   obtain ⟨q, hq⟩ := MvPolynomial.exists_eval_ne_zero hP
   obtain ⟨hadm, R, ⟨z, hz, hRz⟩, hall⟩ := hgood q hq
-  exact hadm.hasDistinctPencilRealization hends hz (hall z hz hRz)
+  exact hadm.hasDistinctPencilRealization (Graph.recordsLinks_iff_forall_isLink.mpr hends) hz
+    (hall z hz hRz)
 
 /-! ## Collineations, and scaling and affine shifts of the heights, keep the rank -/
 
@@ -478,7 +479,7 @@ image of the other under an automorphism of the screw space
 globally affine height is the case of
 `Graph.finrank_span_rigidityRows_ofNormals_smul_add_affineLifts` below. -/
 theorem PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv {G : Graph α β}
-    {ends : β → α × α} (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
+    {ends : β → α × α} (hends : Graph.RecordsLinks G ends)
     (g : (Fin 4 → K) ≃ₗ[K] (Fin 4 → K)) {p p' : α → Fin 4 → K}
     (hp : ∀ w ∈ V(G), p' w = g (p w)) :
     Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 2) G ends
@@ -488,7 +489,7 @@ theorem PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv {G :
   have hspan : Submodule.span K (pointJoinFramework G ends p').rigidityRows
       = Submodule.span K (pointJoinFramework G ends (fun w => g (p w))).rigidityRows :=
     span_rigidityRows_eq_of_supportExtensor_agree _ _ rfl fun e u v he => by
-      have h0 := hends e u v he
+      have h0 := hends.isLink he
       simp only [pointJoinFramework, hp _ h0.left_mem, hp _ h0.right_mem]
   rw [ofNormals_toBodyHinge_eq_mapExtensor_pointJoinFramework G ends p',
     BodyHingeFramework.finrank_span_rigidityRows_mapExtensor, hspan,
@@ -505,7 +506,7 @@ With `a_w = h ⬝ᵥ (x_w, y_w, 1)` on `V(G)`, the invertible linear map
 `(q, t • z + a)` at every body `w` of `G`, and
 `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv` applies. -/
 theorem _root_.Graph.finrank_span_rigidityRows_ofNormals_smul_add_affineLifts {G : Graph α β}
-    {ends : β → α × α} (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
+    {ends : β → α × α} (hends : Graph.RecordsLinks G ends)
     (q : α × Fin 2 → K) (z : α → K) {t : K} (ht : t ≠ 0) {a : α → K}
     (ha : a ∈ G.affineLifts q) :
     Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 2) G ends

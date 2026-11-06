@@ -135,14 +135,13 @@ ends**, in either orientation (a step of `lem:pencil-rank-congr` and of
 `lem:pencil-splitoff-special-rank`): swapping the ends only negates the panel extensor, which does
 not change its span. -/
 theorem span_supportExtensor_ofNormals_eq {k : ℕ} {H : Graph α β} {ends : β → α × α}
-    (hends : ∀ f u w, H.IsLink f u w → H.IsLink f (ends f).1 (ends f).2)
+    (hends : Graph.RecordsLinks H ends)
     (n : α × Fin (k + 2) → K) {f : β} {u w : α} (hf : H.IsLink f u w) :
     Submodule.span K {(PanelHingeFramework.ofNormals H ends n).toBodyHinge.supportExtensor f} =
       Submodule.span K {panelSupportExtensor (fun i => n (u, i)) (fun i => n (w, i))} := by
-  have h := hends f u w hf
   simp only [PanelHingeFramework.toBodyHinge_supportExtensor,
     PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_ends]
-  rcases h.eq_and_eq_or_eq_and_eq hf with ⟨h1, h2⟩ | ⟨h1, h2⟩
+  rcases hends.eq_or_swap hf with ⟨h1, h2⟩ | ⟨h1, h2⟩
   · rw [h1, h2]
   · rw [h1, h2, panelSupportExtensor_swap, ← Set.neg_singleton, Submodule.span_neg]
 
@@ -152,8 +151,7 @@ row rank: the hinge at a link is built from the normals at its two ends and swap
 it, so the motion spaces agree, and equal motion spaces give equal row spans. -/
 theorem PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr {k : ℕ} [Finite α]
     (G : Graph α β) {ends ends' : β → α × α}
-    (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
-    (hends' : ∀ e u v, G.IsLink e u v → G.IsLink e (ends' e).1 (ends' e).2)
+    (hends : Graph.RecordsLinks G ends) (hends' : Graph.RecordsLinks G ends')
     {q q' : α × Fin (k + 2) → K} (hq : ∀ x ∈ V(G), ∀ i, q (x, i) = q' (x, i)) :
     Module.finrank K (Submodule.span K
         (PanelHingeFramework.ofNormals G ends q).toBodyHinge.rigidityRows)
@@ -370,9 +368,7 @@ theorem _root_.Graph.X0Attains.of_cutVertex [Infinite K] [Finite α] [Finite β]
   obtain ⟨Pm, hPm, hmain⟩ := G.exists_mvPolynomial_isMainPicture (K := K)
     hG.simple.toLoopless hG.three_le_ncard_closedNbhd
   set ends := G.endsOf with hendsdef
-  have hends : ∀ e u w, G.IsLink e u w → G.IsLink e (ends e).1 (ends e).2 :=
-    fun e _ _ he => G.isLink_endsOf he.edge_mem
-  have hendsG := Graph.recordsLinks_iff_forall_isLink.mpr hends
+  have hends : Graph.RecordsLinks G ends := Graph.recordsLinks_endsOf G
   obtain ⟨q, hq⟩ := MvPolynomial.exists_eval_ne_zero (mul_ne_zero (mul_ne_zero hP₁ hP₂) hPm)
   rw [map_mul, map_mul] at hq
   obtain ⟨-, R₁, ⟨z₁, hz₁, hR₁⟩, hatt₁⟩ := hgood₁ q (left_ne_zero_of_mul (left_ne_zero_of_mul hq))
@@ -403,8 +399,8 @@ theorem _root_.Graph.X0Attains.of_cutVertex [Infinite K] [Finite α] [Finite β]
         = Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 2) (G.induce X)
           ends (fun p => pencilConfigPoint q z p.1 p.2)).toBodyHinge.rigidityRows) := by
     intro X endsX hendsX
-    refine PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr _ hendsX
-      (Graph.recordsLinks_iff_forall_isLink.mp (hendsG.induce X)) ?_
+    refine PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr _
+      (Graph.recordsLinks_iff_forall_isLink.mpr hendsX) (hends.induce X) ?_
     intro x hx i
     exact pencilConfigPoint_liftingRestrict X q z hx i
   rw [Graph.vertexSet_induce G V₁] at hr₁
@@ -1083,9 +1079,7 @@ theorem _root_.Graph.X0Attains.of_bridgePath [Infinite K] [Finite α] [Finite β
   obtain ⟨Pm, hPm, hmain⟩ := G.exists_mvPolynomial_isMainPicture (K := K)
     hG.simple.toLoopless hG.three_le_ncard_closedNbhd
   set ends := G.endsOf with hendsdef
-  have hends : ∀ f u w, G.IsLink f u w → G.IsLink f (ends f).1 (ends f).2 :=
-    fun f _ _ hf => G.isLink_endsOf hf.edge_mem
-  have hendsG := Graph.recordsLinks_iff_forall_isLink.mpr hends
+  have hends : Graph.RecordsLinks G ends := Graph.recordsLinks_endsOf G
   obtain ⟨q, hq⟩ := MvPolynomial.exists_eval_ne_zero (mul_ne_zero (mul_ne_zero hP₁ hP₂) hPm)
   rw [map_mul, map_mul] at hq
   obtain ⟨-, R₁, ⟨z₁, hz₁, hR₁⟩, hatt₁⟩ := hgood₁ q (left_ne_zero_of_mul (left_ne_zero_of_mul hq))
@@ -1127,8 +1121,8 @@ theorem _root_.Graph.X0Attains.of_bridgePath [Infinite K] [Finite α] [Finite β
         = Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 2) (G.induce X)
           ends (fun p => pencilConfigPoint q z p.1 p.2)).toBodyHinge.rigidityRows) := by
     intro X endsX hendsX
-    refine PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr _ hendsX
-      (Graph.recordsLinks_iff_forall_isLink.mp (hendsG.induce X)) ?_
+    refine PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr _
+      (Graph.recordsLinks_iff_forall_isLink.mpr hendsX) (hends.induce X) ?_
     intro x hx i
     exact pencilConfigPoint_liftingRestrict X q z hx i
   rw [Graph.vertexSet_induce G V₁] at hr₁

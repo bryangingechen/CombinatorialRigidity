@@ -76,7 +76,7 @@ theorem card_le_finrank_of_linearIndependent_normalsJoin {α β : Type*} {G : Gr
   have hmem : panelSupportExtensor (p (u i)) (p (w i)) ∈ Submodule.span K
       {(PanelHingeFramework.ofNormals G ends (fun x => p x.1 x.2)).toBodyHinge.supportExtensor
         (g i)} := by
-    rw [span_supportExtensor_ofNormals_eq hends _ (hg i)]
+    rw [span_supportExtensor_ofNormals_eq (Graph.recordsLinks_iff_forall_isLink.mpr hends) _ (hg i)]
     exact Submodule.mem_span_singleton_self _
   exact (Submodule.span_le.mpr (by rintro _ rfl; exact hT i)) hmem
 

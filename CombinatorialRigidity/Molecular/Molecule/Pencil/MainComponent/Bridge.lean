@@ -146,8 +146,7 @@ polynomial at `t = 0` (`PanelHingeFramework.exists_rankPolynomial_of_le_finrank_
 (`MvPolynomial.polynomial_eval_aeval`), nonzero at `t = 0`, so its finitely many roots are the only
 `t` where the rank can drop. -/
 theorem PanelHingeFramework.finite_setOf_finrank_lt_of_curve [Finite α] [Finite β]
-    (G : Graph α β) (ends : β → α × α)
-    (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
+    (G : Graph α β) (ends : β → α × α) (hends : Graph.RecordsLinks G ends)
     (c : α × Fin (k + 2) → Polynomial K)
     (hne : ∀ e, G.IsLink e (ends e).1 (ends e).2 →
       (PanelHingeFramework.ofNormals G ends (fun p => (c p).eval 0)).toBodyHinge.supportExtensor e
@@ -158,8 +157,7 @@ theorem PanelHingeFramework.finite_setOf_finrank_lt_of_curve [Finite α] [Finite
       (PanelHingeFramework.ofNormals G ends (fun p => (c p).eval t)).toBodyHinge.rigidityRows)
         < N}.Finite := by
   obtain ⟨Q, hQ₀, hQ⟩ :=
-    PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking G ends
-    (Graph.recordsLinks_iff_forall_isLink.mpr hends) hne hN
+    PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking G ends hends hne hN
   set P : Polynomial K := MvPolynomial.aeval c Q with hP
   have hPt : ∀ t, P.eval t = MvPolynomial.eval (fun p => (c p).eval t) Q :=
     fun t => MvPolynomial.polynomial_eval_aeval c Q t
@@ -203,14 +201,13 @@ theorem _root_.Graph.exists_mvPolynomial_le_finrank_span_rigidityRows_pencilPict
   obtain ⟨Q₀, hQ₀g, -, hQ₀C, hQ₀rank⟩ :=
     PanelHingeFramework.finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen_of_supply
       (K := K) (k := 1) (n := 2) le_rfl rfl hfresh G hV hSimple
-  have hQ₀ends : ∀ e u v, G.IsLink e u v → G.IsLink e (Q₀.ends e).1 (Q₀.ends e).2 :=
-    hQ₀g ▸ Graph.recordsLinks_iff_forall_isLink.mp Q₀.isLink_ends
+  have hQ₀ends : Graph.RecordsLinks G Q₀.ends := PanelHingeFramework.recordsLinks_of_graph_eq hQ₀g
   have hself : PanelHingeFramework.ofNormals (k := 1) G Q₀.ends (fun p => Q₀.normal p.1 p.2)
       = Q₀ := PanelHingeFramework.ofNormals_eq_self_of_graph_eq Q₀ hQ₀g
   set N := Module.finrank K (Submodule.span K Q₀.toBodyHinge.rigidityRows) with hN
   -- Its rank polynomial, the general-position polynomial, and the chart polynomial.
   obtain ⟨Rk, hRk₀, hRk⟩ := PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking G
-    Q₀.ends (Graph.recordsLinks_iff_forall_isLink.mpr hQ₀ends) (q₀ := fun p => Q₀.normal p.1 p.2)
+    Q₀.ends hQ₀ends (q₀ := fun p => Q₀.normal p.1 p.2)
     (fun e _ => by rw [hself]; exact hQ₀C e)
     (N := N) (le_of_eq (by rw [hself]))
   obtain ⟨Pgp, hPgp_seed, hPgp⟩ :=
@@ -260,8 +257,7 @@ theorem _root_.Graph.exists_mvPolynomial_le_finrank_span_rigidityRows_pencilPict
     exact PanelHingeFramework.supportExtensor_ne_zero_of_isGeneralPosition _ hgp he.ne
   -- The rank polynomial at the chart point, pulled back along the chart.
   obtain ⟨Rk₂, hRk₂₀, hRk₂⟩ := PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking G
-    Q₀.ends (Graph.recordsLinks_iff_forall_isLink.mpr hQ₀ends)
-    (q₀ := fun p => pencilPicturePoint q' p.1 p.2) hC' (N := N)
+    Q₀.ends hQ₀ends (q₀ := fun p => pencilPicturePoint q' p.1 p.2) hC' (N := N)
     (by rw [hrow]; exact hRk n₀ hn₀Rk)
   set T : MvPolynomial (α × Fin 2) K :=
     MvPolynomial.bind₁ (fun p : α × Fin 3 => pencilPicturePointPoly p.1 p.2) Rk₂ with hTdef
@@ -272,7 +268,8 @@ theorem _root_.Graph.exists_mvPolynomial_le_finrank_span_rigidityRows_pencilPict
     congr 2
     funext ⟨a, i⟩
     exact eval_pencilPicturePointPoly q a i
-  refine ⟨Q₀.ends, T, hQ₀ends, fun h => hRk₂₀ (by rw [← hT, h, map_zero]), fun q hq => ?_⟩
+  refine ⟨Q₀.ends, T, Graph.recordsLinks_iff_forall_isLink.mp hQ₀ends,
+    fun h => hRk₂₀ (by rw [← hT, h, map_zero]), fun q hq => ?_⟩
   have hle := hRk₂ _ (by rwa [hT] at hq)
   rw [← hQ₀rank]
   exact_mod_cast hle
@@ -380,7 +377,8 @@ theorem _root_.Graph.exists_mvPolynomial_finrank_liftingSpace_eq [Infinite K] [F
   have hmain := hPmain q (left_ne_zero_of_mul hq)
   have hmain' : G'.IsMainPicture q := Graph.isMainPicture_embedEdges_iff.mpr hmain
   have hrk := hPrk q (right_ne_zero_of_mul hq)
-  rw [Graph.finrank_span_rigidityRows_ofNormals_pencilPicturePoint hmain'.1 hends,
+  rw [Graph.finrank_span_rigidityRows_ofNormals_pencilPicturePoint hmain'.1
+      (Graph.recordsLinks_iff_forall_isLink.mpr hends),
     screwDim_one, Graph.liftingSpace_embedEdges, Graph.deficiency_embedEdges,
     Graph.vertexSet_embedEdges] at hrk
   have hlow := Graph.three_add_deficiency_le_finrank_liftingSpace hmain.1 hV

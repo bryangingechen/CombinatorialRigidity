@@ -372,7 +372,8 @@ theorem _root_.Graph.exists_earBase_splitOff_grade [Infinite K] [Finite α] {G :
     intro s
     rw [BodyHingeFramework.finrank_span_rigidityRows_congr (G.induce V₁) (hCG s)]
     have := PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr (k := m + 1)
-      (G.induce V₁) hendsI hends₁ (q := cfg sstar)
+      (G.induce V₁) (hendsG.induce V₁) (Graph.recordsLinks_iff_forall_isLink.mpr hends₁)
+      (q := cfg sstar)
       (q' := fun p => pencilConfigPointGrade q' z₁ p.1 p.2)
       (fun w hw j => hcV₁ sstar w hw j)
     change (Module.finrank K ↥(Submodule.span K (PanelHingeFramework.ofNormals (k := m + 1)
@@ -391,7 +392,8 @@ theorem _root_.Graph.exists_earBase_splitOff_grade [Infinite K] [Finite α] {G :
     fun s => ?_, hrk₁, fun s => ?_, hzs, hzsR, fun t ht i => ?_, fun i p hp => hla i p hp,
     fun i p hp => hlb i p hp⟩
   · rw [← hcfgdef, hcfgstar, PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr
-      (k := m + 1) H hends'' hends₂ (fun _ _ _ => rfl)]
+      (k := m + 1) H (hendsG.update_splitOff hl₀) (Graph.recordsLinks_iff_forall_isLink.mpr hends₂)
+      (fun _ _ _ => rfl)]
     exact hr₂
   · rw [← hcfgdef, hcfgstar]
     exact fun f hf => hadm₂.supportExtensor_ne_zero_grade hends'' zs hf
@@ -445,13 +447,15 @@ theorem span_supportExtensor_comp_eq_map_normalsJoin {k : ℕ} {H : Graph α β}
         Submodule.span K (Set.range ((complementScrew K k).toLinearMap ∘
           fun i => normalsJoin (fun j => c (u i, j)) (fun j => c (w i, j)))) :=
       Submodule.subset_span ⟨i, rfl⟩
-    have h := span_supportExtensor_ofNormals_eq hends c (hg i)
+    have h := span_supportExtensor_ofNormals_eq (Graph.recordsLinks_iff_forall_isLink.mpr hends) c
+      (hg i)
     have h1 := Submodule.mem_span_singleton_self (R := K)
       ((PanelHingeFramework.ofNormals (k := k) H ends c).toBodyHinge.supportExtensor (g i))
     rw [h] at h1
     exact (Submodule.span_le.mpr (Set.singleton_subset_iff.mpr hbase)) h1
   · rintro _ ⟨i, rfl⟩
-    have h := span_supportExtensor_ofNormals_eq hends c (hg i)
+    have h := span_supportExtensor_ofNormals_eq (Graph.recordsLinks_iff_forall_isLink.mpr hends) c
+      (hg i)
     have h1 := Submodule.mem_span_singleton_self (R := K)
       (panelSupportExtensor (fun j => c (u i, j)) (fun j => c (w i, j)))
     rw [← h] at h1
@@ -534,8 +538,8 @@ theorem map_relScrews_ofNormals_eq_joinRelScrews {k : ℕ} {G H : Graph α β} {
           {(PanelHingeFramework.ofNormals (k := k) G ends c).toBodyHinge.supportExtensor f} =
         (K ∙ normalsJoin (fun j => c (u, j)) (fun j => c (w, j))).map ι.toLinearMap := by
     intro f u w hf
-    rw [span_supportExtensor_ofNormals_eq hends c (hHG f u w hf), Submodule.map_span,
-      Set.image_singleton]
+    rw [span_supportExtensor_ofNormals_eq (Graph.recordsLinks_iff_forall_isLink.mpr hends) c
+      (hHG f u w hf), Submodule.map_span, Set.image_singleton]
     rfl
   ext x
   constructor
