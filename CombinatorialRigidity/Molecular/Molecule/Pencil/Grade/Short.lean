@@ -39,6 +39,9 @@ bodies (which uses the variant `_of_base`).
 * `starsCond_of_smul` and `span_joins_succAbove_two`: the stars condition is scale invariant, and
   the joins of the ear of `G` are those of the ear of `G″` but one, with the two at the body put
   back, from three interior bodies on (the step at three uses them too).
+* `exists_insertion_earDataGrade`: putting the suppressed body back at the ear data
+  (`lem:pencil-d-insertion`), for an ear of `G″` with `n + 2` interior bodies; the steps at three
+  and at four or more interior bodies both call it.
 * `Graph.X0AttainsGrade.of_openEar_four` (`thm:pencil-d-open-ear-four`): the factoring, its `hins`
   discharged by `lem:pencil-d-stars-four`, `lem:pencil-d-ear-data` (3) and `lem:pencil-d-insertion`.
 
@@ -963,6 +966,127 @@ theorem span_joins_succAbove_two {k n : ℕ} (P : Fin (n + 5) → Fin (k + 2) �
       · exact Submodule.subset_span ⟨1, rfl⟩
       · exact Submodule.subset_span ⟨2, rfl⟩
 
+/-- **Putting the suppressed body back** (a step of `thm:pencil-d-open-ear-four` and
+`thm:pencil-d-open-ear-three`, by `lem:pencil-d-insertion`). Let `a − x 0 − ⋯ − x (n + 2) − b` be
+an ear of `G` with `n + 3` interior bodies, and `a − x 0 − x 2 − ⋯ − x (n + 2) − b` the ear of
+`G″`, without `x 1`. At ear data `s` where the third condition holds at the points `Y` of the
+interior bodies of `G″` (the span `W` of `ρ` and the joins of the ear of `G″` is everything
+whenever it holds both stars of `Y 0`, `Y 1`), some `x₂` with last coordinate `1` raises the span
+by one: with `x 1` at `x₂` and the other bodies at their ear points, `ρ` and the joins of the ear
+of `G` span at least `min (dim W + 1, D)`. The proof is `exists_insertion_of_starGrade_sup` at
+`R = ρ +` the joins of `G″` but `Y 0 ∨ Y 1`, and `span_joins_succAbove_two`. -/
+theorem exists_insertion_earDataGrade [Infinite K] {V₁ : Set α} {q₁ : α × Fin 2 → K}
+    {z₁ : α × Fin m → K} {xf xl : α} {la lb : Fin m → Fin 3 → K} {n : ℕ} {x : Fin (n + 3) → α}
+    {a b : α} (hinj : Function.Injective x) (hxV₁ : ∀ i, x i ∉ V₁) (ha : a ∈ V₁) (hb : b ∈ V₁)
+    (ρ : Submodule K (⋀[K]^2 (Fin (m + 1 + 2) → K))) {pa pb : Fin (m + 1 + 2) → K}
+    (hpa : pencilConfigPointGrade q₁ z₁ a = pa) (hpb : pencilConfigPointGrade q₁ z₁ b = pb)
+    (s : (α × Fin 2) ⊕ (α × Fin m) → K)
+    (hC : ∀ Y : Fin (n + 2) → Fin (m + 1 + 2) → K, (∀ i j, Y i j = earConfigGrade V₁ q₁ z₁ xf xl
+          (Set.range x) la lb s ((x ∘ Fin.succAbove 1) i, j)) →
+        starGrade (Y 0) ⊔ starGrade (Y 1) ≤ ρ ⊔ Submodule.span K
+          (Set.range fun i : Fin (n + 3) =>
+            normalsJoin (pathVertex pa Y pb i.castSucc) (pathVertex pa Y pb i.succ)) →
+          ρ ⊔ Submodule.span K (Set.range fun i : Fin (n + 3) =>
+            normalsJoin (pathVertex pa Y pb i.castSucc) (pathVertex pa Y pb i.succ)) = ⊤) :
+    ∃ x₂ : Fin (m + 1 + 2) → K, x₂ (Fin.last (m + 2)) = 1 ∧
+      ∀ p : α → Fin (m + 1 + 2) → K, p (x 1) = x₂ →
+      (∀ t, t ≠ x 1 →
+        p t = fun j => earConfigGrade V₁ q₁ z₁ xf xl (Set.range x) la lb s (t, j)) →
+      min (Module.finrank K ↥(ρ ⊔ Submodule.span K (Set.range fun i : Fin (n + 3) =>
+        normalsJoin (fun j => earConfigGrade V₁ q₁ z₁ xf xl (Set.range x) la lb s
+            (pathVertex a (x ∘ Fin.succAbove 1) b i.castSucc, j))
+          (fun j => earConfigGrade V₁ q₁ z₁ xf xl (Set.range x) la lb s
+            (pathVertex a (x ∘ Fin.succAbove 1) b i.succ, j)))) + 1) (screwDim (m + 1)) ≤
+      Module.finrank K ↥(ρ ⊔ Submodule.span K (Set.range fun i : Fin (n + 4) =>
+        normalsJoin (p (pathVertex a x b i.castSucc)) (p (pathVertex a x b i.succ)))) := by
+  classical
+  set cfg : α → Fin (m + 1 + 2) → K := fun w c => earConfigGrade V₁ q₁ z₁ xf xl
+    (Set.range x) la lb s (w, c) with hcfg
+  set Y : Fin (n + 2) → Fin (m + 1 + 2) → K := fun i => cfg ((x ∘ Fin.succAbove 1) i) with hY
+  have hcfa : cfg a = pa := (funext fun c => earConfigGrade_of_mem (V₁ := V₁) (q₁ := q₁)
+    (z₁ := z₁) (xf := xf) (xl := xl) (X := Set.range x) (la := la) (lb := lb) s ha c).trans hpa
+  have hcfb : cfg b = pb := (funext fun c => earConfigGrade_of_mem (V₁ := V₁) (q₁ := q₁)
+    (z₁ := z₁) (xf := xf) (xl := xl) (X := Set.range x) (la := la) (lb := lb) s hb c).trans hpb
+  have hQY : ∀ j, cfg (pathVertex a (x ∘ Fin.succAbove 1) b j) = pathVertex pa Y pb j := by
+    intro j
+    rw [pathVertex_map cfg a b (x ∘ Fin.succAbove 1) j, hcfa, hcfb]
+    rfl
+  have hy1 : ∀ i, Y i (Fin.last (m + 2)) = 1 := fun i => by
+    simp [hY, hcfg, earConfigGrade]
+  set pv : Fin (n + 4) → Fin (m + 1 + 2) → K := pathVertex pa Y pb with hpv
+  set R : Submodule K (⋀[K]^2 (Fin (m + 1 + 2) → K)) := ρ ⊔ Submodule.span K
+    (Set.range fun j : Fin (n + 3) =>
+      if j = 1 then 0 else normalsJoin (pv j.castSucc) (pv j.succ)) with hR
+  have hJ1 : normalsJoin (pv (Fin.castSucc 1)) (pv (Fin.succ 1)) = normalsJoin (Y 0) (Y 1) := by
+    rw [Fin.castSucc_one, Fin.succ_one_eq_two, hpv,
+      pathVertex_eq_of_val_eq pa pb Y (i := 0) (by simp),
+      pathVertex_eq_of_val_eq pa pb Y (i := 1) (by simp)]
+  have hRe : R ⊔ K ∙ normalsJoin (Y 0) (Y 1) = ρ ⊔ Submodule.span K
+      (Set.range fun i : Fin (n + 3) => normalsJoin (pv i.castSucc) (pv i.succ)) := by
+    rw [hR, sup_assoc]
+    congr 1
+    refine le_antisymm (sup_le (Submodule.span_le.mpr ?_)
+      (Submodule.span_singleton_le_iff_mem _ _ |>.mpr ?_)) (Submodule.span_le.mpr ?_)
+    · rintro _ ⟨j, rfl⟩
+      beta_reduce
+      by_cases hj : j = 1
+      · simp only [hj, ↓reduceIte]; exact Submodule.zero_mem _
+      · simp only [hj, ↓reduceIte]; exact Submodule.subset_span ⟨j, rfl⟩
+    · exact Submodule.subset_span ⟨1, hJ1⟩
+    · rintro _ ⟨j, rfl⟩
+      by_cases hj : j = 1
+      · subst hj
+        exact Submodule.mem_sup_right (by
+          change normalsJoin (pv (Fin.castSucc 1)) (pv (Fin.succ 1)) ∈ _
+          rw [hJ1]; exact Submodule.mem_span_singleton_self _)
+      · exact Submodule.mem_sup_left (Submodule.subset_span ⟨j, by simp [hj]⟩)
+  obtain ⟨x₂, hx₂, hmin⟩ := exists_insertion_of_starGrade_sup R (Y 0) (Y 1) (hy1 0) (hy1 1)
+    (by rw [hRe]; exact hC Y fun i j => rfl)
+  refine ⟨x₂, hx₂, fun p hpvx hpt => ?_⟩
+  have hP : ∀ j, p (pathVertex a x b (Fin.succAbove 2 j)) = pv j := fun j => by
+    rw [← pathVertex_comp_succAbove_one, ← hQY j]
+    refine hpt _ ?_
+    rcases pathVertex_cases a (x ∘ Fin.succAbove 1) b j with ⟨_, h'⟩ | ⟨i, _, h'⟩ | ⟨_, h'⟩
+    · rw [h']; exact fun h => hxV₁ 1 (h ▸ ha)
+    · rw [h']; exact fun h => Fin.succAbove_ne 1 i (hinj h)
+    · rw [h']; exact fun h => hxV₁ 1 (h ▸ hb)
+  have hP1 : p (pathVertex a x b 1) = Y 0 := by
+    have h1 : (Fin.succAbove 2 (1 : Fin (n + 4)) : Fin (n + 5)) = 1 :=
+      Fin.ext (by rw [coe_succAbove_two]; simp)
+    have := hP 1
+    rw [h1] at this
+    rw [this, hpv, pathVertex_eq_of_val_eq pa pb Y (i := 0) (by simp)]
+  have hP3 : p (pathVertex a x b 3) = Y 1 := by
+    have h1 : (Fin.succAbove 2 (2 : Fin (n + 4)) : Fin (n + 5)) = 3 :=
+      Fin.ext (by
+        rw [coe_succAbove_two, Fin.val_two, Fin.coe_ofNat_eq_mod,
+          Nat.mod_eq_of_lt (show 3 < n + 4 + 1 by omega)]
+        simp)
+    have := hP 2
+    rw [h1] at this
+    rw [this, hpv, pathVertex_eq_of_val_eq pa pb Y (i := 1) (by simp)]
+  have hP2 : p (pathVertex a x b 2) = x₂ := by
+    rw [pathVertex_eq_of_val_eq a b x (i := 1) (by simp)]; exact hpvx
+  have hspan := span_joins_succAbove_two (fun i => p (pathVertex a x b i)) pv hP
+  beta_reduce at hspan
+  rw [hP1, hP2, hP3] at hspan
+  have hfinal : R ⊔ Submodule.span K {normalsJoin (Y 0) x₂, normalsJoin x₂ (Y 1)} =
+      ρ ⊔ Submodule.span K (Set.range fun i : Fin (n + 4) =>
+        normalsJoin (p (pathVertex a x b i.castSucc)) (p (pathVertex a x b i.succ))) := by
+    rw [hspan, hR, sup_assoc]
+  have hgoalL : (Set.range fun i : Fin (n + 3) =>
+      normalsJoin (fun j => cfg (pathVertex a (x ∘ Fin.succAbove 1) b i.castSucc) j)
+        (fun j => cfg (pathVertex a (x ∘ Fin.succAbove 1) b i.succ) j)) =
+      Set.range fun i : Fin (n + 3) => normalsJoin (pv i.castSucc) (pv i.succ) := by
+    congr 1; funext i; rw [hQY, hQY]
+  have hL : Module.finrank K ↥(ρ ⊔ Submodule.span K (Set.range fun i : Fin (n + 3) =>
+      normalsJoin (fun j => cfg (pathVertex a (x ∘ Fin.succAbove 1) b i.castSucc) j)
+        (fun j => cfg (pathVertex a (x ∘ Fin.succAbove 1) b i.succ) j))) =
+      Module.finrank K ↥(R ⊔ K ∙ normalsJoin (Y 0) (Y 1)) := by
+    rw [hRe, hgoalL]
+  refine le_of_eq_of_le ?_ (hmin.trans_eq (by rw [hfinal]))
+  exact congrArg (fun r => min (r + 1) (screwDim (m + 1))) hL
+
 /-! ## The open ear with four or more interior bodies (`thm:pencil-d-open-ear-four`) -/
 
 
@@ -973,7 +1097,7 @@ configurations of `G[V₁]` and `G″` attain with `m` heights, so does that of 
 `Graph.X0AttainsGrade.of_openEar_splitOff` at `G″` (`splitOff_ear_succAbove`), its `hins`
 discharged by `exists_mvPolynomial_starsFour`, moved to the ear data by
 `exists_mvPolynomial_earDataGrade_of_smul` (`starsCond_of_smul`), and
-`exists_insertion_of_starGrade_sup` (`span_joins_succAbove_two`). -/
+`exists_insertion_earDataGrade`. -/
 theorem _root_.Graph.X0AttainsGrade.of_openEar_four [Infinite K] [Finite α] [Finite β]
     {G : Graph α β} (hG : G.IsX0Graph) {V₁ : Set α} {n : ℕ} {x : Fin (n + 4) → α} {a b : α}
     {e : Fin (n + 5) → β} (hcover : V(G) = V₁ ∪ Set.range x) (hinj : Function.Injective x)
@@ -1052,98 +1176,9 @@ theorem _root_.Graph.X0AttainsGrade.of_openEar_four [Infinite K] [Finite α] [Fi
         obtain ⟨Y, hY0, hYl, hYf⟩ := hf₀
         exact ⟨Y, fun i hi => hv0 i hi ▸ hY0, fun i hi => hvl i hi ▸ hYl, hYf⟩)
       (fun Y hYa hYb hYf => (hf Y (hYa 0 rfl) (hYb _ rfl) hYf).2)
-    refine ⟨g, fun h => hs₀ (by simp [h]), fun s hs hadm => ?_⟩
-    have hC := hg s hs
-    set cfg : α → Fin (m + 1 + 2) → K := fun w c => earConfigGrade V₁ q z (x 0)
-      (x (Fin.last _)) (Set.range x) la lb s (w, c) with hcfg
-    set Y : Fin (n + 3) → Fin (m + 1 + 2) → K := fun i => cfg ((x ∘ Fin.succAbove 1) i) with hY
-    have hcfa : cfg a = pa := funext fun c => earConfigGrade_of_mem (V₁ := V₁) (q₁ := q) (z₁ := z)
-      (xf := x 0) (xl := x (Fin.last _)) (X := Set.range x) (la := la) (lb := lb) s ha c
-    have hcfb : cfg b = pb := funext fun c => earConfigGrade_of_mem (V₁ := V₁) (q₁ := q) (z₁ := z)
-      (xf := x 0) (xl := x (Fin.last _)) (X := Set.range x) (la := la) (lb := lb) s hb c
-    have hQY : ∀ j, cfg (pathVertex a (x ∘ Fin.succAbove 1) b j) = pathVertex pa Y pb j := by
-      intro j
-      have := pathVertex_map cfg a b (x ∘ Fin.succAbove 1) j
-      rw [this, hcfa, hcfb]
-      rfl
-    have hQ1 : cfg (pathVertex a (x ∘ Fin.succAbove 1) b 1) = Y 0 := by
-      rw [hQY]; exact pathVertex_eq_of_val_eq pa pb Y (i := 0) (by simp)
-    have hQ2 : cfg (pathVertex a (x ∘ Fin.succAbove 1) b 2) = Y 1 := by
-      rw [hQY]; exact pathVertex_eq_of_val_eq pa pb Y (i := 1) (by simp)
-    have hy1 : ∀ i, Y i (Fin.last (m + 2)) = 1 := fun i => by
-      simp [hY, hcfg, earConfigGrade]
-    set pv : Fin (n + 5) → Fin (m + 1 + 2) → K := pathVertex pa Y pb with hpv
-    set R : Submodule K (⋀[K]^2 (Fin (m + 1 + 2) → K)) := ρ ⊔ Submodule.span K
-      (Set.range fun j : Fin (n + 4) =>
-        if j = 1 then 0 else normalsJoin (pv j.castSucc) (pv j.succ)) with hR
-    have hJ1 : normalsJoin (pv (Fin.castSucc 1)) (pv (Fin.succ 1)) = normalsJoin (Y 0) (Y 1) := by
-      rw [Fin.castSucc_one, Fin.succ_one_eq_two, hpv,
-        pathVertex_eq_of_val_eq pa pb Y (i := 0) (by simp),
-        pathVertex_eq_of_val_eq pa pb Y (i := 1) (by simp)]
-    have hRe : R ⊔ K ∙ normalsJoin (Y 0) (Y 1) = ρ ⊔ Submodule.span K
-        (Set.range fun i : Fin (n + 4) => normalsJoin (pv i.castSucc) (pv i.succ)) := by
-      rw [hR, sup_assoc]
-      congr 1
-      refine le_antisymm (sup_le (Submodule.span_le.mpr ?_)
-        (Submodule.span_singleton_le_iff_mem _ _ |>.mpr ?_)) (Submodule.span_le.mpr ?_)
-      · rintro _ ⟨j, rfl⟩
-        beta_reduce
-        by_cases hj : j = 1
-        · simp only [hj, ↓reduceIte]; exact Submodule.zero_mem _
-        · simp only [hj, ↓reduceIte]; exact Submodule.subset_span ⟨j, rfl⟩
-      · exact Submodule.subset_span ⟨1, hJ1⟩
-      · rintro _ ⟨j, rfl⟩
-        by_cases hj : j = 1
-        · subst hj
-          exact Submodule.mem_sup_right (by
-            change normalsJoin (pv (Fin.castSucc 1)) (pv (Fin.succ 1)) ∈ _
-            rw [hJ1]; exact Submodule.mem_span_singleton_self _)
-        · exact Submodule.mem_sup_left (Submodule.subset_span ⟨j, by simp [hj]⟩)
-    obtain ⟨x₂, hx₂, hmin⟩ := exists_insertion_of_starGrade_sup R (Y 0) (Y 1) (hy1 0) (hy1 1)
-      (by rw [hRe]; exact hC)
-    refine ⟨x₂, hx₂, fun p hpvx hpt => ?_⟩
-    have hP : ∀ j, p (pathVertex a x b (Fin.succAbove 2 j)) = pv j := fun j => by
-      rw [← pathVertex_comp_succAbove_one, ← hQY j]
-      refine hpt _ ?_
-      rcases pathVertex_cases a (x ∘ Fin.succAbove 1) b j with ⟨_, h'⟩ | ⟨i, _, h'⟩ | ⟨_, h'⟩
-      · rw [h']; exact fun h => hxV₁ 1 (h ▸ ha)
-      · rw [h']; exact fun h => Fin.succAbove_ne 1 i (hinj h)
-      · rw [h']; exact fun h => hxV₁ 1 (h ▸ hb)
-    have hP1 : p (pathVertex a x b 1) = Y 0 := by
-      have h1 : (Fin.succAbove 2 (1 : Fin (n + 5)) : Fin (n + 6)) = 1 :=
-        Fin.ext (by rw [coe_succAbove_two]; simp)
-      have := hP 1
-      rw [h1] at this
-      rw [this, hpv, pathVertex_eq_of_val_eq pa pb Y (i := 0) (by simp)]
-    have hP3 : p (pathVertex a x b 3) = Y 1 := by
-      have h1 : (Fin.succAbove 2 (2 : Fin (n + 5)) : Fin (n + 6)) = 3 :=
-        Fin.ext (by
-          rw [coe_succAbove_two, Fin.val_two, Fin.coe_ofNat_eq_mod,
-            Nat.mod_eq_of_lt (show 3 < n + 5 + 1 by omega)]
-          simp)
-      have := hP 2
-      rw [h1] at this
-      rw [this, hpv, pathVertex_eq_of_val_eq pa pb Y (i := 1) (by simp)]
-    have hP2 : p (pathVertex a x b 2) = x₂ := by
-      rw [pathVertex_eq_of_val_eq a b x (i := 1) (by simp)]; exact hpvx
-    have hspan := span_joins_succAbove_two (fun i => p (pathVertex a x b i)) pv hP
-    beta_reduce at hspan
-    rw [hP1, hP2, hP3] at hspan
-    have hfinal : R ⊔ Submodule.span K {normalsJoin (Y 0) x₂, normalsJoin x₂ (Y 1)} =
-        ρ ⊔ Submodule.span K (Set.range fun i : Fin (n + 5) =>
-          normalsJoin (p (pathVertex a x b i.castSucc)) (p (pathVertex a x b i.succ))) := by
-      rw [hspan, hR, sup_assoc]
-    have hgoalL : (Set.range fun i : Fin (n + 4) =>
-        normalsJoin (fun j => cfg (pathVertex a (x ∘ Fin.succAbove 1) b i.castSucc) j)
-          (fun j => cfg (pathVertex a (x ∘ Fin.succAbove 1) b i.succ) j)) =
-        Set.range fun i : Fin (n + 4) => normalsJoin (pv i.castSucc) (pv i.succ) := by
-      congr 1; funext i; rw [hQY, hQY]
-    have hL : Module.finrank K ↥(ρ ⊔ Submodule.span K (Set.range fun i : Fin (n + 4) =>
-        normalsJoin (fun j => cfg (pathVertex a (x ∘ Fin.succAbove 1) b i.castSucc) j)
-          (fun j => cfg (pathVertex a (x ∘ Fin.succAbove 1) b i.succ) j))) =
-        Module.finrank K ↥(R ⊔ K ∙ normalsJoin (Y 0) (Y 1)) := by
-      rw [hRe, hgoalL]
-    refine le_of_eq_of_le ?_ (hmin.trans_eq (by rw [hfinal]))
-    exact congrArg (fun r => min (r + 1) (screwDim (m + 1))) hL
+    refine ⟨g, fun h => hs₀ (by simp [h]), fun s hs _ => exists_insertion_earDataGrade hinj hxV₁
+      ha hb ρ rfl rfl s fun Y hY => ?_⟩
+    obtain rfl : Y = _ := funext fun i => funext (hY i)
+    exact hg s hs
 
 end CombinatorialRigidity.Molecular

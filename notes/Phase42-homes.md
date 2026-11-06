@@ -6,14 +6,14 @@ CLEANUP-42 and ahead of ORIGAMI, in two parts: the friction log's docs and tooli
 2–4), then the lemmas Phase 42 left outside their home files, one task per home file, with the
 mirror lemmas that now meet their entries' own bar (tasks 5–18). No statement changes. Phase 42
 deferred the moves because a declaration added to these files rebuilds most of `Molecular/`
-mid-phase; ORIGAMI will not edit them, so they are cheapest now. Tasks 1–16 landed
+mid-phase; ORIGAMI will not edit them, so they are cheapest now. Tasks 1–17 landed
 (the docs part, the tree-wide basics, `Deficiency.lean`, the linear-independence mirrors and their
 sweep, `Meet.lean`, `RigidityMatrix/Basic.lean` with `GenericityDevice.lean`, `PanelLayer.lean`,
 `Realization.lean`, `Carrier.lean` with `Configuration.lean`, `Fin.val_succAbove` with
-`MainComponent/Cut.lean`, the glued-ends helpers, the additive kernel lemma):
-62 actionable entries down to 21 (heading tags, by `grep -c '^### \[<tag>\]'`: open 10,
-mirror-candidate 9, process 2, blueprint 0; the header said 25, but at task 13 the grep gave 24).
-**Next concrete task:** task 17, the ear insertion, once (*Lemma checklist*).
+`MainComponent/Cut.lean`, the glued-ends helpers, the additive kernel lemma, the ear insertion):
+62 actionable entries down to 20 (heading tags, by `grep -c '^### \[<tag>\]'`: open 9,
+mirror-candidate 9, process 2, blueprint 0).
+**Next concrete task:** task 18, two small lemmas (*Lemma checklist*).
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -29,18 +29,27 @@ public declaration's name, or delete a pinned declaration, does not land that ch
 
 ## Current state
 
-**Task 16 landed** (this commit; Lean; sonnet; one dispatch). The spike (the lemma against
-`MainComponent/ContractAdditive.lean`'s import cone alone) compiled first try.
-`Graph.finrank_ker_contractLiftingMatrix_zero_eq_and_map_eq` sliced verbatim (statement and binders
-unchanged; only its docstring's closing sentence, which said the `d = 3` proof kept an inline copy)
-into `MainComponent/ContractAdditive.lean` before `Graph.X0Attains.of_additiveContract`, which now
-makes one call (`hqG := (hmain q hPmq).1`); `hlow0`, `hD₀…`, `hK3`, `hmapLe`, `hmapfin`, `hup0`'s
-proof and `honto`'s proof are gone (`hup0` became the call's dimension equation, `hdimL`, which a later
-`linarith` uses). `Grade/ContractAdditive.lean` imports `MainComponent.ContractAdditive`. Gates: G2
-`lake build` (6249 jobs, 0 warnings) and `lake lint`; G3 `blueprint/lint.sh`; G4 `blueprint/verify.sh`
-(the name is pinned, `pencil-d.tex`); G5 `#print axioms` of the 21 `formalization.yaml`
-declarations, no `sorryAx`; G1. FRICTION: *The kernel argument at an additive core…* `[resolved]`;
-task 15's entry's Status line now reads resolved.
+**Task 17 landed** (this commit; Lean; opus; one dispatch). `exists_insertion_earDataGrade`, in
+`Grade/Short.lean` after `span_joins_succAbove_two`, is `exists_insertion_earDataGrade_three`'s
+statement at `x : Fin (n + 3) → α` (the ear of `G″` has `n + 2` interior bodies), with the ear
+data's ends `xf`, `xl` implicit and free (`x 0`, `x (Fin.last _)` at four; `x 0`, `x 2` at three)
+and `hC` in the three-body `∀ Y, (∀ i j, Y i j = …) →` form; its proof is the old tail, `hP1` and
+`hP3` through `coe_succAbove_two` (four's form, not three's `rfl`). `of_openEar_four`'s tail, from
+`hC` to its end, is one call and an `obtain rfl : Y = _` from the applied form of
+`exists_mvPolynomial_earDataGrade_of_smul`; `of_openEar_three` calls it at `n = 0`.
+`exists_insertion_earDataGrade_three` (unpinned, one caller) is deleted; `ShortThree.lean`'s module
+doc and `of_openEar_three`'s docstring are repointed (closed notes and `Phase42-design.md` keep the
+name). Every surviving statement is
+unchanged (`git diff`: docstrings and proof bodies only). No `maxHeartbeats` override;
+`ShortThree.lean` builds in about 5 s. `blueprint-deps.py --label` on the two theorems' nodes:
+the same edges as at `63fd4e68`, only the reach chains differ. Gates: G2 `lake build` (6249 jobs,
+0 warnings) and `lake lint`; G3 `blueprint/lint.sh` (check 9 total 0); G5 `#print axioms` of the
+21 `formalization.yaml` declarations, no `sorryAx`; G1. G4 not run: no pinned name moved or went.
+FRICTION: *The insertion at three bodies…* `[resolved]`. `of_openEar_four`'s `hax` and `hbx` are
+dead (they were before), left for a golf.
+
+**Task 16** (landed; `Graph.finrank_ker_contractLiftingMatrix_zero_eq_and_map_eq` sliced into
+`MainComponent/ContractAdditive.lean`, and `Graph.X0Attains.of_additiveContract` through it).
 
 **Task 15** (landed; the glued-ends helpers to `Pencil/Motive.lean`, `MainComponent/ContractCurve.lean`
 and `Grade/PlanesMeet.lean`, sliced verbatim).
@@ -225,19 +234,12 @@ the entries it resolved.
   `MainComponent/ContractCurve.lean`, beside `rigidContract_induce_simple`;
   `Graph.liftingPlanesDiff_eq_top_of_notMem` to `Grade/PlanesMeet.lean`, beside
   `liftingPlanesDiff`. Resolves *Glued-ends' contraction and lifting-planes helpers…*.
-- [x] **16. The additive core's kernel argument, once** (Lean; sonnet). Re-spike first: the entry
-  records a scratch copy compiling against the target file alone at 42f's close. Move
-  `Graph.finrank_ker_contractLiftingMatrix_zero_eq_and_map_eq` (from `Grade/ContractAdditive.lean`),
-  unchanged, into `MainComponent/ContractAdditive.lean` before `Graph.X0Attains.of_additiveContract`;
-  replace that proof's `hlow0`, `hup0` and `honto` by one call (admissibility for `G` from the main
-  picture); `Grade/ContractAdditive.lean` gains a `public import` of `MainComponent.ContractAdditive`.
-  Resolves *The kernel argument at an additive core is proved twice…*.
-- [ ] **17. The ear insertion, once** (Lean; sonnet). The insertion stated once, for an ear of
-  `G″` with `n + 2` interior bodies, in `Grade/Short.lean`; `of_openEar_four`'s inline tail (`hcfa`
-  to `hL`, about 80 lines) and `Grade/ShortThree.lean`'s `exists_insertion_earDataGrade_three`
-  through it (the latter its `n = 0` case, or deleted if unpinned and unused). Watch the
-  200 000-heartbeat budget that split `of_openEar_three`. Resolves *The insertion at three bodies
-  repeats `of_openEar_four`'s inline tail*.
+- [x] **16. The additive core's kernel argument, once** (`63fd4e68`; Lean; sonnet). The lemma
+  into `MainComponent/ContractAdditive.lean`, `of_additiveContract` through it. Resolves *The kernel
+  argument at an additive core is proved twice…*.
+- [x] **17. The ear insertion, once** (this commit; Lean; opus). `exists_insertion_earDataGrade`
+  (`Grade/Short.lean`, `n + 2` bodies of `G″`), called by `of_openEar_four` and `of_openEar_three`;
+  `exists_insertion_earDataGrade_three` deleted. Resolves *The insertion at three bodies repeats…*.
 - [ ] **18. Two small lemmas** (Lean; sonnet). `@[simp] shadowGraph_isLink : G.shadowGraph.IsLink e
   x y ↔ G.Adj x y ∧ Sum.inl s(x, y) = e` beside `shadowGraph_isLink_iff`
   (`Molecular/Molecule/Carrier.lean`), with `Nonvacuity.lean`'s local `hL` through it.
@@ -262,6 +264,22 @@ the entries it resolved.
 - **`PanelLayer.lean`'s split** (task 11): 1705 → 1805 lines, past the ~1500 tripwire
   (`CombinatorialRigidity/CLAUDE.md`) since before the round; its three `/-! ##` sections are the
   seams. A split is not a home move, so not this round's.
+- **The blueprint's dependency graph is behind the round's Lean** (the coordinator's run at
+  `63fd4e68` of `python3 scripts/blueprint-deps.py`, diffed against its cached pre-round run,
+  `.lake/blueprint-deps/12e3e35a9ffe3111.jsonl`, written before task 5). The round's proof
+  replacements left the blueprint's dependency graph behind its Lean, and HOMES writes no TeX.
+  Four **missing** `\uses` edges: `lem:pencil-contract-additive-kernel` from
+  `Graph.X0Attains.of_additiveContract` (task 16); `lem:pencil-d-condition-linear` from
+  `finrank_span_pencilConfigPointGrade_closedNbhd_le` → `gradeSigma` (task 13), which the tool
+  flags as one that "would close a cycle", so it needs a node restructure, not just an edge;
+  `lem:pencil-d-embedding-join` from `panelSupportExtensor_linearEquiv_eq_det_smul` (task 11) and
+  from `starGrade_sup_starGrade_eq_ker` (task 11). One new **unbacked** edge:
+  `lem:decomposable-extensor-span-unique` (`meet.tex:577`) `\uses{def:join}`, which task 9's
+  re-proof of `span_range_eq_of_extensor_eq` through the grade lemma no longer reaches; its Lean
+  docstring still describes the `join_extensor` / `extensor_triple_eq_zero_iff` route. The other
+  twelve missing edges predate the round. The PI decides whether a TeX task joins HOMES or a later
+  round takes these. (Task 17 adds none: `--label` on its two theorems' nodes gives the same edges
+  as at `63fd4e68`.)
 
 ## Blockers / open questions
 
@@ -269,7 +287,7 @@ the entries it resolved.
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 17, the ear insertion, once (*Lemma checklist*), one commit.
+**Next concrete task:** task 18, two small lemmas (*Lemma checklist*), one commit.
 After the round: ORIGAMI's open, with the PI (`notes/Origami.md`).
 
 ## Decisions made during this round

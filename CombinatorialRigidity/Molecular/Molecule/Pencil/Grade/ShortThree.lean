@@ -18,8 +18,6 @@ The step `thm:pencil-d-open-ear-three` (`blueprint/src/chapter/pencil-d.tex`,
 * `exists_mvPolynomial_earDataGrade_starsCond_three`: the third condition on the ear data, off a
   nonzero polynomial, when `dim ρ ≤ 2` (`not_starGrade_sup_le_of_finrank_le_two`,
   `Grade/Stars.lean`) or `d + κ ≤ 6` (by stars-three).
-* `exists_insertion_earDataGrade_three`: putting the suppressed body back, as in the step at four
-  or more interior bodies.
 * `Graph.X0AttainsGrade.of_openEar_three`: the factoring through `G″` with the insertion hypothesis
   at the base data (`Graph.X0AttainsGrade.of_openEar_splitOff_of_base`), the picture off
   glued-ends' polynomial for `G[V₁]` and the heights off planes-meet's for `G″`.
@@ -112,118 +110,6 @@ theorem exists_mvPolynomial_earDataGrade_starsCond_three [Infinite K] {V₁ : Se
         ((x ∘ Fin.succAbove 1) i, j) := funext fun i => funext (hY i)
     exact hg s hs
 
-/-- **Putting the suppressed body back, at three interior bodies** (a step of
-`thm:pencil-d-open-ear-three`, by `lem:pencil-d-insertion`). At ear data `s` where the third
-condition holds at the points `y₁`, `y₃` of `x 0`, `x 2` (the span `W` of `ρ` and the joins of the
-ear `a − x 0 − x 2 − b` of `G″` is everything whenever it holds both stars), some `x₂` with last
-coordinate `1` raises the span by one: with `x 1` at `x₂` and the other bodies at their ear points,
-`ρ` and the joins of the ear `a − x 0 − x 1 − x 2 − b` of `G` span at least `min (dim W + 1, D)`.
-As in `Graph.X0AttainsGrade.of_openEar_four`: `exists_insertion_of_starGrade_sup` at `R = ρ +` the
-joins of `G″` but `y₁ ∨ y₃`, and `span_joins_succAbove_two`. -/
-theorem exists_insertion_earDataGrade_three [Infinite K] {V₁ : Set α} {q₁ : α × Fin 2 → K}
-    {z₁ : α × Fin m → K} {la lb : Fin m → Fin 3 → K} {x : Fin 3 → α} {a b : α}
-    (hinj : Function.Injective x) (hxV₁ : ∀ i, x i ∉ V₁) (ha : a ∈ V₁) (hb : b ∈ V₁)
-    (ρ : Submodule K (⋀[K]^2 (Fin (m + 1 + 2) → K))) {pa pb : Fin (m + 1 + 2) → K}
-    (hpa : pencilConfigPointGrade q₁ z₁ a = pa) (hpb : pencilConfigPointGrade q₁ z₁ b = pb)
-    (s : (α × Fin 2) ⊕ (α × Fin m) → K)
-    (hC : ∀ Y : Fin 2 → Fin (m + 1 + 2) → K, (∀ i j, Y i j = earConfigGrade V₁ q₁ z₁ (x 0) (x 2)
-          (Set.range x) la lb s ((x ∘ Fin.succAbove 1) i, j)) →
-        starGrade (Y 0) ⊔ starGrade (Y 1) ≤ ρ ⊔ Submodule.span K (Set.range fun i : Fin 3 =>
-            normalsJoin (pathVertex pa Y pb i.castSucc) (pathVertex pa Y pb i.succ)) →
-          ρ ⊔ Submodule.span K (Set.range fun i : Fin 3 =>
-            normalsJoin (pathVertex pa Y pb i.castSucc) (pathVertex pa Y pb i.succ)) = ⊤) :
-    ∃ x₂ : Fin (m + 1 + 2) → K, x₂ (Fin.last (m + 2)) = 1 ∧
-      ∀ p : α → Fin (m + 1 + 2) → K, p (x 1) = x₂ →
-      (∀ t, t ≠ x 1 →
-        p t = fun j => earConfigGrade V₁ q₁ z₁ (x 0) (x 2) (Set.range x) la lb s (t, j)) →
-      min (Module.finrank K ↥(ρ ⊔ Submodule.span K (Set.range fun i : Fin 3 =>
-        normalsJoin (fun j => earConfigGrade V₁ q₁ z₁ (x 0) (x 2) (Set.range x) la lb s
-            (pathVertex a (x ∘ Fin.succAbove 1) b i.castSucc, j))
-          (fun j => earConfigGrade V₁ q₁ z₁ (x 0) (x 2) (Set.range x) la lb s
-            (pathVertex a (x ∘ Fin.succAbove 1) b i.succ, j)))) + 1) (screwDim (m + 1)) ≤
-      Module.finrank K ↥(ρ ⊔ Submodule.span K (Set.range fun i : Fin 4 =>
-        normalsJoin (p (pathVertex a x b i.castSucc)) (p (pathVertex a x b i.succ)))) := by
-  classical
-  set cfg : α → Fin (m + 1 + 2) → K := fun w c => earConfigGrade V₁ q₁ z₁ (x 0) (x 2)
-    (Set.range x) la lb s (w, c) with hcfg
-  set Y : Fin 2 → Fin (m + 1 + 2) → K := fun i => cfg ((x ∘ Fin.succAbove 1) i) with hY
-  have hcfa : cfg a = pa := (funext fun c => earConfigGrade_of_mem (V₁ := V₁) (q₁ := q₁)
-    (z₁ := z₁) (xf := x 0) (xl := x 2) (X := Set.range x) (la := la) (lb := lb) s ha c).trans hpa
-  have hcfb : cfg b = pb := (funext fun c => earConfigGrade_of_mem (V₁ := V₁) (q₁ := q₁)
-    (z₁ := z₁) (xf := x 0) (xl := x 2) (X := Set.range x) (la := la) (lb := lb) s hb c).trans hpb
-  have hQY : ∀ j, cfg (pathVertex a (x ∘ Fin.succAbove 1) b j) = pathVertex pa Y pb j := by
-    intro j
-    rw [pathVertex_map cfg a b (x ∘ Fin.succAbove 1) j, hcfa, hcfb]
-    rfl
-  have hy1 : ∀ i, Y i (Fin.last (m + 2)) = 1 := fun i => by
-    simp [hY, hcfg, earConfigGrade]
-  set pv : Fin 4 → Fin (m + 1 + 2) → K := pathVertex pa Y pb with hpv
-  set R : Submodule K (⋀[K]^2 (Fin (m + 1 + 2) → K)) := ρ ⊔ Submodule.span K
-    (Set.range fun j : Fin 3 =>
-      if j = 1 then 0 else normalsJoin (pv j.castSucc) (pv j.succ)) with hR
-  have hJ1 : normalsJoin (pv (Fin.castSucc 1)) (pv (Fin.succ 1)) = normalsJoin (Y 0) (Y 1) := by
-    rw [Fin.castSucc_one, Fin.succ_one_eq_two, hpv,
-      pathVertex_eq_of_val_eq pa pb Y (i := 0) (by simp),
-      pathVertex_eq_of_val_eq pa pb Y (i := 1) (by simp)]
-  have hRe : R ⊔ K ∙ normalsJoin (Y 0) (Y 1) = ρ ⊔ Submodule.span K
-      (Set.range fun i : Fin 3 => normalsJoin (pv i.castSucc) (pv i.succ)) := by
-    rw [hR, sup_assoc]
-    congr 1
-    refine le_antisymm (sup_le (Submodule.span_le.mpr ?_)
-      (Submodule.span_singleton_le_iff_mem _ _ |>.mpr ?_)) (Submodule.span_le.mpr ?_)
-    · rintro _ ⟨j, rfl⟩
-      beta_reduce
-      by_cases hj : j = 1
-      · simp only [hj, ↓reduceIte]; exact Submodule.zero_mem _
-      · simp only [hj, ↓reduceIte]; exact Submodule.subset_span ⟨j, rfl⟩
-    · exact Submodule.subset_span ⟨1, hJ1⟩
-    · rintro _ ⟨j, rfl⟩
-      by_cases hj : j = 1
-      · subst hj
-        exact Submodule.mem_sup_right (by
-          change normalsJoin (pv (Fin.castSucc 1)) (pv (Fin.succ 1)) ∈ _
-          rw [hJ1]; exact Submodule.mem_span_singleton_self _)
-      · exact Submodule.mem_sup_left (Submodule.subset_span ⟨j, by simp [hj]⟩)
-  obtain ⟨x₂, hx₂, hmin⟩ := exists_insertion_of_starGrade_sup R (Y 0) (Y 1) (hy1 0) (hy1 1)
-    (by rw [hRe]; exact hC Y fun i j => rfl)
-  refine ⟨x₂, hx₂, fun p hpvx hpt => ?_⟩
-  have hP : ∀ j, p (pathVertex a x b (Fin.succAbove 2 j)) = pv j := fun j => by
-    rw [← pathVertex_comp_succAbove_one, ← hQY j]
-    refine hpt _ ?_
-    rcases pathVertex_cases a (x ∘ Fin.succAbove 1) b j with ⟨_, h'⟩ | ⟨i, _, h'⟩ | ⟨_, h'⟩
-    · rw [h']; exact fun h => hxV₁ 1 (h ▸ ha)
-    · rw [h']; exact fun h => Fin.succAbove_ne 1 i (hinj h)
-    · rw [h']; exact fun h => hxV₁ 1 (h ▸ hb)
-  have hP1 : p (pathVertex a x b 1) = Y 0 := by
-    have := hP 1
-    rw [show (Fin.succAbove 2 (1 : Fin 4) : Fin 5) = 1 from rfl] at this
-    rw [this, hpv, pathVertex_eq_of_val_eq pa pb Y (i := 0) (by simp)]
-  have hP3 : p (pathVertex a x b 3) = Y 1 := by
-    have := hP 2
-    rw [show (Fin.succAbove 2 (2 : Fin 4) : Fin 5) = 3 from rfl] at this
-    rw [this, hpv, pathVertex_eq_of_val_eq pa pb Y (i := 1) (by simp)]
-  have hP2 : p (pathVertex a x b 2) = x₂ := by
-    rw [pathVertex_eq_of_val_eq a b x (i := 1) (by simp)]; exact hpvx
-  have hspan := span_joins_succAbove_two (fun i => p (pathVertex a x b i)) pv hP
-  beta_reduce at hspan
-  rw [hP1, hP2, hP3] at hspan
-  have hfinal : R ⊔ Submodule.span K {normalsJoin (Y 0) x₂, normalsJoin x₂ (Y 1)} =
-      ρ ⊔ Submodule.span K (Set.range fun i : Fin 4 =>
-        normalsJoin (p (pathVertex a x b i.castSucc)) (p (pathVertex a x b i.succ))) := by
-    rw [hspan, hR, sup_assoc]
-  have hgoalL : (Set.range fun i : Fin 3 =>
-      normalsJoin (fun j => cfg (pathVertex a (x ∘ Fin.succAbove 1) b i.castSucc) j)
-        (fun j => cfg (pathVertex a (x ∘ Fin.succAbove 1) b i.succ) j)) =
-      Set.range fun i : Fin 3 => normalsJoin (pv i.castSucc) (pv i.succ) := by
-    congr 1; funext i; rw [hQY, hQY]
-  have hL : Module.finrank K ↥(ρ ⊔ Submodule.span K (Set.range fun i : Fin 3 =>
-      normalsJoin (fun j => cfg (pathVertex a (x ∘ Fin.succAbove 1) b i.castSucc) j)
-        (fun j => cfg (pathVertex a (x ∘ Fin.succAbove 1) b i.succ) j))) =
-      Module.finrank K ↥(R ⊔ K ∙ normalsJoin (Y 0) (Y 1)) := by
-    rw [hRe, hgoalL]
-  refine le_of_eq_of_le ?_ (hmin.trans_eq (by rw [hfinal]))
-  exact congrArg (fun r => min (r + 1) (screwDim (m + 1))) hL
-
 /-- `thm:pencil-d-open-ear-three`: let `G` satisfy the standing hypotheses, with an open ear
 `a − x 0 − x 1 − x 2 − b` on `V₁` of three interior bodies, its ends possibly adjacent, and let
 `G″ = G.splitOff (x 1) (x 0) (x 2) (e 1)` be `G` with `x 1` suppressed. If the general
@@ -239,9 +125,9 @@ of `Graph.liftingPlanesDiff` of `G[V₁]`, at most `3`. If `r ≤ 2`, then `dim 
 `joinRelScrews_le_span_of_mem_closedNbhd` when the closed neighbourhoods of `a` and `b` meet, by
 glued-ends otherwise. If `r = 3`, the planes meet in dimension `κ = 3 − min(m, 3)` by
 planes-meet, so `d + κ ≤ 6`. Either way `exists_mvPolynomial_earDataGrade_starsCond_three` gives
-the third condition, and `exists_insertion_earDataGrade_three` puts `x 1` back. The points `pa`,
-`pb` need not be independent, so the picture is not also taken off the first coordinate of
-`q_a − q_b`. -/
+the third condition, and `exists_insertion_earDataGrade` (`Grade/Short.lean`, at `n = 0`) puts
+`x 1` back. The points `pa`, `pb` need not be independent, so the picture is not also taken off
+the first coordinate of `q_a − q_b`. -/
 theorem _root_.Graph.X0AttainsGrade.of_openEar_three [Infinite K] [Finite α] [Finite β]
     {G : Graph α β} (hG : G.IsX0Graph) {V₁ : Set α} {x : Fin 3 → α} {a b : α}
     {e : Fin 4 → β} (hm : 2 ≤ m) (hm4 : m ≤ 4) (hcover : V(G) = V₁ ∪ Set.range x)
@@ -336,6 +222,6 @@ theorem _root_.Graph.X0AttainsGrade.of_openEar_three [Infinite K] [Finite α] [F
   obtain ⟨g', hg'₀, hg'⟩ :=
     exists_mvPolynomial_earDataGrade_starsCond_three hinj hxV₁ hm _ hpa hpb hρκ
   exact ⟨g', hg'₀, fun s hs _ =>
-    exists_insertion_earDataGrade_three hinj hxV₁ ha hb _ rfl rfl s (hg' s hs)⟩
+    exists_insertion_earDataGrade hinj hxV₁ ha hb _ rfl rfl s (hg' s hs)⟩
 
 end CombinatorialRigidity.Molecular

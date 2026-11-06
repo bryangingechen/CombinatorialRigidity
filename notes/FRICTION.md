@@ -414,7 +414,7 @@ to be re-derived by re-reading entries later.
   a `normalsJoin` form of the bound is worth adding at a second caller.)
 - **Status:** resolved in-proof (usage note).
 
-### [open] The insertion at three bodies repeats `of_openEar_four`'s inline tail
+### [resolved] The insertion at three bodies repeats `of_openEar_four`'s inline tail
 - **Where it bit:** Phase 42i, `Pencil/Grade/ShortThree.lean`: `Graph.X0AttainsGrade.of_openEar_three`,
   first written as one declaration like `of_openEar_four` (`Grade/Short.lean`), ran out of
   heartbeats (200000, for the whole declaration; the error landed at a `by decide` deep in its third
@@ -429,8 +429,10 @@ to be re-derived by re-reading entries later.
   `simpa using Finset.card_le_two`).
 - **Proposed fix:** state the insertion once, for the ear of `G″` with `n + 2` interior bodies, and
   call it from both steps, at a cleanup round; only `of_openEar_four`'s proof changes.
-- **Status:** open (42i's deferral, a cleanup-round fold; tracked under PD-STEPS,
-  `notes/Phase42-design.md` §3).
+- **Status:** resolved (HOMES task 17): `exists_insertion_earDataGrade` (`Grade/Short.lean`), the
+  insertion for the ear of `G″` with `n + 2` interior bodies (ear data ends `xf`, `xl` left free),
+  is called by `of_openEar_four` (at `n + 1`, its tail now four lines) and by `of_openEar_three`
+  (at `n = 0`); `exists_insertion_earDataGrade_three`, unpinned, was deleted.
 
 ### [resolved] `complementScrew` sits in `Pencil/Grade/Short.lean`, not `PanelLayer.lean`
 - **Where it bit:** Phase 42h, `Pencil/Grade/Short.lean`: `complementScrew K k`, the complement
