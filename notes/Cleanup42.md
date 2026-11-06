@@ -17,9 +17,9 @@ one `\uses` sweep (blueprint and notes, no Lean); each slice set its rows' statu
 here. The ledger now: none `open`, 23 `aligned`, 17 `kept`, 14 `no departure`. Round 4 opened the
 same day at the PI's word (§1, all four items), in nine tasks: the stale docstrings and notes,
 Theorem S's fold, the reduction's fold and the witnesses at `K₂` and `K_{2,3}` (§3). **Next
-concrete task:** round 4's task 7, witness (2) part 1, `K_{2,3}` is feasible
-(`notes/Phase42-fold.md`); tasks 2 to 6, the stale docstrings, the `K₂` witness, Theorem S's fold and
-the reduction's folds, have landed.
+concrete task:** round 4's task 8, witness (2) part 2, the good ear and the ear's condition
+(`notes/Phase42-fold.md`); tasks 2 to 7, the stale docstrings, the `K₂` witness, Theorem S's fold,
+the reduction's folds and the feasibility of `K_{2,3}`, have landed.
 
 ## 1. The PI's decisions (verbatim)
 

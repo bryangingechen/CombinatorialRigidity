@@ -110,6 +110,22 @@ moment you resolve the entry) is what makes the sweep a pure
 to be re-derived by re-reading entries later.
 
 ## Open
+### [idiom] A degree in `Graph.OfSimpleGraph`, and `#print axioms` of a `private` declaration
+- **Where it bit:** CLEANUP-42 round 4, task 7: `Nonvacuity.lean`'s private `k23_degree` and
+  `k23_pencilNondegFeasible` (`K_{2,3}`), and the gate's `#print axioms` of the latter.
+- **Friction:** (1) no lemma gives a degree or a neighbourhood of `Graph.OfSimpleGraph H`.
+  `Graph.degree_eq_ncard_adj` asks a `Simple` instance (the `[open]` entry on it), then
+  `N(…, v) = {w | H.Adj v w}` by `simp [Graph.Neighbor, Graph.Adj]`; the
+  `Set.ncard_eq_toFinset_card'`-and-`decide` idiom found no `Fintype` on
+  `{w | (completeBipartiteGraph (Fin 2) (Fin 3)).Adj v w}`, so the set is rewritten to
+  `Set.range Sum.inr` (or `Sum.inl`) and counted by `Set.ncard_range_of_injective`. (2) A scratch
+  file's plain `import` does not reach another module's `private` declaration: its mangled name
+  `_private.<module>.0.<name>` does not parse, and this mathlib has no `Mathlib.Tactic.OpenPrivate`.
+- **Proposed fix:** (1) `(Graph.OfSimpleGraph H).degree v = H.degree v` upstream, beside the
+  `Simple` instance. (2) A scratch `module` file with `import all CombinatorialRigidity.Nonvacuity`
+  reaches it by its source name, inside its `namespace`, and `#print axioms` works there.
+- **Status:** idiom. **Lifted to:** TACTICS-QUIRKS *Symptom index* (2).
+
 ### [open] The two sides of a cut from `¬ G.TwoEdgeConnected` are unfolded at each cut case
 - **Where it bit:** CLEANUP-42 round 4, task 5: `Pencil/ArmsAssembly.lean`'s private
   `exists_cut_sides` (a nonempty `V₁ ⊂ V(G)` crossed by at most one edge, both sides nonempty with
@@ -830,6 +846,7 @@ to be re-derived by re-reading entries later.
 - **Where it bit:** RECONCILE round 3, task 23: `pencil_realization_theorem_witness` and
   `pencilPair_of_nonempty_witness` (`Nonvacuity.lean`) need `(Graph.OfSimpleGraph H).Simple` for
   the star `SimpleGraph.starGraph 0`; neither the `Matroid` dependency nor the project has it.
+  CLEANUP-42 round 4, task 7: `k23_degree` (same file), for `Graph.degree_eq_ncard_adj`.
 - **Friction:** a private two-field proof (`ofSimpleGraph_simple`: a loop is `H.irrefl`, two links
   of the same ends have the edge `s(x, y)`). Also, passing the graph as `_` and fixing it by a
   later argument `singleEdge … 0` elaborated the edge label `0` at `ℕ`; naming the graph fixed it.

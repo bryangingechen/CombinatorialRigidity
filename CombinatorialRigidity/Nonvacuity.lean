@@ -100,9 +100,10 @@ input (for an `iff`, the side the theorem derives there). Each is the closed dec
   so it has a pencil realization at the deficiency rank whose adjacent bodies have linearly
   independent normals.
 * `graded_pencil_conditioned_pair_generic_witness`: the same theorem's generic conjunct at `K₂` in
-  dimension four, the least graph with an edge. Its simplicity and feasibility hypotheses are met:
-  feasibility (a nondegenerate pencil realization) passes from the double edge, which has one, to
-  its subgraph `K₂`, as no body of the double edge is a pencil hub, and from there to the grade.
+  dimension four, the least simple graph with an edge. Its simplicity and feasibility hypotheses
+  are met: feasibility (a nondegenerate pencil realization) passes from the double edge, which has
+  one, to its subgraph `K₂`, as no body of the double edge is a pencil hub, and from there to the
+  grade.
 * `molecule_rank_formula_witness`: Jackson and Jordán's molecule rank formula (Katoh and
   Tanigawa's Corollary 5.7) at the triangle `K₃`, the least simple graph of minimum degree two.
   Its multigraph is a triangle, `0`-dof, so the square `K₃² = K₃` has generic rank `3 · 3 - 6 = 3`.
@@ -669,6 +670,152 @@ theorem graded_pencil_conditioned_pair_generic_witness :
   (Graph.graded_pencil_conditioned_pair (K := ℝ) (m := 2) (by norm_num) ⟨0, by simp⟩).2.2
     banana_single_simple
     ((gradedPencilNondegFeasible_iff (by norm_num) _).2 banana_single_pencilNondegFeasible)
+
+end
+
+/-! ### The good-ear arm of the generic conjunct, at `K_{2,3}`
+
+The generic conjunct of `Graph.graded_pencil_conditioned_pair` asks a simple,
+nondegeneracy-feasible graph; `K₂` above meets both hypotheses. Its induction
+(`liftAttains_of_simple`) has an arm at a good ear (`Graph.IsPencilGoodEar`), whose condition comes
+from `holdsGenerally_earFree`, at a simple, nondegeneracy-feasible graph with a good ear. The
+complete bipartite graph `K_{2,3}`, two bodies of degree three each linked to the three of degree
+two, is the instance here, of that arm and not of a main result's hypothesis: it is simple
+(`ofSimpleGraph_simple`) and nondegeneracy-feasible (`k23_pencilNondegFeasible`). -/
+
+section
+
+open scoped Matrix
+open Molecular
+
+/-- In `K_{2,3}` the two bodies `Sum.inl i` have degree three and the three bodies `Sum.inr j` have
+degree two. The graph is simple, so the degree of a body is its number of neighbours
+(`Graph.degree_eq_ncard_adj`), the bodies of the other side. -/
+private theorem k23_degree (v : Fin 2 ⊕ Fin 3) :
+    (Graph.OfSimpleGraph (completeBipartiteGraph (Fin 2) (Fin 3))).degree v =
+      Sum.elim (fun _ => 3) (fun _ => 2) v := by
+  have := ofSimpleGraph_simple (completeBipartiteGraph (Fin 2) (Fin 3))
+  have hN : N(Graph.OfSimpleGraph (completeBipartiteGraph (Fin 2) (Fin 3)), v) =
+      {w | (completeBipartiteGraph (Fin 2) (Fin 3)).Adj v w} := by
+    ext w; simp [Graph.Neighbor, Graph.Adj]
+  rw [Graph.degree_eq_ncard_adj, hN]
+  rcases v with i | j
+  · rw [show {w | _} = Set.range (Sum.inr : Fin 3 → Fin 2 ⊕ Fin 3) by ext (k | k) <;> simp,
+      Set.ncard_range_of_injective Sum.inr_injective]
+    simp
+  · rw [show {w | _} = Set.range (Sum.inl : Fin 2 → Fin 2 ⊕ Fin 3) by ext (k | k) <;> simp,
+      Set.ncard_range_of_injective Sum.inl_injective]
+    simp
+
+/-- **`K_{2,3}` is nondegeneracy-feasible** (`def:pencil-nondegenerate`): it has a nondegenerate
+pencil realization over `ℝ`. With `e₀, …, e₃` the standard basis of `ℝ⁴`, the two bodies of degree
+three get the points `e₀`, `e₁` and the normals `e₁`, `e₀`, and the three of degree two the points
+`e₂`, `e₃`, `e₂ + e₃` and the normals `e₃`, `e₂`, `e₂ - e₃`. Each point is orthogonal to the normal
+of its own body and to those of its neighbours, so each edge gets a nonzero hinge in both panels
+and through both points (`exists_extensor_two_pencils`); every other pair of bodies gets a nonzero
+hinge as well, as every hinge is asked to be nonzero. The points at the two ends of an edge are
+independent. The hubs are the two bodies of degree three (`k23_degree`), which are not adjacent, so
+the closed hub-neighbourhood of a hub is the hub alone and that of any other body is the two hubs,
+with normals `e₁`, `e₀`. The closed neighbourhood of a body of degree two has the points `e₀`, `e₁`
+and the body's own, a nonzero vector of the span of `e₂`, `e₃`. -/
+private theorem k23_pencilNondegFeasible :
+    PencilNondegFeasible ℝ (Graph.OfSimpleGraph (completeBipartiteGraph (Fin 2) (Fin 3))) := by
+  set H := completeBipartiteGraph (Fin 2) (Fin 3) with hH
+  set normal : Fin 2 ⊕ Fin 3 → Fin 4 → ℝ :=
+    Sum.elim ![![0, 1, 0, 0], ![1, 0, 0, 0]] ![![0, 0, 0, 1], ![0, 0, 1, 0], ![0, 0, 1, -1]]
+    with hnormal
+  set point : Fin 2 ⊕ Fin 3 → Fin 4 → ℝ :=
+    Sum.elim ![![1, 0, 0, 0], ![0, 1, 0, 0]] ![![0, 0, 1, 0], ![0, 0, 0, 1], ![0, 0, 1, 1]]
+    with hpoint
+  have hnorm : ∀ v, normal v ≠ 0 := by
+    rintro (i | j)
+    · fin_cases i <;> simp [hnormal]
+    · fin_cases j <;> simp [hnormal]
+  have hpt : ∀ v, point v ≠ 0 := by
+    rintro (i | j)
+    · fin_cases i <;> simp [hpoint]
+    · fin_cases j <;> simp [hpoint]
+  have hself : ∀ v, point v ⬝ᵥ normal v = 0 := by
+    rintro (i | j)
+    · fin_cases i <;> simp [hpoint, hnormal, dotProduct, Fin.sum_univ_four]
+    · fin_cases j <;> simp [hpoint, hnormal, dotProduct, Fin.sum_univ_four]
+  have hinc : ∀ u v, H.Adj u v → point u ⬝ᵥ normal v = 0 := by
+    rintro (i | i) (j | j) h <;> simp [hH] at h <;>
+      fin_cases i <;> fin_cases j <;> simp [hpoint, hnormal, dotProduct, Fin.sum_univ_four]
+  have hli : ∀ u v, H.Adj u v → LinearIndependent ℝ ![point u, point v] := by
+    have key : ∀ i j, LinearIndependent ℝ ![point (Sum.inl i), point (Sum.inr j)] := by
+      intro i j
+      rw [LinearIndependent.pair_iff]
+      intro s t hst
+      have h0 := congr_fun hst 0
+      have h1 := congr_fun hst 1
+      have h2 := congr_fun hst 2
+      have h3 := congr_fun hst 3
+      fin_cases i <;> fin_cases j <;> simp [hpoint] at h0 h1 h2 h3 <;> simp_all
+    rintro (i | i) (j | j) h <;> simp [hH] at h
+    · exact key i j
+    · exact LinearIndependent.pair_symm_iff.mp (key j i)
+  have hhub : ∀ v, (Graph.OfSimpleGraph H).PencilHub v ↔ v.isLeft := by
+    rintro (i | j) <;> simp [Graph.PencilHub, hH, k23_degree]
+  -- a hinge at every pair of bodies: a nonzero one through both points at an edge
+  obtain ⟨C₀, hC₀, -⟩ := exists_extensor_two_pencils (hpt (Sum.inl 0)) (hself (Sum.inl 0))
+    (hself (Sum.inr 0)) (hinc _ _ (by simp [hH])) (hinc _ _ (by simp [hH]))
+  have hC : ∀ e : Sym2 (Fin 2 ⊕ Fin 3), ∃ C : ScrewSpace ℝ 2, C ≠ 0 ∧
+      ∀ u v, (Graph.OfSimpleGraph H).IsLink e u v →
+        ExtensorInPanel C (normal u) ∧ ExtensorInPanel C (normal v) ∧
+        ExtensorThroughPoint C (point u) ∧ ExtensorThroughPoint C (point v) := by
+    intro e
+    induction e using Sym2.ind with | h a b => ?_
+    by_cases hab : H.Adj a b
+    · obtain ⟨C, hC0, h1, h2, h3, h4⟩ := exists_extensor_two_pencils (hpt a) (hself a) (hself b)
+        (hinc a b hab) (hinc b a hab.symm)
+      refine ⟨C, hC0, fun u v huv => ?_⟩
+      rcases Sym2.eq_iff.mp huv.2 with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+      · exact ⟨h1, h2, h3, h4⟩
+      · exact ⟨h2, h1, h4, h3⟩
+    · refine ⟨C₀, hC₀, fun u v huv => absurd ?_ hab⟩
+      rcases Sym2.eq_iff.mp huv.2 with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+      · exact huv.1
+      · exact huv.1.symm
+  choose hinge hhinge0 hhinge using hC
+  refine ⟨{ graph := Graph.OfSimpleGraph H, supportExtensor := hinge }, normal, point,
+    ⟨⟨⟨rfl, fun v _ => hnorm v, hhinge0,
+        fun e u v h => ⟨(hhinge e u v h).1, (hhinge e u v h).2.1⟩⟩,
+      fun v _ => hpt v, fun v _ => hself v,
+      fun e u v h => ⟨(hhinge e u v h).2.2.1, (hhinge e u v h).2.2.2⟩⟩,
+    fun e u v h => hli u v h.1, ?_, ?_⟩⟩
+  · -- the normals: a hub's closed hub-neighbourhood is itself, another's is the two hubs
+    rintro (i | j) -
+    · refine (LinearIndepOn.singleton (hnorm (Sum.inl i))).mono ?_
+      rintro (k | k) ⟨hw, h | ⟨e, he⟩⟩
+      · exact h
+      · simp [hH] at he
+      · simp [hhub] at hw
+      · simp [hhub] at hw
+    · refine LinearIndepOn.mono (s := {Sum.inl 0, Sum.inl 1}) ?_ ?_
+      · rw [LinearIndepOn.pair_iff normal (by simp)]
+        exact fun c d hcd => ⟨by simpa [hnormal] using congr_fun hcd 1,
+          by simpa [hnormal] using congr_fun hcd 0⟩
+      · rintro (k | k) ⟨hw, -⟩
+        · fin_cases k <;> simp
+        · simp [hhub] at hw
+  · -- the points at a body of degree two, the one kind of body that is not a hub
+    rintro (i | j) - hv
+    · exact absurd ((hhub _).2 rfl) hv
+    · refine LinearIndepOn.mono (s := {Sum.inr j, Sum.inl 0, Sum.inl 1}) ?_ ?_
+      · rw [linearIndepOn_insert (by simp), LinearIndepOn.pair_iff point (by simp), Set.image_pair,
+          Submodule.mem_span_pair]
+        refine ⟨fun c d hcd => ⟨by simpa [hpoint] using congr_fun hcd 0,
+          by simpa [hpoint] using congr_fun hcd 1⟩, ?_⟩
+        rintro ⟨c, d, h⟩
+        have h2 := congr_fun h 2
+        have h3 := congr_fun h 3
+        fin_cases j <;> simp [hpoint] at h2 h3
+      · rintro (k | k) (h | ⟨e, he⟩)
+        · simp at h
+        · fin_cases k <;> simp
+        · simp [h]
+        · simp [hH] at he
 
 end
 
