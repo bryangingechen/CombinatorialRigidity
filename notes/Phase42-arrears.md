@@ -7,7 +7,7 @@ carried over (`notes/Phase42-homes.md` *Moved to a later round*, *Candidates for
 debt, the friction log's archive sweep, a dead pair of `have`s, the splits of the four molecular
 files past the ~1500-line tripwire, and `RecordsLinks` moved to `Graph` with its link hypotheses
 restated. Seventeen tasks; no main result's statement changes.
-**Next concrete task:** task 3, the dead `have`s (*Lemma checklist*).
+**Next concrete task:** task 4, HOMES's dependency-graph debt (*Lemma checklist*).
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -22,9 +22,11 @@ stops; the PI answers in an entry that starts `**PI, <date>:**`.
 
 ## Current state
 
-**Tasks 1-2 landed** (docs only). Task 1 (`381dcae1`): the open. Task 2 (this commit): the
-friction log's archive sweep, 22 `[resolved]` entries to `FRICTION-archive.md`; FRICTION's counts
-now open 8, mirror-candidate 8, process 2, blueprint 0, resolved 0. Gates: G1.
+**Tasks 1-3 landed.** Task 1 (`381dcae1`): the open. Task 2 (`0edd6e7e`): the friction log's
+archive sweep, 22 `[resolved]` entries to `FRICTION-archive.md`; FRICTION's counts now open 8,
+mirror-candidate 8, process 2, blueprint 0, resolved 0. Task 3 (this commit): `hax`, `hbx` deleted
+from `X0AttainsGrade.of_openEar_four` (unused there; `hxV₁`, `ha`, `hb` stay used, so no golf
+left). Gates: G1, G2, G3; G6 missing total 16 (unchanged).
 
 **Verified at the open** (2026-11-05, at `6d75d694`; a whole-tree `lake build` replays clean, 0
 warnings, 0 cache failures):
@@ -119,11 +121,11 @@ landing, a task's line is cut to at most three lines:** number, sha, what landed
 resolved.
 
 - [x] **1. Open** (`381dcae1`; docs only).
-- [x] **2. The friction log's archive sweep** (this commit; docs only). 22 `[resolved]` entries
+- [x] **2. The friction log's archive sweep** (`0edd6e7e`; docs only). 22 `[resolved]` entries
   moved verbatim (425 lines, non-blank lines equal as multisets; `FRICTION.md` 6110 to 5685). One
   live pointer repointed (`PERFORMANCE.md`'s `mulTilde` mention); dated records stay.
-- [ ] **3. The dead `have`s** (Lean, proof only; sonnet). Delete `hax`, `hbx` from
-  `X0AttainsGrade.of_openEar_four` (`Grade/Short.lean`). HOMES *Current state*, task 17.
+- [x] **3. The dead `have`s** (this commit; Lean, proof only). `hax`, `hbx` deleted from
+  `X0AttainsGrade.of_openEar_four` (`Grade/Short.lean`); statement unchanged.
 - [ ] **4. HOMES's dependency-graph debt** (TeX and `Meet.lean`; opus). (a) The cycle: give `σ_v`
   (`gradeSigma`) a definition node of its own before `lem:pencil-d-config-realization`, its pin
   moved there from `lem:pencil-d-condition-linear`, `\uses`d by the first's proof and the second's
@@ -201,7 +203,7 @@ resolved.
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 3, the dead `have`s (*Lemma checklist*). After the
+**Next concrete task:** task 4, HOMES's dependency-graph debt (*Lemma checklist*). After the
 close: ORIGAMI's open, with the PI (ROADMAP *Queued post-program phases*).
 
 ## Decisions made during this round

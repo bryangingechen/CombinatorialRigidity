@@ -1107,8 +1107,6 @@ theorem _root_.Graph.X0AttainsGrade.of_openEar_four [Infinite K] [Finite α] [Fi
     (hsep : ∀ f u w, G.IsLink f u w → (∀ i, f ≠ e i) → u ∈ V₁ ∧ w ∈ V₁)
     (h₁ : (G.induce V₁).X0AttainsGrade K m)
     (h₂ : (G.splitOff (x 1) (x 0) (x 2) (e 1)).X0AttainsGrade K m) : G.X0AttainsGrade K m := by
-  have hax : ∀ i, x i ≠ a := fun i h => hxV₁ i (h ▸ ha)
-  have hbx : ∀ i, x i ≠ b := fun i h => hxV₁ i (h ▸ hb)
   have hx : ∀ i j, i ≠ j → x i ≠ x j := fun i j h h' => h (hinj h')
   obtain ⟨hcover'', hinj'', hxV₁'', hpath'', hsep'', hdeg2⟩ :=
     splitOff_ear_succAbove (k := n + 1) hcover hinj hxV₁ ha hb hab hpath hsep
