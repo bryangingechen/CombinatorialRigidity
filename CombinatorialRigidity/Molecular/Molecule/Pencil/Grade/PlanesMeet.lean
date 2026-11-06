@@ -46,6 +46,17 @@ theorem _root_.Graph.mem_liftingPlanesDiff {G : Graph α β} {q : α × Fin 2 �
     d ∈ G.liftingPlanesDiff q a b ↔ ∃ h ∈ G.liftingPlanes q, h b - h a = d := by
   simp [Graph.liftingPlanesDiff]
 
+/-- Off `V(G)` the lifting planes are free, so with `b ∉ V(G)` every difference `h_b − h_a` is
+reached (by `Pi.single b w`). -/
+theorem _root_.Graph.liftingPlanesDiff_eq_top_of_notMem {G : Graph α β} {q : α × Fin 2 → K}
+    {a b : α} (hb : b ∉ V(G)) (hab : a ≠ b) : G.liftingPlanesDiff q a b = ⊤ := by
+  classical
+  refine eq_top_iff.mpr fun w _ => Graph.mem_liftingPlanesDiff.mpr
+    ⟨Pi.single b w, fun e u v he => ?_, by simp [hab]⟩
+  have hu : u ≠ b := fun h => hb (h ▸ he.left_mem)
+  have hv : v ≠ b := fun h => hb (h ▸ he.right_mem)
+  simp [hu, hv]
+
 /-- **A fixed inverse reads the plane off the heights** (a step of `lem:pencil-d-planes-meet`):
 at a body `v` of an admissible picture there are three members `t` of the closed neighbourhood and
 a matrix `N` such that every affine function `h` agreeing with a height `z` on the closed

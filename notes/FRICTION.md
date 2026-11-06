@@ -519,7 +519,7 @@ to be re-derived by re-reading entries later.
   inline `let` is `gradeSigma h`, `pictureProj` is public, and `gradePlanarProj` (kept: `gradePi_normalsJoin`'s
   statement names it) and ConditionLinear's `π` go through it.
 
-### [open] Glued-ends' contraction and lifting-planes helpers sit in `Pencil/Grade/GluedEnds.lean`
+### [resolved] Glued-ends' contraction and lifting-planes helpers sit in `Pencil/Grade/GluedEnds.lean`
 - **Where it bit:** Phase 42i, `lem:pencil-d-glued-ends` (`Grade/GluedEnds.lean`). Its helpers
   have homes upstream (three groups): `Graph.mem_closedNbhd_comm` (`w ∈ N[v] → v ∈ N[w]`; home
   `Pencil/Motive.lean`, beside `closedNbhd`); the contraction of two bodies,

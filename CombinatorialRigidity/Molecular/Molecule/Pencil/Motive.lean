@@ -100,6 +100,13 @@ theorem _root_.Graph.closedNbhd_subset_vertexSet {G : Graph α β} {v : α} (hv 
   · exact hv
   · exact he.right_mem
 
+/-- A member of a closed neighbourhood has it in its own: `w ∈ N[v] → v ∈ N[w]`. -/
+theorem _root_.Graph.mem_closedNbhd_comm {G : Graph α β} {v w : α} (h : w ∈ G.closedNbhd v) :
+    v ∈ G.closedNbhd w := by
+  rcases h with rfl | ⟨e, he⟩
+  · exact Or.inl rfl
+  · exact Or.inr ⟨e, he.symm⟩
+
 /-- **In a simple graph, a body of degree at least two has at least three members in its closed
 neighbourhood** (`def:pencil-x0-standing`): its neighbours, which in a simple graph are as many as
 its degree, and itself, which is none of them, as `G` has no loops. From it

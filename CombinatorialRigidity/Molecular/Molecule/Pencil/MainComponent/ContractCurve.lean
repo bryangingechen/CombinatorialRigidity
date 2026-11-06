@@ -1055,6 +1055,120 @@ theorem _root_.Graph.rigidContract_induce_simple {G : Graph α β} (hS : G.Simpl
       (fun e x y h hx hy => ((Graph.induce_isLink G W e x y).mpr ⟨h, hx, hy⟩).edge_mem) hns
   exact hab (hatt v hvW a haW b hbW ⟨ea, ha⟩ ⟨eb, hb⟩)
 
+/-- Two bodies whose closed neighbourhoods are disjoint span no edge of `G[{a, b}]`. -/
+theorem _root_.Graph.edgeSet_induce_pair_eq_empty {G : Graph α β} (hS : G.Simple) {a b : α}
+    (hab : Disjoint (G.closedNbhd a) (G.closedNbhd b)) : E(G.induce {a, b}) = ∅ := by
+  have hloop : ∀ e v, ¬ G.IsLink e v v := fun e v he => hS.toLoopless.not_isLoopAt e v he
+  have hb : b ∉ G.closedNbhd a := fun h => Set.disjoint_left.mp hab h (Or.inl rfl)
+  have ha : a ∉ G.closedNbhd b := fun h => Set.disjoint_left.mp hab (Or.inl rfl) h
+  refine Set.eq_empty_iff_forall_notMem.mpr fun e he => ?_
+  obtain ⟨x, y, hl⟩ := Graph.exists_isLink_of_mem_edgeSet he
+  rw [Graph.induce_isLink] at hl
+  obtain ⟨hl, hx, hy⟩ := hl
+  rcases hx with rfl | rfl <;> rcases hy with rfl | rfl
+  · exact hloop e _ hl
+  · exact hb (Or.inr ⟨e, hl⟩)
+  · exact ha (Or.inr ⟨e, hl⟩)
+  · exact hloop e _ hl
+
+/-- The ends glued (the chapter's `G'`) is simple: a body adjacent to both `a` and `b` would lie in
+both closed neighbourhoods. -/
+theorem _root_.Graph.rigidContract_pair_simple {G : Graph α β} (hS : G.Simple) {a b : α}
+    (hab : Disjoint (G.closedNbhd a) (G.closedNbhd b)) :
+    (G.rigidContract (G.induce {a, b}) a).Simple := by
+  refine Graph.rigidContract_induce_simple hS (by simp) fun u _ c₁ hc₁ c₂ hc₂ h₁ h₂ => ?_
+  obtain ⟨e₁, he₁⟩ := h₁
+  obtain ⟨e₂, he₂⟩ := h₂
+  have hu₁ : u ∈ G.closedNbhd c₁ := Or.inr ⟨e₁, he₁.symm⟩
+  have hu₂ : u ∈ G.closedNbhd c₂ := Or.inr ⟨e₂, he₂.symm⟩
+  rcases hc₁ with rfl | rfl <;> rcases hc₂ with rfl | rfl
+  · rfl
+  · exact absurd hu₂ (Set.disjoint_left.mp hab hu₁)
+  · exact absurd hu₁ (Set.disjoint_left.mp hab hu₂)
+  · rfl
+
+/-- The bodies of the ends glued are those of `G` but `b`. -/
+theorem _root_.Graph.mem_vertexSet_rigidContract_pair {G : Graph α β} {a b : α}
+    (ha : a ∈ V(G)) (hb : b ∈ V(G)) (hne : a ≠ b) {v : α} :
+    v ∈ V(G.rigidContract (G.induce {a, b}) a) ↔ v ∈ V(G) ∧ v ≠ b := by
+  rw [Graph.mem_vertexSet_rigidContract_iff (by simp) (Set.pair_subset ha hb)]
+  constructor
+  · rintro (rfl | ⟨hv, hvW⟩)
+    · exact ⟨ha, hne⟩
+    · exact ⟨hv, fun h => hvW (Or.inr h)⟩
+  · rintro ⟨hv, hvb⟩
+    by_cases hva : v = a
+    · exact Or.inl hva
+    · exact Or.inr ⟨hv, by simp [hva, hvb]⟩
+
+/-- A link of the ends glued is a link of `G` with its ends sent along the gluing. -/
+theorem _root_.Graph.exists_isLink_of_rigidContract_pair {G : Graph α β} {a b : α} {e : β}
+    {x y : α} (h : (G.rigidContract (G.induce {a, b}) a).IsLink e x y) :
+    ∃ u v, G.IsLink e u v ∧ Graph.collapseTo a {a, b} u = x ∧ Graph.collapseTo a {a, b} v = y := by
+  simp only [Graph.rigidContract, Graph.map_isLink, Graph.deleteEdges_isLink] at h
+  obtain ⟨u, v, ⟨huv, -⟩, rfl, rfl⟩ := h
+  exact ⟨u, v, huv, rfl, rfl⟩
+
+/-- The value of a partition of the ends glued is that of its pullback to `G`
+(`partitionDef_map`, as `G[{a, b}]` has no edge). -/
+theorem _root_.Graph.partitionDef_rigidContract_pair {G : Graph α β} (hS : G.Simple) {a b : α}
+    (hab : Disjoint (G.closedNbhd a) (G.closedNbhd b)) (n : ℕ) (h : α → α) :
+    (G.rigidContract (G.induce {a, b}) a).partitionDef n h =
+      G.partitionDef n (h ∘ Graph.collapseTo a {a, b}) := by
+  rw [Graph.rigidContract, Graph.partitionDef_map, Graph.edgeSet_induce_pair_eq_empty hS hab,
+    Graph.deleteEdges_empty, Graph.vertexSet_induce]
+
+/-- Every closed neighbourhood of the ends glued has at least three members: at `a` it contains
+`N_G[a]`; at another body `v` the gluing is injective on `N_G[v]`, which cannot hold both `a` and
+`b`, and maps it into `N[v]`. -/
+theorem _root_.Graph.three_le_ncard_closedNbhd_rigidContract_pair [Finite α] {G : Graph α β}
+    (h3 : ∀ v ∈ V(G), 3 ≤ (G.closedNbhd v).ncard) {a b : α} (ha : a ∈ V(G)) (hb : b ∈ V(G))
+    (hab : Disjoint (G.closedNbhd a) (G.closedNbhd b)) :
+    ∀ v ∈ V(G.rigidContract (G.induce {a, b}) a),
+      3 ≤ ((G.rigidContract (G.induce {a, b}) a).closedNbhd v).ncard := by
+  have hne : a ≠ b := fun h => Set.disjoint_left.mp hab (Or.inl rfl) (h ▸ Or.inl rfl)
+  have hbNa : b ∉ G.closedNbhd a := fun h => Set.disjoint_left.mp hab h (Or.inl rfl)
+  intro v hv
+  rw [Graph.mem_vertexSet_rigidContract_pair ha hb hne] at hv
+  by_cases hva : v = a
+  · subst hva
+    refine (h3 v ha).trans (Set.ncard_le_ncard (fun w hw => ?_) (Set.toFinite _))
+    by_cases hwv : w = v
+    · exact Or.inl hwv
+    · have hwW : w ∉ ({v, b} : Set α) := by
+        rintro (h | h)
+        · exact hwv h
+        · exact hbNa (h ▸ hw)
+      have := Graph.collapseTo_mem_closedNbhd_rigidContract (r := v) (W := {v, b}) hw
+        (fun h => hwW h.2)
+      rwa [collapseTo_of_not_mem hwW, collapseTo_of_mem (by simp)] at this
+  · have hvW : v ∉ ({a, b} : Set α) := by
+      rintro (h | h)
+      · exact hva h
+      · exact hv.2 h
+    have hinj : Set.InjOn (Graph.collapseTo a {a, b}) (G.closedNbhd v) := by
+      intro x hx y hy hxy
+      by_cases hxW : x ∈ ({a, b} : Set α) <;> by_cases hyW : y ∈ ({a, b} : Set α)
+      · rcases hxW with rfl | rfl <;> rcases hyW with rfl | rfl
+        · rfl
+        · exact absurd (Graph.mem_closedNbhd_comm hy)
+            (Set.disjoint_left.mp hab (Graph.mem_closedNbhd_comm hx))
+        · exact absurd (Graph.mem_closedNbhd_comm hx)
+            (Set.disjoint_left.mp hab (Graph.mem_closedNbhd_comm hy))
+        · rfl
+      · rw [collapseTo_of_mem hxW, collapseTo_of_not_mem hyW] at hxy
+        exact absurd (hxy ▸ (by simp : a ∈ ({a, b} : Set α))) hyW
+      · rw [collapseTo_of_not_mem hxW, collapseTo_of_mem hyW] at hxy
+        exact absurd (hxy ▸ (by simp : a ∈ ({a, b} : Set α))) hxW
+      · rwa [collapseTo_of_not_mem hxW, collapseTo_of_not_mem hyW] at hxy
+    refine (h3 v hv.1).trans ?_
+    rw [← hinj.ncard_image]
+    refine Set.ncard_le_ncard ?_ (Set.toFinite _)
+    rintro _ ⟨w, hw, rfl⟩
+    have := Graph.collapseTo_mem_closedNbhd_rigidContract (r := a) (W := {a, b}) hw
+      (fun h => hvW h.1)
+    rwa [collapseTo_of_not_mem hvW] at this
+
 /-- **Every closed neighbourhood of `G/H` has at least three members** (a step of
 `lem:pencil-contract-standing` and of `thm:pencil-x0-contract-additive`). At `r`: `G` is
 2-edge-connected, so at least two edges leave `W`, and their ends outside `W` are distinct, by

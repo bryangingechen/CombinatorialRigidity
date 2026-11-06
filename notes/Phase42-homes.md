@@ -6,14 +6,14 @@ CLEANUP-42 and ahead of ORIGAMI, in two parts: the friction log's docs and tooli
 2–4), then the lemmas Phase 42 left outside their home files, one task per home file, with the
 mirror lemmas that now meet their entries' own bar (tasks 5–18). No statement changes. Phase 42
 deferred the moves because a declaration added to these files rebuilds most of `Molecular/`
-mid-phase; ORIGAMI will not edit them, so they are cheapest now. Tasks 1–14 landed
+mid-phase; ORIGAMI will not edit them, so they are cheapest now. Tasks 1–15 landed
 (the docs part, the tree-wide basics, `Deficiency.lean`, the linear-independence mirrors and their
 sweep, `Meet.lean`, `RigidityMatrix/Basic.lean` with `GenericityDevice.lean`, `PanelLayer.lean`,
 `Realization.lean`, `Carrier.lean` with `Configuration.lean`, `Fin.val_succAbove` with
-`MainComponent/Cut.lean`):
-62 actionable entries down to 23 (heading tags, by `grep -c '^### \[<tag>\]'`: open 12,
+`MainComponent/Cut.lean`, the glued-ends helpers):
+62 actionable entries down to 22 (heading tags, by `grep -c '^### \[<tag>\]'`: open 11,
 mirror-candidate 9, process 2, blueprint 0; the header said 25, but at task 13 the grep gave 24).
-**Next concrete task:** task 15, the glued-ends helpers' homes (*Lemma checklist*).
+**Next concrete task:** task 16, the additive core's kernel argument, once (*Lemma checklist*).
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -29,7 +29,17 @@ public declaration's name, or delete a pinned declaration, does not land that ch
 
 ## Current state
 
-**Task 14 landed** (this commit; Lean; sonnet; one dispatch). `Fin.val_succAbove` is in the
+**Task 15 landed** (this commit; Lean; sonnet; one dispatch). All eight helpers sliced verbatim from
+`Grade/GluedEnds.lean`, no statement or binder change: `Graph.mem_closedNbhd_comm` after
+`closedNbhd_subset_vertexSet` in `Pencil/Motive.lean`; the six pair lemmas (`edgeSet_induce_pair_eq_empty` to
+`three_le_ncard_closedNbhd_rigidContract_pair`) in
+`MainComponent/ContractCurve.lean` after `rigidContract_induce_simple`; `liftingPlanesDiff_eq_top_of_notMem`
+after `mem_liftingPlanesDiff` in `Grade/PlanesMeet.lean`. No import change needed. Gates: G2 `lake build`
+(6249 jobs, 0 warnings) and `lake lint`; G3 `blueprint/lint.sh`; G1. G4 not run (no moved name is
+pinned: grep of `blueprint/src`); G5 not run (no proof replaced). FRICTION: *Glued-ends' contraction
+and lifting-planes helpers…* `[resolved]`.
+
+**Task 14** (landed;  Lean; sonnet; one dispatch). `Fin.val_succAbove` is in the
 `Mathlib/Data/Fin/Basic.lean` mirror (statement as the checklist, proved by the `val_succ_succAbove`
 pattern; `val_succ_succAbove` is left as it is, its `≤` form being a different statement);
 `coe_succAbove_one` and `coe_succAbove_two` stay in `Grade/Short.lean` (about 25 uses), each now
@@ -201,7 +211,7 @@ the entries it resolved.
   `Fin.val_succAbove` in the `Fin/Basic` mirror, `coe_succAbove_one`/`_two` through it; six
   `pathVertex` lemmas into `Cut.lean` (`pathVertex_zero_single` stays). Resolves *The `pathVertex`
   lemmas of 42h…*, the `Fin` part of *No `Fin.val_succAbove`…*.
-- [ ] **15. The glued-ends helpers' homes** (Lean; sonnet), all from `Grade/GluedEnds.lean`:
+- [x] **15. The glued-ends helpers' homes** (this commit; Lean; sonnet), all from `Grade/GluedEnds.lean`:
   `Graph.mem_closedNbhd_comm` to `Pencil/Motive.lean`, beside `closedNbhd`;
   `Graph.edgeSet_induce_pair_eq_empty`, `rigidContract_pair_simple`,
   `mem_vertexSet_rigidContract_pair`, `exists_isLink_of_rigidContract_pair`,
@@ -253,7 +263,7 @@ the entries it resolved.
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 15, the glued-ends helpers' homes (*Lemma checklist*), one commit.
+**Next concrete task:** task 16, the additive core's kernel argument, once (*Lemma checklist*), one commit.
 After the round: ORIGAMI's open, with the PI (`notes/Origami.md`).
 
 ## Decisions made during this round
