@@ -19,9 +19,10 @@ field `PanelHingeFramework.isLink_ends` (`Molecular/AlgebraicInduction/PanelHing
 tactic `link_tac` proves it from a hypothesis in scope.
 
 The condition has two forms at the links of the multigraph (`recordsLinks_iff_forall_isLink`,
-`recordsLinks_iff_eq_or_swap`), and the total and pair forms give it (`RecordsLinks.of_forall`,
-`RecordsLinks.of_pair`). It passes to a graph with fewer links (`RecordsLinks.of_isLink_imp`), a
-subgraph (`RecordsLinks.mono`) and an induced subgraph (`RecordsLinks.induce`).
+`recordsLinks_iff_eq_or_swap`), the total and pair forms give it (`RecordsLinks.of_forall`,
+`RecordsLinks.of_pair`), and it gives the pair form (`RecordsLinks.eq_pair_or_swap`). It passes
+to a graph with fewer links (`RecordsLinks.of_isLink_imp`), a subgraph (`RecordsLinks.mono`) and an
+induced subgraph (`RecordsLinks.induce`).
 
 Three of its lemmas are in `Molecular/Induction/Operations.lean`: its forms at the project's
 endpoint choice `Graph.endsOf` (`recordsLinks_endsOf`) and splitting off
@@ -106,12 +107,19 @@ theorem RecordsLinks.of_forall (h : ∀ e, G.IsLink e (ends e).1 (ends e).2) :
 
 /-- **The condition from the pair form** (`fmlnote:panel-hinge-nondegenerate`): if at every link of
 `G` at `e` from `u` to `v` the pair `ends e` is `(u, v)` or `(v, u)`, then `ends` records the links
-of `G`. This is the form of Case III's selector hypotheses (`hrec`, `hQrec`);
-`recordsLinks_iff_eq_or_swap` compares the pair coordinatewise. -/
+of `G`. `RecordsLinks.eq_pair_or_swap` is the converse; `recordsLinks_iff_eq_or_swap` compares the
+pair coordinatewise. -/
 theorem RecordsLinks.of_pair (h : ∀ e u v, G.IsLink e u v → ends e = (u, v) ∨ ends e = (v, u)) :
     RecordsLinks G ends := by
   refine recordsLinks_iff_eq_or_swap.mpr fun e u v he => ?_
   rcases h e u v he with h' | h' <;> simp [h']
+
+/-- **A recorded link, as a pair** (`fmlnote:panel-hinge-nondegenerate`): if `ends` records the
+links of `G` and `e` links `u` and `v` in `G`, then `ends e` is `(u, v)` or `(v, u)`. The converse
+of `RecordsLinks.of_pair`; `RecordsLinks.eq_or_swap` gives the same coordinatewise. -/
+theorem RecordsLinks.eq_pair_or_swap (h : RecordsLinks G ends) {e : β} {u v : α}
+    (he : G.IsLink e u v) : ends e = (u, v) ∨ ends e = (v, u) :=
+  (h.eq_or_swap he).imp (fun h => Prod.ext h.1 h.2) fun h => Prod.ext h.1 h.2
 
 /-- **The condition from a subgraph and two edges at a body** (a step of
 `lem:case-III-candidate-dispatch-d3` and `lem:case-III-chain-dispatch`, through

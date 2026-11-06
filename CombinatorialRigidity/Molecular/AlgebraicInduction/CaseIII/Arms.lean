@@ -84,7 +84,7 @@ theorem PanelHingeFramework.case_III_realization_of_rank [Infinite K]
     (hends_ea : ends e_a = (v, a)) (hends_eb : ends e_b = (v, b)) (heab : e_a ≠ e_b)
     (hleG : ∀ e u w, Gv.IsLink e u w → G.IsLink e u w)
     (hsplitG : ∀ e u w, G.IsLink e u w → e = e_a ∨ e = e_b ∨ Gv.IsLink e u w)
-    (hends_Gv : ∀ e u w, Gv.IsLink e u w → Gv.IsLink e (ends e).1 (ends e).2)
+    (hends_Gv : Graph.RecordsLinks Gv ends)
     (hne_Gv : ∀ e, Gv.IsLink e (ends e).1 (ends e).2 →
       (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.supportExtensor e ≠ 0)
     {n' : Fin (k + 2) → K}
@@ -94,13 +94,11 @@ theorem PanelHingeFramework.case_III_realization_of_rank [Infinite K]
       ≤ Module.finrank K (Submodule.span K
         (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
           (fun i => q (a, i)) n' (fun i => q (b, i)) 0
-          (.of_split (Graph.recordsLinks_iff_forall_isLink.mpr hends_Gv) hleG hG_ea hends_ea hG_eb
-            hends_eb hsplitG)).rigidityRows))
+          (.of_split hends_Gv hleG hG_ea hends_ea hG_eb hends_eb hsplitG)).rigidityRows))
     {n : ℕ} (hdef : G.deficiency n = 0) :
     PanelHingeFramework.HasGenericFullRankRealization K k n G := by
   classical
-  have hGrec := Graph.RecordsLinks.of_split (Graph.recordsLinks_iff_forall_isLink.mpr hends_Gv)
-    hleG hG_ea hends_ea hG_eb hends_eb hsplitG
+  have hGrec := Graph.RecordsLinks.of_split hends_Gv hleG hG_ea hends_ea hG_eb hends_eb hsplitG
   have : Fintype α := Fintype.ofFinite α
   set na := (fun i => q (a, i)) with hna
   set nb := (fun i => q (b, i)) with hnb
@@ -116,17 +114,8 @@ theorem PanelHingeFramework.case_III_realization_of_rank [Infinite K]
     simp only [hF₀, PanelHingeFramework.caseIIICandidate_supportExtensor_reproduced, zero_smul,
       add_zero]
   -- (ii) The rank gives that many linearly independent panel rows of `F₀` at links.
-  -- `hends` at `F₀.graph = G`: every `G`-link is `e_a`, `e_b`, or a `Gᵥ`-link (`hsplitG`).
+  -- `F₀.graph = G`, whose links `ends` records (`hGrec`, through `hsplitG`).
   have hF₀graph : F₀.graph = G := by rw [hF₀]; exact PanelHingeFramework.caseIIICandidate_graph ..
-  -- `hends` and `hne` at `G` (`F₀.graph = G` by definition), for step (ii) and the last step.
-  have hends_q₀ : ∀ e u w, G.IsLink e u w → G.IsLink e (ends e).1 (ends e).2 := by
-    intro e u w hlink
-    rcases hsplitG e u w hlink with he | he | hGv
-    · rw [he, hends_ea]; exact hG_ea
-    · rw [he, hends_eb]; exact hG_eb
-    · exact hleG e _ _ (hends_Gv e u w hGv)
-  have hends_G : ∀ e u w, F₀.graph.IsLink e u w → F₀.graph.IsLink e (ends e).1 (ends e).2 :=
-    hF₀graph ▸ hends_q₀
   -- `hne` on linking edges: `e_a ↦ C(L) ≠ 0` (`hLn`), `e_b ↦ C(e₀) ≠ 0` (`hgab`), `Gᵥ` via `hne_Gv`
   -- + extensor agreement off `{e_a, e_b}`, which meet `v ∉ V(Gv)` (`Graph.IsLink.ne_of_notMem`).
   have hGv_off : ∀ {e u w}, Gv.IsLink e u w → e ≠ e_a ∧ e ≠ e_b := fun hlink =>
@@ -139,10 +128,10 @@ theorem PanelHingeFramework.case_III_realization_of_rank [Infinite K]
     · obtain ⟨hne_a, hne_b⟩ := hGv_off hGv
       rw [hF₀, PanelHingeFramework.caseIIICandidate_supportExtensor_of_ne G ends q e_a e_b na n' nb
         0 hne_a hne_b]
-      exact hne_Gv e (hends_Gv e _ _ hGv)
+      exact hne_Gv e (hends_Gv.isLink hGv)
   obtain ⟨s, hs_link, hs_card, hs_indep⟩ :=
     F₀.exists_independent_panelRow_subfamily_of_le_finrank (ends := ends)
-      (Graph.recordsLinks_iff_forall_isLink.mpr hends_G) hne_F₀ hrank
+      (hF₀graph ▸ hGrec) hne_F₀ hrank
   -- (iii) The same rows stay independent at some `t ≠ 0` off the set `bad` of the `t` at which
   -- `na + t·n'` and `nb` are dependent.
   have : Finite ↥s := Set.Finite.to_subtype (Set.toFinite s)
@@ -191,7 +180,7 @@ theorem PanelHingeFramework.case_III_realization_of_rank [Infinite K]
     obtain ⟨hne_a, hne_b⟩ := hGv_off hlink
     -- the *recorded* endpoints of `e` lie in `V(Gᵥ)` (via `hends_Gv`), so both avoid `v`, hence
     -- `q₀` agrees with `q` at each.
-    have hrec := hends_Gv e u w hlink
+    have hrec := hends_Gv.isLink hlink
     have hfst : (ends e).1 ≠ v := fun h => hvVc (h ▸ hrec.left_mem)
     have hsnd : (ends e).2 ≠ v := fun h => hvVc (h ▸ hrec.right_mem)
     simp only [hFt, PanelHingeFramework.caseIIICandidate_supportExtensor_of_ne G ends q e_a e_b na
@@ -238,7 +227,7 @@ theorem PanelHingeFramework.case_III_realization_of_rank [Infinite K]
     · -- An edge of `Gᵥ`: the hinges agree (`hGv_seed_eq`), so it is a row of `FG₀`.
       rw [hFG₀_eq_panelRow t₁ t₂ (Prod.mk.eta (p := ends e)) (hGv_seed_eq hGv)]
       exact Submodule.subset_span (FG₀.panelRow_mem_rigidityRows_of_link ends
-        (Prod.mk.eta (p := ends e)) (hleG e _ _ (hends_Gv e _ _ hGv)) t₁ t₂)
+        (Prod.mk.eta (p := ends e)) (hleG e _ _ (hends_Gv.isLink hGv)) t₁ t₂)
   -- (v) Rigidity on `V(G)` at `q₀`, then a generic full-rank realization.
   have hsub : Submodule.span K
       (Set.range (fun i : ↥s => Ft.panelRow ends (i : β × _ × _)))
@@ -265,7 +254,7 @@ theorem PanelHingeFramework.case_III_realization_of_rank [Infinite K]
       obtain ⟨hne_a, hne_b⟩ := hGv_off hGv
       rw [hFt, PanelHingeFramework.caseIIICandidate_supportExtensor_of_ne G ends q e_a e_b na n' nb
         t hne_a hne_b]
-      exact hne_Gv e (hends_Gv e _ _ hGv)
+      exact hne_Gv e (hends_Gv.isLink hGv)
   -- (v) Rigidity on `V(G)` at `q₀` — generalize the heavy `Ft.panelRow`-family to a plain `f` so
   -- the `_of_span_le_rigidityRows` application never `whnf`s the `caseIIICandidate` carrier
   -- (TACTICS-QUIRKS §38), then a generic full-rank realization.
@@ -280,8 +269,7 @@ theorem PanelHingeFramework.case_III_realization_of_rank [Infinite K]
       ht_li hsub (by rw [hG]; exact hnev) (by rw [hG]; exact hcard_s)
   rw [hG] at hrig
   exact PanelHingeFramework.hasGenericFullRankRealization_of_rigidOn_ofNormals G ends
-    (Graph.recordsLinks_iff_forall_isLink.mpr hends_q₀)
-    hne_q₀ hnev hrig n hdef
+    hGrec hne_q₀ hnev hrig n hdef
 
 /-- **The count at `(G, p_1)`, then the rotation** (a step of `lem:case-III-candidate-dispatch-d3`
 and `lem:case-III-chain-dispatch`): under the hypotheses of `case_III_realization_of_rank` but
@@ -307,7 +295,7 @@ theorem PanelHingeFramework.case_III_arm_realization [Infinite K]
     (hends_ea : ends e_a = (v, a)) (hends_eb : ends e_b = (v, b)) (heab : e_a ≠ e_b)
     (hleG : ∀ e u w, Gv.IsLink e u w → G.IsLink e u w)
     (hsplitG : ∀ e u w, G.IsLink e u w → e = e_a ∨ e = e_b ∨ Gv.IsLink e u w)
-    (hends_Gv : ∀ e u w, Gv.IsLink e u w → Gv.IsLink e (ends e).1 (ends e).2)
+    (hends_Gv : Graph.RecordsLinks Gv ends)
     (hne_Gv : ∀ e, Gv.IsLink e (ends e).1 (ends e).2 →
       (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.supportExtensor e ≠ 0)
     (hVone : 1 ≤ V(Gv).ncard) (hVcard : V(G).ncard = V(Gv).ncard + 1)
@@ -329,8 +317,7 @@ theorem PanelHingeFramework.case_III_arm_realization [Infinite K]
     {n : ℕ} (hdef : G.deficiency n = 0) :
     PanelHingeFramework.HasGenericFullRankRealization K k n G := by
   classical
-  have hGrec := Graph.RecordsLinks.of_split (Graph.recordsLinks_iff_forall_isLink.mpr hends_Gv)
-    hleG hG_ea hends_ea hG_eb hends_eb hsplitG
+  have hGrec := Graph.RecordsLinks.of_split hends_Gv hleG hG_ea hends_ea hG_eb hends_eb hsplitG
   -- (i) The rank bound of KT eq. (6.29) at `F₀`, by `case_III_rank_certification`; then
   -- `case_III_realization_of_rank`, which does not depend on how the rank was found, rotates the
   -- panel of `v`.
@@ -368,7 +355,7 @@ theorem PanelHingeFramework.case_III_arm_realization_M2 [Infinite K]
     (hends_ea : ends e_a = (v, a)) (hends_eb : ends e_b = (v, b)) (heab : e_a ≠ e_b)
     (hleG : ∀ e u w, Gv.IsLink e u w → G.IsLink e u w)
     (hsplitG : ∀ e u w, G.IsLink e u w → e = e_a ∨ e = e_b ∨ Gv.IsLink e u w)
-    (hends_Gv : ∀ e u w, Gv.IsLink e u w → Gv.IsLink e (ends e).1 (ends e).2)
+    (hends_Gv : Graph.RecordsLinks Gv ends)
     (hne_Gv : ∀ e, Gv.IsLink e (ends e).1 (ends e).2 →
       (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.supportExtensor e ≠ 0)
     (hVone : 1 ≤ V(Gv).ncard) (hVcard : V(G).ncard = V(Gv).ncard + 1)

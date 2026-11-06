@@ -524,12 +524,28 @@ to be re-derived by re-reading entries later.
   restated as `RecordsLinks` at `F.graph`, where `F.graph` unfolds to the graph of an `ofNormals`
   in scope, broke a later `rw` through `link_tac`'s `assumption`: state it at the `ofNormals`'s
   graph. **Lifted to:** TACTICS-QUIRKS § 120.
+  ARREARS, task 14: the pair form has its lemma, `Graph.RecordsLinks.eq_pair_or_swap` (the
+  mirror), and the 23 link binders of `CaseIII/` (20 in signatures, 3 inside `h622lb`) are
+  `RecordsLinks`; the conversions there are gone, and `CaseII.lean`'s three pair sites read the
+  lemma. Two pair-form *conclusions* stay (`ofNormals_relabel`'s third conjunct,
+  `fullLink_recording_of_splitOff_recording`, whose one caller takes `.of_pair`).
 - **Proposed fix:** state such hypotheses as `RecordsLinks G ends` when the switch (Phase 41a, item
   5) or RESTATE touches their declarations; the conversions then go. For the field under
   `Q.graph = G`: a lemma `PanelHingeFramework.recordsLinks_of_graph_eq (hQg : Q.graph = G) :
   RecordsLinks G Q.ends` and a `link_base_tac` branch that applies it with `hQg` in scope (both
-  landed, ARREARS task 13).
+  landed, ARREARS task 13). For the pair form: `RecordsLinks.eq_pair_or_swap` (ARREARS task 14).
 - **Status:** open.
+
+### [idiom] Inserting arguments before a multi-line `(by tac₁` ⏎ `tac₂)` breaks the block's layout
+- **Where it bit:** ARREARS task 14: `chainData_freshEdge_slot_perp_ends₀`
+  (`CaseIII/Relabel/ChainColumn.lean`), `hrec (cd.edge …) … (by have h := …` with `simpa …` on the
+  next line under `have`, rewritten as `hrec.eq_pair_or_swap (e := …) (u := …)` ⏎ `(v := …) (by have
+  h := …`: *"unexpected identifier; expected ')', ',' or ':'"* at the `simpa`.
+- **Friction:** a tactic block's later tactics must sit at its first tactic's column; the edit
+  moved `have` right, and `simpa` no longer lined up. One iteration.
+- **Proposed fix:** keep `(by` at the start of its own line, at the old column, so the block's
+  tactics keep theirs.
+- **Status:** idiom.
 
 
 ### [idiom] `simp` makes no progress on `0 = s.card ↔ s = ∅`

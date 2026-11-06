@@ -94,18 +94,13 @@ theorem PanelHingeFramework.case_II_placement_rank [DecidableEq α] [Finite α] 
   have hvVGab : v ∉ V(Gab) := by rw [hGab_def, Graph.vertexSet_splitOff]; simp
   have hends_Gab : ∀ e u w, Gab.IsLink e u w → Gab.IsLink e (endsv e).1 (endsv e).2 :=
     fun _ _ _ he => hlinksv.isLink he
-  have hrec' : ∀ e u w, Gab.IsLink e u w → endsv e = (u, w) ∨ endsv e = (w, u) := by
-    intro e u w he
-    rcases hlinksv.eq_or_swap he with ⟨h1, h2⟩ | ⟨h1, h2⟩
-    · exact Or.inl (Prod.ext h1 h2)
-    · exact Or.inr (Prod.ext h1 h2)
   have he₀ab : Gab.IsLink e₀ a b := by
     rw [hGab_def, Graph.splitOff_isLink]
     exact Or.inr ⟨rfl, hav, hbv, haG, hbG, Or.inl ⟨rfl, rfl⟩⟩
   -- The hinge of `e₀` is `±C(n_a, n_b)`, nondegenerate.
   have hC : panelSupportExtensor n_a n_b ≠ 0 := by
     have h := hne e₀ (hends_Gab e₀ a b he₀ab)
-    rcases hrec' e₀ a b he₀ab with h' | h'
+    rcases hlinksv.eq_pair_or_swap he₀ab with h' | h'
     · rwa [PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends _ e₀ h'] at h
     · rw [PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends _ e₀ h',
         panelSupportExtensor_swap] at h
@@ -155,14 +150,8 @@ theorem PanelHingeFramework.case_II_placement_rank [DecidableEq α] [Finite α] 
       (by simpa [hFGab_def] using hlinksv) (by simpa [hFGab_def] using hne₀)
       (by simpa [hFGab_def] using hN₀)
   -- The hinges of `e_b` and `e_a` at `q₀`: `±C` and `±t C`, with `C = C(n_a, n_b)`.
-  have hends_ea : ends e_a = (v, a) ∨ ends e_a = (a, v) := by
-    rcases hlinks.eq_or_swap hG_ea with ⟨h1, h2⟩ | ⟨h1, h2⟩
-    · exact Or.inl (Prod.ext h1 h2)
-    · exact Or.inr (Prod.ext h1 h2)
-  have hends_eb : ends e_b = (v, b) ∨ ends e_b = (b, v) := by
-    rcases hlinks.eq_or_swap hG_eb with ⟨h1, h2⟩ | ⟨h1, h2⟩
-    · exact Or.inl (Prod.ext h1 h2)
-    · exact Or.inr (Prod.ext h1 h2)
+  have hends_ea : ends e_a = (v, a) ∨ ends e_a = (a, v) := hlinks.eq_pair_or_swap hG_ea
+  have hends_eb : ends e_b = (v, b) ∨ ends e_b = (b, v) := hlinks.eq_pair_or_swap hG_eb
   have hFG_ea : FG.supportExtensor e_a = (-t) • panelSupportExtensor n_a n_b ∨
       FG.supportExtensor e_a = t • panelSupportExtensor n_a n_b := by
     rcases hends_ea with h | h
@@ -200,7 +189,7 @@ theorem PanelHingeFramework.case_II_placement_rank [DecidableEq α] [Finite α] 
       FGab.panelRow endsv (e₀, t₁, t₂) ∈ Submodule.span K FG.rigidityRows := by
     intro t₁ t₂
     rw [hFGab_def, PanelHingeFramework.ofNormals_panelRow_eq_hingeRow_of_ends_or_swap Gab endsv q₀
-        (hrec' e₀ a b he₀ab) t₁ t₂, hq₀a, hq₀b]
+        (hlinksv.eq_pair_or_swap he₀ab) t₁ t₂, hq₀a, hq₀b]
     set ρ := annihRow (panelSupportExtensor n_a n_b) t₁ t₂ with hρ_def
     have hρC : ρ (panelSupportExtensor n_a n_b) = 0 := annihRow_apply_self _ t₁ t₂
     rw [← BodyHingeFramework.hingeRow_add_hingeRow a v b ρ]

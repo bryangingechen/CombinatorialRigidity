@@ -73,13 +73,11 @@ theorem PanelHingeFramework.case_III_arm_realization_M3 [Infinite K]
     (hG_ea : G.IsLink e_a v a) (hG_eb : G.IsLink e_b v b) (hG_ec : G.IsLink e_c a c)
     (heac : e_a ≠ e_c)
     (hcla : ∀ e x, G.IsLink e a x → e = e_a ∨ e = e_c)
-    (hrecGv : ∀ e x y, (G.removeVertex v).IsLink e x y →
-      ends₀ e = (x, y) ∨ ends₀ e = (y, x))
+    (hrecGv : Graph.RecordsLinks (G.removeVertex v) ends₀)
     (hends₃_ec : ends₃ e_c = (a, c)) (hends₃_ea : ends₃ e_a = (a, v))
     (hends₃_eb : ends₃ e_b = (v, b))
     (hends₃_off : ∀ e, e ≠ e_a → e ≠ e_b → e ≠ e_c → ends₃ e = ends₀ e)
-    (hends_Gva : ∀ e x y, (G.removeVertex a).IsLink e x y →
-      (G.removeVertex a).IsLink e (ends₃ e).1 (ends₃ e).2)
+    (hends_Gva : Graph.RecordsLinks (G.removeVertex a) ends₃)
     (hne_Gva : ∀ e, (G.removeVertex a).IsLink e (ends₃ e).1 (ends₃ e).2 →
       (PanelHingeFramework.ofNormals (G.removeVertex a) ends₃
         (fun p => q (Equiv.swap a v p.1, p.2))).toBodyHinge.supportExtensor e ≠ 0)
@@ -139,7 +137,7 @@ theorem PanelHingeFramework.case_III_arm_realization_M3 [Infinite K]
     rw [hFv, PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_normal,
       PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_ends] at hperp
     -- `ends₀ e_c ∈ {(a,c),(c,a)}`; either gives `ρ ⊥ ±C(q(ac))`.
-    rcases hrecGv e_c a c hGv_ec with he | he
+    rcases hrecGv.eq_pair_or_swap hGv_ec with he | he
     · rwa [he] at hperp
     · rw [he, panelSupportExtensor_swap, map_neg, neg_eq_zero] at hperp; exact hperp
   -- The framework `Fva = ofNormals (G − a) ends₃ qρ`.
@@ -225,7 +223,7 @@ theorem PanelHingeFramework.case_III_arm_realization_M3 [Infinite K]
         rw [hFv, PanelHingeFramework.toBodyHinge_supportExtensor,
           PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal,
           PanelHingeFramework.ofNormals_ends] at hr
-        rcases hrecGv f x y hlink with he | he <;> rw [he] at hr ⊢ <;>
+        rcases hrecGv.eq_pair_or_swap hlink with he | he <;> rw [he] at hr ⊢ <;>
           simp only [hqρ, Equiv.swap_apply_of_ne_of_ne hxa hxv,
             Equiv.swap_apply_of_ne_of_ne hya hyv] <;> exact hr
     have hw9a := BodyHingeFramework.funLeft_dualMap_sub_acolumn_mem_span_rigidityRows
@@ -270,7 +268,7 @@ theorem PanelHingeFramework.case_III_arm_realization_M3 [Infinite K]
       (fun e x y hlink => (Graph.removeVertex_isLink.mp hlink).1)
       (fun e x y hlink => ⟨(Graph.removeVertex_isLink.mp hlink).2.1,
         (Graph.removeVertex_isLink.mp hlink).2.2⟩)
-      (fun e x y hlink => hrecGv e x y hlink) hends₃_eb hends₃_off (hwmem j)
+      hrecGv hends₃_eb hends₃_off (hwmem j)
 
 /-! ## Rows at the edges of the chain in `G − v_i`
 

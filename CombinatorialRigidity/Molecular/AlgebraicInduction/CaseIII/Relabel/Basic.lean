@@ -228,8 +228,7 @@ theorem PanelHingeFramework.ofNormals_relabel [DecidableEq α] [DecidableEq β]
     (hcla : ∀ e x, G.IsLink e a x → e = eₐ ∨ e = e_c)
     (he₀ : e₀ ∉ E(G)) (he₁ : e₁ ∉ E(G)) (he₁₀ : e₁ ≠ e₀)
     {ends₀ : β → α × α} {q₀ : α × Fin (k + 2) → K}
-    (hQrec : ∀ e u w, (G.splitOff v a b e₀).IsLink e u w →
-        ends₀ e = (u, w) ∨ ends₀ e = (w, u))
+    (hQrec : Graph.RecordsLinks (G.splitOff v a b e₀) ends₀)
     (hQgp : (PanelHingeFramework.ofNormals (G.splitOff v a b e₀) ends₀ q₀).IsGeneralPosition)
     (hQrig :
       (PanelHingeFramework.ofNormals (G.splitOff v a b e₀) ends₀
@@ -238,7 +237,7 @@ theorem PanelHingeFramework.ofNormals_relabel [DecidableEq α] [DecidableEq β]
       (fun e => (Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).1,
           Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).2)) :=
       recordsLinks_splitOff_relabel hG_ea hG_eb hG_ec hav hbv hcv hca heab hclv hcla he₀ he₁ he₁₀
-        (Graph.RecordsLinks.of_pair hQrec)) :
+        hQrec) :
     (PanelHingeFramework.ofNormals (G.splitOff a v c e₁)
         (fun e => (Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).1,
           Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).2))
@@ -331,7 +330,7 @@ theorem PanelHingeFramework.ofNormals_relabel [DecidableEq α] [DecidableEq β]
     have hfQ : (G.splitOff v a b e₀).IsLink (σ e') (ρ u) (ρ w) :=
       (_root_.Graph.splitOff_isLink_relabel hG_ea hG_eb hG_ec hav hbv hcv hca
         heab hclv hcla he₀ he₁ he₁₀).mp he'
-    rcases hQrec (σ e') (ρ u) (ρ w) hfQ with h1 | h1
+    rcases hQrec.eq_pair_or_swap hfQ with h1 | h1
     · refine Or.inl ?_
       rw [h1]; exact Prod.ext (hρρ u) (hρρ w)
     · refine Or.inr ?_
@@ -475,14 +474,8 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_splitOff_relabel [F
   have hrig' : (PanelHingeFramework.ofNormals (G.splitOff v a b e₀) Q.ends
       (fun p => Q.normal p.1 p.2)).toBodyHinge.IsInfinitesimallyRigidOn
         V(G.splitOff v a b e₀) := by rw [hQeq]; exact hQrig
-  have hrec' : ∀ e u w, (G.splitOff v a b e₀).IsLink e u w →
-      Q.ends e = (u, w) ∨ Q.ends e = (w, u) := by
-    intro e u w he
-    rcases hQrec.eq_or_swap he with ⟨h1, h2⟩ | ⟨h1, h2⟩
-    · exact Or.inl (Prod.ext h1 h2)
-    · exact Or.inr (Prod.ext h1 h2)
   obtain ⟨hgp, hrig_out, hrec⟩ := PanelHingeFramework.ofNormals_relabel hG_ea hG_eb hG_ec
-    hav hbv hcv hca heab hclv hcla he₀ he₁ he₁₀ hrec' hgp' hrig'
+    hav hbv hcv hca heab hclv hcla he₀ he₁ he₁₀ hQrec hgp' hrig'
   -- Derive rank from the rigidity of the output framework.
   set F_out := PanelHingeFramework.ofNormals (G.splitOff a v c e₁)
       (fun e => (Equiv.swap a v (Q.ends ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).1,
@@ -647,8 +640,7 @@ theorem _root_.Graph.ChainData.seedAdvance_wstep_hstep
     (hbound : s + 2 < cd.d) (ends ends' : β → α × α) (q : α × Fin (k + 2) → K)
     (hends'_off : ∀ f, f ≠ cd.edge ⟨s + 1, by omega⟩ → f ≠ cd.edge ⟨s + 2, by omega⟩ →
       ends' f = ends f)
-    (hrec : ∀ f x y, (G.removeVertex (cd.vtx ⟨s + 1, by omega⟩)).IsLink f x y →
-      ends f = (x, y) ∨ ends f = (y, x))
+    (hrec : Graph.RecordsLinks (G.removeVertex (cd.vtx ⟨s + 1, by omega⟩)) ends)
     {hlinks : Graph.RecordsLinks (G.removeVertex (cd.vtx ⟨s + 2, by omega⟩)) ends'} :
     (cd.vtx ⟨s + 3, by omega⟩ ≠ cd.vtx ⟨s + 2, by omega⟩ ∧
         cd.vtx ⟨s + 3, by omega⟩ ≠ cd.vtx ⟨s + 1, by omega⟩) ∧
@@ -757,7 +749,7 @@ theorem _root_.Graph.ChainData.seedAdvance_wstep_hstep
       -- `ends f`'s two ends are `x` and `y` in some order (`hrec`), neither `a` (`hxa`, `hya`) nor
       -- `v` (`hxv`, `hyv`). The transposition `(a v)` fixes them, so `qρ = q` there, and the hinge
       -- of `Fva` is that of `Fv`, on which `r` vanishes (`hr`).
-      rcases hrec f x y hlink with he | he <;> rw [he] at hr ⊢ <;>
+      rcases hrec.eq_pair_or_swap hlink with he | he <;> rw [he] at hr ⊢ <;>
         simp only [hqρ, Equiv.swap_apply_of_ne_of_ne hxa hxv,
           Equiv.swap_apply_of_ne_of_ne hya hyv] <;> exact hr
   exact ⟨⟨hca, hcv⟩, hFv_link_ec, hdeg2, hnov, htrans⟩

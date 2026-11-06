@@ -133,30 +133,27 @@ labels of the edges `v_{s+2} v_{s+3}` and the steps `shiftBodyListAsc i`, and
 theorem _root_.Graph.ChainData.shiftBodyListAsc_foldl_mem_span_rigidityRows
     [DecidableEq α] {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin cd.d)
     (ends : β → α × α) (q : α × Fin (k + 2) → K)
-    (hrec : ∀ f x y, G.IsLink f x y → ends f = (x, y) ∨ ends f = (y, x))
+    (hrec : Graph.RecordsLinks G ends)
     {φ : Module.Dual K (α → ScrewSpace K k)}
     (hφ : φ ∈ Submodule.span K
-      (cd.shiftBodyFrameworkAsc (s := 0) (by have := i.2; omega) ends
-      (Graph.RecordsLinks.of_pair hrec) q).rigidityRows) :
+      (cd.shiftBodyFrameworkAsc (s := 0) (by have := i.2; omega) ends hrec q).rigidityRows) :
     ((cd.shiftBodyListAsc i).foldl
         (fun T b => (BodyHingeFramework.wstep (k := k) b.1 b.2.1 b.2.2).comp T) LinearMap.id) φ
       ∈ Submodule.span K
-          (cd.shiftBodyFrameworkAsc (s := (i : ℕ) - 1) (by have := i.2; omega) ends
-      (Graph.RecordsLinks.of_pair hrec) q).rigidityRows
-            := by
-  have hG := Graph.RecordsLinks.of_pair hrec
+          (cd.shiftBodyFrameworkAsc (s := (i : ℕ) - 1) (by have := i.2; omega) ends hrec
+            q).rigidityRows := by
   have hiv : (i : ℕ) < cd.d := i.2
   -- The frameworks `shiftBodyFrameworkAscTotal`, and the label `edge (s + 2)` at step `s` (any
   -- label past the range: the moves reach only `s ≤ i − 2 < d`).
-  have hF0 : cd.shiftBodyFrameworkAscTotal ends hG q 0
-      = cd.shiftBodyFrameworkAsc (s := 0) (by omega) ends hG q :=
-    cd.shiftBodyFrameworkAscTotal_eq ends hG q (by omega)
-  have hFlen : cd.shiftBodyFrameworkAscTotal ends hG q (cd.shiftBodyListAsc i).length
-      = cd.shiftBodyFrameworkAsc (s := (i : ℕ) - 1) (by omega) ends hG q := by
-    rw [cd.length_shiftBodyListAsc, cd.shiftBodyFrameworkAscTotal_eq ends hG q (by omega)]
+  have hF0 : cd.shiftBodyFrameworkAscTotal ends hrec q 0
+      = cd.shiftBodyFrameworkAsc (s := 0) (by omega) ends hrec q :=
+    cd.shiftBodyFrameworkAscTotal_eq ends hrec q (by omega)
+  have hFlen : cd.shiftBodyFrameworkAscTotal ends hrec q (cd.shiftBodyListAsc i).length
+      = cd.shiftBodyFrameworkAsc (s := (i : ℕ) - 1) (by omega) ends hrec q := by
+    rw [cd.length_shiftBodyListAsc, cd.shiftBodyFrameworkAscTotal_eq ends hrec q (by omega)]
   rw [← hFlen]
   refine BodyHingeFramework.wstep_foldl_mem_span_rigidityRows
-    (F := cd.shiftBodyFrameworkAscTotal ends hG q)
+    (F := cd.shiftBodyFrameworkAscTotal ends hrec q)
     (ec := fun s => if h : s + 2 < cd.d then cd.edge ⟨s + 2, h⟩
       else cd.edge ⟨0, by have := cd.hd; omega⟩)
     (bodies := cd.shiftBodyListAsc i) (hstep := fun s hs => ?_) (hφ := hF0 ▸ hφ)
@@ -164,12 +161,12 @@ theorem _root_.Graph.ChainData.shiftBodyListAsc_foldl_mem_span_rigidityRows
   -- label and the step at `s`, and apply `seedAdvance_wstep_hstep`.
   rw [cd.length_shiftBodyListAsc] at hs
   have hsd : s + 2 < cd.d := by omega
-  have hFs : cd.shiftBodyFrameworkAscTotal ends hG q s
-      = cd.shiftBodyFrameworkAsc (s := s) (by omega) ends hG q :=
-    cd.shiftBodyFrameworkAscTotal_eq ends hG q (by omega)
-  have hFs1 : cd.shiftBodyFrameworkAscTotal ends hG q (s + 1)
-      = cd.shiftBodyFrameworkAsc (s := s + 1) (by omega) ends hG q :=
-    cd.shiftBodyFrameworkAscTotal_eq ends hG q (by omega)
+  have hFs : cd.shiftBodyFrameworkAscTotal ends hrec q s
+      = cd.shiftBodyFrameworkAsc (s := s) (by omega) ends hrec q :=
+    cd.shiftBodyFrameworkAscTotal_eq ends hrec q (by omega)
+  have hFs1 : cd.shiftBodyFrameworkAscTotal ends hrec q (s + 1)
+      = cd.shiftBodyFrameworkAsc (s := s + 1) (by omega) ends hrec q :=
+    cd.shiftBodyFrameworkAscTotal_eq ends hrec q (by omega)
   have hbody : (cd.shiftBodyListAsc i)[s]'(by rw [cd.length_shiftBodyListAsc]; omega)
       = (cd.vtx ⟨s + 1, by omega⟩, cd.vtx ⟨s + 2, by omega⟩, cd.vtx ⟨s + 3, by omega⟩) :=
     cd.getElem_shiftBodyListAsc i s (by rw [cd.length_shiftBodyListAsc]; omega)
@@ -191,7 +188,7 @@ theorem _root_.Graph.ChainData.shiftBodyListAsc_foldl_mem_span_rigidityRows
   -- it states, with `Q (s+1)` rewritten (`hQ`).
   simp only [Graph.ChainData.shiftBodyFrameworkAsc, Graph.ChainData.shiftBodyGraph, hQ]
   exact cd.seedAdvance_wstep_hstep hsd ends ends (cd.shiftSeedAdv q s) (fun _ _ _ => rfl)
-    (fun f x y hl => hrec f x y ((Graph.removeVertex_isLink.mp hl).1))
+    (hrec.mono (Graph.removeVertex_le _ _))
 
 /-! ## The rows of `(G_i, q_i)` (`lem:case-III-chain-relabel-rows`)
 
@@ -262,10 +259,10 @@ lemma _root_.Graph.ChainData.candidateEnds_records_splitOff_isLink
     [DecidableEq α] [DecidableEq β] {G : Graph α β} {n : ℕ}
     (cd : G.ChainData n) (i : Fin cd.d) (hi : 1 < (i : ℕ))
     {ends₀ : β → α × α}
-    (hrec : ∀ f x y, (G.splitOff (cd.vtx (⟨1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc)
+    (hrec : Graph.RecordsLinks
+      (G.splitOff (cd.vtx (⟨1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc)
         (cd.vtx (⟨1, by have := i.isLt; omega⟩ : Fin cd.d).succ)
-        (cd.vtx (⟨0, by have := i.isLt; omega⟩ : Fin cd.d).castSucc) cd.e₀).IsLink f x y →
-      ends₀ f = (x, y) ∨ ends₀ f = (y, x))
+        (cd.vtx (⟨0, by have := i.isLt; omega⟩ : Fin cd.d).castSucc) cd.e₀) ends₀)
     {e : β} {u w : α}
     (hlink : (G.splitOff (cd.vtx i.castSucc) (cd.vtx i.succ)
       (cd.vtx (⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc) cd.e₀).IsLink e u w) :
@@ -275,7 +272,7 @@ lemma _root_.Graph.ChainData.candidateEnds_records_splitOff_isLink
   -- `ends₀` gives it its ends; `candidateEnds` applies `ρ.symm`, which gives back `(u, w)` or
   -- `(w, u)`.
   rw [Graph.ChainData.candidateEnds]
-  rcases hrec _ _ _ hbase with he | he <;> rw [he] <;>
+  rcases hrec.eq_pair_or_swap hbase with he | he <;> rw [he] <;>
     simp only [Equiv.symm_apply_apply, Prod.mk.injEq, true_or, or_true]
 
 /-- **A selector that gives each link of `G` its ends** (a step of `lem:case-III-chain-dispatch`):
@@ -290,10 +287,9 @@ lemma _root_.Graph.ChainData.fullLink_recording_of_splitOff_recording
     {G : Graph α β} {n : ℕ}
     (cd : G.ChainData n) (h3 : 3 ≤ cd.d) {ends₀ : β → α × α}
     -- `ends₀` gives each link of the split at `v₁` its ends:
-    (hrec' : ∀ f x y, (G.splitOff (cd.vtx (⟨1, by omega⟩ : Fin cd.d).castSucc)
+    (hrec' : Graph.RecordsLinks (G.splitOff (cd.vtx (⟨1, by omega⟩ : Fin cd.d).castSucc)
         (cd.vtx (⟨0, by omega⟩ : Fin cd.d).castSucc)
-        (cd.vtx (⟨2, by omega⟩ : Fin cd.d).castSucc) cd.e₀).IsLink f x y →
-      ends₀ f = (x, y) ∨ ends₀ f = (y, x))
+        (cd.vtx (⟨2, by omega⟩ : Fin cd.d).castSucc) cd.e₀) ends₀)
     -- and the edges `edge 0`, which joins `vtx 0` and `vtx 1`, and `edge 1`, which joins `vtx 1`
     -- and `vtx 2`, theirs:
     (he0 : ends₀ (cd.edge ⟨0, by omega⟩) = (cd.vtx (⟨0, by omega⟩ : Fin cd.d).castSucc,
@@ -338,7 +334,7 @@ lemma _root_.Graph.ChainData.fullLink_recording_of_splitOff_recording
     rw [not_or] at hxy1
     obtain ⟨hxv1, hyv1⟩ := hxy1
     have hfe₀ : f ≠ cd.e₀ := fun he => cd.e₀_fresh (he ▸ hG.edge_mem)
-    exact hrec' f x y (Graph.splitOff_isLink.mpr (Or.inl ⟨hfe₀, hG, hxv1, hyv1⟩))
+    exact hrec'.eq_pair_or_swap (Graph.splitOff_isLink.mpr (Or.inl ⟨hfe₀, hG, hxv1, hyv1⟩))
 
 /-- **The rows of `(G_i, q_i)`** (`lem:case-III-chain-relabel-rows`; KT eqs. (6.55), p. 694, and
 (6.62), p. 696): for `2 ≤ i ≤ d − 1`, `σ_i = shiftPerm i.castSucc` and `q_i = q ∘ σ_i`, let `ends₀`
@@ -361,9 +357,8 @@ theorem PanelHingeFramework.chainData_bottom_relabel
     [DecidableEq α] [DecidableEq β] {G : Graph α β} {n : ℕ}
     (cd : G.ChainData n) (i : Fin cd.d) (hi : 1 < (i : ℕ))
     {ends₀ : β → α × α} {q : α × Fin (k + 2) → K}
-    (hrec : ∀ e x y, (G.removeVertex
-          (cd.vtx (⟨1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc)).IsLink e x y →
-      ends₀ e = (x, y) ∨ ends₀ e = (y, x))
+    (hrec : Graph.RecordsLinks
+      (G.removeVertex (cd.vtx (⟨1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc)) ends₀)
     (he₀rec : ends₀ cd.e₀ =
       (cd.vtx (⟨2, by have := i.isLt; omega⟩ : Fin cd.d).castSucc,
         cd.vtx (⟨0, by have := i.isLt; omega⟩ : Fin cd.d).castSucc))
@@ -410,7 +405,7 @@ theorem PanelHingeFramework.chainData_bottom_relabel
       have hr' := (BodyHingeFramework.mem_hingeRowBlock_iff _ f r).1 hr
       rw [PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_normal,
         PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_ends] at hr'
-      rcases hrec f x y (Graph.removeVertex_isLink.mpr ⟨hG, hx1, hy1⟩) with he | he
+      rcases hrec.eq_pair_or_swap (Graph.removeVertex_isLink.mpr ⟨hG, hx1, hy1⟩) with he | he
       · rw [he] at hr'; exact hr'
       · rw [he, panelSupportExtensor_swap, map_neg, neg_eq_zero] at hr'; exact hr'
     -- The renamed link `(σ⁻¹ f, ρ⁻¹ x, ρ⁻¹ y)`: a link of `G − v_i`, or the new edge of `G_i`.
@@ -515,7 +510,7 @@ theorem PanelHingeFramework.case_III_bottom_relabel
     (hcla : ∀ e x, G.IsLink e a x → e = e_a ∨ e = e_c)
     (hGv_le : ∀ e x y, Gv.IsLink e x y → G.IsLink e x y)
     (hnov : ∀ e x y, Gv.IsLink e x y → x ≠ v ∧ y ≠ v)
-    (hrecGv : ∀ e x y, Gv.IsLink e x y → ends₀ e = (x, y) ∨ ends₀ e = (y, x))
+    (hrecGv : Graph.RecordsLinks Gv ends₀)
     (hends₃_eb : ends₃ e_b = (v, b))
     (hends₃_off : ∀ e, e ≠ e_a → e ≠ e_b → e ≠ e_c → ends₃ e = ends₀ e)
     {φ : Module.Dual K (α → ScrewSpace K k)}
@@ -570,7 +565,7 @@ theorem PanelHingeFramework.case_III_bottom_relabel
       · -- annihilation: `r ⊥ C(q(ends₀ e_c))`, and `ends₀ e_c ∈ {(a,c),(c,a)}` (hrecGv).
         rw [hfe] at hr' hlink
         rw [LinearMap.neg_apply, neg_eq_zero]
-        rcases hrecGv e_c a c hlink with he | he
+        rcases hrecGv.eq_pair_or_swap hlink with he | he
         · rw [he] at hr'; rw [panelSupportExtensor_swap, map_neg, hr', neg_zero]
         · rw [he] at hr'; exact hr'
       · rw [Equiv.swap_apply_left, Equiv.swap_apply_of_ne_of_ne hca hcv]
@@ -593,7 +588,7 @@ theorem PanelHingeFramework.case_III_bottom_relabel
         -- relabel `hingeRow c a r → hingeRow c v r`; tag RIGHT with `ρ' := r`.
         refine Or.inr ⟨r, ?_, ?_⟩
         · rw [hfe] at hr' hlink
-          rcases hrecGv e_c c a hlink with he | he
+          rcases hrecGv.eq_pair_or_swap hlink with he | he
           · rw [he] at hr'; exact hr'
           · rw [he] at hr'; rw [panelSupportExtensor_swap, map_neg, hr', neg_zero]
         · rw [Equiv.swap_apply_of_ne_of_ne hca hcv, Equiv.swap_apply_left]
@@ -630,7 +625,7 @@ theorem PanelHingeFramework.case_III_bottom_relabel
             hends₃_off f hfne_a hfne_b hfne_c]
           -- `ends₀ f ∈ {(x,y),(y,x)}` (hrecGv); the swap fixes `x, y ∉ {a, v}`, so `qρ = q` and
           -- the `Fva`-extensor matches the `Fv`-extensor `r` annihilates (`hr'`).
-          rcases hrecGv f x y hlink with he | he <;> rw [he] at hr' ⊢ <;>
+          rcases hrecGv.eq_pair_or_swap hlink with he | he <;> rw [he] at hr' ⊢ <;>
             simp only [hqρ, Equiv.swap_apply_of_ne_of_ne hxa hxv,
               Equiv.swap_apply_of_ne_of_ne hya hyv] <;> exact hr'
   · -- The form `φ = hingeRow a b ρ'`: renamed, the row of `e_b`.

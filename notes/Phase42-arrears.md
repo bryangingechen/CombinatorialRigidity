@@ -7,7 +7,7 @@ carried over (`notes/Phase42-homes.md` *Moved to a later round*, *Candidates for
 debt, the friction log's archive sweep, a dead pair of `have`s, the splits of the four molecular
 files past the ~1500-line tripwire, and `RecordsLinks` moved to `Graph` with its link hypotheses
 restated. Seventeen tasks; no main result's statement changes.
-**Next concrete task:** task 14, restate Case III's link hypotheses (*Lemma checklist*; task 13 landed, 11 reserved and unused).
+**Next concrete task:** task 15, restate `Pencil/MainComponent/`'s link hypotheses (*Lemma checklist*; tasks 13 and 14 landed, 11 reserved and unused).
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -22,7 +22,7 @@ stops; the PI answers in an entry that starts `**PI, <date>:**`.
 
 ## Current state
 
-**Tasks 1-10, 12 and 13 landed.** Task 1 (`381dcae1`): the open. Task 2 (`0edd6e7e`): the friction log's
+**Tasks 1-10 and 12-14 landed.** Task 1 (`381dcae1`): the open. Task 2 (`0edd6e7e`): the friction log's
 archive sweep, 22 `[resolved]` entries to `FRICTION-archive.md`; FRICTION's counts now open 8,
 mirror-candidate 8, process 2, blueprint 0, resolved 0. Task 3 (`6f227b5e`): `hax`, `hbx` deleted
 from `X0AttainsGrade.of_openEar_four`. Task 4 (`a0b498a0`): HOMES's four missing edges closed
@@ -41,10 +41,13 @@ G6 **0 missing**, unbacked 190, implied 3070, both consistency lines OK, as at t
 (`a2d7fe04`): `PanelLayer.lean` split in three, a pure move; same gates, G6 unchanged. Task 10 closed
 as a no-op: each split recorded its sizes in `PERFORMANCE.md` *(C)* item 3, now closed. Task 12
 (`651ecc60`): `RecordsLinks` moved to `Graph` (*Decisions*); G1, G2, G3; no pin moved or renamed, so
-no G4; G6 unchanged. FRICTION now open 7, mirrored 72, idiom 249. Task 13 (this commit): 22 binders
-restated (*Decisions*); G1, G2, G3 (docstring-label report unchanged), G5 (21 × `[propext,
-Classical.choice, Quot.sound]`), G6 unchanged; no pin moved, so no G4; no TeX (no pinned node
-states the old form). FRICTION counts unchanged.
+no G4; G6 unchanged. FRICTION now open 7, mirrored 72, idiom 249. Task 13 (`03215eb1`): 22 binders
+restated (*Decisions*); G1, G2, G3, G5, G6; no G4, no TeX. Task 14 (this commit): `CaseIII/`'s 23
+binders restated, `Graph.RecordsLinks.eq_pair_or_swap` new in the mirror (*Decisions*); G1, G2
+(whole-tree `lake build` 0 warnings, 0 cache failures; `lake lint`), G3 (docstring-label report
+unchanged, total 0), G5 (21 × `[propext, Classical.choice, Quot.sound]`), G6 (0 missing, unbacked
+190, implied 3070, both consistency lines OK); no pin moved, so no G4; no TeX (5 pinned nodes read).
+FRICTION: open 7, idiom 250 (one new).
 
 **Verified at the open** (2026-11-05, at `6d75d694`; a whole-tree `lake build` replays clean, 0
 warnings, 0 cache failures):
@@ -174,11 +177,12 @@ resolved.
 - [x] **12. `RecordsLinks` to `Graph`** (`651ecc60`; Lean). The def and 11 lemmas in the new mirror
   `Graph/RecordsLinks.lean`, three in `Operations.lean`; 15 deprecated aliases; 33 callers renamed.
   Resolves FRICTION *`RecordsLinks` lives in `PanelHingeFramework`…* (now `[mirrored]`).
-- [x] **13. Restate: upstream of Case III** (this commit; Lean). 22 binders in the five files;
+- [x] **13. Restate: upstream of Case III** (`03215eb1`; Lean). 22 binders in the five files;
   `PanelHingeFramework.recordsLinks_of_graph_eq` and its `link_base_tac` branch; callers converted
   (*Decisions*). FRICTION's open `RecordsLinks` entry updated; TACTICS-QUIRKS § 120 a case.
-- [ ] **14. Restate: Case III** (Lean; opus). `CaseIII/` (14 binders), and the conversions task
-  13 left there: `Arms.lean` 2 (`hends_G`, `hends_q₀`), `Realization.lean` 1 (`hends'`).
+- [x] **14. Restate: Case III** (this commit; Lean). 23 binders in six files (*Decisions*), the
+  three conversions task 13 left and the rest of `CaseIII/`'s gone; `RecordsLinks.eq_pair_or_swap`
+  in the mirror, read by `CaseII`'s three pair sites too. FRICTION's `RecordsLinks` entry updated.
 - [ ] **15. Restate: `Pencil/MainComponent/`** (Lean; opus). 26 binders in 12 files, and the
   conversions left there (task 13: `Bridge` 3, `Carrier`, `EarGen`, `ContractCurve` 1 each).
 - [ ] **16. Restate: `Pencil/Grade/`** (Lean; opus). 33 binders in 16 files, and the last
@@ -195,6 +199,11 @@ resolved.
 - **The total-form link hypotheses** (24 declarations, `∀ e, G.IsLink e (ends e).1 (ends e).2`):
   stronger than `RecordsLinks G ends`, so restating them generalizes the declarations, beyond the
   equivalent restatement the PI chose. Recorded at the open.
+- **Case III's pair forms outside the binders** (task 14). Two conclusions, `ofNormals_relabel`'s
+  third conjunct and `fullLink_recording_of_splitOff_recording`'s (its one caller takes
+  `.of_pair`), could read `RecordsLinks`, an equivalent restatement of a conclusion. And
+  `rigidityRows_ofNormals_congr_ends_swap`'s `hagree` (the pair form of two selectors) is implied by
+  its implicit `hlinks`, `hlinks'`: dropping it removes an explicit hypothesis (one caller).
 
 ## Moved to a later round
 
@@ -206,11 +215,14 @@ resolved.
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 14, restate the link hypotheses of `CaseIII/` (*Lemma checklist*; G6 at
-0 missing), with the three conversions task 13 left there. Re-grep the binders by `∀ e u v,` (task
-13 found 22 where the open's scan counted 19; two were split over two lines). A local `have` restated
-as `RecordsLinks` names the graph of the `ofNormals` it serves (task 13's *Decisions* (c)). After
-the close: ORIGAMI's open, with the PI (ROADMAP *Queued post-program phases*).
+**Next concrete task:** task 15, restate the link hypotheses of `Pencil/MainComponent/` (*Lemma
+checklist*; G6 at 0 missing), with the conversions task 13 left there. Scan both forms across lines
+and under any variable names (`∀ e u w`, `∀ f x y`): task 14 found 23 binders where the open counted
+14, pair-form ones whose graph spans three lines. Grep `eq_or_swap` and `Prod.ext` too, for a
+conversion inline at a call site (task 14 met one in `chainData_dispatch`). The pair form reads
+`RecordsLinks.eq_pair_or_swap`; a restated local `have` names the graph of the `ofNormals` it serves,
+and one that repeats a record in scope goes (*Decisions*, tasks 13 and 14, (c)). After the close: ORIGAMI's
+open, with the PI (ROADMAP *Queued post-program phases*).
 
 ## Decisions made during this round
 
@@ -225,40 +237,15 @@ the close: ORIGAMI's open, with the PI (ROADMAP *Queued post-program phases*).
   the splits before task 12, so the restate's tasks edit the final files; the restate bottom-up
   by import order, a caller converting until its own task.
 - **The queue row is attended** (the open): the driver stops before it, and the PI may flip it.
-- **Task 4's shapes.** (a) `σ_v` has its own node, `def:pencil-d-affine-heights-map`, before
-  `lem:pencil-d-config-realization`: not a home on `def:pencil-d-configuration` (four pins already;
-  σ is no part of a configuration). Pins by statement: `gradeSigma` (the map) moves there, its
-  docstring label with it; `gradeSigmaPerp` (the `n^i`), `dotPerp_range_gradeSigma` stay on
-  `lem:pencil-d-condition-linear`, whose statement states both. (b) The d = 3 contraction names its
-  kernel step in a formalization note (the `lem:deficiency-core-bound` precedent); the other two
-  cite the join identity of `lem:pencil-d-embedding-join`'s proof, its general-map pin
-  (`exteriorPower_map_normalsJoin`), forward at the first. (c) `def:join` stays unbacked by design.
-- **Task 5's shapes.** (a) `dof_eq_zero_iff` moves from `def:dof-generic`, a definition its proof
-  made depend on two later lemmas, to its one consumer `cor:bodyhinge-generic-rigid`, whose proof
-  uses both; the shared note after `cor:bodyhinge-generic-tree-packing` gives its role, the def's
-  note points there, its docstring names the new node. (b) Eight edges, each real and in order, a
-  `\cref` at the step (a formalization note at `lem:dof-tracking`, whose step is the label
-  condition). (c) `thm:minimal-kdof-reduction`, `lem:chain-data-extract` reach
-  `lem:splitoff-edge-substitution` only by the label condition: implied via `lem:reduction-step`.
-- **Task 6's shapes.** (a) The merged-deficiency and cut-vertex sections join the cut sections in
-  `Deficiency/Cut.lean`, not the open's last seam: they use the private `crossingEdges_induce` of
-  `partitionDef_split_of_sides` and nothing after the cuts, so no name changes visibility. (b) The
-  parts are a chain, `Deficiency` ← `Cut` ← `Corank` ← `MinimalKDof` (`Corank` uses
-  `partitionDef_congr`, `ConnBetween.eq_of_forall_isLink`; `MinimalKDof` KT eq. (2.4)); the
-  tight-partition and corank sections each need only `Cut`, one file to stay at four. (c) Imports
-  by use: `Operations`, `JacobsCounting` take `Corank`; `GenericityDevice` and
-  `ForestSurgery/Reduction` take `MinimalKDof` (every other user is downstream of one).
-- **Task 7's shapes.** (a) The seam is the column-operation section (line 817); nothing in
-  `Basic.lean` is `private`, so no visibility changes. The new file, `ColumnOperation.lean`,
-  imports `Basic`. (b) Importers by use: `PanelLayer` uses `finrank_screwAssignment`, `Claim612`
-  `columnOp`, `Bricks` `linearIndependent_sum_pinned_block`; all three add the new file beside
-  `Basic`; `ScrewVelocity` keeps `Basic` alone. (c) Sweep: every live Lean mention of
-  `RigidityMatrix/Basic.lean` names a declaration that stayed; TACTICS-QUIRKS' are history, stay.
-- **Task 8's shapes.** (a) The seam is line 672, the `a ∨ v` section; nothing is `private`. The new
-  file, `MeetHyperplanes.lean` (after its closing `lem:meet-two-hyperplanes`), imports `Meet`.
-  (b) `Basic.lean` uses nothing of it; nine files import it by use (`Claim612`, `PanelLayer`, four in
-  `Pencil/`, three in `Pencil/Grade/`). (c) Sweep: four docstrings and
-  TACTICS-GOLF 1422, 1551 repointed; the dated records (GOLF 1470, QUIRKS 1646, 2520, 2541, 2564) stay.
+- **Tasks 4-5's shapes** (TeX, settled). `σ_v` has its own node, `def:pencil-d-affine-heights-map`
+  (pin `gradeSigma`); the d = 3 contraction names its kernel step in a formalization note;
+  `def:join` stays unbacked by design. `dof_eq_zero_iff` moved to its one consumer
+  `cor:bodyhinge-generic-rigid`; eight `\uses` edges, each with a `\cref` at its step; two implied
+  via `lem:reduction-step`.
+- **Tasks 6-9's shapes** (splits, settled). Each seam at a section header, no name changing
+  visibility (task 6 moved the merged-deficiency and cut-vertex sections into `Deficiency/Cut.lean`
+  for its private `crossingEdges_induce`); the parts import in a chain; importers by use; live
+  mentions repointed, dated records kept. Sizes are in the checklist.
 - **Task 12's shapes.** (a) The def and 11 lemmas are a mirror,
   `Mathlib/Combinatorics/Graph/RecordsLinks.lean` (a new upstream file; mathlib's `Graph/Delete.lean`
   its one import); `mono` goes through mathlib's `IsLink.mono`, as `IsLink.of_le` is the `Matroid`
@@ -275,3 +262,11 @@ the close: ORIGAMI's open, with the PI (ROADMAP *Queued post-program phases*).
   `ofNormals` it serves, not an `F.graph` that unfolds to it (TACTICS-QUIRKS § 120). (d) CaseI's three
   `hQrec` `have`s go: the new branch finds the field through `hQg`. (e) No pinned node's prose
   states the old form (8 nodes read), so no TeX.
+- **Task 14's shapes.** (a) 23 binders, pair form and form at links: 20 in signatures (`Relabel/Basic`
+  2, `Relabel/Chain` 5, `Arms` 3, `Relabel/Arm` 2, `Relabel/ChainColumn` 3, `Realization` 5) and the
+  selector's inside the three `h622lb`; every caller is in `CaseIII/`. (b) `RecordsLinks.eq_pair_or_swap`
+  (the mirror) gives the pair form back, so `rcases hrec f x y h` becomes `rcases hrec.eq_pair_or_swap
+  h` and nothing else moves; `CaseII`'s three pair sites read it too. (c) A local repeating a record in
+  scope goes (`hends_q₀`, `hends_G`, `hends_Gv₁` ×2, `hrec'`, `hends_Gab`, `hrecGab`); the rest are
+  built by `mono`, `of_isLink_imp`, `congr`, or link by link. (d) Conclusions stay (*Candidates*).
+  (e) No TeX: five pinned nodes read, each in the record's own words.

@@ -512,7 +512,7 @@ theorem _root_.Graph.ChainData.chainData_freshEdge_slot_mem [DecidableEq α]
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin (cd.d + 1))
     (hi : 1 ≤ (i : ℕ)) (hid : (i : ℕ) < cd.d)
     (ends : β → α × α) (q : α × Fin (k + 2) → K)
-    (hrec : ∀ f x y, G.IsLink f x y → ends f = (x, y) ∨ ends f = (y, x))
+    (hrec : Graph.RecordsLinks G ends)
     {ρ₀ : Module.Dual K (ScrewSpace K k)}
     -- `hingeRow (vtx 0) (vtx 2) ρ₀` in the row space of `G − v₁`:
     (hφ : BodyHingeFramework.hingeRow (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨2, by omega⟩) ρ₀ ∈
@@ -529,7 +529,6 @@ theorem _root_.Graph.ChainData.chainData_freshEdge_slot_mem [DecidableEq α]
         (G.removeVertex (cd.vtx ⟨(i : ℕ), by omega⟩)) ends
           (cd.shiftSeedAdv q ((i : ℕ) - 1))).toBodyHinge.rigidityRows := by
   classical
-  have hG := Graph.RecordsLinks.of_pair hrec
   -- `i` as an element of `Fin cd.d`, for `shiftBodyListAsc_foldl_mem_span_rigidityRows`.
   let i' : Fin cd.d := ⟨(i : ℕ), hid⟩
   have hi'v : (i' : ℕ) = (i : ℕ) := rfl
@@ -551,14 +550,14 @@ theorem _root_.Graph.ChainData.chainData_freshEdge_slot_mem [DecidableEq α]
   -- `G − v_{(i−1)+1} = G − vᵢ`).
   have hidx : (⟨((i' : ℕ) - 1) + 1, by have := i'.2; omega⟩ : Fin (cd.d + 1))
       = ⟨(i : ℕ), by omega⟩ := Fin.ext (by simp only [hi'v]; omega)
-  have hFvaEq : cd.shiftBodyFrameworkAsc (s := (i' : ℕ) - 1) (by have := i'.2; omega) ends hG q
+  have hFvaEq : cd.shiftBodyFrameworkAsc (s := (i' : ℕ) - 1) (by have := i'.2; omega) ends hrec q
       = Fva := by
     rw [Graph.ChainData.shiftBodyFrameworkAsc, hFva]
     congr 2
     rw [Graph.ChainData.shiftBodyGraph]
     exact congrArg (fun x => G.removeVertex (cd.vtx x)) hidx
   -- fold start framework `shiftBodyFrameworkAsc 0 = ofNormals (G − v₁) ends (shiftSeedAdv q 0)`.
-  have hFvaStart : cd.shiftBodyFrameworkAsc (s := 0) (by have := i'.2; omega) ends hG q
+  have hFvaStart : cd.shiftBodyFrameworkAsc (s := 0) (by have := i'.2; omega) ends hrec q
       = (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨1, by omega⟩)) ends
           (cd.shiftSeedAdv q 0)).toBodyHinge := by
     rfl
@@ -677,7 +676,7 @@ theorem _root_.Graph.ChainData.chainData_freshEdge_slot_perp_ends₀
     (rv : Fin m → Module.Dual K (ScrewSpace K k))
     {ρ₀ : Module.Dual K (ScrewSpace K k)}
     -- `ends₀` gives each link of `G` its ends, and `e₀` the ends `v₀` and `v₂`:
-    (hrec : ∀ f x y, G.IsLink f x y → ends₀ f = (x, y) ∨ ends₀ f = (y, x))
+    (hrec : Graph.RecordsLinks G ends₀)
     (hrece₀ : ends₀ cd.e₀ = (cd.vtx ⟨0, by omega⟩, cd.vtx ⟨2, by omega⟩) ∨
       ends₀ cd.e₀ = (cd.vtx ⟨2, by omega⟩, cd.vtx ⟨0, by omega⟩))
     -- `hingeRow v₀ v₂ ρ₀` as a combination at `ofNormals (G − v₁) ends₀ q`:
@@ -701,7 +700,8 @@ theorem _root_.Graph.ChainData.chainData_freshEdge_slot_perp_ends₀
   rw [PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_ends,
     PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal]
   -- `ends₀ (edge s)` records the chain link `(vtx s, vtx (s+1))` (up to orientation).
-  have hrecS := hrec (cd.edge ⟨s, by omega⟩) (cd.vtx ⟨s, by omega⟩) (cd.vtx ⟨s + 1, by omega⟩)
+  have hrecS := hrec.eq_pair_or_swap (e := cd.edge ⟨s, by omega⟩) (u := cd.vtx ⟨s, by omega⟩)
+    (v := cd.vtx ⟨s + 1, by omega⟩)
     (by have h := cd.link ⟨s, by omega⟩
         simpa only [Fin.castSucc_mk, Fin.succ_mk] using h)
   -- `qρ (vtx (s+1), ·) = q (vtx (s+2), ·)` (`shiftPerm_apply_interior`, `1 ≤ s+1 < i`).
@@ -741,8 +741,8 @@ theorem _root_.Graph.ChainData.chainData_freshEdge_slot_perp_ends₀
     rw [PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_ends,
       PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal] at hbase
     -- `ends₀ (edge (s+1))` records `(vtx (s+1), vtx (s+2))` (up to orientation).
-    have hrecS1 := hrec (cd.edge ⟨s + 1, by omega⟩) (cd.vtx ⟨s + 1, by omega⟩)
-      (cd.vtx ⟨s + 2, by omega⟩)
+    have hrecS1 := hrec.eq_pair_or_swap (e := cd.edge ⟨s + 1, by omega⟩)
+      (u := cd.vtx ⟨s + 1, by omega⟩) (v := cd.vtx ⟨s + 2, by omega⟩)
       (by have h := cd.link ⟨s + 1, by omega⟩
           simpa only [Fin.castSucc_mk, Fin.succ_mk] using h)
     have hbase' : ρ₀ (panelSupportExtensor (fun j => q (cd.vtx ⟨s + 1, by omega⟩, j))
@@ -777,7 +777,7 @@ theorem _root_.Graph.ChainData.chainData_relabel_arm_hρGv
     (rv : Fin m → Module.Dual K (ScrewSpace K k))
     {ρ₀ : Module.Dual K (ScrewSpace K k)}
     -- `ends₀` gives each link of `G` its ends, and `e₀` the ends `v₀` and `v₂`:
-    (hrec : ∀ f x y, G.IsLink f x y → ends₀ f = (x, y) ∨ ends₀ f = (y, x))
+    (hrec : Graph.RecordsLinks G ends₀)
     (hrece₀ : ends₀ cd.e₀ = (cd.vtx ⟨0, by omega⟩, cd.vtx ⟨2, by omega⟩) ∨
       ends₀ cd.e₀ = (cd.vtx ⟨2, by omega⟩, cd.vtx ⟨0, by omega⟩))
     -- `hingeRow v₀ v₂ ρ₀` as a combination at `ofNormals (G − v₁) ends₀ q`:
