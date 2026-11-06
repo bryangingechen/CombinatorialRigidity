@@ -582,6 +582,37 @@ theorem exists_smul_eq_of_mem_range_map_subtype_grade {d : ℕ}
   rw [← Submodule.mem_span_singleton, hspan]
   exact hy
 
+/-- **Extensors of two bases of one subspace are proportional**, in every grade (the change of
+basis of `lem:pencil-d-two-pencil-extension`): if `v : Fin j → K^(d+1)` is linearly independent and
+every `u i` lies in the span of the `v i`, then `extensor u = c • extensor v` for some `c`. Both
+lie in the image of `⋀^j W`, `W = span (range v)`, which is a line
+(`finrank_exteriorPower_self_eq_one`). The case `j = 2` is
+`exists_smul_extensor_eq_of_mem_span_range`. -/
+theorem exists_smul_extensor_eq_of_mem_span_range_grade {d j : ℕ}
+    (u v : Fin j → Fin (d + 1) → K) (hv : LinearIndependent K v)
+    (hu : ∀ i, u i ∈ Submodule.span K (Set.range v)) :
+    ∃ c : K, c • extensor v = extensor u := by
+  set W := Submodule.span K (Set.range v)
+  have hWdim : Module.finrank K W = j := by rw [finrank_span_eq_card hv]; simp
+  have hxv : (⟨extensor v, extensor_mem_exteriorPower v⟩ : ⋀[K]^j (Fin (d + 1) → K))
+      ∈ LinearMap.range (exteriorPower.map j W.subtype) :=
+    extensor_mem_range_map_subtype_of_mem_jgrade _ v fun i => Submodule.subset_span ⟨i, rfl⟩
+  have hxu : (⟨extensor u, extensor_mem_exteriorPower u⟩ : ⋀[K]^j (Fin (d + 1) → K))
+      ∈ LinearMap.range (exteriorPower.map j W.subtype) :=
+    extensor_mem_range_map_subtype_of_mem_jgrade _ u hu
+  have hvne : (⟨extensor v, extensor_mem_exteriorPower v⟩ : ⋀[K]^j (Fin (d + 1) → K)) ≠ 0 := by
+    rw [Ne, Subtype.ext_iff]; exact (extensor_ne_zero_iff_linearIndependent v).2 hv
+  have hR : Module.finrank K (LinearMap.range (exteriorPower.map j W.subtype)) = 1 := by
+    rw [LinearMap.finrank_range_of_inj (exteriorPower_map_subtype_injective_grade (d := d) j _),
+      finrank_exteriorPower_self_eq_one hWdim]
+  have hspan : (K ∙ (⟨extensor v, extensor_mem_exteriorPower v⟩ : ⋀[K]^j (Fin (d + 1) → K)))
+      = LinearMap.range (exteriorPower.map j W.subtype) :=
+    Submodule.eq_of_le_of_finrank_eq ((Submodule.span_singleton_le_iff_mem _ _).2 hxv)
+      (by rw [finrank_span_singleton hvne, hR])
+  rw [← hspan, Submodule.mem_span_singleton] at hxu
+  obtain ⟨c, hc⟩ := hxu
+  exact ⟨c, congrArg Subtype.val hc⟩
+
 /-- **Two `2`-extensors of pairs in the same plane are proportional** (a step of
 `lem:pencil-generic-steer`): for a linearly independent pair `v` and a pair `u` whose vectors lie in
 `span (range v)`, `c • extensor v = extensor u` for some `c`. Both lie in the image of `⋀² P`,
@@ -592,30 +623,8 @@ theorem exists_smul_extensor_eq_of_mem_span_range
     (hu : ∀ i, u i ∈ Submodule.span K (Set.range v)) :
     ∃ c : K, c • (⟨extensor v, extensor_mem_exteriorPower v⟩ : ⋀[K]^2 (Fin (d + 1) → K))
       = ⟨extensor u, extensor_mem_exteriorPower u⟩ := by
-  have hPdim : Module.finrank K (Submodule.span K (Set.range v)) = 2 := by
-    rw [finrank_span_eq_card hv]; simp
-  have hvmem : ∀ i, v i ∈ Submodule.span K (Set.range v) := fun i =>
-    Submodule.subset_span ⟨i, rfl⟩
-  have hxv : (⟨extensor v, extensor_mem_exteriorPower v⟩ : ⋀[K]^2 (Fin (d + 1) → K))
-      ∈ LinearMap.range (exteriorPower.map 2 (Submodule.span K (Set.range v)).subtype) :=
-    extensor_mem_range_map_subtype_of_mem_jgrade _ v hvmem
-  have hxu : (⟨extensor u, extensor_mem_exteriorPower u⟩ : ⋀[K]^2 (Fin (d + 1) → K))
-      ∈ LinearMap.range (exteriorPower.map 2 (Submodule.span K (Set.range v)).subtype) :=
-    extensor_mem_range_map_subtype_of_mem_jgrade _ u hu
-  have hvne : (⟨extensor v, extensor_mem_exteriorPower v⟩ : ⋀[K]^2 (Fin (d + 1) → K)) ≠ 0 := by
-    rw [Ne, Subtype.ext_iff]; exact (extensor_ne_zero_iff_linearIndependent v).2 hv
-  -- The image of `⋀² P` is a line; both extensors lie in it, so they are proportional.
-  have hR : Module.finrank K
-      (LinearMap.range (exteriorPower.map 2 (Submodule.span K (Set.range v)).subtype)) = 1 := by
-    rw [LinearMap.finrank_range_of_inj (exteriorPower_map_subtype_injective_grade (d := d) 2 _),
-      finrank_exteriorPower_self_eq_one hPdim]
-  obtain ⟨z, hz⟩ := hxv
-  have hspan : (K ∙ (⟨extensor v, extensor_mem_exteriorPower v⟩ : ⋀[K]^2 (Fin (d + 1) → K)))
-      = LinearMap.range (exteriorPower.map 2 (Submodule.span K (Set.range v)).subtype) :=
-    Submodule.eq_of_le_of_finrank_eq ((Submodule.span_singleton_le_iff_mem _ _).2 ⟨z, hz⟩)
-      (by rw [finrank_span_singleton hvne, hR])
-  rw [← Submodule.mem_span_singleton, hspan]
-  exact hxu
+  obtain ⟨c, hc⟩ := exists_smul_extensor_eq_of_mem_span_range_grade u v hv hu
+  exact ⟨c, Subtype.ext hc⟩
 
 /-! ## Equal nonzero `2`-extensors span the same plane (`lem:decomposable-extensor-span-unique`)
 
@@ -640,6 +649,32 @@ theorem extensor_triple_eq_zero_iff {d : ℕ} {a b : Fin (d + 1) → K} (x : Fin
     rw [hcons, linearIndependent_finCons]
     rintro ⟨-, hns⟩; exact hns hx
 
+/-- **Equal nonzero extensors span the same subspace, in every grade** (the argument of
+`lem:decomposable-extensor-span-unique` with `j` vectors in place of two): if
+`extensor p = extensor p' ≠ 0` for `p p' : Fin j → K^(d+1)`, then the two families have the same
+span. For every `x`, the extensor of `x` followed by `p` is `ι x * extensor p`
+(`ExteriorAlgebra.ιMulti_succ_apply`), so it equals that of `x` followed by `p'`; and as `p` is
+linearly independent, `x` lies in its span exactly when this extensor is `0`
+(`extensor_ne_zero_iff_linearIndependent`, `linearIndependent_finCons`). The case `j = 2` is
+`span_range_eq_of_extensor_eq`. -/
+theorem span_range_eq_of_extensor_eq_grade {d j : ℕ} {p p' : Fin j → Fin (d + 1) → K}
+    (hp : extensor p ≠ 0) (heq : extensor p = extensor p') :
+    Submodule.span K (Set.range p') = Submodule.span K (Set.range p) := by
+  have hmem : ∀ q : Fin j → Fin (d + 1) → K, LinearIndependent K q → ∀ x,
+      x ∈ Submodule.span K (Set.range q) ↔ extensor (Fin.cons x q) = 0 := by
+    intro q hq x
+    rw [← not_iff_not, ← Ne, extensor_ne_zero_iff_linearIndependent, linearIndependent_finCons]
+    simp [hq]
+  have hcons : ∀ (q : Fin j → Fin (d + 1) → K) x,
+      extensor (Fin.cons x q) = ExteriorAlgebra.ι K x * extensor q := by
+    intro q x
+    rw [extensor_apply, extensor_apply, ExteriorAlgebra.ιMulti_succ_apply]
+    rfl
+  have hpli := (extensor_ne_zero_iff_linearIndependent p).1 hp
+  have hp'li := (extensor_ne_zero_iff_linearIndependent p').1 (heq ▸ hp)
+  ext x
+  rw [hmem p' hp'li, hmem p hpli, hcons, hcons, heq]
+
 /-- **Equal nonzero `2`-extensors span the same plane** (`lem:decomposable-extensor-span-unique`):
 if `extensor p = extensor p' ≠ 0`, then `span (range p') = span (range p)`. For every `x`,
 `extensor ![x, p 0, p 1] = extensor ![x] ∨ extensor p` (`join_extensor`), so it equals
@@ -649,24 +684,7 @@ Rota recalled after `def:join`. -/
 theorem span_range_eq_of_extensor_eq {d : ℕ} {p p' : Fin 2 → Fin (d + 1) → K}
     (hp : extensor p ≠ 0) (heq : extensor p = extensor p') :
     Submodule.span K (Set.range p') = Submodule.span K (Set.range p) := by
-  have hp' : extensor p' ≠ 0 := heq ▸ hp
-  have hpli : LinearIndependent K p := (extensor_ne_zero_iff_linearIndependent p).1 hp
-  have hp'li : LinearIndependent K p' := (extensor_ne_zero_iff_linearIndependent p').1 hp'
-  have hpc : (![p 0, p 1] : Fin 2 → Fin (d + 1) → K) = p := by funext i; fin_cases i <;> rfl
-  have hp'c : (![p' 0, p' 1] : Fin 2 → Fin (d + 1) → K) = p' := by funext i; fin_cases i <;> rfl
-  have habp : LinearIndependent K ![p 0, p 1] := by rw [hpc]; exact hpli
-  have habp' : LinearIndependent K ![p' 0, p' 1] := by rw [hp'c]; exact hp'li
-  -- The `3`-extensor depends on the pair only through its join (`join_extensor`).
-  have key : ∀ x : Fin (d + 1) → K, extensor ![x, p 0, p 1] = extensor ![x, p' 0, p' 1] := by
-    intro x
-    have e1 : extensor ![x, p 0, p 1] = extensor ![x] * extensor ![p 0, p 1] := by
-      rw [← join_def, join_extensor]; congr 1; funext i; fin_cases i <;> rfl
-    have e2 : extensor ![x, p' 0, p' 1] = extensor ![x] * extensor ![p' 0, p' 1] := by
-      rw [← join_def, join_extensor]; congr 1; funext i; fin_cases i <;> rfl
-    rw [e1, e2, hpc, hp'c, heq]
-  ext x
-  rw [← hpc, ← hp'c, ← extensor_triple_eq_zero_iff x habp', ← extensor_triple_eq_zero_iff x habp,
-    key]
+  exact span_range_eq_of_extensor_eq_grade hp heq
 
 /-! ## The `2`-extensors `a ∨ v` (`lem:case-III-claim612-line-in-panel-union`)
 
@@ -1235,6 +1253,20 @@ noncomputable def contragredient (g : (Fin (k + 2) → K) ≃ₗ[K] (Fin (k + 2)
   (Pi.basisFun K (Fin (k + 2))).toDualEquiv.symm.toLinearMap ∘ₗ
     (g.symm : (Fin (k + 2) → K) →ₗ[K] (Fin (k + 2) → K)).dualMap ∘ₗ
     (Pi.basisFun K (Fin (k + 2))).toDualEquiv.toLinearMap
+
+/-- **The inverse transpose as a linear equivalence**: `contragredient g` packaged as the
+composite `toDualEquiv ≪≫ₗ g.symm.dualMap ≪≫ₗ toDualEquiv.symm` of coordinate identifications with
+the dual map of `g⁻¹`. -/
+noncomputable def contragredientEquiv (g : (Fin (k + 2) → K) ≃ₗ[K] (Fin (k + 2) → K)) :
+    (Fin (k + 2) → K) ≃ₗ[K] (Fin (k + 2) → K) :=
+  (Pi.basisFun K (Fin (k + 2))).toDualEquiv ≪≫ₗ g.symm.dualMap ≪≫ₗ
+    (Pi.basisFun K (Fin (k + 2))).toDualEquiv.symm
+
+/-- **`contragredientEquiv g` has underlying map `contragredient g`.** -/
+@[simp]
+theorem coe_contragredientEquiv (g : (Fin (k + 2) → K) ≃ₗ[K] (Fin (k + 2) → K)) :
+    (contragredientEquiv g : (Fin (k + 2) → K) →ₗ[K] (Fin (k + 2) → K)) = contragredient g :=
+  rfl
 
 /-- **The pairing of the inverse transpose** (a step of `lem:meet-two-hyperplanes`):
 `⟨contragredient g x, g y⟩ = ⟨x, y⟩`. -/

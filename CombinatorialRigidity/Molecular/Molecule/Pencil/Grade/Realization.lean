@@ -43,8 +43,8 @@ definition is hinge-coplanarity.
   panel realization (`def:pencil-d-realization`).
 * `hasPencilPlaneRealization_two_iff` and `exists_hasPencilPlaneRealization_two_iff`:
   `lem:pencil-d-agrees-three`.
-* `span_range_eq_of_extensor_eq_grade`: equal nonzero extensors span the same subspace, in every
-  grade.
+* `span_range_eq_of_extensor_eq_grade` (now in `Meet.lean`): equal nonzero extensors span the same
+  subspace, in every grade.
 * `extensorInPanel_panelSupportExtensor_iff`, `extensorThroughSubspace_panelSupportExtensor_iff`
   and `exists_eq_panelSupportExtensor_of_ne_zero`: the panels and the orthogonals of a hinge of two
   panels, and every nonzero extensor is one (steps of `lem:pencil-d-embed-realization`).
@@ -260,32 +260,6 @@ writes as an extensor of such vectors, passes through the orthogonal of every su
 both normals, and a nonzero screw element in both panels is a multiple of it. It lies in the panels
 of the vectors in the span of the two normals and in no other, and every nonzero extensor of `k`
 vectors is the panel support extensor of two independent normals. -/
-
-/-- **Equal nonzero extensors span the same subspace, in every grade** (the argument of
-`lem:decomposable-extensor-span-unique` with `j` vectors in place of two): if
-`extensor p = extensor p' ≠ 0` for `p p' : Fin j → K^(d+1)`, then the two families have the same
-span. For every `x`, the extensor of `x` followed by `p` is `ι x * extensor p`
-(`ExteriorAlgebra.ιMulti_succ_apply`), so it equals that of `x` followed by `p'`; and as `p` is
-linearly independent, `x` lies in its span exactly when this extensor is `0`
-(`extensor_ne_zero_iff_linearIndependent`, `linearIndependent_finCons`). The case `j = 2` is
-`span_range_eq_of_extensor_eq` (`Meet.lean`). -/
-theorem span_range_eq_of_extensor_eq_grade {d j : ℕ} {p p' : Fin j → Fin (d + 1) → K}
-    (hp : extensor p ≠ 0) (heq : extensor p = extensor p') :
-    Submodule.span K (Set.range p') = Submodule.span K (Set.range p) := by
-  have hmem : ∀ q : Fin j → Fin (d + 1) → K, LinearIndependent K q → ∀ x,
-      x ∈ Submodule.span K (Set.range q) ↔ extensor (Fin.cons x q) = 0 := by
-    intro q hq x
-    rw [← not_iff_not, ← Ne, extensor_ne_zero_iff_linearIndependent, linearIndependent_finCons]
-    simp [hq]
-  have hcons : ∀ (q : Fin j → Fin (d + 1) → K) x,
-      extensor (Fin.cons x q) = ExteriorAlgebra.ι K x * extensor q := by
-    intro q x
-    rw [extensor_apply, extensor_apply, ExteriorAlgebra.ιMulti_succ_apply]
-    rfl
-  have hpli := (extensor_ne_zero_iff_linearIndependent p).1 hp
-  have hp'li := (extensor_ne_zero_iff_linearIndependent p').1 (heq ▸ hp)
-  ext x
-  rw [hmem p' hp'li, hmem p hpli, hcons, hcons, heq]
 
 /-- **`k` independent vectors orthogonal to two independent vectors span their common orthogonal**:
 in `K^(k+2)`, if `p : Fin k → K^(k+2)` and `n : Fin 2 → K^(k+2)` are linearly independent and every

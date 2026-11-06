@@ -6,11 +6,11 @@ CLEANUP-42 and ahead of ORIGAMI, in two parts: the friction log's docs and tooli
 2–4), then the lemmas Phase 42 left outside their home files, one task per home file, with the
 mirror lemmas that now meet their entries' own bar (tasks 5–18). No statement changes. Phase 42
 deferred the moves because a declaration added to these files rebuilds most of `Molecular/`
-mid-phase; ORIGAMI will not edit them, so they are cheapest now. Tasks 1–8 landed
+mid-phase; ORIGAMI will not edit them, so they are cheapest now. Tasks 1–9 landed
 (the docs part, the tree-wide basics, `Deficiency.lean`, the linear-independence mirrors, the
 two-vector sweep): 62 actionable entries down to 33 (heading tags: open 23, mirror-candidate 8,
 process 2, blueprint 0).
-**Next concrete task:** task 9, `Meet.lean` (*Lemma checklist*).
+**Next concrete task:** task 10, `RigidityMatrix/Basic.lean` and `GenericityDevice.lean` (*Lemma checklist*).
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -26,64 +26,33 @@ public declaration's name, or delete a pinned declaration, does not land that ch
 
 ## Current state
 
-**Task 8 landed** (`bb4c09d6`, and its corrective, this commit; Lean): 22 two-step sites in 9
-pencil files go through `LinearIndepOn.pair_iff_linearIndependent`: `Pair2` (1), `Motive` (3),
-`MainComponent/GenericSteer` (5), `GenericEar` (3), `GenericBase` (2), `GenericTriangle` (1),
-`Grade/EarFree` (1), `Grade/LiftCutEdge` (1), and `Grade/LiftCases` (5, in the corrective:
-`bb4c09d6` had misfiled them as scalar-form; they bridged through the field-form
-`linearIndepOn_pair_iff` and `LinearIndependent.pair_iff'`, and the `b'` rewrites in the two `hyv`
-cases and the `hab'` case simplify to the fused rewrite; one `hn0` became unused and went). Stayed
-as they are (scalar form for its own sake): `Pair.lean` (four), `Nonvacuity.lean` (two),
-`MatroidIdentification.lean:125`. `MatroidIdentification.lean:56` was already one step. The
-`EarFree.lean` site went through with no timeout. Gates (corrective): G1 and G2 `lake build`
-(warning-clean) and `lake lint`, G3 `blueprint/lint.sh`, G5 (`#print axioms` of `PanelHingeFramework.molecular_conjecture`, `molecular_conjecture_multigraph`, `pencil_realization_theorem`, `SimpleGraph.molecule_rank_formula`, `SimpleGraph.jacobs`, `Graph.isBase_ncard_add_deficiency_eq`: the three standard axioms each). The `n`-ary
-entry `[resolved]`; with the two task-7 headings retagged, the heading-tag recount is open 23,
-mirror-candidate 8, process 2, blueprint 0 = 33 (36 at `a293975a`, not the 34 this note claimed).
+**Task 9 landed** (this commit; Lean): the two grade lemmas moved into `Meet.lean` unchanged:
+`exists_smul_extensor_eq_of_mem_span_range_grade` (from `Grade/TwoPencil.lean`) before
+`exists_smul_extensor_eq_of_mem_span_range`, and `span_range_eq_of_extensor_eq_grade` (from
+`Grade/Realization.lean`) before `span_range_eq_of_extensor_eq`. The two `j = 2` statements are
+byte for byte as before (sliced, not retyped); their proofs are now one line through the grade forms
+(about 60 lines gone). New `contragredientEquiv` and `@[simp] coe_contragredientEquiv` (by `rfl`)
+after `contragredient`; `Grade/Collineation.lean`'s inline equivalence is `contragredientEquiv g`,
+and `contragredient_toDual_pairing g` still fits the coerced `h` by defeq. Docstring repoints:
+`Realization.lean`'s module doc and the moved lemmas' "(`Meet.lean`)" tags. G4 not needed (only
+`span_range_eq_of_extensor_eq` is pinned, `meet.tex:579`, and it keeps its name and statement).
+Gates: G2 `lake build` (6249 jobs, 0 warnings or errors, 0 cache failures) and `lake lint`, G3
+`blueprint/lint.sh`, G1. **G5, the full list:** `#print axioms` of every declaration
+`formalization.yaml` names (44 of them): each is `[propext, Classical.choice, Quot.sound]`. The
+coordinator's run at `a654dd56` over the 21 main results agrees. No FRICTION entry is retagged
+(the three entries' `Meet.lean` parts resolve; the other parts stay with tasks 10 and 11).
 
-**Task 7 landed** (`a293975a`; Lean), all four in the mirror
-`Mathlib/LinearAlgebra/LinearIndependent/Basic.lean`: `exists_extend_linearIndependent` (now
-`[Fintype ι]`, `Fintype.card ι ≤ finrank K M`, a division ring; no `FiniteDimensional` hypothesis:
-the bound forces it once `ι` is nonempty), `finrank_span_pair_eq_two`,
-`exists_mem_linearIndependent_pair` and `LinearIndepOn.pair_iff_linearIndependent`. Callers
-`Reseed.lean` and `Steer.lean`. Two FRICTION entries `[resolved]`.
-
-**Task 6 landed** (`b271c1f2`; Lean): `Graph.exists_cut_sides_of_not_twoEdgeConnected` (public,
-the private `exists_cut_sides`'s statement and proof) beside `Graph.TwoEdgeConnected`; the private
-copy in `ArmsAssembly.lean` deleted and its two sites, `Pair2.lean`, `MainComponent/CoverageCut.lean`,
-`Grade/Reduction.lean` and `Grade/Generic.lean` go through it. `@[simp] vertexSet_mulTilde` beside
-`mem_edgeSet_mulTilde`: `EdgeSplitting.lean`'s `simpa [mulTilde]` and `Contraction.lean`'s `simp
-[mulTilde]` lose the unfold, and `Nonvacuity.lean`'s `hV` simp argument became unused (dropped; it
-stays in the `rw`). Gates: G2 build (warning-clean after wrapping two long lines) and lint, G3
-`blueprint/lint.sh`, G5 (the five results: the three standard axioms); G4 not needed (no `\lean{}`
-pin names either declaration). Two FRICTION entries `[resolved]`; open entries 38 → 36 (open 24,
-mirror-candidate 10, process 2, blueprint 0).
-
-**Task 5 landed** (`5a88c26a`; Lean): baseline `lake build` (warning-clean) and `lake lint` green
-before editing. `Graph.bodyBarDim_mono` in `BodyBar/Framework.lean` and its four sites;
-`Set.ncard_range_le` and `Set.ncard_eq_ncard_preimage_inl_add_ncard_preimage_inr` in the `Set/Card`
-mirror, the former's three sites, the latter replacing `Nonvacuity.lean`'s private copy.
-`Set.ncard_range_le` is proved by `ncard_image_le` on `univ`: the mirror's import closure lacks
-`Finite.card_range_le`. Gates: G2 build and lint, G3 `blueprint/lint.sh` green, G5 (`#print axioms`
-of `molecular_conjecture`, `molecular_conjecture_multigraph`, `molecule_rank_formula`, `jacobs`,
-`isBase_ncard_add_deficiency_eq`: the three standard axioms), G4 not needed (no pinned
-declaration moved). Three FRICTION entries retagged (two `[resolved]`, one `[idiom]`; the sweep to
-the archive stays with task 19).
-
-**Task 4 landed** (`671661b3`; docs only): `notes/FRICTION.md`'s statuses, then the archive sweep.
-Retagged: 21 entries `[resolved]` (the `lean_local_search` entry, fixed upstream; nine `[process]`
-and `[blueprint]` entries already resolved, the un-instantiable lemma's gaining a **Lifted to:**
-`DESIGN.md`'s satisfiability corollaries; the two stale entries, whose two remaining shear sites
-are each one `simp only` and the shear `rw`; the nine struck-through headings, two of them deleted
-mirrors); the two don't-retry lists `[wontfix]` (already under *Anti-patterns*, not moved); five
-Phase 7–8 notes `[idiom]`. Then all 23 `[resolved]` entries (with tasks 2–3's) moved verbatim to
-`FRICTION-archive.md` (392 lines; the removed and appended non-blank lines equal as multisets),
-`FRICTION.md` 6477 → 6062 lines. One edit inside a moved entry: its `[Mirrored](#mirrored)` link
-now names `FRICTION.md`. Pointer sweep: no anchor link into a moved entry; the title pointers in
-`TACTICS-QUIRKS.md` (§56's) and in closed notes and design docs stay, as `88436c0b` and `fb61351f`
-left them (QUIRKS says to grep both files); `check-phase-note.py`'s docstring now names the archive.
-Tallies (open, mirror-candidate, process, blueprint): 35, 13, 12, 2 at the open; 27, 12, 2, 0 now.
-Earlier: task 3 (`1b49081f`) re-synced `TACTICS-GOLF.md`'s index (§1–§30, the list-recursor idiom
-now §30); task 2 (`c0bf555a`) made `--selftest` pass between phases; task 1 (`a0c236a6`) opened.
+**Tasks 1-8** are in the checklist below, one line each. Details kept only where no line carries
+them: task 7's `exists_extend_linearIndependent` is `[Fintype ι]` with `Fintype.card ι ≤ finrank K M`
+over a division ring and takes no `FiniteDimensional` hypothesis (the bound forces it once `ι` is
+nonempty); task 8 left `Pair.lean` (four), `Nonvacuity.lean` (two) and
+`MatroidIdentification.lean:125` in scalar form for its own sake, and its `Grade/LiftCases` sites
+(five) came in the corrective after `bb4c09d6` misfiled them; the heading-tag recount after task 8
+is open 23, mirror-candidate 8, process 2, blueprint 0 = 33 (62 at the open). Task 5 proved
+`Set.ncard_range_le` by `ncard_image_le` on `univ` (the mirror's import closure lacks
+`Finite.card_range_le`); task 6 dropped `Nonvacuity.lean`'s `hV` simp argument; task 4 moved 23
+`[resolved]` entries to `FRICTION-archive.md` (pointer sweep: none needed), and tasks 2-3 are
+tooling and index fixes.
 
 **Verified at the open** (2026-11-05, at `445d8069`):
 - **The review.** Of the 62 entries, about 30 can be fixed now (tasks 2–18). The rest are process
@@ -195,12 +164,9 @@ the entries it resolved.
   "extend a `LinearIndepOn` partial family…"*, *No two-vector `finrank_span_pair`…*.
 - [x] **8. The two-vector sweep** (`bb4c09d6`, corrective this commit; Lean). 22 two-step sites in 9
   pencil files through the fused form. Resolves *No `n`-ary (`n ≥ 3`) analogue of `LinearIndepOn.pair_iff`*.
-- [ ] **9. `Meet.lean`** (Lean; sonnet). `exists_smul_extensor_eq_of_mem_span_range_grade` (from
-  `Grade/TwoPencil.lean`) beside `exists_smul_extensor_eq_of_mem_span_range`, which becomes its
-  `j = 2` case; `span_range_eq_of_extensor_eq_grade` (from `Grade/Realization.lean`) beside
-  `span_range_eq_of_extensor_eq`, likewise; a new `contragredientEquiv` beside `contragredient`,
-  and `Grade/Collineation.lean`'s inline `toDualEquiv ≪≫ₗ g.symm.dualMap ≪≫ₗ toDualEquiv.symm`
-  through it. Resolves `Meet.lean`'s parts of *42k's home debts*, *No linear-equivalence form of
+- [x] **9. `Meet.lean`** (this commit; Lean). The two grade lemmas moved in, the two `j = 2`
+  lemmas re-proved through them (statements unchanged); `contragredientEquiv` and its one site.
+  Resolves `Meet.lean`'s parts of *42k's home debts*, *No linear-equivalence form of
   `contragredient`…* and *Grade-general extensor and panel lemmas…*.
 - [ ] **10. `RigidityMatrix/Basic.lean` and `GenericityDevice.lean`** (Lean; sonnet). Into
   `Basic.lean`: `ExtensorInPanel.smul` (from `Grade/TwoPencil.lean`) beside `ExtensorInPanel`;
@@ -297,7 +263,7 @@ the entries it resolved.
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 9, `Meet.lean` (*Lemma checklist*).
+**Next concrete task:** task 10, `RigidityMatrix/Basic.lean` and `GenericityDevice.lean` (*Lemma checklist*).
 After the round: ORIGAMI's open, with the PI (`notes/Origami.md`).
 
 ## Decisions made during this round

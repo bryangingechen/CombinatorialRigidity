@@ -65,37 +65,6 @@ theorem ExtensorInPanel.smul {k : ℕ} [NeZero k] {C : ScrewSpace K k} {n : Fin 
 
 /-! ## `lem:pencil-d-two-pencil-extension` -/
 
-/-- **Extensors of two bases of one subspace are proportional**, in every grade (the change of
-basis of `lem:pencil-d-two-pencil-extension`): if `v : Fin j → K^(d+1)` is linearly independent and
-every `u i` lies in the span of the `v i`, then `extensor u = c • extensor v` for some `c`. Both
-lie in the image of `⋀^j W`, `W = span (range v)`, which is a line
-(`finrank_exteriorPower_self_eq_one`). The case `j = 2` is
-`exists_smul_extensor_eq_of_mem_span_range` (`Meet.lean`). -/
-theorem exists_smul_extensor_eq_of_mem_span_range_grade {d j : ℕ}
-    (u v : Fin j → Fin (d + 1) → K) (hv : LinearIndependent K v)
-    (hu : ∀ i, u i ∈ Submodule.span K (Set.range v)) :
-    ∃ c : K, c • extensor v = extensor u := by
-  set W := Submodule.span K (Set.range v)
-  have hWdim : Module.finrank K W = j := by rw [finrank_span_eq_card hv]; simp
-  have hxv : (⟨extensor v, extensor_mem_exteriorPower v⟩ : ⋀[K]^j (Fin (d + 1) → K))
-      ∈ LinearMap.range (exteriorPower.map j W.subtype) :=
-    extensor_mem_range_map_subtype_of_mem_jgrade _ v fun i => Submodule.subset_span ⟨i, rfl⟩
-  have hxu : (⟨extensor u, extensor_mem_exteriorPower u⟩ : ⋀[K]^j (Fin (d + 1) → K))
-      ∈ LinearMap.range (exteriorPower.map j W.subtype) :=
-    extensor_mem_range_map_subtype_of_mem_jgrade _ u hu
-  have hvne : (⟨extensor v, extensor_mem_exteriorPower v⟩ : ⋀[K]^j (Fin (d + 1) → K)) ≠ 0 := by
-    rw [Ne, Subtype.ext_iff]; exact (extensor_ne_zero_iff_linearIndependent v).2 hv
-  have hR : Module.finrank K (LinearMap.range (exteriorPower.map j W.subtype)) = 1 := by
-    rw [LinearMap.finrank_range_of_inj (exteriorPower_map_subtype_injective_grade (d := d) j _),
-      finrank_exteriorPower_self_eq_one hWdim]
-  have hspan : (K ∙ (⟨extensor v, extensor_mem_exteriorPower v⟩ : ⋀[K]^j (Fin (d + 1) → K)))
-      = LinearMap.range (exteriorPower.map j W.subtype) :=
-    Submodule.eq_of_le_of_finrank_eq ((Submodule.span_singleton_le_iff_mem _ _).2 hxv)
-      (by rw [finrank_span_singleton hvne, hR])
-  rw [← hspan, Submodule.mem_span_singleton] at hxu
-  obtain ⟨c, hc⟩ := hxu
-  exact ⟨c, congrArg Subtype.val hc⟩
-
 /-- **The hinge of a two-dimensional subspace** (`C_B` of `lem:pencil-d-two-pencil-extension`): for
 a subspace `B` of `K^(k+2)` of dimension two, the extensor of a basis of its orthogonal `B^⊥`, of
 dimension `k` (`exists_extensor_eq_perpExtensor`); `0` when `B^⊥` does not have dimension `k`. -/

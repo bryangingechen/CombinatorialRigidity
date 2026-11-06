@@ -92,9 +92,7 @@ theorem PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv_grad
         (fun x => p' x.1 x.2)).toBodyHinge.rigidityRows)
       = Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := k) G ends
         (fun x => p x.1 x.2)).toBodyHinge.rigidityRows) := by
-  let h : (Fin (k + 2) → K) ≃ₗ[K] (Fin (k + 2) → K) :=
-    (Pi.basisFun K (Fin (k + 2))).toDualEquiv ≪≫ₗ g.symm.dualMap ≪≫ₗ
-      (Pi.basisFun K (Fin (k + 2))).toDualEquiv.symm
+  let h : (Fin (k + 2) → K) ≃ₗ[K] (Fin (k + 2) → K) := contragredientEquiv g
   have hdet : LinearMap.det (g : (Fin (k + 2) → K) →ₗ[K] (Fin (k + 2) → K)) ≠ 0 :=
     LinearEquiv.coe_det g ▸ (LinearEquiv.det g).ne_zero
   set M : ScrewSpace K k ≃ₗ[K] ScrewSpace K k :=
