@@ -43,11 +43,8 @@ bodies (which uses the variant `_of_base`).
   discharged by `lem:pencil-d-stars-four`, `lem:pencil-d-ear-data` (3) and `lem:pencil-d-insertion`.
 
 Helpers whose homes are other files, moved with the next commit that edits those files
-(`notes/Phase42h.md` *Hand-off*): `pathVertex_comp_succAbove_one`, `pathVertex_smul_comp` and
-`pathVertex_map` in `MainComponent/Cut.lean`; and the upstream candidates `coe_succAbove_one` and
-`coe_succAbove_two`, as one `Fin.val_succAbove`, in the mirror `Mathlib/Data/Fin/Basic.lean`, and
-`span_range_smul_eq` (`notes/FRICTION.md`). `complementScrew` is in
-`AlgebraicInduction/PanelLayer.lean`, beside `panelSupportExtensor`.
+(`notes/Phase42h.md` *Hand-off*): `span_range_smul_eq` (`notes/FRICTION.md`).
+`complementScrew` is in `AlgebraicInduction/PanelLayer.lean`, beside `panelSupportExtensor`.
 -/
 
 @[expose] public section
@@ -63,36 +60,12 @@ variable {K : Type*} [Field K] {α β : Type*} {m : ℕ}
 /-- The value of `Fin.succAbove 2`. -/
 theorem coe_succAbove_two {n : ℕ} (j : Fin (n + 3)) :
     ((2 : Fin (n + 4)).succAbove j : ℕ) = if (j : ℕ) < 2 then (j : ℕ) else (j : ℕ) + 1 := by
-  simp only [Fin.succAbove, Fin.lt_def, Fin.val_castSucc, Fin.val_two]
-  split_ifs <;> simp_all [Fin.val_succ]
+  rw [Fin.val_succAbove, Fin.val_two]
 
 /-- The value of `Fin.succAbove 1`. -/
 theorem coe_succAbove_one {n : ℕ} (j : Fin (n + 2)) :
     ((1 : Fin (n + 3)).succAbove j : ℕ) = if (j : ℕ) < 1 then (j : ℕ) else (j : ℕ) + 1 := by
-  simp only [Fin.succAbove, Fin.lt_def, Fin.val_castSucc, Fin.val_one]
-  split_ifs <;> simp_all [Fin.val_succ]
-
-/-- Removing the second interior body from the path sequence: `pathVertex a (x ∘ succAbove 1) b j`
-is `pathVertex a x b (succAbove 2 j)`. -/
-theorem pathVertex_comp_succAbove_one {k : ℕ} (a b : α) (x : Fin (k + 3) → α) (j : Fin (k + 4)) :
-    pathVertex a (x ∘ Fin.succAbove 1) b j = pathVertex a x b (Fin.succAbove 2 j) := by
-  rcases pathVertex_cases a (x ∘ Fin.succAbove 1) b j with ⟨h, h'⟩ | ⟨i, h, h'⟩ | ⟨h, h'⟩
-  · have hj : j = 0 := Fin.ext h
-    subst hj
-    rw [h']
-    have : (Fin.succAbove 2 (0 : Fin (k + 4)) : Fin (k + 5)) = 0 := by
-      rw [Fin.ext_iff, coe_succAbove_two]; simp
-    rw [this, pathVertex_zero]
-  · rw [h', pathVertex_eq_of_val_eq a b x (i := Fin.succAbove 1 i)]
-    · rfl
-    · rw [coe_succAbove_two]
-      rw [coe_succAbove_one]
-      split_ifs <;> omega
-  · have hj : j = Fin.last _ := Fin.ext (by simpa using h)
-    subst hj
-    have : (Fin.succAbove 2 (Fin.last (k + 3)) : Fin (k + 5)) = Fin.last (k + 4) := by
-      rw [Fin.ext_iff, coe_succAbove_two]; simp
-    rw [h', this, pathVertex_last]
+  rw [Fin.val_succAbove, Fin.val_one]
 
 /-- **Suppressing the second interior body of an ear** (a step of `thm:pencil-d-open-ear-four`):
 suppressing `x 1` of an ear with `k + 3` interior bodies and relinking `e 1` to `x 0 − x 2` leaves
@@ -874,31 +847,6 @@ theorem _root_.Graph.X0AttainsGrade.of_openEar_splitOff [Infinite K] [Finite α]
       (fun i => (hz b hb i).trans (hlb i b (Or.inl rfl)))) h₁ h₂
 
 /-! ## The stars condition and the insertion, in path-join form -/
-
-/-- The path sequence of scaled interior bodies is the path sequence scaled, by `1` at the ends and
-`c i` at the body `i`. -/
-theorem pathVertex_smul_comp {V : Type*} [AddCommGroup V] [Module K V] {n : ℕ} (pa pb : V)
-    (Y : Fin n → V) (c : Fin n → K) (j : Fin (n + 2)) :
-    pathVertex pa (fun i => c i • Y i) pb j =
-      (Fin.snoc (Fin.cons 1 c : Fin (n + 1) → K) 1 : Fin (n + 2) → K) j • pathVertex pa Y pb j := by
-  induction j using Fin.lastCases with
-  | last => simp [pathVertex]
-  | cast i =>
-    induction i using Fin.cases with
-    | zero => simp [pathVertex]
-    | succ i => simp only [pathVertex, Fin.snoc_castSucc, Fin.cons_succ]
-
-/-- A function carries the path sequence to the path sequence of the images:
-`f (pathVertex a x b j) = pathVertex (f a) (f ∘ x) (f b) j`. -/
-theorem pathVertex_map {V W : Type*} {n : ℕ} (f : V → W) (a b : V) (x : Fin n → V)
-    (j : Fin (n + 2)) : f (pathVertex a x b j) = pathVertex (f a) (f ∘ x) (f b) j := by
-  induction j using Fin.lastCases with
-  | last => simp [pathVertex]
-  | cast i =>
-    induction i using Fin.cases with
-    | zero => simp [pathVertex]
-    | succ i =>
-      simp only [pathVertex, Fin.snoc_castSucc, Fin.cons_succ, Function.comp_apply]
 
 /-- Rescaling the members of a family by nonzero scalars does not change its span. -/
 theorem span_range_smul_eq {ι V : Type*} [AddCommGroup V] [Module K V] (x : ι → V) (d : ι → K)

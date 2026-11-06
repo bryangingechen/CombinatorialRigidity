@@ -22,6 +22,7 @@ The Lean namespace is the upstream one (`Fin`), so promotion to mathlib is a cop
 
 * `Fin.val_add_one'` — the value of `a + 1` in `Fin (n + 1)`: `0` at the top, else `a + 1`
   (the `Nat.mod`-free companion of `Fin.val_add_one`).
+* `Fin.val_succAbove` — the value of `p.succAbove j`: `j` below `p`, else `j + 1`.
 * `Fin.val_succ_succAbove` — the value of `i.succ.succAbove j`: `j` up to `i`, else `j + 1`.
 * `Fin.succ_succAbove_add_one` — for `j ≠ i`, `i.succ.succAbove j + 1 = i.succ.succAbove (j + 1)`:
   the cyclic successor commutes with the insertion away from the insertion point.
@@ -41,6 +42,12 @@ theorem val_add_one' {n : ℕ} (a : Fin (n + 1)) :
     simp
   · have := a.isLt
     rw [Fin.val_add_one_of_lt (Fin.lt_def.2 (by simp only [Fin.val_last]; omega))]
+
+theorem val_succAbove {n : ℕ} (p : Fin (n + 1)) (j : Fin n) :
+    ((p.succAbove j : Fin (n + 1)) : ℕ) = if (j : ℕ) < p then (j : ℕ) else (j : ℕ) + 1 := by
+  unfold Fin.succAbove
+  split_ifs with h1 h2 h2 <;>
+    simp only [Fin.lt_def, Fin.val_castSucc, Fin.val_succ] at h1 h2 ⊢ <;> omega
 
 theorem val_succ_succAbove {n : ℕ} (i j : Fin (n + 1)) :
     ((i.succ.succAbove j : Fin (n + 2)) : ℕ) = if (j : ℕ) ≤ i then (j : ℕ) else (j : ℕ) + 1 := by

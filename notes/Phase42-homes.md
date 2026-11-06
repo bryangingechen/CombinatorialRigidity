@@ -6,12 +6,14 @@ CLEANUP-42 and ahead of ORIGAMI, in two parts: the friction log's docs and tooli
 2–4), then the lemmas Phase 42 left outside their home files, one task per home file, with the
 mirror lemmas that now meet their entries' own bar (tasks 5–18). No statement changes. Phase 42
 deferred the moves because a declaration added to these files rebuilds most of `Molecular/`
-mid-phase; ORIGAMI will not edit them, so they are cheapest now. Tasks 1–13 landed
+mid-phase; ORIGAMI will not edit them, so they are cheapest now. Tasks 1–14 landed
 (the docs part, the tree-wide basics, `Deficiency.lean`, the linear-independence mirrors and their
 sweep, `Meet.lean`, `RigidityMatrix/Basic.lean` with `GenericityDevice.lean`, `PanelLayer.lean`,
-`Realization.lean`, `Carrier.lean` with `Configuration.lean`):
-62 actionable entries down to 25 (heading tags: open 15, mirror-candidate 8, process 2, blueprint
-0). **Next concrete task:** task 14, `MainComponent/Cut.lean` (*Lemma checklist*).
+`Realization.lean`, `Carrier.lean` with `Configuration.lean`, `Fin.val_succAbove` with
+`MainComponent/Cut.lean`):
+62 actionable entries down to 23 (heading tags, by `grep -c '^### \[<tag>\]'`: open 12,
+mirror-candidate 9, process 2, blueprint 0; the header said 25, but at task 13 the grep gave 24).
+**Next concrete task:** task 15, the glued-ends helpers' homes (*Lemma checklist*).
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -27,19 +29,25 @@ public declaration's name, or delete a pinned declaration, does not land that ch
 
 ## Current state
 
-**Task 13 landed** (this commit; Lean; sonnet; one dispatch). `gradeSigma`, `gradeSigma_apply`
-(from `ConditionLinear.lean`) and `pencilConfigPointGrade_ofPoints` (from `Chain.lean`) are sliced
-into `Grade/Carrier.lean` after `pencilConfigPointGrade_eq_gradeMk`; `finrank_span_pencilConfigPointGrade_closedNbhd_le`'s
-inline `let` is `gradeSigma h`. `pictureProj` and `pictureProj_pencilConfigPointGrade` are public
-(bodies unchanged, the explicit `![…]`), `gradePlanarProj := pictureProj m K` and its lemma is
-`exact pictureProj_pencilConfigPointGrade …`, so `gradePiForm` and `gradePi` rest on it; `gradePlanarProj`
-is **kept** (`gradePi_normalsJoin`'s statement names it, per the hygiene rule), and ConditionLinear's
-local `π` is `pictureProj m K`. No repair beyond those lines. **Binders:** `pencilConfigPointGrade_ofPoints`
-was `{K} {m} {α}` (Chain's `variable` order), now `{K} {α} {m}`; the only callers pass `pt hpt1`
-explicitly. `gradeSigma*` unchanged. Gates: G2 `lake build` (6249 jobs, 0 warnings or errors) and
-`lake lint`; G3 `blueprint/lint.sh`; G4 `blueprint/verify.sh` (`checkdecls` silent); G5 `#print
-axioms` of all 21 `formalization.yaml` declarations, no `sorryAx`; G1. FRICTION: *`gradeSigma` and
-the picture projection…* and *`pencilConfigPointGrade_ofPoints` sits in…* `[resolved]`.
+**Task 14 landed** (this commit; Lean; sonnet; one dispatch). `Fin.val_succAbove` is in the
+`Mathlib/Data/Fin/Basic.lean` mirror (statement as the checklist, proved by the `val_succ_succAbove`
+pattern; `val_succ_succAbove` is left as it is, its `≤` form being a different statement);
+`coe_succAbove_one` and `coe_succAbove_two` stay in `Grade/Short.lean` (about 25 uses), each now
+`rw [Fin.val_succAbove, Fin.val_one]` (`Fin.val_two`), statements unchanged. In `MainComponent/Cut.lean`,
+after `pathVertex_eq_or_exists` and before `exists_liftingRestrict_eq_of_bridgePath`:
+`pathVertex_succ_castSucc`, `pathVertex_eq_of_val_eq`, `pathVertex_add_smul` (from `Grade/Stars.lean`),
+`pathVertex_smul_comp`, `pathVertex_map`, `pathVertex_comp_succAbove_one` (from `Grade/Short.lean`),
+sliced, except `pathVertex_comp_succAbove_one`, whose three `coe_succAbove_*` rewrites are now
+`Fin.val_succAbove` with `Fin.val_two`/`Fin.val_one` (Cut cannot import `Grade/Short.lean`); `Cut.lean`
+now imports the `Fin/Basic` mirror (18 importers, all already downstream). Binders unchanged (K,
+then the lemma's own). `pathVertex_zero_single` stays in `Grade/Stars.lean`. Gates: G2 `lake build`
+(6249 jobs) and `lake lint`; G3 `blueprint/lint.sh`; G5 `#print axioms` of the 21
+`formalization.yaml` declarations, no `sorryAx`; G1. G4 not run (no moved name is pinned: grep of
+`blueprint/src`). FRICTION: *The `pathVertex` lemmas of 42h…* `[resolved]`; *No `Fin.val_succAbove`
+or per-member…* stays `[mirror-candidate]` for `span_range_smul_eq`.
+
+**Task 13** (`Carrier.lean`, `Configuration.lean`) is one line below; its one binder change
+(`pencilConfigPointGrade_ofPoints` now `{K} {α} {m}`) stands.
 
 **Task 12** (`Realization.lean`) is one line below.
 
@@ -189,14 +197,10 @@ the entries it resolved.
   `gradePiForm` and `gradePi` built on `pictureProj`); `pencilConfigPointGrade_ofPoints` (from
   `Grade/Chain.lean`) beside `pencilConfigPointGrade_eq_gradeMk`. Resolves *`gradeSigma` and the
   picture projection…*, *`pencilConfigPointGrade_ofPoints` sits in…*.
-- [ ] **14. `MainComponent/Cut.lean`, after `Fin.val_succAbove`** (Lean; sonnet).
-  `Fin.val_succAbove (p : Fin (n + 1)) (j : Fin n) : (p.succAbove j : ℕ) = if (j : ℕ) < p then j
-  else j + 1` in the `Mathlib/Data/Fin/Basic.lean` mirror (unless the pinned mathlib has it), with
-  `Grade/Short.lean`'s `coe_succAbove_one` and `coe_succAbove_two` through it. Then beside
-  `pathVertex_cases`: `pathVertex_add_smul`, `pathVertex_succ_castSucc`, `pathVertex_eq_of_val_eq`
-  (from `Grade/Stars.lean`), `pathVertex_comp_succAbove_one`, `pathVertex_smul_comp`,
-  `pathVertex_map` (from `Grade/Short.lean`); `pathVertex_zero_single` may stay. Resolves *The
-  `pathVertex` lemmas of 42h…*, the `Fin` part of *No `Fin.val_succAbove`…*.
+- [x] **14. `MainComponent/Cut.lean`, after `Fin.val_succAbove`** (this commit; Lean; sonnet).
+  `Fin.val_succAbove` in the `Fin/Basic` mirror, `coe_succAbove_one`/`_two` through it; six
+  `pathVertex` lemmas into `Cut.lean` (`pathVertex_zero_single` stays). Resolves *The `pathVertex`
+  lemmas of 42h…*, the `Fin` part of *No `Fin.val_succAbove`…*.
 - [ ] **15. The glued-ends helpers' homes** (Lean; sonnet), all from `Grade/GluedEnds.lean`:
   `Graph.mem_closedNbhd_comm` to `Pencil/Motive.lean`, beside `closedNbhd`;
   `Graph.edgeSet_induce_pair_eq_empty`, `rigidContract_pair_simple`,
@@ -249,8 +253,7 @@ the entries it resolved.
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 14, `MainComponent/Cut.lean`, after `Fin.val_succAbove` (*Lemma
-checklist*): the `Fin` mirror lemma first, then the `pathVertex` lemmas, one commit.
+**Next concrete task:** task 15, the glued-ends helpers' homes (*Lemma checklist*), one commit.
 After the round: ORIGAMI's open, with the PI (`notes/Origami.md`).
 
 ## Decisions made during this round

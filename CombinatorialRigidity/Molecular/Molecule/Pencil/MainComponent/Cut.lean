@@ -5,6 +5,7 @@ Authors: Bryan Gin-ge Chen
 -/
 module
 
+public import CombinatorialRigidity.Mathlib.Data.Fin.Basic
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Carrier
 
 /-!
@@ -507,6 +508,77 @@ theorem pathVertex_eq_or_exists {k : ℕ} (a : α) (x : Fin k → α) (b : α)
   · exact absurd (Fin.ext h0) hj
   · exact Or.inr ⟨i, h⟩
   · exact Or.inl h
+
+/-- The interior body `x i` sits at index `i + 1` of the path sequence. -/
+theorem pathVertex_succ_castSucc {α : Type*} {n : ℕ} (a b : α) (x : Fin n → α) (i : Fin n) :
+    pathVertex a x b i.succ.castSucc = x i := by
+  rw [pathVertex, Fin.snoc_castSucc, Fin.cons_succ]
+
+/-- The path sequence at an index of value `i + 1` is the interior body `x i`. -/
+theorem pathVertex_eq_of_val_eq {α : Type*} {n : ℕ} (a b : α) (x : Fin n → α) {idx : Fin (n + 2)}
+    {i : Fin n} (h : (idx : ℕ) = i + 1) : pathVertex a x b idx = x i := by
+  have : idx = i.succ.castSucc := Fin.ext (by simp [h])
+  rw [this]; exact pathVertex_succ_castSucc _ _ _ _
+
+/-- The path sequence is affine in its interior bodies: moving them along `x'` moves the sequence
+along `pathVertex 0 x' 0`, the ends fixed. -/
+theorem pathVertex_add_smul {α : Type*} [AddCommGroup α] [Module K α] {n : ℕ} (a b : α)
+    (x x' : Fin n → α) (t : K) :
+    pathVertex a (x + t • x') b = pathVertex a x b + t • pathVertex 0 x' 0 := by
+  funext m
+  induction m using Fin.lastCases with
+  | last => simp [pathVertex]
+  | cast i =>
+    induction i using Fin.cases with
+    | zero => simp [pathVertex]
+    | succ i =>
+      simp only [pathVertex, Fin.snoc_castSucc, Fin.cons_succ, Pi.add_apply, Pi.smul_apply]
+
+/-- The path sequence of scaled interior bodies is the path sequence scaled, by `1` at the ends and
+`c i` at the body `i`. -/
+theorem pathVertex_smul_comp {V : Type*} [AddCommGroup V] [Module K V] {n : ℕ} (pa pb : V)
+    (Y : Fin n → V) (c : Fin n → K) (j : Fin (n + 2)) :
+    pathVertex pa (fun i => c i • Y i) pb j =
+      (Fin.snoc (Fin.cons 1 c : Fin (n + 1) → K) 1 : Fin (n + 2) → K) j • pathVertex pa Y pb j := by
+  induction j using Fin.lastCases with
+  | last => simp [pathVertex]
+  | cast i =>
+    induction i using Fin.cases with
+    | zero => simp [pathVertex]
+    | succ i => simp only [pathVertex, Fin.snoc_castSucc, Fin.cons_succ]
+
+/-- A function carries the path sequence to the path sequence of the images:
+`f (pathVertex a x b j) = pathVertex (f a) (f ∘ x) (f b) j`. -/
+theorem pathVertex_map {V W : Type*} {n : ℕ} (f : V → W) (a b : V) (x : Fin n → V)
+    (j : Fin (n + 2)) : f (pathVertex a x b j) = pathVertex (f a) (f ∘ x) (f b) j := by
+  induction j using Fin.lastCases with
+  | last => simp [pathVertex]
+  | cast i =>
+    induction i using Fin.cases with
+    | zero => simp [pathVertex]
+    | succ i =>
+      simp only [pathVertex, Fin.snoc_castSucc, Fin.cons_succ, Function.comp_apply]
+
+/-- Removing the second interior body from the path sequence: `pathVertex a (x ∘ succAbove 1) b j`
+is `pathVertex a x b (succAbove 2 j)`. -/
+theorem pathVertex_comp_succAbove_one {k : ℕ} (a b : α) (x : Fin (k + 3) → α) (j : Fin (k + 4)) :
+    pathVertex a (x ∘ Fin.succAbove 1) b j = pathVertex a x b (Fin.succAbove 2 j) := by
+  rcases pathVertex_cases a (x ∘ Fin.succAbove 1) b j with ⟨h, h'⟩ | ⟨i, h, h'⟩ | ⟨h, h'⟩
+  · have hj : j = 0 := Fin.ext h
+    subst hj
+    rw [h']
+    have : (Fin.succAbove 2 (0 : Fin (k + 4)) : Fin (k + 5)) = 0 := by
+      rw [Fin.ext_iff, Fin.val_succAbove, Fin.val_two]; simp
+    rw [this, pathVertex_zero]
+  · rw [h', pathVertex_eq_of_val_eq a b x (i := Fin.succAbove 1 i)]
+    · rfl
+    · rw [Fin.val_succAbove, Fin.val_succAbove, Fin.val_two, Fin.val_one]
+      split_ifs <;> omega
+  · have hj : j = Fin.last _ := Fin.ext (by simpa using h)
+    subst hj
+    have : (Fin.succAbove 2 (Fin.last (k + 3)) : Fin (k + 5)) = Fin.last (k + 4) := by
+      rw [Fin.ext_iff, Fin.val_succAbove, Fin.val_two]; simp
+    rw [h', this, pathVertex_last]
 
 /-- **Restriction is onto at a chain of bridges** (`lem:pencil-bridge-fibre`): the path
 `a - x 0 - ⋯ - x (k - 1) - b` (`hpath`, along `pathVertex`) joins `a ∈ V₁` to `b ∉ V₁`, and every

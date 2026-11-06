@@ -45,10 +45,8 @@ exterior power past `⋀²` is used. The *radical* of a form `φ` on `⋀² V` i
   joins of the ear do not span both stars once `d ≥ 4`.
 
 Helpers whose homes are other files, moved with the next commit that edits those files
-(`notes/Phase42h.md` *Hand-off*): the `pathVertex` lemmas `pathVertex_add_smul`,
-`pathVertex_succ_castSucc`, `pathVertex_eq_of_val_eq` and `pathVertex_zero_single` belong in
-`MainComponent/Cut.lean`. The `normalsJoin` lemmas this file used are in
-`AlgebraicInduction/PanelLayer.lean`.
+(`notes/Phase42h.md` *Hand-off*): `pathVertex_zero_single` may stay. The `normalsJoin`
+lemmas this file used are in `AlgebraicInduction/PanelLayer.lean`.
 -/
 
 @[expose] public section
@@ -566,25 +564,6 @@ theorem forall_mem_normalsJoin_eq_zero_of_pivot {S : Submodule K (Fin (k + 2) �
   have hp' := h p hp (by rw [normalsJoin_self, map_zero])
   exact fun u hu => h u hu (hp' u)
 
-/-- The path sequence is affine in its interior bodies: moving them along `x'` moves the sequence
-along `pathVertex 0 x' 0`, the ends fixed. -/
-theorem pathVertex_add_smul {α : Type*} [AddCommGroup α] [Module K α] {n : ℕ} (a b : α)
-    (x x' : Fin n → α) (t : K) :
-    pathVertex a (x + t • x') b = pathVertex a x b + t • pathVertex 0 x' 0 := by
-  funext m
-  induction m using Fin.lastCases with
-  | last => simp [pathVertex]
-  | cast i =>
-    induction i using Fin.cases with
-    | zero => simp [pathVertex]
-    | succ i =>
-      simp only [pathVertex, Fin.snoc_castSucc, Fin.cons_succ, Pi.add_apply, Pi.smul_apply]
-
-/-- The interior body `x i` sits at index `i + 1` of the path sequence. -/
-theorem pathVertex_succ_castSucc {α : Type*} {n : ℕ} (a b : α) (x : Fin n → α) (i : Fin n) :
-    pathVertex a x b i.succ.castSucc = x i := by
-  rw [pathVertex, Fin.snoc_castSucc, Fin.cons_succ]
-
 /-- The points of the stars family (a step of `lem:pencil-d-stars-four` and
 `lem:pencil-d-stars-three`): the path `pa, Y 0, …, Y (n + 1), pb`, then the standard basis
 vectors `e_l`. -/
@@ -685,12 +664,6 @@ theorem exists_mvPolynomial_repr_starsFamily {n r : ℕ} (bρ : Fin r → ⋀[K]
       rw [MvPolynomial.comp_aeval_apply]
       simp [hPPe]
     rw [this, normalsJoinPoly_eval]
-
-/-- The path sequence at an index of value `i + 1` is the interior body `x i`. -/
-theorem pathVertex_eq_of_val_eq {α : Type*} {n : ℕ} (a b : α) (x : Fin n → α) {idx : Fin (n + 2)}
-    {i : Fin n} (h : (idx : ℕ) = i + 1) : pathVertex a x b idx = x i := by
-  have : idx = i.succ.castSucc := Fin.ext (by simp [h])
-  rw [this]; exact pathVertex_succ_castSucc _ _ _ _
 
 /-- The direction of the path sequence when only the interior body `x 1` moves, along `w`: `w` at
 index `2`, `0` elsewhere. -/

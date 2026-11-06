@@ -384,7 +384,7 @@ to be re-derived by re-reading entries later.
   `PanelLayer.lean`, unchanged, with `exteriorPower_map_normalsJoin`; the new fold
   `ιMulti_pair_eq_normalsJoin` (by `rfl`) replaces `starGrade_sup_starGrade_eq_ker`'s `change`.
 
-### [open] The `pathVertex` lemmas of 42h sit in `Pencil/Grade/Stars.lean` and `Grade/Short.lean`, not `MainComponent/Cut.lean`
+### [resolved] The `pathVertex` lemmas of 42h sit in `Pencil/Grade/Stars.lean` and `Grade/Short.lean`, not `MainComponent/Cut.lean`
 - **Where it bit:** Phase 42h, `Pencil/Grade/Stars.lean`: `pathVertex_add_smul` (the path sequence
   is affine in its interior bodies), `pathVertex_succ_castSucc`, `pathVertex_eq_of_val_eq` and
   `pathVertex_zero_single` are about `pathVertex`, whose home is `MainComponent/Cut.lean`, beside
@@ -396,7 +396,10 @@ to be re-derived by re-reading entries later.
   it); `pathVertex_zero_single`, stars-four's one direction at `K^(k+2)`, may stay.
   `pathVertex_comp_succAbove_one` needs the `Fin.succAbove` values of `Grade/Short.lean` (the
   `Fin.val_succAbove` entry below): it moves with them, or after them.
-- **Status:** open (42h's deferral; tracked under PD-STEPS, `notes/Phase42-design.md` §3).
+- **Status:** resolved (HOMES task 14): `pathVertex_add_smul`, `pathVertex_succ_castSucc`,
+  `pathVertex_eq_of_val_eq`, `pathVertex_smul_comp`, `pathVertex_map` and
+  `pathVertex_comp_succAbove_one` in `MainComponent/Cut.lean` (the last now through
+  `Fin.val_succAbove`); `pathVertex_zero_single` stays in `Grade/Stars.lean`.
 
 ### [idiom] `simp` turns `(0 : Fin 3).castSucc` into `0` before a lemma stated at `j.castSucc` can fire
 - **Where it bit:** Phase 42i, `Pencil/Grade/StarsThree.lean` (`exists_mvPolynomial_starsThree`),
@@ -467,7 +470,9 @@ to be re-derived by re-reading entries later.
   cleanup round or with a consumer outside `Grade/Short.lean`. (`starGrade_smul` moved beside
   `starGrade` in `Grade/Stars.lean` with 42i's stars-three, re-proved by the one-scalar
   `Submodule.span_smul_eq_of_isUnit`, so `span_range_smul_eq` keeps its one consumer.)
-- **Status:** open (mirror-candidate; 42h's deferral, `notes/Phase42-design.md` §3).
+- **Status:** open (mirror-candidate), the `Fin` half resolved (HOMES task 14): `Fin.val_succAbove`
+  is in the mirror, `coe_succAbove_one` and `coe_succAbove_two` are its instances; the
+  `span_range_smul_eq` half stays (42h's deferral, `notes/Phase42-design.md` §3).
 
 ### [open] The kernel argument at an additive core is proved twice, inline at `d = 3` and in `Pencil/Grade/`
 - **Where it bit:** Phase 42f, `lem:pencil-contract-additive-kernel`
