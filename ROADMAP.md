@@ -1441,8 +1441,8 @@ research note of its own, `notes/Strata.md`, which holds PENCIL-D's evidence.
   HOMES's four and twelve older ones, went from 16 to 0; HOMES's unbacked `def:join` edge stays, by
   design), the friction log's archive sweep, the splits of `Deficiency.lean`,
   `RigidityMatrix/Basic.lean`, `Meet.lean` and `PanelLayer.lean` (pure moves), and, at the PI's
-  choice, `RecordsLinks` moved to `Graph` (its old names kept as deprecated aliases) with the link
-  hypotheses, witnesses and conclusions restated in its terms. The restatements are equivalent but
+  choice, `RecordsLinks` moved to `Graph` with the link hypotheses, witnesses and conclusions
+  restated in its terms. The restatements are equivalent but
   for three: at the PI's word, three genericity-device lemmas' total-form hypotheses (every label an
   edge) were weakened to `RecordsLinks` plus a new hypothesis that the rows they take are at edges,
   and one blueprint node was repinned. Four lemmas left without a caller were deleted, one by the

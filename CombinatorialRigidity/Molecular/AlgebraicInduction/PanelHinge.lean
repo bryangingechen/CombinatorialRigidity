@@ -20,8 +20,7 @@ molecular conjecture*, Discrete Comput. Geom. **45**), presented in
 
 * the tactic `link_tac`, which proves from a hypothesis in scope that an endpoint selector records
   the links of a multigraph (`Graph.RecordsLinks`, the condition of
-  `fmlnote:panel-hinge-nondegenerate`), and the condition's old names in `PanelHingeFramework`,
-  deprecated;
+  `fmlnote:panel-hinge-nondegenerate`);
 * panel-hinge frameworks and their body-hinge interpretation (`def:panel-hinge-framework`), with the
   frameworks `withMomentNormals`, `ofParam` and `ofNormals` of given normals, and hinge-coplanar
   body-hinge frameworks (`def:hinge-coplanar`);
@@ -50,60 +49,6 @@ variable {k : ℕ}
 variable {K : Type*} [Field K]
 
 open scoped Graph
-
-/-! ## The link condition's old names
-
-The condition that a selector record the links of a multigraph
-(`fmlnote:panel-hinge-nondegenerate`) is `Graph.RecordsLinks`, with its lemmas in
-`Mathlib/Combinatorics/Graph/RecordsLinks.lean`; `Graph.recordsLinks_endsOf`,
-`Graph.RecordsLinks.update_splitOff` and `Graph.RecordsLinks.map` are in
-`Induction/Operations.lean`. Until 2026-11-05 they were in the namespace `PanelHingeFramework`;
-the old names are deprecated aliases. -/
-
-@[deprecated (since := "2026-11-05")]
-alias PanelHingeFramework.RecordsLinks := Graph.RecordsLinks
-
-@[deprecated (since := "2026-11-05")]
-alias PanelHingeFramework.RecordsLinks.isLink := Graph.RecordsLinks.isLink
-
-@[deprecated (since := "2026-11-05")]
-alias PanelHingeFramework.recordsLinks_iff_forall_isLink := Graph.recordsLinks_iff_forall_isLink
-
-@[deprecated (since := "2026-11-05")]
-alias PanelHingeFramework.RecordsLinks.eq_or_swap := Graph.RecordsLinks.eq_or_swap
-
-@[deprecated (since := "2026-11-05")]
-alias PanelHingeFramework.recordsLinks_iff_eq_or_swap := Graph.recordsLinks_iff_eq_or_swap
-
-@[deprecated (since := "2026-11-05")]
-alias PanelHingeFramework.RecordsLinks.of_isLink_imp := Graph.RecordsLinks.of_isLink_imp
-
-@[deprecated (since := "2026-11-05")]
-alias PanelHingeFramework.RecordsLinks.of_forall := Graph.RecordsLinks.of_forall
-
-@[deprecated (since := "2026-11-05")]
-alias PanelHingeFramework.RecordsLinks.of_pair := Graph.RecordsLinks.of_pair
-
-@[deprecated (since := "2026-11-05")]
-alias PanelHingeFramework.RecordsLinks.of_split := Graph.RecordsLinks.of_split
-
-@[deprecated (since := "2026-11-05")]
-alias PanelHingeFramework.RecordsLinks.congr := Graph.RecordsLinks.congr
-
-@[deprecated (since := "2026-11-05")]
-alias PanelHingeFramework.RecordsLinks.mono := Graph.RecordsLinks.mono
-
-@[deprecated (since := "2026-11-05")]
-alias PanelHingeFramework.RecordsLinks.induce := Graph.RecordsLinks.induce
-
-@[deprecated (since := "2026-11-05")]
-alias PanelHingeFramework.recordsLinks_endsOf := Graph.recordsLinks_endsOf
-
-@[deprecated (since := "2026-11-05")]
-alias PanelHingeFramework.RecordsLinks.map := Graph.RecordsLinks.map
-
-@[deprecated (since := "2026-11-05")]
-alias PanelHingeFramework.RecordsLinks.update_splitOff := Graph.RecordsLinks.update_splitOff
 
 /-- **The fill-in tactic for the link condition** (`fmlnote:panel-hinge-nondegenerate`): proves
 `Graph.RecordsLinks G ends` from what is in scope. It tries the base forms (`link_base_tac`: a

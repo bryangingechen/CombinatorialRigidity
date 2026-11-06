@@ -3562,9 +3562,10 @@ limitations. Worth a once-over so future agents don't re-litigate.
   the upstream namespace; `Graph.recordsLinks_endsOf`, `Graph.RecordsLinks.update_splitOff` and
   `Graph.RecordsLinks.map` in `Molecular/Induction/Operations.lean`, beside `endsOf` and `splitOff`
   (`map` there because the tree's `Graph.map` is the `Matroid` package's; the idiom entry *Mathlib's
-  `Graph/Maps.lean` cannot be imported beside the `Matroid` package's `Graph/Map.lean`…*). The
-  fifteen old names are `@[deprecated (since := "2026-11-05")]` aliases in `PanelHinge.lean`;
-  `HingeGeneric.lean` no longer opens `PanelHingeFramework`.
+  `Graph/Maps.lean` cannot be imported beside the `Matroid` package's `Graph/Map.lean`…*).
+  `HingeGeneric.lean` no longer opens `PanelHingeFramework`. The fifteen old names were
+  deprecated aliases in `PanelHinge.lean` until after ARREARS's close, removed then as unneeded
+  (the round was unpushed, so nothing outside the tree named them).
 - **Status:** mirrored.
 - **Mirror file:** `Mathlib/Combinatorics/Graph/RecordsLinks.lean` (a new upstream file).
 

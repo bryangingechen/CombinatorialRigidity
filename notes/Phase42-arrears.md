@@ -125,7 +125,8 @@ warnings, 0 cache failures):
   *changed statement* gate, `CombinatorialRigidity/CLAUDE.md` *Forward-mode slices*). The one
   exception is task 19's, at the PI's word (*Decisions*): three total-form hypotheses weakened to
   `RecordsLinks` plus `hs` (the rows at edges of `G`), two lemmas deleted, a node repinned.
-  The round's renames are task 12's `RecordsLinks` API, each old name kept as a deprecated alias. A
+  The round's renames are task 12's `RecordsLinks` API (its 15 deprecated aliases removed after the
+  close, *Decisions*). A
   split or move keeps every declaration's name, statement and proof. The deletions are
   `extensor_triple_eq_zero_iff` (task 4) and, at the PI's word, `induce_isLink_ends` (task 17), each
   dead and unpinned, and task 19's `exists_independent_panelRow_subfamily_of_rigidOn` (unpinned by
@@ -202,7 +203,8 @@ resolved.
 - [x] **11. (reserved; unused)** for a split that did not fit its task (*One task, one dispatch*):
   each of tasks 6-9 fit, so no commit.
 - [x] **12. `RecordsLinks` to `Graph`** (`651ecc60`; Lean). The def and 11 lemmas in the new mirror
-  `Graph/RecordsLinks.lean`, three in `Operations.lean`; 15 deprecated aliases; 33 callers renamed.
+  `Graph/RecordsLinks.lean`, three in `Operations.lean`; 15 deprecated aliases (removed
+  after the close, *Decisions*); 33 callers renamed.
   Resolves FRICTION *`RecordsLinks` lives in `PanelHingeFramework`…* (now `[mirrored]`).
 - [x] **13. Restate: upstream of Case III** (`03215eb1`; Lean). 22 binders in the five files;
   `PanelHingeFramework.recordsLinks_of_graph_eq` and its `link_base_tac` branch; callers converted
@@ -278,6 +280,12 @@ PI and takes its phase number then.
   pins _linking in place of #4; #4 and #5 (both then uncalled, unpinned) are deleted, with their
   docstring mentions repointed. One task; moves a pin, so verify.sh and the dependency audit
   run."). Task 19.
+- **Task 12's aliases removed, at the PI's word** (2026-11-06, after the close): "task 12 created
+  15 @[deprecated (since := "2026-11-05")] aliases for the old RecordsLinks names which aren't
+  needed (the commits haven't been pushed, so nothing should depend on the old names)". The
+  aliases and their section leave `PanelHinge.lean`; the tree named none of them. The
+  `notes/reconcile-formal/` witnesses that name the old forms are frozen Phase-41 records, already
+  failing against the tree for other reasons, and stay as they are.
 - **Task 19's shapes.** (a) The recon: with only `RecordsLinks`, #1-#3 and #5 are false
   (kernel-checked counterexamples at `k = 1` on a graph with no edges: a label off `E(G)` with ends
   `(0, 1)` and a nonzero hinge gives panel rows outside the row space); #4 holds, as `_linking` with
@@ -303,9 +311,9 @@ PI and takes its phase number then.
   its one import); `mono` goes through mathlib's `IsLink.mono`, as `IsLink.of_le` is the `Matroid`
   package's. (b) `RecordsLinks.map` joins the two `Operations.lean` lemmas: the tree's `Graph.map` is
   the package's, and mathlib's `Graph/Maps.lean` cannot be imported beside it (both declare
-  `Graph.map_map`). (c) The aliases are in `PanelHinge.lean`; every mention is `Graph.`-qualified
-  (in `PanelHingeFramework` a bare name resolves to the alias). (d) The root lists the mirror, beside
-  `Graph/Delete.lean`'s.
+  `Graph.map_map`). (c) The aliases were in `PanelHinge.lean` (removed after the close); every
+  mention is `Graph.`-qualified (in `PanelHingeFramework` a bare name resolved to the alias).
+  (d) The root lists the mirror, beside `Graph/Delete.lean`'s.
 - **Task 13's shapes.** (a) 22 binders (`Pinning` 1, `Dictionary` 4, `GenericityDevice` 6, `Coupling`
   2, `CaseI` 9), each `(hends : Graph.RecordsLinks G ends)`; `Pinning`, `Dictionary` import the
   mirror. (b) Local `have`s feeding them restated in place: in these files and in those of no task
