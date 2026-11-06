@@ -74,7 +74,9 @@ Modes:
              over-cap headers as of 2026-09-10) -- this is the cleanup-round
              scope, not a check to run before a commit.
   --last     check the notes changed in HEAD vs HEAD~1 (post-commit audit).
-  --selftest assert that --all is green at baseline and --archive is not.
+  --selftest assert that --all is green at baseline and --archive is not, and
+             that some note is ACTIVE while a ROADMAP Status row is in
+             progress (between phases, none need be).
 
 Why --all does not gate the archive (2026-09-10, `notes/Harness-structure.md`
 D6.7). The loop tells a coordinator to run the docs gates before committing
@@ -375,17 +377,49 @@ def changed(ref_new, ref_old):
     return out
 
 
+def roadmap_in_progress():
+    """The first cells of ROADMAP's Status-table rows whose status cell reads
+    "in progress": the rows that say some work log should be ACTIVE. None if
+    ROADMAP.md cannot be read."""
+    try:
+        with open("ROADMAP.md", encoding="utf-8") as f:
+            text = f.read()
+    except OSError:
+        return None
+    m = re.search(r"^## Status\n(.*?)^## ", text, re.S | re.M)
+    rows = []
+    for line in (m.group(1) if m else "").splitlines():
+        if not line.startswith("|"):
+            continue
+        cells = [c.strip() for c in line.strip().strip("|").split("|")]
+        if len(cells) >= 3 and re.search(r"in progress", cells[-1], re.I):
+            rows.append(cells[0])
+    return rows
+
+
 def selftest():
     """Pin D6.7's property, which is the reason this scope exists: `--all` is
     GREEN at baseline and `--archive` is not. A gate whose documented fallback
     is red certifies nothing, and the only way that stays fixed is a test that
-    fails when it regresses."""
+    fails when it regresses. Zero ACTIVE notes is a failure only while a
+    ROADMAP Status row is in progress: between phases it is the expected state
+    (FRICTION *`check-phase-note.py --selftest` fails when no phase note is in
+    progress*, fixed in HOMES task 2)."""
     fails = []
     notes = all_notes()
     parsed = [(n, parse(read_note(n))) for n in notes]
     active = [n for n, m in parsed if m["active"]]
+    between = ""
     if not active:
-        fails.append("  no ACTIVE note found; the active/closed split is broken")
+        rows = roadmap_in_progress()
+        if rows is None:
+            fails.append("  no ACTIVE note found, and ROADMAP.md could not be read")
+        elif rows:
+            fails.append(f"  no ACTIVE note found, yet ROADMAP's Status table has "
+                         f"{len(rows)} row(s) in progress ({'; '.join(rows)}); "
+                         f"the active/closed split is broken")
+        else:
+            between = " (between phases: no ROADMAP Status row in progress)"
     bad_all = [n for n, m in parsed if offenders(n, m, None, archive=False)]
     if bad_all:
         fails.append(f"  --all scope is RED at baseline on {bad_all} — the "
@@ -398,7 +432,7 @@ def selftest():
         print("FAIL: check-phase-note selftest", file=sys.stderr)
         print("\n".join(fails), file=sys.stderr)
         return 1
-    print(f"OK: selftest — {len(notes)} notes, {len(active)} ACTIVE; --all "
+    print(f"OK: selftest — {len(notes)} notes, {len(active)} ACTIVE{between}; --all "
           f"green at baseline, --archive red on {len(bad_arch)} closed note(s) "
           f"as expected.")
     return 0

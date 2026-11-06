@@ -534,7 +534,7 @@ to be re-derived by re-reading entries later.
   writes it.
 - **Status:** idiom.
 
-### [open] `check-phase-note.py --selftest` fails when no phase note is in progress
+### [resolved] `check-phase-note.py --selftest` fails when no phase note is in progress
 - **Where it bit:** Phase 42d's close (project-organization review). `notes/Phase23d.md`'s
   `**Status:**` header still read "in progress" two phases after Phase 23 closed, so `--all`
   marked it ACTIVE; the close fixed the header. With 42d closed too, no note is ACTIVE, and
@@ -545,7 +545,10 @@ to be re-derived by re-reading entries later.
 - **Proposed fix:** in `selftest()`, require an ACTIVE note only when one is expected (e.g. when
   ROADMAP's Status table names an open sub-phase), or report zero ACTIVE notes as a note rather
   than a failure. A tooling change, so not made inside the close.
-- **Status:** open.
+- **Status:** resolved (HOMES task 2): `selftest()` fails on zero ACTIVE notes only while a ROADMAP
+  Status row reads "in progress" (the new `roadmap_in_progress()`), and otherwise reports the
+  between-phases state; tested at HEAD, between phases, with a row in progress and no ACTIVE note,
+  and with ROADMAP unreadable.
 
 ### [open] `bodyBarDim` has no monotonicity or lower-bound lemma; each consumer unfolds it
 - **Where it bit:** Phase 42d, COUNT-A: `Graph.deficiencyMerged_two_add_two_le_of_three_le`

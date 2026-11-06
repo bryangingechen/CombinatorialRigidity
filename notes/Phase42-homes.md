@@ -6,8 +6,8 @@ CLEANUP-42 and ahead of ORIGAMI, in two parts: the friction log's docs and tooli
 2–4), then the lemmas Phase 42 left outside their home files, one task per home file, with the
 mirror lemmas that now meet their entries' own bar (tasks 5–18). No statement changes. Phase 42
 deferred the moves because a declaration added to these files rebuilds most of `Molecular/`
-mid-phase; ORIGAMI will not edit them, so they are cheapest now. Task 1 landed.
-**Next concrete task:** task 2, `notes/check-phase-note.py --selftest` between phases.
+mid-phase; ORIGAMI will not edit them, so they are cheapest now. Tasks 1–2 landed.
+**Next concrete task:** task 3, `TACTICS-GOLF.md`'s index.
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -23,9 +23,12 @@ public declaration's name, or delete a pinned declaration, does not land that ch
 
 ## Current state
 
-**Task 1 landed** (this commit; docs only): this log, its row in ROADMAP's Status table, ROADMAP
-§42's *Next* and *Queued post-program phases*, `notes/MolecularConjecture.md`, and a queue row
-ahead of ORIGAMI.
+**Task 2 landed** (this commit; tooling): `notes/check-phase-note.py --selftest` treats zero
+ACTIVE notes as the between-phases state unless a ROADMAP Status row reads "in progress". Tested:
+at HEAD, OK with 1 ACTIVE (this log); on `445d8069`'s `notes/` and ROADMAP (between phases), OK
+with 0 ACTIVE; with one of that ROADMAP's rows set "In progress", FAIL naming the row; with
+ROADMAP unreadable, FAIL. The FRICTION entry is `[resolved]`, for task 4's archive sweep.
+Task 1 (`a0c236a6`) opened the round on its status surfaces.
 
 **Verified at the open** (2026-11-05, at `445d8069`):
 - **The review.** Of the 62 entries, about 30 can be fixed now (tasks 2–18). The rest are process
@@ -114,11 +117,10 @@ dependencies (7 before 8, 9 before 11, `Fin.val_succAbove` first within 14). Nam
 entries. **On landing, a task's line is cut to at most three lines:** number, sha, what landed,
 the entries it resolved.
 
-- [x] **1. Open** (this commit; docs only).
-- [ ] **2. The selftest between phases** (tooling; sonnet). `notes/check-phase-note.py`'s
-  `selftest()` fails on zero ACTIVE notes only when a ROADMAP Status row reads "In progress", and
-  otherwise reports them as the between-phases state; both branches tested. Resolves FRICTION
-  *`check-phase-note.py --selftest` fails when no phase note is in progress*.
+- [x] **1. Open** (`a0c236a6`; docs only).
+- [x] **2. The selftest between phases** (this commit; tooling). `selftest()` fails on zero ACTIVE
+  notes only while a ROADMAP Status row is in progress (new `roadmap_in_progress()`); tested on four
+  trees (*Current state*). FRICTION *`--selftest` fails when no phase note…* `[resolved]`.
 - [ ] **3. `TACTICS-GOLF.md`'s index** (docs only; sonnet). Index entries for the body's §20–§24,
   in the index's style. The list-recursor idiom (index-only §20) becomes body §30 with its own
   index entry, and its pointers move to §30: FRICTION's two (the *`foldl` recurrence* sub-bullet,
@@ -275,8 +277,8 @@ the entries it resolved.
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 2, `notes/check-phase-note.py`'s `selftest()` between phases (*Lemma
-checklist*). After the round: ORIGAMI's open, with the PI (`notes/Origami.md`).
+**Next concrete task:** task 3, `TACTICS-GOLF.md`'s index (*Lemma checklist*). After the round:
+ORIGAMI's open, with the PI (`notes/Origami.md`).
 
 ## Decisions made during this round
 
