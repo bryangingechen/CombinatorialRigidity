@@ -121,6 +121,7 @@ public import CombinatorialRigidity.Molecular.Molecule.Theorem56
 public import CombinatorialRigidity.Molecular.RigidityMatrix.Basic
 public import CombinatorialRigidity.Molecular.RigidityMatrix.Bricks
 public import CombinatorialRigidity.Molecular.RigidityMatrix.Claim612
+public import CombinatorialRigidity.Molecular.RigidityMatrix.ColumnOperation
 public import CombinatorialRigidity.Nonvacuity
 public import CombinatorialRigidity.PebbleGame.Correctness
 public import CombinatorialRigidity.PebbleGame.Examples

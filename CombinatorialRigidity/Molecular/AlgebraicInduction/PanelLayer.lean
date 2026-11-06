@@ -6,6 +6,7 @@ Authors: Bryan Gin-ge Chen
 module
 
 public import CombinatorialRigidity.Molecular.RigidityMatrix.Basic
+public import CombinatorialRigidity.Molecular.RigidityMatrix.ColumnOperation
 public import Mathlib.LinearAlgebra.Quotient.Pi
 public import CombinatorialRigidity.Molecular.Deficiency
 

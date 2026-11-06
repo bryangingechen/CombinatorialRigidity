@@ -6,6 +6,7 @@ Authors: Bryan Gin-ge Chen
 module
 
 public import CombinatorialRigidity.Molecular.RigidityMatrix.Basic
+public import CombinatorialRigidity.Molecular.RigidityMatrix.ColumnOperation
 
 /-!
 # Rank-addition lemmas for body-hinge frameworks

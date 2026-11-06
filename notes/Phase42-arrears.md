@@ -22,7 +22,7 @@ stops; the PI answers in an entry that starts `**PI, <date>:**`.
 
 ## Current state
 
-**Tasks 1-6 landed.** Task 1 (`381dcae1`): the open. Task 2 (`0edd6e7e`): the friction log's
+**Tasks 1-7 landed.** Task 1 (`381dcae1`): the open. Task 2 (`0edd6e7e`): the friction log's
 archive sweep, 22 `[resolved]` entries to `FRICTION-archive.md`; FRICTION's counts now open 8,
 mirror-candidate 8, process 2, blueprint 0, resolved 0. Task 3 (`6f227b5e`): `hax`, `hbx` deleted
 from `X0AttainsGrade.of_openEar_four`. Task 4 (`a0b498a0`): HOMES's four missing edges closed
@@ -31,10 +31,12 @@ from `X0AttainsGrade.of_openEar_four`. Task 4 (`a0b498a0`): HOMES's four missing
 and `lem:pencil-d-planes-meet`, whose Lean reaches it only through `gradeSigma` (the new node, now
 implied through the lemma's statement); not defects (an unbacked edge is a check), left as they
 are. Task 5 (`ca348e9d`): the twelve older missing edges (*Decisions*); G6 at 0 missing from it.
-Task 6 (this commit): `Deficiency.lean` split into four files, a pure move (*Decisions*). Gates:
+Task 6 (`7dc78901`): `Deficiency.lean` split into four files, a pure move (*Decisions*). Gates:
 G1, G2 (whole-tree `lake build` 0 warnings, 0 cache failures; `lake lint`), G3 (check 9 at 0, the
 docstring-label report unchanged), G4 (`checkdecls` silent); G6 **0 missing**, unbacked 190,
 implied 3070, 802 nodes, consistency OK (the built graph's 1885 edges), as at task 5.
+Task 7 (this commit): `RigidityMatrix/Basic.lean` split in two, a pure move (*Decisions*); same gates,
+G6 unchanged.
 
 **Verified at the open** (2026-11-05, at `6d75d694`; a whole-tree `lake build` replays clean, 0
 warnings, 0 cache failures):
@@ -140,11 +142,14 @@ resolved.
 - [x] **5. The twelve older missing edges** (`ca348e9d`; TeX, one docstring in
   `HingeGeneric.lean`). Eight `\uses` edges with their prose; `dof_eq_zero_iff` moved to
   `cor:bodyhinge-generic-rigid`; two edges implied. G6: 0 missing (*Decisions*).
-- [x] **6. Split `Deficiency.lean`** (this commit; Lean, a pure move). `Deficiency.lean` 851,
+- [x] **6. Split `Deficiency.lean`** (`7dc78901`; Lean, a pure move). `Deficiency.lean` 851,
   `Deficiency/Cut.lean` 1207 (with the merged deficiency, the cut vertex), `Deficiency/Corank.lean`
   1371, `Deficiency/MinimalKDof.lean` 569; seven docstrings, three TACTICS-QUIRKS lines repointed.
-- [ ] **7. Split `RigidityMatrix/Basic.lean`** (Lean; sonnet). At the column-operation section
-  (line 817): the rest to a new `RigidityMatrix/` file. A pure move.
+- [x] **7. Split `RigidityMatrix/Basic.lean`** (this commit; Lean, a pure move). `Basic.lean` 819,
+  `RigidityMatrix/ColumnOperation.lean` 915 (lines 817-1683: the column operation, the star-forest
+  rows, the trivial motions and rank lemmas). Also repointed task 6's missed mention in
+  `Induction/SparseDeficiency.lean` (`deficiencyMerged_le_deficiency`, `partitionDef_map`, now
+  `Deficiency/Cut.lean`).
 - [ ] **8. Split `Meet.lean`** (Lean; sonnet). At a seam near line 689 (the `a ∨ v` sections on),
   the rest to a new file. A pure move.
 - [ ] **9. Split `AlgebraicInduction/PanelLayer.lean`** (Lean; sonnet). Along its three sections:
@@ -192,8 +197,8 @@ resolved.
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 7, the split of `RigidityMatrix/Basic.lean` at its column-operation
-section (*Lemma checklist*; a pure move, G6 at 0 missing). After the close: ORIGAMI's open, with
+**Next concrete task:** task 8, the split of `Meet.lean` at its `a ∨ v` sections (*Lemma checklist*;
+a pure move, G6 at 0 missing). After the close: ORIGAMI's open, with
 the PI (ROADMAP *Queued post-program phases*).
 
 ## Decisions made during this round
@@ -232,3 +237,9 @@ the PI (ROADMAP *Queued post-program phases*).
   tight-partition and corank sections each need only `Cut`, one file to stay at four. (c) Imports
   by use: `Operations`, `JacobsCounting` take `Corank`; `GenericityDevice` and
   `ForestSurgery/Reduction` take `MinimalKDof` (every other user is downstream of one).
+- **Task 7's shapes.** (a) The seam is the column-operation section (line 817); nothing in
+  `Basic.lean` is `private`, so no visibility changes. The new file, `ColumnOperation.lean`,
+  imports `Basic`. (b) Importers by use: `PanelLayer` uses `finrank_screwAssignment`, `Claim612`
+  `columnOp`, `Bricks` `linearIndependent_sum_pinned_block`; all three add the new file beside
+  `Basic`; `ScrewVelocity` keeps `Basic` alone. (c) Sweep: every live Lean mention of
+  `RigidityMatrix/Basic.lean` names a declaration that stayed; TACTICS-QUIRKS' are history, stay.

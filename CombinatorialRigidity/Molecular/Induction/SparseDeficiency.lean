@@ -65,7 +65,7 @@ The estimates at `n = 3` are the cases `D = 6` of estimates at every `n`
 
 `Graph.deficiencyMerged_le_deficiency` and `Graph.partitionDef_map`, which
 `lem:deficiency-merge-rigid` and `lem:deficiency-additive-core` also pin, are in
-`Molecular/Deficiency.lean`.
+`Molecular/Deficiency/Cut.lean`.
 -/
 
 @[expose] public section
