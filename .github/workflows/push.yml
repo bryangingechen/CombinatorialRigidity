@@ -20,7 +20,7 @@ concurrency:
 
 jobs:
   build_project:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04 # cf. https://leanprover.zulipchat.com/#narrow/channel/113488-general/topic/docgen.20memory.20issue/with/638099968
     name: Build project, blueprint, and docs
     steps:
       - name: Free up disk space on the runner
