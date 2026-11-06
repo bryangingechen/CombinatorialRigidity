@@ -129,7 +129,7 @@ by `finrank_span_pencilConfigPointGrade_closedNbhd_le`. Then
 `PanelHingeFramework.hasPencilPlaneRealization_toPatchedBodyHinge` applies. -/
 theorem _root_.Graph.IsAdmissiblePicture.hasPencilPlaneRealization_ofNormals_pencilConfigPointGrade
     {G : Graph α β} {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) {ends : β → α × α}
-    (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
+    (hends : Graph.RecordsLinks G ends)
     {z : α × Fin m → K} (hz : z ∈ G.liftingSpaceGrade q m) :
     HasPencilPlaneRealization G
       (PanelHingeFramework.ofNormals (k := m + 1) G ends
@@ -169,7 +169,7 @@ grade `m + 1`, the deficiency taken at `n = m + 2`). The realization is the patc
 are those of `ofNormals` (`PanelHingeFramework.span_rigidityRows_toPatchedBodyHinge`). -/
 theorem _root_.Graph.IsAdmissiblePicture.hasGradedDistinctPencilRealization {G : Graph α β}
     {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) {ends : β → α × α}
-    (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
+    (hends : Graph.RecordsLinks G ends)
     {z : α × Fin m → K} (hz : z ∈ G.liftingSpaceGrade q m)
     (hrank : (Module.finrank K (Submodule.span K
         (PanelHingeFramework.ofNormals (k := m + 1) G ends
@@ -193,6 +193,7 @@ theorem _root_.Graph.X0AttainsGrade.hasGradedDistinctPencilRealization [Infinite
   obtain ⟨ends, P, hends, hP, hgood⟩ := h
   obtain ⟨q, hq⟩ := MvPolynomial.exists_eval_ne_zero hP
   obtain ⟨hadm, R, ⟨z, hz, hRz⟩, hall⟩ := hgood q hq
-  exact hadm.hasGradedDistinctPencilRealization hends hz (hall z hz hRz)
+  exact hadm.hasGradedDistinctPencilRealization (Graph.recordsLinks_iff_forall_isLink.mpr hends) hz
+    (hall z hz hRz)
 
 end CombinatorialRigidity.Molecular

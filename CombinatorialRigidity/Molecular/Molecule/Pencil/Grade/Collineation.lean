@@ -84,7 +84,7 @@ under the one automorphism `det g • Λ_h` of the screw space
 `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv`. -/
 theorem PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv_grade
     {G : Graph α β} {ends : β → α × α}
-    (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
+    (hends : Graph.RecordsLinks G ends)
     (g : (Fin (k + 2) → K) ≃ₗ[K] (Fin (k + 2) → K)) {p p' : α → Fin (k + 2) → K}
     (hp : ∀ w ∈ V(G), p' w = g (p w)) :
     Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := k) G ends
@@ -101,7 +101,7 @@ theorem PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv_grad
       = Submodule.span K ((PanelHingeFramework.ofNormals (k := k) G ends
         (fun x => p x.1 x.2)).toBodyHinge.mapExtensor M).rigidityRows :=
     span_rigidityRows_eq_of_supportExtensor_agree _ _ rfl fun e u v he => by
-      have h0 := hends e u v he
+      have h0 := hends.isLink he
       simp only [BodyHingeFramework.mapExtensor_supportExtensor,
         PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_normal,
         PanelHingeFramework.ofNormals_ends, hp _ h0.left_mem, hp _ h0.right_mem,

@@ -118,6 +118,7 @@ theorem _root_.Graph.X0AttainsGrade.of_additiveContract [Infinite K] [Finite α]
   have hWle : W.ncard ≤ V(G).ncard := Set.ncard_le_ncard hW (Set.toFinite _)
   -- the picture
   obtain ⟨endsc, Pc, hendsc, hPc, hgoodc⟩ := hc
+  replace hendsc := Graph.recordsLinks_iff_forall_isLink.mpr hendsc
   obtain ⟨endsH, PH, hendsH, hPH, hgoodH⟩ := hH
   obtain ⟨PJc, hPJc, hJc⟩ :=
     Graph.exists_mvPolynomial_finrank_liftingSpace_eq (K := K) hcS ⟨r, hrc⟩ hc3
@@ -162,26 +163,16 @@ theorem _root_.Graph.X0AttainsGrade.of_additiveContract [Infinite K] [Finite α]
     exact hattc z₁ hz₁ hRz₁
   -- the selector of `G`, and its restrictions
   set ends := G.endsOf with hendsdef
-  have hends : ∀ e u w, G.IsLink e u w → G.IsLink e (ends e).1 (ends e).2 :=
-    fun e _ _ he => G.isLink_endsOf he.edge_mem
-  have hendsG := Graph.recordsLinks_iff_forall_isLink.mpr hends
-  have hendsI (X : Set α) := Graph.recordsLinks_iff_forall_isLink.mp (hendsG.induce X)
-  have hendsD : ∀ e u w, (G.deleteEdges E(G.induce W)).IsLink e u w →
-      (G.deleteEdges E(G.induce W)).IsLink e (ends e).1 (ends e).2 := by
-    intro e u w he
-    rw [Graph.deleteEdges_isLink] at he ⊢
-    exact ⟨hends e u w he.1, he.2⟩
-  have hendsM : ∀ e u w, (G.rigidContract (G.induce W) r).IsLink e u w →
-      (G.rigidContract (G.induce W) r).IsLink e (Graph.collapseTo r W (ends e).1)
-        (Graph.collapseTo r W (ends e).2) := by
-    intro e u w hlink
-    rw [Graph.rigidContract, Graph.map_isLink] at hlink ⊢
-    obtain ⟨x, y, hxy, _, _⟩ := hlink
-    exact ⟨_, _, hendsD e x y hxy, rfl, rfl⟩
+  have hends : Graph.RecordsLinks G ends := Graph.recordsLinks_endsOf G
+  have hendsD : Graph.RecordsLinks (G.deleteEdges E(G.induce W)) ends :=
+    hends.mono Graph.deleteEdges_le
+  have hendsM : Graph.RecordsLinks (G.rigidContract (G.induce W) r)
+      (fun e => (Graph.collapseTo r W (ends e).1, Graph.collapseTo r W (ends e).2)) :=
+    hendsD.map _
   -- the surviving rows near the collapsed placement (`lem:pencil-contract-degenerate-rank`)
   obtain ⟨Qc, hQc₀, hQc⟩ :=
     PanelHingeFramework.exists_rankPolynomial_rigidContract_induce_proj (k := m + 1) G hr hW ends
-      (Graph.recordsLinks_iff_forall_isLink.mpr hendsD) (pencilConfigPointGrade q z')
+      hendsD (pencilConfigPointGrade q z')
       (fun e he => hqcadm.supportExtensor_ne_zero_grade hendsM z' he) le_rfl
   -- the kernel at the end of the curve (`lem:pencil-contract-additive-kernel`)
   set L := LinearMap.ker ((G.contractLiftingMatrix K W r q).map
@@ -364,12 +355,12 @@ theorem _root_.Graph.X0AttainsGrade.of_additiveContract [Infinite K] [Finite α]
       Graph.liftingRestrict_mem_liftingSpace_induce_of_contract hW (hxt i)
   have hH0 := hattH _ hmemH hPAt
   rw [PanelHingeFramework.finrank_span_rigidityRows_ofNormals_liftingRestrict_grade (X := W)
-    (fun _ h => h) hendsH (hendsI W)] at hH0
+    (fun _ h => h) (Graph.recordsLinks_iff_forall_isLink.mpr hendsH) (hends.induce W)] at hH0
   have hH : (Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := m + 1)
       (G.induce W) ends n).toBodyHinge.rigidityRows) : ℤ) =
       screwDim (m + 1) * ((W.ncard : ℤ) - 1) := by
-    rw [hndef, Graph.finrank_span_rigidityRows_induce_contractHeightGrade_eq q ht xt (hendsI W),
-      hH0, hdefd, sub_zero]
+    rw [hndef, Graph.finrank_span_rigidityRows_induce_contractHeightGrade_eq q ht xt
+      (hends.induce W), hH0, hdefd, sub_zero]
     rfl
   -- the rows outside the core (`lem:pencil-contract-degenerate-rank`)
   have hproj := hQc n hQt
@@ -385,9 +376,8 @@ theorem _root_.Graph.X0AttainsGrade.of_additiveContract [Infinite K] [Finite α]
       Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := m + 1)
         (G.rigidContract (G.induce W) r) endsc
           (fun p => pencilConfigPointGrade q z' p.1 p.2)).toBodyHinge.rigidityRows) :=
-    PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr _
-      (Graph.recordsLinks_iff_forall_isLink.mpr hendsM)
-      (Graph.recordsLinks_iff_forall_isLink.mpr hendsc) (fun _ _ _ => rfl)
+    PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr _ hendsM hendsc
+      (fun _ _ _ => rfl)
   rw [hrankM] at hproj
   have hcountZ : (V(G.rigidContract (G.induce W) r).ncard : ℤ) =
       ((V(G).ncard : ℤ) - (W.ncard : ℤ)) + 1 := by

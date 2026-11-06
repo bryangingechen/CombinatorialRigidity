@@ -221,7 +221,7 @@ theorem _root_.Graph.exists_earBase_splitOff_grade [Infinite K] [Finite α] {G :
     (hl₀ : (G.splitOff v u w e₀).IsLink e₀ u w)
     (he₀ : ∀ p p', G.IsLink e₀ p p' → p ∉ V₁ ∨ p' ∉ V₁)
     (hind : (G.splitOff v u w e₀).induce V₁ = G.induce V₁)
-    {ends : β → α × α} (hends : ∀ f p p', G.IsLink f p p' → G.IsLink f (ends f).1 (ends f).2)
+    {ends : β → α × α} (hends : Graph.RecordsLinks G ends)
     {xf xl : α} {X : Set α} (hxf : xf ∈ (G.splitOff v u w e₀).closedNbhd a)
     (hxl : xl ∈ (G.splitOff v u w e₀).closedNbhd b) (hX : Set.range y ⊆ X)
     (h₁ : (G.induce V₁).X0AttainsGrade K m) (h₂ : (G.splitOff v u w e₀).X0AttainsGrade K m)
@@ -276,10 +276,8 @@ theorem _root_.Graph.exists_earBase_splitOff_grade [Infinite K] [Finite α] {G :
   set H := G.splitOff v u w e₀ with hH
   have hle : G.induce V₁ ≤ H := hind ▸ Graph.induce_le (hcover ▸ Set.subset_union_left)
   set ends'' := Function.update ends e₀ (u, w) with hends''def
-  have hendsG := Graph.recordsLinks_iff_forall_isLink.mpr hends
-  have hends'' : ∀ f p p', H.IsLink f p p' → H.IsLink f (ends'' f).1 (ends'' f).2 :=
-    fun _ _ _ => (hendsG.update_splitOff hl₀).isLink
-  have hendsI := Graph.recordsLinks_iff_forall_isLink.mp (hendsG.induce V₁)
+  have hends'' : Graph.RecordsLinks H ends'' := hends.update_splitOff hl₀
+  have hendsI := hends.induce V₁
   have hnot : ∀ f p p', (G.induce V₁).IsLink f p p' → f ≠ e₀ := by
     rintro f p p' ⟨hf, hp, hp'⟩ rfl
     rcases he₀ p p' hf with h | h
@@ -350,7 +348,7 @@ theorem _root_.Graph.exists_earBase_splitOff_grade [Infinite K] [Finite α] {G :
         (PanelHingeFramework.ofNormals (k := m + 1) G ends
           (cfg sstar)).toBodyHinge.supportExtensor f := by
     intro s f p p' hf
-    obtain ⟨-, h1, h2⟩ := hendsI f p p' hf
+    obtain ⟨-, h1, h2⟩ := hendsI.isLink hf
     simp only [PanelHingeFramework.toBodyHinge_supportExtensor,
       PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_ends]
     congr 1 <;> funext j
@@ -372,7 +370,7 @@ theorem _root_.Graph.exists_earBase_splitOff_grade [Infinite K] [Finite α] {G :
     intro s
     rw [BodyHingeFramework.finrank_span_rigidityRows_congr (G.induce V₁) (hCG s)]
     have := PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr (k := m + 1)
-      (G.induce V₁) (hendsG.induce V₁) (Graph.recordsLinks_iff_forall_isLink.mpr hends₁)
+      (G.induce V₁) hendsI (Graph.recordsLinks_iff_forall_isLink.mpr hends₁)
       (q := cfg sstar)
       (q' := fun p => pencilConfigPointGrade q' z₁ p.1 p.2)
       (fun w hw j => hcV₁ sstar w hw j)
@@ -392,7 +390,7 @@ theorem _root_.Graph.exists_earBase_splitOff_grade [Infinite K] [Finite α] {G :
     fun s => ?_, hrk₁, fun s => ?_, hzs, hzsR, fun t ht i => ?_, fun i p hp => hla i p hp,
     fun i p hp => hlb i p hp⟩
   · rw [← hcfgdef, hcfgstar, PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr
-      (k := m + 1) H (hendsG.update_splitOff hl₀) (Graph.recordsLinks_iff_forall_isLink.mpr hends₂)
+      (k := m + 1) H hends'' (Graph.recordsLinks_iff_forall_isLink.mpr hends₂)
       (fun _ _ _ => rfl)]
     exact hr₂
   · rw [← hcfgdef, hcfgstar]
@@ -432,7 +430,7 @@ theorem _root_.Graph.exists_earBase_splitOff_grade [Infinite K] [Finite α] {G :
 (`panelSupportExtensor`), which is `±` that at `u i, w i` (`span_supportExtensor_ofNormals_eq`,
 `panelSupportExtensor_swap`). -/
 theorem span_supportExtensor_comp_eq_map_normalsJoin {k : ℕ} {H : Graph α β} {ends : β → α × α}
-    (hends : ∀ f u w, H.IsLink f u w → H.IsLink f (ends f).1 (ends f).2)
+    (hends : Graph.RecordsLinks H ends)
     (c : α × Fin (k + 2) → K) {ι : Type*} (g : ι → β) (u w : ι → α)
     (hg : ∀ i, H.IsLink (g i) (u i) (w i)) :
     Submodule.span K (Set.range ((PanelHingeFramework.ofNormals (k := k) H ends
@@ -447,15 +445,13 @@ theorem span_supportExtensor_comp_eq_map_normalsJoin {k : ℕ} {H : Graph α β}
         Submodule.span K (Set.range ((complementScrew K k).toLinearMap ∘
           fun i => normalsJoin (fun j => c (u i, j)) (fun j => c (w i, j)))) :=
       Submodule.subset_span ⟨i, rfl⟩
-    have h := span_supportExtensor_ofNormals_eq (Graph.recordsLinks_iff_forall_isLink.mpr hends) c
-      (hg i)
+    have h := span_supportExtensor_ofNormals_eq hends c (hg i)
     have h1 := Submodule.mem_span_singleton_self (R := K)
       ((PanelHingeFramework.ofNormals (k := k) H ends c).toBodyHinge.supportExtensor (g i))
     rw [h] at h1
     exact (Submodule.span_le.mpr (Set.singleton_subset_iff.mpr hbase)) h1
   · rintro _ ⟨i, rfl⟩
-    have h := span_supportExtensor_ofNormals_eq (Graph.recordsLinks_iff_forall_isLink.mpr hends) c
-      (hg i)
+    have h := span_supportExtensor_ofNormals_eq hends c (hg i)
     have h1 := Submodule.mem_span_singleton_self (R := K)
       (panelSupportExtensor (fun j => c (u i, j)) (fun j => c (w i, j)))
     rw [← h] at h1
@@ -527,7 +523,7 @@ links of `G`) and restrict its hinges to the links of a subgraph `H ≤ G`. The 
 `a, b` of the resulting body-hinge framework, pulled back along `complementScrew`, are
 `joinRelScrews H` at the points `c (t, ·)`. -/
 theorem map_relScrews_ofNormals_eq_joinRelScrews {k : ℕ} {G H : Graph α β} {ends : β → α × α}
-    (hends : ∀ f u w, G.IsLink f u w → G.IsLink f (ends f).1 (ends f).2)
+    (hends : Graph.RecordsLinks G ends)
     (hHG : ∀ f u w, H.IsLink f u w → G.IsLink f u w) (c : α × Fin (k + 2) → K) (a b : α) :
     ((⟨H, (PanelHingeFramework.ofNormals (k := k) G ends c).toBodyHinge.supportExtensor⟩ :
       BodyHingeFramework K k α β).relScrews a b).map (complementScrew K k).symm.toLinearMap =
@@ -538,8 +534,8 @@ theorem map_relScrews_ofNormals_eq_joinRelScrews {k : ℕ} {G H : Graph α β} {
           {(PanelHingeFramework.ofNormals (k := k) G ends c).toBodyHinge.supportExtensor f} =
         (K ∙ normalsJoin (fun j => c (u, j)) (fun j => c (w, j))).map ι.toLinearMap := by
     intro f u w hf
-    rw [span_supportExtensor_ofNormals_eq (Graph.recordsLinks_iff_forall_isLink.mpr hends) c
-      (hHG f u w hf), Submodule.map_span, Set.image_singleton]
+    rw [span_supportExtensor_ofNormals_eq hends c (hHG f u w hf), Submodule.map_span,
+      Set.image_singleton]
     rfl
   ext x
   constructor
@@ -638,12 +634,9 @@ theorem _root_.Graph.X0AttainsGrade.of_openEar_splitOff_of_base [Infinite K] [Fi
   obtain ⟨Pm, hPm, hmain⟩ := G.exists_mvPolynomial_isMainPicture (K := K)
     hG.simple.toLoopless hG.three_le_ncard_closedNbhd
   set ends := G.endsOf
-  have hends : ∀ f p p', G.IsLink f p p' → G.IsLink f (ends f).1 (ends f).2 :=
-    fun f _ _ hf => G.isLink_endsOf hf.edge_mem
+  have hends : Graph.RecordsLinks G ends := Graph.recordsLinks_endsOf G
   set ends'' := Function.update ends e₀ (u, w)
-  have hends'' : ∀ f p p', G''.IsLink f p p' → G''.IsLink f (ends'' f).1 (ends'' f).2 :=
-    fun _ _ _ =>
-      ((Graph.recordsLinks_iff_forall_isLink.mpr hends).update_splitOff hl₀'').isLink
+  have hends'' : Graph.RecordsLinks G'' ends'' := hends.update_splitOff hl₀''
   obtain ⟨q', z₁, zs, la, lb, sstar, ρM, hqm', hadm₂, hpicstar, hrk₂, hne₂, hz₁s, hlas, hlbs, hρG,
       hρ2, hrk₁, hrk₁'', hzs, hzsR, hz₁zs, hlaz, hlbz⟩ :=
     Graph.exists_earBase_splitOff_grade hk hcover'' hinj'' hyV₁ ha hb hab hpath'' hsep'' hl₀'' he₀
@@ -654,15 +647,14 @@ theorem _root_.Graph.X0AttainsGrade.of_openEar_splitOff_of_base [Infinite K] [Fi
   set ρJ := ρM.map (complementScrew K (m + 1)).symm.toLinearMap with hρJ
   -- the insertion hypothesis, a polynomial condition on the ear data
   -- `ρJ` is `G[V₁]`'s relative screws at the base configuration `(q*, z₁)`
-  have hendsI := Graph.recordsLinks_iff_forall_isLink.mp
-    ((Graph.recordsLinks_iff_forall_isLink.mpr hends).induce V₁)
+  have hendsI := hends.induce V₁
   have hρJ' : ρJ = joinRelScrews (G.induce V₁) (pencilConfigPointGrade q' z₁) a b := by
     rw [hρJ, ← hρG sstar, ← map_relScrews_ofNormals_eq_joinRelScrews hends
       (fun f p p' hf => hf.of_le (Graph.induce_le (hcover ▸ Set.subset_union_left)))
       (fun p => pencilConfigPointGrade q' z₁ p.1 p.2)]
     congr 1
     refine BodyHingeFramework.relScrews_congr (G.induce V₁) (fun f p p' hf => ?_) a b
-    obtain ⟨-, h1, h2⟩ := hendsI f p p' hf
+    obtain ⟨-, h1, h2⟩ := hendsI.isLink hf
     simp only [PanelHingeFramework.toBodyHinge_supportExtensor,
       PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_ends]
     congr 1 <;> funext j

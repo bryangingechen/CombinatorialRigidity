@@ -322,8 +322,7 @@ theorem _root_.Graph.eq_of_mem_liftingPlanesZero_of_partitionDef [Finite α] [Fi
     {h : α → Fin 3 → K} (hh : h ∈ G.liftingPlanesZero q a b) {u v : α} (huv : f u = f v) :
     h u = h v := by
   have : Inhabited α := ⟨hV.some⟩
-  have hends : ∀ e u v, G.IsLink e u v → G.IsLink e (G.endsOf e).1 (G.endsOf e).2 :=
-    fun e _ _ he => G.isLink_endsOf he.edge_mem
+  have hends := Graph.recordsLinks_endsOf G
   set F := (PanelHingeFramework.ofNormals (k := 1) G G.endsOf
     (fun p => pencilPicturePoint q p.1 p.2)).toBodyHinge with hF
   have hFg : F.graph = G := by simp [hF]
@@ -331,7 +330,7 @@ theorem _root_.Graph.eq_of_mem_liftingPlanesZero_of_partitionDef [Finite α] [Fi
     rintro e ⟨-, x, y, hl, -⟩
     rw [hF, PanelHingeFramework.toBodyHinge_supportExtensor_ne_zero_iff]
     rw [hFg] at hl
-    exact linearIndependent_pencilPicturePoint_pair (hq.1 e _ _ (hends e x y hl))
+    exact linearIndependent_pencilPicturePoint_pair (hq.1 e _ _ (hends.isLink hl))
   have hlb := F.screwDim_mul_range_card_sub_le_finrank_partitionMotions f hC
   rw [hFg, hrange, screwDim_one] at hlb
   -- the hinge condition in `K³` coordinates
@@ -343,7 +342,7 @@ theorem _root_.Graph.eq_of_mem_liftingPlanesZero_of_partitionDef [Finite α] [Fi
       (F.mem_infinitesimalMotions S).mp hS e u v (hFg ▸ he)
     simp only [hF, PanelHingeFramework.toBodyHinge_supportExtensor,
       PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_ends] at hc
-    rcases (hends e u v he).eq_and_eq_or_eq_and_eq he with ⟨h1, h2⟩ | ⟨h1, h2⟩
+    rcases hends.eq_or_swap he with ⟨h1, h2⟩ | ⟨h1, h2⟩
     · rwa [h1, h2, mem_span_panelSupportExtensor_one_iff
         (linearIndependent_pencilPicturePoint_pair (hq.1 e u v he)), map_sub] at hc
     · rw [h1, h2, mem_span_panelSupportExtensor_one_iff

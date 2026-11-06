@@ -494,6 +494,7 @@ theorem liftAttains_of_forall_deficiency_two_ne_zero [Infinite K] [Finite α] [F
   have : G.Simple := hG.simple
   obtain ⟨hF1, -⟩ := hfeas.hub_conditions
   obtain ⟨ends, Patt, hends, hPatt0, hPatt⟩ := hatt
+  replace hends := Graph.recordsLinks_iff_forall_isLink.mpr hends
   have h3 := hG.three_le_ncard_closedNbhd
   obtain ⟨Pm, hPm0, hPm⟩ := G.exists_mvPolynomial_isMainPicture (K := K) hG.simple.toLoopless h3
   obtain ⟨Ppl, hPpl0, hPpl⟩ := exists_planeDiff_ne_zero_poly (K := K) hG.simple h3 hrig
@@ -585,8 +586,7 @@ theorem liftAttains_of_forall_deficiency_two_ne_zero [Infinite K] [Finite α] [F
     (fun v w₁ w₂ _ _ _ h1 h2 h12 => hDgp (v, w₁, w₂) (Ne.symm h1) (Ne.symm h2) h12 q
       (hqgp _ (Finset.mem_univ _)))
     hx (fun e a b hl _ _ => hpd a hl.left_mem b hl.right_mem hl.ne)
-    (fun v hv _ a ha b hb hab => hpd a ha.1.1 b hb.1.1 hab)
-    (Graph.recordsLinks_iff_forall_isLink.mpr hends) hsel
+    (fun v hv _ a ha b hb hab => hpd a ha.1.1 b hb.1.1 hab) hends hsel
   have hnd := hnd3.toPlane
   set b : α → Fin 4 → K := pencilConfigPoint q fun v => z (v, 0) with hbdef
   set P : α → Submodule K (Fin 4 → K) :=

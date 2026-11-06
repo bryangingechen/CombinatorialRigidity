@@ -38,12 +38,12 @@ exactly when the two endpoint points are independent
 (`Graph.IsAdmissiblePicture.supportExtensor_ne_zero`). -/
 theorem _root_.Graph.IsAdmissiblePicture.supportExtensor_ne_zero_grade {G : Graph α β}
     {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) {ends : β → α × α}
-    (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2) (z : α × Fin m → K)
+    (hends : Graph.RecordsLinks G ends) (z : α × Fin m → K)
     {e : β} {u v : α} (he : G.IsLink e u v) :
     (PanelHingeFramework.ofNormals (k := m + 1) G ends
       (fun p => pencilConfigPointGrade q z p.1 p.2)).toBodyHinge.supportExtensor e ≠ 0 := by
   rw [PanelHingeFramework.toBodyHinge_supportExtensor_ne_zero_iff]
-  exact linearIndependent_pencilConfigPointGrade_pair z (hq.1 e _ _ (hends e u v he))
+  exact linearIndependent_pencilConfigPointGrade_pair z (hq.1 e _ _ (hends.isLink he))
 
 /-- A ring map commutes with the block layout `(x, y, u, w)` of a vector of `K^(m+3)`
 (`pencilConfigPointGrade`): the coordinates `0` and `1`, the `m` heights, and the last. -/
@@ -75,8 +75,7 @@ The rank never exceeds the target once every hinge is nonzero
 (`BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le`, with
 `Graph.bodyBarDim_add_one_eq_screwDim`). -/
 theorem _root_.Graph.x0AttainsGrade_of_exists [Finite α] [Finite β] {G : Graph α β}
-    (hV : V(G).Nonempty) (ends : β → α × α)
-    (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
+    (hV : V(G).Nonempty) (ends : β → α × α) (hends : Graph.RecordsLinks G ends)
     {q₀ : α × Fin 2 → K} (hq₀ : G.IsMainPicture q₀) {z₀ : α × Fin m → K}
     (hz₀ : z₀ ∈ G.liftingSpaceGrade q₀ m)
     (hrank : screwDim (m + 1) * ((V(G).ncard : ℤ) - 1) - G.deficiency (m + 2) ≤
@@ -87,8 +86,7 @@ theorem _root_.Graph.x0AttainsGrade_of_exists [Finite α] [Finite β] {G : Graph
   have : Fintype α := Fintype.ofFinite α
   -- The rank polynomial, nonzero at `(q₀, z₀)`.
   obtain ⟨Q, hQ₀, hQ⟩ := PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking G ends
-    (Graph.recordsLinks_iff_forall_isLink.mpr hends)
-    (q₀ := fun p => pencilConfigPointGrade q₀ z₀ p.1 p.2)
+    hends (q₀ := fun p => pencilConfigPointGrade q₀ z₀ p.1 p.2)
     (fun e he => hq₀.1.supportExtensor_ne_zero_grade hends z₀ he) (Int.toNat_le.mpr hrank)
   -- Admissibility near `q₀`.
   obtain ⟨Padm, hPadm₀, hPadm⟩ := hq₀.1.exists_mvPolynomial
@@ -132,7 +130,8 @@ theorem _root_.Graph.x0AttainsGrade_of_exists [Finite α] [Finite β] {G : Graph
   have hZz₀ : (fun r : α × Fin m => MvPolynomial.eval q₀ (Z r.2 (Sum.inl r.1))) = z₀ := by
     funext ⟨w, i⟩
     exact congr_fun (hZ₀ i) w
-  refine ⟨ends, Padm * (∏ i, D i) * Qsec, hends, fun h0 => ?_, fun q hq => ?_⟩
+  refine ⟨ends, Padm * (∏ i, D i) * Qsec, Graph.recordsLinks_iff_forall_isLink.mp hends,
+    fun h0 => ?_, fun q hq => ?_⟩
   · -- `P(q₀) ≠ 0`: the sections pass through `z₀`.
     have h := congrArg (MvPolynomial.eval q₀) h0
     rw [map_mul, map_mul, map_prod, hQsec, hZz₀, map_zero] at h

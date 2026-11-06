@@ -256,7 +256,7 @@ theorem liftSpace_congr {G : Graph α β} {b0 b0' : α → Fin 4 → K}
 
 /-- The rank only reads the normals on `V(G)`. -/
 theorem finrank_ofNormals_congr {k : ℕ} {G : Graph α β} {ends : β → α × α}
-    (hlinks : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
+    (hlinks : Graph.RecordsLinks G ends)
     {q q' : α → Fin (k + 2) → K} (h : ∀ v ∈ V(G), q' v = q v) :
     Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := k) G ends
         (fun p => q' p.1 p.2)).toBodyHinge.rigidityRows)
@@ -267,7 +267,7 @@ theorem finrank_ofNormals_congr {k : ℕ} {G : Graph α β} {ends : β → α ×
   have hprop : ∀ e u v, F₁.graph.IsLink e u v →
       ∃ c' : K, c' ≠ 0 ∧ c' • F₁.supportExtensor e = F₂.supportExtensor e := by
     intro e u v he
-    have h0 := hlinks e u v he
+    have h0 := hlinks.isLink he
     refine ⟨1, one_ne_zero, ?_⟩
     rw [one_smul]
     change panelSupportExtensor (q' (ends e).1) (q' (ends e).2) =
@@ -315,7 +315,7 @@ theorem finrank_span_rigidityRows_eq_zero_of_vertexSet {k : ℕ} {F : BodyHingeF
 /-- **The rank of a lift is at most the target** (the bound of
 `lem:relative-deficiency-rank-bound`), as its hinges are nonzero. -/
 theorem finrank_liftNormal_le [Finite α] [Finite β] {r : ℕ} {G : Graph α β} {ends : β → α × α}
-    (hlinks : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2) {b0 : α → Fin 4 → K}
+    (hlinks : Graph.RecordsLinks G ends) {b0 : α → Fin 4 → K}
     (hlink : ∀ e u v, G.IsLink e u v → LinearIndependent K ![b0 u, b0 v])
     (hne : V(G).Nonempty) (ζ : Fin r → α → K) :
     (Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := r + 1 + 1) G ends
@@ -323,7 +323,7 @@ theorem finrank_liftNormal_le [Finite α] [Finite β] {r : ℕ} {G : Graph α β
       ≤ screwDim (r + 1 + 1) * ((V(G).ncard : ℤ) - 1) - G.deficiency (r + 1 + 2) := by
   refine BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le _
     (Graph.bodyBarDim_add_one_eq_screwDim (r + 1 + 1)) hne fun e u v he _ => ?_
-  have h0 := hlinks e u v he
+  have h0 := hlinks.isLink he
   change panelSupportExtensor (liftNormal b0 ζ (ends e).1) (liftNormal b0 ζ (ends e).2) ≠ 0
   rw [panelSupportExtensor_ne_zero_iff]
   exact linearIndependent_liftNormal ζ (hlink e _ _ h0)
@@ -342,7 +342,7 @@ theorem liftAttains_of_least [Infinite K] [Finite α] [Finite β] {r : ℕ} {G :
       Module.finrank K (liftSpaceTilde G b) ≤ Module.finrank K (liftSpaceTilde G b'))
     {lam : Fin r → (α → K) × ((v : α) → Module.Dual K (P v))}
     (hlam : ∀ i, lam i ∈ liftSpace G b P) {ends : β → α × α}
-    (hlinks : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
+    (hlinks : Graph.RecordsLinks G ends)
     (hrank : (Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := r + 1 + 1) G
         ends (fun p => liftNormal b (fun i => (lam i).1) p.1 p.2)).toBodyHinge.rigidityRows) : ℤ)
       = screwDim (r + 1 + 1) * ((V(G).ncard : ℤ) - 1) - G.deficiency (r + 1 + 2)) :
@@ -384,7 +384,7 @@ theorem liftAttains_of_least [Infinite K] [Finite α] [Finite β] {r : ℕ} {G :
     rw [panelSupportExtensor_ne_zero_iff]
     exact linearIndependent_liftNormal _ (hlink₀ e _ _ he)
   obtain ⟨Pr, hPr₀, hPr⟩ := PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking G ends
-    (Graph.recordsLinks_iff_forall_isLink.mpr hlinks) hne₀ le_rfl
+    hlinks hne₀ le_rfl
   obtain ⟨Pc, hPc⟩ := IsPolyFun.comp Pr hnrm_poly
   -- `Q₀`, with the bodies off `V(G)` fixed at `b`
   set Q₀ : MvPolynomial (α × Fin 4) K := (∏ i, D i) * Pc with hQ₀def
@@ -406,7 +406,8 @@ theorem liftAttains_of_least [Infinite K] [Finite α] [Finite β] {r : ℕ} {G :
       split_ifs <;> rfl
     rw [hQ₁, e]; exact hQ₀₀
   obtain ⟨d, hd₀, hd⟩ := exists_weightedHomogeneousComponent_of_eval_ne_zero hQ₁₀
-  refine ⟨ends, hlinks, MvPolynomial.weightedHomogeneousComponent bodyWeight d Q₁, ?_,
+  refine ⟨ends, Graph.recordsLinks_iff_forall_isLink.mp hlinks,
+    MvPolynomial.weightedHomogeneousComponent bodyWeight d Q₁, ?_,
     ⟨d, MvPolynomial.weightedHomogeneousComponent_isWeightedHomogeneous _ _⟩,
     ⟨F, b, P, hnd, hd₀⟩, ?_⟩
   · -- the variables are bodies of `G`
@@ -593,7 +594,7 @@ theorem liftAttains_of_holdsGenerally [Infinite K] [Finite α] [Finite β] {r : 
     {hubSel nbrSel : α → Fin 3 → Option α}
     (hHubSel : ∀ v, IsFin3SelectorOf (G.closedHubNbhd v) (hubSel v))
     (hNbrSel : ∀ v, ¬ G.PencilHub v → IsFin3SelectorOf (G.closedNbhd v) (nbrSel v))
-    {ends : β → α × α} (hlinks : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
+    {ends : β → α × α} (hlinks : Graph.RecordsLinks G ends)
     (h : HoldsGenerally G hubSel nbrSel fun b0 P0 =>
       ∃ lam : Fin r → (α → K) × ((v : α) → Module.Dual K (P0 v)),
         (∀ i, lam i ∈ liftSpace G b0 P0) ∧
@@ -647,8 +648,7 @@ theorem eval_smul_of_isWeightedHomogeneous {σ ι : Type*} (g : σ → ι) {φ :
 
 /-- The rank does not depend on the selector of the links. -/
 theorem finrank_ofNormals_ends {k : ℕ} {G : Graph α β} {ends ends' : β → α × α}
-    (h : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
-    (h' : ∀ e u v, G.IsLink e u v → G.IsLink e (ends' e).1 (ends' e).2)
+    (h : Graph.RecordsLinks G ends) (h' : Graph.RecordsLinks G ends')
     (q : α × Fin (k + 2) → K) :
     Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := k) G ends
         q).toBodyHinge.rigidityRows) =
@@ -656,18 +656,14 @@ theorem finrank_ofNormals_ends {k : ℕ} {G : Graph α β} {ends ends' : β → 
         q).toBodyHinge.rigidityRows) := by
   set F₁ := (PanelHingeFramework.ofNormals (k := k) G ends q).toBodyHinge
   set F₂ := (PanelHingeFramework.ofNormals (k := k) G ends' q).toBodyHinge
-  have hr : Graph.RecordsLinks G ends :=
-    (Graph.recordsLinks_iff_forall_isLink).2 h
-  have hr' : Graph.RecordsLinks G ends' :=
-    (Graph.recordsLinks_iff_forall_isLink).2 h'
   have hprop : ∀ e u v, F₁.graph.IsLink e u v →
       ∃ c' : K, c' ≠ 0 ∧ c' • F₁.supportExtensor e = F₂.supportExtensor e := by
     intro e u v he
     change ∃ c' : K, c' ≠ 0 ∧ c' • panelSupportExtensor (fun i => q ((ends e).1, i))
       (fun i => q ((ends e).2, i)) = panelSupportExtensor (fun i => q ((ends' e).1, i))
       (fun i => q ((ends' e).2, i))
-    rcases hr.eq_or_swap he with ⟨h1, h2⟩ | ⟨h1, h2⟩ <;>
-      rcases hr'.eq_or_swap he with ⟨h1', h2'⟩ | ⟨h1', h2'⟩ <;>
+    rcases h.eq_or_swap he with ⟨h1, h2⟩ | ⟨h1, h2⟩ <;>
+      rcases h'.eq_or_swap he with ⟨h1', h2'⟩ | ⟨h1', h2'⟩ <;>
       simp only [h1, h2, h1', h2']
     · exact ⟨1, one_ne_zero, one_smul _ _⟩
     · exact ⟨-1, neg_ne_zero.2 one_ne_zero, by
@@ -781,9 +777,7 @@ theorem lift_transfer [Infinite K] [Finite α] [Finite β] {r : ℕ} {G : Graph 
     (hV'G : V' ⊆ V(G)) (hV' : V'.Nonempty) {hubSel nbrSel : α → Fin 3 → Option α}
     (hHubSel : ∀ v, IsFin3SelectorOf (G.closedHubNbhd v) (hubSel v))
     (hNbrSel : ∀ v, ¬ G.PencilHub v → IsFin3SelectorOf (G.closedNbhd v) (nbrSel v))
-    {ends : β → α × α}
-    (hlinksH : ∀ e u v, (G.induce V').IsLink e u v →
-      (G.induce V').IsLink e (ends e).1 (ends e).2)
+    {ends : β → α × α} (hlinksH : Graph.RecordsLinks (G.induce V') ends)
     (hT1 : ∃ E : MvPolynomial (α × Fin 2 × Fin 4) K, (∀ p ∈ E.vars, p.1 ∈ V') ∧
       (∃ d : α × Fin 2 →₀ ℕ, MvPolynomial.IsWeightedHomogeneous
         (fun p : α × Fin 2 × Fin 4 => Finsupp.single (p.1, p.2.1) 1) E d) ∧
@@ -831,6 +825,7 @@ theorem lift_transfer [Infinite K] [Finite α] [Finite β] {r : ℕ} {G : Graph 
   have hVH : V(H) = V' := rfl
   have hHG : H ≤ G := Graph.induce_le hV'G
   obtain ⟨endsH, hlinksH', QH, hQvars, ⟨dQ, hQhom⟩, ⟨FQ, bQ, PQ, hndQ, hQ0⟩, hQmain⟩ := hH
+  replace hlinksH' := Graph.recordsLinks_iff_forall_isLink.mpr hlinksH'
   obtain ⟨E, hEvars, ⟨dE, hEhom⟩, ⟨FE, bE, nE, hndE, hE0⟩, hEmain⟩ := hT1
   -- the chart of `H`
   obtain ⟨hubSelH, nbrSelH, hHubSelH, hNbrSelH⟩ :=
@@ -982,17 +977,15 @@ theorem lift_transfer [Infinite K] [Finite α] [Finite β] {r : ℕ} {G : Graph 
         liftVec (bG s p.1) (fun i => ζc (i, p.1)) p.2 := fun p =>
       isPolyFun_liftVec (p := fun _ => bG s p.1) (u := fun ζc i => ζc (i, p.1))
         (fun j => isPolyFun_const _) (fun i => isPolyFun_apply (i, p.1)) p.2
-    have hrecH : Graph.RecordsLinks H ends :=
-      (Graph.recordsLinks_iff_forall_isLink).2 hlinksH
     have hne₀ : ∀ e, H.IsLink e (ends e).1 (ends e).2 →
         (PanelHingeFramework.ofNormals (k := r + 1 + 1) H ends
           (fun p => liftNormal (bG s) (fun i => (lam i).1) p.1 p.2)
-          hrecH).toBodyHinge.supportExtensor e ≠ 0 := by
+          hlinksH).toBodyHinge.supportExtensor e ≠ 0 := by
       intro e he
       rw [PanelHingeFramework.toBodyHinge_supportExtensor, panelSupportExtensor_ne_zero_iff]
       exact linearIndependent_liftNormal (fun i v => (lam i).1 v) (hlinkH e _ _ he)
     obtain ⟨Pr, hPr₀, hPr⟩ := PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking H
-      ends (Graph.recordsLinks_iff_forall_isLink.mpr hlinksH) hne₀ le_rfl
+      ends hlinksH hne₀ le_rfl
     obtain ⟨R, hR⟩ := IsPolyFun.comp Pr hnrm_poly
     have hRe : ∀ lam' : Fin r → (α → K) × ((v : α) → Module.Dual K (dotPerp (K ∙ nG s v))),
         MvPolynomial.eval (fun p => (lam' p.1).1 p.2) R =

@@ -117,8 +117,7 @@ rank of `ofNormals (k := 2)` at the points `pencilConfigPoint q (fun v => z (v, 
 (`pencilConfigPointGrade_eq_pencilConfigPoint`). The normals are rewritten first: the two ranks are
 not cheaply definitionally equal, and `rfl` exhausts the heartbeats. -/
 theorem PanelHingeFramework.finrank_span_rigidityRows_ofNormals_pencilConfigPointGrade_one
-    {G : Graph α β} {ends : β → α × α}
-    (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
+    {G : Graph α β} {ends : β → α × α} (hends : Graph.RecordsLinks G ends)
     (q : α × Fin 2 → K) (z : α × Fin 1 → K) :
     Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 1 + 1) G ends
         (fun p => pencilConfigPointGrade q z p.1 p.2)).toBodyHinge.rigidityRows)
@@ -243,8 +242,7 @@ row rank at `ofNormals` of their points, where `(Tz + a)_(w,i) = (T z_w)_i + a_i
 built from the blocks as the point is, so its coordinates are those of
 `pencilConfigPointGrade_apply_zero` to `pencilConfigPointGrade_apply_last`. -/
 theorem _root_.Graph.finrank_span_rigidityRows_ofNormals_heights_linearEquiv_add_affineLifts
-    {G : Graph α β} {ends : β → α × α}
-    (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
+    {G : Graph α β} {ends : β → α × α} (hends : Graph.RecordsLinks G ends)
     (q : α × Fin 2 → K) (z : α × Fin m → K) (T : (Fin m → K) ≃ₗ[K] (Fin m → K))
     {a : Fin m → α → K} (ha : ∀ i, a i ∈ G.affineLifts q) :
     Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := m + 1) G ends
@@ -410,7 +408,7 @@ theorem _root_.Graph.x0AttainsGrade_one_iff {G : Graph α β} :
       rw [MvPolynomial.eval_rename] at hRz'
       have := hR (fun p => z' p.1) (hmem.2 hz') hRz'
       rw [PanelHingeFramework.finrank_span_rigidityRows_ofNormals_pencilConfigPointGrade_one
-        hlinks q _] at this
+        (Graph.recordsLinks_iff_forall_isLink.mpr hlinks) q _] at this
       exact this
   · rintro ⟨ends, P, hlinks, hP, H⟩
     refine ⟨ends, P, hlinks, hP, fun q hq => ?_⟩
@@ -421,7 +419,7 @@ theorem _root_.Graph.x0AttainsGrade_one_iff {G : Graph α β} :
     · intro z' hz' hRz'
       rw [MvPolynomial.eval_rename] at hRz'
       rw [PanelHingeFramework.finrank_span_rigidityRows_ofNormals_pencilConfigPointGrade_one
-        hlinks q _]
+        (Graph.recordsLinks_iff_forall_isLink.mpr hlinks) q _]
       exact hR _ (hmem.1 hz') hRz'
 
 end CombinatorialRigidity.Molecular

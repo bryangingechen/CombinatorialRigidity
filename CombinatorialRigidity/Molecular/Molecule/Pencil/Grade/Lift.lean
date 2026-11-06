@@ -356,7 +356,7 @@ theorem IsNondegPencilPlaneRealization.lift {r : ℕ} {G : Graph α β}
     (hnd : IsNondegPencilPlaneRealization G F b0 P0)
     {lam : Fin r → (α → K) × ((v : α) → Module.Dual K (P0 v))}
     (hlam : ∀ i, lam i ∈ liftSpace G b0 P0) {ends : β → α × α}
-    (hlinks : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2) :
+    (hlinks : Graph.RecordsLinks G ends) :
     IsNondegPencilPlaneRealization G
       (PanelHingeFramework.ofNormals (k := r + 1 + 1) G ends
         (fun p => liftNormal b0 (fun i => (lam i).1) p.1 p.2)).toPatchedBodyHinge
@@ -452,7 +452,7 @@ theorem liftSmul_mem_liftSpace_iff {G : Graph α β} {b0 : α → Fin 4 → K}
 
 /-- Scaling the normals of a panel-hinge framework by nonzero scalars keeps its rank. -/
 theorem finrank_span_rigidityRows_ofNormals_smul {k : ℕ} {G : Graph α β} {ends : β → α × α}
-    (hlinks : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
+    (hlinks : Graph.RecordsLinks G ends)
     {c : α → K} (hc : ∀ v ∈ V(G), c v ≠ 0) (b : α → Fin (k + 2) → K) :
     Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := k) G ends
         (fun p => (c p.1 • b p.1) p.2)).toBodyHinge.rigidityRows)
@@ -464,7 +464,7 @@ theorem finrank_span_rigidityRows_ofNormals_smul {k : ℕ} {G : Graph α β} {en
   have hprop : ∀ e u v, F₁.graph.IsLink e u v →
       ∃ c' : K, c' ≠ 0 ∧ c' • F₁.supportExtensor e = F₂.supportExtensor e := by
     intro e u v he
-    have h0 := hlinks e u v he
+    have h0 := hlinks.isLink he
     refine ⟨c (ends e).1 * c (ends e).2, mul_ne_zero (hc _ h0.left_mem) (hc _ h0.right_mem), ?_⟩
     change _ = panelSupportExtensor (c (ends e).1 • b (ends e).1) (c (ends e).2 • b (ends e).2)
     rw [panelSupportExtensor_smul_left, panelSupportExtensor_swap (c (ends e).2 • _),
@@ -526,7 +526,7 @@ theorem liftAut_liftVec {r : ℕ} (g : (Fin 4 → K) ≃ₗ[K] (Fin 4 → K)) (p
 keeps the rank (`lem:pencil-d-rank-collineation`); scaling is
 `finrank_span_rigidityRows_ofNormals_smul`. -/
 theorem finrank_liftNormal_transport {r : ℕ} {G : Graph α β} {ends : β → α × α}
-    (hlinks : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
+    (hlinks : Graph.RecordsLinks G ends)
     (g : (Fin 4 → K) ≃ₗ[K] (Fin 4 → K)) (b0 : α → Fin 4 → K) (ζ : Fin r → α → K) :
     Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := r + 1 + 1) G ends
         (fun p => liftNormal (fun v => g (b0 v)) ζ p.1 p.2)).toBodyHinge.rigidityRows)

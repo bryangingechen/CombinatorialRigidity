@@ -530,7 +530,7 @@ theorem pendant_deficiency [Finite α] [Finite β] (hS : G.Simple)
 `D - 1`, and the deficiency rises by one. -/
 theorem pendant_rank [Finite α] [Finite β] (hS : G.Simple) (hNv : ∀ y, G.Adj v y → y = u)
     (hvu : G.Adj v u) {r : ℕ} {ends : β → α × α}
-    (hends : ∀ e x y, G.IsLink e x y → G.IsLink e (ends e).1 (ends e).2) {b0 : α → Fin 4 → K}
+    (hends : Graph.RecordsLinks G ends) {b0 : α → Fin 4 → K}
     (hlink : ∀ e x y, G.IsLink e x y → LinearIndependent K ![b0 x, b0 y]) (ζ : Fin r → α → K)
     (hH : (Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := r + 1 + 1)
         (G.induce (V(G) \ {v})) ends (fun p => liftNormal b0 ζ p.1 p.2)).toBodyHinge.rigidityRows)
@@ -549,7 +549,7 @@ theorem pendant_rank [Finite α] [Finite β] (hS : G.Simple) (hNv : ∀ y, G.Adj
     intro e x y he
     change panelSupportExtensor (liftNormal b0 ζ (ends e).1) (liftNormal b0 ζ (ends e).2) ≠ 0
     rw [panelSupportExtensor_ne_zero_iff]
-    exact linearIndependent_liftNormal ζ (hlink e _ _ (hends e x y he))
+    exact linearIndependent_liftNormal ζ (hlink e _ _ (hends.isLink he))
   have hadd := BodyHingeFramework.add_le_finrank_span_rigidityRows_induce_union_singleton
     (G := G) (V₁ := V(G) \ {v}) _ he₀.symm ⟨he₀.right_mem, he₀.adj.ne.symm⟩ (fun h => h.2 rfl)
     hext
@@ -594,16 +594,11 @@ theorem closedHubNbhd_eq_empty_of_notMem {y : α} (hy : y ∉ V(G)) : G.closedHu
   · exact hy hw.1
   · exact hy he.left_mem
 
-/-- The links of an induced subgraph are recorded by any selector recording those of `G`. -/
-theorem induce_isLink_ends {ends : β → α × α}
-    (hends : ∀ e x y, G.IsLink e x y → G.IsLink e (ends e).1 (ends e).2) (V' : Set α) :
-    ∀ e x y, (G.induce V').IsLink e x y → (G.induce V').IsLink e (ends e).1 (ends e).2 := by
-  rintro e x y ⟨hl, hx, hy⟩
-  have h := hends e x y hl
-  refine ⟨h, ?_⟩
-  rcases h.eq_and_eq_or_eq_and_eq hl with ⟨h1, h2⟩ | ⟨h1, h2⟩
-  · rw [h1, h2]; exact ⟨hx, hy⟩
-  · rw [h1, h2]; exact ⟨hy, hx⟩
+/-- The links of an induced subgraph are recorded by any selector recording those of `G`: the form
+at links of `Graph.RecordsLinks.induce`. -/
+theorem induce_isLink_ends {ends : β → α × α} (hends : Graph.RecordsLinks G ends) (V' : Set α) :
+    ∀ e x y, (G.induce V').IsLink e x y → (G.induce V').IsLink e (ends e).1 (ends e).2 :=
+  fun _ _ _ => (hends.induce V').isLink
 
 /-- **`lem:pencil-d-lift-pendant`.** -/
 theorem liftAttains_of_pendant [Infinite K] [Finite α] [Finite β] (r : ℕ) {G : Graph α β}
@@ -631,8 +626,7 @@ theorem liftAttains_of_pendant [Infinite K] [Finite α] [Finite β] (r : ℕ) {G
   have hne : (steerSet (K := K) G hubSel nbrSel).Nonempty :=
     (steerSet_nonempty_iff hHubSel hNbrSel).2 hfeas
   have : Inhabited α := ⟨u⟩
-  have hends : ∀ e x y, G.IsLink e x y → G.IsLink e (G.endsOf e).1 (G.endsOf e).2 :=
-    fun e x y h => G.isLink_endsOf h.edge_mem
+  have hends := Graph.recordsLinks_endsOf G
   -- (T1): `E` the minors of the closed hub-neighbourhoods in `G`
   have hind₀ : ∀ y, LinearIndepOn K (fun w i => bnPoint point₀ normal₀ (w, 1, i))
       (G.closedHubNbhd y) := fun y => by
@@ -667,7 +661,7 @@ theorem liftAttains_of_pendant [Infinite K] [Finite α] [Finite β] (r : ℕ) {G
       have := hEind y (bnPoint b n) (Finset.prod_ne_zero_iff.1 hE y (Finset.mem_univ _))
       rwa [bnPoint_one] at this
   have htr := lift_transfer (K := K) (r := r) (V' := V(G) \ {v}) Set.sdiff_subset
-    ⟨u, hvu.right_mem, huv⟩ hHubSel hNbrSel (induce_isLink_ends hends _) hT1
+    ⟨u, hvu.right_mem, huv⟩ hHubSel hNbrSel (hends.induce _) hT1
     (pendant_T2 hS hNv hvu hHubSel hNbrSel hne) hH
   refine liftAttains_of_holdsGenerally hHubSel hNbrSel hends (htr.mono fun s hs h => ?_)
   obtain ⟨-, ⟨lam, hlam, hrk⟩, -⟩ := h
@@ -780,7 +774,7 @@ theorem ear_T2 (hS : G.Simple) (hNx : ∀ y, G.Adj x y → y = a ∨ y = b)
 
 /-- The hinges at the two edges of the ear are independent. -/
 theorem ear_hinges_linearIndependent {k : ℕ} {ends : β → α × α}
-    (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2) {e₀ e₁ : β}
+    (hends : Graph.RecordsLinks G ends) {e₀ e₁ : β}
     (he₀ : G.IsLink e₀ a x) (he₁ : G.IsLink e₁ x b) {nv : α → Fin (k + 2) → K}
     (hli : LinearIndependent K ![nv a, nv x, nv b]) :
     LinearIndependent K ![panelSupportExtensor (nv (ends e₀).1) (nv (ends e₀).2),
@@ -790,8 +784,8 @@ theorem ear_hinges_linearIndependent {k : ℕ} {ends : β → α × α}
     have := (panelSupportExtensor_linearIndependent_iff (k := k) ![nv a, nv x] ![nv x, nv b]).2
       (by convert linearIndependent_normalsJoin_pair hli using 1; funext i; fin_cases i <;> rfl)
     convert this using 1; funext i; fin_cases i <;> rfl
-  rcases (hends e₀ _ _ he₀).eq_and_eq_or_eq_and_eq he₀ with ⟨h1, h2⟩ | ⟨h1, h2⟩ <;>
-  rcases (hends e₁ _ _ he₁).eq_and_eq_or_eq_and_eq he₁ with ⟨h3, h4⟩ | ⟨h3, h4⟩ <;>
+  rcases hends.eq_or_swap he₀ with ⟨h1, h2⟩ | ⟨h1, h2⟩ <;>
+  rcases hends.eq_or_swap he₁ with ⟨h3, h4⟩ | ⟨h3, h4⟩ <;>
   simp only [h1, h2, h3, h4, panelSupportExtensor_swap (nv a) (nv x),
     panelSupportExtensor_swap (nv x) (nv b), LinearIndependent.pair_neg_left_iff,
     LinearIndependent.pair_neg_right_iff] <;> exact h0
@@ -800,7 +794,7 @@ theorem ear_hinges_linearIndependent {k : ℕ} {ends : β → α × α}
 adds at least `2(D - 1) + 2 - D = D`, and `def_d(H) ≤ def_d(G)`. -/
 theorem ear_rank [Finite α] [Finite β] (hS : G.Simple) (hNx : ∀ y, G.Adj x y → y = a ∨ y = b)
     (hxa : G.Adj x a) (hxb : G.Adj x b) (hab : a ≠ b) {r : ℕ} {ends : β → α × α}
-    (hends : ∀ e x y, G.IsLink e x y → G.IsLink e (ends e).1 (ends e).2) {b0 : α → Fin 4 → K}
+    (hends : Graph.RecordsLinks G ends) {b0 : α → Fin 4 → K}
     (hlink : ∀ e x y, G.IsLink e x y → LinearIndependent K ![b0 x, b0 y])
     (hli : LinearIndependent K ![b0 a, b0 x, b0 b]) (ζ : Fin r → α → K)
     (hdef : (G.induce (V(G) \ {x})).deficiency (r + 1 + 2) ≤ G.deficiency (r + 1 + 2))
@@ -1101,8 +1095,7 @@ theorem liftAttains_of_ear [Infinite K] [Finite α] [Finite β] (r : ℕ) {G : G
   have hne : (steerSet (K := K) G hubSel nbrSel).Nonempty :=
     (steerSet_nonempty_iff hHubSel hNbrSel).2 hfeas
   have : Inhabited α := ⟨x⟩
-  have hends : ∀ e x y, G.IsLink e x y → G.IsLink e (G.endsOf e).1 (G.endsOf e).2 :=
-    fun e x y h => G.isLink_endsOf h.edge_mem
+  have hends := Graph.recordsLinks_endsOf G
   -- (T1): `E` the minors of the closed hub-neighbourhoods in `G`, times one of `b_a · n_b`,
   -- `b_b · n_a` nonzero at the steer lemma's realization
   have hind₀ : ∀ y, LinearIndepOn K (fun w i => bnPoint point₀ normal₀ (w, 1, i))
@@ -1181,7 +1174,7 @@ theorem liftAttains_of_ear [Infinite K] [Finite α] [Finite β] (r : ℕ) {G : G
         (Finset.prod_ne_zero_iff.1 (left_ne_zero_of_mul hE) y (Finset.mem_univ _))
       rwa [bnPoint_one] at this
   have htr := lift_transfer (K := K) (r := r) (V' := V(G) \ {x}) Set.sdiff_subset
-    ⟨a, hxa.right_mem, hax⟩ hHubSel hNbrSel (induce_isLink_ends hends _) hT1
+    ⟨a, hxa.right_mem, hax⟩ hHubSel hNbrSel (hends.induce _) hT1
     (ear_T2 hS hNx hxa hxb hab hxhub hHubSel hNbrSel hcond) hH
   refine liftAttains_of_holdsGenerally hHubSel hNbrSel hends (htr.mono fun s hs h => ?_)
   obtain ⟨-, ⟨lam, hlam, hrk⟩, -⟩ := h
@@ -1550,7 +1543,7 @@ zero. -/
 theorem pendantTri_rank [Finite α] [Finite β] (hS : G.Simple)
     (hN₁ : ∀ y, G.Adj x₁ y → y = x₂ ∨ y = c) (hN₂ : ∀ y, G.Adj x₂ y → y = x₁ ∨ y = c)
     (h₁₂ : G.Adj x₁ x₂) (h₁c : G.Adj x₁ c) (h₂c : G.Adj x₂ c) {r : ℕ} {ends : β → α × α}
-    (hends : ∀ e x y, G.IsLink e x y → G.IsLink e (ends e).1 (ends e).2) {b0 : α → Fin 4 → K}
+    (hends : Graph.RecordsLinks G ends) {b0 : α → Fin 4 → K}
     (hlink : ∀ e x y, G.IsLink e x y → LinearIndependent K ![b0 x, b0 y])
     (hli : LinearIndependent K ![b0 x₁, b0 x₂, b0 c]) (ζ : Fin r → α → K)
     (hH : (Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := r + 1 + 1)
@@ -1631,10 +1624,9 @@ theorem pendantTri_rank [Finite α] [Finite β] (hS : G.Simple)
   have hTri := finrank_triangle (K := K) (G := G.induce V₂) (k := r + 1 + 1) h12 h2c h1c
     (Graph.vertexSet_induce G V₂) ((Graph.induce_isLink G V₂ e₀ x₁ x₂).mpr ⟨he₀, hx₁₂, hx₂₂⟩)
     ((Graph.induce_isLink G V₂ e₁ x₂ c).mpr ⟨he₁, hx₂₂, hc₂⟩)
-    ((Graph.induce_isLink G V₂ e₂ c x₁).mpr ⟨he₂.symm, hc₂, hx₁₂⟩) (induce_isLink_ends hends V₂)
-    hlin
+    ((Graph.induce_isLink G V₂ e₂ c x₁).mpr ⟨he₂.symm, hc₂, hx₁₂⟩) (hends.induce V₂) hlin
   have hneT : V(G.induce V₂).Nonempty := ⟨x₁, hx₁₂⟩
-  have hupT := finrank_liftNormal_le (G := G.induce V₂) (induce_isLink_ends hends V₂)
+  have hupT := finrank_liftNormal_le (G := G.induce V₂) (hends.induce V₂)
     (fun e u v h => hlink e u v h.1) hneT ζ
   rw [hTri] at hupT
   have hV₂card : V(G.induce V₂).ncard = 3 :=
@@ -1703,8 +1695,7 @@ theorem liftAttains_of_pendantTriangle [Infinite K] [Finite α] [Finite β] (r :
   have hne : (steerSet (K := K) G hubSel nbrSel).Nonempty :=
     (steerSet_nonempty_iff hHubSel hNbrSel).2 hfeas
   have : Inhabited α := ⟨c⟩
-  have hends : ∀ e x y, G.IsLink e x y → G.IsLink e (G.endsOf e).1 (G.endsOf e).2 :=
-    fun e x y h => G.isLink_endsOf h.edge_mem
+  have hends := Graph.recordsLinks_endsOf G
   -- (T1): `E` the minors of the closed hub-neighbourhoods in `G`
   have hind₀ : ∀ y, LinearIndepOn K (fun w i => bnPoint point₀ normal₀ (w, 1, i))
       (G.closedHubNbhd y) := fun y => by
@@ -1742,7 +1733,7 @@ theorem liftAttains_of_pendantTriangle [Infinite K] [Finite α] [Finite β] (r :
       have := hEind y (bnPoint b n) (Finset.prod_ne_zero_iff.1 hE y (Finset.mem_univ _))
       rwa [bnPoint_one] at this
   have htr := lift_transfer (K := K) (r := r) (V' := V(G) \ {x₁, x₂}) Set.sdiff_subset
-    ⟨c, hcV, hcT⟩ hHubSel hNbrSel (induce_isLink_ends hends _) hT1
+    ⟨c, hcV, hcT⟩ hHubSel hNbrSel (hends.induce _) hT1
     (pendantTri_T2 hS hN₁ hN₂ h₁₂ h₁c h₂c hHubSel hNbrSel hne) hH
   refine liftAttains_of_holdsGenerally hHubSel hNbrSel hends (htr.mono fun s hs h => ?_)
   obtain ⟨-, ⟨lam, hlam, hrk⟩, -⟩ := h

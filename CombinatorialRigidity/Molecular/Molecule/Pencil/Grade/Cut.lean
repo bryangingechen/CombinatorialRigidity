@@ -80,17 +80,14 @@ theorem pencilConfigPointGrade_liftingRestrict (X : Set α) (q : α × Fin 2 →
 every link (`PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr`). -/
 theorem PanelHingeFramework.finrank_span_rigidityRows_ofNormals_liftingRestrict_grade [Finite α]
     {G' : Graph α β} {X : Set α} (hX : V(G') ⊆ X) {ends ends' : β → α × α}
-    (hends : ∀ e u v, G'.IsLink e u v → G'.IsLink e (ends e).1 (ends e).2)
-    (hends' : ∀ e u v, G'.IsLink e u v → G'.IsLink e (ends' e).1 (ends' e).2)
+    (hends : Graph.RecordsLinks G' ends) (hends' : Graph.RecordsLinks G' ends')
     (q : α × Fin 2 → K) (z : α × Fin m → K) :
     Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := m + 1) G' ends
         (fun p => pencilConfigPointGrade q (Graph.liftingRestrict (Prod.fst ⁻¹' X) z) p.1 p.2)
           ).toBodyHinge.rigidityRows)
       = Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := m + 1) G' ends'
         (fun p => pencilConfigPointGrade q z p.1 p.2)).toBodyHinge.rigidityRows) :=
-  PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr G'
-    (Graph.recordsLinks_iff_forall_isLink.mpr hends)
-    (Graph.recordsLinks_iff_forall_isLink.mpr hends')
+  PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr G' hends hends'
     fun _ hx i => congrFun (pencilConfigPointGrade_liftingRestrict X q z (hX hx)) i
 
 /-- **A restriction onto at one height is onto at `m` heights** (the "height by height" of
@@ -140,10 +137,7 @@ theorem _root_.Graph.X0AttainsGrade.of_cutVertex [Infinite K] [Finite α] [Finit
   obtain ⟨Pm, hPm, hmain⟩ := G.exists_mvPolynomial_isMainPicture (K := K)
     hG.simple.toLoopless hG.three_le_ncard_closedNbhd
   set ends := G.endsOf with hendsdef
-  have hends : ∀ e u w, G.IsLink e u w → G.IsLink e (ends e).1 (ends e).2 :=
-    fun e _ _ he => G.isLink_endsOf he.edge_mem
-  have hendsG := Graph.recordsLinks_iff_forall_isLink.mpr hends
-  have hendsI (X : Set α) := Graph.recordsLinks_iff_forall_isLink.mp (hendsG.induce X)
+  have hends : Graph.RecordsLinks G ends := Graph.recordsLinks_endsOf G
   obtain ⟨q, hq⟩ := MvPolynomial.exists_eval_ne_zero (mul_ne_zero (mul_ne_zero hP₁ hP₂) hPm)
   rw [map_mul, map_mul] at hq
   obtain ⟨-, R₁, ⟨z₁, hz₁, hR₁⟩, hatt₁⟩ := hgood₁ q (left_ne_zero_of_mul (left_ne_zero_of_mul hq))
@@ -169,9 +163,11 @@ theorem _root_.Graph.X0AttainsGrade.of_cutVertex [Infinite K] [Finite α] [Finit
   have hr₁ := hatt₁ _ (Graph.liftingRestrict_mem_liftingSpaceGrade hle₁ hz) hz₁'
   have hr₂ := hatt₂ _ (Graph.liftingRestrict_mem_liftingSpaceGrade hle₂ hz) hz₂'
   rw [PanelHingeFramework.finrank_span_rigidityRows_ofNormals_liftingRestrict_grade
-    (X := V(G.induce V₁)) subset_rfl hends₁ (hendsI V₁), Graph.vertexSet_induce G V₁] at hr₁
+    (X := V(G.induce V₁)) subset_rfl (Graph.recordsLinks_iff_forall_isLink.mpr hends₁)
+    (hends.induce V₁), Graph.vertexSet_induce G V₁] at hr₁
   rw [PanelHingeFramework.finrank_span_rigidityRows_ofNormals_liftingRestrict_grade
-    (X := V(G.induce V₂)) subset_rfl hends₂ (hendsI V₂), Graph.vertexSet_induce G V₂] at hr₂
+    (X := V(G.induce V₂)) subset_rfl (Graph.recordsLinks_iff_forall_isLink.mpr hends₂)
+    (hends.induce V₂), Graph.vertexSet_induce G V₂] at hr₂
   -- the ranks add (`lem:block-rank-cut-vertex`)
   have hadd := BodyHingeFramework.finrank_span_rigidityRows_cutVertex_eq
     (PanelHingeFramework.ofNormals (k := m + 1) G ends
@@ -244,10 +240,7 @@ theorem _root_.Graph.X0AttainsGrade.of_bridgePath [Infinite K] [Finite α] [Fini
   obtain ⟨Pm, hPm, hmain⟩ := G.exists_mvPolynomial_isMainPicture (K := K)
     hG.simple.toLoopless hG.three_le_ncard_closedNbhd
   set ends := G.endsOf with hendsdef
-  have hends : ∀ f u w, G.IsLink f u w → G.IsLink f (ends f).1 (ends f).2 :=
-    fun f _ _ hf => G.isLink_endsOf hf.edge_mem
-  have hendsG := Graph.recordsLinks_iff_forall_isLink.mpr hends
-  have hendsI (X : Set α) := Graph.recordsLinks_iff_forall_isLink.mp (hendsG.induce X)
+  have hends : Graph.RecordsLinks G ends := Graph.recordsLinks_endsOf G
   obtain ⟨q, hq⟩ := MvPolynomial.exists_eval_ne_zero (mul_ne_zero (mul_ne_zero hP₁ hP₂) hPm)
   rw [map_mul, map_mul] at hq
   obtain ⟨-, R₁, ⟨z₁, hz₁, hR₁⟩, hatt₁⟩ := hgood₁ q (left_ne_zero_of_mul (left_ne_zero_of_mul hq))
@@ -286,9 +279,11 @@ theorem _root_.Graph.X0AttainsGrade.of_bridgePath [Infinite K] [Finite α] [Fini
   have hr₁ := hatt₁ _ (Graph.liftingRestrict_mem_liftingSpaceGrade hle₁ hz) hz₁'
   have hr₂ := hatt₂ _ (Graph.liftingRestrict_mem_liftingSpaceGrade hle₂ hz) hz₂'
   rw [PanelHingeFramework.finrank_span_rigidityRows_ofNormals_liftingRestrict_grade
-    (X := V(G.induce V₁)) subset_rfl hends₁ (hendsI V₁), Graph.vertexSet_induce G V₁] at hr₁
+    (X := V(G.induce V₁)) subset_rfl (Graph.recordsLinks_iff_forall_isLink.mpr hends₁)
+    (hends.induce V₁), Graph.vertexSet_induce G V₁] at hr₁
   rw [PanelHingeFramework.finrank_span_rigidityRows_ofNormals_liftingRestrict_grade
-    (X := V(G.induce V₂)) subset_rfl hends₂ (hendsI V₂), Graph.vertexSet_induce G V₂] at hr₂
+    (X := V(G.induce V₂)) subset_rfl (Graph.recordsLinks_iff_forall_isLink.mpr hends₂)
+    (hends.induce V₂), Graph.vertexSet_induce G V₂] at hr₂
   -- the last bridge is the only edge leaving `S = V₁ ∪ range x`, whose complement is `V₂`
   have hcut : G.cutEdges S = {e (Fin.last k)} := by
     have := Graph.cutEdges_union_image_of_bridgePath hdisj hxV₁ hxV₂ hinj ha hb hpath hsep le_rfl

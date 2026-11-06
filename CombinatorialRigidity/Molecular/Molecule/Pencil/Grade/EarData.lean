@@ -452,8 +452,7 @@ variable {σ : Type*}
 
 /-- `lem:pencil-d-ear-data-open` (1): a rank lower bound, at a witness with nonzero hinges. -/
 theorem exists_mvPolynomial_le_finrank_ofNormals_bind_grade [Finite α] [Finite β]
-    (H : Graph α β) (ends : β → α × α)
-    (hends : ∀ e u v, H.IsLink e u v → H.IsLink e (ends e).1 (ends e).2)
+    (H : Graph α β) (ends : β → α × α) (hends : Graph.RecordsLinks H ends)
     (P : α × Fin (k + 2) → MvPolynomial σ K) {s₀ : σ → K}
     (hne : ∀ e, H.IsLink e (ends e).1 (ends e).2 →
       (PanelHingeFramework.ofNormals (k := k) H ends
@@ -466,8 +465,7 @@ theorem exists_mvPolynomial_le_finrank_ofNormals_bind_grade [Finite α] [Finite 
         (PanelHingeFramework.ofNormals (k := k) H ends
           (fun p => MvPolynomial.eval s (P p))).toBodyHinge.rigidityRows) := by
   obtain ⟨Q, hQ₀, hQ⟩ :=
-    PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking H ends
-      (Graph.recordsLinks_iff_forall_isLink.mpr hends) hne hN
+    PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking H ends hends hne hN
   refine ⟨MvPolynomial.bind₁ P Q, by rwa [MvPolynomial.eval_bind₁], fun s hs => hQ _ ?_⟩
   rwa [MvPolynomial.eval_bind₁] at hs
 

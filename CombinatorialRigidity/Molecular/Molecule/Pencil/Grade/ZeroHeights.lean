@@ -96,7 +96,7 @@ as `Graph.X0AttainsGrade` states its rank. Its points are `ι` of those of `(q, 
 applies, `φ` being injective (`screwEmbed_injective`). -/
 theorem _root_.Graph.finrank_span_rigidityRows_ofNormals_pencilConfigPointGrade_padHeights
     [Finite α] {G : Graph α β} (hG : G.Connected) {ends : β → α × α}
-    (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
+    (hends : Graph.RecordsLinks G ends)
     (h : m' ≤ m) (q : α × Fin 2 → K) (z : α × Fin m' → K) :
     (Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := m + 1) G ends
         (fun p => pencilConfigPointGrade q (padHeights m z) p.1 p.2)).toBodyHinge.rigidityRows) : ℤ)
@@ -140,6 +140,7 @@ theorem _root_.Graph.X0AttainsGrade.of_le [Infinite K] [Finite α] [Finite β] {
     (hG : G.Connected) (h : m' ≤ m) (hdef : G.deficiency (m' + 2) = G.deficiency (m + 2))
     (hatt : G.X0AttainsGrade K m') : G.X0AttainsGrade K m := by
   obtain ⟨ends, P, hends, hP, hPq⟩ := hatt
+  replace hends := Graph.recordsLinks_iff_forall_isLink.mpr hends
   obtain ⟨q₁, hq₁⟩ := MvPolynomial.exists_eval_ne_zero hP
   have hadm := (hPq q₁ hq₁).1
   have hloop : G.Loopless := ⟨fun e v hl => hadm.1 e v v hl rfl⟩

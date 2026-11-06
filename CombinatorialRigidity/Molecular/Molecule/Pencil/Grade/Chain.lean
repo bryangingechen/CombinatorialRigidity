@@ -59,9 +59,8 @@ panel support extensor of its ends (`span_supportExtensor_ofNormals_eq`), and th
 is the image of the join under the complement isomorphism, which is linear and injective, so the
 panel support extensors are independent and span a subspace of `T`. -/
 theorem card_le_finrank_of_linearIndependent_normalsJoin {α β : Type*} {G : Graph α β}
-    {ends : β → α × α}
-    (hends : ∀ f u w, G.IsLink f u w → G.IsLink f (ends f).1 (ends f).2)
-    (p : α → Fin (k + 2) → K) {ι : Type*} [Fintype ι] (u w : ι → α) (g : ι → β)
+    {ends : β → α × α} (hends : Graph.RecordsLinks G ends) (p : α → Fin (k + 2) → K)
+    {ι : Type*} [Fintype ι] (u w : ι → α) (g : ι → β)
     (hg : ∀ i, G.IsLink (g i) (u i) (w i))
     (hli : LinearIndependent K (fun i => normalsJoin (p (u i)) (p (w i))))
     (T : Submodule K (ScrewSpace K k))
@@ -76,7 +75,7 @@ theorem card_le_finrank_of_linearIndependent_normalsJoin {α β : Type*} {G : Gr
   have hmem : panelSupportExtensor (p (u i)) (p (w i)) ∈ Submodule.span K
       {(PanelHingeFramework.ofNormals G ends (fun x => p x.1 x.2)).toBodyHinge.supportExtensor
         (g i)} := by
-    rw [span_supportExtensor_ofNormals_eq (Graph.recordsLinks_iff_forall_isLink.mpr hends) _ (hg i)]
+    rw [span_supportExtensor_ofNormals_eq hends _ (hg i)]
     exact Submodule.mem_span_singleton_self _
   exact (Submodule.span_le.mpr (by rintro _ rfl; exact hT i)) hmem
 
@@ -188,8 +187,7 @@ theorem _root_.Graph.X0AttainsGrade.of_cycle_of_certificate [Infinite K] [Finite
   have hqmain := hmain q (left_ne_zero_of_mul hq)
   have hliq := hPlam q (right_ne_zero_of_mul hq)
   set ends := G.endsOf with hendsdef
-  have hends : ∀ f u w, G.IsLink f u w → G.IsLink f (ends f).1 (ends f).2 :=
-    fun f _ _ hf => G.isLink_endsOf hf.edge_mem
+  have hends : Graph.RecordsLinks G ends := Graph.recordsLinks_endsOf G
   -- every height on `V(G)` is a lifting height of the cycle, height by height
   set z := Graph.liftingRestrict (Prod.fst ⁻¹' V(G)) zs with hzdef
   have hz : z ∈ G.liftingSpaceGrade q m := by
@@ -438,9 +436,7 @@ theorem _root_.Graph.X0AttainsGrade.of_openEar_of_cert [Infinite K] [Finite α] 
   obtain ⟨Pm, hPm, hmain⟩ := G.exists_mvPolynomial_isMainPicture (K := K)
     hG.simple.toLoopless hG.three_le_ncard_closedNbhd
   set ends := G.endsOf
-  have hends : ∀ f u w, G.IsLink f u w → G.IsLink f (ends f).1 (ends f).2 :=
-    fun f _ _ hf => G.isLink_endsOf hf.edge_mem
-  have hendsG := Graph.recordsLinks_iff_forall_isLink.mpr hends
+  have hends : Graph.RecordsLinks G ends := Graph.recordsLinks_endsOf G
   -- the picture: generic for `G[V₁]`, main for `G`, the joins independent at `zs`
   obtain ⟨Plam, hPlam₀, hPlam⟩ :=
     exists_mvPolynomial_linearIndependent_join_picture_grade zs u v hcert
@@ -466,9 +462,8 @@ theorem _root_.Graph.X0AttainsGrade.of_openEar_of_cert [Infinite K] [Finite α] 
   have hr₁ := hatt₁ _ (Graph.liftingRestrict_mem_liftingSpaceGrade hle₁ hz) hz₁'
   have hli := hRlam z hzlam
   rw [PanelHingeFramework.finrank_span_rigidityRows_ofNormals_liftingRestrict_grade
-    (X := V(G.induce V₁)) subset_rfl hends₁
-    (Graph.recordsLinks_iff_forall_isLink.mp (hendsG.induce V₁)),
-    Graph.vertexSet_induce G V₁] at hr₁
+    (X := V(G.induce V₁)) subset_rfl (Graph.recordsLinks_iff_forall_isLink.mpr hends₁)
+    (hends.induce V₁), Graph.vertexSet_induce G V₁] at hr₁
   -- the ear rank formula at `ofNormals G ends`, with `n` independent ear hinges
   set F := (PanelHingeFramework.ofNormals (k := m + 1) G ends
     (fun p => pencilConfigPointGrade q z p.1 p.2)).toBodyHinge

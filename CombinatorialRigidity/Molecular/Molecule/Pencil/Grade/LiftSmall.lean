@@ -68,7 +68,7 @@ variable {G : Graph α β}
 /-- **`Q = 1`**: if every lift by `0` of every nondegenerate realization has the target rank, the
 general lift attains. -/
 theorem liftAttains_of_forall {r : ℕ} (hfeas : PencilNondegFeasible K G)
-    {ends : β → α × α} (hends : ∀ e x y, G.IsLink e x y → G.IsLink e (ends e).1 (ends e).2)
+    {ends : β → α × α} (hends : Graph.RecordsLinks G ends)
     (h : ∀ (F : BodyHingeFramework K 2 α β) (b0 : α → Fin 4 → K)
       (P0 : α → Submodule K (Fin 4 → K)), IsNondegPencilPlaneRealization G F b0 P0 →
       (Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := r + 1 + 1) G ends
@@ -76,8 +76,9 @@ theorem liftAttains_of_forall {r : ℕ} (hfeas : PencilNondegFeasible K G)
         = screwDim (r + 1 + 1) * ((V(G).ncard : ℤ) - 1) - G.deficiency (r + 1 + 2)) :
     LiftAttains K r G := by
   obtain ⟨F, b, P, hnd⟩ := (gradedPencilNondegFeasible_two_iff G).2 hfeas
-  refine ⟨ends, hends, 1, by simp, ⟨0, MvPolynomial.isWeightedHomogeneous_one _ _⟩,
-    ⟨F, b, P, hnd, by simp⟩, fun F b0 P0 hnd _ => ⟨fun _ => 0, fun _ => Submodule.zero_mem _, ?_⟩⟩
+  refine ⟨ends, Graph.recordsLinks_iff_forall_isLink.mp hends, 1, by simp,
+    ⟨0, MvPolynomial.isWeightedHomogeneous_one _ _⟩, ⟨F, b, P, hnd, by simp⟩,
+    fun F b0 P0 hnd _ => ⟨fun _ => 0, fun _ => Submodule.zero_mem _, ?_⟩⟩
   exact h F b0 P0 hnd
 
 /-- The joins of the sides of a triangle with independent vertices are independent. -/
@@ -103,8 +104,7 @@ theorem linearIndependent_normalsJoin_triangle {k : ℕ} {p q w : Fin (k + 2) �
 /-- **A triangle with independent normals is rigid**, of rank `2D`. -/
 theorem finrank_triangle [Finite α] {k : ℕ} {p q w : α} (hpq : p ≠ q) (hqw : q ≠ w) (hpw : p ≠ w)
     (hV : V(G) = {p, q, w}) {e₀ e₁ e₂ : β} (h₀ : G.IsLink e₀ p q) (h₁ : G.IsLink e₁ q w)
-    (h₂ : G.IsLink e₂ w p) {ends : β → α × α}
-    (hends : ∀ e x y, G.IsLink e x y → G.IsLink e (ends e).1 (ends e).2)
+    (h₂ : G.IsLink e₂ w p) {ends : β → α × α} (hends : Graph.RecordsLinks G ends)
     {nv : α → Fin (k + 2) → K} (hli : LinearIndependent K ![nv p, nv q, nv w]) :
     Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := k) G ends
       (fun x => nv x.1 x.2)).toBodyHinge.rigidityRows) = screwDim k * 2 := by
@@ -119,7 +119,7 @@ theorem finrank_triangle [Finite α] {k : ℕ} {p q w : α} (hpq : p ≠ q) (hqw
       intro e x y he
       change panelSupportExtensor (nv (ends e).1) (nv (ends e).2) = _ ∨
         panelSupportExtensor (nv (ends e).1) (nv (ends e).2) = _
-      rcases (hends e x y he).eq_and_eq_or_eq_and_eq he with ⟨h1, h2⟩ | ⟨h1, h2⟩
+      rcases hends.eq_or_swap he with ⟨h1, h2⟩ | ⟨h1, h2⟩
       · left; rw [h1, h2]
       · right; rw [h1, h2, panelSupportExtensor_swap]
     have hJ' : LinearIndependent K fun i : Fin 3 =>
@@ -166,8 +166,7 @@ theorem liftAttains_of_ncard_le_two [Finite α] [Finite β] [Nonempty α] (r : �
   classical
   have := hS
   have : Inhabited α := Classical.inhabited_of_nonempty ‹_›
-  have hends : ∀ e x y, G.IsLink e x y → G.IsLink e (G.endsOf e).1 (G.endsOf e).2 :=
-    fun e x y h => G.isLink_endsOf h.edge_mem
+  have hends := Graph.recordsLinks_endsOf G
   refine liftAttains_of_forall hfeas hends fun F b0 P0 hnd => ?_
   have hn : Graph.bodyBarDim (r + 1 + 2) = screwDim (r + 1 + 1) :=
     Graph.bodyBarDim_add_one_eq_screwDim _
@@ -194,7 +193,7 @@ theorem liftAttains_of_ncard_le_two [Finite α] [Finite β] [Nonempty α] (r : �
     change panelSupportExtensor (liftNormal b0 (fun (_ : Fin r) _ => 0) (G.endsOf e).1)
       (liftNormal b0 (fun (_ : Fin r) _ => 0) (G.endsOf e).2) ≠ 0
     rw [panelSupportExtensor_ne_zero_iff]
-    exact linearIndependent_liftNormal _ (hnd.2.1 e _ _ (hends e x y (hlinks e he)))
+    exact linearIndependent_liftNormal _ (hnd.2.1 e _ _ (hends.isLink (hlinks e he)))
   exact finrank_span_rigidityRows_of_single_edge (m := r + 1) rfl hxy (hlinks e he) hVG hEe hC
 
 /-- **`lem:pencil-d-lift-small` (1), the triangle.** -/
@@ -212,8 +211,7 @@ theorem liftAttains_of_triangle [Finite α] [Finite β] (r : ℕ) (hS : G.Simple
   obtain ⟨e₁, h₁⟩ := hadj q hq w hw hqw
   obtain ⟨e₂, h₂⟩ := hadj w hw p hp hpw.symm
   have : Inhabited α := ⟨p⟩
-  have hends : ∀ e x y, G.IsLink e x y → G.IsLink e (G.endsOf e).1 (G.endsOf e).2 :=
-    fun e x y h => G.isLink_endsOf h.edge_mem
+  have hends := Graph.recordsLinks_endsOf G
   refine liftAttains_of_forall hfeas hends fun F b0 P0 hnd => ?_
   -- `p` is no hub, and its closed neighbourhood is all three bodies
   have hpnot : ¬ G.PencilHub p := fun h => by
@@ -426,6 +424,8 @@ theorem liftAttains_of_cutEdges_eq_empty [Finite α] [Finite β] (r : ℕ)
   refine ⟨hfeas₁, hfeas₂, fun hL₁ hL₂ => ?_⟩
   obtain ⟨ends₁, hends₁, Q₁, hQ₁v, ⟨d₁, hd₁⟩, ⟨F₁, b₁, P₁, hnd₁, hQ₁ne⟩, hall₁⟩ := hL₁
   obtain ⟨ends₂, hends₂, Q₂, hQ₂v, ⟨d₂, hd₂⟩, ⟨F₂, b₂, P₂, hnd₂, hQ₂ne⟩, hall₂⟩ := hL₂
+  replace hends₁ := Graph.recordsLinks_iff_forall_isLink.mpr hends₁
+  replace hends₂ := Graph.recordsLinks_iff_forall_isLink.mpr hends₂
   -- links and edges of the sides
   have indl₁ : ∀ {e u v}, G.IsLink e u v → u ∈ V₁ → (G.induce V₁).IsLink e u v :=
     fun {e u v} hl hu => (Graph.induce_isLink G V₁ e u v).mpr ⟨hl, hu, hAdj₁ e u v hl hu⟩
@@ -447,16 +447,14 @@ theorem liftAttains_of_cutEdges_eq_empty [Finite α] [Finite β] (r : ℕ)
     intro e u v hl
     by_cases hu : u ∈ V₁
     · rw [hends_1 e ((hedge₁ hl).2 hu)]
-      exact (hends₁ e u v (indl₁ hl hu)).of_le (Graph.induce_le hV₁G)
+      exact (hends₁.isLink (indl₁ hl hu)).of_le (Graph.induce_le hV₁G)
     · have hu₂ : u ∈ V₂ := ⟨hl.left_mem, hu⟩
       rw [hends_2 e (indl₂ hl hu₂).edge_mem]
-      exact (hends₂ e u v (indl₂ hl hu₂)).of_le (Graph.induce_le hV₂G)
-  have hendsA : ∀ e u v, (G.induce V₁).IsLink e u v →
-      (G.induce V₁).IsLink e (ends e).1 (ends e).2 := fun e u v hl => by
-    rw [hends_1 e hl.edge_mem]; exact hends₁ e u v hl
-  have hendsB : ∀ e u v, (G.induce V₂).IsLink e u v →
-      (G.induce V₂).IsLink e (ends e).1 (ends e).2 := fun e u v hl => by
-    rw [hends_2 e hl.edge_mem]; exact hends₂ e u v hl
+      exact (hends₂.isLink (indl₂ hl hu₂)).of_le (Graph.induce_le hV₂G)
+  have hendsA : Graph.RecordsLinks (G.induce V₁) ends :=
+    hends₁.congr fun e _ _ hl => (hends_1 e hl.edge_mem).symm
+  have hendsB : Graph.RecordsLinks (G.induce V₂) ends :=
+    hends₂.congr fun e _ _ hl => (hends_2 e hl.edge_mem).symm
   have hQvars : ∀ p ∈ (Q₁ * Q₂).vars, p.1 ∈ V(G) := fun p hp => by
     rcases Finset.mem_union.1 (MvPolynomial.vars_mul Q₁ Q₂ hp) with h | h
     · exact hV₁G (hQ₁v p h)
@@ -515,8 +513,7 @@ theorem liftAttains_of_cutEdges_eq_empty [Finite α] [Finite β] (r : ℕ)
               exact Or.inr ⟨hx₂, hAdj₂ e x y hl hx₂⟩
       have side : ∀ (S : Set α) (endsS : β → α × α) (lamS : Fin r → (α → K) ×
           ((v : α) → Module.Dual K (P0 v)))
-          (hS : ∀ e u v, (G.induce S).IsLink e u v → (G.induce S).IsLink e (endsS e).1 (endsS e).2)
-          (hS' : ∀ e u v, (G.induce S).IsLink e u v → (G.induce S).IsLink e (ends e).1 (ends e).2),
+          (hS : Graph.RecordsLinks (G.induce S) endsS) (hS' : Graph.RecordsLinks (G.induce S) ends),
           (∀ i, ∀ v ∈ S, (lam i).1 v = (lamS i).1 v) →
           Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := r + 1 + 1)
               (G.induce S) ends qf).toBodyHinge.rigidityRows)

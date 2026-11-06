@@ -41,7 +41,7 @@ invertible as `t ≠ 0`, takes the first to the second at every body of `W`, and
 theorem _root_.Graph.finrank_span_rigidityRows_induce_contractHeightGrade_eq {G : Graph α β}
     {W : Set α} {r : α} (q : α × Fin 2 → K) {t : K} (ht : t ≠ 0)
     (x : Fin m → α ⊕ (α × Fin 3) → K) {ends : β → α × α}
-    (hends : ∀ e u v, (G.induce W).IsLink e u v → (G.induce W).IsLink e (ends e).1 (ends e).2) :
+    (hends : Graph.RecordsLinks (G.induce W) ends) :
     Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := m + 1) (G.induce W)
         ends (fun p => pencilConfigPointGrade (contractPicture W r q t)
           (fun p => contractHeight W t (x p.2) p.1) p.1 p.2)).toBodyHinge.rigidityRows)

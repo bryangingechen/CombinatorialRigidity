@@ -533,12 +533,21 @@ to be re-derived by re-reading entries later.
   13's six conversions there are gone. Fifteen stay, all from the form at links of
   `Graph.X0Attains`'s existential `hlinks` (13: one where it is built, twelve where it is
   destructured) and of one conclusion (2); `Pencil/Grade/` converts at 13 sites until task 16.
+  ARREARS, task 16: the 37 link binders of `Pencil/Grade/` are `RecordsLinks`, so no link
+  *hypothesis* of the round's scope is left in the form at links. The 39 conversions left come from
+  three defs' existentials (`X0Attains` 13, `X0AttainsGrade` 15, `LiftAttains` 6) and two
+  conclusions (`exists_mvPolynomial_le_finrank_span_rigidityRows_pencilPicturePoint` 2,
+  `exists_molecular_rankHypothesis_generalPosition` 3); a witness destructured for more than one
+  use converts once, `replace h := recordsLinks_iff_forall_isLink.mpr h`.
 - **Proposed fix:** state such hypotheses as `RecordsLinks G ends` when the switch (Phase 41a, item
   5) or RESTATE touches their declarations; the conversions then go. For the field under
   `Q.graph = G`: a lemma `PanelHingeFramework.recordsLinks_of_graph_eq (hQg : Q.graph = G) :
   RecordsLinks G Q.ends` and a `link_base_tac` branch that applies it with `hQg` in scope (both
   landed, ARREARS task 13). For the pair form: `RecordsLinks.eq_pair_or_swap` (ARREARS task 14).
-- **Status:** open.
+  What is left is the PI's (`notes/Phase42-arrears.md` *Candidates for the PI*): read
+  `RecordsLinks` in the three existentials and the conclusions at links and in pair form.
+- **Status:** open, narrowed (ARREARS task 16): the hypotheses are done; the defs' existentials and
+  the conclusions remain.
 
 ### [idiom] Inserting arguments before a multi-line `(by tac₁` ⏎ `tac₂)` breaks the block's layout
 - **Where it bit:** ARREARS task 14: `chainData_freshEdge_slot_perp_ends₀`

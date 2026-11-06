@@ -554,7 +554,7 @@ rows of `uv`, `BodyHingeFramework.finrank_span_rigidityRows_le_add_of_links_subs
 at most the target by `finrank_liftNormal_le`. -/
 theorem cutEdge_rank [Finite α] [Finite β] [G.Loopless] (he : G.IsLink e u v) (hu : u ∈ V₁)
     (hv : v ∉ V₁) (hV₁ : V₁ ⊆ V(G)) (hcut : (G.cutEdges V₁).ncard ≤ 1) {r : ℕ}
-    {ends : β → α × α} (hends : ∀ e x y, G.IsLink e x y → G.IsLink e (ends e).1 (ends e).2)
+    {ends : β → α × α} (hends : Graph.RecordsLinks G ends)
     {b0 : α → Fin 4 → K} (hlink : ∀ e x y, G.IsLink e x y → LinearIndependent K ![b0 x, b0 y])
     (ζ : Fin r → α → K)
     (h₁ : (Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := r + 1 + 1)
@@ -580,7 +580,7 @@ theorem cutEdge_rank [Finite α] [Finite β] [G.Loopless] (he : G.IsLink e u v) 
     intro e x y he
     change panelSupportExtensor (liftNormal b0 ζ (ends e).1) (liftNormal b0 ζ (ends e).2) ≠ 0
     rw [panelSupportExtensor_ne_zero_iff]
-    exact linearIndependent_liftNormal ζ (hlink e _ _ (hends e x y he))
+    exact linearIndependent_liftNormal ζ (hlink e _ _ (hends.isLink he))
   -- the ranks of the sides, at the hinges of `F`
   have hcutF := BodyHingeFramework.le_finrank_span_rigidityRows_of_cut F (V₁ := V₁) (C := {e})
     (by rw [Set.ncard_singleton]) hext fun e' he' => ⟨u, v, by
@@ -685,15 +685,14 @@ theorem liftAttains_of_cutEdge [Infinite K] [Finite α] [Finite β] (r : ℕ) {G
   have hne : (steerSet (K := K) G hubSel nbrSel).Nonempty :=
     (steerSet_nonempty_iff hHubSel hNbrSel).2 hfeas
   have : Inhabited α := ⟨u⟩
-  have hends : ∀ e x y, G.IsLink e x y → G.IsLink e (G.endsOf e).1 (G.endsOf e).2 :=
-    fun e x y h => G.isLink_endsOf h.edge_mem
+  have hends := Graph.recordsLinks_endsOf G
   have htr₁ := lift_transfer (K := K) (r := r)
     (Set.union_subset hV₁ (Set.singleton_subset_iff.2 he.right_mem)) ⟨u, Or.inl hu⟩ hHubSel
-    hNbrSel (induce_isLink_ends hends _) (cutEdge_T1 hfeas he hu hv hV₁ hcut)
+    hNbrSel (hends.induce _) (cutEdge_T1 hfeas he hu hv hV₁ hcut)
     (cutEdge_T2 he hu hv hV₁ hcut hHubSel hNbrSel hne) hH₁
   have htr₂ := lift_transfer (K := K) (r := r)
     (Set.union_subset hV₂ (Set.singleton_subset_iff.2 he.left_mem)) ⟨v, Or.inl hv₂⟩ hHubSel
-    hNbrSel (induce_isLink_ends hends _) (cutEdge_T1 hfeas he.symm hv₂ hu₂ hV₂ hcut₂)
+    hNbrSel (hends.induce _) (cutEdge_T1 hfeas he.symm hv₂ hu₂ hV₂ hcut₂)
     (cutEdge_T2 he.symm hv₂ hu₂ hV₂ hcut₂ hHubSel hNbrSel hne) hH₂
   refine liftAttains_of_holdsGenerally hHubSel hNbrSel hends
     ((HoldsGenerally.and hHubSel hNbrSel htr₁ htr₂).mono fun s hs h => ?_)

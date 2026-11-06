@@ -7,7 +7,7 @@ carried over (`notes/Phase42-homes.md` *Moved to a later round*, *Candidates for
 debt, the friction log's archive sweep, a dead pair of `have`s, the splits of the four molecular
 files past the ~1500-line tripwire, and `RecordsLinks` moved to `Graph` with its link hypotheses
 restated. Seventeen tasks; no main result's statement changes.
-**Next concrete task:** task 16, restate `Pencil/Grade/`'s link hypotheses (*Lemma checklist*; tasks 13-15 landed, 11 reserved and unused).
+**Next concrete task:** task 17, the close (*Lemma checklist*; tasks 1-10 and 12-16 landed, 11 reserved and unused).
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -22,22 +22,27 @@ stops; the PI answers in an entry that starts `**PI, <date>:**`.
 
 ## Current state
 
-**Tasks 1-10 and 12-15 landed.** Task 1 (`381dcae1`): the open. Task 2 (`0edd6e7e`): the friction log's
+**Tasks 1-10 and 12-16 landed.** Task 1 (`381dcae1`): the open. Task 2 (`0edd6e7e`): the friction log's
 archive sweep. Task 3 (`6f227b5e`): the dead `have`s. Tasks 4-5 (`a0b498a0`, `ca348e9d`): the
 sixteen missing edges (*Decisions*); G6 at 0 missing since. Unbacked 187 → 190 at task 4: the σ
 pin's move leaves `lem:pencil-d-condition-linear` unbacked at `lem:pencil-d-ear-data`,
 `thm:pencil-d-open-ear-four` and `lem:pencil-d-planes-meet`, whose Lean reaches it only through
 `gradeSigma`; not defects (an unbacked edge is a check), left as they are. Tasks 6-9 (`7dc78901`,
 `175bcb33`, `0f6d16a8`, `a2d7fe04`): the four splits, pure moves, each with G1-G4 and G6; task 10
-a no-op. Task 12 (`651ecc60`): `RecordsLinks` moved to `Graph`. Tasks 13 (`03215eb1`) and 14
-(`d7f2d00c`): 22 and 23 binders restated (*Decisions*). Task 15 (this commit): `MainComponent/`'s 28
-binders restated (*Decisions*). Its 15 conversions left all come from the form at links of
-`Graph.X0Attains`'s existential (13) and of one conclusion (2), outside the binder scope
-(*Candidates*); `Pencil/Grade/` converts at 13 new sites in 6 files, task 16's. Gates: G1, G2
-(whole-tree `lake build` 0 warnings, 0 cache failures; `lake lint`), G3 (docstring-label report
-total 0), G5 (21 × `[propext, Classical.choice, Quot.sound]`), G6 (0 missing, unbacked 190,
-implied 3070, both consistency lines OK); no pin moved, so no G4; no TeX (18 pinned nodes read).
-FRICTION: open 7 (the `RecordsLinks` entry updated).
+a no-op. Task 12 (`651ecc60`): `RecordsLinks` moved to `Graph`. Tasks 13-15 (`03215eb1`,
+`d7f2d00c`, `c7449832`): 22, 23 and 28 binders restated. Task 16 (this commit): `Pencil/Grade/`'s 37
+(*Decisions*), so no link binder of the open's scope is left in the form at links. **The grep**
+(`recordsLinks_iff_forall_isLink`, 60 Lean mentions): the API's own 12 (the mirror 6, `PanelHinge`'s
+alias and `link_tac` 4, `Operations` 2); records built link by link 8 (`Theorem55` 5, `CaseIII/` 2,
+`Application` 1); one docstring (`Theorem55`); and 39 conversions, all from forms the open left out
+(*Candidates*): the existentials of `X0Attains` 13, `X0AttainsGrade` 15, `LiftAttains` 6, and two
+conclusions, `Bridge`'s 2 and the pinned `exists_molecular_rankHypothesis_generalPosition`'s 3
+(`Application` 2, `Modelling` 1). The checklist's account named neither `LiftAttains` nor `Modelling`,
+and the total form has no site (it reads `.of_forall`). Gates: G1, G2 (whole-tree `lake build` 0
+warnings, 0 cache failures; `lake lint`), G3 (docstring-label report total 0), G5 (21 ×
+`[propext, Classical.choice, Quot.sound]`), G6 (0 missing, unbacked 190, implied 3070, both
+consistency lines OK); no pin moved, so no G4; no TeX (14 pinned nodes read). FRICTION: open 7 (the
+`RecordsLinks` entry stays open, narrowed to those existentials and conclusions).
 
 **Verified at the open** (2026-11-05, at `6d75d694`; a whole-tree `lake build` replays clean, 0
 warnings, 0 cache failures):
@@ -173,17 +178,12 @@ resolved.
 - [x] **14. Restate: Case III** (`d7f2d00c`; Lean). 23 binders in six files (*Decisions*), the
   three conversions task 13 left and the rest of `CaseIII/`'s gone; `RecordsLinks.eq_pair_or_swap`
   in the mirror, read by `CaseII`'s three pair sites too. FRICTION's `RecordsLinks` entry updated.
-- [x] **15. Restate: `Pencil/MainComponent/`** (this commit; Lean). 28 binders in 12 files
+- [x] **15. Restate: `Pencil/MainComponent/`** (`c7449832`; Lean). 28 binders in 12 files
   (*Decisions*); task 13's six conversions gone, 15 left, all from `X0Attains`'s existential and one
   conclusion (*Candidates*). FRICTION's `RecordsLinks` entry updated.
-- [ ] **16. Restate: `Pencil/Grade/`** (Lean; opus). 33 binders in 16 files, and the last
-  conversions (task 13: `EarData`, `Witness` 1, `LiftWitness` 2; task 15: `Short` 5,
-  `ContractAdditive` 3, `Cut` 2, `Chain`, `Flat`, `LiftNoRigid` 1 each; then grep
-  `recordsLinks_iff_forall_isLink` over the tree: what remains is the API's own, the total form's
-  and `Application.lean`'s two, from the conclusion at links of the pinned
-  `exists_molecular_rankHypothesis_generalPosition`, a conclusion outside the open's binder scope;
-  task 15 found more of that kind, `MainComponent/`'s 15 and `X0AttainsGrade`'s, *Candidates*).
-  Resolves FRICTION *The tree's link hypotheses are in the form at links…*.
+- [x] **16. Restate: `Pencil/Grade/`** (this commit; Lean). 37 binders in 16 files; tasks 13 and
+  15's conversions there gone; the tree-wide grep classified (*Current state*). FRICTION *The tree's
+  link hypotheses are in the form at links…* stays open, narrowed to the PI's (*Candidates*).
 - [ ] **17. The close** (docs only; opus). Each task's sha; the status surfaces; the queue row
   `done = true`; G6; FRICTION's counts.
 
@@ -197,12 +197,16 @@ resolved.
   `.of_pair`), could read `RecordsLinks`, an equivalent restatement of a conclusion. And
   `rigidityRows_ofNormals_congr_ends_swap`'s `hagree` (the pair form of two selectors) is implied by
   its implicit `hlinks`, `hlinks'`: dropping it removes an explicit hypothesis (one caller).
-- **`Graph.X0Attains`'s link witness, and one conclusion** (task 15). The def's existential `hlinks`
-  (pinned at `def:pencil-x0-attains`, whose prose names no selector condition) and the conclusion of
-  `exists_mvPolynomial_le_finrank_span_rigidityRows_pencilPicturePoint` are in the form at links, so
-  `MainComponent/` converts at 15 sites: 13 where an `X0Attains` is built (1) or destructured (12),
-  2 at the conclusion. Reading `RecordsLinks` there is an equivalent restatement and removes them;
-  `Graph.X0AttainsGrade`'s existential (task 16's files) is alike.
+- **Three defs' link witnesses, and two conclusions** (tasks 15-16). The existentials `hlinks` of
+  `Graph.X0Attains`, `Graph.X0AttainsGrade` and `LiftAttains` (pinned at `def:pencil-x0-attains`,
+  `def:pencil-d-x0-attains`, `def:pencil-d-lift-attains`, whose prose names no selector condition),
+  and the conclusions of `exists_mvPolynomial_le_finrank_span_rigidityRows_pencilPicturePoint` and
+  of the pinned `exists_molecular_rankHypothesis_generalPosition`, are in the form at links: 39 sites
+  convert, 13, 15 and 6 where a def is built or destructured, 2 and 3 at the conclusions. Reading
+  `RecordsLinks` there is an equivalent restatement and removes them all.
+- **`induce_isLink_ends`** (`Grade/LiftCases.lean`, task 16): its conclusion is
+  `RecordsLinks.induce`'s at links, and since task 16 it has no caller (they read `.induce`).
+  Deleting it is outside the round's one deletion.
 
 ## Moved to a later round
 
@@ -214,17 +218,11 @@ resolved.
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 16, restate the link hypotheses of `Pencil/Grade/` (*Lemma checklist*;
-G6 at 0 missing), with the conversions tasks 13 and 15 left there. Scan both forms across lines,
-under any variable names (`∀ e u w`, `∀ f p p'`) and with a compound selector
-(`(Function.update ends (e 0) (a, b) f).1`: task 15's first scan missed one such `have` in
-`SplitOff`). Grep `eq_or_swap` and `Prod.ext` too, for a conversion inline at a call site.
-`X0AttainsGrade`'s existential and any conclusion stay in the form at links, a destructured one
-converting where it is used; a hypothesis inside a conclusion is restated (*Decisions*, task 15 (a),
-(c); *Candidates*). The pair form reads
-`RecordsLinks.eq_pair_or_swap`; a restated local `have` names the graph of the `ofNormals` it serves,
-and one that repeats a record in scope goes (*Decisions*, tasks 13-15). After the close: ORIGAMI's
-open, with the PI (ROADMAP *Queued post-program phases*).
+**Next concrete task:** task 17, the close (*Lemma checklist*; docs only): each task's sha, the
+status surfaces (`python3 notes/phasenote.py notes/Phase42-arrears.md --surfaces`), the queue row
+`done = true`, G6, FRICTION's counts, and the *Candidates* put to the PI (the round changed no
+main result's statement). After the close: ORIGAMI's open, with the PI (ROADMAP *Queued
+post-program phases*).
 
 ## Decisions made during this round
 
@@ -280,3 +278,11 @@ open, with the PI (ROADMAP *Queued post-program phases*).
   `SplitOff`'s `hends2` (it repeated the statement's `hlinks`) go. (c) `X0Attains`'s existential and
   one conclusion stay at links (task 14 (d)), converting where used; `Cut`'s two `hcongr` keep
   their binder, fed from both. (d) `Pencil/Grade/` converts 13. (e) No TeX: 18 pinned nodes read.
+- **Task 16's shapes.** (a) 37 binders in 35 signatures (`Collineation`, `Carrier` 2, `Configuration`
+  2, `Contract`, `Witness` 2, `ZeroHeights`, `Cut` 2, `Flat` 3, `Chain`, `EarData`, `Short` 3, `Lift`
+  3, `LiftWitness` 7, `LiftSmall` 2, `LiftCases` 5, `LiftCutEdge`), and `LiftSmall`'s local `side`'s
+  two; every caller is in `Grade/`. (b) Locals as task 15 (b), `GluedEnds`' too; five `hendsG`, three
+  `hendsI`, `hr`, `hr'`, `hrecH` go, and `CaseII`'s two locals at links repeating a record in scope.
+  (c) `LiftAttains`'s existential stays at links, as `X0AttainsGrade`'s, with `LiftSmall`'s `hendsG`
+  that feeds only it; a witness of two uses converts once, by `replace`. (d) `induce_isLink_ends`
+  keeps its conclusion; callers read `.induce` (*Candidates*). (e) No TeX: 14 pinned nodes read.

@@ -92,14 +92,12 @@ theorem PanelHingeFramework.case_II_placement_rank [DecidableEq α] [Finite α] 
   have hva : v ≠ a := hav.symm
   have hvb : v ≠ b := hbv.symm
   have hvVGab : v ∉ V(Gab) := by rw [hGab_def, Graph.vertexSet_splitOff]; simp
-  have hends_Gab : ∀ e u w, Gab.IsLink e u w → Gab.IsLink e (endsv e).1 (endsv e).2 :=
-    fun _ _ _ he => hlinksv.isLink he
   have he₀ab : Gab.IsLink e₀ a b := by
     rw [hGab_def, Graph.splitOff_isLink]
     exact Or.inr ⟨rfl, hav, hbv, haG, hbG, Or.inl ⟨rfl, rfl⟩⟩
   -- The hinge of `e₀` is `±C(n_a, n_b)`, nondegenerate.
   have hC : panelSupportExtensor n_a n_b ≠ 0 := by
-    have h := hne e₀ (hends_Gab e₀ a b he₀ab)
+    have h := hne e₀ (hlinksv.isLink he₀ab)
     rcases hlinksv.eq_pair_or_swap he₀ab with h' | h'
     · rwa [PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends _ e₀ h'] at h
     · rw [PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends _ e₀ h',
@@ -117,7 +115,7 @@ theorem PanelHingeFramework.case_II_placement_rank [DecidableEq α] [Finite α] 
   -- The normals of `v` do not reach `Gab`: its motions, rank and hinges are those at `q`.
   have hvedge : ∀ e u w, Gab.IsLink e u w → (endsv e).1 ≠ v ∧ (endsv e).2 ≠ v := by
     intro e u w he
-    have hl := hends_Gab e u w he
+    have hl := hlinksv.isLink he
     exact ⟨fun h => hvVGab (h ▸ hl.left_mem), fun h => hvVGab (h ▸ hl.right_mem)⟩
   have hwN : PanelHingeFramework.ofNormals Gab endsv q₀
       = (PanelHingeFramework.ofNormals Gab endsv q).withNormal v (n_a + t • n_b) :=
@@ -306,7 +304,7 @@ theorem PanelHingeFramework.case_II_placement_rank [DecidableEq α] [Finite α] 
     have hGab_e : Gab.IsLink e (ends e).1 (ends e).2 := by
       rw [hGab_def, Graph.splitOff_isLink]
       exact Or.inl ⟨hne₀e, he, h1, h2⟩
-    have hGabv := hends_Gab e _ _ hGab_e
+    have hGabv := hlinksv.isLink hGab_e
     have hFGab_ne : FGab.supportExtensor e ≠ 0 := hne₀ e hGabv
     rcases hse e (hGab_to_G_link e _ _ hGabv hne₀e) with h | h <;> rw [h]
     · exact hFGab_ne
@@ -599,8 +597,6 @@ theorem PanelHingeFramework.case_II_realization_all_k
       rw [hN_eq]; push_cast [h1Gab] at hQrank ⊢; linarith [hQrank]
     exact_mod_cast hle
   -- ── Steps 7–18: the count at `q₀ = q[v ↦ n_a + 1 • n_b]` (`case_II_placement_rank`, `t = 1`). ──
-  have hQ_ends_Gab : ∀ e u w, Gab.IsLink e u w → Gab.IsLink e (Q.ends e).1 (Q.ends e).2 :=
-    fun _ _ _ he => hQrec.isLink he
   have hne_q : ∀ e, Gab.IsLink e (Q.ends e).1 (Q.ends e).2 →
       (PanelHingeFramework.ofNormals Gab Q.ends q).toBodyHinge.supportExtensor e ≠ 0 := by
     intro e he
@@ -608,7 +604,7 @@ theorem PanelHingeFramework.case_II_realization_all_k
       (by rw [hQeq]; exact hQgp)
     rw [PanelHingeFramework.ofNormals_ends]
     have : Gab.Loopless := hGab_simple.toLoopless
-    exact (hQ_ends_Gab e _ _ he).ne
+    exact (hQrec.isLink he).ne
   set q₀ : α × Fin (k + 2) → K :=
     fun p => if p.1 = v then (n_a + (1 : K) • n_b) p.2 else q p with hq₀_def
   obtain ⟨hne_G, hcount⟩ := PanelHingeFramework.case_II_placement_rank G hav hbv hG_ea hG_eb hclv

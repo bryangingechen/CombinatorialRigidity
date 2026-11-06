@@ -60,7 +60,7 @@ framework has rank `3|V(G)| − dim L(q)`
 (`Graph.finrank_span_rigidityRows_ofNormals_pencilPicturePoint`). -/
 theorem _root_.Graph.finrank_span_rigidityRows_ofNormals_flat_grade [Finite α] {G : Graph α β}
     (hG : G.Connected) {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) {ends : β → α × α}
-    (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2) :
+    (hends : Graph.RecordsLinks G ends) :
     (Module.finrank K (Submodule.span K
         (PanelHingeFramework.ofNormals (k := m + 1) G ends
           (fun p => pencilConfigPointGrade q (0 : α × Fin m → K) p.1 p.2)).toBodyHinge.rigidityRows)
@@ -75,8 +75,7 @@ theorem _root_.Graph.finrank_span_rigidityRows_ofNormals_flat_grade [Finite α] 
     funext fun p => congrFun (pencilConfigPointGrade_eq_pencilPicturePoint q _ p.1) p.2
   have h := Graph.finrank_span_rigidityRows_ofNormals_pencilConfigPointGrade_padHeights hG
     hends (Nat.zero_le m) q (0 : α × Fin 0 → K)
-  rw [hpad, hpic, Graph.finrank_span_rigidityRows_ofNormals_pencilPicturePoint hq
-    (Graph.recordsLinks_iff_forall_isLink.mpr hends)] at h
+  rw [hpad, hpic, Graph.finrank_span_rigidityRows_ofNormals_pencilPicturePoint hq hends] at h
   rw [h]
   simp only [zero_add, screwDim_one]
   push_cast
@@ -87,7 +86,7 @@ the exact flat rank (`Graph.finrank_span_rigidityRows_ofNormals_flat_grade`) wit
 `3 + def₂(G) ≤ dim L(q)` (`Graph.three_add_deficiency_le_finrank_liftingSpace`). -/
 theorem _root_.Graph.finrank_span_rigidityRows_ofNormals_flat_le_grade [Finite α] [Finite β]
     {G : Graph α β} (hG : G.Connected) {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q)
-    {ends : β → α × α} (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2) :
+    {ends : β → α × α} (hends : Graph.RecordsLinks G ends) :
     (Module.finrank K (Submodule.span K
         (PanelHingeFramework.ofNormals (k := m + 1) G ends
           (fun p => pencilConfigPointGrade q (0 : α × Fin m → K) p.1 p.2)).toBodyHinge.rigidityRows)
@@ -103,8 +102,7 @@ theorem _root_.Graph.finrank_span_rigidityRows_ofNormals_flat_le_grade [Finite �
 (`Graph.finrank_span_rigidityRows_ofNormals_flat_grade`). -/
 theorem _root_.Graph.finrank_span_rigidityRows_ofNormals_flat_eq_iff_grade [Finite α]
     {G : Graph α β} (hG : G.Connected) {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q)
-    {ends : β → α × α} (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
-    (n : ℕ) :
+    {ends : β → α × α} (hends : Graph.RecordsLinks G ends) (n : ℕ) :
     (Module.finrank K (Submodule.span K
         (PanelHingeFramework.ofNormals (k := m + 1) G ends
           (fun p => pencilConfigPointGrade q (0 : α × Fin m → K) p.1 p.2)).toBodyHinge.rigidityRows)
@@ -144,8 +142,7 @@ theorem _root_.Graph.x0AttainsGrade_of_finrank_liftingSpace_le [Finite α] [Fini
     G.X0AttainsGrade K m := by
   have hV := hG.nonempty
   have : Inhabited α := ⟨hV.some⟩
-  have hends : ∀ e u v, G.IsLink e u v → G.IsLink e (G.endsOf e).1 (G.endsOf e).2 :=
-    fun e _ _ he => G.isLink_endsOf he.edge_mem
+  have hends := Graph.recordsLinks_endsOf G
   have hdef := hG.deficiency_le_deficiency_of_le (show 2 ≤ m + 2 by omega)
   have hmain : G.IsMainPicture q := by
     refine ⟨hq, fun q' hq' => ?_⟩
