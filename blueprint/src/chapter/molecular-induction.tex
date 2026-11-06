@@ -999,9 +999,10 @@ gives a forest of $\tilde G$.
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{lem:splitoff-edge-substitution}
   As $F$ contains no copy of $ab$, its edges are edges of
-  $\widetilde{G_v}$. As in the proof of
-  \cref{lem:reroute-vfree-transport}, they have the same ends in
+  $\widetilde{G_v}$. As $G_v$ is a subgraph of $G$ and of $G_v^{ab}$
+  (\cref{lem:splitoff-edge-substitution}), they have the same ends in
   $\tilde G$ as in $\widetilde{G_v^{ab}}$. So $F$ is a forest of
   $\tilde G$, and none of its edges is incident with $v$. By
   \cref{lem:acyclic-insert-vfiber}, $F \cup \{x\}$ is a forest of
@@ -1237,15 +1238,17 @@ new edge that joins its neighbours.
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{lem:splitoff-deficiency, lem:splitoff-edge-substitution}
   The graph $G''$ is $G_v^{ab}$ with $e_a$ as its new edge $ab$, and we
   argue as for the upper bound of \cref{lem:splitoff-deficiency}. Let
   $P'$ be a partition of $V(G) - v$, and let $P$ be the partition of
   $V(G)$ obtained by adding $v$ to the part of $a$. Then $|P| = |P'|$. In
   $G$ the edge $e_a$ joins two vertices of one part of $P$, and $e_b$
   joins different parts of $P$ exactly when $e_a$ joins different parts
-  of $P'$ in $G''$. Every other edge has the same ends in $G$ and in
-  $G''$. So $P'$ has the same value for $\tilde G''$ as $P$ for
-  $\tilde G$.
+  of $P'$ in $G''$. Every other edge is an edge of $G_v$, a subgraph of
+  both $G$ and $G''$, so it has the same ends in $G$ and in $G''$
+  (\cref{lem:splitoff-edge-substitution}). So $P'$ has the same value
+  for $\tilde G''$ as $P$ for $\tilde G$.
 \end{proof}
 \begin{fmlnote}
   In the formalization $G''$ is the splitting off at $v$ with $e_0 = e_a$
@@ -1402,10 +1405,18 @@ The step of the induction uses the two bounds together
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:splitoff-deficiency, lem:removal-deficiency}
+  \uses{lem:splitoff-deficiency, lem:removal-deficiency,
+        lem:splitoff-edge-substitution}
   Combine \cref{lem:splitoff-deficiency}, which holds as $D \ge 1$, with
   \cref{lem:removal-deficiency}.
 \end{proof}
+\begin{fmlnote}
+  The pinned theorem takes the label of the new edge $ab$ outside
+  $E(G)$ (\cref{fmlnote:graph-operations}). The upper bound of
+  \cref{lem:splitoff-deficiency} asks it to lie outside $E(G - v)$,
+  which follows, as $G - v$ is a subgraph of $G$
+  (\cref{lem:splitoff-edge-substitution}).
+\end{fmlnote}
 
 \begin{lemma}[When splitting off keeps the deficiency; KT Lemma~4.3(ii)]
   \label{lem:splitoff-kdof-criterion}
@@ -1723,7 +1734,7 @@ vertices~\cite[pp.~666--667]{katohTanigawa2011}.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:circuit-induces-rigid}
+  \uses{lem:circuit-induces-rigid, lem:splitoff-edge-substitution}
   Part~(ii) is the case $k = 0$ of \cref{lem:contraction-minimality}.
 
   For (i) we follow Katoh and Tanigawa's
@@ -1742,7 +1753,8 @@ vertices~\cite[pp.~666--667]{katohTanigawa2011}.
 
   Every circuit $X$ of $M(\widetilde{G'})$ meets $\widetilde{ab}$ (KT
   eq.~(4.10)). Otherwise $X$ is a set of edges of $\widetilde{G_v}$. As
-  $G_v$ is a subgraph of both $G'$ and $G$, $X$ is then a circuit of
+  $G_v$ is a subgraph of both $G'$ and $G$
+  (\cref{lem:splitoff-edge-substitution}), $X$ is then a circuit of
   $M(\widetilde{G_v})$ and of $M(\tilde G)$
   (\cref{lem:matroid-restrict-subgraph}). As $G$ has no loops,
   $|V(X)| \ge 2$, and no edge of $X$ is incident with $v$. So $G[V(X)]$

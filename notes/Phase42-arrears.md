@@ -7,7 +7,7 @@ carried over (`notes/Phase42-homes.md` *Moved to a later round*, *Candidates for
 debt, the friction log's archive sweep, a dead pair of `have`s, the splits of the four molecular
 files past the ~1500-line tripwire, and `RecordsLinks` moved to `Graph` with its link hypotheses
 restated. Seventeen tasks; no main result's statement changes.
-**Next concrete task:** task 5, the twelve older missing edges (*Lemma checklist*).
+**Next concrete task:** task 6, the split of `Deficiency.lean` (*Lemma checklist*).
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -22,16 +22,18 @@ stops; the PI answers in an entry that starts `**PI, <date>:**`.
 
 ## Current state
 
-**Tasks 1-4 landed.** Task 1 (`381dcae1`): the open. Task 2 (`0edd6e7e`): the friction log's
+**Tasks 1-5 landed.** Task 1 (`381dcae1`): the open. Task 2 (`0edd6e7e`): the friction log's
 archive sweep, 22 `[resolved]` entries to `FRICTION-archive.md`; FRICTION's counts now open 8,
 mirror-candidate 8, process 2, blueprint 0, resolved 0. Task 3 (`6f227b5e`): `hax`, `hbx` deleted
-from `X0AttainsGrade.of_openEar_four`. Task 4 (this commit): HOMES's four missing edges closed
-(*Decisions*), `extensor_triple_eq_zero_iff` deleted. Gates: G1, G2, G3 (check 9 at 0, the
-docstring-label report unchanged), G4; G6 missing total **12** (the older twelve, task 5), 802
-nodes, consistency OK. Unbacked 187 → 190: the σ pin's move leaves `lem:pencil-d-condition-linear`
-unbacked at `lem:pencil-d-ear-data`, `thm:pencil-d-open-ear-four` and `lem:pencil-d-planes-meet`,
-whose Lean reaches it only through `gradeSigma` (the new node, now implied through the lemma's
-statement); not defects (an unbacked edge is a check), left as they are.
+from `X0AttainsGrade.of_openEar_four`. Task 4 (`a0b498a0`): HOMES's four missing edges closed
+(*Decisions*), `extensor_triple_eq_zero_iff` deleted. Unbacked 187 → 190: the σ pin's move leaves
+`lem:pencil-d-condition-linear` unbacked at `lem:pencil-d-ear-data`, `thm:pencil-d-open-ear-four`
+and `lem:pencil-d-planes-meet`, whose Lean reaches it only through `gradeSigma` (the new node, now
+implied through the lemma's statement); not defects (an unbacked edge is a check), left as they
+are. Task 5 (this commit): the twelve older missing edges (*Decisions*). Gates: G1, G2 (whole-tree
+`lake build` 0 warnings, 0 cache failures; `lake lint`), G3 (check 9 at 0, the docstring-label
+report unchanged), G4; G6 **0 missing**, unbacked 190, implied 3070, 802 nodes, consistency OK
+(the built graph's 1885 edges). G6 holds at 0 from task 6 on.
 
 **Verified at the open** (2026-11-05, at `6d75d694`; a whole-tree `lake build` replays clean, 0
 warnings, 0 cache failures):
@@ -131,20 +133,12 @@ resolved.
   live pointer repointed (`PERFORMANCE.md`'s `mulTilde` mention); dated records stay.
 - [x] **3. The dead `have`s** (`6f227b5e`; Lean, proof only). `hax`, `hbx` deleted from
   `X0AttainsGrade.of_openEar_four` (`Grade/Short.lean`); statement unchanged.
-- [x] **4. HOMES's dependency-graph debt** (this commit; TeX, `Meet.lean`, one docstring in
+- [x] **4. HOMES's dependency-graph debt** (`a0b498a0`; TeX, `Meet.lean`, one docstring in
   `Grade/Carrier.lean`). `def:pencil-d-affine-heights-map` pins `gradeSigma`; the three edges with
   their prose; `extensor_triple_eq_zero_iff` deleted. G6: 12 missing (*Decisions*).
-- [ ] **5. The twelve older missing edges** (TeX; opus). Each judged on its node: an edge where the
-  dependency is real and in order, a moved pin where a node pins a helper its prose does not state.
-  `def:dof-generic`'s proof (pin `dof_eq_zero_iff`) → `lem:case-II-placement-old-rows-extract`,
-  `lem:isInfRigidOn-of-relative-count` (a definition reaching two later lemmas: a pin to move, most
-  likely); `lem:splitoff-edge-substitution`, reached through `Graph.removeVertex_le` (or
-  `…_le_splitOff_of_notMem_removeVertex`) by `lem:reverse-pendant-insert`,
-  `lem:splitoff-deficiency-reuse`, `lem:dof-tracking`, `lem:reduction-step`,
-  `thm:minimal-kdof-reduction`, `lem:chain-data-extract`; `lem:splitoff-deficiency-reuse` →
-  `lem:splitoff-deficiency`; `def:panel-nonparallel`'s statement → `def:panel-general-position`;
-  `thm:theorem-55-6-rows`'s proof → `def:framework-with-graph`; `lem:generic-hinge-points-max-rank`'s
-  proof → `lem:independent-rows-of-rank`. G6: 0 missing.
+- [x] **5. The twelve older missing edges** (this commit; TeX, one docstring in
+  `HingeGeneric.lean`). Eight `\uses` edges with their prose; `dof_eq_zero_iff` moved to
+  `cor:bodyhinge-generic-rigid`; two edges implied. G6: 0 missing (*Decisions*).
 - [ ] **6. Split `Deficiency.lean`** (Lean; opus). Along its sections into about four files under
   ~1500 lines: the file keeps its module name and its first sections (the deficiency, `k`-dof,
   rigid subgraphs, the small `0`-dof graphs, minimality, the circuit, to line 868), and the rest go
@@ -201,9 +195,9 @@ resolved.
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 5, the twelve older missing edges (*Lemma checklist*; G6 lists them,
-`python3 scripts/blueprint-deps.py --chapter <name>`). After the close: ORIGAMI's open, with the
-PI (ROADMAP *Queued post-program phases*).
+**Next concrete task:** task 6, the split of `Deficiency.lean` along its sections (*Lemma
+checklist*; a pure move, G6 at 0 missing from here). After the close: ORIGAMI's open, with the PI
+(ROADMAP *Queued post-program phases*).
 
 ## Decisions made during this round
 
@@ -226,3 +220,10 @@ PI (ROADMAP *Queued post-program phases*).
   kernel step in a formalization note (the `lem:deficiency-core-bound` precedent); the other two
   cite the join identity of `lem:pencil-d-embedding-join`'s proof, its general-map pin
   (`exteriorPower_map_normalsJoin`), forward at the first. (c) `def:join` stays unbacked by design.
+- **Task 5's shapes.** (a) `dof_eq_zero_iff` moves from `def:dof-generic`, a definition its proof
+  made depend on two later lemmas, to its one consumer `cor:bodyhinge-generic-rigid`, whose proof
+  uses both; the shared note after `cor:bodyhinge-generic-tree-packing` gives its role, the def's
+  note points there, its docstring names the new node. (b) Eight edges, each real and in order, a
+  `\cref` at the step (a formalization note at `lem:dof-tracking`, whose step is the label
+  condition). (c) `thm:minimal-kdof-reduction`, `lem:chain-data-extract` reach
+  `lem:splitoff-edge-substitution` only by the label condition: implied via `lem:reduction-step`.

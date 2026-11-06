@@ -1287,7 +1287,7 @@ between distinct bodies.
 \begin{proof}
   \leanok
   \uses{lem:generic-hinge-points-nondegenerate,
-    lem:exists-generic-hinge-points}
+    lem:exists-generic-hinge-points, lem:independent-rows-of-rank}
   By \cref{lem:generic-hinge-points-nondegenerate}, every hinge of
   $(G, q)$ at a link between distinct bodies is nondegenerate. Let $F$
   be a set of edges, and let $(G, q')$ be a realization. Replace the
@@ -1296,9 +1296,10 @@ between distinct bodies.
   of a loop are zero, and gives every hinge a nondegenerate one. The
   members of the annihilator-row family of the new assignment at $F$
   span the rows of its rigidity matrix at $F$. So some of these
-  members, as many as the rank of these rows, are linearly independent.
-  As $q$ is generic, the members of the family of $q$ with the same
-  indices are linearly independent too. They lie in the span of the
+  members, as many as the rank of these rows, are linearly independent
+  (\cref{lem:independent-rows-of-rank}). As $q$ is generic, the
+  members of the family of $q$ with the same indices are linearly
+  independent too. They lie in the span of the
   rows of $R(G, q)$ at $F$ (the remark after
   \cref{def:hinge-row-block}), whose dimension is therefore at least
   that rank. Over all hinge-point assignments with a degenerate hinge
@@ -1597,7 +1598,8 @@ in every dimension, by comparing the rows.
   rigid graph; Jackson--Jord\'an]
   \label{cor:bodyhinge-generic-rigid}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigidOn_ofHinge_isMaxRankHingePoints_iff,
-    CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff}
+    CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.dof_eq_zero_iff}
   \leanok
   \uses{def:dof-generic, def:generic-hinge-points, def:hinge-constraint,
     def:D-deficiency}
@@ -1690,7 +1692,14 @@ in every dimension, by comparing the rows.
   witness lemma takes a selector that gives
   each edge of $G$ its two ends. The rank formula and its corollaries
   take none, as genericity over $G$ asks about every such selector (the
-  note after \cref{def:generic-hinge-points}).
+  note after \cref{def:generic-hinge-points}). The third pinned theorem
+  of \cref{cor:bodyhinge-generic-rigid} is the step of the proof of its
+  first form between the degree of freedom and rigidity. It holds for
+  every body-hinge framework whose multigraph has a vertex, with bodies
+  outside the multigraph allowed: the degree of freedom is $0$ exactly
+  when the framework is infinitesimally rigid on $V(G)$
+  (\cref{lem:isInfRigidOn-of-relative-count},
+  \cref{lem:case-II-placement-old-rows-extract}).
 \end{fmlnote}
 
 Tay~\cite[\S7]{tay1989} and Whiteley~\cite[Theorem~10]{whiteley1988}

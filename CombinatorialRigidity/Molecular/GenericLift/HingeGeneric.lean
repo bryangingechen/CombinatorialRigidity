@@ -1305,9 +1305,9 @@ theorem tfae_finrank_span_rigidityRows_ofHinge_deficiency_of_isMaxRankHingePoint
   tfae_have 2 ↔ 3 := by constructor <;> intro h <;> linarith
   tfae_finish
 
-/-- **The degree of freedom is `0` exactly at rigidity on `V(G)`** (`def:dof-generic`),
-by the row-count-iff-rigidity bridge
-`isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows`. -/
+/-- **The degree of freedom is `0` exactly at rigidity on `V(G)`** (`cor:bodyhinge-generic-rigid`,
+the step of its proof from the degree of freedom of `def:dof-generic` to rigidity), by the
+row-count-iff-rigidity bridge `isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows`. -/
 theorem dof_eq_zero_iff [Finite α] (F : BodyHingeFramework K k α β)
     (hne : V(F.graph).Nonempty) :
     dof F = 0 ↔ F.IsInfinitesimallyRigidOn V(F.graph) := by
