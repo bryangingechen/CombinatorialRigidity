@@ -631,24 +631,6 @@ theorem exists_smul_extensor_eq_of_mem_span_range
 A converse of `exists_smul_extensor_eq_of_mem_span_range`: a nonzero `2`-extensor determines the
 plane spanned by its two vectors. -/
 
-/-- **A vector lies in the plane of an independent pair exactly when its join with the pair is `0`**
-(a step of `lem:decomposable-extensor-span-unique`): for linearly independent `a, b`,
-`extensor ![x, a, b] = 0 ↔ x ∈ span {a, b}`, as `x, a, b` are linearly dependent exactly then
-(`extensor_ne_zero_iff_linearIndependent`, `linearIndependent_finCons`). -/
-theorem extensor_triple_eq_zero_iff {d : ℕ} {a b : Fin (d + 1) → K} (x : Fin (d + 1) → K)
-    (hab : LinearIndependent K ![a, b]) :
-    extensor ![x, a, b] = 0 ↔ x ∈ Submodule.span K (Set.range ![a, b]) := by
-  have hcons : (![x, a, b] : Fin (2 + 1) → Fin (d + 1) → K) = Fin.cons x ![a, b] := rfl
-  constructor
-  · intro h0
-    by_contra hx
-    exact (extensor_ne_zero_iff_linearIndependent _).mpr
-      (by rw [hcons, linearIndependent_finCons]; exact ⟨hab, hx⟩) h0
-  · intro hx
-    apply extensor_eq_zero_of_not_linearIndependent
-    rw [hcons, linearIndependent_finCons]
-    rintro ⟨-, hns⟩; exact hns hx
-
 /-- **Equal nonzero extensors span the same subspace, in every grade** (the argument of
 `lem:decomposable-extensor-span-unique` with `j` vectors in place of two): if
 `extensor p = extensor p' ≠ 0` for `p p' : Fin j → K^(d+1)`, then the two families have the same
@@ -676,11 +658,12 @@ theorem span_range_eq_of_extensor_eq_grade {d j : ℕ} {p p' : Fin j → Fin (d 
   rw [hmem p' hp'li, hmem p hpli, hcons, hcons, heq]
 
 /-- **Equal nonzero `2`-extensors span the same plane** (`lem:decomposable-extensor-span-unique`):
-if `extensor p = extensor p' ≠ 0`, then `span (range p') = span (range p)`. For every `x`,
-`extensor ![x, p 0, p 1] = extensor ![x] ∨ extensor p` (`join_extensor`), so it equals
-`extensor ![x, p' 0, p' 1]`, and `x` lies in either plane exactly when this is `0`
-(`extensor_triple_eq_zero_iff`). It is the case `j = 2` of the proposition of Barnabei, Brini and
-Rota recalled after `def:join`. -/
+if `extensor p = extensor p' ≠ 0`, then `span (range p') = span (range p)`. It is the case
+`j = 2` of `span_range_eq_of_extensor_eq_grade`, whose argument is the chapter's: for every `x`,
+the join of `x` with `extensor p` (`def:join`) is their product `ι x * extensor p`, the extensor
+of `x` followed by `p`, so it equals the join of `x` with `extensor p'`, and `x` lies in either
+plane exactly when this join is `0`. It is the case `j = 2` of the proposition of Barnabei, Brini
+and Rota recalled after `def:join`. -/
 theorem span_range_eq_of_extensor_eq {d : ℕ} {p p' : Fin 2 → Fin (d + 1) → K}
     (hp : extensor p ≠ 0) (heq : extensor p = extensor p') :
     Submodule.span K (Set.range p') = Submodule.span K (Set.range p) := by

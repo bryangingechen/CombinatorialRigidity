@@ -213,7 +213,7 @@ theorem pencilConfigPointGrade_ofPoints (pt : α → Fin (m + 1 + 2) → K)
   conv_rhs => rw [gradeMk_eta (pt w), hpt]
   rfl
 
-/-- **The map `σ_h`** (`lem:pencil-d-condition-linear`): for `m` coefficient triples
+/-- **The map `σ_h`** (`def:pencil-d-affine-heights-map`): for `m` coefficient triples
 `h_i = (a^i, c^i, e^i)`, the linear map `K³ → K^(m+3)`,
 `(ξ, η, ω) ↦ (ξ, η, a^1 ξ + c^1 η + e^1 ω, …, a^m ξ + c^m η + e^m ω, ω)`, built from its blocks as
 `pencilConfigPointGrade` is (`gradeMk`). It keeps the coordinates `0`, `1` and the last

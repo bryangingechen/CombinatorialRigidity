@@ -2020,7 +2020,7 @@ of the rank, so the step works over every infinite field.
         lem:pencil-x0-fibre-intersection,
         lem:pencil-contract-magnified-rank, lem:pencil-rank-congr,
         lem:block-rank-contract, lem:reduction-measure,
-        lem:pencil-lifting-restrict}
+        lem:pencil-lifting-restrict, lem:pencil-contract-additive-kernel}
   \emph{The pieces.} $H$ satisfies the standing hypotheses
   (\cref{lem:pencil-contract-standing-rigid}, at $d = 3$). By
   \cref{lem:pencil-contract-standing}, $G/H$ is simple and satisfies them
@@ -2105,6 +2105,12 @@ of the rank, so the step works over every infinite field.
   has the deficiency of $G$. So
   \cref{lem:pencil-x0-one-witness} applies.
 \end{proof}
+\begin{fmlnote}
+  The formalization proves the step of the kernel at the end of the
+  curve by \cref{lem:pencil-contract-additive-kernel}, which concerns one
+  height. Its lower bound takes the parameter $t$ where $q(t)$ is
+  admissible for $G$, not where $q(t)$ is a main picture.
+\end{fmlnote}
 
 \begin{corollary}[Contraction at a core of planar deficiency zero]
   \label{cor:pencil-x0-contract-rigid}

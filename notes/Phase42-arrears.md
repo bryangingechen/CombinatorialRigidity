@@ -7,7 +7,7 @@ carried over (`notes/Phase42-homes.md` *Moved to a later round*, *Candidates for
 debt, the friction log's archive sweep, a dead pair of `have`s, the splits of the four molecular
 files past the ~1500-line tripwire, and `RecordsLinks` moved to `Graph` with its link hypotheses
 restated. Seventeen tasks; no main result's statement changes.
-**Next concrete task:** task 4, HOMES's dependency-graph debt (*Lemma checklist*).
+**Next concrete task:** task 5, the twelve older missing edges (*Lemma checklist*).
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -22,11 +22,16 @@ stops; the PI answers in an entry that starts `**PI, <date>:**`.
 
 ## Current state
 
-**Tasks 1-3 landed.** Task 1 (`381dcae1`): the open. Task 2 (`0edd6e7e`): the friction log's
+**Tasks 1-4 landed.** Task 1 (`381dcae1`): the open. Task 2 (`0edd6e7e`): the friction log's
 archive sweep, 22 `[resolved]` entries to `FRICTION-archive.md`; FRICTION's counts now open 8,
-mirror-candidate 8, process 2, blueprint 0, resolved 0. Task 3 (this commit): `hax`, `hbx` deleted
-from `X0AttainsGrade.of_openEar_four` (unused there; `hxV₁`, `ha`, `hb` stay used, so no golf
-left). Gates: G1, G2, G3; G6 missing total 16 (unchanged).
+mirror-candidate 8, process 2, blueprint 0, resolved 0. Task 3 (`6f227b5e`): `hax`, `hbx` deleted
+from `X0AttainsGrade.of_openEar_four`. Task 4 (this commit): HOMES's four missing edges closed
+(*Decisions*), `extensor_triple_eq_zero_iff` deleted. Gates: G1, G2, G3 (check 9 at 0, the
+docstring-label report unchanged), G4; G6 missing total **12** (the older twelve, task 5), 802
+nodes, consistency OK. Unbacked 187 → 190: the σ pin's move leaves `lem:pencil-d-condition-linear`
+unbacked at `lem:pencil-d-ear-data`, `thm:pencil-d-open-ear-four` and `lem:pencil-d-planes-meet`,
+whose Lean reaches it only through `gradeSigma` (the new node, now implied through the lemma's
+statement); not defects (an unbacked edge is a check), left as they are.
 
 **Verified at the open** (2026-11-05, at `6d75d694`; a whole-tree `lake build` replays clean, 0
 warnings, 0 cache failures):
@@ -124,18 +129,11 @@ resolved.
 - [x] **2. The friction log's archive sweep** (`0edd6e7e`; docs only). 22 `[resolved]` entries
   moved verbatim (425 lines, non-blank lines equal as multisets; `FRICTION.md` 6110 to 5685). One
   live pointer repointed (`PERFORMANCE.md`'s `mulTilde` mention); dated records stay.
-- [x] **3. The dead `have`s** (this commit; Lean, proof only). `hax`, `hbx` deleted from
+- [x] **3. The dead `have`s** (`6f227b5e`; Lean, proof only). `hax`, `hbx` deleted from
   `X0AttainsGrade.of_openEar_four` (`Grade/Short.lean`); statement unchanged.
-- [ ] **4. HOMES's dependency-graph debt** (TeX and `Meet.lean`; opus). (a) The cycle: give `σ_v`
-  (`gradeSigma`) a definition node of its own before `lem:pencil-d-config-realization`, its pin
-  moved there from `lem:pencil-d-condition-linear`, `\uses`d by the first's proof and the second's
-  statement (or, if the chapter reads better, a home on `def:pencil-d-configuration`; record which
-  and why). (b) The three edges: `thm:pencil-x0-contract-additive`'s proof `\uses`
-  `lem:pencil-contract-additive-kernel`; `lem:pencil-d-rank-collineation`'s and
-  `lem:pencil-d-two-stars`'s proofs `\uses` `lem:pencil-d-embedding-join`, each with the prose that
-  names the step. (c) `def:join`: the edge stays (the chapter's argument is the Lean's, the join
-  being the product); `span_range_eq_of_extensor_eq`'s docstring describes its route at HEAD;
-  `extensor_triple_eq_zero_iff` deleted. G6 shows the twelve older edges only.
+- [x] **4. HOMES's dependency-graph debt** (this commit; TeX, `Meet.lean`, one docstring in
+  `Grade/Carrier.lean`). `def:pencil-d-affine-heights-map` pins `gradeSigma`; the three edges with
+  their prose; `extensor_triple_eq_zero_iff` deleted. G6: 12 missing (*Decisions*).
 - [ ] **5. The twelve older missing edges** (TeX; opus). Each judged on its node: an edge where the
   dependency is real and in order, a moved pin where a node pins a helper its prose does not state.
   `def:dof-generic`'s proof (pin `dof_eq_zero_iff`) → `lem:case-II-placement-old-rows-extract`,
@@ -203,8 +201,9 @@ resolved.
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 4, HOMES's dependency-graph debt (*Lemma checklist*). After the
-close: ORIGAMI's open, with the PI (ROADMAP *Queued post-program phases*).
+**Next concrete task:** task 5, the twelve older missing edges (*Lemma checklist*; G6 lists them,
+`python3 scripts/blueprint-deps.py --chapter <name>`). After the close: ORIGAMI's open, with the
+PI (ROADMAP *Queued post-program phases*).
 
 ## Decisions made during this round
 
@@ -219,3 +218,11 @@ close: ORIGAMI's open, with the PI (ROADMAP *Queued post-program phases*).
   the splits before task 12, so the restate's tasks edit the final files; the restate bottom-up
   by import order, a caller converting until its own task.
 - **The queue row is attended** (the open): the driver stops before it, and the PI may flip it.
+- **Task 4's shapes.** (a) `σ_v` has its own node, `def:pencil-d-affine-heights-map`, before
+  `lem:pencil-d-config-realization`: not a home on `def:pencil-d-configuration` (four pins already;
+  σ is no part of a configuration). Pins by statement: `gradeSigma` (the map) moves there, its
+  docstring label with it; `gradeSigmaPerp` (the `n^i`), `dotPerp_range_gradeSigma` stay on
+  `lem:pencil-d-condition-linear`, whose statement states both. (b) The d = 3 contraction names its
+  kernel step in a formalization note (the `lem:deficiency-core-bound` precedent); the other two
+  cite the join identity of `lem:pencil-d-embedding-join`'s proof, its general-map pin
+  (`exteriorPower_map_normalsJoin`), forward at the first. (c) `def:join` stays unbacked by design.
