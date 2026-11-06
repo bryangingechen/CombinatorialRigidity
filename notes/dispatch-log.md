@@ -803,6 +803,14 @@ promoted. F56 stays open.
   coordinator's `hygiene` line carries it. The incident line is in
   `notes/harness/incidents.md`, filed with SHORT-CORE's close on its branch
   (a master append had conflicted with that branch's at 42c's close).
+  **Promoted 2026-11-05**, after the CLEANUP-42 grooming: the builder
+  core's commit bullet carries the rule, and the recon core's design-pass
+  paragraph and root `CLAUDE.md`'s commit-message rule a clause each. The
+  premise was false: the builder core is not a `HARNESS.md` file, since
+  `/harness-review`'s *Inputs* says `/coordinate-phase` and its agents
+  change by their own promotions, and F54–F55 entered the core at the
+  Phase-41 grooming (`49afc113`). The incident line stays as filed
+  (`incidents.md` is append-only); its candidate is now the core's rule.
 - **F57 — a question or option text put to the PI is a coordinator
   artifact (six rows, 42f–42k).** Six texts carried a claim the coordinator
   had not checked: a factoring "checked" by type only (false at three
@@ -840,4 +848,11 @@ promoted. F56 stays open.
   lesson: the F17 sweep reads this list, so a row it omits is a surface the
   sweep skips. Open: a sub-lettered log falls back to its parent's row, and
   a suffixed log matches the `⋮` row whose cell names its path. Until then
-  the coordinator names the row.
+  the coordinator names the row. **Fixed 2026-11-05**, after the
+  CLEANUP-42 grooming: `phasenote.py`'s `roadmap_rows()` does both, and
+  any log not named `PhaseN.md`/`PhaseNa.md` takes the rows naming its
+  path. Run over every work log in `notes/`, each resolves one row: the
+  sub-lettered logs of Phases 23 and 40–42 their parent's, `42m`
+  included; `Phase42-fold.md` and the `Prose-*`/`Reconcile-*` logs (no
+  row before) their own `⋮` row. Only design docs resolve none, and the
+  output says so. The playbook's `--surfaces` pointer drops the gap.

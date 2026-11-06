@@ -124,11 +124,12 @@ session*, which also carries the Lean-specific working rules).
   than copying recent `git log` (a stale example here once propagated into a
   landed trailer). Under `/coordinate-phase`, the step-3 prompt names the
   dispatched model. **A message body with backticks** (Lean identifiers, in
-  most multi-line messages here) goes through `-F <file>` or a heredoc,
-  never an inline double-quoted `-m "…"`: zsh treats backticks inside double
-  quotes as command substitution, corrupting the message and even *running*
-  the embedded text (a 2026-06-26 commit ran `lake build` from its own
-  message and had to be amended).
+  most multi-line messages here) goes through a heredoc or `-F` on a
+  fresh file (a shared temp path can still hold an earlier session's
+  message, dispatch-log F56), never an inline double-quoted `-m "…"`: zsh
+  treats backticks inside double quotes as command substitution, corrupting
+  the message and even *running* the embedded text (a 2026-06-26 commit ran
+  `lake build` from its own message and had to be amended).
 - **Never commit local machine paths**, in tracked file content or in commit
   messages. Absolute or home-relative paths (`/Users/<name>/…`, `~/…`,
   `~/.claude*`, agent or tooling log dirs, scratch checkouts, worktree paths)

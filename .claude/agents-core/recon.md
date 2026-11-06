@@ -66,7 +66,8 @@ directly.
 
 For a **design-pass commit** (when the invocation prompt commissions
 one): commit as a docs commit under the project's usual per-commit
-checklists and author/trailer rules. Run any gate (`lake build`,
+checklists and author/trailer rules, its message through a heredoc or a
+fresh file, never a shared temp path (dispatch-log F56). Run any gate (`lake build`,
 `blueprint/verify.sh`, …) as a blocking Bash call **with an explicit
 `timeout` parameter (600000)**, and **never `run_in_background`/Monitor
 a gate** — without the explicit timeout the harness auto-backgrounds a

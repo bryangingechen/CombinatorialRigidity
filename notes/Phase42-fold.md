@@ -213,7 +213,8 @@ fallout); `--chapter main-component`'s three *missing* edges, `lem:deficiency-co
 `lem:deficiency-one-body-chain` and `lem:deficiency-two-body-chain` into their `-d` forms, from
 Phase 42 (missing at round 4's open, outside the PI's 15), were added after the close at the PI's
 word, each with a formalization note (`b27e447a`; `main-component` 0 *missing*); and
-`notes/dispatch-log.md` was groomed after the close (this commit; its *CLEANUP-42 grooming*).
+`notes/dispatch-log.md` was groomed after the close (`bf8eaaf5`; its *CLEANUP-42 grooming*),
+and its two open items closed (this commit: F59's `--surfaces` fix, F56's promotion).
 
 ## Decisions made during this round
 

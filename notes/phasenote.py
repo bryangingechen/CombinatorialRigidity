@@ -40,6 +40,9 @@ this is the first script off D7.8's list and not the cheapest one.
                 current first sentence, so the sweep can be checked rather
                 than remembered. This is the mode that pays twice: F17 is
                 three consecutive landings each leaving a DIFFERENT one stale.
+                The ROADMAP row is resolved per `roadmap_rows()`: a
+                sub-lettered log without a row of its own reads its parent
+                phase's, and a cleanup round's log the row naming its path.
   --selftest    lossless-split audit (no content).
 
 `--head N` / `--tail N` / `--sentences A-B` / `--full` window the output,
@@ -228,6 +231,33 @@ def cmd_section(disp, text, secs, want, args):
     return 0
 
 
+def roadmap_rows(disp):
+    """The ROADMAP Status-table rows a work log's F17 sweep touches, and how
+    they were found (dispatch-log F59). A phase log `PhaseN.md` or
+    `PhaseNa.md` takes the row that starts `| N.` / `| Na.`; a sub-lettered
+    log whose phase has one row for all its sub-phases (`Phase42m.md`: no
+    `| 42m.` row) falls back to the parent's `| 42.` row. Any other log -- a
+    cleanup round's (`Phase42-fold.md`, `Reconcile-lean-cleanup.md`), a perf
+    or structure pass's -- takes the rows whose cells name its path: its own
+    `⋮` row, never its parent phase's, which `Phase(\\d+)` alone found."""
+    lines = [l for l in open(ROADMAP, encoding="utf-8").read().split("\n")
+             if l.startswith("|")]
+    m = re.fullmatch(r"Phase(\d+)([a-z]?)\.md", os.path.basename(disp))
+    if m:
+        n, letter = m.groups()
+        for key in (n + letter, n) if letter else (n,):
+            rows = [l for l in lines if re.match(rf"^\|\s*{key}\.", l)]
+            if rows:
+                return rows, (f"`| {key}.`" if key == n + letter else
+                              f"`| {key}.`, the parent phase's (no `| {n}"
+                              f"{letter}.` row)")
+        return [], f"no `| {n}{letter}.` row"
+    path = disp.replace(os.sep, "/")
+    named = re.compile(rf"(?<![\w/.-]){re.escape(path)}(?![\w-])")
+    return ([l for l in lines if named.search(l)],
+            f"the rows naming `{path}`")
+
+
 def cmd_surfaces(disp, text, secs, args):
     """Every status surface an F17 sweep must touch. Printed as first
     sentences, not full text: the point is to see all of them beside each
@@ -249,18 +279,18 @@ def cmd_surfaces(disp, text, secs, args):
     if not any(next_task_para(b) is not None for _t, _k, b in secs):
         print("  ** NO next-task sentence in ANY surface — the hand-off "
               "contract is unmet. **")
-    phase = re.search(r"Phase(\d+[a-z]?)", os.path.basename(disp))
-    if phase and os.path.isfile(ROADMAP):
-        n = phase.group(1)
-        rows = [l for l in open(ROADMAP, encoding="utf-8").read().split("\n")
-                if l.startswith("|") and re.match(rf"^\|\s*{n}\.", l)]
-        print(f"  {'ROADMAP Status cell':<24} "
-              f"{'(' + str(len(rows)) + ' row)':>16}  the at-a-glance surface")
+    if os.path.isfile(ROADMAP):
+        rows, how = roadmap_rows(disp)
+        count = f"({len(rows)} row{'' if len(rows) == 1 else 's'})"
+        print(f"  {'ROADMAP Status cell':<24} {count:>16}  "
+              f"the at-a-glance surface: {how}")
         for r in rows:
             cells = r.split("|")
             print(f"      {_first_sentence(cells[3] if len(cells) > 3 else r)}")
+        if not rows:
+            print("      ** no row resolved: the coordinator names it **")
     else:
-        print("  ROADMAP Status cell      — not resolved from the filename")
+        print("  ROADMAP Status cell      — ROADMAP.md not found")
     print("  NOTE: the dispatch-scoping file's own header is the fifth "
           "surface (e.g. notes/pencil/CLAUDE.md); it is corpus-specific, so "
           "this reader names it rather than guessing it.")

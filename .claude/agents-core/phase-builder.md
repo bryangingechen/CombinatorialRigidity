@@ -84,7 +84,11 @@ pre-commit checklists; this file pins the loop contract):
   reads as one you did not run, and `blueprint/verify.sh` green says
   nothing of `blueprint/lint.sh` (dispatch-log F54). Gate the commit
   with `if <gate>; then git commit …; fi`, never an `&&`/`||` chain,
-  which commits after a failed gate (F55).
+  which commits after a failed gate (F55). Write the message through a
+  heredoc (`git commit -F - <<'EOF'`) or a fresh file under
+  `scratch/<phase>/`, never a shared temp path such as
+  `$TMPDIR/msg.txt`, which once still held an earlier dispatch's
+  message and landed it twice (F56).
 - **Before committing, re-read the pinned checklist / design section
   VERBATIM** and confirm every pinned sub-clause is either delivered
   in this commit or explicitly re-flagged in the hand-off — never

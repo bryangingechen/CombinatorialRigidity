@@ -310,9 +310,8 @@ The step-4/5 checks below always run. On top of them, by rung:
   chapter). An unchecked claim in a question is marked as a hypothesis,
   as in a shaping block (F14). A coordinator commit runs the same
   status-surface sweep it enforces on landings (F17; `python3
-  notes/phasenote.py N --surfaces` lists them, but not the ROADMAP row
-  of a sub-lettered or cleanup-round log, which the coordinator names,
-  F59).
+  notes/phasenote.py N --surfaces` lists them, the ROADMAP row of a
+  sub-lettered or cleanup-round log included, F59).
 
 When re-running a gate **yourself**, obey the same mechanics the agent
 cores mandate: pass the Bash tool's **`timeout` PARAMETER** and never

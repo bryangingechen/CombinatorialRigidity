@@ -1217,8 +1217,10 @@ there.
     `lem:deficiency-two-body-chain` into their `-d` forms (from Phase 42, whose `d = 3` Lean is the
     `d = 3` case of the `-d` Lean), added as proof `\uses`, each with a one-sentence formalization
     note as task 9's (`b27e447a`); `main-component` 0 *missing*. Then `notes/dispatch-log.md`'s
-    grooming, left to the coordinator at the close (this commit): the 24 rows of 42f–42m and
+    grooming, left to the coordinator at the close (`bf8eaaf5`): the 24 rows of 42f–42m and
     round 1 pruned to a profile, findings F57–F59, F57 promoted to the coordinator's playbook.
+    Then its two open items (this commit): F59 fixed in `notes/phasenote.py --surfaces`, and
+    F56 promoted to the builder core's commit bullet.
 
   Rounds 1, 2 and 4's *Candidates for the PI* and *Moved to a later round* lines are mirrored
   here as they land, each with the task that takes it:
