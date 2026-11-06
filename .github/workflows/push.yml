@@ -20,7 +20,7 @@ concurrency:
 
 jobs:
   build_project:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04 # memory issue
     name: Build project, blueprint, and docs
     steps:
       - name: Free up disk space on the runner
