@@ -321,7 +321,7 @@ theorem _root_.Graph.IsOpenEar.hasGenericPencilRealization_of_isNondegPencilReal
           · exact absurd h hxb
           · exact absurd hl'.2.1 hx₀V
       have hLIon : LinearIndepOn K normal {a, b} :=
-        (LinearIndepOn.pair_iff normal hab').mpr (LinearIndependent.pair_iff.mp hab)
+        (LinearIndepOn.pair_iff_linearIndependent hab').mpr hab
       exact (hLIon.mono hsub).congr heq.symm
   -- the points are independent on the closed neighbourhood of every body that is not a hub
   have hnbhd' : ∀ v ∈ V(G), ¬ G.PencilHub v → LinearIndepOn K point' (G.closedNbhd v) := by
@@ -486,8 +486,7 @@ theorem _root_.Graph.IsOpenEar.hasGenericPencilRealization_of_one
     · exact ⟨ha, Or.inr ⟨e 0, l0.symm⟩⟩
     · exact ⟨hb, Or.inr ⟨e 1, l1⟩⟩
   have hnab : LinearIndependent K ![normal a, normal b] :=
-    LinearIndependent.pair_iff.mpr ((LinearIndepOn.pair_iff normal hab).mp
-      ((hndG.2.2.1 (x 0) hx₀G).mono hCx))
+    (LinearIndepOn.pair_iff_linearIndependent hab).mp ((hndG.2.2.1 (x 0) hx₀G).mono hCx)
   have hflag : point a ⬝ᵥ normal b ≠ 0 ∨ point b ⬝ᵥ normal a ≠ 0 := by
     by_contra hcon
     push Not at hcon
@@ -586,7 +585,7 @@ theorem _root_.Graph.IsOpenEar.hasGenericPencilRealization_of_one
     simp only [S] at this
     rwa [ite_eq_left hv] at this
   have hab' : LinearIndependent K ![n' a, n' b] :=
-    LinearIndependent.pair_iff.mpr ((LinearIndepOn.pair_iff n' hab).mp (hS' (Sum.inr ())))
+    (LinearIndepOn.pair_iff_linearIndependent hab).mp (hS' (Sum.inr ()))
   exact hear.hasGenericPencilRealization_of_isNondegPencilRealization ha hb hdef hnd' hrank' hprom
     hab' hflag'
 

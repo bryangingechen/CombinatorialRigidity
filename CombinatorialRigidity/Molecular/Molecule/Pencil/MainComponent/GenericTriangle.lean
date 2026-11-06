@@ -940,8 +940,7 @@ theorem pencilPair_of_simple_ncard_eq_three [Finite α] [Finite β] {G : Graph �
     have hsub : ({u, v} : Set α) ⊆ ({x, y, z} : Set α) := by
       rw [← hVeq]; rintro w (rfl | rfl); exacts [hl.left_mem, hl.right_mem]
     have hpair := hLI3.mono hsub
-    rw [LinearIndepOn.pair_iff point huv] at hpair
-    rwa [LinearIndependent.pair_iff]
+    exact (LinearIndepOn.pair_iff_linearIndependent huv).1 hpair
   have hhubLI : ∀ v ∈ V(G), LinearIndepOn K normal (G.closedHubNbhd v) := by
     intro v _
     rw [hchn v]; exact linearIndepOn_empty K normal

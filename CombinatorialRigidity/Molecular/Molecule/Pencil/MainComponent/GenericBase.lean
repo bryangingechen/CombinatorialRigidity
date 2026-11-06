@@ -695,8 +695,8 @@ theorem isNondeg_pencilConfig_of_planeDiff [Fintype α] [Finite β] {G : Graph �
       · obtain ⟨w, hw⟩ := Set.ncard_eq_one.mp (show T.ncard = 1 by omega)
         rw [hw]
         obtain ⟨hwh, hwv, e, hl⟩ := hTmem w (hw ▸ Set.mem_singleton w)
-        refine (LinearIndepOn.pair_iff _ hwv.symm).2 ?_
-        exact LinearIndependent.pair_iff.1 (planeNormal_pair (hPD v w (hedge e v w hl hvh hwh)))
+        exact (LinearIndepOn.pair_iff_linearIndependent hwv.symm).2
+          (planeNormal_pair (hPD v w (hedge e v w hl hvh hwh)))
       · obtain ⟨w₁, w₂, h12, hw⟩ := Set.ncard_eq_two.mp (show T.ncard = 2 by omega)
         rw [hw]
         obtain ⟨hh1, hv1, e₁, hl₁⟩ := hTmem w₁ (hw ▸ Set.mem_insert _ _)
@@ -752,8 +752,7 @@ theorem isNondeg_pencilConfig_of_planeDiff [Fintype α] [Finite β] {G : Graph �
         have haS : a ∈ G.closedHubNbhd v := hS ▸ Set.mem_insert a _
         have hbS : b ∈ G.closedHubNbhd v := hS ▸ Set.mem_insert_of_mem a rfl
         rw [hS]
-        refine (LinearIndepOn.pair_iff _ hab).2 ?_
-        exact LinearIndependent.pair_iff.1
+        exact (LinearIndepOn.pair_iff_linearIndependent hab).2
           (planeNormal_pair (hPD a b (hdeg2 v hv hvh a haS b hbS hab)))
   · -- a body that is not a hub: its closed neighbourhood is the triple that admissibility gives
     obtain ⟨t, ht, hli⟩ := hq.2 v hv

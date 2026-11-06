@@ -346,9 +346,8 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant_
           · exact Or.inl rfl
           · exact Or.inr ⟨e_c, hl_c.symm⟩
       rw [hset]
-      rw [LinearIndepOn.pair_iff point (fun h => hv_c (h ▸ hu_c) : v_c ≠ u_c)]
-      exact LinearIndependent.pair_iff.mp
-        (LinearIndependent.pair_symm_iff.mp (hadjLI e_c u_c v_c hl_c))
+      rw [LinearIndepOn.pair_iff_linearIndependent (fun h => hv_c (h ▸ hu_c) : v_c ≠ u_c)]
+      exact LinearIndependent.pair_symm_iff.mp (hadjLI e_c u_c v_c hl_c)
   -- ── The glue (`exists_hasPencilPanelRealization_glue`): the pendant side `{v_c}` is edgeless,
   -- realized by the constant data at `v_c` with the pendant hinge as every extensor. ────────────
   have hne : V₁.Nonempty := ⟨u_c, hu_c⟩

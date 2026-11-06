@@ -323,7 +323,7 @@ to be re-derived by re-reading entries later.
   `finrank_dotPerp`.
 - **Status:** open (42k's deferral, tracked in `notes/Phase42k.md` *Hand-off*).
 
-### [mirror-candidate] No two-vector `finrank_span_pair` or "independent partner in a subspace" lemma
+### [resolved] No two-vector `finrank_span_pair` or "independent partner in a subspace" lemma
 - **Where it bit:** Phase 42k, build 1, `Pencil/Grade/TwoPencil.lean`: `finrank_span_pair_eq_two`
   (`LinearIndependent K ![x, y] → finrank K (span K {x, y}) = 2`, by `finrank_span_eq_card` after
   `Matrix.range_cons_cons_empty`) and `exists_mem_linearIndependent_pair` (`b ≠ 0` and
@@ -1192,7 +1192,7 @@ to be re-derived by re-reading entries later.
   the `rfl`-defeq of `restrict`'s vertex set), then `(induce_le hsub').trans restrict_le`.
 - **Status:** idiom.
 
-### [mirror-candidate] No packaged "extend a `LinearIndepOn` partial family by filling the free slots" lemma
+### [resolved] No packaged "extend a `LinearIndepOn` partial family by filling the free slots" lemma
 - **Where it bit:** Phase 39 (PENCIL) W5-L5 L5-cut-v-d, the post-steering `fillNbr` re-choice
   (`Molecular/Molecule/Pencil/Steer.lean`, `exists_fillNbr_pencilChartWF_of_standing`). Closing
   `PencilChartWF`'s fourth conjunct at a non-hub body means: given the `nbrSel`-assigned slots' points
@@ -3348,7 +3348,7 @@ to be re-derived by re-reading entries later.
   expected `H.IsKDof n 0` fine.
 - **Status:** idiom. **Lifted to:** TACTICS-QUIRKS § 8 (new bullet).
 
-### [open] No `n`-ary (`n ≥ 3`) analogue of `LinearIndepOn.pair_iff` (`LinearIndepOn` on `{i,j}` ↔ `LinearIndependent ![f i, f j]`)
+### [resolved] No `n`-ary (`n ≥ 3`) analogue of `LinearIndepOn.pair_iff` (`LinearIndepOn` on `{i,j}` ↔ `LinearIndependent ![f i, f j]`)
 - **Where it bit:** Phase 39 W5-L4 piece 3 (point-side global assembly),
   `linearIndependent_triple_of_linearIndepOn` (`Pencil/Engine.lean`) — needed to convert
   `LinearIndepOn K normal {x, y, z}` (from `Set.ncard_eq_three`'s witnesses) to the literal
@@ -3390,6 +3390,11 @@ to be re-derived by re-reading entries later.
   `LinearIndependent.pair_iff` (e.g. `Base.lean`'s `hadj`: `rw [LinearIndepOn.pair_iff point huv]
   at hpair; rwa [LinearIndependent.pair_iff]`). A fused `n = 2` mirror would make each one step;
   it is a §B-style sweep, not part of task 24's screen.
+- **Status (resolved, HOMES task 8):** task 7 landed the fused form
+  `LinearIndepOn.pair_iff_linearIndependent`, and task 8 swept 17 two-step sites in 8 pencil files
+  through it (`Pair2`, `Motive`, `GenericSteer`, `GenericEar`, `GenericBase`, `GenericTriangle`,
+  `Grade/EarFree`, `Grade/LiftCutEdge`). The sites that use `pair_iff`'s scalar form for its own
+  sake stay (`Pair.lean`, `Nonvacuity.lean`, `MatroidIdentification.lean`, `Grade/LiftCases.lean`).
 
 ### [idiom] `simp only [someDef, e.choose_spec]` blows `maxRecDepth` when the def's match reduces against an `Exists.choose` term — hoist a plain witness with the `choose` *tactic*
 - **Where it bit:** Phase 39 W5-L5 L5-cut-v-e,

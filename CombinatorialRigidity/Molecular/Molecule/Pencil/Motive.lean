@@ -304,8 +304,8 @@ theorem PencilNondegFeasible.mono {G H : Graph α β} [G.LocallyFinite]
         obtain rfl := hl.right_unique hl'
         exact Set.mem_insert_of_mem _ rfl
     have hLI : LinearIndepOn K point {v, w} := by
-      rw [LinearIndepOn.pair_iff point hvw]
-      exact LinearIndependent.pair_iff.1 (hadj e v w (hl.of_le hle))
+      rw [LinearIndepOn.pair_iff_linearIndependent hvw]
+      exact hadj e v w (hl.of_le hle)
     exact hLI.mono hsub
   · have hsub : H.closedNbhd v ⊆ {v} := by
       rintro u (rfl | ⟨e', hl'⟩)
@@ -548,8 +548,7 @@ theorem not_pencilNondegFeasible_of_triangle_two_hubs {G : Graph α β}
     · exact ⟨hy, Or.inl rfl⟩
     · exact ⟨hz, Or.inr ⟨e₂, h₂⟩⟩
   have hLIyz : LinearIndependent K ![normal y, normal z] :=
-    LinearIndependent.pair_iff.2
-      ((LinearIndepOn.pair_iff normal hyz).1 ((hnd.2.2.1 y hy.1).mono hsubyz))
+    (LinearIndepOn.pair_iff_linearIndependent hyz).1 ((hnd.2.2.1 y hy.1).mono hsubyz)
   -- Every point of the triangle is orthogonal to `normal y` and `normal z` (the incidences along
   -- its three edges).
   have hxV : point x ⬝ᵥ normal y = 0 ∧ point x ⬝ᵥ normal z = 0 :=
@@ -662,8 +661,7 @@ theorem not_isNondegPencilRealization_of_two_hubs_three_common
     · exact ⟨ha, Or.inr ⟨ea, hxa⟩⟩
     · exact ⟨hb, Or.inr ⟨eb, hxb⟩⟩
   have hLIab : LinearIndependent K ![normal a, normal b] :=
-    LinearIndependent.pair_iff.2
-      ((LinearIndepOn.pair_iff normal hab).1 ((hnd.2.2.1 x hxa.left_mem).mono hsub))
+    (LinearIndepOn.pair_iff_linearIndependent hab).1 ((hnd.2.2.1 x hxa.left_mem).mono hsub)
   have hin : ∀ {w : α} {e f : β}, G.IsLink e w a → G.IsLink f w b →
       point w ⬝ᵥ normal a = 0 ∧ point w ⬝ᵥ normal b = 0 := fun he hf =>
     ⟨dotProduct_point_eq_zero_of_mem_closedNbhd hnd.1 he.left_mem (Or.inr ⟨_, he⟩),

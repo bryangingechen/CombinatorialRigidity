@@ -6,10 +6,11 @@ CLEANUP-42 and ahead of ORIGAMI, in two parts: the friction log's docs and tooli
 2–4), then the lemmas Phase 42 left outside their home files, one task per home file, with the
 mirror lemmas that now meet their entries' own bar (tasks 5–18). No statement changes. Phase 42
 deferred the moves because a declaration added to these files rebuilds most of `Molecular/`
-mid-phase; ORIGAMI will not edit them, so they are cheapest now. Tasks 1–7 landed
-(the docs part, the tree-wide basics, `Deficiency.lean`, the linear-independence mirrors): 62
-actionable entries down to 34.
-**Next concrete task:** task 8, the two-vector sweep.
+mid-phase; ORIGAMI will not edit them, so they are cheapest now. Tasks 1–8 landed
+(the docs part, the tree-wide basics, `Deficiency.lean`, the linear-independence mirrors, the
+two-vector sweep): 62 actionable entries down to 33 (heading tags: open 23, mirror-candidate 8,
+process 2, blueprint 0).
+**Next concrete task:** task 9, `Meet.lean` (*Lemma checklist*).
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -25,21 +26,28 @@ public declaration's name, or delete a pinned declaration, does not land that ch
 
 ## Current state
 
-**Task 7 landed** (this commit; Lean), all four in the mirror
-`Mathlib/LinearAlgebra/LinearIndependent/Basic.lean` (which already held the pair lemmas' siblings):
-`exists_extend_linearIndependent` (now `[Fintype ι]`, `Fintype.card ι ≤ finrank K M`, a division
-ring; no `FiniteDimensional` hypothesis, the bound forces it), `finrank_span_pair_eq_two` and
-`exists_mem_linearIndependent_pair` (any `AddCommGroup M` over a division ring), and
-`LinearIndepOn.pair_iff_linearIndependent` (`LinearIndepOn R f {i, j} ↔ LinearIndependent R ![f i,
-f j]` at `i ≠ j`, over a ring; a bare-name search of mathlib found no packaged form). Callers:
-`Reseed.lean` (`(M := P) (ι := Fin 3)`) and `Steer.lean` (`hn` restated with `Fintype.card (Fin 3)`);
-`Reseed.lean` and `Grade/TwoPencil.lean` import the mirror. The fused form has no site yet (task 8).
-Gates: G2 build (warning-clean after wrapping two long lines) and lint, G3 `blueprint/lint.sh`, G5
-(the four results `molecular_conjecture`, `molecule_rank_formula`, `jacobs`,
-`isBase_ncard_add_deficiency_eq`: the three standard axioms); G4 not needed (none of the three
-unfused names is `\lean{}`-pinned). Two FRICTION entries `[resolved]`; open entries 36 → 34.
+**Task 8 landed** (this commit; Lean): 17 two-step sites in 8 pencil files go through
+`LinearIndepOn.pair_iff_linearIndependent`: `Pair2` (1), `Motive` (3), `MainComponent/GenericSteer`
+(5), `GenericEar` (3), `GenericBase` (2), `GenericTriangle` (1), `Grade/EarFree` (1),
+`Grade/LiftCutEdge` (1). Stayed as they are, as they use `pair_iff`'s scalar form for its own sake
+(a `rintro c d hcd` or `fun c d hcd`, or its `linearIndepOn_pair_iff` sibling): `Pair.lean` (four),
+`Nonvacuity.lean` (two), `MatroidIdentification.lean:125`, `Grade/LiftCases.lean` (five).
+`MatroidIdentification.lean:56` is already one step. The `EarFree.lean` site went through
+(`exact (…pair_iff_linearIndependent hab).2 (planeNormal_pair …)`) with no timeout. The three
+`rw [LinearIndependent.pair_iff]` lines at three of the sites went. Gates: G2 build
+(warning-clean) and lint; G3 and G5 not needed (no statement or pinned name changed). The
+`n`-ary entry `[resolved]`; with the two task-7 headings retagged (task 7's commit had changed only
+their Status lines), the heading-tag recount is open 23, mirror-candidate 8, process 2, blueprint 0
+= 33 (it was 36 at `a293975a`, not the 34 this note claimed).
 
-**Task 6 landed** (Lean): `Graph.exists_cut_sides_of_not_twoEdgeConnected` (public,
+**Task 7 landed** (`a293975a`; Lean), all four in the mirror
+`Mathlib/LinearAlgebra/LinearIndependent/Basic.lean`: `exists_extend_linearIndependent` (now
+`[Fintype ι]`, `Fintype.card ι ≤ finrank K M`, a division ring; no `FiniteDimensional` hypothesis:
+the bound forces it once `ι` is nonempty), `finrank_span_pair_eq_two`,
+`exists_mem_linearIndependent_pair` and `LinearIndepOn.pair_iff_linearIndependent`. Callers
+`Reseed.lean` and `Steer.lean`. Two FRICTION entries `[resolved]`.
+
+**Task 6 landed** (`b271c1f2`; Lean): `Graph.exists_cut_sides_of_not_twoEdgeConnected` (public,
 the private `exists_cut_sides`'s statement and proof) beside `Graph.TwoEdgeConnected`; the private
 copy in `ArmsAssembly.lean` deleted and its two sites, `Pair2.lean`, `MainComponent/CoverageCut.lean`,
 `Grade/Reduction.lean` and `Grade/Generic.lean` go through it. `@[simp] vertexSet_mulTilde` beside
@@ -178,22 +186,15 @@ the entries it resolved.
   sites; `Set.ncard_range_le` (three sites) and the sum-type `ncard` lemma in the `Set/Card`
   mirror. Resolves *`bodyBarDim` has no monotonicity…*, *No `Set.ncard_range_le`…*, part (1) of
   *No `Set.ncard` of a set of a sum type…*.
-- [x] **6. `Deficiency.lean`** (this commit; Lean). Public
+- [x] **6. `Deficiency.lean`** (`b271c1f2`; Lean). Public
   `Graph.exists_cut_sides_of_not_twoEdgeConnected` (four copies and the private original through
   it) and `@[simp] vertexSet_mulTilde` (two sites). Resolves *The two sides of a cut…*, *`mulTilde`
   has no vertex-set lemma*.
-- [x] **7. The linear-independence mirrors** (landed; Lean; sonnet), each at the mirror path of its
-  mathlib home (`TACTICS-GOLF.md` §3): `exists_extend_linearIndependent` (from `Pencil/Reseed.lean`,
-  for any finite-dimensional `V` and `Fintype ι`); `finrank_span_pair_eq_two` and
-  `exists_mem_linearIndependent_pair` (from `Grade/TwoPencil.lean`, for a vector space over a
-  division ring); a fused two-vector form, `LinearIndepOn K f {i, j} ↔ LinearIndependent K ![f i,
-  f j]` at `i ≠ j`, named against mathlib's. Their consumers repointed; the fused form's sites are
-  task 8. Resolves *No packaged "extend a `LinearIndepOn` partial family…"*, *No two-vector
-  `finrank_span_pair`…*.
-- [ ] **8. The two-vector sweep** (Lean; sonnet). The pencil sites (about 25 in 9 files, by the
-  entry's count; re-`grep`) that bridge `LinearIndepOn.pair_iff` and `LinearIndependent.pair_iff`
-  in two steps (e.g. `Base.lean`'s `hadj`), through task 7's fused form. Resolves the `n = 2` part
-  of *No `n`-ary (`n ≥ 3`) analogue of `LinearIndepOn.pair_iff`*.
+- [x] **7. The linear-independence mirrors** (`a293975a`; Lean). Four lemmas in the
+  `LinearIndependent/Basic` mirror, the fused two-vector form among them. Resolves *No packaged
+  "extend a `LinearIndepOn` partial family…"*, *No two-vector `finrank_span_pair`…*.
+- [x] **8. The two-vector sweep** (this commit; Lean). 17 two-step sites in 8 pencil files
+  through the fused form. Resolves *No `n`-ary (`n ≥ 3`) analogue of `LinearIndepOn.pair_iff`*.
 - [ ] **9. `Meet.lean`** (Lean; sonnet). `exists_smul_extensor_eq_of_mem_span_range_grade` (from
   `Grade/TwoPencil.lean`) beside `exists_smul_extensor_eq_of_mem_span_range`, which becomes its
   `j = 2` case; `span_range_eq_of_extensor_eq_grade` (from `Grade/Realization.lean`) beside
@@ -296,9 +297,7 @@ the entries it resolved.
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 8, the two-vector sweep (*Lemma checklist*): repoint the pencil sites
-that bridge `LinearIndepOn.pair_iff` and `LinearIndependent.pair_iff` in two steps through
-`LinearIndepOn.pair_iff_linearIndependent` (re-`grep`; the entry's count was about 25 in 9 files).
+**Next concrete task:** task 9, `Meet.lean` (*Lemma checklist*).
 After the round: ORIGAMI's open, with the PI (`notes/Origami.md`).
 
 ## Decisions made during this round

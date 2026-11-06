@@ -80,11 +80,11 @@ use it to push one side's adjacent independence through the repositioning automo
 
 `exists_extend_linearIndependent` completes a family independent on a finset of indices to an
 independent family, when `Fintype.card ι ≤ finrank K M` (no `FiniteDimensional` hypothesis: the
-bound forces it). `finrank_span_pair_eq_two` and `exists_mem_linearIndependent_pair` are the plane
-spanned by an independent pair and the independent partner of a nonzero vector in a subspace of
-dimension at least two. `LinearIndepOn.pair_iff_linearIndependent` fuses mathlib's `pair_iff` for
-`LinearIndepOn` and for `LinearIndependent` (the rigidity project's pencil files,
-`Molecular/Molecule/Pencil/`).
+bound forces it once `ι` is nonempty). `finrank_span_pair_eq_two` and
+`exists_mem_linearIndependent_pair` are the plane spanned by an independent pair and the
+independent partner of a nonzero vector in a subspace of dimension at least two.
+`LinearIndepOn.pair_iff_linearIndependent` fuses mathlib's `pair_iff` for `LinearIndepOn` and for
+`LinearIndependent` (the rigidity project's pencil files, `Molecular/Molecule/Pencil/`).
 
 Promotion to mathlib: copy-paste into `Mathlib/LinearAlgebra/LinearIndependent/Basic.lean`
 (it imports `linearIndependent_sum` there, `disjoint_span_singleton'` from `Span.Basic`,
@@ -225,11 +225,11 @@ the set (`finrank_span_finset_le_card`), less than `card ι`, and `linearIndepOn
 index to the set. -/
 theorem exists_extend_linearIndependent [Fintype ι]
     (hn : Fintype.card ι ≤ Module.finrank K M)
-    (g₀ : ι → M) (s₀ : Finset (ι)) (hs₀ : LinearIndepOn K g₀ (s₀ : Set (ι))) :
+    (g₀ : ι → M) (s₀ : Finset ι) (hs₀ : LinearIndepOn K g₀ (s₀ : Set ι)) :
     ∃ g' : ι → M, (∀ i ∈ s₀, g' i = g₀ i) ∧ LinearIndependent K g' := by
   classical
-  suffices H : ∀ (m : ℕ) (g : ι → M) (s : Finset (ι)),
-      (Finset.univ \ s).card = m → LinearIndepOn K g (s : Set (ι)) →
+  suffices H : ∀ (m : ℕ) (g : ι → M) (s : Finset ι),
+      (Finset.univ \ s).card = m → LinearIndepOn K g (s : Set ι) →
       ∃ g' : ι → M, (∀ i ∈ s, g' i = g i) ∧ LinearIndependent K g' from
     H _ g₀ s₀ rfl hs₀
   intro m
@@ -255,27 +255,27 @@ theorem exists_extend_linearIndependent [Fintype ι]
         exact fun h => his (h ▸ Finset.mem_univ i)
       have hlt := Finset.card_lt_card hss
       rwa [Finset.card_univ] at hlt
-    have hfr : Module.finrank K (Submodule.span K (g '' (s : Set (ι)))) ≤ s.card := by
+    have hfr : Module.finrank K (Submodule.span K (g '' (s : Set ι))) ≤ s.card := by
       have h1 := finrank_span_finset_le_card (R := K) (s.image g)
       rw [Finset.coe_image] at h1
       exact le_trans h1 Finset.card_image_le
-    have hexists : ∃ w : M, w ∉ Submodule.span K (g '' (s : Set (ι))) := by
+    have hexists : ∃ w : M, w ∉ Submodule.span K (g '' (s : Set ι)) := by
       by_contra hcon
       simp only [not_exists, not_not] at hcon
       rw [Submodule.eq_top_iff'.2 hcon, finrank_top] at hfr
       omega
     obtain ⟨w, hw⟩ := hexists
-    have hEqOn : Set.EqOn g (Function.update g i w) (s : Set (ι)) := by
+    have hEqOn : Set.EqOn g (Function.update g i w) (s : Set ι) := by
       intro x hx
       have hxi : x ≠ i := fun h => his (Finset.mem_coe.mp (h ▸ hx))
       rw [Function.update_of_ne hxi]
-    have hLI_s : LinearIndepOn K (Function.update g i w) (s : Set (ι)) := hs.congr hEqOn
-    have himg : (Function.update g i w) '' (s : Set (ι)) = g '' (s : Set (ι)) :=
+    have hLI_s : LinearIndepOn K (Function.update g i w) (s : Set ι) := hs.congr hEqOn
+    have himg : (Function.update g i w) '' (s : Set ι) = g '' (s : Set ι) :=
       Set.image_congr (fun x hx => (hEqOn hx).symm)
     have hnotmem : Function.update g i w i ∉
-        Submodule.span K ((Function.update g i w) '' (s : Set (ι))) := by
+        Submodule.span K ((Function.update g i w) '' (s : Set ι)) := by
       rw [Function.update_self, himg]; exact hw
-    have hLI_ins : LinearIndepOn K (Function.update g i w) (insert i (s : Set (ι))) :=
+    have hLI_ins : LinearIndepOn K (Function.update g i w) (insert i (s : Set ι)) :=
       (linearIndepOn_insert (by rwa [Finset.mem_coe])).mpr ⟨hLI_s, hnotmem⟩
     rw [← Finset.coe_insert] at hLI_ins
     have hcard' : (Finset.univ \ insert i s).card = m := by

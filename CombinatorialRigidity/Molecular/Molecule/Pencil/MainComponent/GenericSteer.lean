@@ -394,8 +394,8 @@ theorem exists_coord_linearIndepOn_closedNbhd_of_demoted [Finite α]
         have : y ∈ N(H, v) := by rw [hy]; rfl
         exact this
       obtain ⟨e, he⟩ := hadj
-      exact (LinearIndepOn.pair_iff (pencilChartPoint seed₀ hubSel) he.ne).mpr
-        (LinearIndependent.pair_iff.mp (hWF₀.2.2.2.2 e v y (he.of_le hle)))
+      exact (LinearIndepOn.pair_iff_linearIndependent he.ne).mpr
+        (hWF₀.2.2.2.2 e v y (he.of_le hle))
   · -- two neighbours in `H`: `exists_coord_linearIndependent_pencilChartPoint_of_other_nonhub`
     obtain ⟨u, w, huw, hNuw⟩ := Set.ncard_eq_two.mp (show N(H, v).ncard = 2 by omega)
     have hu : H.Adj v u := by
@@ -481,8 +481,8 @@ theorem exists_isNondegPencilRealization_restrict_of_demoted [Finite α] [Finite
           obtain ⟨e, he⟩ := hadj
           refine ⟨seed₀.toCoord, ?_⟩
           rw [hpt_eq]
-          exact (LinearIndepOn.pair_iff (pencilChartPoint seed₀ hubSel) he.ne).mpr
-            (LinearIndependent.pair_iff.mp (hWF₀.2.2.2.2 e u v he))
+          exact (LinearIndepOn.pair_iff_linearIndependent he.ne).mpr
+            (hWF₀.2.2.2.2 e u v he)
         · rw [ite_eq_right hadj]
           exact ⟨seed₀.toCoord, linearIndepOn_empty K _⟩
       · change ∃ q, LinearIndepOn K (pencilChartPoint (PencilSeed.ofCoord q) hubSel)
@@ -516,8 +516,7 @@ theorem exists_isNondegPencilRealization_restrict_of_demoted [Finite α] [Finite
     have h : LinearIndepOn K (pencilChartPoint seed hubSel)
         (if G.Adj u v then ({u, v} : Set α) else ∅) := hq (Sum.inr (Sum.inl (u, v)))
     rw [ite_eq_left hl.adj] at h
-    rw [LinearIndependent.pair_iff]
-    exact (LinearIndepOn.pair_iff (pencilChartPoint seed hubSel) hl.ne).mp h
+    exact (LinearIndepOn.pair_iff_linearIndependent hl.ne).mp h
   have hnbr_some : ∀ v, ¬ G.PencilHub v → LinearIndepOn K (nbrSlotPoint seed hubSel nbrSel v)
       {i | (nbrSel v i).isSome} := by
     intro v hv
@@ -685,8 +684,8 @@ theorem exists_isNondegPencilRealization_steer [Finite α] [Finite β] [Infinite
       · rw [ite_eq_left hadj]
         obtain ⟨e, he⟩ := hadj
         rw [hpt_eq]
-        exact (LinearIndepOn.pair_iff (pencilChartPoint seed₁ hubSel) he.ne).mpr
-          (LinearIndependent.pair_iff.mp (hWF₁.2.2.2.2 e u v he))
+        exact (LinearIndepOn.pair_iff_linearIndependent he.ne).mpr
+          (hWF₁.2.2.2.2 e u v he)
       · rw [ite_eq_right hadj]; exact linearIndepOn_empty K _
     obtain ⟨Q, hQ0, hQ⟩ :=
       exists_polynomial_ne_zero_of_linearIndependent_pencilChartPoint hubSel id hwit
@@ -764,8 +763,7 @@ theorem exists_isNondegPencilRealization_steer [Finite α] [Finite β] [Infinite
         pencilChartPoint (PencilSeed.ofCoord q) hubSel v] := by
     intro e u v hl
     have h := hcondB u v; rw [ite_eq_left hl.adj] at h
-    rw [LinearIndependent.pair_iff]
-    exact (LinearIndepOn.pair_iff (pencilChartPoint (PencilSeed.ofCoord q) hubSel) hl.ne).mp h
+    exact (LinearIndepOn.pair_iff_linearIndependent hl.ne).mp h
   have hnbr_some : ∀ v, ¬ H.PencilHub v →
       LinearIndepOn K (nbrSlotPoint (PencilSeed.ofCoord q) hubSel nbrSel v)
         {i | (nbrSel v i).isSome} := by

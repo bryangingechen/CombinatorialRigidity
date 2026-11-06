@@ -852,8 +852,8 @@ theorem linearIndepOn_planeNormal_of_subset [Fintype α] {Y : Graph α β} {q : 
     have haV : a ∈ V(Y) := hTV (hS ▸ Set.mem_insert a _)
     have hbV : b ∈ V(Y) := hTV (hS ▸ Set.mem_insert_of_mem a rfl)
     rw [hS]
-    refine (LinearIndepOn.pair_iff _ hab).2 ?_
-    exact LinearIndependent.pair_iff.1 (planeNormal_pair (hPD a haV b hbV hab))
+    exact (LinearIndepOn.pair_iff_linearIndependent hab).2
+      (planeNormal_pair (hPD a haV b hbV hab))
   -- three members: `v` and two of its neighbours
   have hvT := hTv h3
   obtain ⟨w₁, w₂, h12, hw⟩ := Set.ncard_eq_two.mp (show (T \ {v}).ncard = 2 by

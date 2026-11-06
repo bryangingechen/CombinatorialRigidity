@@ -232,8 +232,7 @@ theorem IsNondegPencilRealization.induce_union_singleton [Finite β] [G.Loopless
       · rw [Set.mem_singleton_iff] at hw
         rw [hw] at hlG
         exact absurd hlG (G.not_isLoopAt e' v)
-  exact ((LinearIndepOn.pair_iff point huv).2
-    (LinearIndependent.pair_iff.1 (hnd.2.1 e v u he.symm))).mono hsub
+  exact ((LinearIndepOn.pair_iff_linearIndependent huv).2 (hnd.2.1 e v u he.symm)).mono hsub
 
 /-- **The conditions of a glued realization at the bodies of one side** (of
 `lem:pencil-d-lift-cut-edge`): let `(b, n^⊥)` be a nondegenerate realization of `G[V₁ ∪ {v}]`, and
