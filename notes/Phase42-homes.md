@@ -6,14 +6,14 @@ CLEANUP-42 and ahead of ORIGAMI, in two parts: the friction log's docs and tooli
 2–4), then the lemmas Phase 42 left outside their home files, one task per home file, with the
 mirror lemmas that now meet their entries' own bar (tasks 5–18). No statement changes. Phase 42
 deferred the moves because a declaration added to these files rebuilds most of `Molecular/`
-mid-phase; ORIGAMI will not edit them, so they are cheapest now. Tasks 1–15 landed
+mid-phase; ORIGAMI will not edit them, so they are cheapest now. Tasks 1–16 landed
 (the docs part, the tree-wide basics, `Deficiency.lean`, the linear-independence mirrors and their
 sweep, `Meet.lean`, `RigidityMatrix/Basic.lean` with `GenericityDevice.lean`, `PanelLayer.lean`,
 `Realization.lean`, `Carrier.lean` with `Configuration.lean`, `Fin.val_succAbove` with
-`MainComponent/Cut.lean`, the glued-ends helpers):
-62 actionable entries down to 22 (heading tags, by `grep -c '^### \[<tag>\]'`: open 11,
+`MainComponent/Cut.lean`, the glued-ends helpers, the additive kernel lemma):
+62 actionable entries down to 21 (heading tags, by `grep -c '^### \[<tag>\]'`: open 10,
 mirror-candidate 9, process 2, blueprint 0; the header said 25, but at task 13 the grep gave 24).
-**Next concrete task:** task 16, the additive core's kernel argument, once (*Lemma checklist*).
+**Next concrete task:** task 17, the ear insertion, once (*Lemma checklist*).
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -29,15 +29,21 @@ public declaration's name, or delete a pinned declaration, does not land that ch
 
 ## Current state
 
-**Task 15 landed** (this commit; Lean; sonnet; one dispatch). All eight helpers sliced verbatim from
-`Grade/GluedEnds.lean`, no statement or binder change: `Graph.mem_closedNbhd_comm` after
-`closedNbhd_subset_vertexSet` in `Pencil/Motive.lean`; the six pair lemmas (`edgeSet_induce_pair_eq_empty` to
-`three_le_ncard_closedNbhd_rigidContract_pair`) in
-`MainComponent/ContractCurve.lean` after `rigidContract_induce_simple`; `liftingPlanesDiff_eq_top_of_notMem`
-after `mem_liftingPlanesDiff` in `Grade/PlanesMeet.lean`. No import change needed. Gates: G2 `lake build`
-(6249 jobs, 0 warnings) and `lake lint`; G3 `blueprint/lint.sh`; G1. G4 not run (no moved name is
-pinned: grep of `blueprint/src`); G5 not run (no proof replaced). FRICTION: *Glued-ends' contraction
-and lifting-planes helpers…* `[resolved]`.
+**Task 16 landed** (this commit; Lean; sonnet; one dispatch). The spike (the lemma against
+`MainComponent/ContractAdditive.lean`'s import cone alone) compiled first try.
+`Graph.finrank_ker_contractLiftingMatrix_zero_eq_and_map_eq` sliced verbatim (statement and binders
+unchanged; only its docstring's closing sentence, which said the `d = 3` proof kept an inline copy)
+into `MainComponent/ContractAdditive.lean` before `Graph.X0Attains.of_additiveContract`, which now
+makes one call (`hqG := (hmain q hPmq).1`); `hlow0`, `hD₀…`, `hK3`, `hmapLe`, `hmapfin`, `hup0`'s
+proof and `honto`'s proof are gone (`hup0` became the call's dimension equation, `hdimL`, which a later
+`linarith` uses). `Grade/ContractAdditive.lean` imports `MainComponent.ContractAdditive`. Gates: G2
+`lake build` (6249 jobs, 0 warnings) and `lake lint`; G3 `blueprint/lint.sh`; G4 `blueprint/verify.sh`
+(the name is pinned, `pencil-d.tex`); G5 `#print axioms` of the 21 `formalization.yaml`
+declarations, no `sorryAx`; G1. FRICTION: *The kernel argument at an additive core…* `[resolved]`;
+task 15's entry's Status line now reads resolved.
+
+**Task 15** (landed; the glued-ends helpers to `Pencil/Motive.lean`, `MainComponent/ContractCurve.lean`
+and `Grade/PlanesMeet.lean`, sliced verbatim).
 
 **Task 14** (landed;  Lean; sonnet; one dispatch). `Fin.val_succAbove` is in the
 `Mathlib/Data/Fin/Basic.lean` mirror (statement as the checklist, proved by the `val_succ_succAbove`
@@ -219,7 +225,7 @@ the entries it resolved.
   `MainComponent/ContractCurve.lean`, beside `rigidContract_induce_simple`;
   `Graph.liftingPlanesDiff_eq_top_of_notMem` to `Grade/PlanesMeet.lean`, beside
   `liftingPlanesDiff`. Resolves *Glued-ends' contraction and lifting-planes helpers…*.
-- [ ] **16. The additive core's kernel argument, once** (Lean; sonnet). Re-spike first: the entry
+- [x] **16. The additive core's kernel argument, once** (Lean; sonnet). Re-spike first: the entry
   records a scratch copy compiling against the target file alone at 42f's close. Move
   `Graph.finrank_ker_contractLiftingMatrix_zero_eq_and_map_eq` (from `Grade/ContractAdditive.lean`),
   unchanged, into `MainComponent/ContractAdditive.lean` before `Graph.X0Attains.of_additiveContract`;
@@ -263,7 +269,7 @@ the entries it resolved.
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 16, the additive core's kernel argument, once (*Lemma checklist*), one commit.
+**Next concrete task:** task 17, the ear insertion, once (*Lemma checklist*), one commit.
 After the round: ORIGAMI's open, with the PI (`notes/Origami.md`).
 
 ## Decisions made during this round

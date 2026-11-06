@@ -474,7 +474,7 @@ to be re-derived by re-reading entries later.
   is in the mirror, `coe_succAbove_one` and `coe_succAbove_two` are its instances; the
   `span_range_smul_eq` half stays (42h's deferral, `notes/Phase42-design.md` §3).
 
-### [open] The kernel argument at an additive core is proved twice, inline at `d = 3` and in `Pencil/Grade/`
+### [resolved] The kernel argument at an additive core is proved twice, inline at `d = 3` and in `Pencil/Grade/`
 - **Where it bit:** Phase 42f, `lem:pencil-contract-additive-kernel`
   (`Graph.finrank_ker_contractLiftingMatrix_zero_eq_and_map_eq`,
   `Pencil/Grade/ContractAdditive.lean`).
@@ -493,7 +493,7 @@ to be re-derived by re-reading entries later.
   (a scratch copy compiled against that file alone at 42f's close). With the next commit that edits
   `MainComponent/ContractAdditive.lean` (design doc `notes/Phase42-design.md` §3, *Deferred to them
   from PD-STEPS (42f)*), not alone.
-- **Status:** open.
+- **Status:** resolved (HOMES task 16): the lemma sits before `Graph.X0Attains.of_additiveContract`, which calls it once (`hlow0`, `hup0` and the `honto` proof gone; admissibility for `G` is `(hmain q hPmq).1`); `Grade/ContractAdditive.lean` imports `MainComponent.ContractAdditive`.
 
 ### [resolved] `gradeSigma` and the picture projection are each defined twice in `Pencil/Grade/`
 - **Where it bit:** Phase 42e, `lem:pencil-d-condition-linear`
@@ -534,7 +534,7 @@ to be re-derived by re-reading entries later.
 - **Proposed fix:** move each, unchanged, with the next commit that edits its home file for another
   reason; `liftingPlanesDiff_eq_top_of_notMem` with any edit of `Grade/PlanesMeet.lean` (its only
   importers are the root and `Grade/GluedEnds.lean`).
-- **Status:** open (42i's deferral; tracked under PD-STEPS, `notes/Phase42-design.md` §3).
+- **Status:** resolved (HOMES task 15, bdc85fdc): the helpers moved to `Pencil/Motive.lean`, `MainComponent/ContractCurve.lean` and `Grade/PlanesMeet.lean`.
 
 ### [idiom] `LinearMap.ker_eq_bot.mp` on a map out of a submodule of `⋀[K]^2` fails to unify the ring
 - **Where it bit:** Phase 42i, `Graph.exists_mvPolynomial_gluedEnds`: with

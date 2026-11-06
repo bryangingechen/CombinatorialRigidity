@@ -53,6 +53,82 @@ namespace CombinatorialRigidity.Molecular
 
 variable {K : Type*} [Field K] {α β : Type*}
 
+/-- **The kernel at the end of the curve, at an additive core**
+(`lem:pencil-contract-additive-kernel`): one height, planar. If `q` is admissible for `G`, for
+`H = G.induce W` and for `G/H` (`hqG`, `hqH`, `hqc`), the lifting spaces of `H` and of `G/H` at `q`
+have dimension `3 + deficiency 2` (`hdimH`, `hdimc`), and the planar deficiencies add up (`hadd`),
+then the kernel of `M(0)` has dimension `3 + deficiency 2 G`, and its restriction to the core is
+onto `H`'s lifting space. The lower bound is the semicontinuity of the kernel along `t`; the upper
+bound is `Graph.finrank_ker_contractLiftingMatrix_zero_add_three_le`. It is the kernel step of
+`Graph.X0Attains.of_additiveContract` below, and of its `m`-height form. -/
+theorem _root_.Graph.finrank_ker_contractLiftingMatrix_zero_eq_and_map_eq [Infinite K]
+    [Fintype α] [Finite β] {G : Graph α β} {W : Set α} {r : α} (hr : r ∈ W) (hW : W ⊆ V(G))
+    (hadd : (G.induce W).deficiency 2 + (G.rigidContract (G.induce W) r).deficiency 2 ≤
+      G.deficiency 2)
+    {q : α × Fin 2 → K} (hqG : G.IsAdmissiblePicture q)
+    (hqH : (G.induce W).IsAdmissiblePicture q)
+    (hqc : (G.rigidContract (G.induce W) r).IsAdmissiblePicture q)
+    (hdimH : (Module.finrank K ((G.induce W).liftingSpace q) : ℤ) = 3 + (G.induce W).deficiency 2)
+    (hdimc : (Module.finrank K ((G.rigidContract (G.induce W) r).liftingSpace q) : ℤ) =
+      3 + (G.rigidContract (G.induce W) r).deficiency 2) :
+    (Module.finrank K (LinearMap.ker ((G.contractLiftingMatrix K W r q).map
+        (MvPolynomial.eval (fun _ => (0 : K)))).mulVecLin) : ℤ) = 3 + G.deficiency 2 ∧
+      (LinearMap.ker ((G.contractLiftingMatrix K W r q).map
+        (MvPolynomial.eval (fun _ => (0 : K)))).mulVecLin).map (contractCoreRestrict W) =
+        (G.induce W).liftingSpace q := by
+  classical
+  have hV : V(G).Nonempty := ⟨r, hW hr⟩
+  set L := LinearMap.ker ((G.contractLiftingMatrix K W r q).map
+    (MvPolynomial.eval (fun _ => (0 : K)))).mulVecLin with hL
+  -- admissibility of `G` near `q`, read along the curve
+  obtain ⟨A, hA, hAadm⟩ := hqG.exists_mvPolynomial
+  have hevP : ∀ (P : MvPolynomial (α × Fin 2) K) (t : K),
+      MvPolynomial.eval (fun _ => t) (MvPolynomial.bind₁ (contractPicturePoly W r q) P) =
+        MvPolynomial.eval (contractPicture W r q t) P := by
+    intro P t
+    have hf : (fun i => MvPolynomial.eval (fun _ => t) (contractPicturePoly W r q i)) =
+        contractPicture W r q t := funext (eval_contractPicturePoly W r q t)
+    rw [MvPolynomial.eval_bind₁, hf]
+  have hAC : MvPolynomial.bind₁ (contractPicturePoly W r q) A ≠ 0 := fun h => by
+    have := hevP A 1
+    rw [h, map_zero, contractPicture_one] at this
+    exact hA this.symm
+  have hX : (MvPolynomial.X () : MvPolynomial Unit K) ≠ 0 := MvPolynomial.X_ne_zero ()
+  -- the lower bound: `dim ker M(0) ≥ 3 + def₂(G)` (semicontinuity along `t`)
+  obtain ⟨D₀, -, hD₀₀, -, hD₀rank, -⟩ :=
+    Matrix.exists_mvPolynomial_section_mulVec_eq_zero (G.contractLiftingMatrix K W r q)
+      (q₀ := fun _ => (0 : K)) (z₀ := 0) (Matrix.mulVec_zero _)
+  have hD₀ne : D₀ ≠ 0 := fun h => hD₀₀ (by rw [h, map_zero])
+  have hlow0 : 3 + G.deficiency 2 ≤ (Module.finrank K L : ℤ) := by
+    obtain ⟨s, hs⟩ := MvPolynomial.exists_eval_ne_zero (mul_ne_zero (mul_ne_zero hD₀ne hX) hAC)
+    set t : K := s () with htdef
+    have hst : s = fun _ => t := funext fun u => by cases u; rfl
+    rw [hst] at hs
+    simp only [map_mul, MvPolynomial.eval_X] at hs
+    rw [hevP] at hs
+    have hqt := hAadm _ (right_ne_zero_of_mul hs)
+    have ht : t ≠ 0 := right_ne_zero_of_mul (left_ne_zero_of_mul hs)
+    have h1 := hD₀rank (fun _ => t) (left_ne_zero_of_mul (left_ne_zero_of_mul hs))
+    have h2 := Graph.finrank_liftingSpace_le_finrank_ker_contractLiftingMatrix
+      (G := G) (W := W) (r := r) (q := q) ht
+    have h3 := Graph.three_add_deficiency_le_finrank_liftingSpace hqt hV
+    have : Module.finrank K (G.liftingSpace (contractPicture W r q t)) ≤ Module.finrank K L :=
+      h2.trans h1
+    have := Nat.cast_le (α := ℤ).mpr this
+    linarith
+  -- the upper bound (`lem:pencil-contract-kernel-bound`)
+  have hK3 := Graph.finrank_ker_contractLiftingMatrix_zero_add_three_le hr hW hqH hqc
+  have hmapLe : L.map (contractCoreRestrict W) ≤ (G.induce W).liftingSpace q := by
+    rintro _ ⟨x, hx, rfl⟩
+    exact Graph.liftingRestrict_mem_liftingSpace_induce_of_contract hW hx
+  have hmapfin := Nat.cast_le (α := ℤ).mpr (Submodule.finrank_mono hmapLe)
+  have hK3' := Nat.cast_le (α := ℤ).mpr hK3
+  push_cast at hK3'
+  refine ⟨le_antisymm (by linarith) hlow0, Submodule.eq_of_le_of_finrank_le hmapLe ?_⟩
+  have h' : (Module.finrank K ((G.induce W).liftingSpace q) : ℤ) ≤
+      Module.finrank K (L.map (contractCoreRestrict W)) := by linarith
+  exact_mod_cast h'
+
 /-- **Contraction at an additive core** (`thm:pencil-x0-contract-additive`): over an infinite field,
 let `G` satisfy the standing hypotheses and be 2-edge-connected, let `W ⊊ V(G)` with `|W| ≥ 2` and
 `def₃(G[W]) = 0`, such that no body outside `W` is adjacent to two bodies of `W` (`hatt`), and let
@@ -192,49 +268,12 @@ theorem _root_.Graph.X0Attains.of_additiveContract [Infinite K] [Finite α] [Fin
     rw [h, map_zero, contractPicture_one] at this
     exact hPmq this.symm
   have hX : (MvPolynomial.X () : MvPolynomial Unit K) ≠ 0 := MvPolynomial.X_ne_zero ()
-  -- the lower bound: `dim ker M(0) ≥ 3 + def₂(G)` (semicontinuity along `t`)
+  -- the kernel of `M(0)`: dimension `3 + def₂(G)`, and its core heights are all of `L_H(q)`
   set L := LinearMap.ker ((G.contractLiftingMatrix K W r q).map
     (MvPolynomial.eval (fun _ => (0 : K)))).mulVecLin with hL
-  obtain ⟨D₀, -, hD₀₀, -, hD₀rank, -⟩ :=
-    Matrix.exists_mvPolynomial_section_mulVec_eq_zero (G.contractLiftingMatrix K W r q)
-      (q₀ := fun _ => (0 : K)) (z₀ := 0) (Matrix.mulVec_zero _)
-  have hD₀ne : D₀ ≠ 0 := fun h => hD₀₀ (by rw [h, map_zero])
-  have hlow0 : 3 + G.deficiency 2 ≤ (Module.finrank K L : ℤ) := by
-    obtain ⟨s, hs⟩ := MvPolynomial.exists_eval_ne_zero (mul_ne_zero (mul_ne_zero hD₀ne hX) hPmC)
-    set t : K := s () with htdef
-    have hst : s = fun _ => t := funext fun u => by cases u; rfl
-    rw [hst] at hs
-    simp only [map_mul, MvPolynomial.eval_X] at hs
-    rw [hevP] at hs
-    have hqt := hmain _ (right_ne_zero_of_mul hs)
-    have ht : t ≠ 0 := right_ne_zero_of_mul (left_ne_zero_of_mul hs)
-    have h1 := hD₀rank (fun _ => t) (left_ne_zero_of_mul (left_ne_zero_of_mul hs))
-    have h2 := Graph.finrank_liftingSpace_le_finrank_ker_contractLiftingMatrix
-      (G := G) (W := W) (r := r) (q := q) ht
-    have h3 := Graph.three_add_deficiency_le_finrank_liftingSpace hqt.1 hV
-    have : Module.finrank K (G.liftingSpace (contractPicture W r q t)) ≤ Module.finrank K L :=
-      h2.trans h1
-    have := Nat.cast_le (α := ℤ).mpr this
-    linarith
-  -- the upper bound (`lem:pencil-contract-kernel-bound`): the core heights of `ker M(0)` are
-  -- all of `L_H(q)`
-  have hK3 := Graph.finrank_ker_contractLiftingMatrix_zero_add_three_le hr hW hqHadm hqcadm
-  have hmapLe : L.map (contractCoreRestrict W) ≤ (G.induce W).liftingSpace q := by
-    rintro _ ⟨x, hx, rfl⟩
-    exact Graph.liftingRestrict_mem_liftingSpace_induce_of_contract hW hx
-  have hmapfin := Submodule.finrank_mono hmapLe
-  have hup0 : (Module.finrank K L : ℤ) ≤ 3 + G.deficiency 2 := by
-    have := Nat.cast_le (α := ℤ).mpr hK3
-    have := Nat.cast_le (α := ℤ).mpr hmapfin
-    push_cast at *
-    linarith
-  have honto : L.map (contractCoreRestrict W) = (G.induce W).liftingSpace q := by
-    refine Submodule.eq_of_le_of_finrank_le hmapLe ?_
-    have := Nat.cast_le (α := ℤ).mpr hK3
-    push_cast at this
-    have h' : (Module.finrank K ((G.induce W).liftingSpace q) : ℤ) ≤
-        Module.finrank K (L.map (contractCoreRestrict W)) := by linarith
-    exact_mod_cast h'
+  obtain ⟨hdimL, honto⟩ := Graph.finrank_ker_contractLiftingMatrix_zero_eq_and_map_eq (K := K) hr hW
+    hadd (hmain q hPmq).1 hqHadm hqcadm
+    hqHdim hqcdim
   -- two open conditions in `ker M(0)` (`lem:pencil-x0-fibre-intersection`)
   set PA : MvPolynomial (α ⊕ (α × Fin 3)) K :=
     MvPolynomial.rename Sum.inl (restrictPoly W RH) with hPAdef
