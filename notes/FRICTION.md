@@ -491,7 +491,7 @@ to be re-derived by re-reading entries later.
   defeq of closed terms (TACTICS-QUIRKS § 38, pin the heavy argument explicit).
 - **Status:** idiom.
 
-### [open] The tree's link hypotheses are in the form at links; `RecordsLinks` is the form on `E(G)`
+### [resolved] The tree's link hypotheses are in the form at links; `RecordsLinks` is the form on `E(G)`
 - **Where it bit:** Phase 41a, item 2: the callers of the four link lemmas gathered onto
   `PanelHingeFramework.RecordsLinks` (`Short`, `SplitOff`, `Orbit`, `Cut`, `Ear` and
   `ContractAdditive.lean` under `Pencil/MainComponent/`, `CaseI.lean`, `Theorem55.lean`); item 3a,
@@ -553,8 +553,9 @@ to be re-derived by re-reading entries later.
   pair forms (`notes/Phase42-arrears.md` task 18): read `RecordsLinks` in `ofNormals_relabel`'s third
   conjunct and `fullLink_recording_of_splitOff_recording`'s conclusion, and drop
   `rigidityRows_ofNormals_congr_ends_swap`'s explicit `hagree`.
-- **Status:** open, narrowed (ARREARS task 17): the hypotheses, the defs' existentials and the
-  conclusions at links are done; Case III's pair forms remain (task 18).
+  ARREARS, task 18: Case III's pair forms read `RecordsLinks`, and `hagree` is gone.
+- **Status:** resolved (ARREARS task 18). The total-form binders of task 19 are a separate
+  generalization, not this entry's.
 
 ### [idiom] Inserting arguments before a multi-line `(by tac₁` ⏎ `tac₂)` breaks the block's layout
 - **Where it bit:** ARREARS task 14: `chainData_freshEdge_slot_perp_ends₀`

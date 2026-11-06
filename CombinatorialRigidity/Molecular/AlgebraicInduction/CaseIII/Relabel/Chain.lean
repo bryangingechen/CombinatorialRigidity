@@ -300,9 +300,9 @@ lemma _root_.Graph.ChainData.fullLink_recording_of_splitOff_recording
         cd.vtx (⟨2, by omega⟩ : Fin cd.d).castSucc) ∨
       ends₀ (cd.edge ⟨1, by omega⟩) = (cd.vtx (⟨2, by omega⟩ : Fin cd.d).castSucc,
         cd.vtx (⟨1, by omega⟩ : Fin cd.d).castSucc)) :
-    ∀ f x y, G.IsLink f x y → ends₀ f = (x, y) ∨ ends₀ f = (y, x) := by
+    Graph.RecordsLinks G ends₀ := by
   classical
-  intro f x y hG
+  refine .of_pair fun f x y hG => ?_
   -- `edge 0` links `vtx 1`–`vtx 0`, `edge 1` links `vtx 1`–`vtx 2`, and they are the edges at
   -- `vtx 1` (`splitOff_data_one`, at the indices of `Fin (cd.d + 1)`).
   obtain ⟨-, -, -, -, hl0, hl1, hdt⟩ := cd.splitOff_data_one (by omega)

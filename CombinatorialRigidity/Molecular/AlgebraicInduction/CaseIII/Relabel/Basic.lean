@@ -207,9 +207,9 @@ labels of `lem:splitOff-isLink-relabel`. If `ofNormals G_v^{ab} ends₀ q₀` is
 infinitesimally rigid on `V(G_v^{ab})`, and `ends₀` gives each link of `G_v^{ab}` its ends in some
 order, then `ofNormals G_a^{vc}` with the selector `e ↦ (ρ (ends₀ (σ e)).1, ρ (ends₀ (σ e)).2)` and
 the normals `q₀ ∘ ρ` is in general position and infinitesimally rigid on `V(G_a^{vc})`, and its
-selector gives each link of `G_a^{vc}` its ends in some order. These are the three conjuncts of the
-statement. The record of the new selector that `ofNormals` takes is, by default,
-`recordsLinks_splitOff_relabel`'s.
+selector gives each link of `G_a^{vc}` its ends in some order, that is, `RecordsLinks`. These are
+the three conjuncts of the statement. The record of the new selector that `ofNormals` takes is, by
+default, `recordsLinks_splitOff_relabel`'s, and the third conjunct is that record.
 
 The normals `q₀ ∘ ρ` are those of `q₀`, permuted. As `ρ` and `σ` are involutions (`hσσ_relabel`),
 the hinge of the new framework at `f` is that of `ofNormals G_v^{ab} ends₀ q₀` at `σ f`, and `σ f`
@@ -247,11 +247,9 @@ theorem PanelHingeFramework.ofNormals_relabel [DecidableEq α] [DecidableEq β]
           Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).2))
         (fun p => q₀ (Equiv.swap a v p.1, p.2))).toBodyHinge.IsInfinitesimallyRigidOn
           V(G.splitOff a v c e₁) ∧
-    (∀ e u w, (G.splitOff a v c e₁).IsLink e u w →
-        (Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).1,
-          Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).2) = (u, w) ∨
-        (Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).1,
-          Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).2) = (w, u)) := by
+    Graph.RecordsLinks (G.splitOff a v c e₁)
+      (fun e => (Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).1,
+          Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).2)) := by
   classical
   set ρ : Equiv.Perm α := Equiv.swap a v with hρ_def
   set σ : Equiv.Perm β := Equiv.swap e_b e₀ * Equiv.swap e₁ e_c with hσ_def
@@ -325,16 +323,8 @@ theorem PanelHingeFramework.ofNormals_relabel [DecidableEq α] [DecidableEq β]
     have hSmotConst := hQrig (S ∘ ρ) hSmot (ρ u) hρu (ρ w) hρw
     simp only [Function.comp] at hSmotConst
     rwa [hρρ u, hρρ w] at hSmotConst
-  -- (3) Link-recording: every link of G.splitOff a v c e₁ has endpoints recorded by endsσρ.
-  · intro e' u w he'
-    have hfQ : (G.splitOff v a b e₀).IsLink (σ e') (ρ u) (ρ w) :=
-      (_root_.Graph.splitOff_isLink_relabel hG_ea hG_eb hG_ec hav hbv hcv hca
-        heab hclv hcla he₀ he₁ he₁₀).mp he'
-    rcases hQrec.eq_pair_or_swap hfQ with h1 | h1
-    · refine Or.inl ?_
-      rw [h1]; exact Prod.ext (hρρ u) (hρρ w)
-    · refine Or.inr ?_
-      rw [h1]; exact Prod.ext (hρρ w) (hρρ u)
+  -- (3) Link-recording: the default `hlinks`, `recordsLinks_splitOff_relabel`.
+  · exact hlinks
 
 /-- **The rows of the realization of `G_a^{vc}`** (`lem:splitOff-rigidityRows-relabel`; KT
 eq. (6.31), p. 687): with `G`, `v`, `a`, `b`, `c`, the labels, `ρ = Equiv.swap a v` and `σ` as in

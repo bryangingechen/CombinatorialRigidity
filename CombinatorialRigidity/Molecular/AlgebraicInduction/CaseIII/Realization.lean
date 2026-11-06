@@ -94,8 +94,9 @@ theorem PanelHingeFramework.rigidityRows_ofNormals_congr_ends
 
 /-- **Selectors that give each link its ends give the same rows** (a step of
 `lem:case-III-chain-dispatch`): if `ends` and `ends'` each give every link `e` of `G` from `u` to
-`v` the ends `(u, v)` or `(v, u)` (`hagree`), then `ofNormals G ends q` and `ofNormals G ends' q`
-have the same set of rigidity rows. `chainData_interior_realization_hρGv` uses it to pass from the
+`v` the ends `(u, v)` or `(v, u)` (`hlinks`, `hlinks'`: `RecordsLinks`), then
+`ofNormals G ends q` and `ofNormals G ends' q` have the same set of rigidity rows.
+`chainData_interior_realization_hρGv` uses it to pass from the
 selector `Graph.ChainData.candidateEnds i ends₀`, at which `chainData_bottom_relabel`
 (`lem:case-III-chain-relabel-rows`) gives the bottom rows, to the selector of the `i`-th framework.
 
@@ -105,16 +106,13 @@ span the same line `span {panelSupportExtensor (q u) (q v)}`, the hinge-row bloc
 coincide, and the row sets are equal. -/
 theorem PanelHingeFramework.rigidityRows_ofNormals_congr_ends_swap
     {G : Graph α β} {ends ends' : β → α × α} (q : α × Fin (k + 2) → K)
-    (hagree : ∀ e u v, G.IsLink e u v →
-      (ends e = (u, v) ∨ ends e = (v, u)) ∧ (ends' e = (u, v) ∨ ends' e = (v, u)))
-    {hlinks : Graph.RecordsLinks G ends}
-    {hlinks' : Graph.RecordsLinks G ends'} :
+    (hlinks : Graph.RecordsLinks G ends) (hlinks' : Graph.RecordsLinks G ends') :
     (PanelHingeFramework.ofNormals G ends q).toBodyHinge.rigidityRows
       = (PanelHingeFramework.ofNormals G ends' q).toBodyHinge.rigidityRows := by
   -- On any link `e u v`, the support extensor of either framework is `±panelSupportExtensor (q u)
   -- (q v)` (each `ends`/`ends'` recording branch collapses through `panelSupportExtensor_swap`), so
   -- both single-element spans equal `span {panelSupportExtensor (q u) (q v)}`.
-  have hspan : ∀ (sel : β → α × α), (hlinks : ∀ e u v, G.IsLink e u v →
+  have hspan : ∀ (sel : β → α × α), (hsel : ∀ e u v, G.IsLink e u v →
         sel e = (u, v) ∨ sel e = (v, u)) → ∀ e u v, G.IsLink e u v →
       Submodule.span K {(PanelHingeFramework.ofNormals G sel q).toBodyHinge.supportExtensor e}
         = Submodule.span K {panelSupportExtensor (fun i => q (u, i)) (fun i => q (v, i))} := by
@@ -136,8 +134,8 @@ theorem PanelHingeFramework.rigidityRows_ofNormals_congr_ends_swap
         (PanelHingeFramework.ofNormals G ends' q).toBodyHinge.hingeRowBlock e := by
     intro e u v hlink
     simp only [BodyHingeFramework.hingeRowBlock,
-      hspan ends (fun e u v h => (hagree e u v h).1) e u v hlink,
-      hspan ends' (fun e u v h => (hagree e u v h).2) e u v hlink]
+      hspan ends (fun e u v h => hlinks.eq_pair_or_swap h) e u v hlink,
+      hspan ends' (fun e u v h => hlinks'.eq_pair_or_swap h) e u v hlink]
   apply Set.eq_of_subset_of_subset
   · rintro φ ⟨e, u, v, hlink, r, hr, rfl⟩
     refine ⟨e, u, v, hlink, r, ?_, rfl⟩
@@ -1206,22 +1204,17 @@ theorem PanelHingeFramework.chainData_interior_realization_hρGv [Infinite K]
   have hcongr_swap :
       (PanelHingeFramework.ofNormals Gv (cd.candidateEnds i ends₀) qρ).toBodyHinge.rigidityRows
         = (PanelHingeFramework.ofNormals Gv endsσρ₁ qρ).toBodyHinge.rigidityRows :=
-    PanelHingeFramework.rigidityRows_ofNormals_congr_ends_swap qρ <| by
-      intro e u w hlink
-      -- The link `e u w` of `Gv` is a link of `G.splitOff v a b cd.e₀` (`u, w ≠ v`, and `e ≠ e₀` as
-      -- `e₀ ∉ E(G)`), so `candidateEnds i ends₀` gives it its ends
-      -- (`candidateEnds_records_splitOff_isLink`).
-      obtain ⟨hGlink, hunev, hwnev⟩ := Graph.removeVertex_isLink.mp hlink
-      have hsplit : (G.splitOff v a b cd.e₀).IsLink e u w :=
-        Graph.splitOff_isLink.mpr
-          (Or.inl ⟨fun he => cd.e₀_fresh (he ▸ hGlink.edge_mem), hGlink, hunev, hwnev⟩)
-      refine ⟨cd.candidateEnds_records_splitOff_isLink i (by omega) hrec' hsplit, ?_⟩
-      -- `endsσρ₁` gives the link of `Gv` its ends in some order (`hends_Gv` gives
-      -- `Gv.IsLink e (endsσρ₁ e).1 (endsσρ₁ e).2`; compare with the link by
-      -- `eq_and_eq_or_eq_and_eq`).
-      rcases hlink.eq_and_eq_or_eq_and_eq (hends_Gv.isLink hlink) with ⟨h1, h2⟩ | ⟨h1, h2⟩
-      · exact Or.inl (Prod.ext h1.symm h2.symm)
-      · exact Or.inr (Prod.ext h2.symm h1.symm)
+    PanelHingeFramework.rigidityRows_ofNormals_congr_ends_swap qρ
+      (.of_pair fun e u w hlink => by
+        -- The link `e u w` of `Gv` is a link of `G.splitOff v a b cd.e₀` (`u, w ≠ v`, and `e ≠ e₀`
+        -- as `e₀ ∉ E(G)`), so `candidateEnds i ends₀` gives it its ends
+        -- (`candidateEnds_records_splitOff_isLink`).
+        obtain ⟨hGlink, hunev, hwnev⟩ := Graph.removeVertex_isLink.mp hlink
+        have hsplit : (G.splitOff v a b cd.e₀).IsLink e u w :=
+          Graph.splitOff_isLink.mpr
+            (Or.inl ⟨fun he => cd.e₀_fresh (he ▸ hGlink.edge_mem), hGlink, hunev, hwnev⟩)
+        exact cd.candidateEnds_records_splitOff_isLink i (by omega) hrec' hsplit)
+      hends_Gv
   -- `hρGv` passes to `endsσρ₁` through `hcongr`, and the bottom rows through `hcongr_swap`.
   have hρGv₁ : BodyHingeFramework.hingeRow a b (-ρ₀) ∈ Submodule.span K
       (PanelHingeFramework.ofNormals Gv endsσρ₁ qρ).toBodyHinge.rigidityRows := by
@@ -1851,8 +1844,8 @@ theorem PanelHingeFramework.chainData_dispatch_interior_of_discriminator [Infini
       rcases hxy with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
       · exact Or.inr he₀rec
       · exact Or.inl he₀rec
-  have hrec_G : Graph.RecordsLinks G ends₀ := .of_pair
-    (cd.fullLink_recording_of_splitOff_recording h3 hrecGab' (Or.inl hr0) (Or.inl hr1))
+  have hrec_G : Graph.RecordsLinks G ends₀ :=
+    cd.fullLink_recording_of_splitOff_recording h3 hrecGab' (Or.inl hr0) (Or.inl hr1)
   -- (b) The facts on `Gv` at `ends₀`.
   have hwmem'₀ : ∀ j, w j ∈ (PanelHingeFramework.ofNormals Gv ends₀ q).toBodyHinge.rigidityRows ∨
       ∃ ρ' : Module.Dual K (ScrewSpace K k),
