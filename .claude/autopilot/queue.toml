@@ -142,6 +142,17 @@ note = "notes/Cleanup42.md"
 attended = true
 done = true
 
+# Attended (the open's choice; the PI may set attended = false): the cleanup round the PI opened on
+# 2026-11-05, after a review of the open friction entries, ahead of ORIGAMI: the friction log's docs
+# and tooling fixes, then the lemmas Phase 42 left outside their home files. Work log, tasks, gates:
+# notes/Phase42-homes.md.
+[[item]]
+id = "42-homes"
+title = "HOMES: Phase 42's deferred lemma homes and the friction log (post-Phase-42 cleanup)"
+note = "notes/Phase42-homes.md"
+attended = true
+done = false
+
 # Attended, so the driver stops before it. ORIGAMI opens with the PI, and takes its phase number
 # then; afterwards the PI may replace this row with the opened phase's id and set attended = false.
 [[item]]

@@ -185,6 +185,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (CLEANUP-42, round 1: the route audit) | `pencil-d.tex`'s 99 green nodes against their Lean (docs only: rows of the proof-route ledger) | ✓ Complete — every node audited, 54 ledger rows, 34 open, the Lean unchanged; the PI's remedies given (see `notes/Phase42-cleanup.md`; plan `notes/Cleanup42.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (CLEANUP-42, round 2: the chapter to the Lean) | `pencil-d.tex`'s statements, proofs and dependency edges at the 34 open ledger rows (blueprint and notes only, no Lean) | ✓ Complete — the chapter restated or annotated at every open row, the Lean unchanged (see `notes/Phase42-align.md`; plan `notes/Cleanup42.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (CLEANUP-42, round 4: the folds, the witnesses and the docstrings) | the `d = 3` Lean that repeats the every-dimension Lean, two non-vacuity witnesses and stale Lean docstrings (Lean; two blueprint pins, the folded nodes' edges and notes, no statement) | ✓ Complete — the `d = 3` Lean proved as the every-dimension Lean's `d = 3` case, two witnesses, no statement changed; CLEANUP-42 complete (see `notes/Phase42-fold.md`; plan `notes/Cleanup42.md`; round manual: `CLEANUP.md`) |
+| ⋮ Cleanup round (HOMES: Phase 42's deferred lemma homes and the friction log) | the friction log's docs and tooling fixes, then the lemmas Phase 42 left outside their home files and the mirror lemmas that now meet their bar (Lean and notes, no statement) | In progress — opened 2026-11-05 at the PI's word (see `notes/Phase42-homes.md`; round manual: `CLEANUP.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1311,7 +1312,9 @@ Tier 0 (42c) and Tier 2, every `d`, are formalized, which subsumes Tier 1's `P�
 CLEANUP-42, opened 2026-11-05 at the PI's word ahead of ORIGAMI: round 1, the route audit
 (`notes/Phase42-cleanup.md`), closed; round 2, the chapter to the Lean (`notes/Phase42-align.md`),
 closed; round 4, the folds, the witnesses and the docstrings (`notes/Phase42-fold.md`), closed the
-same day, and CLEANUP-42 with it; then ORIGAMI, with the PI (*Queued post-program phases*). Detail →
+same day, and CLEANUP-42 with it; then HOMES, a cleanup round of Phase 42's deferred lemma homes
+and the friction log (`notes/Phase42-homes.md`), open; then ORIGAMI, with the PI (*Queued
+post-program phases*). Detail →
 `notes/Phase42a.md` to `notes/Phase42m.md` + `notes/Phase42-design.md`.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
@@ -1340,7 +1343,8 @@ after PROSE, so **ORIGAMI opens after RECONCILE**; on 2026-10-29 the PI queued *
 ahead of ORIGAMI, and it opened the same day as Phase 42 and closed 2026-11-05, §42 above; on
 2026-10-30 the PI asked
 for a cleanup after Phase 42, **CLEANUP-42**, and opened it on 2026-11-05, ahead of ORIGAMI; it
-closed the same day.)
+closed the same day. The same day the PI opened **HOMES** ahead of ORIGAMI, a cleanup round of the
+lemmas Phase 42 left outside their home files and of the friction log.)
 A longer **unqueued**
 idea backlog from the same survey (KT-template subvariety questions,
 e.g. Tanigawa's identified-panel-hinge Problem 1, plus known-math
@@ -1400,7 +1404,8 @@ research note of its own, `notes/Strata.md`, which holds PENCIL-D's evidence.
   as **Phase 41** (§41 above). The findings ledger `notes/Prose-findings.md` closed with 332
   entries, 307 `done` and 25 `left`, none `reported` (its header). **PENCIL-D**
   opened next, as Phase 42, and closed 2026-11-05; **CLEANUP-42** opened next, at the PI's word
-  (2026-11-05), and closed the same day; **ORIGAMI** is next, with the PI.
+  (2026-11-05), and closed the same day; **HOMES** opened next (below); then **ORIGAMI**, with the
+  PI.
 - **PENCIL-D** — the pencil realization theorem in every dimension: opened 2026-10-29 with the PI
   as Phase 42 and closed 2026-11-05, proving it in every dimension `d ≥ 3` (§42 above; plan
   `notes/Phase42-design.md`).
@@ -1418,7 +1423,12 @@ research note of its own, `notes/Strata.md`, which holds PENCIL-D's evidence.
   `d = 3` case (Theorem S's core and four cases of the reduction), added two non-vacuity witnesses,
   at `K₂` and `K_{2,3}`, fixed the stale Lean docstrings, and gave the folded `d = 3` nodes their
   dependency edges and formalization notes, with no statement changed. Plan, the PI's words and
-  the ledger: `notes/Cleanup42.md`. **Next:** ORIGAMI's open, with the PI.
+  the ledger: `notes/Cleanup42.md`. **Next:** HOMES (below), then ORIGAMI's open, with the PI.
+- **HOMES** — a cleanup round after CLEANUP-42, opened 2026-11-05 at the PI's word after a review
+  of the open friction entries: the friction log's docs and tooling fixes, then the lemmas Phase 42
+  left outside their home files (deferred because a declaration added to those files rebuilds most
+  of `Molecular/` mid-phase), one task per home file, with the mirror lemmas that now meet their
+  entries' bar; no statement changes. **Next:** `notes/Phase42-homes.md`'s **Status**.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid
