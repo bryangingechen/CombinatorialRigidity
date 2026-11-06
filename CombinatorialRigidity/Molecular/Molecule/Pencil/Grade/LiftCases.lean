@@ -307,9 +307,8 @@ theorem pendant_T1 [Finite α] [Finite β] (hS : G.Simple) (hNv : ∀ y, G.Adj v
       fun y hy hyhub => by
         by_cases hyv : y = v
         · subst hyv
-          rw [hclv, linearIndepOn_pair_iff b' huv.symm (by rw [hb'v]; exact hp0), hb'v,
-            hb' u huv]
-          exact (LinearIndependent.pair_iff' hp0).1 (LinearIndependent.pair_symm_iff.1 hpi)
+          rw [hclv, LinearIndepOn.pair_iff_linearIndependent huv.symm, hb'v, hb' u huv]
+          exact LinearIndependent.pair_symm_iff.1 hpi
         have hyu : y ≠ u := fun h => hyhub (h ▸ hhu)
         rw [hcl y ⟨hy, hyv⟩ hyu]
         refine (hnhub y ⟨hy, hyv⟩ fun h => hyhub ⟨hy, ?_⟩).congr fun z hz =>
@@ -407,9 +406,8 @@ theorem pendant_T1 [Finite α] [Finite β] (hS : G.Simple) (hNv : ∀ y, G.Adj v
       fun y hy hyhub => by
         by_cases hyv : y = v
         · subst hyv
-          rw [hclv, linearIndepOn_pair_iff b' huv.symm (by rw [hb'v]; exact hp0), hb'v,
-            hb' u huv]
-          exact (LinearIndependent.pair_iff' hp0).1 (LinearIndependent.pair_symm_iff.1 hpi)
+          rw [hclv, LinearIndepOn.pair_iff_linearIndependent huv.symm, hb'v, hb' u huv]
+          exact LinearIndependent.pair_symm_iff.1 hpi
         by_cases hyu : y = u
         · subst hyu
           rw [hclu]
@@ -900,8 +898,7 @@ theorem ear_T1 [Finite α] (hS : G.Simple) (hNx : ∀ y, G.Adj x y → y = a ∨
       · exact ⟨hahub, Or.inr (let ⟨e, he⟩ := hxa; ⟨e, he⟩)⟩
       · exact ⟨hbhub, Or.inr (let ⟨e, he⟩ := hxb; ⟨e, he⟩)⟩
     have := (h.mono hsub)
-    rw [linearIndepOn_pair_iff nv hab (hn0 a haH)] at this
-    exact (LinearIndependent.pair_iff' (hn0 a haH)).2 this
+    exact (LinearIndepOn.pair_iff_linearIndependent hab).1 this
   set L := dotPerp (K ∙ nv a) ⊓ dotPerp (K ∙ nv b) with hL
   have hLeq : L = dotPerp (Submodule.span K (Set.range ![nv a, nv b])) := by
     ext y
@@ -1018,9 +1015,8 @@ theorem ear_T1 [Finite α] (hS : G.Simple) (hNx : ∀ y, G.Adj x y → y = a ∨
         · subst hyx
           rw [hclx]
           have hab' : LinearIndepOn K b' {a, b} := by
-            rw [linearIndepOn_pair_iff b' hab (by rw [hb' a hax]; exact hb0 a haH), hb' a hax,
-              hb' b hbx]
-            exact (LinearIndependent.pair_iff' (hb0 a haH)).1 hbab
+            rw [LinearIndepOn.pair_iff_linearIndependent hab, hb' a hax, hb' b hbx]
+            exact hbab
           refine hab'.insert ?_
           rw [hb'x, Set.image_pair, hb' a hax, hb' b hbx, ← Matrix.range_cons_cons_empty]
           exact hpW
@@ -1129,9 +1125,7 @@ theorem liftAttains_of_ear [Infinite K] [Finite α] [Finite β] (r : ℕ) {G : G
         rintro z (rfl | rfl)
         · exact ⟨ha, Or.inr (let ⟨e, he⟩ := hxa; ⟨e, he⟩)⟩
         · exact ⟨hb, Or.inr (let ⟨e, he⟩ := hxb; ⟨e, he⟩)⟩)
-      have hn0 : normal₀ a ≠ 0 := hndG.1.1.2.1 a hxa.right_mem
-      rw [linearIndepOn_pair_iff _ hab hn0] at h
-      exact (LinearIndependent.pair_iff' hn0).2 h
+      exact (LinearIndepOn.pair_iff_linearIndependent hab).1 h
     have hxa' : x ∈ G.closedNbhd a := Or.inr (let ⟨e, he⟩ := hxa; ⟨e, he.symm⟩)
     have hxb' : x ∈ G.closedNbhd b := Or.inr (let ⟨e, he⟩ := hxb; ⟨e, he.symm⟩)
     exact not_three_le_of_orth hli hml (horth₀ a hxa.right_mem x hxa')

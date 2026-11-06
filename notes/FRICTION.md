@@ -3382,19 +3382,19 @@ to be re-derived by re-reading entries later.
   Both directions are that now: the forward one since task 38.20 (`F-304`), the converse since task
   38.21 (`F-306`), so the `Equiv.ofBijective` route of the bullet above is gone. Since task 38.22
   (`F-327`) the converse takes no distinctness hypotheses: `hLI.injective` gives them.
-- **Status:** open for `n = 2` only (below); the `Fin 3` forms are two short lemmas on mathlib's
-  general one, forward in `Pencil/Motive.lean`, reverse in `Pencil/Steer.lean`.
 - **`n = 2` is not fused either** (40-cleanup task 24). The title's gloss is loose: mathlib's
   `LinearIndepOn.pair_iff` is the coefficient form (`∀ c d, c • f i + d • f j = 0 → c = 0 ∧ d = 0`),
   not the `![f i, f j]` form. About 25 sites in 9 pencil files bridge the two through it and
   `LinearIndependent.pair_iff` (e.g. `Base.lean`'s `hadj`: `rw [LinearIndepOn.pair_iff point huv]
   at hpair; rwa [LinearIndependent.pair_iff]`). A fused `n = 2` mirror would make each one step;
   it is a §B-style sweep, not part of task 24's screen.
-- **Status (resolved, HOMES task 8):** task 7 landed the fused form
-  `LinearIndepOn.pair_iff_linearIndependent`, and task 8 swept 17 two-step sites in 8 pencil files
-  through it (`Pair2`, `Motive`, `GenericSteer`, `GenericEar`, `GenericBase`, `GenericTriangle`,
-  `Grade/EarFree`, `Grade/LiftCutEdge`). The sites that use `pair_iff`'s scalar form for its own
-  sake stay (`Pair.lean`, `Nonvacuity.lean`, `MatroidIdentification.lean`, `Grade/LiftCases.lean`).
+- **Status (resolved, HOMES task 8):** the `Fin 3` forms are two short lemmas on mathlib's general
+  one, forward in `Pencil/Motive.lean`, reverse in `Pencil/Steer.lean`. For `n = 2`, task 7 landed
+  the fused form `LinearIndepOn.pair_iff_linearIndependent`, and task 8 swept 22 two-step sites in
+  9 pencil files through it (`Pair2`, `Motive`, `GenericSteer`, `GenericEar`, `GenericBase`,
+  `GenericTriangle`, `Grade/EarFree`, `Grade/LiftCutEdge`, and all five of `Grade/LiftCases`, in
+  the corrective). The sites that use the scalar form for its own sake stay (`Pair.lean`,
+  `Nonvacuity.lean`, `MatroidIdentification.lean:125`).
 
 ### [idiom] `simp only [someDef, e.choose_spec]` blows `maxRecDepth` when the def's match reduces against an `Exists.choose` term — hoist a plain witness with the `choose` *tactic*
 - **Where it bit:** Phase 39 W5-L5 L5-cut-v-e,

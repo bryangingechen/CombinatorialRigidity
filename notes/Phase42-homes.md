@@ -26,19 +26,19 @@ public declaration's name, or delete a pinned declaration, does not land that ch
 
 ## Current state
 
-**Task 8 landed** (this commit; Lean): 17 two-step sites in 8 pencil files go through
-`LinearIndepOn.pair_iff_linearIndependent`: `Pair2` (1), `Motive` (3), `MainComponent/GenericSteer`
-(5), `GenericEar` (3), `GenericBase` (2), `GenericTriangle` (1), `Grade/EarFree` (1),
-`Grade/LiftCutEdge` (1). Stayed as they are, as they use `pair_iff`'s scalar form for its own sake
-(a `rintro c d hcd` or `fun c d hcd`, or its `linearIndepOn_pair_iff` sibling): `Pair.lean` (four),
-`Nonvacuity.lean` (two), `MatroidIdentification.lean:125`, `Grade/LiftCases.lean` (five).
-`MatroidIdentification.lean:56` is already one step. The `EarFree.lean` site went through
-(`exact (…pair_iff_linearIndependent hab).2 (planeNormal_pair …)`) with no timeout. The three
-`rw [LinearIndependent.pair_iff]` lines at three of the sites went. Gates: G2 build
-(warning-clean) and lint; G3 and G5 not needed (no statement or pinned name changed). The
-`n`-ary entry `[resolved]`; with the two task-7 headings retagged (task 7's commit had changed only
-their Status lines), the heading-tag recount is open 23, mirror-candidate 8, process 2, blueprint 0
-= 33 (it was 36 at `a293975a`, not the 34 this note claimed).
+**Task 8 landed** (`bb4c09d6`, and its corrective, this commit; Lean): 22 two-step sites in 9
+pencil files go through `LinearIndepOn.pair_iff_linearIndependent`: `Pair2` (1), `Motive` (3),
+`MainComponent/GenericSteer` (5), `GenericEar` (3), `GenericBase` (2), `GenericTriangle` (1),
+`Grade/EarFree` (1), `Grade/LiftCutEdge` (1), and `Grade/LiftCases` (5, in the corrective:
+`bb4c09d6` had misfiled them as scalar-form; they bridged through the field-form
+`linearIndepOn_pair_iff` and `LinearIndependent.pair_iff'`, and the `b'` rewrites in the two `hyv`
+cases and the `hab'` case simplify to the fused rewrite; one `hn0` became unused and went). Stayed
+as they are (scalar form for its own sake): `Pair.lean` (four), `Nonvacuity.lean` (two),
+`MatroidIdentification.lean:125`. `MatroidIdentification.lean:56` was already one step. The
+`EarFree.lean` site went through with no timeout. Gates (corrective): G1 and G2 `lake build`
+(warning-clean) and `lake lint`, G3 `blueprint/lint.sh`, G5 (`#print axioms` of `PanelHingeFramework.molecular_conjecture`, `molecular_conjecture_multigraph`, `pencil_realization_theorem`, `SimpleGraph.molecule_rank_formula`, `SimpleGraph.jacobs`, `Graph.isBase_ncard_add_deficiency_eq`: the three standard axioms each). The `n`-ary
+entry `[resolved]`; with the two task-7 headings retagged, the heading-tag recount is open 23,
+mirror-candidate 8, process 2, blueprint 0 = 33 (36 at `a293975a`, not the 34 this note claimed).
 
 **Task 7 landed** (`a293975a`; Lean), all four in the mirror
 `Mathlib/LinearAlgebra/LinearIndependent/Basic.lean`: `exists_extend_linearIndependent` (now
@@ -193,8 +193,8 @@ the entries it resolved.
 - [x] **7. The linear-independence mirrors** (`a293975a`; Lean). Four lemmas in the
   `LinearIndependent/Basic` mirror, the fused two-vector form among them. Resolves *No packaged
   "extend a `LinearIndepOn` partial family…"*, *No two-vector `finrank_span_pair`…*.
-- [x] **8. The two-vector sweep** (this commit; Lean). 17 two-step sites in 8 pencil files
-  through the fused form. Resolves *No `n`-ary (`n ≥ 3`) analogue of `LinearIndepOn.pair_iff`*.
+- [x] **8. The two-vector sweep** (`bb4c09d6`, corrective this commit; Lean). 22 two-step sites in 9
+  pencil files through the fused form. Resolves *No `n`-ary (`n ≥ 3`) analogue of `LinearIndepOn.pair_iff`*.
 - [ ] **9. `Meet.lean`** (Lean; sonnet). `exists_smul_extensor_eq_of_mem_span_range_grade` (from
   `Grade/TwoPencil.lean`) beside `exists_smul_extensor_eq_of_mem_span_range`, which becomes its
   `j = 2` case; `span_range_eq_of_extensor_eq_grade` (from `Grade/Realization.lean`) beside
