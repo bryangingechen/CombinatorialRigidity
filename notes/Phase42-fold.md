@@ -212,8 +212,8 @@ PI and takes its phase number then. Nothing carries over from round 4.
 fallout); `--chapter main-component`'s three *missing* edges, `lem:deficiency-core-bound`,
 `lem:deficiency-one-body-chain` and `lem:deficiency-two-body-chain` into their `-d` forms, from
 Phase 42 (missing at round 4's open, outside the PI's 15), were added after the close at the PI's
-word, each with a formalization note (this commit; `main-component` 0 *missing*);
-`notes/dispatch-log.md`'s grooming is the coordinator's.
+word, each with a formalization note (`b27e447a`; `main-component` 0 *missing*); and
+`notes/dispatch-log.md` was groomed after the close (this commit; its *CLEANUP-42 grooming*).
 
 ## Decisions made during this round
 

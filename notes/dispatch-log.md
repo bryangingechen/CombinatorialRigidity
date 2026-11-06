@@ -168,153 +168,41 @@ shared temp file and reported a concurrent session as the cause, squashed by
 the coordinator before the push (rescue §1; F56), the same diff read catching
 an off-by-one in a range.
 
-**Phase 42f (PD-STEPS: cut, bridges, contraction) rows, 2026-10-30: 1, written
-at 42f's close.** None BLOCKED, escalated or killed; five dispatches (open,
-recon, two sonnet transcriptions of the recon's complete spikes, handed to
-fresh builders past the recon's ~400k context, F46; close). The one: a
-gate-invisible prose defect the coordinator's own option text seeded. The PI
-chose a cut whose option said the coverage keeps "one sentence saying the
-d = 3 split-off and two-body ear steps aren't needed for d ≥ 4", which the open
-transcribed; read literally it is false, since both still enter through the
-embedding inside the d = 3 coverage. The close's end-to-end chapter re-read
-caught it ("no step in dimension d"), not a gate (F19's lesson: option text is
-a coordinator artifact).
-
-**Phase 42g (PD-STEPS: cycles and long open ears) rows, 2026-10-31: 3, written
-at 42g's close.** None BLOCKED, escalated or killed; six dispatches (open,
-recon, two sonnet transcriptions of its complete spikes handed to fresh
-builders past the recon's ~530k context, F46; one opus prose commit at the PI's
-word mid-phase; close). (1) The recon checked a throwaway file twice with
-`lake env lean` against TACTICS-QUIRKS §55; self-reported, its final witnesses
-ran under `lake lean`, and the coordinator re-ran them so. (2) The Polygon build
-dropped the copyright header every `Grade/` file carries; no gate checks it;
-the coordinator's comment-stripped diff of landed file vs spike caught it, fixed
-at 199429d1. (3) The Chain build over-applied the new route-ledger rule,
-logging a carrier encoding (heights restricted to `V(G)`) as a departure; the
-coordinator judged it none, and the rule now says so. Tool:
-`phasenote.py --surfaces` misses a sub-lettered `| 42.` ROADMAP row (open and
-close, as at 42f).
-
-**Phase 42h (PD-STEPS: open ears with four or more interior bodies) rows,
-2026-10-31: 4, written at 42h's close.** None BLOCKED, escalated or killed;
-eight dispatches (open; recon, seven of eight nodes spiked complete; one opus
-build carrying a PI-adjudicated restatement; four sonnet builds, the last the
-theorem's unspiked `hins` discharge on a coordinator slot trace, which held;
-close). (1)–(2) Two coordinator question texts put to the PI overclaimed: the
-open's "SHORT-CORE's hand proof" (the whole step, not the three-body half) and
-the post-recon "use only that degree" (the citing proofs also used part (3)'s
-injectivity at `p = d − 2`); the open and the Stars build each caught one and
-noted it beside the verbatim PI entry (F19). (3) `pathVertex_map`'s docstring
-said "a linear map" over any function: the coordinator's sonnet-tier docstring
-read caught it; the close found four more (F44). (4) A 42d sentence of the
-section overview overstated stars-four; the close's end-to-end re-read caught
-it. Tool: `phasenote.py --surfaces` still misses the sub-lettered row.
-
-**Phase 42i (PD-STEPS: open ears with three interior bodies) rows, 2026-10-31:
-3, written at 42i's close.** None BLOCKED, escalated or killed; eight
-dispatches (open; recon, its variant spiked complete beside a kernel-checked
-refutation; two sonnet builds; three opus builds, the last carrying a
-PI-adjudicated restatement; close) and one coordinator fixup. (1) The open's
-question to the PI repeated 42h's close hand-off: its factoring "applies at
-three bodies, leaving only the insertion condition". That was checked by type
-only; `hins`, quantified over every base datum and `ρ`, is false there. The
-open's consistency read flagged it, and the recon refuted it in Lean and pinned
-a variant (+1 build). The same question's "about 430 lines" was 98 (F8, F19).
-(2) The sonnet variant build dropped a section header and left a loose header
-bullet. The coordinator's full-diff read caught both, fixed in `9a19579e` (F44).
-(3) The PI's stars-three option repeated an unverified recon claim (the first
-stage's polynomial drops). The theorem dispatch marked it a hypothesis, and it
-held (F14).
-
-**Phase 42j (PD-COVERAGE: the coverage in every dimension) rows, 2026-10-31:
-2, written at 42j's close.** None BLOCKED, escalated or killed; six dispatches
-(open; recon, all four nodes spiked complete; three sonnet builds; close). The
-recon returned at ~440k tokens, so per F46 its spike went to fresh builders
-rather than a resume; each landed body diffed identical to the spike. (1) The
-open's question to the PI repeated design doc §3's "bridge, cut-vertex or cycle
-data", which omits the fourth reduction's data, a maximal planar-rigid set. The
-open's check caught it and noted it beside the verbatim PI entry (F19). The
-estimate of 4–7 builds was 3. (2) Build 2's note gave the landed names' axioms
-from the coordinator's spike run, not a run on the landed tree (its return said
-so). The coordinator's `lake lean` on the landed names confirmed them before the
-next dispatch.
-
-**Phase 42k (PD-REDUCTION: Phase 39's reduction in every dimension) rows,
-2026-11-04: 2, written at 42k's close.** None BLOCKED, escalated or killed; six
-dispatches (open; recon, all eight nodes spiked complete at ~200k tokens; three
-builds landed by resuming the recon, F43, each clean, its context reaching ~370k;
-a fresh close). (1) The open's question to the PI put the `d = 3` cases at "about
-1,160 Lean lines", the `wc -l` of two whole files: about 250 of those lines serve
-only the generic conjunct, and it missed `X0.lean`'s nonsimple case and
-`Statement.lean`'s two-pencil lemma (about 1,310 in all). It also left out the
-theorem's infinite field, `d ≥ 3` and "at least one body". The open's check
-caught both and noted them beside the verbatim PI entry (F19). The estimate of
-4–8 builds was 3. (2) Two of the recon prompt's five API claims were false (the
-transport lemma exists only at grade 2; `exists_extensor_in_two_panels_grade`
-gives none of two-pencil (1)–(3)). The prompt had marked them as hypotheses, and
-the recon checked them (F14).
-
-**Phase 42l (PD-HEAD's first half: nondegenerate realizations and their lifts)
-rows, 2026-11-04: 3, written at 42l's close.** None BLOCKED, escalated or killed;
-seven dispatches (open; recon, all ten nodes spiked complete; four sonnet builds
-transcribing the spike; an opus close). (1) The spike was `lake lean`-clean
-against its own imports, which omit `MainComponent/Lines.lean`. Its `liftPlane`
-clashed with that file's in the same namespace, and only build 3's whole-project
-`lake build` caught it (renamed `liftSubspace`). A spike's compile is
-import-relative, so the whole-project build is the clash check. Before build 4
-the coordinator grepped its 33 names (no other hit). (2) Build 3's hand-off line
-ranges left out `HoldsGenerally` (spike line 2047, in the one-witness section),
-though *Current state* assigned it to build 3. The coordinator's spike outline
-caught this before dispatch, and the prompt's scope-pin carried it. (3) The
-user asked about R-22 mid-loop: `lem:pencil-d-steer`'s five auxiliary vectors
-against the Lean's six. That difference sits in the node's *statement*, since
-`Γ(G)` is defined there, yet it was filed as a route difference and went green
-at build 3. The user had the node restated to its Lean at the close, and their
-words went verbatim through an `adjudication` block. Design doc §3's standing
-rule names departures from the chapter's *proof*; a departure in the statement
-needs the user's word before `\leanok`, as 42i's restatement had.
-
-**Phase 42m (PD-HEAD's second half: the generic conjunct and the headline;
-closes Phase 42) rows, 2026-11-05: 3, written after the close.** None
-BLOCKED, escalated or killed. Fourteen dispatches: the open; a recon (3 of
-11 nodes spiked complete, all 11 signatures checked); eight builds (Sonnet
-1, 2, 4, 7; Opus 3, 5, 6a, 6b, the last four new math with no spike); and
-a close in four Opus parts with one PI question. The estimate of 4–7 builds
-was 8, with 6 split. (1) The coordinator's build-1 `route` block said a
-declaration in the hand-off (`exists_hasPencilPlaneRealization`) was not
-found. It exists (`Grade/Feasible.lean:161`). An `-E` grep with `\b`
-missed it, for a reason not pinned. The block had marked it a hypothesis
-(F41/F42), and the builder found it. For an absence claim, use the Lean
-MCP's local search or a fixed-string `grep -rn "theorem <name>"`, not a
-regex with `\b`. (2) Build 4's first `lake build` had a stray
-stdin-reading `cat` in its command, and the harness backgrounded it. The
-builder stopped it and re-ran every gate in the foreground. This is F6's
-park shape by a new path: a command that waits on stdin. (3) Build 1's
-two-body pin adds an ambient `[Nonempty α]`. Over an empty `α` with edge
-labels, `LiftAttains` asks for a selector that cannot exist. 42l's row
-(3) says a departure in a statement needs the user's word before
-`\leanok`. The coordinator classed this one as an encoding (design doc
-§3's standing rule), told the user, and did not block; no objection came.
-The line it drew: a carrier artifact at a degenerate type is an
-encoding, and a change to the mathematics is a departure.
-
-**CLEANUP-42 round 1 (the route audit) rows, 2026-11-05: 3, written at the
-stop.** None BLOCKED, escalated or killed. Sixteen dispatches, all Opus: the
-open, fourteen recon slices (one docs commit each) and the stop. (1) The open
-wrote round 1's next task number into ROADMAP's CLEANUP-42 bullet, a surface
-its own scope barred the slices from editing; it went stale at the first
-slice, and a coordinator fixup (`191275be`) made it a pointer to the work
-log's **Status**. A surface the slices may not touch carries a pointer, never
-a task number. (2) The work log's forward weighting fell to 104 / 95 by task
-9, each tick moving a forward line to a finished one; task 10 cut the ticked
-lines to a three-line register written into the checklist. A long
-uniform-slice round sets that register at its open. (3) Criterion (3) split
-the recons: a hypothesis the pin drops was `open` in some slices (R-35) and
-`no departure` in others (R-36, R-44). From task 12 the prompt pinned it:
-`no departure` only when the drop is vacuous or trivially recovered, else
-`open`; the stop lists the close calls for the PI. A recon's clause on
-callers (R-50, "one caller") was wrong, caught by the next slice and fixed by
-a grep-verified `scope-pin`.
+**Phase 42f–42m and CLEANUP-42 round 1 rows, 2026-10-30 → 11-05: 24
+pruned at the CLEANUP-42 grooming (2026-11-05); the full rows are in git
+history at `b27e447a`.** Over 76 dispatches (42f 5, 42g 6, 42h 8, 42i 8,
+42j 6, 42k 6, 42l 7, 42m 14, round 1 16), none BLOCKED, escalated or
+killed. 42a, 42d, 42e and CLEANUP-42 rounds 2 and 4 wrote no rows; round
+4's close corrected two slips in earlier tasks' work-log lines
+(`b26ba0f5`), unlogged. Profile, by the rows' own wording (a row can match
+several classes): 6 question or option texts put to the PI that carried an
+unchecked claim (F57): a hand-off claim checked by type only, a line count
+taken as the `wc -l` of two whole files, a list copied from the design doc
+that missed a case, two overclaims of what a proof uses, and an option
+sentence false as read; five were caught by a later dispatch (an open's
+consistency read, a recon, a build), one at the cost of a build (42i,
+refuted in Lean), and one (42f) only by the close's re-read, after the open
+had transcribed it into the chapter; 4 gate-invisible defects caught on a
+read (F44): a dropped copyright header (a comment-stripped diff of the
+landed file against its spike), a docstring's "a linear map" over any
+function, an overstated 42d overview sentence, a dropped section header; 3
+coordinator hypotheses marked as such and checked by the dispatch (F14,
+F41): one held, two of five API claims were false, and an absence claim
+from a regex `grep` with `\b` was false; 3 readings of the line between a
+route departure, a carrier encoding and a statement departure (F58); 2
+claims about the landed tree taken from a spike: axioms quoted from the
+spike's run (F45), and a spike `lake lean`-clean against its own imports
+whose name clashed in a file outside them, caught only by the
+whole-project build; 2 gate-mechanics rows (F6 family): a `lake env lean`
+check (`TACTICS-QUIRKS.md` §55) and a stdin-reading `cat` that the harness
+backgrounded; 1 hand-off whose line ranges left out a declaration, caught
+before dispatch; and round 1's three: a task number written into a surface
+its slices could not edit, made a pointer (F17), a forward-weighting slide
+over a long uniform-slice round, and a criterion read two ways across recon
+slices until the prompt pinned it (F51). The build estimates missed both
+ways (4–7 for 3, 4–8 for 3, 4–7 for 8). Tool: two rows (42g, 42h) record
+that `phasenote.py --surfaces` resolves no ROADMAP row for a sub-lettered
+log, as at 42f (F59).
 
 ## Findings
 
@@ -365,6 +253,16 @@ the builder core's commit bullet, a harness change (`HARNESS.md`): it is a
 candidate for the next `/harness-review` (`notes/harness/incidents.md`,
 2026-10-30). The other row is F19 and F44 again, both promoted, and the F6
 family.
+
+**CLEANUP-42 grooming (2026-11-05, after CLEANUP-42's close).** The 24
+rows of 42f–42m and CLEANUP-42 round 1, which closed ungroomed, are pruned
+to git history (profile under *Log*). New findings: F57–F59. Promoted now:
+F57 into *Verification tiers* (the coordinator's own artifacts include the
+questions and option texts it puts to the PI), with F59's gap named at the
+`--surfaces` pointer there. Kept: F58, not promoted (the proof-route ledger
+it reads closed with CLEANUP-42), and F59, open (a tool item). The other
+rows are F14, F17, F41, F44, F45, F51 and the F6 family again, all
+promoted. F56 stays open.
 
 - **F1 — re-derive inventories at build time.** Promoted to
   `notes/CLAUDE.md` *One canonical home* (count again in the compressing
@@ -905,3 +803,41 @@ family.
   coordinator's `hygiene` line carries it. The incident line is in
   `notes/harness/incidents.md`, filed with SHORT-CORE's close on its branch
   (a master append had conflicted with that branch's at 42c's close).
+- **F57 — a question or option text put to the PI is a coordinator
+  artifact (six rows, 42f–42k).** Six texts carried a claim the coordinator
+  had not checked: a factoring "checked" by type only (false at three
+  bodies), "about 430 lines" for 98 and "about 1,160" for the `wc -l` of
+  two whole files, a list of reduction data missing its fourth case, and
+  two overclaims of what a proof uses. The PI answered each as asked. Five
+  were caught by a later dispatch, four of them noted beside the verbatim
+  PI entry (42i's cost a build); the sixth, an option sentence false as
+  read, was transcribed into the chapter and caught only by 42f's
+  end-to-end re-read. F19's promotion named specs, shaping blocks,
+  predictions and prep commits, not the questions. Promoted: *Verification
+  tiers* names them, and an unchecked claim in one is marked as a
+  hypothesis (F14), as in a shaping block.
+- **F58 — a route departure, a carrier encoding and a statement departure
+  are three things (three rows: 42g, 42l, 42m).** Phase 42's standing rule
+  (`notes/Phase42-design.md` §3) logged each departure of the Lean from the
+  chapter's proof in CLEANUP-42's route ledger. A build logged a carrier
+  encoding (heights restricted to `V(G)`) as a departure, and the rule then
+  said an encoding is none (42g). A difference in a node's *statement*
+  (R-22: five auxiliary vectors against the Lean's six) was filed as a
+  route row and went green; the user had the node restated, since a
+  statement departure needs the user's word before `\leanok` (42l). An
+  ambient `[Nonempty α]` at a degenerate type was classed an encoding, told
+  to the user and not blocked (42m). Not promoted: the ledger was Phase
+  42's instrument and closed with CLEANUP-42 (`notes/Cleanup42.md`). A
+  later phase that keeps a route ledger copies the three readings into its
+  standing rule.
+- **F59 — `phasenote.py --surfaces` resolves the wrong ROADMAP row for a
+  sub-lettered or a cleanup-round log (two rows, 42g and 42h; round 4's
+  close).** It takes `Phase(\d+[a-z]?)` from the filename and matches rows
+  that start `| <that>.`: `Phase42m.md` finds no `| 42m.` row (0 rows, as
+  at 42f, 42g and 42h's opens and closes), and `Phase42-fold.md` finds
+  Phase 42's row, not the round's own `⋮ Cleanup round (CLEANUP-42, round
+  4: …)` row, which round 4's close edited by hand (`b26ba0f5`). F40's
+  lesson: the F17 sweep reads this list, so a row it omits is a surface the
+  sweep skips. Open: a sub-lettered log falls back to its parent's row, and
+  a suffixed log matches the `⋮` row whose cell names its path. Until then
+  the coordinator names the row.

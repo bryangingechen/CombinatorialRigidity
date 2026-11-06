@@ -302,11 +302,17 @@ The step-4/5 checks below always run. On top of them, by rung:
 - **probe (haiku):** re-run every gate the return names; treat all
   attestations as unverified.
 - **the coordinator's own artifacts** — specs, shaping blocks,
-  predictions, prep commits — get the same tier as a subagent return
-  (dispatch-log F19: four of four needed correction in one Phase-39
-  wave, three caught by the dispatches they primed), and a coordinator
-  commit runs the same status-surface sweep it enforces on landings
-  (F17; `python3 notes/phasenote.py N --surfaces` lists them).
+  predictions, prep commits, and the questions and option texts put to
+  the PI — get the same tier as a subagent return (dispatch-log F19:
+  four of four needed correction in one Phase-39 wave, three caught by
+  the dispatches they primed; F57: six PI questions in 42f–42k carried
+  an unchecked count, case list or route claim, and one reached the
+  chapter). An unchecked claim in a question is marked as a hypothesis,
+  as in a shaping block (F14). A coordinator commit runs the same
+  status-surface sweep it enforces on landings (F17; `python3
+  notes/phasenote.py N --surfaces` lists them, but not the ROADMAP row
+  of a sub-lettered or cleanup-round log, which the coordinator names,
+  F59).
 
 When re-running a gate **yourself**, obey the same mechanics the agent
 cores mandate: pass the Bash tool's **`timeout` PARAMETER** and never
