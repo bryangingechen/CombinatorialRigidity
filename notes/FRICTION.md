@@ -359,7 +359,7 @@ to be re-derived by re-reading entries later.
   passing `(dotPerp B).subtype` explicitly and no `set` (TACTICS-QUIRKS § 38, § 43).
 - **Status:** idiom.
 
-### [open] `pencilConfigPointGrade_ofPoints` sits in `Pencil/Grade/Chain.lean`, not `Grade/Carrier.lean`
+### [resolved] `pencilConfigPointGrade_ofPoints` sits in `Pencil/Grade/Chain.lean`, not `Grade/Carrier.lean`
 - **Where it bit:** Phase 42g, `Pencil/Grade/Chain.lean`: `pencilConfigPointGrade_ofPoints` (a vector
   with last coordinate `1` is the configuration point of its own picture and heights, by
   `gradeMk_eta`) is about `pencilConfigPointGrade` and `gradeMk`, whose home is
@@ -367,8 +367,7 @@ to be re-derived by re-reading entries later.
 - **Proposed fix:** move it there, unchanged, with 42e's fold (the `gradeSigma` entry below), i.e.
   with the next commit that edits `Grade/Configuration.lean` or `Grade/Carrier.lean`: a declaration
   added to `Carrier.lean` rebuilds every `Grade/` file after it.
-- **Status:** open (42e's deferral, extended; tracked under PD-CARRIER's, `notes/Phase42-design.md`
-  §3).
+- **Status:** resolved in HOMES task 13: moved unchanged to `Grade/Carrier.lean`.
 
 ### [resolved] The `normalsJoin` linearity and minor lemmas sit in `Pencil/Grade/Polygon.lean`, not `PanelLayer.lean`
 - **Where it bit:** Phase 42g, `Pencil/Grade/Polygon.lean`: `normalsJoin_add_right`, `normalsJoin_smul_right`,
@@ -491,7 +490,7 @@ to be re-derived by re-reading entries later.
   from PD-STEPS (42f)*), not alone.
 - **Status:** open.
 
-### [open] `gradeSigma` and the picture projection are each defined twice in `Pencil/Grade/`
+### [resolved] `gradeSigma` and the picture projection are each defined twice in `Pencil/Grade/`
 - **Where it bit:** Phase 42e, `lem:pencil-d-condition-linear`
   (`Pencil/Grade/ConditionLinear.lean`). Its map `σ_h`, `gradeSigma h : (Fin 3 → K) →ₗ[K]
   (Fin (m + 1 + 2) → K)`, `c ↦ gradeMk (c 0) (c 1) (fun i => h i ⬝ᵥ c) (c 2)`, is the linear map
@@ -511,7 +510,9 @@ to be re-derived by re-reading entries later.
 - **42i:** `Grade/GluedEnds.lean` (glued-ends) adds a third copy of the projection,
   `gradePlanarProj` (with `gradePlanarProj_pencilConfigPointGrade`), under which its `⋀²π`
   (`gradePiForm`, `gradePi`) is built. The same fold replaces it by the public `pictureProj`.
-- **Status:** open.
+- **Status:** resolved in HOMES task 13: `gradeSigma` and `gradeSigma_apply` in `Grade/Carrier.lean`, the
+  inline `let` is `gradeSigma h`, `pictureProj` is public, and `gradePlanarProj` (kept: `gradePi_normalsJoin`'s
+  statement names it) and ConditionLinear's `π` go through it.
 
 ### [open] Glued-ends' contraction and lifting-planes helpers sit in `Pencil/Grade/GluedEnds.lean`
 - **Where it bit:** Phase 42i, `lem:pencil-d-glued-ends` (`Grade/GluedEnds.lean`). Its helpers

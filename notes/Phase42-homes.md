@@ -6,11 +6,12 @@ CLEANUP-42 and ahead of ORIGAMI, in two parts: the friction log's docs and tooli
 2–4), then the lemmas Phase 42 left outside their home files, one task per home file, with the
 mirror lemmas that now meet their entries' own bar (tasks 5–18). No statement changes. Phase 42
 deferred the moves because a declaration added to these files rebuilds most of `Molecular/`
-mid-phase; ORIGAMI will not edit them, so they are cheapest now. Tasks 1–12 landed
+mid-phase; ORIGAMI will not edit them, so they are cheapest now. Tasks 1–13 landed
 (the docs part, the tree-wide basics, `Deficiency.lean`, the linear-independence mirrors and their
-sweep, `Meet.lean`, `RigidityMatrix/Basic.lean` with `GenericityDevice.lean`, `PanelLayer.lean`):
-62 actionable entries down to 27 (heading tags: open 17, mirror-candidate 8, process 2, blueprint
-0). **Next concrete task:** task 13, `Grade/Carrier.lean` and `Grade/Configuration.lean` (*Lemma checklist*).
+sweep, `Meet.lean`, `RigidityMatrix/Basic.lean` with `GenericityDevice.lean`, `PanelLayer.lean`,
+`Realization.lean`, `Carrier.lean` with `Configuration.lean`):
+62 actionable entries down to 25 (heading tags: open 15, mirror-candidate 8, process 2, blueprint
+0). **Next concrete task:** task 14, `MainComponent/Cut.lean` (*Lemma checklist*).
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -26,18 +27,21 @@ public declaration's name, or delete a pinned declaration, does not land that ch
 
 ## Current state
 
-**Task 12 landed** (this commit; Lean; sonnet; one dispatch). The seven `dotPerp` declarations are
-sliced, not retyped (48 lines out of `Feasible.lean` and `TwoPencil.lean`, the same 48 in): after
-`finrank_dotPerp` in `Grade/Realization.lean`, `finrank_dotPerp_add`,
-`finrank_dotPerp_span_singleton_of_ne_zero`, `dotPerp_sup`, `dotPerp_inf`, `dotPerp_antitone`,
-`dotPerp_top` (from `Feasible.lean`) and `dotPerp_map_eq` (from `TwoPencil.lean`). Import cone: all
-proofs use only `dotPerp_dotPerp`, `mem_dotPerp`, `finrank_dotPerp` and mathlib, so the cone is
-met (the build is the check). **Binders:** unchanged, as all seven sit under the same `variable
-{K} [Field K]` line in both files; no caller passes any with `@`. None pinned in the blueprint, so
-G4 is vacuous. Gates: G2 `lake build` (6249 jobs, 0 warnings or errors) and `lake lint`; G3
-`blueprint/lint.sh` (all static reference checks passed); G5 vacuous (no proof replaced); G1.
-FRICTION: *42k's home debts* `[resolved]`; *42l's home debts* retagged `[mirror-candidate]`
-(`finrank_map_of_injOn` remains).
+**Task 13 landed** (this commit; Lean; sonnet; one dispatch). `gradeSigma`, `gradeSigma_apply`
+(from `ConditionLinear.lean`) and `pencilConfigPointGrade_ofPoints` (from `Chain.lean`) are sliced
+into `Grade/Carrier.lean` after `pencilConfigPointGrade_eq_gradeMk`; `finrank_span_pencilConfigPointGrade_closedNbhd_le`'s
+inline `let` is `gradeSigma h`. `pictureProj` and `pictureProj_pencilConfigPointGrade` are public
+(bodies unchanged, the explicit `![…]`), `gradePlanarProj := pictureProj m K` and its lemma is
+`exact pictureProj_pencilConfigPointGrade …`, so `gradePiForm` and `gradePi` rest on it; `gradePlanarProj`
+is **kept** (`gradePi_normalsJoin`'s statement names it, per the hygiene rule), and ConditionLinear's
+local `π` is `pictureProj m K`. No repair beyond those lines. **Binders:** `pencilConfigPointGrade_ofPoints`
+was `{K} {m} {α}` (Chain's `variable` order), now `{K} {α} {m}`; the only callers pass `pt hpt1`
+explicitly. `gradeSigma*` unchanged. Gates: G2 `lake build` (6249 jobs, 0 warnings or errors) and
+`lake lint`; G3 `blueprint/lint.sh`; G4 `blueprint/verify.sh` (`checkdecls` silent); G5 `#print
+axioms` of all 21 `formalization.yaml` declarations, no `sorryAx`; G1. FRICTION: *`gradeSigma` and
+the picture projection…* and *`pencilConfigPointGrade_ofPoints` sits in…* `[resolved]`.
+
+**Task 12** (`Realization.lean`) is one line below.
 
 **Task 11** (`PanelLayer.lean`) is one line below; its binder reorderings are in its commit.
 
@@ -177,7 +181,7 @@ the entries it resolved.
   in…*, *No linear-equivalence form…*, *Grade-general extensor…*.
 - [x] **12. `Grade/Realization.lean`** (this commit; Lean; sonnet). Seven `dotPerp` moves beside
   `finrank_dotPerp`. Resolves the `dotPerp` parts of *42l's home debts* and *42k's home debts*.
-- [ ] **13. `Grade/Carrier.lean` and `Grade/Configuration.lean`** (Lean; sonnet). `gradeSigma` and
+- [x] **13. `Grade/Carrier.lean` and `Grade/Configuration.lean`** (this commit; Lean; sonnet). `gradeSigma` and
   `gradeSigma_apply` (from `Grade/ConditionLinear.lean`) beside `gradeMk`, and
   `finrank_span_pencilConfigPointGrade_closedNbhd_le`'s inline `let` through it; `pictureProj` and
   `pictureProj_pencilConfigPointGrade` made public, and the two other projections through them
@@ -245,8 +249,8 @@ the entries it resolved.
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 13, `Grade/Carrier.lean` and `Grade/Configuration.lean` (*Lemma
-checklist*): `gradeSigma` and the picture projections, one commit.
+**Next concrete task:** task 14, `MainComponent/Cut.lean`, after `Fin.val_succAbove` (*Lemma
+checklist*): the `Fin` mirror lemma first, then the `pathVertex` lemmas, one commit.
 After the round: ORIGAMI's open, with the PI (`notes/Origami.md`).
 
 ## Decisions made during this round

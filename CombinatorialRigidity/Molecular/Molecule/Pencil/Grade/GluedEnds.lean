@@ -45,13 +45,12 @@ variable {K : Type*} [Field K] {α β : Type*} {m : ℕ}
 
 /-- Keep the first, the second and the last coordinate: `π(b_v) = (q_v, 1)`. -/
 def gradePlanarProj : (Fin (m + 1 + 2) → K) →ₗ[K] (Fin 3 → K) :=
-  LinearMap.funLeft K K ![0, 1, Fin.last _]
+  pictureProj m K
 
 /-- `π` reads the configuration point as its homogeneous picture point. -/
 theorem gradePlanarProj_pencilConfigPointGrade (q : α × Fin 2 → K) (z : α × Fin m → K) (w : α) :
     gradePlanarProj (pencilConfigPointGrade q z w) = pencilPicturePoint q w := by
-  funext i
-  fin_cases i <;> simp [gradePlanarProj, LinearMap.funLeft_apply, pencilPicturePoint]
+  exact pictureProj_pencilConfigPointGrade q z w
 
 /-- The alternating form `(v, w) ↦ π v ×₃ π w`. -/
 def gradePiForm : (Fin (m + 1 + 2) → K) [⋀^Fin 2]→ₗ[K] (Fin 3 → K) where

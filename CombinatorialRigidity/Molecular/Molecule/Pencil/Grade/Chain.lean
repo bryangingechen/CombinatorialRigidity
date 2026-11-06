@@ -37,8 +37,8 @@ isomorphism from the joins to the hinges.
 * `Graph.X0AttainsGrade.of_openEar`: `thm:pencil-d-open-ear-long`.
 * `Graph.X0AttainsGrade.of_cycle_of_certificate`, `Graph.X0AttainsGrade.of_openEar_of_cert`: the
   steps at any independent joins.
-* `card_le_finrank_of_linearIndependent_normalsJoin`, `three_le_screwDim_succ` and
-  `pencilConfigPointGrade_ofPoints`: the helpers.
+* `card_le_finrank_of_linearIndependent_normalsJoin`, `three_le_screwDim_succ`: the helpers
+  (`pencilConfigPointGrade_ofPoints` is in `Grade/Carrier.lean`).
 -/
 
 @[expose] public section
@@ -341,17 +341,6 @@ theorem _root_.Graph.X0AttainsGrade.of_cycle_of_certificate [Infinite K] [Finite
 /-- **`D ≥ 3` in every dimension**: `screwDim (m + 1) = C(m + 3, 2) ≥ C(3, 2) = 3`. -/
 theorem three_le_screwDim_succ : 3 ≤ screwDim (m + 1) :=
   (Nat.choose_le_choose 2 (by omega : 3 ≤ m + 1 + 2)).trans' (by decide)
-
-/-- **Points with last coordinate `1` are configuration points**: the picture `![pt w 0, pt w 1]`
-and the heights `gradeHeights (pt w)` give back the point `pt w` (`gradeMk_eta`), so a placement of
-bodies at vectors with last coordinate `1` is a picture and `m` heights. -/
-theorem pencilConfigPointGrade_ofPoints (pt : α → Fin (m + 1 + 2) → K)
-    (hpt : ∀ w, pt w (Fin.last (m + 2)) = 1) (w : α) :
-    pencilConfigPointGrade (fun p => ![pt p.1 0, pt p.1 1] p.2)
-      (fun p => gradeHeights (pt p.1) p.2) w = pt w := by
-  rw [pencilConfigPointGrade_eq_gradeMk]
-  conv_rhs => rw [gradeMk_eta (pt w), hpt]
-  rfl
 
 /-- **A cycle attains, in every dimension** (`thm:pencil-d-cycle`, CERT S6 (C1) and S7 (a)): a
 cycle on `k + 2` bodies, the open ear `a - x₁ - ⋯ - x_k - b` and one edge `ab`, attains at `m`

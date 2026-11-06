@@ -202,6 +202,34 @@ theorem gradeHeights_smul (r : K) (b : Fin (m + 1 + 2) → K) :
 theorem pencilConfigPointGrade_eq_gradeMk (q : α × Fin 2 → K) (z : α × Fin m → K) (w : α) :
     pencilConfigPointGrade q z w = gradeMk (q (w, 0)) (q (w, 1)) (fun i => z (w, i)) 1 := rfl
 
+/-- **Points with last coordinate `1` are configuration points**: the picture `![pt w 0, pt w 1]`
+and the heights `gradeHeights (pt w)` give back the point `pt w` (`gradeMk_eta`), so a placement of
+bodies at vectors with last coordinate `1` is a picture and `m` heights. -/
+theorem pencilConfigPointGrade_ofPoints (pt : α → Fin (m + 1 + 2) → K)
+    (hpt : ∀ w, pt w (Fin.last (m + 2)) = 1) (w : α) :
+    pencilConfigPointGrade (fun p => ![pt p.1 0, pt p.1 1] p.2)
+      (fun p => gradeHeights (pt p.1) p.2) w = pt w := by
+  rw [pencilConfigPointGrade_eq_gradeMk]
+  conv_rhs => rw [gradeMk_eta (pt w), hpt]
+  rfl
+
+/-- **The map `σ_h`** (`lem:pencil-d-condition-linear`): for `m` coefficient triples
+`h_i = (a^i, c^i, e^i)`, the linear map `K³ → K^(m+3)`,
+`(ξ, η, ω) ↦ (ξ, η, a^1 ξ + c^1 η + e^1 ω, …, a^m ξ + c^m η + e^m ω, ω)`, built from its blocks as
+`pencilConfigPointGrade` is (`gradeMk`). It keeps the coordinates `0`, `1` and the last
+(`gradeSigma_apply`), so it is injective (`gradeSigma_injective`). -/
+def gradeSigma (h : Fin m → Fin 3 → K) : (Fin 3 → K) →ₗ[K] (Fin (m + 1 + 2) → K) where
+  toFun c := gradeMk (c 0) (c 1) (fun i => h i ⬝ᵥ c) (c 2)
+  map_add' c c' := by
+    rw [gradeMk_add]
+    exact gradeMk_ext rfl rfl (funext fun i => by simp [dotProduct_add]) rfl
+  map_smul' r c := by
+    rw [RingHom.id_apply, gradeMk_smul]
+    exact gradeMk_ext rfl rfl (funext fun i => by simp [dotProduct_smul]) rfl
+
+theorem gradeSigma_apply (h : Fin m → Fin 3 → K) (c : Fin 3 → K) :
+    gradeSigma h c = gradeMk (c 0) (c 1) (fun i => h i ⬝ᵥ c) (c 2) := rfl
+
 /-! ## Linear changes and affine shifts of the heights -/
 
 /-- **A linear change and an affine shift of the heights keep the rank**

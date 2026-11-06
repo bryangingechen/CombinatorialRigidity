@@ -27,7 +27,7 @@ proof (`Graph.IsAdmissiblePicture.mem_liftingSpace_iff_coplanar`), which does no
 
 ## Main definitions
 
-* `gradeSigma`: the map `σ_h`.
+* `gradeSigma` (defined in `Grade/Carrier.lean`): the map `σ_h`.
 * `gradeSigmaPerp`: the vectors `n^i` spanning the orthogonal of its image.
 
 ## Main results
@@ -54,23 +54,6 @@ namespace CombinatorialRigidity.Molecular
 variable {K : Type*} [Field K] {α β : Type*} {m : ℕ}
 
 /-! ## The map `σ_h` and the vectors `n^i` -/
-
-/-- **The map `σ_h`** (`lem:pencil-d-condition-linear`): for `m` coefficient triples
-`h_i = (a^i, c^i, e^i)`, the linear map `K³ → K^(m+3)`,
-`(ξ, η, ω) ↦ (ξ, η, a^1 ξ + c^1 η + e^1 ω, …, a^m ξ + c^m η + e^m ω, ω)`, built from its blocks as
-`pencilConfigPointGrade` is (`gradeMk`). It keeps the coordinates `0`, `1` and the last
-(`gradeSigma_apply`), so it is injective (`gradeSigma_injective`). -/
-def gradeSigma (h : Fin m → Fin 3 → K) : (Fin 3 → K) →ₗ[K] (Fin (m + 1 + 2) → K) where
-  toFun c := gradeMk (c 0) (c 1) (fun i => h i ⬝ᵥ c) (c 2)
-  map_add' c c' := by
-    rw [gradeMk_add]
-    exact gradeMk_ext rfl rfl (funext fun i => by simp [dotProduct_add]) rfl
-  map_smul' r c := by
-    rw [RingHom.id_apply, gradeMk_smul]
-    exact gradeMk_ext rfl rfl (funext fun i => by simp [dotProduct_smul]) rfl
-
-theorem gradeSigma_apply (h : Fin m → Fin 3 → K) (c : Fin 3 → K) :
-    gradeSigma h c = gradeMk (c 0) (c 1) (fun i => h i ⬝ᵥ c) (c 2) := rfl
 
 /-- **`σ_h` is injective**: it keeps the coordinates `0`, `1` and the last. -/
 theorem gradeSigma_injective (h : Fin m → Fin 3 → K) : Function.Injective (gradeSigma h) := by
@@ -215,10 +198,9 @@ theorem _root_.Graph.IsAdmissiblePicture.finrank_span_pencilConfigPointGrade_clo
     classical
     set S := Submodule.span K (pencilConfigPointGrade q z '' G.closedNbhd v) with hSdef
     -- `π` keeps the coordinates `0`, `1` and the last.
-    let π : (Fin (m + 1 + 2) → K) →ₗ[K] (Fin 3 → K) :=
-      LinearMap.funLeft K K ![0, 1, Fin.last (m + 2)]
-    have hπ : ∀ w, π (pencilConfigPointGrade q z w) = pencilPicturePoint q w := by
-      intro w; funext j; fin_cases j <;> simp [π, pencilPicturePoint]
+    let π : (Fin (m + 1 + 2) → K) →ₗ[K] (Fin 3 → K) := pictureProj m K
+    have hπ : ∀ w, π (pencilConfigPointGrade q z w) = pencilPicturePoint q w :=
+      pictureProj_pencilConfigPointGrade q z
     have hmem : ∀ w ∈ G.closedNbhd v, pencilConfigPointGrade q z w ∈ S :=
       fun w hw => Submodule.subset_span ⟨w, hw, rfl⟩
     obtain ⟨t, ht, hli⟩ := hq.2 v hv

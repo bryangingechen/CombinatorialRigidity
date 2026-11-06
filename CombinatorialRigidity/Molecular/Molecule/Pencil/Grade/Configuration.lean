@@ -39,13 +39,13 @@ variable {K : Type*} [Field K] {α β : Type*} {m : ℕ}
 /-! ## Independence over the picture -/
 
 /-- The linear map of `K^(m+3)` to `K³` that keeps the coordinates `0`, `1` and the last. -/
-private def pictureProj (m : ℕ) (K : Type*) [Field K] :
+def pictureProj (m : ℕ) (K : Type*) [Field K] :
     (Fin (m + 1 + 2) → K) →ₗ[K] (Fin 3 → K) where
   toFun a := ![a 0, a 1, a (Fin.last (m + 2))]
   map_add' a b := by funext i; fin_cases i <;> rfl
   map_smul' c a := by funext i; fin_cases i <;> rfl
 
-private theorem pictureProj_pencilConfigPointGrade (q : α × Fin 2 → K) (z : α × Fin m → K)
+theorem pictureProj_pencilConfigPointGrade (q : α × Fin 2 → K) (z : α × Fin m → K)
     (w : α) : pictureProj m K (pencilConfigPointGrade q z w) = pencilPicturePoint q w := by
   funext i
   fin_cases i <;> simp [pictureProj, pencilPicturePoint]
@@ -101,14 +101,7 @@ theorem finrank_span_pencilConfigPointGrade_closedNbhd_le {G : Graph α β}
     Module.finrank K (Submodule.span K (pencilConfigPointGrade q z '' G.closedNbhd v)) ≤ 3 := by
   rw [Graph.mem_liftingSpaceGrade] at hz
   choose h hh using fun i => (hz i).2 v hv
-  let f : (Fin 3 → K) →ₗ[K] (Fin (m + 1 + 2) → K) :=
-    { toFun := fun c => gradeMk (c 0) (c 1) (fun i => h i ⬝ᵥ c) (c 2)
-      map_add' := fun c c' => by
-        rw [gradeMk_add]
-        exact gradeMk_ext rfl rfl (funext fun i => by simp [dotProduct_add]) rfl
-      map_smul' := fun r c => by
-        rw [RingHom.id_apply, gradeMk_smul]
-        exact gradeMk_ext rfl rfl (funext fun i => by simp [dotProduct_smul]) rfl }
+  let f := gradeSigma h
   have hle : Submodule.span K (pencilConfigPointGrade q z '' G.closedNbhd v)
       ≤ LinearMap.range f := by
     refine Submodule.span_le.2 ?_
