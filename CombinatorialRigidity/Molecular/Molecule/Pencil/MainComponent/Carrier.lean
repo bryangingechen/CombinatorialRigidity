@@ -342,7 +342,7 @@ holds vacuously. The lemmas that obtain a realization from it assume an infinite
 (`[Infinite K]`), so the definition needs no such hypothesis of its own. -/
 def _root_.Graph.X0Attains (K : Type*) [Field K] (G : Graph α β) : Prop :=
   ∃ (ends : β → α × α) (P : MvPolynomial (α × Fin 2) K)
-    (hlinks : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2), P ≠ 0 ∧
+    (hlinks : Graph.RecordsLinks G ends), P ≠ 0 ∧
     ∀ q : α × Fin 2 → K, MvPolynomial.eval q P ≠ 0 →
       G.IsAdmissiblePicture q ∧
       ∃ R : MvPolynomial α K, (∃ z ∈ G.liftingSpace q, MvPolynomial.eval z R ≠ 0) ∧
@@ -901,8 +901,7 @@ theorem _root_.Graph.x0Attains_of_exists [Finite α] [Finite β] {G : Graph α �
     congr 2
     funext ⟨w, j⟩
     fin_cases j <;> simp [pencilConfigPoint]
-  refine ⟨ends, Padm * D * Qsec, Graph.recordsLinks_iff_forall_isLink.mp hends, fun h0 => ?_,
-    fun q hq => ?_⟩
+  refine ⟨ends, Padm * D * Qsec, hends, fun h0 => ?_, fun q hq => ?_⟩
   · -- `P(q₀) ≠ 0`: the section passes through `z₀`.
     have hZz₀ : (fun w => MvPolynomial.eval q₀ (Z (Sum.inl w))) = z₀ := by
       rw [← hx₀z]

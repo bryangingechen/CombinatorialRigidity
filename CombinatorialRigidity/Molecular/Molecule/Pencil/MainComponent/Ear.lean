@@ -1361,8 +1361,7 @@ theorem _root_.Graph.X0Attains.of_openEar_of_cert [Infinite K] [Finite α] [Fini
   have hli := hRlam z hzlam
   rw [Graph.vertexSet_induce G V₁] at hr₁
   rw [PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr _
-    (Graph.recordsLinks_iff_forall_isLink.mpr hends₁) (hends.induce V₁)
-    (q' := fun p => pencilConfigPoint q z p.1 p.2)
+    hends₁ (hends.induce V₁) (q' := fun p => pencilConfigPoint q z p.1 p.2)
     (fun w hw t => pencilConfigPoint_liftingRestrict V₁ q z hw t)] at hr₁
   -- the ear rank formula at `ofNormals G ends`, with `n` independent ear hinges
   set F := (PanelHingeFramework.ofNormals (k := 2) G ends

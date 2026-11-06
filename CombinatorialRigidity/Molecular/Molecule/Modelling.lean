@@ -59,9 +59,9 @@ an endpoint selector `ends` and a placement `c : α → ℝ³` of the atom centr
   (`RankHypothesis (G.deficiency 3)`);
 * the centres are in general position up to order four (`SimpleGraph.IsGeneralPositionPlacement`);
   and
-* `ends` records every `G`-link (`∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2`) — the
-  `hends` compatibility fact the square-graph dictionary (`molecular_finrank_motions_eq_square_ker`)
-  needs for the *same* `ends` this theorem returns.
+* `ends` records every `G`-link (`Graph.RecordsLinks G ends`), the hypothesis `hends` of the
+  square-graph dictionary (`molecular_finrank_motions_eq_square_ker`) at the *same* `ends` this
+  theorem returns.
 
 `molecule_rank_lower_bound` (`lem:molecule-rank-lower-bound`) applies it with the square-graph
 dictionary.
@@ -80,13 +80,11 @@ theorem exists_molecular_rankHypothesis_generalPosition [Finite α] [Finite β]
     ∃ (ends : β → α × α) (c : α → EuclideanSpace ℝ (Fin 3)),
       (molecularOfCentres G ends c).RankHypothesis (G.deficiency 3)
       ∧ SimpleGraph.IsGeneralPositionPlacement c
-      ∧ (∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2) := by
+      ∧ Graph.RecordsLinks G ends := by
   classical
   -- Step 1: the general-position form of Theorem 5.6 supplies a panel realization `Q`.
   obtain ⟨Q, hQg, _hQC, hQrank, hQgp4, -⟩ :=
     PanelHingeFramework.exists_rankHypothesis_isGeneralPosition4 G hne hspan hSimple
-  have hQends : ∀ e u v, G.IsLink e u v → G.IsLink e (Q.ends e).1 (Q.ends e).2 :=
-    hQg ▸ Graph.recordsLinks_iff_forall_isLink.mp Q.isLink_ends
   -- The last coordinates of `Q`'s normals are nonzero (general position up to order four).
   have hw : ∀ a, Q.normal a (Fin.last 3) ≠ 0 := hQgp4.1
   -- The atom centres are the dehomogenized poles of `Q`'s normals.
@@ -110,7 +108,7 @@ theorem exists_molecular_rankHypothesis_generalPosition [Finite α] [Finite β]
     intro t n₁ n₂
     rw [panelSupportExtensor_swap (t • n₂) n₁, panelSupportExtensor_smul_left,
       panelSupportExtensor_swap n₁ n₂, smul_neg, neg_neg]
-  refine ⟨Q.ends, c, ?_, ?_, hQends⟩
+  refine ⟨Q.ends, c, ?_, ?_, PanelHingeFramework.recordsLinks_of_graph_eq hQg⟩
   · -- `RankHypothesis`: `Q`'s rank, across the rescaling and the polarity.
     rw [← rankHypothesis_ofNormals_homogenize_iff G Q.ends (hlinks := by link_tac) c
       (G.deficiency 3)]

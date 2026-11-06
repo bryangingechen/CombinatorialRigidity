@@ -594,12 +594,6 @@ theorem closedHubNbhd_eq_empty_of_notMem {y : α} (hy : y ∉ V(G)) : G.closedHu
   · exact hy hw.1
   · exact hy he.left_mem
 
-/-- The links of an induced subgraph are recorded by any selector recording those of `G`: the form
-at links of `Graph.RecordsLinks.induce`. -/
-theorem induce_isLink_ends {ends : β → α × α} (hends : Graph.RecordsLinks G ends) (V' : Set α) :
-    ∀ e x y, (G.induce V').IsLink e x y → (G.induce V').IsLink e (ends e).1 (ends e).2 :=
-  fun _ _ _ => (hends.induce V').isLink
-
 /-- **`lem:pencil-d-lift-pendant`.** -/
 theorem liftAttains_of_pendant [Infinite K] [Finite α] [Finite β] (r : ℕ) {G : Graph α β}
     (hS : G.Simple) (hfeas : PencilNondegFeasible K G) {v u : α} (hv : G.degree v = 1)

@@ -494,7 +494,6 @@ theorem liftAttains_of_forall_deficiency_two_ne_zero [Infinite K] [Finite α] [F
   have : G.Simple := hG.simple
   obtain ⟨hF1, -⟩ := hfeas.hub_conditions
   obtain ⟨ends, Patt, hends, hPatt0, hPatt⟩ := hatt
-  replace hends := Graph.recordsLinks_iff_forall_isLink.mpr hends
   have h3 := hG.three_le_ncard_closedNbhd
   obtain ⟨Pm, hPm0, hPm⟩ := G.exists_mvPolynomial_isMainPicture (K := K) hG.simple.toLoopless h3
   obtain ⟨Ppl, hPpl0, hPpl⟩ := exists_planeDiff_ne_zero_poly (K := K) hG.simple h3 hrig

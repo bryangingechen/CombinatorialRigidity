@@ -444,8 +444,7 @@ theorem _root_.Graph.X0Attains.hasDistinctPencilRealization [Infinite K] {G : Gr
   obtain ⟨ends, P, hends, hP, hgood⟩ := h
   obtain ⟨q, hq⟩ := MvPolynomial.exists_eval_ne_zero hP
   obtain ⟨hadm, R, ⟨z, hz, hRz⟩, hall⟩ := hgood q hq
-  exact hadm.hasDistinctPencilRealization (Graph.recordsLinks_iff_forall_isLink.mpr hends) hz
-    (hall z hz hRz)
+  exact hadm.hasDistinctPencilRealization hends hz (hall z hz hRz)
 
 /-! ## Collineations, and scaling and affine shifts of the heights, keep the rank -/
 

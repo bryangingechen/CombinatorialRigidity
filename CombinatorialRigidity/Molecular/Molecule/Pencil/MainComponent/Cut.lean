@@ -391,16 +391,15 @@ theorem _root_.Graph.X0Attains.of_cutVertex [Infinite K] [Finite α] [Finite β]
   have hr₂ := hatt₂ _ (Graph.liftingRestrict_mem_liftingSpace hle₂ hz) hz₂'
   -- carry each side's rank to the selector `ends` and the unrestricted heights
   have hcongr : ∀ (X : Set α) (endsX : β → α × α),
-      (hlinks : ∀ e u w, (G.induce X).IsLink e u w →
-        (G.induce X).IsLink e (endsX e).1 (endsX e).2) →
+      (hlinks : Graph.RecordsLinks (G.induce X) endsX) →
       Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 2) (G.induce X)
           endsX (fun p => pencilConfigPoint q (Graph.liftingRestrict X z) p.1 p.2)
             ).toBodyHinge.rigidityRows)
         = Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 2) (G.induce X)
           ends (fun p => pencilConfigPoint q z p.1 p.2)).toBodyHinge.rigidityRows) := by
     intro X endsX hendsX
-    refine PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr _
-      (Graph.recordsLinks_iff_forall_isLink.mpr hendsX) (hends.induce X) ?_
+    refine PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr _ hendsX
+      (hends.induce X) ?_
     intro x hx i
     exact pencilConfigPoint_liftingRestrict X q z hx i
   rw [Graph.vertexSet_induce G V₁] at hr₁
@@ -1113,16 +1112,15 @@ theorem _root_.Graph.X0Attains.of_bridgePath [Infinite K] [Finite α] [Finite β
   have hr₁ := hatt₁ _ (Graph.liftingRestrict_mem_liftingSpace hle₁ hz) hz₁'
   have hr₂ := hatt₂ _ (Graph.liftingRestrict_mem_liftingSpace hle₂ hz) hz₂'
   have hcongr : ∀ (X : Set α) (endsX : β → α × α),
-      (hlinks : ∀ f u w, (G.induce X).IsLink f u w →
-        (G.induce X).IsLink f (endsX f).1 (endsX f).2) →
+      (hlinks : Graph.RecordsLinks (G.induce X) endsX) →
       Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 2) (G.induce X)
           endsX (fun p => pencilConfigPoint q (Graph.liftingRestrict X z) p.1 p.2)
             ).toBodyHinge.rigidityRows)
         = Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 2) (G.induce X)
           ends (fun p => pencilConfigPoint q z p.1 p.2)).toBodyHinge.rigidityRows) := by
     intro X endsX hendsX
-    refine PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr _
-      (Graph.recordsLinks_iff_forall_isLink.mpr hendsX) (hends.induce X) ?_
+    refine PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr _ hendsX
+      (hends.induce X) ?_
     intro x hx i
     exact pencilConfigPoint_liftingRestrict X q z hx i
   rw [Graph.vertexSet_induce G V₁] at hr₁

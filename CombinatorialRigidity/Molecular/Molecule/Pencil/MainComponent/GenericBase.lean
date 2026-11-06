@@ -939,7 +939,7 @@ theorem _root_.Graph.IsX0Graph.hasGenericPencilRealization_of_forall_deficiency_
       (hq3 _ (Finset.mem_univ _)))
     hxL (fun e a b hl _ _ => hpd a b hl.ne hl.left_mem hl.right_mem)
     (fun v hv _ a ha b hb hab => hpd a b hab ha.1.1 hb.1.1)
-    (Graph.recordsLinks_iff_forall_isLink.mpr hends) hsel
+    hends hsel
   refine ⟨pencilConfigFramework G ends q z, pencilNormalOfPicture q z sel, pencilConfigPoint q z,
     hnd, ?_⟩
   rw [finrank_span_rigidityRows_pencilConfigFramework]

@@ -692,8 +692,7 @@ theorem _root_.Graph.X0Attains.of_splitOff [Infinite K] [Finite α] [Finite β]
   have h28 := Graph.finrank_span_rigidityRows_splitOff_special hcover hxV₁ ha hb hpath hsep hends
     n0 hs0 hs1 hnx hLIab (hlinks := hends2)
   have hcongr := PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr G'' hends2
-    (Graph.recordsLinks_iff_forall_isLink.mpr hends₁)
-    (q := n0) (q' := fun p => pencilConfigPoint q z₁ p.1 p.2) (fun v hv i => by
+    hends₁ (q := n0) (q' := fun p => pencilConfigPoint q z₁ p.1 p.2) (fun v hv i => by
       rw [hn0']
       have hv0 : v ≠ x 0 := fun h => by rw [hVG''] at hv; exact hx0 (h ▸ hv)
       fin_cases i <;> simp [pencilConfigPoint, hqtv 0 v hv0, hzt, hyt, hv0, hxz])

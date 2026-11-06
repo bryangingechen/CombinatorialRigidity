@@ -374,7 +374,7 @@ As for `Graph.X0Attains`, `P ≠ 0` means "off a proper Zariski-closed set of pi
 infinite field; the lemmas that use it assume `[Infinite K]`. -/
 def _root_.Graph.X0AttainsGrade (K : Type*) [Field K] (m : ℕ) (G : Graph α β) : Prop :=
   ∃ (ends : β → α × α) (P : MvPolynomial (α × Fin 2) K)
-    (hlinks : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2), P ≠ 0 ∧
+    (hlinks : Graph.RecordsLinks G ends), P ≠ 0 ∧
     ∀ q : α × Fin 2 → K, MvPolynomial.eval q P ≠ 0 →
       G.IsAdmissiblePicture q ∧
       ∃ R : MvPolynomial (α × Fin m) K,
@@ -408,7 +408,7 @@ theorem _root_.Graph.x0AttainsGrade_one_iff {G : Graph α β} :
       rw [MvPolynomial.eval_rename] at hRz'
       have := hR (fun p => z' p.1) (hmem.2 hz') hRz'
       rw [PanelHingeFramework.finrank_span_rigidityRows_ofNormals_pencilConfigPointGrade_one
-        (Graph.recordsLinks_iff_forall_isLink.mpr hlinks) q _] at this
+        hlinks q _] at this
       exact this
   · rintro ⟨ends, P, hlinks, hP, H⟩
     refine ⟨ends, P, hlinks, hP, fun q hq => ?_⟩
@@ -419,7 +419,7 @@ theorem _root_.Graph.x0AttainsGrade_one_iff {G : Graph α β} :
     · intro z' hz' hRz'
       rw [MvPolynomial.eval_rename] at hRz'
       rw [PanelHingeFramework.finrank_span_rigidityRows_ofNormals_pencilConfigPointGrade_one
-        (Graph.recordsLinks_iff_forall_isLink.mpr hlinks) q _]
+        hlinks q _]
       exact hR _ (hmem.1 hz') hRz'
 
 end CombinatorialRigidity.Molecular

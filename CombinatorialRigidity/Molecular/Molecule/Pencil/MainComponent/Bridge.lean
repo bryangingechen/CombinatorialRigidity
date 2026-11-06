@@ -191,7 +191,7 @@ theorem _root_.Graph.exists_mvPolynomial_le_finrank_span_rigidityRows_pencilPict
     (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof 2 c → ∃ e₀ : β, e₀ ∉ E(G'))
     {G : Graph α β} (hSimple : G.Simple) (hV : 2 ≤ V(G).ncard) :
     ∃ (ends : β → α × α) (P : MvPolynomial (α × Fin 2) K)
-      (hlinks : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2), P ≠ 0 ∧
+      (hlinks : Graph.RecordsLinks G ends), P ≠ 0 ∧
       ∀ q : α × Fin 2 → K, MvPolynomial.eval q P ≠ 0 →
         screwDim 1 * ((V(G).ncard : ℤ) - 1) - G.deficiency 2 ≤
           (Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 1) G ends
@@ -268,8 +268,7 @@ theorem _root_.Graph.exists_mvPolynomial_le_finrank_span_rigidityRows_pencilPict
     congr 2
     funext ⟨a, i⟩
     exact eval_pencilPicturePointPoly q a i
-  refine ⟨Q₀.ends, T, Graph.recordsLinks_iff_forall_isLink.mp hQ₀ends,
-    fun h => hRk₂₀ (by rw [← hT, h, map_zero]), fun q hq => ?_⟩
+  refine ⟨Q₀.ends, T, hQ₀ends, fun h => hRk₂₀ (by rw [← hT, h, map_zero]), fun q hq => ?_⟩
   have hle := hRk₂ _ (by rwa [hT] at hq)
   rw [← hQ₀rank]
   exact_mod_cast hle
@@ -377,8 +376,7 @@ theorem _root_.Graph.exists_mvPolynomial_finrank_liftingSpace_eq [Infinite K] [F
   have hmain := hPmain q (left_ne_zero_of_mul hq)
   have hmain' : G'.IsMainPicture q := Graph.isMainPicture_embedEdges_iff.mpr hmain
   have hrk := hPrk q (right_ne_zero_of_mul hq)
-  rw [Graph.finrank_span_rigidityRows_ofNormals_pencilPicturePoint hmain'.1
-      (Graph.recordsLinks_iff_forall_isLink.mpr hends),
+  rw [Graph.finrank_span_rigidityRows_ofNormals_pencilPicturePoint hmain'.1 hends,
     screwDim_one, Graph.liftingSpace_embedEdges, Graph.deficiency_embedEdges,
     Graph.vertexSet_embedEdges] at hrk
   have hlow := Graph.three_add_deficiency_le_finrank_liftingSpace hmain.1 hV

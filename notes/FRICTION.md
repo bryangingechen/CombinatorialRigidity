@@ -539,15 +539,22 @@ to be re-derived by re-reading entries later.
   conclusions (`exists_mvPolynomial_le_finrank_span_rigidityRows_pencilPicturePoint` 2,
   `exists_molecular_rankHypothesis_generalPosition` 3); a witness destructured for more than one
   use converts once, `replace h := recordsLinks_iff_forall_isLink.mpr h`.
+  ARREARS, task 17: the three existentials and the two conclusions are `RecordsLinks`, and the 39
+  conversions are gone (the lemma's mentions 60 → 21: the API's 12, records built link by link 8,
+  one docstring); so are `Cut`'s two `hcongr` binders at links and `Modelling`'s `hQends` (now
+  `recordsLinks_of_graph_eq hQg`). `LiftSmall`'s `hendsG`, built at links, is built on `E(G)`:
+  `intro e he; obtain ⟨u, v, hl⟩ := Graph.exists_isLink_of_mem_edgeSet he`, with no iff.
 - **Proposed fix:** state such hypotheses as `RecordsLinks G ends` when the switch (Phase 41a, item
   5) or RESTATE touches their declarations; the conversions then go. For the field under
   `Q.graph = G`: a lemma `PanelHingeFramework.recordsLinks_of_graph_eq (hQg : Q.graph = G) :
   RecordsLinks G Q.ends` and a `link_base_tac` branch that applies it with `hQg` in scope (both
   landed, ARREARS task 13). For the pair form: `RecordsLinks.eq_pair_or_swap` (ARREARS task 14).
-  What is left is the PI's (`notes/Phase42-arrears.md` *Candidates for the PI*): read
-  `RecordsLinks` in the three existentials and the conclusions at links and in pair form.
-- **Status:** open, narrowed (ARREARS task 16): the hypotheses are done; the defs' existentials and
-  the conclusions remain.
+  The existentials and the conclusions at links: done (ARREARS task 17). What is left is Case III's
+  pair forms (`notes/Phase42-arrears.md` task 18): read `RecordsLinks` in `ofNormals_relabel`'s third
+  conjunct and `fullLink_recording_of_splitOff_recording`'s conclusion, and drop
+  `rigidityRows_ofNormals_congr_ends_swap`'s explicit `hagree`.
+- **Status:** open, narrowed (ARREARS task 17): the hypotheses, the defs' existentials and the
+  conclusions at links are done; Case III's pair forms remain (task 18).
 
 ### [idiom] Inserting arguments before a multi-line `(by tac₁` ⏎ `tac₂)` breaks the block's layout
 - **Where it bit:** ARREARS task 14: `chainData_freshEdge_slot_perp_ends₀`

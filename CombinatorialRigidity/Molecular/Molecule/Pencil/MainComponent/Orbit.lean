@@ -556,8 +556,7 @@ theorem _root_.Graph.exists_oneEar_base [Infinite K] [Fintype α] [Finite β] {H
   have hz' := Graph.liftingRestrict_mem_liftingSpace (Graph.induce_le hV₁H) hmem
   rw [Graph.liftingSpace_congr (G := G') (q := q) (q' := q') hqV₁] at hz'
   have hr := hatt₁ _ hz' hR
-  rw [PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr G'
-    (Graph.recordsLinks_iff_forall_isLink.mpr hends₁) hends
+  rw [PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr G' hends₁ hends
     (q' := fun p => pencilConfigPoint q (fun w => xk' (Sum.inl w)) p.1 p.2) (fun w hw t => ?_)]
     at hr
   · exact hr
@@ -934,7 +933,7 @@ theorem _root_.Graph.X0Attains.of_openEar_two_of_splitOff [Infinite K] [Finite �
         screwDim 2 * ((V(G₁).ncard : ℤ) - 1) - G₁.deficiency 3 := by
       rw [← hr₂]
       exact_mod_cast PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr G₁ hends₁
-        (Graph.recordsLinks_iff_forall_isLink.mpr hends₂) (fun _ _ _ => rfl)
+        hends₂ (fun _ _ _ => rfl)
     rw [hear₁, hrk₁, hcount₁, hs6, ← hρJ] at h1
     push_cast at h1
     linarith

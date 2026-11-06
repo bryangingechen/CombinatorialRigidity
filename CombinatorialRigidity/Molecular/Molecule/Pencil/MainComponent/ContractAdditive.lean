@@ -196,7 +196,6 @@ theorem _root_.Graph.X0Attains.of_additiveContract [Infinite K] [Finite α] [Fin
   have hWle : W.ncard ≤ V(G).ncard := Set.ncard_le_ncard hW (Set.toFinite _)
   -- one generic ambient picture `q`
   obtain ⟨endsc, Pc, hendsc, hPc, hgoodc⟩ := hc
-  replace hendsc := Graph.recordsLinks_iff_forall_isLink.mpr hendsc
   obtain ⟨endsH, PH, hendsH, hPH, hgoodH⟩ := hH
   obtain ⟨PJc, hPJc, hJc⟩ :=
     Graph.exists_mvPolynomial_finrank_liftingSpace_eq (K := K) hcS ⟨r, hrc⟩ hc3
@@ -367,7 +366,7 @@ theorem _root_.Graph.X0Attains.of_additiveContract [Infinite K] [Finite α] [Fin
     hPAt
   have hVH : V(G.induce W).ncard = W.ncard := rfl
   have hHcongr := PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr (k := 2)
-    (G.induce W) (hends.induce W) (Graph.recordsLinks_iff_forall_isLink.mpr hendsH)
+    (G.induce W) (hends.induce W) hendsH
     (q := fun p => pencilConfigPoint q (fun w => xt (Sum.inl w)) p.1 p.2)
     (q' := fun p => pencilConfigPoint q (contractCoreRestrict W xt) p.1 p.2)
     (fun y hy i => by

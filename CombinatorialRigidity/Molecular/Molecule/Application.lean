@@ -87,8 +87,7 @@ theorem molecule_rank_lower_bound {V : Type*} [Fintype V] [Nonempty V] (G : Simp
   -- Step 2: the square-graph dictionary gives the motion-space dimension as `dim ker R(G², c)`.
   have hshadow : ∀ u v, u ≠ v → ((∃ e, G.shadowGraph.IsLink e u v) ↔ G.Adj u v) :=
     fun u v _ => shadowGraph_isLink_iff G u v
-  have hkey := molecular_finrank_motions_eq_square_ker hshadow
-    (Graph.recordsLinks_iff_forall_isLink.mpr hends) hmin hgp
+  have hkey := molecular_finrank_motions_eq_square_ker hshadow hends hmin hgp
   -- Step 3: `RankHypothesis` gives the motion-space dimension; combine into the kernel dimension.
   have hrank' : (Module.finrank ℝ
       (molecularOfCentres G.shadowGraph ends c).infinitesimalMotions : ℤ)
@@ -402,8 +401,7 @@ theorem molecular_rigid_iff_square_rigid {V : Type*} [Fintype V] (G : SimpleGrap
       exists_molecular_rankHypothesis_generalPosition G.shadowGraph hne
         (shadowGraph_vertexSet G) (shadowGraph_simple G)
     rw [BodyHingeFramework.RankHypothesis, hdef] at hrank'
-    have hkey := molecular_finrank_motions_eq_square_ker hshadow
-      (Graph.recordsLinks_iff_forall_isLink.mpr hends') hmin hgp'
+    have hkey := molecular_finrank_motions_eq_square_ker hshadow hends' hmin hgp'
     refine ⟨c', ?_⟩
     rw [IsInfinitesimallyRigid]
     omega

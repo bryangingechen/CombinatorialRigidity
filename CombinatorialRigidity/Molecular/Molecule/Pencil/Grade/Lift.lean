@@ -544,7 +544,7 @@ realization in dimension three with `Q(b⁰) ≠ 0` has a lift of rank
 `tgt = D(|V(G)| − 1) − def_d(G)`, the rank of the panel-hinge framework with the normals of the lift
 (at a selector `ends` of the links; the rank does not depend on it). -/
 def LiftAttains (K : Type*) [Field K] (r : ℕ) (G : Graph α β) : Prop :=
-  ∃ (ends : β → α × α) (_ : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
+  ∃ (ends : β → α × α) (_ : Graph.RecordsLinks G ends)
     (Q : MvPolynomial (α × Fin 4) K),
     (∀ p ∈ Q.vars, p.1 ∈ V(G)) ∧
     (∃ d : α →₀ ℕ, MvPolynomial.IsWeightedHomogeneous (fun p : α × Fin 4 => Finsupp.single p.1 1)

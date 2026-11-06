@@ -406,7 +406,7 @@ theorem liftAttains_of_least [Infinite K] [Finite α] [Finite β] {r : ℕ} {G :
       split_ifs <;> rfl
     rw [hQ₁, e]; exact hQ₀₀
   obtain ⟨d, hd₀, hd⟩ := exists_weightedHomogeneousComponent_of_eval_ne_zero hQ₁₀
-  refine ⟨ends, Graph.recordsLinks_iff_forall_isLink.mp hlinks,
+  refine ⟨ends, hlinks,
     MvPolynomial.weightedHomogeneousComponent bodyWeight d Q₁, ?_,
     ⟨d, MvPolynomial.weightedHomogeneousComponent_isWeightedHomogeneous _ _⟩,
     ⟨F, b, P, hnd, hd₀⟩, ?_⟩
@@ -825,7 +825,6 @@ theorem lift_transfer [Infinite K] [Finite α] [Finite β] {r : ℕ} {G : Graph 
   have hVH : V(H) = V' := rfl
   have hHG : H ≤ G := Graph.induce_le hV'G
   obtain ⟨endsH, hlinksH', QH, hQvars, ⟨dQ, hQhom⟩, ⟨FQ, bQ, PQ, hndQ, hQ0⟩, hQmain⟩ := hH
-  replace hlinksH' := Graph.recordsLinks_iff_forall_isLink.mpr hlinksH'
   obtain ⟨E, hEvars, ⟨dE, hEhom⟩, ⟨FE, bE, nE, hndE, hE0⟩, hEmain⟩ := hT1
   -- the chart of `H`
   obtain ⟨hubSelH, nbrSelH, hHubSelH, hNbrSelH⟩ :=

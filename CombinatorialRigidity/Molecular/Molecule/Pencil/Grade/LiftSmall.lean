@@ -76,7 +76,7 @@ theorem liftAttains_of_forall {r : ℕ} (hfeas : PencilNondegFeasible K G)
         = screwDim (r + 1 + 1) * ((V(G).ncard : ℤ) - 1) - G.deficiency (r + 1 + 2)) :
     LiftAttains K r G := by
   obtain ⟨F, b, P, hnd⟩ := (gradedPencilNondegFeasible_two_iff G).2 hfeas
-  refine ⟨ends, Graph.recordsLinks_iff_forall_isLink.mp hends, 1, by simp,
+  refine ⟨ends, hends, 1, by simp,
     ⟨0, MvPolynomial.isWeightedHomogeneous_one _ _⟩, ⟨F, b, P, hnd, by simp⟩,
     fun F b0 P0 hnd _ => ⟨fun _ => 0, fun _ => Submodule.zero_mem _, ?_⟩⟩
   exact h F b0 P0 hnd
@@ -424,8 +424,6 @@ theorem liftAttains_of_cutEdges_eq_empty [Finite α] [Finite β] (r : ℕ)
   refine ⟨hfeas₁, hfeas₂, fun hL₁ hL₂ => ?_⟩
   obtain ⟨ends₁, hends₁, Q₁, hQ₁v, ⟨d₁, hd₁⟩, ⟨F₁, b₁, P₁, hnd₁, hQ₁ne⟩, hall₁⟩ := hL₁
   obtain ⟨ends₂, hends₂, Q₂, hQ₂v, ⟨d₂, hd₂⟩, ⟨F₂, b₂, P₂, hnd₂, hQ₂ne⟩, hall₂⟩ := hL₂
-  replace hends₁ := Graph.recordsLinks_iff_forall_isLink.mpr hends₁
-  replace hends₂ := Graph.recordsLinks_iff_forall_isLink.mpr hends₂
   -- links and edges of the sides
   have indl₁ : ∀ {e u v}, G.IsLink e u v → u ∈ V₁ → (G.induce V₁).IsLink e u v :=
     fun {e u v} hl hu => (Graph.induce_isLink G V₁ e u v).mpr ⟨hl, hu, hAdj₁ e u v hl hu⟩
@@ -443,8 +441,9 @@ theorem liftAttains_of_cutEdges_eq_empty [Finite α] [Finite β] (r : ℕ)
     obtain ⟨a, b, hab⟩ := Graph.exists_isLink_of_mem_edgeSet he
     have : e ∉ E(G.induce V₁) := fun he1 => hab.2.1.2 ((hedge₁ hab.1).1 he1)
     simp only [ends, this, ↓reduceIte]
-  have hendsG : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2 := by
-    intro e u v hl
+  have hendsG : Graph.RecordsLinks G ends := by
+    intro e he
+    obtain ⟨u, v, hl⟩ := Graph.exists_isLink_of_mem_edgeSet he
     by_cases hu : u ∈ V₁
     · rw [hends_1 e ((hedge₁ hl).2 hu)]
       exact (hends₁.isLink (indl₁ hl hu)).of_le (Graph.induce_le hV₁G)

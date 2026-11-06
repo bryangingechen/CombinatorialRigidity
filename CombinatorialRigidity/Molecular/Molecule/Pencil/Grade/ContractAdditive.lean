@@ -118,7 +118,6 @@ theorem _root_.Graph.X0AttainsGrade.of_additiveContract [Infinite K] [Finite α]
   have hWle : W.ncard ≤ V(G).ncard := Set.ncard_le_ncard hW (Set.toFinite _)
   -- the picture
   obtain ⟨endsc, Pc, hendsc, hPc, hgoodc⟩ := hc
-  replace hendsc := Graph.recordsLinks_iff_forall_isLink.mpr hendsc
   obtain ⟨endsH, PH, hendsH, hPH, hgoodH⟩ := hH
   obtain ⟨PJc, hPJc, hJc⟩ :=
     Graph.exists_mvPolynomial_finrank_liftingSpace_eq (K := K) hcS ⟨r, hrc⟩ hc3
@@ -355,7 +354,7 @@ theorem _root_.Graph.X0AttainsGrade.of_additiveContract [Infinite K] [Finite α]
       Graph.liftingRestrict_mem_liftingSpace_induce_of_contract hW (hxt i)
   have hH0 := hattH _ hmemH hPAt
   rw [PanelHingeFramework.finrank_span_rigidityRows_ofNormals_liftingRestrict_grade (X := W)
-    (fun _ h => h) (Graph.recordsLinks_iff_forall_isLink.mpr hendsH) (hends.induce W)] at hH0
+    (fun _ h => h) hendsH (hends.induce W)] at hH0
   have hH : (Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := m + 1)
       (G.induce W) ends n).toBodyHinge.rigidityRows) : ℤ) =
       screwDim (m + 1) * ((W.ncard : ℤ) - 1) := by

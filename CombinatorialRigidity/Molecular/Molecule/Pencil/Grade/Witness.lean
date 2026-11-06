@@ -130,8 +130,7 @@ theorem _root_.Graph.x0AttainsGrade_of_exists [Finite α] [Finite β] {G : Graph
   have hZz₀ : (fun r : α × Fin m => MvPolynomial.eval q₀ (Z r.2 (Sum.inl r.1))) = z₀ := by
     funext ⟨w, i⟩
     exact congr_fun (hZ₀ i) w
-  refine ⟨ends, Padm * (∏ i, D i) * Qsec, Graph.recordsLinks_iff_forall_isLink.mp hends,
-    fun h0 => ?_, fun q hq => ?_⟩
+  refine ⟨ends, Padm * (∏ i, D i) * Qsec, hends, fun h0 => ?_, fun q hq => ?_⟩
   · -- `P(q₀) ≠ 0`: the sections pass through `z₀`.
     have h := congrArg (MvPolynomial.eval q₀) h0
     rw [map_mul, map_mul, map_prod, hQsec, hZz₀, map_zero] at h

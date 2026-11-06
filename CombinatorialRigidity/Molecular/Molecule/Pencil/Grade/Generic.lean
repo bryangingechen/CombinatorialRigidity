@@ -50,7 +50,7 @@ theorem LiftAttains.hasGradedGenericPencilRealization {r : ℕ} {G : Graph α β
     HasGradedGenericPencilRealization K (r + 1 + 1) (r + 1 + 2) G := by
   obtain ⟨ends, hlinks, Q, -, -, ⟨F, b0, P0, hnd, hQ⟩, hmain⟩ := h
   obtain ⟨lam, hlam, hrank⟩ := hmain F b0 P0 hnd hQ
-  refine ⟨_, _, _, hnd.lift hlam (Graph.recordsLinks_iff_forall_isLink.mpr hlinks), ?_⟩
+  refine ⟨_, _, _, hnd.lift hlam hlinks, ?_⟩
   rw [PanelHingeFramework.span_rigidityRows_toPatchedBodyHinge]
   exact hrank
 

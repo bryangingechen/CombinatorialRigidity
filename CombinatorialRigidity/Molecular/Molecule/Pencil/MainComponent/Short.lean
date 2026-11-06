@@ -516,7 +516,7 @@ theorem _root_.Graph.exists_earBase_splitOff [Infinite K] [Finite α] {G : Graph
     intro s
     rw [BodyHingeFramework.finrank_span_rigidityRows_congr (G.induce V₁) (hCG s)]
     have := PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr (k := 2) (G.induce V₁)
-      hendsI (Graph.recordsLinks_iff_forall_isLink.mpr hends₁) (q := cfg sstar)
+      hendsI hends₁ (q := cfg sstar)
       (q' := fun p => pencilConfigPoint q' z₁ p.1 p.2)
       (fun w hw j => hcV₁ sstar w hw j)
     change (Module.finrank K ↥(Submodule.span K (PanelHingeFramework.ofNormals (k := 2)
@@ -533,7 +533,7 @@ theorem _root_.Graph.exists_earBase_splitOff [Infinite K] [Finite α] {G : Graph
     fun s p hp => ?_, fun s => BodyHingeFramework.relScrews_congr (G.induce V₁) (hCG s) a b,
     fun s => ?_, hrk₁, fun s => ?_⟩
   · rw [← hcfgdef, hcfgstar, PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr (k := 2)
-      H hends'' (Graph.recordsLinks_iff_forall_isLink.mpr hends₂) (fun _ _ _ => rfl)]
+      H hends'' hends₂ (fun _ _ _ => rfl)]
     exact hr₂
   · rw [← hcfgdef, hcfgstar]
     exact fun f hf => hadm₂.supportExtensor_ne_zero hends'' zs hf

@@ -163,10 +163,10 @@ theorem _root_.Graph.X0AttainsGrade.of_cutVertex [Infinite K] [Finite α] [Finit
   have hr₁ := hatt₁ _ (Graph.liftingRestrict_mem_liftingSpaceGrade hle₁ hz) hz₁'
   have hr₂ := hatt₂ _ (Graph.liftingRestrict_mem_liftingSpaceGrade hle₂ hz) hz₂'
   rw [PanelHingeFramework.finrank_span_rigidityRows_ofNormals_liftingRestrict_grade
-    (X := V(G.induce V₁)) subset_rfl (Graph.recordsLinks_iff_forall_isLink.mpr hends₁)
+    (X := V(G.induce V₁)) subset_rfl hends₁
     (hends.induce V₁), Graph.vertexSet_induce G V₁] at hr₁
   rw [PanelHingeFramework.finrank_span_rigidityRows_ofNormals_liftingRestrict_grade
-    (X := V(G.induce V₂)) subset_rfl (Graph.recordsLinks_iff_forall_isLink.mpr hends₂)
+    (X := V(G.induce V₂)) subset_rfl hends₂
     (hends.induce V₂), Graph.vertexSet_induce G V₂] at hr₂
   -- the ranks add (`lem:block-rank-cut-vertex`)
   have hadd := BodyHingeFramework.finrank_span_rigidityRows_cutVertex_eq
@@ -279,10 +279,10 @@ theorem _root_.Graph.X0AttainsGrade.of_bridgePath [Infinite K] [Finite α] [Fini
   have hr₁ := hatt₁ _ (Graph.liftingRestrict_mem_liftingSpaceGrade hle₁ hz) hz₁'
   have hr₂ := hatt₂ _ (Graph.liftingRestrict_mem_liftingSpaceGrade hle₂ hz) hz₂'
   rw [PanelHingeFramework.finrank_span_rigidityRows_ofNormals_liftingRestrict_grade
-    (X := V(G.induce V₁)) subset_rfl (Graph.recordsLinks_iff_forall_isLink.mpr hends₁)
+    (X := V(G.induce V₁)) subset_rfl hends₁
     (hends.induce V₁), Graph.vertexSet_induce G V₁] at hr₁
   rw [PanelHingeFramework.finrank_span_rigidityRows_ofNormals_liftingRestrict_grade
-    (X := V(G.induce V₂)) subset_rfl (Graph.recordsLinks_iff_forall_isLink.mpr hends₂)
+    (X := V(G.induce V₂)) subset_rfl hends₂
     (hends.induce V₂), Graph.vertexSet_induce G V₂] at hr₂
   -- the last bridge is the only edge leaving `S = V₁ ∪ range x`, whose complement is `V₂`
   have hcut : G.cutEdges S = {e (Fin.last k)} := by

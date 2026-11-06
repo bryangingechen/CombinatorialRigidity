@@ -140,7 +140,6 @@ theorem _root_.Graph.X0AttainsGrade.of_le [Infinite K] [Finite α] [Finite β] {
     (hG : G.Connected) (h : m' ≤ m) (hdef : G.deficiency (m' + 2) = G.deficiency (m + 2))
     (hatt : G.X0AttainsGrade K m') : G.X0AttainsGrade K m := by
   obtain ⟨ends, P, hends, hP, hPq⟩ := hatt
-  replace hends := Graph.recordsLinks_iff_forall_isLink.mpr hends
   obtain ⟨q₁, hq₁⟩ := MvPolynomial.exists_eval_ne_zero hP
   have hadm := (hPq q₁ hq₁).1
   have hloop : G.Loopless := ⟨fun e v hl => hadm.1 e v v hl rfl⟩

@@ -462,7 +462,7 @@ theorem _root_.Graph.X0AttainsGrade.of_openEar_of_cert [Infinite K] [Finite α] 
   have hr₁ := hatt₁ _ (Graph.liftingRestrict_mem_liftingSpaceGrade hle₁ hz) hz₁'
   have hli := hRlam z hzlam
   rw [PanelHingeFramework.finrank_span_rigidityRows_ofNormals_liftingRestrict_grade
-    (X := V(G.induce V₁)) subset_rfl (Graph.recordsLinks_iff_forall_isLink.mpr hends₁)
+    (X := V(G.induce V₁)) subset_rfl hends₁
     (hends.induce V₁), Graph.vertexSet_induce G V₁] at hr₁
   -- the ear rank formula at `ofNormals G ends`, with `n` independent ear hinges
   set F := (PanelHingeFramework.ofNormals (k := m + 1) G ends

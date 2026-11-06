@@ -193,7 +193,6 @@ theorem _root_.Graph.X0AttainsGrade.hasGradedDistinctPencilRealization [Infinite
   obtain ⟨ends, P, hends, hP, hgood⟩ := h
   obtain ⟨q, hq⟩ := MvPolynomial.exists_eval_ne_zero hP
   obtain ⟨hadm, R, ⟨z, hz, hRz⟩, hall⟩ := hgood q hq
-  exact hadm.hasGradedDistinctPencilRealization (Graph.recordsLinks_iff_forall_isLink.mpr hends) hz
-    (hall z hz hRz)
+  exact hadm.hasGradedDistinctPencilRealization hends hz (hall z hz hRz)
 
 end CombinatorialRigidity.Molecular
