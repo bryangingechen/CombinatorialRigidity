@@ -8,6 +8,8 @@ module
 public import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseIII.Candidate
 public import CombinatorialRigidity.Molecular.Induction.ForestSurgery.ChainExtraction
 public import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseI
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.PanelHingeForms
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.DeficiencyBound
 
 /-!
 # Case III: the rotation about `L`, the triangle and the cycle

@@ -7,6 +7,7 @@ module
 
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Pair
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GenericSteer
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.DeficiencyBound
 
 /-!
 # The conditioned pair at a cut edge

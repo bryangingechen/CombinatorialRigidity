@@ -6,6 +6,8 @@ Authors: Bryan Gin-ge Chen
 module
 
 public import CombinatorialRigidity.Molecular.AlgebraicInduction.Theorem55
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.PanelHingeForms
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.DeficiencyBound
 
 /-!
 # The generic lift — generic panel-and-hinge normal assignments

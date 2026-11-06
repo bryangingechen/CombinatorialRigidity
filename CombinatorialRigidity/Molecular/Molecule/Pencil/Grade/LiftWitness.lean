@@ -9,6 +9,7 @@ public import CombinatorialRigidity.Mathlib.LinearAlgebra.Pi
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Lift
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Arms
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Pair
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.DeficiencyBound
 
 /-!
 # One lift suffices, and lifts restrict to a subgraph

@@ -1107,6 +1107,12 @@ Surveyed the other raised-budget decls and next-largest files:
    `MeetHyperplanes.lean` 908 (the `2`-extensors `a ∨ v`, the coordinate
    pairing and the dot product, the transformation law of `*`, the meet of
    two hyperplanes).
+   Task 9 split `AlgebraicInduction/PanelLayer.lean` along its three
+   sections: `PanelLayer.lean` 1162 lines (the panel support extensor),
+   `PanelHingeForms.lean` 223 (the forms that vanish on a hinge; imports
+   `PanelLayer`), `DeficiencyBound.lean` 476 (the deficiency bound; imports
+   `Deficiency` and `RigidityMatrix/ColumnOperation`, not `PanelLayer`).
+   **All four splits are done: item 3 is closed.**
 4. **The three other CaseI budgets (:9142 400k, :9528 800k, :9896
    800k)** — in the cut-edge / Case-I-nonsimple producers
    (`case_cut_edge_realization{,_gp}`, `case_I_realization_nonsimple`).

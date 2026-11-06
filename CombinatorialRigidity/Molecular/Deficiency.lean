@@ -258,8 +258,8 @@ Take `ι` injective on the labels `f '' V(G)` used on `V(G)`, with `ι '' (f '' 
 `g x = ι (f x)` on `V(G)` and `g x = x` off it, so that each vertex outside `V(G)` is its own label.
 
 `BodyHingeFramework.screwDim_mul_compl_add_deficiency_le_finrank_infinitesimalMotions`
-(`AlgebraicInduction/PanelLayer.lean`) applies at `g` a bound that counts the range of a labeling
-(`BodyHingeFramework.screwDim_mul_range_card_sub_le_finrank_partitionMotions`). -/
+(`AlgebraicInduction/DeficiencyBound.lean`) applies at `g` a bound that counts the range of a
+labeling (`BodyHingeFramework.screwDim_mul_range_card_sub_le_finrank_partitionMotions`). -/
 theorem exists_normalized_labeling [Finite α] (G : Graph α β) (f : α → α) :
     ∃ g : α → α, g '' V(G) ⊆ V(G) ∧ G.numParts g = G.numParts f ∧
       G.crossingEdges g = G.crossingEdges f ∧

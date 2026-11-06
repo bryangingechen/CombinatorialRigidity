@@ -9,6 +9,7 @@ public import CombinatorialRigidity.Mathlib.Basic.Countable.Defs
 public import CombinatorialRigidity.Molecular.AlgebraicInduction.GenericityDevice
 public import CombinatorialRigidity.Molecular.Induction.ForestSurgery.Reduction
 public import CombinatorialRigidity.Molecular.RigidityMatrix.Bricks
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.PanelHingeForms
 
 /-!
 # Case II: putting back a vertex of degree two

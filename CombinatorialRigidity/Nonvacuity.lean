@@ -15,6 +15,7 @@ public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Generic
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Statements
 public import CombinatorialRigidity.PebbleGame.Correctness
 public import Mathlib.Combinatorics.SimpleGraph.Star
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.DeficiencyBound
 
 /-!
 # Non-vacuity witnesses for the main results

@@ -9,6 +9,7 @@ public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Polygon
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Cut
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.JoinIndependence
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Chain
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.DeficiencyBound
 
 /-!
 # A cycle and a long open ear, in every dimension

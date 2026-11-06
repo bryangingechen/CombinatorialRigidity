@@ -9,6 +9,7 @@ public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Short
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.PlanesMeet
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Bridge
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.ContractCurve
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.DeficiencyBound
 
 /-!
 # Glued ends in the plane bound the relative screws

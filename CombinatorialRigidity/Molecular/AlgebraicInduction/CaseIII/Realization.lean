@@ -7,6 +7,7 @@ module
 
 public import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseIII.Relabel.ForkedArm
 public import CombinatorialRigidity.Mathlib.Basic.Countable.Defs
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.DeficiencyBound
 
 /-!
 # Case III: the case `d = 3`, the case of a chain and `lem:case-III`

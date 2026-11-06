@@ -7,6 +7,8 @@ module
 
 public import CombinatorialRigidity.Molecular.AlgebraicInduction.Pinning
 public import CombinatorialRigidity.Molecular.Induction.Operations
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.PanelHingeForms
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.DeficiencyBound
 
 /-!
 # Panel-hinge frameworks and the realization hypotheses

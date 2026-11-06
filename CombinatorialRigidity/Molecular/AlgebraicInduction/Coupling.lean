@@ -7,6 +7,7 @@ module
 
 public import CombinatorialRigidity.Molecular.AlgebraicInduction.GenericityDevice
 public import CombinatorialRigidity.Molecular.Induction.ReducibleVertex
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.PanelHingeForms
 
 /-!
 # Case I: selectors, the two subgraphs, and deleting columns

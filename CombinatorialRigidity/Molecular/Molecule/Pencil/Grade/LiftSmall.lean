@@ -7,6 +7,7 @@ module
 
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.LiftWitness
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Polygon
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.DeficiencyBound
 
 /-!
 # Few bodies, a triangle, and a disconnected multigraph

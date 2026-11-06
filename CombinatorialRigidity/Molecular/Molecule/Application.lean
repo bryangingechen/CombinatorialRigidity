@@ -7,6 +7,7 @@ module
 
 public import CombinatorialRigidity.Molecular.Molecule.Carrier
 public import CombinatorialRigidity.Molecular.Molecule.Modelling
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.DeficiencyBound
 
 /-!
 # The molecule rank formula

@@ -7,6 +7,7 @@ module
 
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Witness
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Cut
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.DeficiencyBound
 
 /-!
 # Cut vertices and chains of bridges, in every dimension

@@ -7,6 +7,7 @@ module
 
 public import CombinatorialRigidity.Molecular.AlgebraicInduction.GenericityDevice
 public import CombinatorialRigidity.Molecular.RigidityMatrix.Claim612
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.PanelHingeForms
 
 /-!
 # Case III: KT Claim 6.11, the frameworks `F_t`, and the count at `(G, p_1)`

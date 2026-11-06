@@ -7,6 +7,7 @@ module
 
 public import CombinatorialRigidity.Molecular.AlgebraicInduction.Theorem55
 public import CombinatorialRigidity.Molecular.Molecule.GeneralPosition4
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.DeficiencyBound
 
 /-!
 # KT Theorem 5.6 in `ℝ³`, with the poles in general position

@@ -7,6 +7,7 @@ module
 
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.GluedEnds
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.StarsThree
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.DeficiencyBound
 
 /-!
 # The step at three interior bodies of an open ear, in dimensions four to six

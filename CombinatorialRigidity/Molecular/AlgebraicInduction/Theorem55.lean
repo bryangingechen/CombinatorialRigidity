@@ -8,6 +8,7 @@ module
 public import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseIII.Realization
 public import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseII
 public import CombinatorialRigidity.Molecular.Induction.Contraction
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.DeficiencyBound
 
 /-!
 # KT Theorem 5.5, KT Theorem 5.6 and the molecular conjecture

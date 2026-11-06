@@ -6,6 +6,7 @@ Authors: Bryan Gin-ge Chen
 module
 
 public import CombinatorialRigidity.Molecular.AlgebraicInduction.PanelLayer
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.PanelHingeForms
 
 /-!
 # Panel rows, block pins and small rigid frameworks
@@ -34,8 +35,8 @@ presented in `sec:molecular-algebraic-induction`. The file proves:
   `V(G)` from a bound on the motions (`lem:isInfRigidOn-of-relative-count`);
 * putting back a body (`lem:case-II`).
 
-`PanelLayer.lean` defines the panel support extensor and the forms `annihRow` that the rows
-`panelRow` use.
+`PanelLayer.lean` defines the panel support extensor and `PanelHingeForms.lean` the forms
+`annihRow` that the rows `panelRow` use.
 -/
 
 @[expose] public section

@@ -7,7 +7,7 @@ carried over (`notes/Phase42-homes.md` *Moved to a later round*, *Candidates for
 debt, the friction log's archive sweep, a dead pair of `have`s, the splits of the four molecular
 files past the ~1500-line tripwire, and `RecordsLinks` moved to `Graph` with its link hypotheses
 restated. Seventeen tasks; no main result's statement changes.
-**Next concrete task:** task 9, the split of `AlgebraicInduction/PanelLayer.lean` (*Lemma checklist*).
+**Next concrete task:** task 12, `RecordsLinks` to `Graph` (*Lemma checklist*; tasks 9-10 landed, 11 reserved and unused).
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -22,7 +22,7 @@ stops; the PI answers in an entry that starts `**PI, <date>:**`.
 
 ## Current state
 
-**Tasks 1-7 landed.** Task 1 (`381dcae1`): the open. Task 2 (`0edd6e7e`): the friction log's
+**Tasks 1-10 landed.** Task 1 (`381dcae1`): the open. Task 2 (`0edd6e7e`): the friction log's
 archive sweep, 22 `[resolved]` entries to `FRICTION-archive.md`; FRICTION's counts now open 8,
 mirror-candidate 8, process 2, blueprint 0, resolved 0. Task 3 (`6f227b5e`): `hax`, `hbx` deleted
 from `X0AttainsGrade.of_openEar_four`. Task 4 (`a0b498a0`): HOMES's four missing edges closed
@@ -36,8 +36,10 @@ G1, G2 (whole-tree `lake build` 0 warnings, 0 cache failures; `lake lint`), G3 (
 docstring-label report unchanged), G4 (`checkdecls` silent); G6 **0 missing**, unbacked 190,
 implied 3070, 802 nodes, consistency OK (the built graph's 1885 edges), as at task 5.
 Task 7 (`175bcb33`): `RigidityMatrix/Basic.lean` split in two, a pure move (*Decisions*); same gates,
-G6 unchanged. Task 8 (this commit): `Meet.lean` split in two, a pure move (*Decisions*); same gates,
-G6 **0 missing**, unbacked 190, implied 3070, both consistency lines OK, as at task 7.
+G6 unchanged. Task 8 (`0f6d16a8`): `Meet.lean` split in two, a pure move (*Decisions*); same gates,
+G6 **0 missing**, unbacked 190, implied 3070, both consistency lines OK, as at task 7. Task 9 (this
+commit): `PanelLayer.lean` split in three, a pure move; same gates, G6 unchanged. Task 10 closed as a
+no-op: each split recorded its sizes in `PERFORMANCE.md` *(C)* item 3, now closed.
 
 **Verified at the open** (2026-11-05, at `6d75d694`; a whole-tree `lake build` replays clean, 0
 warnings, 0 cache failures):
@@ -151,15 +153,17 @@ resolved.
   rows, the trivial motions and rank lemmas). Also repointed task 6's missed mention in
   `Induction/SparseDeficiency.lean` (`deficiencyMerged_le_deficiency`, `partitionDef_map`, now
   `Deficiency/Cut.lean`).
-- [x] **8. Split `Meet.lean`** (this commit; Lean, a pure move). `Meet.lean` 672, new
+- [x] **8. Split `Meet.lean`** (`0f6d16a8`; Lean, a pure move). `Meet.lean` 672, new
   `MeetHyperplanes.lean` 908 (lines 672-1542: the `a ∨ v` section through the meet of two
   hyperplanes). Four live docstrings and two TACTICS-GOLF lines repointed.
-- [ ] **9. Split `AlgebraicInduction/PanelLayer.lean`** (Lean; sonnet). Along its three sections:
-  the panel support extensor stays (to line 1162); the hinge forms (1163–1358) and the deficiency
-  bound (1359–1805) to new files. A pure move. HOMES *Moved to a later round*.
-- [ ] **10. `notes/PERFORMANCE.md` *(C)* item 3** (docs only; sonnet), if tasks 6–9 left it stale:
-  the four files' new sizes; the item closes. (Each split task may do this in its own commit, in
-  which case this task is a no-op and is ticked so.)
+- [x] **9. Split `AlgebraicInduction/PanelLayer.lean`** (this commit; Lean, a pure move).
+  `PanelLayer.lean` 1162 (the panel support extensor), new `PanelHingeForms.lean` 223 (imports
+  `PanelLayer`) and `DeficiencyBound.lean` 476 (imports `Deficiency`, `ColumnOperation`, not
+  `PanelLayer`). 36 users import the part they use. The root lists no `PanelLayer`, so neither new
+  file is added to it (reached through `Theorem55`). Also repointed task 8's `Motive.lean` mention
+  of `finrank_toDualPerp_single_eq` (`Statement.lean`).
+- [x] **10. `notes/PERFORMANCE.md` *(C)* item 3** (no-op, this commit): tasks 6-9 each recorded
+  their sizes there, and task 9 closed the item.
 - [ ] **11. (reserved)** for a split that does not fit its task (*One task, one dispatch*).
 - [ ] **12. `RecordsLinks` to `Graph`** (Lean; opus). `Graph.RecordsLinks` and its lemmas in the
   `Graph` namespace, in a new low-level file importing only mathlib's `Graph` files it needs, so
@@ -199,8 +203,8 @@ resolved.
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 9, the split of `AlgebraicInduction/PanelLayer.lean` along its three
-sections (*Lemma checklist*; a pure move, G6 at 0 missing). After the close: ORIGAMI's open, with
+**Next concrete task:** task 12, `RecordsLinks` to `Graph` (*Lemma checklist*; G6 at 0 missing).
+After the close: ORIGAMI's open, with
 the PI (ROADMAP *Queued post-program phases*).
 
 ## Decisions made during this round

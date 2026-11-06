@@ -6,6 +6,7 @@ Authors: Bryan Gin-ge Chen
 module
 
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Chart
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.PanelHingeForms
 
 /-!
 # The pencil chart in coordinates, and `cross₃` of independent vectors
@@ -76,8 +77,8 @@ Each construction of the chart has a polynomial form, whose value at `q` is the 
 `nbrSlotPointPoly`); the points and the normals (`pencilChartPointPoly`, `pencilChartNormalPoly`);
 the coordinates in `screwBasis 2` of the join of the points of two bodies, the `2 × 2` minors of
 their coordinates (`pencilPointJoinPoly`); and the coordinates of the forms `annihRow` that vanish
-at that join (`pencilAnnihRowPoly`), as `annihRowPoly` (`PanelLayer.lean`) gives them at the join of
-two panels.
+at that join (`pencilAnnihRowPoly`), as `annihRowPoly` (`PanelHingeForms.lean`) gives them at the
+join of two panels.
 
 `pencilRow` is the family of rows `hingeRow u v (annihRow C t₁ t₂)`, where `(u, v)` are the bodies
 an endpoint selector gives an edge and `C` is the join of their points: the chart's counterpart of
@@ -284,7 +285,7 @@ theorem pencilPointJoinPoly_eval (hubSel : α → Fin 3 → Option α) (u v : α
 /-- **The coordinates of the forms that vanish at a join** (a step of `lem:pencil-generic-steer`):
 `[t₂ = s] C_{t₁} − [t₁ = s] C_{t₂}`, with `C_t = pencilPointJoinPoly hubSel u v t`. Its value at `q`
 is that of `annihRow C t₁ t₂` at the basis vector `screwBasis 2 s`, for `C` the join of the points
-of `u` and `v` (`pencilAnnihRowPoly_eval`). It is `annihRowPoly` (`PanelLayer.lean`) with
+of `u` and `v` (`pencilAnnihRowPoly_eval`). It is `annihRowPoly` (`PanelHingeForms.lean`) with
 `pencilPointJoinPoly` in place of `panelSupportPoly`. -/
 noncomputable def pencilAnnihRowPoly (hubSel : α → Fin 3 → Option α) (u v : α)
     (t₁ t₂ s : Set.powersetCard (Fin 4) 2) : MvPolynomial (α × Fin 4 × Fin 4) K :=

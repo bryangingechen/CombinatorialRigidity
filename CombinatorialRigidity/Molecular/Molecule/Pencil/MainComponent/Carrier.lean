@@ -8,6 +8,7 @@ module
 public import CombinatorialRigidity.Mathlib.Algebra.MvPolynomial.Monad
 public import CombinatorialRigidity.Mathlib.LinearAlgebra.Matrix.MvPolynomial
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Chart
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.DeficiencyBound
 
 /-!
 # Planar pictures, the lifting space and the main pictures

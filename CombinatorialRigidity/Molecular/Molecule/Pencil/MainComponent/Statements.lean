@@ -10,6 +10,7 @@ public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Gene
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GenericEar
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GenericTriangle
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GoodEar
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.DeficiencyBound
 
 /-!
 # The two main-component statements and the pencil realization theorem

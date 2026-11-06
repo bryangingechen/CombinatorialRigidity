@@ -10,6 +10,7 @@ public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Cut
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Flat
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.ContractAdditive
 public import CombinatorialRigidity.Molecular.Induction.SparseDeficiency
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.DeficiencyBound
 
 /-!
 # Contraction at an additive core, in every dimension

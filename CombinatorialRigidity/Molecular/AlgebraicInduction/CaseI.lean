@@ -7,6 +7,7 @@ module
 
 public import CombinatorialRigidity.Molecular.AlgebraicInduction.Coupling
 public import CombinatorialRigidity.Mathlib.Basic.Countable.Defs
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.PanelHingeForms
 import CombinatorialRigidity.Molecular.Induction.Contraction
 
 /-!

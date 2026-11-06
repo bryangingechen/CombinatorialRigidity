@@ -1904,7 +1904,7 @@ This is the same medicine as § 38 (the heavy carrier must stay out of the elabo
 applied to instance-diamond reconciliation rather than a basis-coordinate unfold. **A
 `maxHeartbeats` bump is not the fix — it still times out.** Worked case:
 `BodyHingeFramework.screwDim_mul_numParts_sub_le_finrank_partitionMotions` (Phase 22d,
-`Molecular/AlgebraicInduction/PanelLayer.lean`, the `hub` dimension lower bound).
+`Molecular/AlgebraicInduction/DeficiencyBound.lean`, the `hub` dimension lower bound).
 
 ## 40. Singleton-family LI (`LinearIndependent.of_subsingleton`) needs a torsion-free instance not transitively imported in module mode
 

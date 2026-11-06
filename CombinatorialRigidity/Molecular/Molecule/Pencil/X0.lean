@@ -7,6 +7,7 @@ module
 
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Arms
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Pair2
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.DeficiencyBound
 
 /-!
 # The main-component statements, and the conditioned pair from them

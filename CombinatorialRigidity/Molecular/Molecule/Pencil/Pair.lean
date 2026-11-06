@@ -7,6 +7,7 @@ module
 
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.ArmsAssembly
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Motive
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.DeficiencyBound
 
 /-!
 # The conditioned pair at a loop, on at most two bodies and at a cut edge

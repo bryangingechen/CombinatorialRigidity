@@ -8,6 +8,8 @@ module
 public import CombinatorialRigidity.Mathlib.Basic.Countable.Defs
 public import CombinatorialRigidity.Molecular.AlgebraicInduction.PanelHinge
 public import CombinatorialRigidity.Molecular.Deficiency.MinimalKDof
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.PanelHingeForms
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.DeficiencyBound
 
 /-!
 # The rank at generic normals, and counting rows and motions

@@ -8,6 +8,7 @@ module
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GenericSteer
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Lines
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Cut
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.DeficiencyBound
 
 /-!
 # The generic realization across a pendant triangle, and the triangle on three bodies

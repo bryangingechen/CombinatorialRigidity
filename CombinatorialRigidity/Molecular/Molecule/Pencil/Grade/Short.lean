@@ -9,6 +9,7 @@ public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Cut
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.EarData
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Stars
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Short
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.DeficiencyBound
 
 /-!
 # The step at four or more interior bodies of an open ear, in every dimension

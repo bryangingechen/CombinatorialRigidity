@@ -8,6 +8,7 @@ module
 public import CombinatorialRigidity.Molecular.MeetHyperplanes
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GenericSteer
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Coverage
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.DeficiencyBound
 
 /-!
 # The generic realization across a one-body ear
