@@ -260,6 +260,25 @@ so the lemma went to `Operations.lean` and a FRICTION idiom records it.
 content was unchanged and it re-ran every gate. The coordinator confirmed
 from `git stash list` that only the older stash remained.
 
+**ARREARS rows, 2026-11-06, the candidates and tasks 17–19 (a second
+coordinator session): 3.** Three dispatches and one resume (opus, sonnet, an opus recon
+resumed to land), none BLOCKED, no escalation. (1) The open's count of
+total-form link binders was 24 (`notes/Phase42-arrears.md`, carried into
+*Candidates for the PI*); a recount at the open's sha and at HEAD found 5.
+The coordinator caught it while re-checking the candidates before putting
+them to the PI (F57), and the PI was asked with 5. (2) The candidate's
+premise, that weakening the total form only generalizes, rode from the
+open to the PI's "take it" unchecked against the proofs. The PI chose a
+recon first; it refuted 4 of the 5 with kernel-checked counterexamples (a
+label off `E(G)` gives rows outside the row space), and the PI then chose
+a further hypothesis `hs` and a repin. A candidate that weakens a
+hypothesis is a recon question before it is a PI question. (3) Task 18
+(sonnet) found the coordinator's route hypothesis false (the implicit
+records are not inferred once `hagree` goes) and made them explicit; it
+left its checklist line uncut, which task 19 fixed. Task 19's landing,
+resumed from the recon (F43, 345k tokens), amended a ROADMAP summary
+phrase beyond its brief; accurate, kept.
+
 ## Findings
 
 (Distill recurring lessons here — one entry per lesson, rows cite it.
