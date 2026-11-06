@@ -378,7 +378,7 @@ leaves — is in *Current state* / *Hand-off* above. The opening recon's decisio
   graph-iso, NOT a W9b fold; §(o‴)(I.5)/(I.6)). Landed: 3 genuine-row branches, both block-orientation bricks,
   the `hsupp_of` foundation `ofNormals_supportExtensor_relabel_perm`, the make-or-break
   `removeVertex_genuine_shiftRelabel`, the per-member assembly `chainData_bottom_relabel`, the `hρGv` G1
-  bridges, LEAF-ρ2. Lessons → TACTICS-QUIRKS §38 / GOLF §20 / FRICTION idioms.
+  bridges, LEAF-ρ2. Lessons → TACTICS-QUIRKS §38 / GOLF §30 / FRICTION idioms.
 - **`hρGv` algebraic core + chain-induction LANDED 2026-06-20 (all axiom-clean; detail = §(o‴)(I.7.10)/(I.8) +
   git + Lean docstrings):** LEAF-ρ1 closed-form telescope `wstep_foldl_hingeRow_telescope` (an EXACT closed-form
   sum, KT eq. 6.66) + the membership corollary `wstep_foldl_freshEdge_slot_mem`; **P1** finite-range restatement
@@ -456,7 +456,7 @@ solely through CHAIN-3 (h-4) + `extensor_update_smul`.
 
 - *Match the list recursor to which end the fold's base case sits on: a `foldl`/accumulating fold anchored at
   index 0 inducts with `List.reverseRec`; a `foldr` anchored at the tail wants `cons` + `generalizing`* →
-  TACTICS-GOLF § 20 / FRICTION [idiom] *A `List.foldl` whose induction base case lives at index `0`…*.
+  TACTICS-GOLF § 30 / FRICTION [idiom] *A `List.foldl` whose induction base case lives at index `0`…*.
 - *Referencing a `CombinatorialRigidity.Molecular`-namespace lemma from inside a `_root_.Graph.ChainData` decl
   needs its full path including the inner `BodyHingeFramework` namespace* → FRICTION [idiom] *Referencing a
   `CombinatorialRigidity.Molecular`-namespace lemma from inside a `_root_.Graph.ChainData` decl…*.

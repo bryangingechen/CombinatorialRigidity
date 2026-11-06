@@ -86,15 +86,26 @@ symptom-indexed and lighter.
     equation-level `inv_smul_eq_iff₀ hcne` on the goal, not `rw [← hc, smul_smul, …]`;
     the nested-`•` `rw` chain fails to find its pattern on `⋀`-subtype elements (and
     `module` mis-atomizes the term).
-20. **Match the list recursor to which end the fold's base case sits on** — a
-    `List.foldr` whose invariant is anchored at the *tail* inducts with `cons` +
-    `generalizing` (the IH recurses over the shifted chain `F (· + 1)`); a `List.foldl`
-    (accumulating, ascending) whose invariant is anchored at *index 0* inducts with
-    `List.reverseRec` (cases `nil` / `append_singleton rest b ih`, peeling the **last**
-    element) and does **not** generalize the chain family — `index 0` stays pinned, only
-    the suffix grows. Re-index the inner steps off `rest ++ [b]` with
-    `List.getElem_append_left`; the peeled last element resolves with bare `simp`.
-    (FRICTION *A `List.foldl` whose induction base case lives at index `0`…*.)
+20. **An explicit small graph by iterated star `0`-extensions** — build it as
+    `⊥ ⊔ star₁ ⊔ … ⊔ starₙ`, each star attaching one fresh vertex, and carry the property with a
+    step lemma and an isolation-propagation lemma instead of case-bashing one `fromEdgeSet`
+    literal; write the edge literal in the orientation the construction produces (`Sym2.mk`'s
+    two orders are only propositionally equal).
+21. **`simp_all` in a big-hypothesis proof is a heartbeat multiplier** — it re-simplifies every
+    hypothesis, so its cost scales with the context: simplify only the goal (`simp only
+    [Fin.forall_fin_two, …]`, then `exact`), or extract a context-free `have` to a top-level
+    lemma.
+22. **Transport a span membership along a `LinearEquiv` by its linear combination** — not by
+    `Submodule.map_span`, whose `⇑↑g` coercion does not meet `Set.range_comp`'s `⇑g`: take the
+    coefficients from `Submodule.mem_span_range_iff_exists_fun`, then `map_sum`/`map_smul`. For
+    `span (f '' s)` with an unbundled `f`, rewrite `f` to the bundled form with `Set.image_congr'`
+    first.
+23. **A GL automorphism sending one independent pair to another** — compose two frame maps,
+    `exists_linearEquiv_basisFun_pair` twice (`g₁.symm.trans g₂`), rather than hand-rolling
+    `Basis.span` and `Basis.equiv`.
+24. **A conjunction both destructured and passed whole** — take its conjuncts by projection
+    (`hWF.1`, `hWF.2.2.1`): `obtain` clears the hypothesis, and a later call that needs it whole
+    fails with *"unknown identifier"*.
 25. **"Injective near `q₀`, with a polynomial inverse" — left-multiply by a left inverse at
     `q₀`** — for a matrix of polynomials whose specialization at `q₀` is injective, don't hunt
     for a nonzero maximal minor: a constant left inverse `H` at `q₀` makes `H · A(q)` square with
@@ -111,6 +122,10 @@ symptom-indexed and lighter.
 29. **A nonzero polynomial from a nonzero value — `ne_zero_of_map`.** From `hP : eval q P ≠ 0`,
     `ne_zero_of_map hP : P ≠ 0`; the lambda `fun h => hP (by rw [h, map_zero])` does not elaborate
     as an argument whose type is not yet fixed (`mul_ne_zero`'s).
+30. **Match the list recursor to which end the fold's base case sits on** — a `List.foldr`
+    anchored at the *tail* inducts with `cons` + `generalizing`; a `List.foldl` anchored at *index
+    0* inducts with `List.reverseRec`, peeling the **last** element, and does **not** generalize
+    the chain family.
 
 ---
 
@@ -1707,3 +1722,19 @@ product takes one line:
 `MvPolynomial.exists_eval_ne_zero (mul_ne_zero (ne_zero_of_map h₁) (ne_zero_of_map (h₂ f hf)))`
 (`hasNonparallelFullRankRealization_of_generic`, `GenericityDevice.lean`; Phase 41b, item 4b).
 About thirty sites keep the lambda form inside a typed `have`, which is fine.
+
+## 30. Match the list recursor to which end the fold's base case sits on
+
+A `List.foldr` whose invariant is anchored at the *tail* inducts with `cons` + `generalizing`: the
+IH recurses over the shifted chain `F (· + 1)`. A `List.foldl` (accumulating, ascending) whose
+invariant is anchored at *index 0* is the opposite. Induct with `List.reverseRec` (cases `nil` /
+`append_singleton rest b ih`), peeling the **last** element, and do **not** generalize the chain
+family: index 0 stays pinned, and only the suffix grows. In the `append_singleton` step,
+`rw [List.foldl_append]` splits off the last step; the inner fold over `rest` lands by `ih`, its
+steps re-indexed off `rest ++ [b]` with `List.getElem_append_left`; and the peeled last element
+resolves with bare `simp` (`(rest ++ [b])[rest.length] = b`).
+
+From `BodyHingeFramework.wstep_foldl_mem_span_rigidityRows` (`CaseIII/Relabel/`, Phase 23b), whose
+`foldr` sibling, since deleted, ran the other way. The rule was an index-only §20 with no body
+section until HOMES task 3 gave it this one. See FRICTION [idiom] *A `List.foldl` whose induction
+base case lives at index `0`…*.

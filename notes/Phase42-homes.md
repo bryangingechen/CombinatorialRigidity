@@ -6,8 +6,8 @@ CLEANUP-42 and ahead of ORIGAMI, in two parts: the friction log's docs and tooli
 2–4), then the lemmas Phase 42 left outside their home files, one task per home file, with the
 mirror lemmas that now meet their entries' own bar (tasks 5–18). No statement changes. Phase 42
 deferred the moves because a declaration added to these files rebuilds most of `Molecular/`
-mid-phase; ORIGAMI will not edit them, so they are cheapest now. Tasks 1–2 landed.
-**Next concrete task:** task 3, `TACTICS-GOLF.md`'s index.
+mid-phase; ORIGAMI will not edit them, so they are cheapest now. Tasks 1–3 landed.
+**Next concrete task:** task 4, the friction log's statuses and the archive sweep.
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -23,12 +23,16 @@ public declaration's name, or delete a pinned declaration, does not land that ch
 
 ## Current state
 
-**Task 2 landed** (this commit; tooling): `notes/check-phase-note.py --selftest` treats zero
-ACTIVE notes as the between-phases state unless a ROADMAP Status row reads "in progress". Tested:
-at HEAD, OK with 1 ACTIVE (this log); on `445d8069`'s `notes/` and ROADMAP (between phases), OK
-with 0 ACTIVE; with one of that ROADMAP's rows set "In progress", FAIL naming the row; with
-ROADMAP unreadable, FAIL. The FRICTION entry is `[resolved]`, for task 4's archive sweep.
-Task 1 (`a0c236a6`) opened the round on its status surfaces.
+**Task 3 landed** (this commit; docs only): `TACTICS-GOLF.md`'s index now runs §1–§30 in body
+order. Its index-only §20, the list-recursor idiom (`96c37025`, Phase 23b), had no body section;
+Phase 32 then added body §20 (iterated star `0`-extensions) unindexed, and §21–§24 followed. The
+idiom is now body and index §30. Its four pointers moved from §20 to §30: FRICTION's *`foldl`
+recurrence* sub-bullet and the *Lifted to* of *A `List.foldl` whose induction base case…*, and
+`notes/Phase23b.md`'s two (that closed note's G1 green); Phase 32's two §20 pointers already meant
+the body section. The FRICTION entry is `[resolved]`, for task 4's archive sweep.
+Earlier: task 2 (`c0bf555a`) made `--selftest` pass between phases, tested on four trees (HEAD;
+`445d8069`, between phases; a row in progress with no ACTIVE note, FAIL; ROADMAP unreadable,
+FAIL); task 1 (`a0c236a6`) opened the round.
 
 **Verified at the open** (2026-11-05, at `445d8069`):
 - **The review.** Of the 62 entries, about 30 can be fixed now (tasks 2–18). The rest are process
@@ -118,15 +122,12 @@ entries. **On landing, a task's line is cut to at most three lines:** number, sh
 the entries it resolved.
 
 - [x] **1. Open** (`a0c236a6`; docs only).
-- [x] **2. The selftest between phases** (this commit; tooling). `selftest()` fails on zero ACTIVE
+- [x] **2. The selftest between phases** (`c0bf555a`; tooling). `selftest()` fails on zero ACTIVE
   notes only while a ROADMAP Status row is in progress (new `roadmap_in_progress()`); tested on four
   trees (*Current state*). FRICTION *`--selftest` fails when no phase note…* `[resolved]`.
-- [ ] **3. `TACTICS-GOLF.md`'s index** (docs only; sonnet). Index entries for the body's §20–§24,
-  in the index's style. The list-recursor idiom (index-only §20) becomes body §30 with its own
-  index entry, and its pointers move to §30: FRICTION's two (the *`foldl` recurrence* sub-bullet,
-  and the *Lifted to* of *A `List.foldl` whose induction base case…*), and `notes/Phase23b.md`'s
-  two if G1 stays green on that closed note (else kept, and listed). Phase 32's §20 pointers
-  already mean the body section. Resolves FRICTION *sections-index ↔ body drift*.
+- [x] **3. `TACTICS-GOLF.md`'s index** (this commit; docs only). Index entries for body §20–§24;
+  the list-recursor idiom is body and index §30, its four pointers repointed (two in FRICTION, two
+  in `notes/Phase23b.md`, G1 green). FRICTION *sections-index ↔ body drift* `[resolved]`.
 - [ ] **4. The friction log's statuses and the archive sweep** (docs only; sonnet). In
   `notes/FRICTION.md`, retag:
   - `[resolved]`: the `lean_local_search` entry (*Verified at the open*); the nine `[process]` and
@@ -277,7 +278,8 @@ the entries it resolved.
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 3, `TACTICS-GOLF.md`'s index (*Lemma checklist*). After the round:
+**Next concrete task:** task 4, the friction log's statuses and the archive sweep (*Lemma
+checklist*). After the round:
 ORIGAMI's open, with the PI (`notes/Origami.md`).
 
 ## Decisions made during this round
