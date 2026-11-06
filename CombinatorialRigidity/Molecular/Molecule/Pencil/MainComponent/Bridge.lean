@@ -158,7 +158,8 @@ theorem PanelHingeFramework.finite_setOf_finrank_lt_of_curve [Finite α] [Finite
       (PanelHingeFramework.ofNormals G ends (fun p => (c p).eval t)).toBodyHinge.rigidityRows)
         < N}.Finite := by
   obtain ⟨Q, hQ₀, hQ⟩ :=
-    PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking G ends hends hne hN
+    PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking G ends
+    (Graph.recordsLinks_iff_forall_isLink.mpr hends) hne hN
   set P : Polynomial K := MvPolynomial.aeval c Q with hP
   have hPt : ∀ t, P.eval t = MvPolynomial.eval (fun p => (c p).eval t) Q :=
     fun t => MvPolynomial.polynomial_eval_aeval c Q t
@@ -209,7 +210,8 @@ theorem _root_.Graph.exists_mvPolynomial_le_finrank_span_rigidityRows_pencilPict
   set N := Module.finrank K (Submodule.span K Q₀.toBodyHinge.rigidityRows) with hN
   -- Its rank polynomial, the general-position polynomial, and the chart polynomial.
   obtain ⟨Rk, hRk₀, hRk⟩ := PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking G
-    Q₀.ends hQ₀ends (q₀ := fun p => Q₀.normal p.1 p.2) (fun e _ => by rw [hself]; exact hQ₀C e)
+    Q₀.ends (Graph.recordsLinks_iff_forall_isLink.mpr hQ₀ends) (q₀ := fun p => Q₀.normal p.1 p.2)
+    (fun e _ => by rw [hself]; exact hQ₀C e)
     (N := N) (le_of_eq (by rw [hself]))
   obtain ⟨Pgp, hPgp_seed, hPgp⟩ :=
     PanelHingeFramework.exists_generalPosition_polynomial (k := 1) (K := K) G Q₀.ends
@@ -258,7 +260,8 @@ theorem _root_.Graph.exists_mvPolynomial_le_finrank_span_rigidityRows_pencilPict
     exact PanelHingeFramework.supportExtensor_ne_zero_of_isGeneralPosition _ hgp he.ne
   -- The rank polynomial at the chart point, pulled back along the chart.
   obtain ⟨Rk₂, hRk₂₀, hRk₂⟩ := PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking G
-    Q₀.ends hQ₀ends (q₀ := fun p => pencilPicturePoint q' p.1 p.2) hC' (N := N)
+    Q₀.ends (Graph.recordsLinks_iff_forall_isLink.mpr hQ₀ends)
+    (q₀ := fun p => pencilPicturePoint q' p.1 p.2) hC' (N := N)
     (by rw [hrow]; exact hRk n₀ hn₀Rk)
   set T : MvPolynomial (α × Fin 2) K :=
     MvPolynomial.bind₁ (fun p : α × Fin 3 => pencilPicturePointPoly p.1 p.2) Rk₂ with hTdef

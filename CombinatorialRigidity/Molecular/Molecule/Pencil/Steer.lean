@@ -512,13 +512,10 @@ theorem exists_independent_pencilRow_subfamily_at_toCoord_of_reseed
     rw [hcongr, ← hceq]
     exact smul_ne_zero hc (hSuppNe e)
   -- The selector `H.endsOf` gives every edge of `H` its ends.
-  have hends : ∀ e u v,
-      (pencilChartFramework (PencilSeed.ofCoord seed₁.toCoord) hubSel H).graph.IsLink e u v →
-      (pencilChartFramework (PencilSeed.ofCoord seed₁.toCoord) hubSel H).graph.IsLink e
-        (H.endsOf e).1 (H.endsOf e).2 := by
-    intro e u v hlink
-    rw [pencilChartFramework_graph] at hlink ⊢
-    exact H.isLink_endsOf hlink.edge_mem
+  have hends : Graph.RecordsLinks
+      (pencilChartFramework (PencilSeed.ofCoord seed₁.toCoord) hubSel H).graph H.endsOf := by
+    rw [pencilChartFramework_graph]
+    exact Graph.recordsLinks_endsOf H
   -- `N` independent rows `panelRow` at links, at the selector `H.endsOf`.
   obtain ⟨s, hslink, hscard, hsLI⟩ :=
     (pencilChartFramework (PencilSeed.ofCoord seed₁.toCoord) hubSel

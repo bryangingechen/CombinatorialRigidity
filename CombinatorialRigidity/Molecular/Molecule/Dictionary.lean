@@ -7,6 +7,7 @@ module
 
 public import CombinatorialRigidity.Molecular.Molecule.ScrewVelocity
 public import CombinatorialRigidity.GeneralPositionPlacement
+public import CombinatorialRigidity.Mathlib.Combinatorics.Graph.RecordsLinks
 
 /-!
 # The square-graph dictionary
@@ -153,7 +154,7 @@ field of `S w` is an infinitesimal isometry (`dotProduct_screwVel_sub`). -/
 theorem molecularVel_mem_ker {G : SimpleGraph V} {G' : Graph V β} {ends : β → V × V}
     {c : V → EuclideanSpace ℝ (Fin 3)}
     (hshadow : ∀ u v, u ≠ v → ((∃ e, G'.IsLink e u v) ↔ G.Adj u v))
-    (hends : ∀ e u v, G'.IsLink e u v → G'.IsLink e (ends e).1 (ends e).2)
+    (hends : Graph.RecordsLinks G' ends)
     {S : V → ScrewSpace ℝ 2}
     (hmem : S ∈ (molecularOfCentres G' ends c).infinitesimalMotions) :
     molecularVel c S ∈ LinearMap.ker (G.square.RigidityMap c) := by
@@ -174,7 +175,7 @@ theorem molecularVel_mem_ker {G : SimpleGraph V} {G' : Graph V β} {ends : β �
         have hcons : S w - S z ∈
             Submodule.span ℝ {(molecularOfCentres G' ends c).supportExtensor e'} :=
           hIM e' w z hlink
-        obtain ⟨_, h2⟩ := screwVel_eq_zero_of_link hcons (hends e' w z hlink) hlink
+        obtain ⟨_, h2⟩ := screwVel_eq_zero_of_link hcons (hends.isLink hlink) hlink
         rw [screwVel_sub_screw, sub_eq_zero] at h2
         exact h2.symm
     change G.square.RigidityMap c (molecularVel c S) ⟨s(x, y), he⟩ = 0
@@ -202,7 +203,7 @@ neighbours, and general position makes the three centres non-collinear, so `S v 
 theorem eq_zero_of_molecularVel_eq_zero {G : SimpleGraph V} {G' : Graph V β} {ends : β → V × V}
     {c : V → EuclideanSpace ℝ (Fin 3)} [Fintype V] [DecidableRel G.Adj]
     (hshadow : ∀ u v, u ≠ v → ((∃ e, G'.IsLink e u v) ↔ G.Adj u v))
-    (hends : ∀ e u v, G'.IsLink e u v → G'.IsLink e (ends e).1 (ends e).2)
+    (hends : Graph.RecordsLinks G' ends)
     (hmin : ∀ v, 2 ≤ G.degree v) (hgp : IsGeneralPositionPlacement c) {S : V → ScrewSpace ℝ 2}
     (hmem : S ∈ (molecularOfCentres G' ends c).infinitesimalMotions)
     (h0 : molecularVel c S = 0) : S = 0 := by
@@ -219,7 +220,7 @@ theorem eq_zero_of_molecularVel_eq_zero {G : SimpleGraph V} {G' : Graph V β} {e
   have hkill : ∀ u, G.Adj v u → screwVel (S v) (ofLp (c u)) = 0 := by
     intro u hadj
     obtain ⟨e, hlink⟩ := (hshadow v u hadj.ne).mpr hadj
-    obtain ⟨-, hcu⟩ := screwVel_eq_zero_of_link (hIM e v u hlink) (hends e v u hlink) hlink
+    obtain ⟨-, hcu⟩ := screwVel_eq_zero_of_link (hIM e v u hlink) (hends.isLink hlink) hlink
     rw [screwVel_sub_screw, hvel u, sub_zero] at hcu
     exact hcu
   refine eq_zero_of_screwVel_eq_zero (q := ![ofLp (c v), ofLp (c u₁), ofLp (c u₂)]) ?_ ?_
@@ -295,7 +296,7 @@ adjacent bodies agree at the centres of both, so their difference is in the span
 theorem exists_molecularVel_eq {G : SimpleGraph V} {G' : Graph V β} {ends : β → V × V}
     {c : V → EuclideanSpace ℝ (Fin 3)} [Fintype V] [DecidableRel G.Adj]
     (hshadow : ∀ u v, u ≠ v → ((∃ e, G'.IsLink e u v) ↔ G.Adj u v))
-    (hends : ∀ e u v, G'.IsLink e u v → G'.IsLink e (ends e).1 (ends e).2)
+    (hends : Graph.RecordsLinks G' ends)
     (hmin : ∀ v, 2 ≤ G.degree v) (hgp : IsGeneralPositionPlacement c)
     {x : V → EuclideanSpace ℝ (Fin 3)} (hx : x ∈ LinearMap.ker (G.square.RigidityMap c)) :
     ∃ S ∈ (molecularOfCentres G' ends c).infinitesimalMotions, molecularVel c S = x := by
@@ -313,7 +314,7 @@ theorem exists_molecularVel_eq {G : SimpleGraph V} {G' : Graph V β} {ends : β 
           simp only [screwVel_sub_screw, hS u u (Or.inl rfl), hS w u (Or.inr hadj.symm), sub_self]
         have h2 : screwVel (S u - S w) (ofLp (c w)) = 0 := by
           simp only [screwVel_sub_screw, hS u w (Or.inr hadj), hS w w (Or.inl rfl), sub_self]
-        exact mem_span_supportExtensor_of_link huvc (hends e u w hlink) hlink h1 h2
+        exact mem_span_supportExtensor_of_link huvc (hends.isLink hlink) hlink h1 h2
     exact H
   · funext v
     rw [molecularVel_apply, hS v v (Or.inl rfl), toLp_ofLp]
@@ -329,7 +330,7 @@ with an edge between distinct `u` and `v` iff `G.Adj u v` (`hshadow`), and `ends
 theorem molecular_finrank_motions_eq_square_ker {G : SimpleGraph V} {G' : Graph V β}
     {ends : β → V × V} {c : V → EuclideanSpace ℝ (Fin 3)} [Fintype V] [DecidableRel G.Adj]
     (hshadow : ∀ u v, u ≠ v → ((∃ e, G'.IsLink e u v) ↔ G.Adj u v))
-    (hends : ∀ e u v, G'.IsLink e u v → G'.IsLink e (ends e).1 (ends e).2)
+    (hends : Graph.RecordsLinks G' ends)
     (hmin : ∀ v, 2 ≤ G.degree v) (hgp : IsGeneralPositionPlacement c) :
     Module.finrank ℝ (molecularOfCentres G' ends c).infinitesimalMotions
       = Module.finrank ℝ (LinearMap.ker (G.square.RigidityMap c)) := by

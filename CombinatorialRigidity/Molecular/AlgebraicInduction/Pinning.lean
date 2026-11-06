@@ -7,6 +7,7 @@ module
 
 public import CombinatorialRigidity.Molecular.AlgebraicInduction.PanelLayer
 public import CombinatorialRigidity.Molecular.AlgebraicInduction.PanelHingeForms
+public import CombinatorialRigidity.Mathlib.Combinatorics.Graph.RecordsLinks
 
 /-!
 # Panel rows, block pins and small rigid frameworks
@@ -164,15 +165,15 @@ theorem hingeRow_mem_rigidityRows (F : BodyHingeFramework K k α β)
   ⟨e, u, v, hlink, r, hr, rfl⟩
 
 /-- **The panel rows of the linking edges span the row space** (a step of
-`lem:independent-rows-of-rank`): if the selector gives a link at every edge of `F.graph` (`hends`:
-an edge that links some `u` and `v` links `ends e`), and the hinges of those edges are nondegenerate
-(`hne`), then the panel rows at the indices `(e, t₁, t₂)` with `e` linking `ends e` span the row
-space. Unlike `span_panelRow_eq_rigidityRows`, it asks nothing at an edge label that is not an edge
-of `F.graph`, such as an edge of a larger graph whose selector a framework on a subgraph keeps; the
-rows of `R(G,p)` come from the edges of `F.graph` alone. The proof is that of
+`lem:independent-rows-of-rank`): if the selector records the links of `F.graph` (`hends`), and the
+hinges of those edges are nondegenerate (`hne`), then the panel rows at the indices `(e, t₁, t₂)`
+with `e` linking `ends e` span the row space. Unlike `span_panelRow_eq_rigidityRows`, it asks
+nothing at an edge label that is not an edge of `F.graph`, such as an edge of a larger graph whose
+selector a framework on a subgraph keeps; the rows of `R(G,p)` come from the edges of `F.graph`
+alone. The proof is that of
 `span_panelRow_eq_rigidityRows`, at the linking edges. -/
 theorem span_panelRow_linking_eq_rigidityRows (F : BodyHingeFramework K k α β) {ends : β → α × α}
-    (hends : ∀ e u v, F.graph.IsLink e u v → F.graph.IsLink e (ends e).1 (ends e).2)
+    (hends : Graph.RecordsLinks F.graph ends)
     (hne : ∀ e, F.graph.IsLink e (ends e).1 (ends e).2 → F.supportExtensor e ≠ 0) :
     Submodule.span K (Set.range (fun i : {i : β × Set.powersetCard (Fin (k + 2)) k
         × Set.powersetCard (Fin (k + 2)) k //
@@ -188,7 +189,7 @@ theorem span_panelRow_linking_eq_rigidityRows (F : BodyHingeFramework K k α β)
   · rw [Submodule.span_le]
     rintro _ ⟨e, u, v, he, r, hr, rfl⟩
     -- The edge `e` links in `F.graph`, so by `hends` its selector `ends e` links it too.
-    have hle : F.graph.IsLink e (ends e).1 (ends e).2 := hends e u v he
+    have hle : F.graph.IsLink e (ends e).1 (ends e).2 := hends.isLink he
     rw [hingeRowBlock_apply, ← span_annihRow_eq_dualAnnihilator _ (hne e hle)] at hr
     have hmap : ∀ w x : α,
         (∀ t₁ t₂, hingeRow w x (annihRow (F.supportExtensor e) t₁ t₂)

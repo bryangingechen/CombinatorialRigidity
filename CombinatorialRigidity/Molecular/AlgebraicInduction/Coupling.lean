@@ -403,7 +403,7 @@ space, on which the deletion is injective
 (`CaseI.lean`) uses it. -/
 theorem BodyHingeFramework.exists_independent_panelRow_subfamily_of_rigidOn_linking_set_proj
     [Finite α] [Finite β] (F : BodyHingeFramework K k α β) {ends : β → α × α} {proj : Set α} {r : α}
-    (hends : ∀ e u v, F.graph.IsLink e u v → F.graph.IsLink e (ends e).1 (ends e).2)
+    (hends : Graph.RecordsLinks F.graph ends)
     (hne : ∀ e, F.graph.IsLink e (ends e).1 (ends e).2 → F.supportExtensor e ≠ 0)
     (hrig : F.IsInfinitesimallyRigidOn F.graph.vertexSet)
     (hinter : F.graph.vertexSet ∩ proj = {r}) :
@@ -447,7 +447,7 @@ under the deletion, which is injective on the row space
 (`injOn_extProj_dualMap_rigidityRows_of_inter_eq_singleton`). It needs no rigidity. -/
 theorem BodyHingeFramework.exists_independent_panelRow_subfamily_of_le_finrank_proj
     [Finite α] [Finite β] (F : BodyHingeFramework K k α β) {ends : β → α × α} {proj : Set α} {r : α}
-    (hends : ∀ e u v, F.graph.IsLink e u v → F.graph.IsLink e (ends e).1 (ends e).2)
+    (hends : Graph.RecordsLinks F.graph ends)
     (hne : ∀ e, F.graph.IsLink e (ends e).1 (ends e).2 → F.supportExtensor e ≠ 0)
     (hinter : F.graph.vertexSet ∩ proj = {r})
     {N : ℕ} (hN : N ≤ Module.finrank K (Submodule.span K F.rigidityRows)) :

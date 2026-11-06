@@ -87,7 +87,8 @@ theorem _root_.Graph.x0AttainsGrade_of_exists [Finite α] [Finite β] {G : Graph
   have : Fintype α := Fintype.ofFinite α
   -- The rank polynomial, nonzero at `(q₀, z₀)`.
   obtain ⟨Q, hQ₀, hQ⟩ := PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking G ends
-    hends (q₀ := fun p => pencilConfigPointGrade q₀ z₀ p.1 p.2)
+    (Graph.recordsLinks_iff_forall_isLink.mpr hends)
+    (q₀ := fun p => pencilConfigPointGrade q₀ z₀ p.1 p.2)
     (fun e he => hq₀.1.supportExtensor_ne_zero_grade hends z₀ he) (Int.toNat_le.mpr hrank)
   -- Admissibility near `q₀`.
   obtain ⟨Padm, hPadm₀, hPadm⟩ := hq₀.1.exists_mvPolynomial

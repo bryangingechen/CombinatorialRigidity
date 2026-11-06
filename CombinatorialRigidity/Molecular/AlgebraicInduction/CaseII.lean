@@ -152,7 +152,7 @@ theorem PanelHingeFramework.case_II_placement_rank [DecidableEq α] [Finite α] 
   set FGab := (PanelHingeFramework.ofNormals Gab endsv q₀).toBodyHinge with hFGab_def
   obtain ⟨so, hso_link, hso_card, hso_indep⟩ :=
     FGab.exists_independent_panelRow_subfamily_of_le_finrank (ends := endsv)
-      (by simpa [hFGab_def] using hends_Gab) (by simpa [hFGab_def] using hne₀)
+      (by simpa [hFGab_def] using hlinksv) (by simpa [hFGab_def] using hne₀)
       (by simpa [hFGab_def] using hN₀)
   -- The hinges of `e_b` and `e_a` at `q₀`: `±C` and `±t C`, with `C = C(n_a, n_b)`.
   have hends_ea : ends e_a = (v, a) ∨ ends e_a = (a, v) := by
@@ -396,7 +396,7 @@ theorem PanelHingeFramework.case_II_placement [DecidableEq α] [Finite α] [Fini
     rw [hm, Nat.add_sub_cancel_left, Nat.mul_add, mul_one]
     omega
   exact (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge
-    |>.exists_independent_panelRow_subfamily_of_le_finrank (fun _ _ _ h => hlinks.isLink h) hne_G
+    |>.exists_independent_panelRow_subfamily_of_le_finrank hlinks hne_G
       hle'
 
 /-- **Case II: splitting off a vertex of degree two** (`lem:case-II-realization`; KT Lemma 6.8,
@@ -642,8 +642,7 @@ theorem PanelHingeFramework.case_II_realization_all_k
       (Submodule.span K (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.rigidityRows) := by
     rw [sub_toNat_eq_of_add_pred_eq hc h1V hD1 hNpD]
     exact hcount
-  have hends_G : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2 := by
-    rw [hendsDef]; exact fun e _ _ h => G.isLink_endsOf h.edge_mem
+  have hends_G : Graph.RecordsLinks G ends := by rw [hendsDef]; exact Graph.recordsLinks_endsOf G
   -- ── Step 20: normals `q'` in general position at the target rank. ──────────────────────────────
   -- `exists_rankPolynomial_of_le_finrank_linking` gives a polynomial off whose zeros the bound
   -- holds; with the polynomial of general position it has a common non-root `q'`.
@@ -670,7 +669,7 @@ theorem PanelHingeFramework.case_II_realization_all_k
   have hne_q' : ∀ e u w, G.IsLink e u w →
       (PanelHingeFramework.ofNormals G ends q').toBodyHinge.supportExtensor e ≠ 0 :=
     fun e u w he => PanelHingeFramework.supportExtensor_ne_zero_of_isGeneralPosition
-      _ hgp' (by rw [PanelHingeFramework.ofNormals_ends]; exact (hends_G e u w he).ne)
+      _ hgp' (by rw [PanelHingeFramework.ofNormals_ends]; exact (hends_G.isLink he).ne)
   have hB2_q' : (Module.finrank K (Submodule.span K
       (PanelHingeFramework.ofNormals G ends q').toBodyHinge.rigidityRows) : ℤ)
       ≤ screwDim k * ((V(G).ncard : ℤ) - 1) - G.deficiency n := by

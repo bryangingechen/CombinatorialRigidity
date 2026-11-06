@@ -555,7 +555,7 @@ The rows at links span the row space (`span_panelRow_linking_eq_rigidityRows`);
 (`Fin.castLE`) are the rows, indexed by their edge and pair of coordinates. -/
 theorem BodyHingeFramework.exists_independent_panelRow_subfamily_of_le_finrank
     [Finite α] [Finite β] (F : BodyHingeFramework K k α β) {ends : β → α × α}
-    (hends : ∀ e u v, F.graph.IsLink e u v → F.graph.IsLink e (ends e).1 (ends e).2)
+    (hends : Graph.RecordsLinks F.graph ends)
     (hne : ∀ e, F.graph.IsLink e (ends e).1 (ends e).2 → F.supportExtensor e ≠ 0)
     {N : ℕ} (hN : N ≤ Module.finrank K (Submodule.span K F.rigidityRows)) :
     ∃ s : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
@@ -614,7 +614,7 @@ theorem BodyHingeFramework.exists_independent_panelRow_subfamily_of_le_finrank
 `finrank_span_rigidityRows_of_rigidOn`. -/
 theorem BodyHingeFramework.exists_independent_panelRow_subfamily_of_rigidOn_linking
     [Finite α] [Finite β] (F : BodyHingeFramework K k α β) {ends : β → α × α}
-    (hends : ∀ e u v, F.graph.IsLink e u v → F.graph.IsLink e (ends e).1 (ends e).2)
+    (hends : Graph.RecordsLinks F.graph ends)
     (hne : ∀ e, F.graph.IsLink e (ends e).1 (ends e).2 → F.supportExtensor e ≠ 0)
     (hnev : F.graph.vertexSet.Nonempty)
     (hrig : F.IsInfinitesimallyRigidOn F.graph.vertexSet) :
@@ -636,7 +636,7 @@ and the rows at links span the row space (`span_panelRow_linking_eq_rigidityRows
 `exists_rankPolynomial_of_rigidOn_linking_set` uses it. -/
 theorem BodyHingeFramework.exists_independent_panelRow_subfamily_of_rigidOn_linking_set
     [Finite α] [Finite β] (F : BodyHingeFramework K k α β) {ends : β → α × α} {s : Set α}
-    (hends : ∀ e u v, F.graph.IsLink e u v → F.graph.IsLink e (ends e).1 (ends e).2)
+    (hends : Graph.RecordsLinks F.graph ends)
     (hne : ∀ e, F.graph.IsLink e (ends e).1 (ends e).2 → F.supportExtensor e ≠ 0)
     (hnes : s.Nonempty)
     (hrig : F.IsInfinitesimallyRigidOn s) :
@@ -783,7 +783,7 @@ every `q` with `Q(q) ≠ 0`. The rows are those of
 `exists_rankPolynomial_of_linearIndependent`. -/
 theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking [Finite α] [Finite β]
     (G : Graph α β) (ends : β → α × α)
-    (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
+    (hends : Graph.RecordsLinks G ends)
     {q₀ : α × Fin (k + 2) → K}
     (hne : ∀ e, G.IsLink e (ends e).1 (ends e).2 →
       (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.supportExtensor e ≠ 0)
@@ -820,7 +820,7 @@ they are independent and lie in the row space, as they are at links, so the rank
 it at deficient realizations. -/
 theorem PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking [Finite α] [Finite β]
     (G : Graph α β) (ends : β → α × α)
-    (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
+    (hends : Graph.RecordsLinks G ends)
     {q₀ : α × Fin (k + 2) → K}
     (hne : ∀ e, G.IsLink e (ends e).1 (ends e).2 →
       (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.supportExtensor e ≠ 0)
@@ -873,7 +873,7 @@ applies it to `H` at `s = V(H)`
 (`hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set_kdof`, in `CaseI.lean`). -/
 theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set [Finite α] [Finite β]
     (G : Graph α β) (ends : β → α × α) {s : Set α}
-    (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
+    (hends : Graph.RecordsLinks G ends)
     {q₀ : α × Fin (k + 2) → K}
     (hne : ∀ e, G.IsLink e (ends e).1 (ends e).2 →
       (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.supportExtensor e ≠ 0)
@@ -937,7 +937,7 @@ theorem hasPanelRealization_of_generic [NeZero k] {n : ℕ} {G : Graph α β}
       supportExtensor := fun e => panelSupportExtensor (Q.normal (Q.ends e).1) (Q.normal (b e)) }
   have hends : ∀ e u v, G.IsLink e u v →
       (Q.ends e).1 = u ∧ (Q.ends e).2 = v ∨ (Q.ends e).1 = v ∧ (Q.ends e).2 = u :=
-    fun e u v he => (hQg ▸ Q.isLink_ends).eq_or_swap he
+    fun e u v he => (PanelHingeFramework.recordsLinks_of_graph_eq hQg).eq_or_swap he
   refine ⟨F, Q.normal, rfl, ?_, ?_, ?_⟩
   · -- Each normal is nonzero.
     intro v _hv heq
@@ -983,8 +983,7 @@ theorem PanelHingeFramework.hasNonparallelFullRankRealization_of_generic [Infini
     [G.Loopless] (hne : V(G).Nonempty) (h : HasGenericFullRankRealization K k n G) :
     HasNonparallelFullRankRealization K k n G := by
   obtain ⟨Q, hQg, hQgp, hQrank⟩ := h
-  have hends : ∀ e u v, G.IsLink e u v → G.IsLink e (Q.ends e).1 (Q.ends e).2 :=
-    Graph.recordsLinks_iff_forall_isLink.mp (hQg ▸ Q.isLink_ends)
+  have hends : Graph.RecordsLinks G Q.ends := recordsLinks_of_graph_eq hQg
   have hself : ofNormals G Q.ends (fun p => Q.normal p.1 p.2) = Q :=
     ofNormals_eq_self_of_graph_eq Q hQg
   -- The rank polynomial at the normals of `Q`, whose hinges are nondegenerate.
@@ -1002,7 +1001,7 @@ theorem PanelHingeFramework.hasNonparallelFullRankRealization_of_generic [Infini
   · -- At most the target rank: the hinges at `q` are nondegenerate.
     exact BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le _ hn hne
       fun e u v he _ => supportExtensor_ne_zero_of_isGeneralPosition _ hnp.isGeneralPosition
-        (hends e u v he).ne
+        (hends.isLink he).ne
   · -- At least the rank of `Q`, the target rank.
     rw [← hQrank]
     exact_mod_cast hQrk q (left_ne_zero_of_mul hq)

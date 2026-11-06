@@ -141,7 +141,8 @@ theorem PanelHingeFramework.case_III_realization_of_rank [Infinite K]
         0 hne_a hne_b]
       exact hne_Gv e (hends_Gv e _ _ hGv)
   obtain ⟨s, hs_link, hs_card, hs_indep⟩ :=
-    F₀.exists_independent_panelRow_subfamily_of_le_finrank (ends := ends) hends_G hne_F₀ hrank
+    F₀.exists_independent_panelRow_subfamily_of_le_finrank (ends := ends)
+      (Graph.recordsLinks_iff_forall_isLink.mpr hends_G) hne_F₀ hrank
   -- (iii) The same rows stay independent at some `t ≠ 0` off the set `bad` of the `t` at which
   -- `na + t·n'` and `nb` are dependent.
   have : Finite ↥s := Set.Finite.to_subtype (Set.toFinite s)
@@ -278,7 +279,8 @@ theorem PanelHingeFramework.case_III_realization_of_rank [Infinite K]
       (F := (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge)
       ht_li hsub (by rw [hG]; exact hnev) (by rw [hG]; exact hcard_s)
   rw [hG] at hrig
-  exact PanelHingeFramework.hasGenericFullRankRealization_of_rigidOn_ofNormals G ends hends_q₀
+  exact PanelHingeFramework.hasGenericFullRankRealization_of_rigidOn_ofNormals G ends
+    (Graph.recordsLinks_iff_forall_isLink.mpr hends_q₀)
     hne_q₀ hnev hrig n hdef
 
 /-- **The count at `(G, p_1)`, then the rotation** (a step of `lem:case-III-candidate-dispatch-d3`
@@ -602,7 +604,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_triangle [Infinite 
   -- `V(G) = {v, a, b}`, and a generic full-rank realization.
   have hrig : F.IsInfinitesimallyRigidOn V(G) := by rwa [hVeq]
   exact PanelHingeFramework.hasGenericFullRankRealization_of_rigidOn_ofNormals G G.endsOf
-    (fun e u w he => G.isLink_endsOf he.edge_mem) hne
+    (Graph.recordsLinks_endsOf G) hne
     ⟨v, hG_ea.left_mem⟩ hrig n hG.1
 
 /-- **A cycle has a generic full-rank realization** (`lem:cycle-realization`; KT Lemma 5.4, p. 670):
@@ -697,7 +699,7 @@ theorem PanelHingeFramework.cycle_realization [Infinite K]
     rwa [cy.range_vtx] at h
   -- A generic full-rank realization.
   exact PanelHingeFramework.hasGenericFullRankRealization_of_rigidOn_ofNormals G G.endsOf
-    (fun e u w he => G.isLink_endsOf he.edge_mem) hne
+    (Graph.recordsLinks_endsOf G) hne
     ⟨cy.vtx 0, (hlink 0).left_mem⟩ hrig n hG.1
 
 /-! ## The proof of `lem:case-III` from its case of a chain -/

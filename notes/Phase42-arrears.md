@@ -7,7 +7,7 @@ carried over (`notes/Phase42-homes.md` *Moved to a later round*, *Candidates for
 debt, the friction log's archive sweep, a dead pair of `have`s, the splits of the four molecular
 files past the ~1500-line tripwire, and `RecordsLinks` moved to `Graph` with its link hypotheses
 restated. Seventeen tasks; no main result's statement changes.
-**Next concrete task:** task 13, restate the link hypotheses upstream of Case III (*Lemma checklist*; task 12 landed, 11 reserved and unused).
+**Next concrete task:** task 14, restate Case III's link hypotheses (*Lemma checklist*; task 13 landed, 11 reserved and unused).
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -22,7 +22,7 @@ stops; the PI answers in an entry that starts `**PI, <date>:**`.
 
 ## Current state
 
-**Tasks 1-10 and 12 landed.** Task 1 (`381dcae1`): the open. Task 2 (`0edd6e7e`): the friction log's
+**Tasks 1-10, 12 and 13 landed.** Task 1 (`381dcae1`): the open. Task 2 (`0edd6e7e`): the friction log's
 archive sweep, 22 `[resolved]` entries to `FRICTION-archive.md`; FRICTION's counts now open 8,
 mirror-candidate 8, process 2, blueprint 0, resolved 0. Task 3 (`6f227b5e`): `hax`, `hbx` deleted
 from `X0AttainsGrade.of_openEar_four`. Task 4 (`a0b498a0`): HOMES's four missing edges closed
@@ -39,9 +39,12 @@ Task 7 (`175bcb33`): `RigidityMatrix/Basic.lean` split in two, a pure move (*Dec
 G6 unchanged. Task 8 (`0f6d16a8`): `Meet.lean` split in two, a pure move (*Decisions*); same gates,
 G6 **0 missing**, unbacked 190, implied 3070, both consistency lines OK, as at task 7. Task 9
 (`a2d7fe04`): `PanelLayer.lean` split in three, a pure move; same gates, G6 unchanged. Task 10 closed
-as a no-op: each split recorded its sizes in `PERFORMANCE.md` *(C)* item 3, now closed. Task 12 (this
-commit): `RecordsLinks` moved to `Graph` (*Decisions*); G1, G2, G3; no pin moved or renamed, so no G4;
-G6 unchanged. FRICTION now open 7, mirrored 72, idiom 249.
+as a no-op: each split recorded its sizes in `PERFORMANCE.md` *(C)* item 3, now closed. Task 12
+(`651ecc60`): `RecordsLinks` moved to `Graph` (*Decisions*); G1, G2, G3; no pin moved or renamed, so
+no G4; G6 unchanged. FRICTION now open 7, mirrored 72, idiom 249. Task 13 (this commit): 22 binders
+restated (*Decisions*); G1, G2, G3 (docstring-label report unchanged), G5 (21 × `[propext,
+Classical.choice, Quot.sound]`), G6 unchanged; no pin moved, so no G4; no TeX (no pinned node
+states the old form). FRICTION counts unchanged.
 
 **Verified at the open** (2026-11-05, at `6d75d694`; a whole-tree `lake build` replays clean, 0
 warnings, 0 cache failures):
@@ -168,22 +171,22 @@ resolved.
 - [x] **10. `notes/PERFORMANCE.md` *(C)* item 3** (no-op, `a2d7fe04`): tasks 6-9 each recorded
   their sizes there, and task 9 closed the item.
 - [ ] **11. (reserved)** for a split that does not fit its task (*One task, one dispatch*).
-- [x] **12. `RecordsLinks` to `Graph`** (this commit; Lean). The def and 11 lemmas in the new mirror
+- [x] **12. `RecordsLinks` to `Graph`** (`651ecc60`; Lean). The def and 11 lemmas in the new mirror
   `Graph/RecordsLinks.lean`, three in `Operations.lean`; 15 deprecated aliases; 33 callers renamed.
   Resolves FRICTION *`RecordsLinks` lives in `PanelHingeFramework`…* (now `[mirrored]`).
-- [ ] **13. Restate the link hypotheses: upstream of Case III** (Lean; opus). `Pinning`,
-  `Dictionary`, `GenericityDevice`, `Coupling`, `CaseI` (19 binders): each to `RecordsLinks G ends`,
-  proofs through `.isLink` / `.eq_or_swap`; a downstream caller not yet restated converts with
-  `recordsLinks_iff_forall_isLink.mpr` until its own task. Also
-  `PanelHingeFramework.recordsLinks_of_graph_eq (hQg : Q.graph = G) : RecordsLinks G Q.ends` and a
-  `link_base_tac` branch applying it with `hQg` in scope (FRICTION's proposed fix).
-- [ ] **14. Restate: Case III** (Lean; opus). `CaseIII/` (14 binders), and the conversions tasks
-  13's callers left there.
+- [x] **13. Restate: upstream of Case III** (this commit; Lean). 22 binders in the five files;
+  `PanelHingeFramework.recordsLinks_of_graph_eq` and its `link_base_tac` branch; callers converted
+  (*Decisions*). FRICTION's open `RecordsLinks` entry updated; TACTICS-QUIRKS § 120 a case.
+- [ ] **14. Restate: Case III** (Lean; opus). `CaseIII/` (14 binders), and the conversions task
+  13 left there: `Arms.lean` 2 (`hends_G`, `hends_q₀`), `Realization.lean` 1 (`hends'`).
 - [ ] **15. Restate: `Pencil/MainComponent/`** (Lean; opus). 26 binders in 12 files, and the
-  conversions left there.
+  conversions left there (task 13: `Bridge` 3, `Carrier`, `EarGen`, `ContractCurve` 1 each).
 - [ ] **16. Restate: `Pencil/Grade/`** (Lean; opus). 33 binders in 16 files, and the last
-  conversions (grep `recordsLinks_iff_forall_isLink` over the tree: what remains is the API's own
-  and the total form's). Resolves FRICTION *The tree's link hypotheses are in the form at links…*.
+  conversions (task 13: `EarData`, `Witness` 1, `LiftWitness` 2; then grep
+  `recordsLinks_iff_forall_isLink` over the tree: what remains is the API's own, the total form's
+  and `Application.lean`'s two, from the conclusion at links of the pinned
+  `exists_molecular_rankHypothesis_generalPosition`, a conclusion outside the open's binder scope).
+  Resolves FRICTION *The tree's link hypotheses are in the form at links…*.
 - [ ] **17. The close** (docs only; opus). Each task's sha; the status surfaces; the queue row
   `done = true`; G6; FRICTION's counts.
 
@@ -203,12 +206,11 @@ resolved.
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 13, restate the link hypotheses upstream of Case III (*Lemma
-checklist*; G6 at 0 missing). `Pinning.lean` and `Dictionary.lean` reach `Graph.RecordsLinks` by a
-`public import` of `CombinatorialRigidity.Mathlib.Combinatorics.Graph.RecordsLinks`; the three
-lemmas in `Operations.lean` (`recordsLinks_endsOf`, `RecordsLinks.update_splitOff`,
-`RecordsLinks.map`) they do not reach. After the close: ORIGAMI's open, with the PI (ROADMAP
-*Queued post-program phases*).
+**Next concrete task:** task 14, restate the link hypotheses of `CaseIII/` (*Lemma checklist*; G6 at
+0 missing), with the three conversions task 13 left there. Re-grep the binders by `∀ e u v,` (task
+13 found 22 where the open's scan counted 19; two were split over two lines). A local `have` restated
+as `RecordsLinks` names the graph of the `ofNormals` it serves (task 13's *Decisions* (c)). After
+the close: ORIGAMI's open, with the PI (ROADMAP *Queued post-program phases*).
 
 ## Decisions made during this round
 
@@ -265,3 +267,11 @@ lemmas in `Operations.lean` (`recordsLinks_endsOf`, `RecordsLinks.update_splitOf
   `Graph.map_map`). (c) The aliases are in `PanelHinge.lean`; every mention is `Graph.`-qualified
   (in `PanelHingeFramework` a bare name resolves to the alias). (d) The root lists the mirror, beside
   `Graph/Delete.lean`'s.
+- **Task 13's shapes.** (a) 22 binders (`Pinning` 1, `Dictionary` 4, `GenericityDevice` 6, `Coupling`
+  2, `CaseI` 9), each `(hends : Graph.RecordsLinks G ends)`; `Pinning`, `Dictionary` import the
+  mirror. (b) Local `have`s feeding them restated in place: in these files and in those of no task
+  (`Theorem55`, `CaseII`, `HingeGeneric`, `PanelGeneric`, `Steer`, `Theorem56`, `Application`); a
+  later task's file converts by `.mpr`. (c) A restated `have` is stated at the graph of the
+  `ofNormals` it serves, not an `F.graph` that unfolds to it (TACTICS-QUIRKS § 120). (d) CaseI's three
+  `hQrec` `have`s go: the new branch finds the field through `hQg`. (e) No pinned node's prose
+  states the old form (8 nodes read), so no TeX.

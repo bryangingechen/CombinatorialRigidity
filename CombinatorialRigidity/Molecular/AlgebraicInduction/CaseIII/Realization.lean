@@ -376,7 +376,7 @@ theorem PanelHingeFramework.case_III_candidate_dispatch [Infinite K]
   have h1_Gab : 1 ≤ V(Gab).ncard := (Set.ncard_pos (Set.toFinite _)).2 hne'
   -- Factor 1 (`P_ab`): the rank polynomial of `Gab` at `Q.ends`, for KT eq. (6.18).
   obtain ⟨N, hNeq, P_ab, hP_abne, hP_abtrans⟩ :=
-    PanelHingeFramework.exists_rankPolynomial_of_IH_linking Gab Q.ends hsplitGP hGabloop hends_Gab
+    PanelHingeFramework.exists_rankPolynomial_of_IH_linking Gab Q.ends hsplitGP hGabloop hQrec
   -- Factor 2 (`P_v`): the polynomial of KT eq. (6.22) for `Gv` at `Q.ends`, from `h622lb`.
   obtain ⟨P_v, hP_vne, hP_vtrans⟩ := h622lb Q.ends hrec'
   -- Factor 3 (`Q_gp`): the general-position polynomial for `Gab` at `Q.ends`.
@@ -770,7 +770,7 @@ theorem PanelHingeFramework.exists_nested_rankPolynomial_lower_all_k
   -- The polynomial `P` of `exists_rankPolynomial_of_IH_linking` for the realization of `G − v`.
   obtain ⟨N, hNeq, P, hPne, hPtrans⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_IH_linking (G.removeVertex v) ends hQv
-      hGvloop hends'
+      hGvloop (Graph.recordsLinks_iff_forall_isLink.mpr hends')
   -- The arithmetic `D(|V(Gab)| − 1) − (D − 2) ≤ N`, which does not involve `q`.
   have hGvne1 : 1 ≤ V(G.splitOff v a b e₀).ncard :=
     hcard ▸ (Set.ncard_pos (Set.toFinite _)).2 hGvne
@@ -923,7 +923,7 @@ theorem PanelHingeFramework.chainData_split_w6b_gates [Infinite K]
   have h1_Gab : 1 ≤ V(Gab).ncard := (Set.ncard_pos (Set.toFinite _)).2 hne'
   -- Factor 1 (`P_ab`): the rank polynomial of `Gab` at `Q.ends`, for KT eq. (6.18).
   obtain ⟨N, hNeq, P_ab, hP_abne, hP_abtrans⟩ :=
-    PanelHingeFramework.exists_rankPolynomial_of_IH_linking Gab Q.ends hsplitGP hGabloop hends_Gab
+    PanelHingeFramework.exists_rankPolynomial_of_IH_linking Gab Q.ends hsplitGP hGabloop hQrec
   -- Factor 2 (`P_v`): the polynomial of KT eq. (6.22) for `Gv` at `Q.ends`, from `h622lb`.
   obtain ⟨P_v, hP_vne, hP_vtrans⟩ := h622lb Q.ends hrec'
   -- Factor 3 (`Q_gp`): the general-position polynomial for `Gab` at `Q.ends`.

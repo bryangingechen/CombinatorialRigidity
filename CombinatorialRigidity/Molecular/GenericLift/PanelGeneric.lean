@@ -370,7 +370,7 @@ theorem exists_independent_normalRow_of_le_finrank [Finite α] [Finite β]
   -- Extract `N` independent literal `panelRow`s of `Q.toBodyHinge`, at the selector `ends`.
   obtain ⟨s, hsupp, hscard, hsli⟩ :=
     Q.toBodyHinge.exists_independent_panelRow_subfamily_of_le_finrank (ends := ends)
-      (fun _ _ _ he => hends.isLink he) (fun e he => hC e he.edge_mem) hN
+      hends (fun e he => hC e he.edge_mem) hN
   refine ⟨s, fun i hi => (hsupp i hi).edge_mem, hscard, ?_⟩
   -- Each index's panel row of `Q.toBodyHinge` at `ends` is `±` the graph-free `normalRow`, at an
   -- edge of `Q.graph`.

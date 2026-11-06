@@ -516,10 +516,19 @@ to be re-derived by re-reading entries later.
   Phase 41b, item 5: the rows form and the d = 3 wrapper lost their link conjuncts, so their
   consumers (`Bridge.lean`, `Modelling.lean`) rebuild the form at links from the field, as item 7's
   two did: four sites of `hQg ▸ recordsLinks_iff_forall_isLink.mp Q.isLink_ends` now.
+  ARREARS, task 13: the lemma and the `link_base_tac` branch below landed, and the 22 link
+  binders of `Pinning`, `Dictionary`, `GenericityDevice`, `Coupling` and `CaseI` are
+  `RecordsLinks`; their callers in `CaseIII/` (3), `Pencil/MainComponent/` (6), `Pencil/Grade/` (4)
+  convert by `recordsLinks_iff_forall_isLink.mpr` until tasks 14–16, and `Application.lean` (2) for
+  the conclusion at links of `exists_molecular_rankHypothesis_generalPosition`. A local `have`
+  restated as `RecordsLinks` at `F.graph`, where `F.graph` unfolds to the graph of an `ofNormals`
+  in scope, broke a later `rw` through `link_tac`'s `assumption`: state it at the `ofNormals`'s
+  graph. **Lifted to:** TACTICS-QUIRKS § 120.
 - **Proposed fix:** state such hypotheses as `RecordsLinks G ends` when the switch (Phase 41a, item
   5) or RESTATE touches their declarations; the conversions then go. For the field under
   `Q.graph = G`: a lemma `PanelHingeFramework.recordsLinks_of_graph_eq (hQg : Q.graph = G) :
-  RecordsLinks G Q.ends` and a `link_base_tac` branch that applies it with `hQg` in scope.
+  RecordsLinks G Q.ends` and a `link_base_tac` branch that applies it with `hQg` in scope (both
+  landed, ARREARS task 13).
 - **Status:** open.
 
 

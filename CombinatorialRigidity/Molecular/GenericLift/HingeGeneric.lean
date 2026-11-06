@@ -937,7 +937,7 @@ theorem exists_hingePoints_independent_hingePointRow [Infinite K] [Finite α] [F
       = (c e : K) • hingeRow (ends e).1 (ends e).2 (annihRow (F.supportExtensor e) t₁ t₂)
     rw [hFsupp e he, annihRow_smul, hingeRow_smul]
   obtain ⟨s, hsupp, hscard, hsli⟩ := F.exists_independent_panelRow_subfamily_of_le_finrank
-    (ends := ends) (fun e u v h => by rw [hFg] at h ⊢; exact hends.isLink h)
+    (ends := ends) (by rw [hFg]; exact hends)
     (fun e _ => hFne e)
     (N := Module.finrank K (Submodule.span K F0.rigidityRows)) (le_of_eq hFrank.symm)
   have hsE : ∀ i ∈ s, (i : β × _ × _).1 ∈ E(G) := fun i hi => by
@@ -1222,7 +1222,7 @@ theorem isMaxRankHingePoints_of_isGenericHingePoints [Finite α] [Finite β] (hk
   obtain ⟨s, hsl, hscard, hsli⟩ :=
     (ofHinge (G ↾ E') fun e a b => q'' (e, a, b))
       |>.exists_independent_panelRow_subfamily_of_le_finrank (ends := G.endsOf)
-        (fun e u v h => hendsE.isLink h) (fun e _ => hne'' e) le_rfl
+        hendsE (fun e _ => hne'' e) le_rfl
   have hsE : ∀ i ∈ s, (i : β × _ × _).1 ∈ E(G) := fun i hi =>
     ((hsl i hi).of_le Graph.restrict_le).edge_mem
   -- Genericity carries their independence to `q`.

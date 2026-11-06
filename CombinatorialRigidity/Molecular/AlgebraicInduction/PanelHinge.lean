@@ -107,14 +107,14 @@ alias PanelHingeFramework.RecordsLinks.update_splitOff := Graph.RecordsLinks.upd
 
 /-- **The fill-in tactic for the link condition** (`fmlnote:panel-hinge-nondegenerate`): proves
 `Graph.RecordsLinks G ends` from what is in scope. It tries the base forms (`link_base_tac`: a
-hypothesis in any of the condition's forms, the field `isLink_ends` of a framework on `G`, or the
-endpoint choice `G.endsOf`); then a base form for a larger graph, with the inclusion from
-`link_le_tac` (`Graph.RecordsLinks.mono`); then, from a base form for a graph `G'`, the record of a
-splitting-off of `G'` with the new edge's link in scope (`Graph.RecordsLinks.update_splitOff`), of
-an induced subgraph of `G'` (`Graph.RecordsLinks.induce`) or of the image of `G'` under a map of the
-bodies (`Graph.RecordsLinks.map`). It fills in the field `isLink_ends` of a structure literal and
-the record arguments of `ofParam` and `ofNormals`. Its rules come after the structure
-`PanelHingeFramework`. -/
+hypothesis in any of the condition's forms, the field `isLink_ends` of a framework on `G` or on a
+graph equal to `G` by a hypothesis in scope, or the endpoint choice `G.endsOf`); then a base form
+for a larger graph, with the inclusion from `link_le_tac` (`Graph.RecordsLinks.mono`); then, from a
+base form for a graph `G'`, the record of a splitting-off of `G'` with the new edge's link in scope
+(`Graph.RecordsLinks.update_splitOff`), of an induced subgraph of `G'` (`Graph.RecordsLinks.induce`)
+or of the image of `G'` under a map of the bodies (`Graph.RecordsLinks.map`). It fills in the field
+`isLink_ends` of a structure literal and the record arguments of `ofParam` and `ofNormals`. Its
+rules come after the structure `PanelHingeFramework`. -/
 syntax (name := linkTac) "link_tac" : tactic
 
 /-! ## The panel-hinge framework (`def:panel-hinge-framework`)
@@ -168,17 +168,29 @@ They come after the structure, as they name its field `isLink_ends`; the syntax 
 before it, for the field's default. The base forms and the inclusion of a subgraph have tactics of
 their own, `link_base_tac` and `link_le_tac`. -/
 
+/-- **The field at an equal graph** (`fmlnote:panel-hinge-nondegenerate`): if the multigraph of a
+panel-hinge framework `Q` is `G` (`hQg`), then `Q.ends` records the links of `G`, by the field
+`isLink_ends`. A destructured realization gives `Q` with `hQg`; `link_base_tac` applies this with
+`hQg` in scope. -/
+theorem PanelHingeFramework.recordsLinks_of_graph_eq {α β : Type*}
+    {Q : PanelHingeFramework K k α β} {G : Graph α β} (hQg : Q.graph = G) :
+    Graph.RecordsLinks G Q.ends :=
+  hQg ▸ Q.isLink_ends
+
 /-- **The base forms of the link condition**, the first step of `link_tac`:
 `Graph.RecordsLinks G ends` from a hypothesis in scope; from the field of a framework on `G`
-(`PanelHingeFramework.isLink_ends`) or the endpoint choice `G.endsOf` (`Graph.recordsLinks_endsOf`);
-or from a hypothesis in the form at links (`Graph.recordsLinks_iff_forall_isLink`), the total form
-(`Graph.RecordsLinks.of_forall`), the coordinatewise form up to order
-(`Graph.recordsLinks_iff_eq_or_swap`) or the pair form (`Graph.RecordsLinks.of_pair`). -/
+(`PanelHingeFramework.isLink_ends`), or on a graph equal to `G` by a hypothesis in scope
+(`PanelHingeFramework.recordsLinks_of_graph_eq`), or the endpoint choice `G.endsOf`
+(`Graph.recordsLinks_endsOf`); or from a hypothesis in the form at links
+(`Graph.recordsLinks_iff_forall_isLink`), the total form (`Graph.RecordsLinks.of_forall`), the
+coordinatewise form up to order (`Graph.recordsLinks_iff_eq_or_swap`) or the pair form
+(`Graph.RecordsLinks.of_pair`). -/
 syntax (name := linkBaseTac) "link_base_tac" : tactic
 macro_rules
   | `(tactic| link_base_tac) => `(tactic| first
   | assumption
   | exact PanelHingeFramework.isLink_ends _
+  | exact PanelHingeFramework.recordsLinks_of_graph_eq (by assumption)
   | exact Graph.recordsLinks_endsOf _
   | exact Graph.recordsLinks_iff_forall_isLink.mpr (by assumption)
   | exact Graph.RecordsLinks.of_forall (by assumption)

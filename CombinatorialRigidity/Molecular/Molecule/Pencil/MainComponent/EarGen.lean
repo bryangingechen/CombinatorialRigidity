@@ -290,7 +290,8 @@ theorem exists_mvPolynomial_le_finrank_ofNormals_bind [Finite α] [Finite β]
         (PanelHingeFramework.ofNormals (k := 2) H ends
           (fun p => MvPolynomial.eval s (P p))).toBodyHinge.rigidityRows) := by
   obtain ⟨Q, hQ₀, hQ⟩ :=
-    PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking H ends hends hne hN
+    PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking H ends
+      (Graph.recordsLinks_iff_forall_isLink.mpr hends) hne hN
   refine ⟨MvPolynomial.bind₁ P Q, by rwa [MvPolynomial.eval_bind₁], fun s hs => hQ _ ?_⟩
   rwa [MvPolynomial.eval_bind₁] at hs
 

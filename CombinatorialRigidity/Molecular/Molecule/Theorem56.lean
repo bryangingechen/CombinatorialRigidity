@@ -100,8 +100,7 @@ theorem exists_rankHypothesis_isGeneralPosition4_of_two_le [Finite α] [Finite �
   obtain ⟨Q0, hQ0g, -, hQ0C, hQ0rank⟩ :=
     rankHypothesis_genuine_of_theorem_55_gen
       (K := ℝ) (k := 2) (n := 3) (by norm_num) hn G hV hspan hSimple
-  have hQ0ends : ∀ e u v, G.IsLink e u v → G.IsLink e (Q0.ends e).1 (Q0.ends e).2 :=
-    hQ0g ▸ Graph.recordsLinks_iff_forall_isLink.mp Q0.isLink_ends
+  have hQ0ends : Graph.RecordsLinks G Q0.ends := recordsLinks_of_graph_eq hQ0g
   -- View `Q0` as the free-normal framework at its own normals `q₀ = fun p => Q0.normal p.1 p.2`.
   have hself : ofNormals (k := 2) G Q0.ends (fun p => Q0.normal p.1 p.2) = Q0 :=
     ofNormals_eq_self_of_graph_eq Q0 hQ0g
@@ -159,7 +158,7 @@ theorem exists_rankHypothesis_isGeneralPosition4_of_two_le [Finite α] [Finite �
     refine supportExtensor_ne_zero_of_isGeneralPosition
       (ofNormals (k := 2) G Q0.ends q_star) hgp2 ?_
     rw [ofNormals_ends]
-    exact (hQ0ends e u v hl).ne
+    exact (hQ0ends.isLink hl).ne
   -- Lower bound at `q*` (rank polynomial) and upper bound at `q*` (deficiency bound).
   have hlb := hQ_rk q_star hq_rk
   have hub := BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le

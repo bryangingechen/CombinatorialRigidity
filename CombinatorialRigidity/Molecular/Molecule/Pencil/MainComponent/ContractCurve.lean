@@ -976,7 +976,7 @@ theorem PanelHingeFramework.exists_rankPolynomial_rigidContract_induce_proj [Fin
     Graph.rigidContract_vertexSet_inter_eq_singleton G (G.induce W) hr hW
   obtain ⟨t, hsuppM, hcountM, hindepM⟩ :=
     F'.exists_independent_panelRow_subfamily_of_le_finrank_proj (ends := endsM) (proj := W)
-      (r := r) hendsF' hne hinter hN
+      (r := r) (Graph.recordsLinks_iff_forall_isLink.mpr hendsF') hne hinter hN
   have hsupp₀ : ∀ i ∈ t, Gc.IsLink (i : β × _ × _).1 (ends (i : β × _ × _).1).1
       (ends (i : β × _ × _).1).2 := by
     intro i hi

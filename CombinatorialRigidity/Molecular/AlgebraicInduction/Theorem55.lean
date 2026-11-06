@@ -235,9 +235,8 @@ theorem theorem_55_base_producer_single_edge_gen [DecidableEq β] {n : ℕ}
   · -- Rank conjunct: `finrank (span rigidityRows) = screwDim k - 1 = D * 1 - 1`.
     -- Use `span_panelRow_linking_eq_rigidityRows` with `ends := fun _ => (x, y)`.
     set ends : β → α × α := fun _ => (x, y) with hends_def
-    have hends : ∀ e' u v, F.graph.IsLink e' u v →
-        F.graph.IsLink e' (ends e').1 (ends e').2 := by
-      intro e' u v he'
+    have hends : Graph.RecordsLinks F.graph ends := by
+      refine Graph.recordsLinks_iff_forall_isLink.mpr fun e' u v he' => ?_
       simp only [hends_def]
       exact (hlink_e e' u v (hFg ▸ he')).symm ▸ (hFg ▸ hl)
     have hne_link : ∀ e', F.graph.IsLink e' (ends e').1 (ends e').2 →
@@ -375,9 +374,8 @@ theorem theorem_55_base_producer_single_edge_gp_gen
     exact Q.supportExtensor_ne_zero_of_isGeneralPosition hgp (by rw [hQends, hends_def]; exact hxy)
   refine ⟨Q, PanelHingeFramework.ofNormals_graph G ends q₀, hgp, ?_⟩
   -- Rank conjunct: `finrank (span rigidityRows) = D − 1 = D·1 − 1`.
-  have hends : ∀ e' u v, F.graph.IsLink e' u v →
-      F.graph.IsLink e' (ends e').1 (ends e').2 := by
-    intro e' u v he'
+  have hends : Graph.RecordsLinks F.graph ends := by
+    refine Graph.recordsLinks_iff_forall_isLink.mpr fun e' u v he' => ?_
     rw [hends_def]
     exact (hlink_e e' u v (hFg ▸ he')).symm ▸ (hFg ▸ hl)
   have hne_link : ∀ e', F.graph.IsLink e' (ends e').1 (ends e').2 →
@@ -608,9 +606,6 @@ theorem PanelHingeFramework.case_I_realization_h65_gen
   have hGvdef : Gv.deficiency n = 0 := hGvmin.deficiency_eq
   have h1Gv : 1 ≤ V(Gv).ncard := (Set.ncard_pos (Set.toFinite _)).2 hGvne
   have hGvloop : Gv.Loopless := hGvSimple.toLoopless
-  -- `Q_v.ends` records every `Gv`-link (single-link form).
-  have hends_Gv : ∀ e u w, Gv.IsLink e u w → Gv.IsLink e (Q_v.ends e).1 (Q_v.ends e).2 :=
-    fun _ _ _ he => hQvrec.isLink he
   -- Step 3: the selector `ends`, which is `Q_v.ends` but at `eₐ` and `e_b`.
   set ends : β → α × α :=
     Function.update (Function.update Q_v.ends eₐ (v, a)) e_b (v, b) with hends_def
@@ -631,8 +626,8 @@ theorem PanelHingeFramework.case_I_realization_h65_gen
   have hends_off : ∀ e, e ≠ eₐ → e ≠ e_b → ends e = Q_v.ends e := by
     intro e hea heb; rw [hends_def, Function.update_of_ne heb, Function.update_of_ne hea]
   -- `ends` gives every link of `G` its ends, in some order.
-  have hends_G : ∀ e u w, G.IsLink e u w → G.IsLink e (ends e).1 (ends e).2 := by
-    intro e u w hlink
+  have hends_G : Graph.RecordsLinks G ends := by
+    refine Graph.recordsLinks_iff_forall_isLink.mpr fun e u w hlink => ?_
     by_cases hea : e = eₐ
     · subst hea; rw [hends_ea]; exact hlea
     by_cases heb : e = e_b
@@ -652,7 +647,7 @@ theorem PanelHingeFramework.case_I_realization_h65_gen
   -- Step 3': three nonzero polynomials, fixed before the normals, and normals `q` off the zeros of
   -- all three.
   obtain ⟨N, hNeq, P_v, hP_vne, hP_vtrans⟩ :=
-    PanelHingeFramework.exists_rankPolynomial_of_IH_linking Gv Q_v.ends hQv hGvloop hends_Gv
+    PanelHingeFramework.exists_rankPolynomial_of_IH_linking Gv Q_v.ends hQv hGvloop hQvrec
   obtain ⟨Qgp, hQgp_mc, hQgp_pos⟩ := exists_generalPosition_polynomial (K := K) (k := k) G ends
   have hQgp_ne : Qgp ≠ 0 := by
     obtain ⟨f, hf⟩ := Countable.exists_injective_of_infinite α K
@@ -682,7 +677,7 @@ theorem PanelHingeFramework.case_I_realization_h65_gen
       (PanelHingeFramework.ofNormals Gv Q_v.ends q).toBodyHinge.supportExtensor e ≠ 0 := by
     intro e u w hlink
     rw [hFv_graph] at hlink
-    exact hne_v e (hends_Gv e u w hlink)
+    exact hne_v e (hQvrec.isLink hlink)
   have hB2 := BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le
     (PanelHingeFramework.ofNormals Gv Q_v.ends q).toBodyHinge hn
     (by rw [hFv_graph]; exact hGvne) (fun e u v h _ => hFvC e u v h)
@@ -736,17 +731,10 @@ theorem PanelHingeFramework.case_I_realization_h65_gen
     intro e he
     rw [hFv_graph] at he
     exact hne_v e he
-  have hrecFv : ∀ e u w,
-      (PanelHingeFramework.ofNormals Gv Q_v.ends q).toBodyHinge.graph.IsLink e u w →
-      (PanelHingeFramework.ofNormals Gv Q_v.ends q).toBodyHinge.graph.IsLink e
-        (Q_v.ends e).1 (Q_v.ends e).2 := by
-    intro e u w hlink
-    rw [hFv_graph] at hlink ⊢
-    exact hends_Gv e u w hlink
   obtain ⟨so, hso_link, hso_card, hso_indep⟩ :=
     (PanelHingeFramework.ofNormals Gv
       Q_v.ends q).toBodyHinge.exists_independent_panelRow_subfamily_of_rigidOn_linking
-      hrecFv hneFv ⟨a, by rw [hFv_graph]; exact haVGv⟩ (by rw [hFv_graph]; exact hFvrig)
+      hQvrec hneFv ⟨a, by rw [hFv_graph]; exact haVGv⟩ (by rw [hFv_graph]; exact hFvrig)
   rw [hFv_graph] at hso_card hso_link
   -- `hold`: these rows vanish in the columns of `v`.
   have hold := case_I_h65_old_vanish (PanelHingeFramework.ofNormals Gv Q_v.ends q).toBodyHinge
@@ -1261,28 +1249,13 @@ theorem case_cut_edge_realization_gp_gen [Infinite K] [DecidableEq β] [Finite �
       Module.finrank K (Submodule.span K
         (PanelHingeFramework.ofNormals (G.induce V₂) G.endsOf q₀₂).toBodyHinge.rigidityRows) :=
     hfinrank₂.symm ▸ le_refl _
-  -- hends helper: (G.induce Vᵢ)-links have (G.endsOf e) endpoints in G.induce Vᵢ.
-  have hends₁ : ∀ e u v, (G.induce V₁).IsLink e u v →
-      (G.induce V₁).IsLink e (G.endsOf e).1 (G.endsOf e).2 := by
-    intro e u v he
-    have hGlink : G.IsLink e u v := he.1
-    rcases G.endsOf_eq_or_swap hGlink with h | h
-    · rw [h]; exact (Graph.induce_isLink G V₁ e u v).mpr ⟨hGlink, he.2.1, he.2.2⟩
-    · rw [h]; exact (Graph.induce_isLink G V₁ e v u).mpr ⟨hGlink.symm, he.2.2, he.2.1⟩
-  have hends₂ : ∀ e u v, (G.induce V₂).IsLink e u v →
-      (G.induce V₂).IsLink e (G.endsOf e).1 (G.endsOf e).2 := by
-    intro e u v he
-    have hGlink : G.IsLink e u v := he.1
-    rcases G.endsOf_eq_or_swap hGlink with h | h
-    · rw [h]; exact (Graph.induce_isLink G V₂ e u v).mpr ⟨hGlink, he.2.1, he.2.2⟩
-    · rw [h]; exact (Graph.induce_isLink G V₂ e v u).mpr ⟨hGlink.symm, he.2.2, he.2.1⟩
   -- Per-side rank polynomials.
   obtain ⟨Q₁_rank, hQ₁ne, hQ₁trans⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking
-      (G.induce V₁) G.endsOf hends₁ hne₁ hN₁
+      (G.induce V₁) G.endsOf ((Graph.recordsLinks_endsOf G).induce V₁) hne₁ hN₁
   obtain ⟨Q₂_rank, hQ₂ne, hQ₂trans⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking
-      (G.induce V₂) G.endsOf hends₂ hne₂ hN₂
+      (G.induce V₂) G.endsOf ((Graph.recordsLinks_endsOf G).induce V₂) hne₂ hN₂
   -- ── Step 9: GP polynomial ──────────────────────────────────────────────────────────────────
   obtain ⟨Q_gp, hQgpne_witness, hQgp_pos⟩ :=
     PanelHingeFramework.exists_generalPosition_polynomial (K := K) (k := k) G G.endsOf
@@ -1698,18 +1671,13 @@ theorem PanelHingeFramework.case_I_realization_all_k_gen
   -- The selector `ends = G.endsOf` of `G`.
   have : Inhabited α := ⟨r⟩
   set ends := G.endsOf with hendsDef
-  have hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2 := by
-    rw [hendsDef]; exact fun e _ _ h => G.isLink_endsOf h.edge_mem
+  have hends : Graph.RecordsLinks G ends := Graph.recordsLinks_endsOf G
   have hHprop : H.IsProperRigidSubgraph G n := ⟨⟨hle, hKDof⟩, hVH2', hVHss⟩
   have : G.Loopless := hSimple.toLoopless
   have hne_ends : ∀ e, G.IsLink e (ends e).1 (ends e).2 → (ends e).1 ≠ (ends e).2 :=
     fun e hlink => G.endsOf_fst_ne_snd hlink.edge_mem
   obtain ⟨hGH, hGc, _, _, _, _, _⟩ :=
     PanelHingeFramework.couple_geometry_of_isProperRigidSubgraph hHprop hr
-  have hendsGc : ∀ e u v, (G.deleteEdges E(H)).IsLink e u v →
-      (G.deleteEdges E(H)).IsLink e (ends e).1 (ends e).2 := fun e u v hlink =>
-    (Graph.IsSubgraph.isLink_iff hGc hlink.edge_mem).mpr
-      (hends e u v ((Graph.IsSubgraph.isLink_iff hGc hlink.edge_mem).mp hlink))
   have hcover : V(G) ⊆ V(H) ∪ ((V(G) \ V(H)) ∪ {r}) := by
     intro x hx
     by_cases hxH : x ∈ V(H)
@@ -1752,7 +1720,7 @@ theorem PanelHingeFramework.case_I_realization_all_k_gen
   -- they have rank at least `D(|s_c| − 1) − c` (KT Claim 6.4).
   obtain ⟨Qc, hQc_ne, hsc_proj_indep⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_IH_relabel_linking_set_proj
-      G H ends hr hHsub hKmin hQcf hendsGc
+      G H ends hr hHsub hKmin hQcf (hends.mono hGc)
   -- (3) The two combined at one set of normals (KT eq. (6.3)); `hn` and the distinct ends of the
   -- links give the upper bound on the rank.
   exact

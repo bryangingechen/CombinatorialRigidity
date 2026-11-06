@@ -4633,6 +4633,12 @@ whose target *"is not type-correct under the `implicit` transparency level"*.
 - *The tactic's term must have the predicate's type.* A branch that proves the unfolded body (e.g.
   by `solve_by_elim`) leaves `∀ e ∈ E(G), …` in the term, and a later `rw` fails at instance
   transparency. Close every branch with `exact <lemma>`, whose type is `RecordsLinks …`.
+- *`assumption` takes a hypothesis on a graph that only unfolds to the goal's.* A local
+  `h : RecordsLinks F.graph ends`, with `F := (ofNormals G ends q).toBodyHinge`, closes the
+  `assumption` branch at a goal `RecordsLinks G ends`, and the term `ofNormals G ends q h` then
+  carries a proof whose type names `F.graph`; a later `rw [ofNormals_ends]` fails at instance
+  transparency. State the hypothesis at the graph the `ofNormals` names, `RecordsLinks G ends`,
+  and pass it where `F.graph` is asked: an application checks that at default transparency.
 - *A macro that names the field.* A `macro` declared before the structure cannot name the field,
   and one after it cannot be the field's default. Declare `syntax (name := …) "tac" : tactic`
   before the structure, and the `macro_rules` after it.
@@ -4646,6 +4652,10 @@ whose target *"is not type-correct under the `implicit` transparency level"*.
 declarations in 27 files (`notes/Phase41a.md`, item 4; the spike's per-site record was local).
 The first case's witness, `h622lb` of `case_III_candidate_dispatch` cut down: anonymous, the
 default fails with *"could not synthesize default value"*; named, it elaborates.
+ARREARS, task 13: the case of a hypothesis on a graph that unfolds, `hendsF'` of
+`rigidContract_exterior_rank_transport_htransport` and
+`exists_rankPolynomial_of_IH_relabel_linking_set_proj` (`CaseI.lean`), restated as
+`RecordsLinks F'.graph endsM` and then as `RecordsLinks (Gc.map f) endsM`.
 
 ---
 

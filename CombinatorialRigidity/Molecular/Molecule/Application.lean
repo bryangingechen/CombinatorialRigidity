@@ -87,7 +87,8 @@ theorem molecule_rank_lower_bound {V : Type*} [Fintype V] [Nonempty V] (G : Simp
   -- Step 2: the square-graph dictionary gives the motion-space dimension as `dim ker R(G², c)`.
   have hshadow : ∀ u v, u ≠ v → ((∃ e, G.shadowGraph.IsLink e u v) ↔ G.Adj u v) :=
     fun u v _ => shadowGraph_isLink_iff G u v
-  have hkey := molecular_finrank_motions_eq_square_ker hshadow hends hmin hgp
+  have hkey := molecular_finrank_motions_eq_square_ker hshadow
+    (Graph.recordsLinks_iff_forall_isLink.mpr hends) hmin hgp
   -- Step 3: `RankHypothesis` gives the motion-space dimension; combine into the kernel dimension.
   have hrank' : (Module.finrank ℝ
       (molecularOfCentres G.shadowGraph ends c).infinitesimalMotions : ℤ)
@@ -142,9 +143,8 @@ theorem molecule_rank_upper_bound {V : Type*} [Fintype V] [Nonempty V] (G : Simp
     split_ifs with h
     · exact h.choose_spec.choose_spec.1.ne
     · exact hu₀mem.ne
-  have hends : ∀ e u v, G.shadowGraph.IsLink e u v →
-      G.shadowGraph.IsLink e (ends e).1 (ends e).2 := by
-    intro e u v huv
+  have hends : Graph.RecordsLinks G.shadowGraph ends := by
+    refine Graph.recordsLinks_iff_forall_isLink.mpr fun e u v huv => ?_
     have hex : ∃ x y, G.shadowGraph.IsLink e x y := ⟨u, v, huv⟩
     rw [hends_eq, dite_eq_left hex]
     exact hex.choose_spec.choose_spec
@@ -402,7 +402,8 @@ theorem molecular_rigid_iff_square_rigid {V : Type*} [Fintype V] (G : SimpleGrap
       exists_molecular_rankHypothesis_generalPosition G.shadowGraph hne
         (shadowGraph_vertexSet G) (shadowGraph_simple G)
     rw [BodyHingeFramework.RankHypothesis, hdef] at hrank'
-    have hkey := molecular_finrank_motions_eq_square_ker hshadow hends' hmin hgp'
+    have hkey := molecular_finrank_motions_eq_square_ker hshadow
+      (Graph.recordsLinks_iff_forall_isLink.mpr hends') hmin hgp'
     refine ⟨c', ?_⟩
     rw [IsInfinitesimallyRigid]
     omega
@@ -424,8 +425,7 @@ theorem molecular_rigid_iff_square_rigid {V : Type*} [Fintype V] (G : SimpleGrap
     -- The dictionary, and the trivial motions as a `D`-dimensional subspace of `Z_mol`.
     have hkey : Module.finrank ℝ F.infinitesimalMotions
         = Module.finrank ℝ (LinearMap.ker (G.square.RigidityMap c)) :=
-      molecular_finrank_motions_eq_square_ker hshadow
-        (Graph.recordsLinks_iff_forall_isLink.mp hends) hmin hgp
+      molecular_finrank_motions_eq_square_ker hshadow hends hmin hgp
     have htriv := Submodule.finrank_mono F.trivialMotions_le_infinitesimalMotions
     rw [F.finrank_trivialMotions] at htriv
     rw [← BodyHingeFramework.rankHypothesis_zero_iff, BodyHingeFramework.RankHypothesis]

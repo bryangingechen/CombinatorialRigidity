@@ -384,7 +384,7 @@ theorem liftAttains_of_least [Infinite K] [Finite α] [Finite β] {r : ℕ} {G :
     rw [panelSupportExtensor_ne_zero_iff]
     exact linearIndependent_liftNormal _ (hlink₀ e _ _ he)
   obtain ⟨Pr, hPr₀, hPr⟩ := PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking G ends
-    hlinks hne₀ le_rfl
+    (Graph.recordsLinks_iff_forall_isLink.mpr hlinks) hne₀ le_rfl
   obtain ⟨Pc, hPc⟩ := IsPolyFun.comp Pr hnrm_poly
   -- `Q₀`, with the bodies off `V(G)` fixed at `b`
   set Q₀ : MvPolynomial (α × Fin 4) K := (∏ i, D i) * Pc with hQ₀def
@@ -992,7 +992,7 @@ theorem lift_transfer [Infinite K] [Finite α] [Finite β] {r : ℕ} {G : Graph 
       rw [PanelHingeFramework.toBodyHinge_supportExtensor, panelSupportExtensor_ne_zero_iff]
       exact linearIndependent_liftNormal (fun i v => (lam i).1 v) (hlinkH e _ _ he)
     obtain ⟨Pr, hPr₀, hPr⟩ := PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking H
-      ends hlinksH hne₀ le_rfl
+      ends (Graph.recordsLinks_iff_forall_isLink.mpr hlinksH) hne₀ le_rfl
     obtain ⟨R, hR⟩ := IsPolyFun.comp Pr hnrm_poly
     have hRe : ∀ lam' : Fin r → (α → K) × ((v : α) → Module.Dual K (dotPerp (K ∙ nG s v))),
         MvPolynomial.eval (fun p => (lam' p.1).1 p.2) R =
