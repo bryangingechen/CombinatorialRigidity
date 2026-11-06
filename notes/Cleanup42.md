@@ -15,11 +15,11 @@ every open row its remedy the same day, at round 1's stop and at a second stop o
 Round 2, opened and closed 2026-11-05, applied them to the chapter in eight slices by layer, then
 one `\uses` sweep (blueprint and notes, no Lean); each slice set its rows' status, and the tally
 here. The ledger now: none `open`, 23 `aligned`, 17 `kept`, 14 `no departure`. Round 4 opened the
-same day at the PI's word (§1, all four items), in nine tasks: the stale docstrings and notes,
+same day at the PI's word (§1, all four items), in ten tasks (the PI added task 9, §1): the stale docstrings and notes,
 Theorem S's fold, the reduction's fold and the witnesses at `K₂` and `K_{2,3}` (§3). **Next
-concrete task:** round 4's task 9, the close (`notes/Phase42-fold.md`); tasks 2 to 8, the stale
-docstrings, the `K₂` witness, Theorem S's fold, the reduction's folds and the `K_{2,3}` witness, have
-landed.
+concrete task:** round 4's task 10, the close (`notes/Phase42-fold.md`); tasks 2 to 9, the stale
+docstrings, the `K₂` witness, Theorem S's fold, the reduction's folds, the `K_{2,3}` witness and the
+folds' `d = 3` edges and notes, have landed.
 
 ## 1. The PI's decisions (verbatim)
 
@@ -226,6 +226,23 @@ What follows from it:
 - **The one stop is the PI's:** a fold that would change a main result's statement or a blueprint
   statement. The open's spikes found none: every `d = 3` declaration the folds re-prove keeps its
   statement, and the folds move two pins (one added, one removed) and no blueprint statement.
+
+### 2026-11-05: the folds' fallout
+
+From the coordinator's check-in after round 4's task 8: each question, then the option the PI
+chose with its description.
+
+**PI, 2026-11-05:** (verbatim)
+- Q: "Round 4's tasks 2–8 have all landed, verified, with no statement changed. The folds left side effects in the d = 3 blueprint chapters (pencil.tex, main-component.tex), whose proofs the open kept as the d = 3 argument. (1) 15 new 'missing' dependency edges: the five folded d = 3 nodes (loop, base, cut-edge and nonsimple cases, and the d = 3 Theorem S) now reach pencil-d.tex nodes through their Lean, with no \uses edge. (2) One false formalization note: the cut-edge case's note still says 'the two forms are one Lean theorem whose parameter selects the form', but that theorem was deleted. (3) Six d = 3 helper lemmas are now 'dead pins': still pinned and correct, but no main result uses them. How should CLEANUP-42 finish?" — A: "One more task, then close (Recommended)" — "A blueprint-only task before the close: add the 15 edges, give each of the five folded d = 3 nodes a one-sentence formalization note ('the formalization proves this as the d = 3 case of …'), the cut-edge note rewritten as one of them. The six dead pins stay pinned. Then the close, and CLEANUP-42 is done (2 commits)."
+- Q: "The six dead-pin lemmas (exists_reposition_cross_incidences, exists_perp_linearIndependent, exists_linearIndependent_extensor_pair_through_given_point in the pencil files; partitionDef_induce_id_le_of_maximal, deficiencyMerged_three_add_five_le, deficiencyMerged_two_add_two_le in the deficiency files) back steps of the d = 3 chapter's own proofs, but after the folds no Lean main result reaches them. Keep them?" — A: "Keep them (Recommended)" — "They stay as the Lean of the d = 3 chapter's proof steps, which the open chose to keep; only their pins are outside the main results' closure. No change."
+
+What follows from it:
+
+- **Task 9 is added before the close** (blueprint and notes only): the 15 edges, one formalization
+  note on each of the five folded `d = 3` nodes, `fmlnote:pencil-cut-case` rewritten as the
+  cut-edge node's. This overrides the work log's *Scope* decision that the `d = 3` chapter's notes
+  and `\uses` do not change. The close becomes task 10, and the two *Candidates* lines on the
+  folds' edges are settled. The six dead pins stay pinned; no Lean changes.
 
 ## 2. The proof-route ledger
 
@@ -1184,10 +1201,10 @@ there.
   - **Round 3** is empty: no row went H (§1, the second stop).
   - **Round 4, the folds, the witnesses and the docstrings** (opened 2026-11-05 at the PI's word,
     §1; `notes/Phase42-fold.md`): the three *Also left to it* items below and every *Moved* line
-    below marked round 4, in nine tasks, one commit each. Task 2 the ten stale Lean docstrings and
+    below marked round 4, in ten tasks, one commit each. Task 2 the ten stale Lean docstrings and
     the five dated `notes/BlueprintExposition.md` entries; task 3 the `K₂` witness; task 4 Theorem
-    S's fold; tasks 5 and 6 the reduction's fold; tasks 7 and 8 the `K_{2,3}` witness; task 9 the
-    close. The open's spikes: no fold changes a statement, `d = 3` or graded, or a blueprint
+    S's fold; tasks 5 and 6 the reduction's fold; tasks 7 and 8 the `K_{2,3}` witness; task 9 the folds'
+    `d = 3` edges and notes (the PI, §1); task 10 the close. The open's spikes: no fold changes a statement, `d = 3` or graded, or a blueprint
     statement.
   - **Round 2 closed** 2026-11-05 (`notes/Phase42-align.md`): 11 tasks, 11 commits, the shas in §2's
     statuses; 23 `aligned`, 17 `kept`, 14 `no departure`, none `open`; 17 formalization notes in
@@ -1266,15 +1283,15 @@ there.
     embedding without the count of its maps" among the route differences left, and
     "`-ear-extend`'s simplicity" among the hypotheses the pins drop; R-33 and R-34 put the chapter
     on those routes and that statement.
-  - *Candidates for the PI* (round 4 task 5; round 4's close, task 9, with its line on the folds'
-    new edges): a stale formalization note. `fmlnote:pencil-cut-case` says the two forms "are one
+  - *Candidates for the PI* (round 4 task 5; settled by task 9 at the PI's
+    word, §1: the note reworded): a stale formalization note. `fmlnote:pencil-cut-case` says the two forms "are one
     Lean theorem whose parameter selects the form"; task 5 deleted that theorem (`…_core`), and each
     form is now the `m = 1` case of 42k's cut case. The open keeps the `d = 3` chapter's notes, so
     the PI chooses: reword it there, or delete it.
   - *Candidates for the PI* (round 4 task 6): `lem:extensor-pair-through-point`'s Lean declaration
     (`Statement.lean`) is unused now that the `d = 3` nonsimple proof is gone; its node is pinned,
     so it stays. `lem:pencil-nonsimple-case` gains the `d = 3` reach into `pencil-d.tex`: leave, or
-    add edges and a formalization note (task 9's line).
+    add edges and a formalization note (settled by task 9: both added).
 - **The ledger at Phase 42's close:** the standing rule (§1) kept §2 current through PD-STEPS's
   rest, PD-COVERAGE, PD-REDUCTION and PD-HEAD (`notes/Phase42-design.md` §3), the last rows 42m's,
   R-24 to R-34; Phase 42 closed on 2026-11-05 with no row added after them. Round 1 adds from R-35.

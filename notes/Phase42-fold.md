@@ -5,8 +5,8 @@ round of CLEANUP-42: Theorem S's `d = 3` core and four `d = 3` cases of the redu
 `n = 3` / `m = 1` cases of their graded Lean (the folds); two non-vacuity witnesses, at `K₂` and
 `K_{2,3}`; and the ten stale Lean docstrings and five dated `notes/BlueprintExposition.md` entries
 left by rounds 1–2. The open's spikes: both folds keep every `d = 3` statement, no blueprint
-statement changes, so no `NEEDS_PI`. Nine tasks, one commit each.
-**Next concrete task:** task 9, the close (below); tasks 2 to 8 landed.
+statement changes, so no `NEEDS_PI`. Ten tasks, one commit each (task 9 added by the PI's adjudication of 2026-11-05).
+**Next concrete task:** task 10, the close (below); tasks 2 to 9 landed.
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -21,7 +21,7 @@ entry here, newest first, and the loop stops; the PI answers in an entry that st
 
 ## Current state
 
-**Task 8 landed** (witness (2), part 2: the good ear and the ear's condition at `K_{2,3}`; its checklist line; gates: whole-tree `lake build` 6249 jobs, 0 warnings, 0 cache failures, `lake lint`, `blueprint/lint.sh` with the docstring-label total 0, `holdsGenerally_earFree_witness` on the three standard axioms). **Task 7 landed** (witness (2), part 1: `K_{2,3}` is feasible; its checklist line; gates: whole-tree `lake build` 6249 jobs, 0 warnings, `lake lint`, `blueprint/lint.sh` with the docstring-label total 0, `k23_pencilNondegFeasible` and `k23_degree` on the three standard axioms). **Task 6 landed** (the reduction's fold: the nonsimple case; its checklist line; gates: whole-tree `lake build` 6249 jobs, 0 warnings, `lake lint`, `blueprint/lint.sh`, `blueprint/verify.sh` with `checkdecls` silent, the three pencil results and `hasGradedPencilRealization_of_not_simple` on the three standard axioms). **Task 5 landed** (the reduction's fold: base, loop and cut-edge cases; its checklist line; gates: whole-tree `lake build` 6249 jobs, 0 warnings, `lake lint`, `blueprint/lint.sh` with the docstring-label total 0, `blueprint/verify.sh` with `checkdecls` silent, the three pencil results and the four `d = 3` cases on the three standard axioms). **Task 4 landed** (Theorem S's fold; its checklist line; gates: whole-tree `lake build` 6249 jobs, 0 warnings, `lake lint`, `blueprint/lint.sh`, `blueprint/verify.sh` with `checkdecls` silent, the three pencil results and the bridge on the three standard axioms). **Task 3 landed** (witness (1), `K₂`: `graded_pencil_conditioned_pair_generic_witness` in
+**Task 9 landed** (blueprint and notes only: the 15 edges and the five formalization notes of the folded `d = 3` nodes; its checklist line; gates: `check-phase-note.py`, `blueprint/lint.sh`, `blueprint/verify.sh` with `checkdecls` silent, 9 `WARNING:` lines as at the parent, 0 `LaTeX Warning`, Lean diff empty). **Task 8 landed** (witness (2), part 2: the good ear and the ear's condition at `K_{2,3}`; its checklist line; gates: whole-tree `lake build` 6249 jobs, 0 warnings, 0 cache failures, `lake lint`, `blueprint/lint.sh` with the docstring-label total 0, `holdsGenerally_earFree_witness` on the three standard axioms). **Task 7 landed** (witness (2), part 1: `K_{2,3}` is feasible; its checklist line; gates: whole-tree `lake build` 6249 jobs, 0 warnings, `lake lint`, `blueprint/lint.sh` with the docstring-label total 0, `k23_pencilNondegFeasible` and `k23_degree` on the three standard axioms). **Task 6 landed** (the reduction's fold: the nonsimple case; its checklist line; gates: whole-tree `lake build` 6249 jobs, 0 warnings, `lake lint`, `blueprint/lint.sh`, `blueprint/verify.sh` with `checkdecls` silent, the three pencil results and `hasGradedPencilRealization_of_not_simple` on the three standard axioms). **Task 5 landed** (the reduction's fold: base, loop and cut-edge cases; its checklist line; gates: whole-tree `lake build` 6249 jobs, 0 warnings, `lake lint`, `blueprint/lint.sh` with the docstring-label total 0, `blueprint/verify.sh` with `checkdecls` silent, the three pencil results and the four `d = 3` cases on the three standard axioms). **Task 4 landed** (Theorem S's fold; its checklist line; gates: whole-tree `lake build` 6249 jobs, 0 warnings, `lake lint`, `blueprint/lint.sh`, `blueprint/verify.sh` with `checkdecls` silent, the three pencil results and the bridge on the three standard axioms). **Task 3 landed** (witness (1), `K₂`: `graded_pencil_conditioned_pair_generic_witness` in
 `Nonvacuity.lean`, three private helpers, axioms the three standard). **Task 2 landed** (Lean docstrings only, no statement or proof): the ten stale docstrings and the
 five dated `BlueprintExposition.md` entries (the checklist line). **Task 1 landed** (docs only): this log; `notes/Cleanup42.md`'s §1 (the PI's entry
 of 2026-11-05 for round 4), **Status** and §3; ROADMAP's Status row, §42's *Next* and the
@@ -100,7 +100,7 @@ consumer is; `lake lean` counts):
   the new reach as *missing* edges from those nodes into `pencil-d.tex`, and some of their proofs'
   edges as unbacked: each fold task records them, `--chapter` before and after, in its line, and
   the close puts one *Candidates for the PI* line (add an edge and a formalization note naming the
-  `d = 3` case, or leave). `--chapter pencil-d` stays at 0 *missing*.
+  `d = 3` case, or leave). `--chapter pencil-d` stays at 0 *missing*. **Overridden** by the PI's adjudication of 2026-11-05 (`notes/Cleanup42.md` §1, "the folds' fallout"): task 9 adds the edges and the notes; the six dead pins stay.
 - **Decision (the open): the witnesses' home.** Both go in `CombinatorialRigidity/Nonvacuity.lean`,
   the home of the main results' witnesses, which already imports `Grade/Generic` and has the
   private `ofSimpleGraph_simple` that `K_{2,3}` needs: witness (1) beside
@@ -145,7 +145,7 @@ three lines:** number, sha, what landed, lines deleted, its edges and any *Candi
 - [x] **2. The stale docstrings and dated notes** (this commit; Lean docstrings and notes only). Ten
   docstrings in eight `Grade/` files lose or restate the sentence contrasting them with a round-2-removed
   route or hypothesis; five `BlueprintExposition.md` entries (42h, 42i, 42k, 42l, 42m) gain a closing sentence.
-  §3's *Moved* lines for round 4 are marked taken at the close (task 9). 11 lines deleted net.
+  §3's *Moved* lines for round 4 are marked taken at the close (task 10). 11 lines deleted net.
 - [x] **3. Witness (1): `K₂` at the generic conjunct** (this commit). `graded_pencil_conditioned_pair_generic_witness`
   in `Nonvacuity.lean` after `graded_pencil_conditioned_pair_witness`, spike transcribed, three private
   helpers, a module bullet; `#print axioms`: `propext`, `Classical.choice`, `Quot.sound`. 47 lines added.
@@ -161,20 +161,22 @@ three lines:** number, sha, what landed, lines deleted, its edges and any *Candi
 - [x] **8. Witness (2), part 2: the good ear and the ear's condition** (this commit). Public `holdsGenerally_earFree_witness` in `Nonvacuity.lean` under task 7's header (a `K₂₃` local notation, task 7's two statements on it), its module bullet; the
   five leaves closed as eight private lemmas: (a2) by `|E(K_{2,3}[Z])| ≤ i·j` and `interval_cases`; selectors by the existing `exists_steer_selectors`. Axioms the three standard. FRICTION: a new
   mirror-candidate entry (`ncard` of a set of a sum type), a line on 22i's `vertexSet_induce` entry. 135 Lean lines added net.
-- [ ] **9. The close** (Sonnet). Each task's sha in its line and in §3's mirrored lines; the
-  *Candidates* line on the folds' new edges (*Scope*); the status surfaces of the open; the queue
-  row's `done = true` only if CLEANUP-42 has nothing left.
+- [x] **9. The folds' `d = 3` nodes: their edges and notes** (this commit; blueprint and notes only). The 15 edges, proof `\uses`: `pencil.tex`'s loop, base, cut and nonsimple cases into `def:pencil-d-rank-hypothesis`, `lem:pencil-d-rank-agrees-three` and their `pencil-d` case (the cut also `def:pencil-d-distinct-motive`); `main-component.tex`'s `thm:pencil-x0-theorem-s` into `def:pencil-d-usable-chain`, `thm:pencil-d-theorem-s`; no cycle, none left out. Five one-sentence formalization notes (`fmlnote:pencil-cut-case` rewritten). G7: `pencil` *missing* 13 → 0, `main-component` 5 → 3 (the other three, `lem:deficiency-*-d` from the dead pins, untouched), dead pins unchanged.
+- [ ] **10. The close** (Sonnet). Each task's sha in its line and in §3's mirrored lines; the two
+  *Candidates* entries below (the stale note, the nonsimple edges) are settled by task 9: mark them
+  taken with its sha; the status surfaces of the open; the queue row's `done = true` only if
+  CLEANUP-42 has nothing left.
 
 ## Candidates for the PI
 
-- **A stale formalization note** (task 5; for the close's line on the folds' new edges, task 9).
+- **A stale formalization note** (task 5; settled by task 9: the note reworded, the PI's adjudication).
   `fmlnote:pencil-cut-case` (`pencil.tex`) says the two forms "are one Lean theorem whose parameter
   selects the form"; that theorem (`…_core`) is deleted, and each form is now the `m = 1` case of
   42k's cut case through a `two_iff`. The open keeps the `d = 3` chapter's notes, so it stays until
   the PI chooses: reword it in that line's formalization note, or delete it. Mirrored in
   `notes/Cleanup42.md` §3.
 
-- **Dead pin and the nonsimple edges** (task 6; for task 9). `lem:extensor-pair-through-point`'s
+- **Dead pin and the nonsimple edges** (task 6; settled by task 9: edges and note added, the pin stays). `lem:extensor-pair-through-point`'s
   Lean declaration (`Statement.lean`) has no user now that the `d = 3` nonsimple proof is gone;
   its node is pinned, so it stays. `lem:pencil-nonsimple-case` gains the `d = 3` reach into
   `pencil-d.tex` like task 5's nodes; leave or add edges and a formalization note. Mirrored in
@@ -190,11 +192,11 @@ three lines:** number, sha, what landed, lines deleted, its edges and any *Candi
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 9, the close (Sonnet; its line above): each task's sha in its line and in §3's mirrored lines, the *Candidates* line on the folds' new edges, the status surfaces of the open, and the queue row. Round 4's Lean is done: tasks 2 to 8 landed, the last (`holdsGenerally_earFree_witness`) with no new *Candidates* or *Moved* line.
+**Next concrete task:** task 10, the close (Sonnet; its line above): each task's sha in its line and in §3's mirrored lines, the two *Candidates* entries marked taken with task 9's sha, the status surfaces of the open, and the queue row. Round 4's Lean is done and task 9 settled the folds' fallout: tasks 2 to 9 landed.
 
 ## Decisions made during this round
 
-- **The log, the order and the rungs** (the open): nine tasks, the PI's four items; the cheap
+- **The log, the order and the rungs** (the open): nine tasks at the open (a tenth added 2026-11-05), the PI's four items; the cheap
   docstring task first, as it shares no file with a fold; the folds before witness (2), whose file
   they do not touch either. Under *Scope*: the sweep, the `d = 3` proofs, the witnesses' home, the
   count, the gates.

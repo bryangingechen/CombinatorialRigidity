@@ -4762,7 +4762,8 @@ no two of them are adjacent, a rigid set that avoids one of them.
         lem:deficiency-two-body-chain, lem:deficiency-tight-rigid,
         lem:deficiency-add-body, lem:deficiency-merge-rigid,
         lem:deficiency-core-bound, lem:deficiency-additive-core,
-        lem:deficiency-zero-connected}
+        lem:deficiency-zero-connected, def:pencil-d-usable-chain,
+        thm:pencil-d-theorem-s}
   \emph{The chains.} As $G$ has no planar-rigid set, it is sparse
   (\cref{lem:deficiency-sparse}). So it has bodies of degree two
   (\cref{lem:pencil-x0-sparse-count}), and each of them lies on a chain
@@ -4810,6 +4811,12 @@ no two of them are adjacent, a rigid set that avoids one of them.
   \Cref{lem:deficiency-core-bound} with $X_0 = \{x\}$ and
   \cref{lem:deficiency-additive-core} give the inequality.
 \end{proof}
+\begin{fmlnote}
+  The formalization proves this theorem as the case $d = 3$ of
+  \cref{thm:pencil-d-theorem-s}, whose usable chains
+  (\cref{def:pencil-d-usable-chain}) are those of
+  \cref{def:pencil-x0-usable-chain} at $d = 3$.
+\end{fmlnote}
 
 \begin{theorem}[The structural coverage]
   \label{thm:pencil-x0-coverage}

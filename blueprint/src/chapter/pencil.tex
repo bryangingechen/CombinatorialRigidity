@@ -629,6 +629,8 @@ deficiency unchanged.
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{def:pencil-d-rank-hypothesis, lem:pencil-d-rank-agrees-three,
+        lem:pencil-d-loop-case}
   Keep the realization of $G - e$, and give $e$ a nonzero hinge that lies
   in the panel of $v$ and passes through the point of $v$. It exists by
   \cref{lem:two-pencil-extension} with $u = v$, where both
@@ -637,6 +639,11 @@ deficiency unchanged.
   loop crosses no partition of $V(G)$, so deleting it leaves the
   deficiency unchanged, and the rank is still the deficiency rank.
 \end{proof}
+\begin{fmlnote}
+  The formalization proves this lemma as the case $d = 3$ of
+  \cref{lem:pencil-d-loop-case}, through
+  \cref{lem:pencil-d-rank-agrees-three}.
+\end{fmlnote}
 
 The cut-edge case moves one side of a realization by a projective
 automorphism. The next lemma shows that such a move keeps a pencil
@@ -728,7 +735,9 @@ automorphism.
   \leanok
   \uses{lem:pencil-projective-transport, lem:pencil-cut-nondegeneracy,
         lem:cut-edge-decomposition, lem:two-pencil-extension,
-        lem:block-rank-cut, lem:relative-deficiency-rank-bound}
+        lem:block-rank-cut, lem:relative-deficiency-rank-bound,
+        def:pencil-d-rank-hypothesis, def:pencil-d-distinct-motive,
+        lem:pencil-d-rank-agrees-three, lem:pencil-d-cut-case}
   Realize the two sides separately. If no edge crosses, together they
   realize $G$. Suppose one edge $uv$ crosses, with $u \in V_1$. The two
   realizations were chosen independently, so the cross-incidences of $uv$
@@ -747,8 +756,11 @@ automorphism.
 \end{proof}
 \begin{fmlnote}
   \label{fmlnote:pencil-cut-case}
-  The two forms are one Lean theorem whose parameter selects the form;
-  the pinned names are that theorem and its two specializations.
+  The formalization proves each of the two forms as the case $d = 3$ of
+  the corresponding form of \cref{lem:pencil-d-cut-case}, the first
+  through the agreement of the deficiency-rank realizations at $d = 3$
+  and the second through the agreement of the adjacent-distinct ones, both
+  in \cref{lem:pencil-d-rank-agrees-three}.
 \end{fmlnote}
 
 \begin{lemma}[The base case, $|V(G)| \le 2$]
@@ -763,7 +775,9 @@ automorphism.
   \leanok
   \uses{lem:case-II-placement-old-rows-extract,
     lem:edge-rows-independent, lem:isInfRigidOn-of-relative-count,
-    lem:relative-deficiency-rank-bound, lem:two-vertex-zero-dof}
+    lem:relative-deficiency-rank-bound, lem:two-vertex-zero-dof,
+    def:pencil-d-rank-hypothesis, lem:pencil-d-rank-agrees-three,
+    lem:pencil-d-base-case}
   Give every body the same normal $n$ and the same point $q$ of its
   panel. With no edge the deficiency rank is $0$. With one edge it is
   $D - 1$, which one nonzero hinge in the panel through $q$ attains.
@@ -772,6 +786,11 @@ automorphism.
   \cref{lem:extensor-pair-through-point}, which make the two bodies rigid
   (\cref{lem:theorem-55-base}), and every further edge reuses the second hinge.
 \end{proof}
+\begin{fmlnote}
+  The formalization proves this lemma as the case $d = 3$ of
+  \cref{lem:pencil-d-base-case}, through
+  \cref{lem:pencil-d-rank-agrees-three}.
+\end{fmlnote}
 
 \begin{lemma}[Deficiency is unchanged by contracting a proper rigid subgraph]
   \label{lem:pencil-contraction-deficiency}
@@ -1105,7 +1124,9 @@ from the conditioned pair at smaller multigraphs
         lem:relative-deficiency-rank-bound,
         lem:case-II-placement-old-rows-extract,
         lem:extProj-preserves-rank-of-inter,
-        lem:isInfRigidOn-of-relative-count, lem:two-vertex-zero-dof}
+        lem:isInfRigidOn-of-relative-count, lem:two-vertex-zero-dof,
+        def:pencil-d-rank-hypothesis, lem:pencil-d-rank-agrees-three,
+        lem:pencil-d-nonsimple-case}
   We follow the proof of KT Lemma~6.2~\cite[p.~673]{katohTanigawa2011},
   as in \cref{lem:case-I-realization-nonsimple}, for pencil realizations
   and without minimality.
@@ -1141,6 +1162,11 @@ from the conditioned pair at smaller multigraphs
   (\cref{lem:relative-deficiency-rank-bound}), so this is the deficiency
   rank.
 \end{proof}
+\begin{fmlnote}
+  The formalization proves this lemma as the case $d = 3$ of
+  \cref{lem:pencil-d-nonsimple-case}, through
+  \cref{lem:pencil-d-rank-agrees-three}.
+\end{fmlnote}
 
 \begin{theorem}[Pencil realization from the two main-component statements]
   \label{thm:pencil-conditional-realization-main-component}
