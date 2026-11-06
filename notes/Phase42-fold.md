@@ -209,10 +209,11 @@ three lines:** number, sha, what landed, lines deleted, its edges and any *Candi
 PI and takes its phase number then. Nothing carries over from round 4.
 
 **For the PI** (a report, not a stop): the six dead pins stay pinned (§1 there, the folds'
-fallout); `--chapter main-component` keeps three *missing* edges, `lem:deficiency-core-bound`,
+fallout); `--chapter main-component`'s three *missing* edges, `lem:deficiency-core-bound`,
 `lem:deficiency-one-body-chain` and `lem:deficiency-two-body-chain` into their `-d` forms, from
-Phase 42 (missing at round 4's open, outside the PI's 15); `notes/dispatch-log.md`'s grooming is
-the coordinator's.
+Phase 42 (missing at round 4's open, outside the PI's 15), were added after the close at the PI's
+word, each with a formalization note (this commit; `main-component` 0 *missing*);
+`notes/dispatch-log.md`'s grooming is the coordinator's.
 
 ## Decisions made during this round
 

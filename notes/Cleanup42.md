@@ -1212,6 +1212,11 @@ there.
     (`K₂`) and `holdsGenerally_earFree_witness` (`K_{2,3}`); the ten docstrings and five dated
     entries; the folded nodes' 15 edges and five formalization notes. `--chapter`: `pencil` and
     `pencil-d` 0 *missing*, `main-component` 3 (as at the open); `formalization.yaml` unchanged.
+  - **After the close** (2026-11-05, at the PI's word): `main-component`'s three *missing* edges,
+    `lem:deficiency-core-bound`, `lem:deficiency-one-body-chain` and
+    `lem:deficiency-two-body-chain` into their `-d` forms (from Phase 42, whose `d = 3` Lean is the
+    `d = 3` case of the `-d` Lean), added as proof `\uses`, each with a one-sentence formalization
+    note as task 9's (this commit); `main-component` 0 *missing*.
 
   Rounds 1, 2 and 4's *Candidates for the PI* and *Moved to a later round* lines are mirrored
   here as they land, each with the task that takes it:

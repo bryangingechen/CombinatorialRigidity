@@ -4182,7 +4182,7 @@ empty or $X_0 = \{x\}$.
 \begin{proof}
   \leanok
   \uses{lem:deficiency-merge-rigid, lem:deficiency-singleton-bound,
-        lem:deficiency-add-body}
+        lem:deficiency-add-body, lem:deficiency-core-bound-d}
   (1) Let $P$ be a partition of $Y$, with values taken in $G[Y]$. Let
   $P'$ be a partition coarser than $P$ with $W$ inside one part $Q$ and
   $v_3(P) \le v_3(P')$ (\cref{lem:deficiency-merge-rigid}). If $Q = Y$
@@ -4204,6 +4204,10 @@ empty or $X_0 = \{x\}$.
   avoiding $X_0$ that strictly contains $W$, against the maximality of
   $W$.
 \end{proof}
+\begin{fmlnote}
+  The formalization proves both parts as the case $d = 3$ of
+  \cref{lem:deficiency-core-bound-d}.
+\end{fmlnote}
 
 \begin{lemma}[The planar deficiencies of a core and its contraction add up to at most that of the graph]
   \label{lem:deficiency-additive-core}
@@ -4259,7 +4263,7 @@ empty or $X_0 = \{x\}$.
 \begin{proof}
   \leanok
   \uses{lem:deficiency-singleton-bound, lem:deficiency-add-body,
-        lem:separated-partition-value}
+        lem:separated-partition-value, lem:deficiency-one-body-chain-d}
   (1) An edge $ab$ would give the triangle $\{x, a, b\}$ singleton value
   zero. Let a partition of $V_1$ with $a$ and $b$ in one part $Z$ attain
   the merged deficiency. Its value plus $s(Z)$ is at most
@@ -4287,6 +4291,10 @@ empty or $X_0 = \{x\}$.
   least one such edge exists, and the value is at most $4 - 5 < 0$. When
   they are together, the value is at most $0$.
 \end{proof}
+\begin{fmlnote}
+  The formalization proves part~(2) as the case $d = 3$ of
+  \cref{lem:deficiency-one-body-chain-d}, where $D - 1 = 5$.
+\end{fmlnote}
 
 \begin{lemma}[A non-adjacent pair outside every rigid set]
   \label{lem:deficiency-two-body-chain}
@@ -4301,7 +4309,8 @@ empty or $X_0 = \{x\}$.
 \begin{proof}
   \leanok
   \uses{lem:deficiency-singleton-bound, lem:deficiency-add-body,
-        lem:deficiency-tight-rigid, lem:deficiency-merge-rigid}
+        lem:deficiency-tight-rigid, lem:deficiency-merge-rigid,
+        lem:deficiency-two-body-chain-d}
   Otherwise the part $Z$ of $a$ and $b$ in a partition attaining the
   planar merged deficiency has $s(Z) \le 1$
   (\cref{lem:deficiency-singleton-bound}). The pair $\{a, b\}$ has
@@ -4310,6 +4319,10 @@ empty or $X_0 = \{x\}$.
   (\cref{lem:deficiency-tight-rigid}). Then $\operatorname{def}_3(G; a,
   b) = \operatorname{def}_3(G)$ (\cref{lem:deficiency-merge-rigid}).
 \end{proof}
+\begin{fmlnote}
+  The formalization proves this lemma as the case $d = 3$ of
+  \cref{lem:deficiency-two-body-chain-d}.
+\end{fmlnote}
 
 \subsection{The structural coverage}
 \label{sec:main-component-coverage}
