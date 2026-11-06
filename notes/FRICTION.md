@@ -209,7 +209,7 @@ to be re-derived by re-reading entries later.
   `Set.mem_ofPred_eq`.
 - **Status:** idiom (resolved in-proof).
 
-### [mirror-candidate] 42m build 5: `LinearMap.pi_apply_eq_sum_univ` reads the basis as `fun j => if i = j …`, not `Pi.single`
+### [resolved] 42m build 5: `LinearMap.pi_apply_eq_sum_univ` reads the basis as `fun j => if i = j …`, not `Pi.single`
 - **Where it bit:** Phase 42m, `Pencil/Grade/LiftNoRigid.lean` (`mem_liftMaps_pencilConfigPoint_iff`),
   as in `Pencil/Grade/LiftWitness.lean` (`exists_mem_liftSpaceTilde_of_mem_liftSpace`).
 - **Friction:** expanding a form `ψ` on `Fin n → K` as `∑ i, p i * ψ (Pi.single i 1)` takes
@@ -218,7 +218,8 @@ to be re-derived by re-reading entries later.
 - **Proposed fix:** a mirror `LinearMap.pi_apply_eq_sum_univ_single` in
   `Mathlib/LinearAlgebra/Pi.lean`, and the two call sites on it; not now (two call sites, a
   cleanup round).
-- **Status:** mirror-candidate (open; a cleanup round).
+- **Status:** resolved (HOMES task 18): `LinearMap.pi_apply_eq_sum_univ_single` in the mirror
+  `Mathlib/LinearAlgebra/Pi.lean` (the `smul` form, any target module); both sites call it.
 
 ### [idiom] 42m build 3: a pair-flip fed to a lemma generic in `{N}` times out, and three small traps
 - **Where it bit:** Phase 42m, `Pencil/Grade/LiftCutEdge.lean` (`exists_basis_frame`,
@@ -856,7 +857,7 @@ to be re-derived by re-reading entries later.
   hypothesis in simp-normal form (`V(G) = V(Q.graph)`).
 - **Status:** idiom.
 
-### [open] `SimpleGraph.shadowGraph` has no `IsLink` or edge-set lemma in the plain form
+### [resolved] `SimpleGraph.shadowGraph` has no `IsLink` or edge-set lemma in the plain form
 - **Where it bit:** RECONCILE round 3, task 24: `molecule_rank_formula_witness` and
   `molecule_generic_square_packing_witness` (`Nonvacuity.lean`) need the links and the edge set of
   `K₃.shadowGraph` (the triangle's `isKDof_zero_of_triangle` arguments; the six trees' `IsPath` in
@@ -869,7 +870,9 @@ to be re-derived by re-reading entries later.
 - **Proposed fix:** `@[simp] shadowGraph_isLink : G.shadowGraph.IsLink e x y ↔ G.Adj x y ∧ Sum.inl
   s(x, y) = e := Iff.rfl` beside `shadowGraph_isLink_iff` (`Molecular/Molecule/Carrier.lean`);
   an edge-set lemma if a second caller appears.
-- **Status:** open.
+- **Status:** resolved (HOMES task 18): `SimpleGraph.shadowGraph_isLink` (`@[simp]`, the statement
+  `G.Adj x y ∧ s(x, y) = e`: the carrier has no `Sum.inl`) beside `shadowGraph_isLink_iff`;
+  `Nonvacuity.lean`'s local `hL` deleted. No edge-set lemma (still one caller).
 
 ### [idiom] Two `edgeFinset` instances are two `omega` atoms; `decide` stalls on `edgeFinset.card`
 - **Where it bit:** RECONCILE round 3, task 24: `degree_one_rank_witness` (`Nonvacuity.lean`), the

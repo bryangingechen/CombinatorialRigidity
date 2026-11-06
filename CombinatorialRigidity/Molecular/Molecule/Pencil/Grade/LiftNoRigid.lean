@@ -5,6 +5,7 @@ Authors: Bryan Gin-ge Chen
 -/
 module
 
+public import CombinatorialRigidity.Mathlib.LinearAlgebra.Pi
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.LiftCutEdge
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GenericBase
 
@@ -279,12 +280,8 @@ theorem mem_liftMaps_pencilConfigPoint_iff {G : Graph α β} {q : α × Fin 2 �
       ψ (Pi.single 3 1) + ψ (Pi.single 2 1) * h₀ 2], fun w hw => ?_⟩
     have hψb : ψ (pencilConfigPoint q z w) =
         ∑ i, pencilConfigPoint q z w i * ψ (Pi.single i 1) := by
-      rw [LinearMap.pi_apply_eq_sum_univ ψ]
-      refine Finset.sum_congr rfl fun i _ => ?_
-      rw [smul_eq_mul]
-      congr 2
-      funext j
-      simp [Pi.single_apply, eq_comm]
+      rw [LinearMap.pi_apply_eq_sum_univ_single ψ]
+      simp only [smul_eq_mul]
     rw [hψ w hw, hψb]
     simp only [Fin.sum_univ_four, pencilConfigPoint, dotProduct, Fin.sum_univ_three,
       pencilPicturePoint, hh₀ w hw]

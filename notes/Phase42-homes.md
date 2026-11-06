@@ -6,14 +6,14 @@ CLEANUP-42 and ahead of ORIGAMI, in two parts: the friction log's docs and tooli
 2–4), then the lemmas Phase 42 left outside their home files, one task per home file, with the
 mirror lemmas that now meet their entries' own bar (tasks 5–18). No statement changes. Phase 42
 deferred the moves because a declaration added to these files rebuilds most of `Molecular/`
-mid-phase; ORIGAMI will not edit them, so they are cheapest now. Tasks 1–17 landed
+mid-phase; ORIGAMI will not edit them, so they are cheapest now. Tasks 1–18 landed
 (the docs part, the tree-wide basics, `Deficiency.lean`, the linear-independence mirrors and their
 sweep, `Meet.lean`, `RigidityMatrix/Basic.lean` with `GenericityDevice.lean`, `PanelLayer.lean`,
 `Realization.lean`, `Carrier.lean` with `Configuration.lean`, `Fin.val_succAbove` with
-`MainComponent/Cut.lean`, the glued-ends helpers, the additive kernel lemma, the ear insertion):
-62 actionable entries down to 20 (heading tags, by `grep -c '^### \[<tag>\]'`: open 9,
-mirror-candidate 9, process 2, blueprint 0).
-**Next concrete task:** task 18, two small lemmas (*Lemma checklist*).
+`MainComponent/Cut.lean`, the glued-ends helpers, the additive kernel lemma, the ear insertion, two small lemmas):
+62 actionable entries down to 18 (heading tags, by `grep -c '^### \[<tag>\]'`: open 8,
+mirror-candidate 8, process 2, blueprint 0).
+**Next concrete task:** task 19, the close (coordinator; *Lemma checklist*).
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -29,7 +29,19 @@ public declaration's name, or delete a pinned declaration, does not land that ch
 
 ## Current state
 
-**Task 17 landed** (this commit; Lean; opus; one dispatch). `exists_insertion_earDataGrade`, in
+**Task 18 landed** (this commit; Lean; sonnet). `SimpleGraph.shadowGraph_isLink` (`@[simp]`,
+`Iff.rfl`, lint-clean) beside `shadowGraph_isLink_iff`; `Nonvacuity.lean`'s `hL` is deleted and its
+`simp` closes the six path goals by the lemma and `SimpleGraph.top_adj`. The new mirror
+`Mathlib/LinearAlgebra/Pi.lean` (in `CombinatorialRigidity.lean`) holds
+`LinearMap.pi_apply_eq_sum_univ_single` (`f x = ∑ i, x i • f (Pi.single i 1)`, over any target
+module), called by `mem_liftMaps_pencilConfigPoint_iff` (`Grade/LiftNoRigid.lean`) and
+`exists_mem_liftSpaceTilde_of_mem_liftSpace` (`Grade/LiftWitness.lean`), each now two lines shorter
+than its `congr 2`/`funext` tail. Gates: G2 `lake build` (6251 jobs, 0 warnings, 0 cache failures)
+and `lake lint`; G3 `blueprint/lint.sh`; G5 `#print axioms` of the 21 `formalization.yaml`
+declarations, no `sorryAx`; G1. G4 not run: no pinned name moved or went. FRICTION: both entries
+`[resolved]`.
+
+**Task 17 landed** (`834845db`; Lean; opus; one dispatch). `exists_insertion_earDataGrade`, in
 `Grade/Short.lean` after `span_joins_succAbove_two`, is `exists_insertion_earDataGrade_three`'s
 statement at `x : Fin (n + 3) → α` (the ear of `G″` has `n + 2` interior bodies), with the ear
 data's ends `xf`, `xl` implicit and free (`x 0`, `x (Fin.last _)` at four; `x 0`, `x 2` at three)
@@ -237,11 +249,12 @@ the entries it resolved.
 - [x] **16. The additive core's kernel argument, once** (`63fd4e68`; Lean; sonnet). The lemma
   into `MainComponent/ContractAdditive.lean`, `of_additiveContract` through it. Resolves *The kernel
   argument at an additive core is proved twice…*.
-- [x] **17. The ear insertion, once** (this commit; Lean; opus). `exists_insertion_earDataGrade`
+- [x] **17. The ear insertion, once** (`834845db`; Lean; opus). `exists_insertion_earDataGrade`
   (`Grade/Short.lean`, `n + 2` bodies of `G″`), called by `of_openEar_four` and `of_openEar_three`;
   `exists_insertion_earDataGrade_three` deleted. Resolves *The insertion at three bodies repeats…*.
-- [ ] **18. Two small lemmas** (Lean; sonnet). `@[simp] shadowGraph_isLink : G.shadowGraph.IsLink e
-  x y ↔ G.Adj x y ∧ Sum.inl s(x, y) = e` beside `shadowGraph_isLink_iff`
+- [x] **18. Two small lemmas** (this commit; Lean; sonnet). `@[simp] shadowGraph_isLink :
+  G.shadowGraph.IsLink e x y ↔ G.Adj x y ∧ s(x, y) = e` (no `Sum.inl`: the carrier is
+  `Graph V (Sym2 V)`) beside `shadowGraph_isLink_iff`
   (`Molecular/Molecule/Carrier.lean`), with `Nonvacuity.lean`'s local `hL` through it.
   `LinearMap.pi_apply_eq_sum_univ_single` at the mirror path of mathlib's
   `LinearMap.pi_apply_eq_sum_univ`, with its two sites (`mem_liftMaps_pencilConfigPoint_iff`,
@@ -287,7 +300,7 @@ the entries it resolved.
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 18, two small lemmas (*Lemma checklist*), one commit.
+**Next concrete task:** task 19, the close (docs only; coordinator).
 After the round: ORIGAMI's open, with the PI (`notes/Origami.md`).
 
 ## Decisions made during this round

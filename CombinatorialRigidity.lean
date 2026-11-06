@@ -23,6 +23,7 @@ public import CombinatorialRigidity.Mathlib.Combinatorics.SimpleGraph.Acyclic
 public import CombinatorialRigidity.Mathlib.Combinatorics.SimpleGraph.Connectivity.Connected
 public import CombinatorialRigidity.Mathlib.Combinatorics.SimpleGraph.DeleteEdges
 public import CombinatorialRigidity.Mathlib.Data.Fin.Basic
+public import CombinatorialRigidity.Mathlib.LinearAlgebra.Pi
 public import CombinatorialRigidity.MatroidIdentification
 public import CombinatorialRigidity.Molecular.AlgebraicInduction.Nonvacuity
 public import CombinatorialRigidity.Molecular.AlgebraicInduction.Theorem55

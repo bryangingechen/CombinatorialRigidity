@@ -68,6 +68,12 @@ of `V`. -/
 @[simp] theorem shadowGraph_vertexSet (G : SimpleGraph V) : V(G.shadowGraph) = Set.univ := rfl
 
 omit [Finite V] in
+/-- **The links of the multigraph of a simple graph, by label**: `G.shadowGraph` links `x` and `y`
+with label `e` iff `G.Adj x y` and `s(x, y) = e`. -/
+@[simp] theorem shadowGraph_isLink (G : SimpleGraph V) (e : Sym2 V) (x y : V) :
+    G.shadowGraph.IsLink e x y ↔ G.Adj x y ∧ s(x, y) = e := Iff.rfl
+
+omit [Finite V] in
 /-- **The links of the multigraph of a simple graph** (`lem:molecule-graph-carrier`):
 `G.shadowGraph` links `x` and `y` iff `G.Adj x y`. The equivalence needs no `x ≠ y`: both sides fail
 at `x = y`. -/

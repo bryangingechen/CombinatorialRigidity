@@ -5,6 +5,7 @@ Authors: Bryan Gin-ge Chen
 -/
 module
 
+public import CombinatorialRigidity.Mathlib.LinearAlgebra.Pi
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Lift
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Arms
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Pair
@@ -176,11 +177,8 @@ theorem exists_mem_liftSpaceTilde_of_mem_liftSpace {G : Graph α β} {b0 : α �
   refine ⟨Sum.elim lam.1 fun q => ψ q.1 (Pi.single q.2 1), fun v hv w hw => ?_, fun w => rfl⟩
   simp only [Sum.elim_inl, Sum.elim_inr]
   rw [hlam v hv w hw (hP0 v hv w hw), ← hψ v, LinearMap.comp_apply, Submodule.subtype_apply,
-    LinearMap.pi_apply_eq_sum_univ (ψ v) (b0 w)]
-  refine Finset.sum_congr rfl fun i _ => ?_
-  rw [smul_eq_mul, mul_comm]
-  congr 2
-  funext j; simp [Pi.single_apply, eq_comm]
+    LinearMap.pi_apply_eq_sum_univ_single (ψ v) (b0 w)]
+  simp only [smul_eq_mul, mul_comm]
 
 /-- A member of `L̃` gives a lift: the forms restricted to `Π⁰_v`. -/
 theorem exists_mem_liftSpace_of_mem_liftSpaceTilde {G : Graph α β} {b0 : α → Fin 4 → K}

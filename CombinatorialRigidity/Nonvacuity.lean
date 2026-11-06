@@ -1066,11 +1066,9 @@ theorem molecule_generic_square_packing_witness :
     ∃ p : Framework (Fin 3) 3, IsGenericPlacement p ∧
       (⊤ : SimpleGraph (Fin 3)).square.IsInfinitesimallyRigid p := by
   have hV : V((⊤ : SimpleGraph (Fin 3)).shadowGraph.mulTilde 3) = Set.univ := rfl
-  have hL : ∀ e x y, (⊤ : SimpleGraph (Fin 3)).shadowGraph.IsLink e x y ↔
-      x ≠ y ∧ s(x, y) = e := fun _ _ _ ↦ Iff.rfl
   have hP : ∀ i, ((⊤ : SimpleGraph (Fin 3)).shadowGraph.mulTilde 3).IsPath (treeWalk i) := by
     intro i
-    fin_cases i <;> simp [treeWalk, path3, Graph.cons_isPath_iff, hL]
+    fin_cases i <;> simp [treeWalk, path3, Graph.cons_isPath_iff]
   have hspan : ∀ i, (treeWalk i).toGraph ≤s (⊤ : SimpleGraph (Fin 3)).shadowGraph.mulTilde 3 := by
     refine fun i ↦ ⟨(hP i).isWalk.toGraph_le, ?_⟩
     rw [WList.toGraph_vertexSet, hV]
