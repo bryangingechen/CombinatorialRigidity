@@ -314,6 +314,19 @@ argument in full, and no node decomposed or rerouted for difficulty. The verdict
 sub-phase, are the `pencil-d.tex` sections below, the last 42m's with the judgment for the phase.
 **Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
 
+**CLEANUP-42 (closed 2026-11-05).** Round 1 audited `pencil-d.tex`'s proofs against their Lean
+and round 2 aligned each departing one with its Lean or kept both routes with a note
+(`notes/Phase42-cleanup.md`, `notes/Phase42-align.md`); round 4 (`notes/Phase42-fold.md`) proved
+five `d = 3` nodes' Lean as the `d = 3` case of the every-dimension Lean: `thm:pencil-x0-theorem-s`
+and the loop, cut-edge, base and nonsimple cases of `pencil.tex`, each now with a formalization
+note saying so (`d7e18795`). No entry is added: a proof restated to its Lean's route is not a
+reroute for difficulty, a fold is project-side (the `d = 3` Lean proved once), and each folded node
+keeps its `d = 3` argument. Round 4's task 2 (`e803c78d`) gave the 42h, 42i, 42k, 42l and 42m
+entries a closing sentence on what round 2 did to their route differences. The entries of
+`lem:pencil-cut-case`, `lem:pencil-nonsimple-case` and `thm:pencil-x0-theorem-s` describe the
+chapter's arguments, which stand; the first names `…_core`, which `273e824b` deleted, as a dated
+record. **Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
+
 ## Format
 
 One entry per node, grouped by destination blueprint chapter:

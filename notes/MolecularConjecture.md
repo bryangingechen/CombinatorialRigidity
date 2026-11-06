@@ -807,7 +807,7 @@ against their Lean, `notes/Cleanup42.md`) opened 2026-11-05 at the PI's word, ah
 round 1, the route audit, closed the same day at a stop for the PI, who gave every open row its
 remedy; round 2, the chapter to the Lean (`notes/Phase42-align.md`), opened and closed then; round 4,
 the Lean round (the folds, the witnesses and the docstrings, `notes/Phase42-fold.md`), opened then
-at the PI's word. Still queued,
+at the PI's word and closed the same day, and CLEANUP-42 with it. Still queued,
 codenamed:
 **ORIGAMI** (the planar-blocks / molecular-origami
 conjecture, `notes/Origami.md`, with the PI), **PIN** (a second,

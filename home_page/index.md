@@ -218,9 +218,12 @@ whose deficiency is the same in both. It needed one new step, at ears with
 few interior bodies, first proved by hand in dimension four. On top of the
 induction, the reduction to all multigraphs runs in every dimension, and
 the nondegenerate claim is proved by lifting nondegenerate
-three-dimensional realizations to dimension $d$. Where a formal proof
-takes a different route from the blueprint's, the difference is recorded
-for the cleanup that follows the phase.
+three-dimensional realizations to dimension $d$. A cleanup after the
+phase (closed 2026-11-05) went through each step where a formal proof
+takes a different route from the blueprint's: the blueprint now follows
+the formal proof there, or gives both routes. It also re-proved the parts
+of the three-dimensional formal proof that duplicated the every-dimension
+one, as its three-dimensional case.
 
 The table below and `ROADMAP.md` carry the fine-grained status.
 

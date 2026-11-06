@@ -1,12 +1,13 @@
 # CLEANUP-42 round 4 — the folds, the witnesses and the docstrings (work log)
 
-**Status:** open (2026-11-05, at the PI's word, `notes/Cleanup42.md` §1). Round 4 is the Lean
-round of CLEANUP-42: Theorem S's `d = 3` core and four `d = 3` cases of the reduction become the
-`n = 3` / `m = 1` cases of their graded Lean (the folds); two non-vacuity witnesses, at `K₂` and
-`K_{2,3}`; and the ten stale Lean docstrings and five dated `notes/BlueprintExposition.md` entries
-left by rounds 1–2. The open's spikes: both folds keep every `d = 3` statement, no blueprint
-statement changes, so no `NEEDS_PI`. Ten tasks, one commit each (task 9 added by the PI's adjudication of 2026-11-05).
-**Next concrete task:** task 10, the close (below); tasks 2 to 9 landed.
+**Status:** closed (2026-11-05; opened the same day at the PI's word, `notes/Cleanup42.md` §1),
+and CLEANUP-42 with it. Round 4 was the Lean round: Theorem S's `d = 3` core and four `d = 3`
+cases of the reduction are now the `n = 3` / `m = 1` cases of their graded Lean (the folds), every
+statement kept; two non-vacuity witnesses, at `K₂` and `K_{2,3}`; the ten stale Lean docstrings and
+five dated `notes/BlueprintExposition.md` entries rounds 1–2 left; and, at the PI's word, the
+folded `d = 3` nodes' 15 edges and five formalization notes. Ten tasks, ten commits; no `NEEDS_PI`
+stop; `formalization.yaml` unchanged.
+**Next concrete task:** ORIGAMI's open, with the PI (ROADMAP *Queued post-program phases*).
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -17,18 +18,31 @@ statement or a blueprint statement. Such a task does not land that change: it wr
 entry here, newest first, and the loop stops; the PI answers in an entry that starts
 `**PI, <date>:**`. Sessions hand off as usual when the context grows long (the PI's note).
 
-- None yet. (The open's spikes found none: both folds keep every statement, `d = 3` and graded.)
+- None arose. (The open's spikes found none, and every fold kept its statements, `d = 3` and
+  graded. The PI's adjudication of the folds' fallout came at a coordinator check-in, not a stop:
+  `notes/Cleanup42.md` §1, task 9.)
 
 ## Current state
 
-**Task 9 landed** (blueprint and notes only: the 15 edges and the five formalization notes of the folded `d = 3` nodes; its checklist line; gates: `check-phase-note.py`, `blueprint/lint.sh`, `blueprint/verify.sh` with `checkdecls` silent, 9 `WARNING:` lines as at the parent, 0 `LaTeX Warning`, Lean diff empty). **Task 8 landed** (witness (2), part 2: the good ear and the ear's condition at `K_{2,3}`; its checklist line; gates: whole-tree `lake build` 6249 jobs, 0 warnings, 0 cache failures, `lake lint`, `blueprint/lint.sh` with the docstring-label total 0, `holdsGenerally_earFree_witness` on the three standard axioms). **Task 7 landed** (witness (2), part 1: `K_{2,3}` is feasible; its checklist line; gates: whole-tree `lake build` 6249 jobs, 0 warnings, `lake lint`, `blueprint/lint.sh` with the docstring-label total 0, `k23_pencilNondegFeasible` and `k23_degree` on the three standard axioms). **Task 6 landed** (the reduction's fold: the nonsimple case; its checklist line; gates: whole-tree `lake build` 6249 jobs, 0 warnings, `lake lint`, `blueprint/lint.sh`, `blueprint/verify.sh` with `checkdecls` silent, the three pencil results and `hasGradedPencilRealization_of_not_simple` on the three standard axioms). **Task 5 landed** (the reduction's fold: base, loop and cut-edge cases; its checklist line; gates: whole-tree `lake build` 6249 jobs, 0 warnings, `lake lint`, `blueprint/lint.sh` with the docstring-label total 0, `blueprint/verify.sh` with `checkdecls` silent, the three pencil results and the four `d = 3` cases on the three standard axioms). **Task 4 landed** (Theorem S's fold; its checklist line; gates: whole-tree `lake build` 6249 jobs, 0 warnings, `lake lint`, `blueprint/lint.sh`, `blueprint/verify.sh` with `checkdecls` silent, the three pencil results and the bridge on the three standard axioms). **Task 3 landed** (witness (1), `K₂`: `graded_pencil_conditioned_pair_generic_witness` in
-`Nonvacuity.lean`, three private helpers, axioms the three standard). **Task 2 landed** (Lean docstrings only, no statement or proof): the ten stale docstrings and the
-five dated `BlueprintExposition.md` entries (the checklist line). **Task 1 landed** (docs only): this log; `notes/Cleanup42.md`'s §1 (the PI's entry
-of 2026-11-05 for round 4), **Status** and §3; ROADMAP's Status row, §42's *Next* and the
-CLEANUP-42 bullet; `notes/MolecularConjecture.md`; the queue's comment.
+**Task 10 landed** (this commit; docs only): each task's sha in its line; the two *Candidates*
+entries and their `notes/Cleanup42.md` §3 mirrors marked taken by task 9 (`d7e18795`), and §3's nine
+*Moved* lines for round 4 by task 2 (`e803c78d`); the round and CLEANUP-42 closed here, in
+`notes/Cleanup42.md`'s **Status** and §3, ROADMAP's row, §42's *Next* and *Queued post-program
+phases*, `notes/MolecularConjecture.md`, the queue (`done = true`) and the sentence of `README.md`
+and `home_page/index.md` that left the route differences to this cleanup; `notes/BlueprintExposition.md`
+records the close's no-entry judgment in its header. Two slips corrected: task 9's line (the three
+`main-component` *missing* edges left were there at the open) and the dead pin's node, which is
+`lem:extensor-pair-through-given-point` (task 6's line, its *Candidates* entry, the §3 mirror).
+At HEAD, `python3 scripts/blueprint-deps.py --chapter` (nodes, pins, *missing*, dead pins): `pencil`
+31, 44, 0, 7; `main-component` 124, 211, 3, 14; `pencil-d` 99, 237, 0, 26. Gates: G1, and the Lean
+and TeX diff empty.
 
-**Task 2's gates** (the round's Lean baseline): whole-tree `lake build` green (6247 jobs, 0 warnings,
-0 cache failures), `lake lint` green, `blueprint/lint.sh` green, docstring-label total 0.
+**The round's gates** (each task's own were in this section at its landing; git keeps them):
+every Lean task (2–8) a whole-tree `lake build` with 0 warnings (6247 jobs at task 2, 6249 from
+task 4 on) and `lake lint`, and `blueprint/lint.sh` at tasks 2 and 4–9; the folds (4–6) and task 9
+`blueprint/verify.sh` with `checkdecls` silent; `#print axioms` the three standard for the three
+pencil main results at each fold, with the bridge (4), the four `d = 3` cases (5) and the graded
+nonsimple case (6), and for each new witness (3, 7, 8).
 
 **Verified at the open** (2026-11-05, at `8797f875`):
 - **The tree:** the coordinator's `lake build` of
@@ -141,50 +155,47 @@ One commit per task, in this order (the docstring task first: none of its files 
 numbers are at `8797f875`; re-`grep` before editing. **On landing, a task's line is cut to at most
 three lines:** number, sha, what landed, lines deleted, its edges and any *Candidates* line.
 
-- [x] **1. Open** (this commit; docs only).
-- [x] **2. The stale docstrings and dated notes** (this commit; Lean docstrings and notes only). Ten
+- [x] **1. Open** (`83ac039d`; docs only).
+- [x] **2. The stale docstrings and dated notes** (`e803c78d`; Lean docstrings and notes only). Ten
   docstrings in eight `Grade/` files lose or restate the sentence contrasting them with a round-2-removed
   route or hypothesis; five `BlueprintExposition.md` entries (42h, 42i, 42k, 42l, 42m) gain a closing sentence.
-  §3's *Moved* lines for round 4 are marked taken at the close (task 10). 11 lines deleted net.
-- [x] **3. Witness (1): `K₂` at the generic conjunct** (this commit). `graded_pencil_conditioned_pair_generic_witness`
+  §3's *Moved* lines for round 4 marked taken at the close. 11 lines deleted net.
+- [x] **3. Witness (1): `K₂` at the generic conjunct** (`40554d8b`). `graded_pencil_conditioned_pair_generic_witness`
   in `Nonvacuity.lean` after `graded_pencil_conditioned_pair_witness`, spike transcribed, three private
   helpers, a module bullet; `#print axioms`: `propext`, `Classical.choice`, `Quot.sound`. 47 lines added.
-- [x] **4. Theorem S's fold** (this commit). New `MainComponent/SparseCount.lean` (the five counting lemmas, 229 lines);
+- [x] **4. Theorem S's fold** (`6bdb5686`). New `MainComponent/SparseCount.lean` (the five counting lemmas, 229 lines);
   `Grade/TheoremS` imports it, drops its private `six_le_bodyBarDim` (FRICTION's fourth site); `CoverageTheoremS` imports `Grade/TheoremS`, gains the bridge, `exists_additiveCore` (statement `diff`ed, unchanged) is `exists_additiveCoreAt` at `3`, `exists_additiveCore_of_rigid` deleted (673 → 317). `pencil-d.tex`: `def:pencil-d-usable-chain` pins the bridge, `\uses` `def:pencil-x0-usable-chain`. Kept in the sweep: `Phase40-design.md`, `Prose-findings.md`. G7 `--chapter`, HEAD → after: `pencil` and `pencil-d` 0 *missing*; `main-component` *missing* 3 → 5 (`thm:pencil-x0-theorem-s` into `def:pencil-d-usable-chain`, `thm:pencil-d-theorem-s`), unbacked 24+36 → 32+39 (its proof's `\uses`: `lem:deficiency-*`, `lem:pencil-x0-chain-exists`, `lem:pencil-x0-sparse-count`), dead pins 11 → 14 (`partitionDef_induce_id_le_of_maximal`, `deficiencyMerged_three_add_five_le`, `deficiencyMerged_two_add_two_le`).
-- [x] **5. The reduction's fold: base, loop and cut-edge cases** (this commit). `ArmsAssembly.lean` imports `Grade/Arms`; its four `d = 3` cases (statements `diff`ed, unchanged) are the `m = 1` cases, with one private helper, `exists_cut_sides` (`n = 3` by the existing `Graph.eq_add_one_of_bodyBarDim_eq_screwDim`, so no new FRICTION site); `…_core` deleted; `Arms.lean` 930 → 630, `ArmsAssembly.lean` 233 → 137 (396 Lean lines deleted net); docstrings in `Grade/Arms`, `Pair`, `Pair2`, the `pair_map` mirror; FRICTION: the 42k entries updated, a new *cut sides* entry.
+- [x] **5. The reduction's fold: base, loop and cut-edge cases** (`273e824b`). `ArmsAssembly.lean` imports `Grade/Arms`; its four `d = 3` cases (statements `diff`ed, unchanged) are the `m = 1` cases, with one private helper, `exists_cut_sides` (`n = 3` by the existing `Graph.eq_add_one_of_bodyBarDim_eq_screwDim`, so no new FRICTION site); `…_core` deleted; `Arms.lean` 930 → 630, `ArmsAssembly.lean` 233 → 137 (396 Lean lines deleted net); docstrings in `Grade/Arms`, `Pair`, `Pair2`, the `pair_map` mirror; FRICTION: the 42k entries updated, a new *cut sides* entry.
   `pencil.tex`: `lem:pencil-cut-case`'s pin drops `…_core`. Kept in the sweep: `BlueprintExposition.md`, `Cleanup40.md`, `Phase40-cleanup.md`, `Phase39-design.md`, `Prose-findings.md`, the W4 workbook and archive, FRICTION's `pair_map` *Where it bit*.
   G7 `--chapter`, HEAD → after: `pencil` *missing* 0 → 10 (loop, base, cut into `def:pencil-d-rank-hypothesis`, `lem:pencil-d-rank-agrees-three` and their `pencil-d` case; the cut into `def:pencil-d-distinct-motive`), unbacked 2+5 → 12+9 (their proofs' `\uses`), dead pins 4 → 6 (`exists_reposition_cross_incidences`, `exists_perp_linearIndependent`); `pencil-d` 0 *missing*, dead 29 → 26 (the two `two_iff`s, `exists_hasPencilPlaneRealization_two_iff`); `main-component` unchanged. A *Candidates* line (below).
-- [x] **6. The reduction's fold: the nonsimple case** (this commit). `hasGradedPencilRealization_of_not_simple` moved verbatim to the end of `Grade/Arms.lean` (`Grade/Reduction.lean` 372 → 109 lines, `Arms.lean` 594 → 858); `X0.lean` imports `Grade/Arms`, its `hasPencilRealization_of_not_simple` (statement `diff`ed, unchanged) is the `m = 1` case (375 → 122; no orphaned helper in `X0.lean`); FRICTION *42k's cases repeat…* to the archive. Nothing deleted, so the sweep found only moves; no TeX. G7: `pencil` *missing* 10 → 13 (nonsimple into `def:pencil-d-rank-hypothesis`, `lem:pencil-d-rank-agrees-three`, `lem:pencil-d-nonsimple-case`), unbacked 12+9 → 21+10, dead pins 6 → 7 (`exists_linearIndependent_extensor_pair_through_given_point`, pinned by `lem:extensor-pair-through-point`, now unused); `pencil-d` and `main-component` unchanged. A *Candidates* line.
-- [x] **7. Witness (2), part 1: `K_{2,3}` is feasible** (this commit). `Nonvacuity.lean`, a new header after the molecular rows: private `k23_degree` and `k23_pencilNondegFeasible`, the route's data
+- [x] **6. The reduction's fold: the nonsimple case** (`d9dee0c6`). `hasGradedPencilRealization_of_not_simple` moved verbatim to the end of `Grade/Arms.lean` (`Grade/Reduction.lean` 372 → 109 lines, `Arms.lean` 594 → 858); `X0.lean` imports `Grade/Arms`, its `hasPencilRealization_of_not_simple` (statement `diff`ed, unchanged) is the `m = 1` case (375 → 122; no orphaned helper in `X0.lean`); FRICTION *42k's cases repeat…* to the archive. Nothing deleted, so the sweep found only moves; no TeX. G7: `pencil` *missing* 10 → 13 (nonsimple into `def:pencil-d-rank-hypothesis`, `lem:pencil-d-rank-agrees-three`, `lem:pencil-d-nonsimple-case`), unbacked 12+9 → 21+10, dead pins 6 → 7 (`exists_linearIndependent_extensor_pair_through_given_point`, pinned by `lem:extensor-pair-through-given-point`, now unused); `pencil-d` and `main-component` unchanged. A *Candidates* line.
+- [x] **7. Witness (2), part 1: `K_{2,3}` is feasible** (`f3487c00`). `Nonvacuity.lean`, a new header after the molecular rows: private `k23_degree` and `k23_pencilNondegFeasible`, the route's data
   unchanged (every conjunct holds; the hubs are the two bodies of degree three), hinges by `exists_extensor_two_pencils`; axioms the three standard (a scratch `module` with `import all`). The hygiene fix
   ("the least simple graph with an edge"). FRICTION: a new idiom entry, lifted to a TACTICS-QUIRKS symptom row. 147 Lean lines added net.
-- [x] **8. Witness (2), part 2: the good ear and the ear's condition** (this commit). Public `holdsGenerally_earFree_witness` in `Nonvacuity.lean` under task 7's header (a `K₂₃` local notation, task 7's two statements on it), its module bullet; the
+- [x] **8. Witness (2), part 2: the good ear and the ear's condition** (`1e6f40f6`). Public `holdsGenerally_earFree_witness` in `Nonvacuity.lean` under task 7's header (a `K₂₃` local notation, task 7's two statements on it), its module bullet; the
   five leaves closed as eight private lemmas: (a2) by `|E(K_{2,3}[Z])| ≤ i·j` and `interval_cases`; selectors by the existing `exists_steer_selectors`. Axioms the three standard. FRICTION: a new
   mirror-candidate entry (`ncard` of a set of a sum type), a line on 22i's `vertexSet_induce` entry. 135 Lean lines added net.
-- [x] **9. The folds' `d = 3` nodes: their edges and notes** (this commit; blueprint and notes only). The 15 edges, proof `\uses`: `pencil.tex`'s loop, base, cut and nonsimple cases into `def:pencil-d-rank-hypothesis`, `lem:pencil-d-rank-agrees-three` and their `pencil-d` case (the cut also `def:pencil-d-distinct-motive`); `main-component.tex`'s `thm:pencil-x0-theorem-s` into `def:pencil-d-usable-chain`, `thm:pencil-d-theorem-s`; no cycle, none left out. Five one-sentence formalization notes (`fmlnote:pencil-cut-case` rewritten). G7: `pencil` *missing* 13 → 0, `main-component` 5 → 3 (the other three, `lem:deficiency-*-d` from the dead pins, untouched), dead pins unchanged.
-- [ ] **10. The close** (Sonnet). Each task's sha in its line and in §3's mirrored lines; the two
-  *Candidates* entries below (the stale note, the nonsimple edges) are settled by task 9: mark them
-  taken with its sha; the status surfaces of the open; the queue row's `done = true` only if
-  CLEANUP-42 has nothing left.
+- [x] **9. The folds' `d = 3` nodes: their edges and notes** (`d7e18795`; blueprint and notes only). The 15 edges, proof `\uses`: `pencil.tex`'s loop, base, cut and nonsimple cases into `def:pencil-d-rank-hypothesis`, `lem:pencil-d-rank-agrees-three` and their `pencil-d` case (the cut also `def:pencil-d-distinct-motive`); `main-component.tex`'s `thm:pencil-x0-theorem-s` into `def:pencil-d-usable-chain`, `thm:pencil-d-theorem-s`; no cycle, none left out. Five one-sentence formalization notes (`fmlnote:pencil-cut-case` rewritten). G7: `pencil` *missing* 13 → 0, `main-component` 5 → 3 (the other three, `lem:deficiency-core-bound`, `lem:deficiency-one-body-chain` and `lem:deficiency-two-body-chain` into their `-d` forms, were missing at the open, `8797f875`, since Phase 42 proved those `d = 3` lemmas through their `-d` forms; outside the PI's 15, untouched), dead pins unchanged.
+- [x] **10. The close** (this commit; docs only). Shas in tasks 1–9's lines and §3's mirrored lines;
+  the two *Candidates* entries taken by task 9 (`d7e18795`); the round and CLEANUP-42 closed on the
+  open's status surfaces, the queue row `done = true`; the README and home-page sentence; no ledger entry.
 
 ## Candidates for the PI
 
-- **A stale formalization note** (task 5; settled by task 9: the note reworded, the PI's adjudication).
-  `fmlnote:pencil-cut-case` (`pencil.tex`) says the two forms "are one Lean theorem whose parameter
-  selects the form"; that theorem (`…_core`) is deleted, and each form is now the `m = 1` case of
-  42k's cut case through a `two_iff`. The open keeps the `d = 3` chapter's notes, so it stays until
-  the PI chooses: reword it in that line's formalization note, or delete it. Mirrored in
-  `notes/Cleanup42.md` §3.
+- **A stale formalization note** (task 5, `273e824b`; taken by task 9, `d7e18795`, at the PI's word:
+  the note reworded). `fmlnote:pencil-cut-case` (`pencil.tex`) said the two forms "are one Lean
+  theorem whose parameter selects the form"; task 5 deleted that theorem (`…_core`), and each form
+  is now the `m = 1` case of 42k's cut case through a `two_iff`. Mirrored in `notes/Cleanup42.md` §3.
 
-- **Dead pin and the nonsimple edges** (task 6; settled by task 9: edges and note added, the pin stays). `lem:extensor-pair-through-point`'s
-  Lean declaration (`Statement.lean`) has no user now that the `d = 3` nonsimple proof is gone;
-  its node is pinned, so it stays. `lem:pencil-nonsimple-case` gains the `d = 3` reach into
-  `pencil-d.tex` like task 5's nodes; leave or add edges and a formalization note. Mirrored in
-  `notes/Cleanup42.md` §3.
+- **Dead pin and the nonsimple edges** (task 6, `d9dee0c6`; taken by task 9, `d7e18795`: edges and
+  note added, the pin kept at the PI's word). `lem:extensor-pair-through-given-point`'s Lean
+  declaration (`Statement.lean`) has no user now that the `d = 3` nonsimple proof is the `m = 1`
+  case; its node is pinned, so it stays. `lem:pencil-nonsimple-case` gained the `d = 3` reach into
+  `pencil-d.tex`, like task 5's nodes. Mirrored in `notes/Cleanup42.md` §3.
 
 ## Moved to a later round
 
-- None yet.
+- None: nothing left the round, and round 4 is CLEANUP-42's last.
 
 ## Blockers / open questions
 
@@ -192,7 +203,16 @@ three lines:** number, sha, what landed, lines deleted, its edges and any *Candi
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 10, the close (Sonnet; its line above): each task's sha in its line and in §3's mirrored lines, the two *Candidates* entries marked taken with task 9's sha, the status surfaces of the open, and the queue row. Round 4's Lean is done and task 9 settled the folds' fallout: tasks 2 to 9 landed.
+**Next concrete task:** ORIGAMI's open, with the PI (ROADMAP *Queued post-program phases*;
+`notes/Origami.md`). CLEANUP-42 is done: round 4 closed with this commit, and the queue's
+`CLEANUP-42` row is `done = true`. ORIGAMI, the queue's next row, is attended, so it opens with the
+PI and takes its phase number then. Nothing carries over from round 4.
+
+**For the PI** (a report, not a stop): the six dead pins stay pinned (§1 there, the folds'
+fallout); `--chapter main-component` keeps three *missing* edges, `lem:deficiency-core-bound`,
+`lem:deficiency-one-body-chain` and `lem:deficiency-two-body-chain` into their `-d` forms, from
+Phase 42 (missing at round 4's open, outside the PI's 15); `notes/dispatch-log.md`'s grooming is
+the coordinator's.
 
 ## Decisions made during this round
 
@@ -200,3 +220,8 @@ three lines:** number, sha, what landed, lines deleted, its edges and any *Candi
   docstring task first, as it shares no file with a fold; the folds before witness (2), whose file
   they do not touch either. Under *Scope*: the sweep, the `d = 3` proofs, the witnesses' home, the
   count, the gates.
+- **The close** (task 10): `notes/BlueprintExposition.md` takes no entry, by its header's
+  criterion: a fold is project-side (the `d = 3` Lean proved once, as a case of the every-dimension
+  Lean), each folded node keeps its `d = 3` argument, and no node rerouted for difficulty; its
+  header records the judgment. `README.md` and `home_page/index.md` said the route differences were
+  "recorded for the cleanup that follows the phase"; they now say what the cleanup did.

@@ -1,25 +1,20 @@
 # The post-Phase-42 cleanup (planning note)
 
-**Status:** open (2026-11-05, at the PI's word, §1), ahead of ORIGAMI; round 2, the chapter to the
-Lean, closed 2026-11-05 (`notes/Phase42-align.md`); round 4, the Lean round, open
-(`notes/Phase42-fold.md`). On 2026-10-30, during 42g, the PI asked for a cleanup
-phase after Phase 42 to address the informal proofs of `blueprint/src/chapter/pencil-d.tex` that
-were difficult to formalize as written (§1); on 2026-11-05 the PI opened it ahead of ORIGAMI.
-`.claude/autopilot/queue.toml` carries it as `CLEANUP-42`, attended, between PENCIL-D (done) and
-ORIGAMI; ROADMAP *Queued post-program phases* lists it. Its input is the proof-route ledger (§2):
-34 rows at Phase 42's close, 54 at the close of round 1, the route audit (`notes/Phase42-cleanup.md`,
-closed 2026-11-05 at its planned stop): 34 `open`, 6 `aligned`, 14 `no departure`. The PI gave
-every open row its remedy the same day, at round 1's stop and at a second stop on the B/C judgment
-(§1; §3 *Round 1's stop*, *The B/C judgment*): 17 rows go `aligned` (every part to the Lean) and 17
-`kept` (a part keeps both routes, with a formalization note); no row goes H, so round 3 is empty.
-Round 2, opened and closed 2026-11-05, applied them to the chapter in eight slices by layer, then
-one `\uses` sweep (blueprint and notes, no Lean); each slice set its rows' status, and the tally
-here. The ledger now: none `open`, 23 `aligned`, 17 `kept`, 14 `no departure`. Round 4 opened the
-same day at the PI's word (§1, all four items), in ten tasks (the PI added task 9, §1): the stale docstrings and notes,
-Theorem S's fold, the reduction's fold and the witnesses at `K₂` and `K_{2,3}` (§3). **Next
-concrete task:** round 4's task 10, the close (`notes/Phase42-fold.md`); tasks 2 to 9, the stale
-docstrings, the `K₂` witness, Theorem S's fold, the reduction's folds, the `K_{2,3}` witness and the
-folds' `d = 3` edges and notes, have landed.
+**Status:** closed (2026-11-05; opened the same day at the PI's word, §1, ahead of ORIGAMI). On
+2026-10-30, during 42g, the PI asked for a cleanup phase after Phase 42 to address the informal
+proofs of `blueprint/src/chapter/pencil-d.tex` that were difficult to formalize as written (§1).
+`.claude/autopilot/queue.toml` carries it as `CLEANUP-42`, attended, now `done = true`; ROADMAP
+*Queued post-program phases* lists it. Its input is the proof-route ledger (§2): 34 rows at Phase
+42's close, 54 at the close of round 1, the route audit (`notes/Phase42-cleanup.md`): 34 `open`, 6
+`aligned`, 14 `no departure`. The PI gave every open row its remedy at round 1's stop and at a
+second stop on the B/C judgment (§1; §3 *Round 1's stop*, *The B/C judgment*); no row went H, so
+round 3 was empty. Round 2, the chapter to the Lean (`notes/Phase42-align.md`), applied them: the
+ledger closed at 23 `aligned`, 17 `kept`, 14 `no departure`, none `open`. Round 4, the Lean round
+(`notes/Phase42-fold.md`), took the PI's four items and, at the PI's word, a ninth task (§1): the
+stale docstrings and notes, Theorem S's fold, the reduction's folds, the witnesses at `K₂` and
+`K_{2,3}`, and the folded `d = 3` nodes' edges and notes, in ten commits, no statement changed (§3).
+Rounds 1, 2 and 4 closed on 2026-11-05. **Next concrete task:** ORIGAMI's open, with the PI (ROADMAP
+*Queued post-program phases*); nothing of CLEANUP-42 is left.
 
 ## 1. The PI's decisions (verbatim)
 
@@ -1210,6 +1205,13 @@ there.
     statuses; 23 `aligned`, 17 `kept`, 14 `no departure`, none `open`; 17 formalization notes in
     the chapter; `--chapter pencil-d` 99 nodes, 236 pins, 0 *missing*; no Lean, pin or `\leanok`
     change.
+  - **Round 4 closed** 2026-11-05 (`notes/Phase42-fold.md`), and CLEANUP-42 with it: ten tasks, ten
+    commits, the shas in the log's task lines and in the mirrored lines below. Theorem S's `d = 3`
+    core and four `d = 3` cases of the reduction are the `n = 3` / `m = 1` cases of their graded
+    Lean, every statement kept; the witnesses `graded_pencil_conditioned_pair_generic_witness`
+    (`K₂`) and `holdsGenerally_earFree_witness` (`K_{2,3}`); the ten docstrings and five dated
+    entries; the folded nodes' 15 edges and five formalization notes. `--chapter`: `pencil` and
+    `pencil-d` 0 *missing*, `main-component` 3 (as at the open); `formalization.yaml` unchanged.
 
   Rounds 1, 2 and 4's *Candidates for the PI* and *Moved to a later round* lines are mirrored
   here as they land, each with the task that takes it:
@@ -1229,43 +1231,43 @@ there.
     has `d ≤ d′`, but its "in particular" embeds a realization in dimension `d′ ≤ d` into dimension
     `d` (the letters of `lem:pencil-d-embed-realization`), a map `K^(d′+1) → K^(d+1)`: `d` and `d′`
     swap roles within one statement.
-  - *Moved to a later round* (round 1 task 15; round 4, as it edits Lean): a stale docstring.
+  - *Moved to a later round* (round 1 task 15; round 4 (`e803c78d`), taken): a stale docstring.
     `Grade/LiftNoRigid.lean`'s module docstring names `mem_liftMaps_pencilConfigPoint_iff` among the
     steps stated "for `lem:pencil-d-ear-free`" (`L(b⁰) = L(q)` in the maps), but its one caller is
     `liftAttains_of_forall_deficiency_two_ne_zero`: the Lean of `-ear-free` never reads `L(b⁰)`
     (R-34) and calls only the other two it names.
-  - *Moved to a later round* (round 2 (`c3f237fe`); round 4, as it edits Lean): a stale docstring.
+  - *Moved to a later round* (round 2 (`c3f237fe`); round 4 (`e803c78d`), taken): a stale docstring.
     `Grade/Stars.lean`'s `exists_mulVec_add_mulVec_eq_zero` ends "The chapter argues by Cramer's
     rule over `K(t)` instead" (R-9), and its first line's "without `K(t)`" contrasts it with that
     proof; since R-9's alignment the chapter's proof of `lem:pencil-d-kernel-curve` is the Lean's.
-  - *Moved to a later round* (round 2 (`8bffb361`); round 4, as it edits Lean): a stale docstring.
+  - *Moved to a later round* (round 2 (`8bffb361`); round 4 (`e803c78d`), taken): a stale docstring.
     `Grade/ShortThree.lean`'s `Graph.X0AttainsGrade.of_openEar_three` ends "The chapter's proof of
     the case `r ≤ 2` goes instead through the components of `G[V₁]` and a path from `a` to `b`"
     (R-14); since R-14's alignment the chapter bounds `dim ρ ≤ 2` as the Lean does, by glued-ends
     or a common member of the closed neighbourhoods of `a` and `b`.
-  - *Moved to a later round* (round 2 (`cba4806c`); round 4, as it edits Lean): a stale docstring.
+  - *Moved to a later round* (round 2 (`cba4806c`); round 4 (`e803c78d`), taken): a stale docstring.
     `Grade/LiftWitness.lean`'s `liftAttains_of_least` says the Lean takes the lift's maps through
     the polynomial section "in place of the chapter's Cramer basis and coefficients `γ`" (R-21);
     since R-21's alignment the chapter's proof of `lem:pencil-d-lift-one-witness` is that route.
-  - *Moved to a later round* (round 2 (`cba4806c`); round 4, a note outside round 2's writes): a dated
+  - *Moved to a later round* (round 2 (`cba4806c`); round 4 (`e803c78d`), taken): a dated
     sentence. `notes/BlueprintExposition.md`'s 42l entry (judged 2026-11-04) says that the nodes
     keep "the one-lift and restriction lemmas' unused simplicity and feasibility hypotheses";
     R-49 dropped the simplicity. Its list of route differences left (R-20, R-21, R-23) is dated
     likewise, as the 42h entry's is since R-9.
-  - *Moved to a later round* (round 2 (`36ab7f53`); round 4, as it edits Lean): three stale docstrings.
+  - *Moved to a later round* (round 2 (`36ab7f53`); round 4 (`e803c78d`), taken): three stale docstrings.
     `Grade/LiftSmall.lean`'s module docstring ends "It needs no `G.Simple` and no `[Infinite K]`,
     which the chapter assumes" (R-28, R-51); `Grade/LiftCutEdge.lean`'s `liftAttains_of_cutEdge`
     ends "The chapter's `|V₁|, |V₂| ≥ 2` is not needed" (R-30); `Grade/LiftNoRigid.lean`'s
     `exists_pencilConfigPoint_of_dotProduct` says "The chapter reaches the two nonzero coordinates
     by a map `g` of `K⁴`" (R-32). Since task 7 the chapter's statements and proofs are the Lean's.
-  - *Moved to a later round* (round 2 (`36ab7f53`); round 4, a note outside round 2's writes): a dated
+  - *Moved to a later round* (round 2 (`36ab7f53`); round 4 (`e803c78d`), taken): a dated
     sentence. `notes/BlueprintExposition.md`'s 42m entry (judged 2026-11-05) lists "the cut edge's
     glue by one frame map and one minor" and "the least lift space through the lifting system
     without the chapter's map `g`" among the route differences left, and "the cut edge's side
     sizes" and "`-lift-small` (2)'s simplicity" among the hypotheses the pins drop; R-30, R-32 and
     R-28 put the chapter on those routes and statements.
-  - *Moved to a later round* (round 2 (`6c082081`); round 4, as it edits Lean, and a note outside round
-    2's writes): a stale docstring and a dated sentence. `Grade/LiftCases.lean`'s module docstring
+  - *Moved to a later round* (round 2 (`6c082081`); round 4 (`e803c78d`),
+    taken): a stale docstring and a dated sentence. `Grade/LiftCases.lean`'s module docstring
     ends "The chapter's two statements are kept in the pins' stronger form: the pendant drops
     "whose neighbour has another neighbour" and the ear drops "not adjacent"" (R-25, R-29); since
     task 8 the two statements are their pins'. `notes/BlueprintExposition.md`'s 42m entry lists
@@ -1273,8 +1275,8 @@ there.
     (T2)" among the route differences left, and "the pendant's other neighbour" and "the ear's
     non-adjacency" among the hypotheses the pins drop; R-24, R-26, R-25 and R-29 put the chapter on
     those routes and statements.
-  - *Moved to a later round* (round 2 (`900338bd`); round 4, as it edits Lean, and a note outside round
-    2's writes): two stale docstrings and a dated sentence. `Grade/EarFree.lean`'s
+  - *Moved to a later round* (round 2 (`900338bd`); round 4 (`e803c78d`),
+    taken): two stale docstrings and a dated sentence. `Grade/EarFree.lean`'s
     `exists_earExtend_poly` ends "The chapter's moment curve and its case analysis on `O_v` are not
     used" (R-33), and `isTrivialLift_of_finrank_liftSpaceTilde_le` ends "The chapter's count
     `dim L̃ = dim L(b⁰) + |X|` is not used" (R-34); since task 9 the chapter's proofs are those
@@ -1283,15 +1285,16 @@ there.
     embedding without the count of its maps" among the route differences left, and
     "`-ear-extend`'s simplicity" among the hypotheses the pins drop; R-33 and R-34 put the chapter
     on those routes and that statement.
-  - *Candidates for the PI* (round 4 task 5; settled by task 9 at the PI's
-    word, §1: the note reworded): a stale formalization note. `fmlnote:pencil-cut-case` says the two forms "are one
+  - *Candidates for the PI* (round 4 task 5 (`273e824b`); taken by task 9 (`d7e18795`) at the
+    PI's word, §1: the note reworded): a stale formalization note. `fmlnote:pencil-cut-case` says the two forms "are one
     Lean theorem whose parameter selects the form"; task 5 deleted that theorem (`…_core`), and each
     form is now the `m = 1` case of 42k's cut case. The open keeps the `d = 3` chapter's notes, so
     the PI chooses: reword it there, or delete it.
-  - *Candidates for the PI* (round 4 task 6): `lem:extensor-pair-through-point`'s Lean declaration
-    (`Statement.lean`) is unused now that the `d = 3` nonsimple proof is gone; its node is pinned,
-    so it stays. `lem:pencil-nonsimple-case` gains the `d = 3` reach into `pencil-d.tex`: leave, or
-    add edges and a formalization note (settled by task 9: both added).
+  - *Candidates for the PI* (round 4 task 6 (`d9dee0c6`); taken by task 9 (`d7e18795`) at the
+    PI's word, §1: edges and note added, the pin kept): `lem:extensor-pair-through-given-point`'s
+    Lean declaration (`Statement.lean`) is unused now that the `d = 3` nonsimple proof is gone; its
+    node is pinned, so it stays. `lem:pencil-nonsimple-case` gains the `d = 3` reach into
+    `pencil-d.tex`: leave, or add edges and a formalization note.
 - **The ledger at Phase 42's close:** the standing rule (§1) kept §2 current through PD-STEPS's
   rest, PD-COVERAGE, PD-REDUCTION and PD-HEAD (`notes/Phase42-design.md` §3), the last rows 42m's,
   R-24 to R-34; Phase 42 closed on 2026-11-05 with no row added after them. Round 1 adds from R-35.
@@ -1300,13 +1303,13 @@ there.
   `Graph.IsX0Graph.exists_additiveCoreAt` (`Grade/TheoremS.lean`, which imports that file), with a
   bridge `Graph.ChainUsable ↔ Graph.ChainUsableAt 3`. It reverses the import, so COUNT-B's
   lemmas move upstream of the `d = 3` coverage; no node of PD-COVERAGE uses Theorem S at `D` (42j's
-  recon, `notes/Phase42j.md`). Round 4 task 4: the five `d = 3` lemmas Theorem S at `D` calls move
+  recon, `notes/Phase42j.md`). Round 4 task 4 (`6bdb5686`): the five `d = 3` lemmas Theorem S at `D` calls move
   to a new `MainComponent/SparseCount.lean` upstream of both (spiked).
 - **Also left to it** (not a route row): the `d = 3` cases of the reduction (`Pencil/Arms.lean`,
   `hasPencilRealization_of_not_simple` in `Pencil/X0.lean`) as the `m = 1` case of 42k's graded
   ones (`Grade/Arms.lean`, `Grade/Reduction.lean`) through `hasGradedPencilRealization_two_iff`. It
   reverses the imports, as Theorem S's fold does (FRICTION *42k's cases repeat the `d = 3` cases'
-  proofs*). Round 4 tasks 5 and 6 (landed), with the base case (`Pencil/ArmsAssembly.lean`): the `d = 3`
+  proofs*). Round 4 tasks 5 and 6 (`273e824b`, `d9dee0c6`), with the base case (`Pencil/ArmsAssembly.lean`): the `d = 3`
   cases become corollaries in `ArmsAssembly.lean`, which imports `Grade/Arms` (spiked).
 - **Also left to it** (not a route row): two instances no `main_results` witness exhibits. (1) The
   generic conjunct's hypothesis at a small graph. Phase 42's one `main_results` row, the headline
@@ -1319,7 +1322,7 @@ there.
   42m introduced, `Graph.IsPencilGoodEar` and `EarLiftCondition`; the candidate is `K_{2,3}`
   (`W₀` all five bodies, `x` a body of degree two; `s(W₀) = 3·4 − 2·6 = 0`, `X` a four-cycle with
   `s = 1`; `notes/Phase42m.md` *Blockers*). It would witness an inner arm of the induction, not a
-  hypothesis of the headline. Round 4 tasks 3, 7 and 8, both in `Nonvacuity.lean`: (1) closes as
+  hypothesis of the headline. Round 4 tasks 3, 7 and 8 (`40554d8b`, `f3487c00`, `1e6f40f6`), both in `Nonvacuity.lean`: (1) closes as
   spiked; (2) composes through `Graph.IsX0Graph.exists_goodEar_or_pendantTriangle` and
   `holdsGenerally_earFree`, with five leaves left; tasks 7 and 8 closed them
   (`holdsGenerally_earFree_witness`).
