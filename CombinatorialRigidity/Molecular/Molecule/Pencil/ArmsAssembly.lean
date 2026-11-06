@@ -69,24 +69,6 @@ theorem hasPencilRealization_of_ncard_le_two [Finite α] [Finite β] {G : Graph 
 
 /-! ## The cut-edge case -/
 
-/-- **The two sides of a cut** (a step of `lem:pencil-cut-case`): if `G` is not `2`-edge-connected,
-some nonempty `V₁ ⊂ V(G)` is crossed by at most one edge (`¬ G.TwoEdgeConnected` unfolded), and
-the two sides `G[V₁]` and `G[V(G) \ V₁]` are nonempty with fewer bodies than `G`. -/
-private theorem exists_cut_sides [Finite α] {G : Graph α β} (hntec : ¬ G.TwoEdgeConnected) :
-    ∃ V₁ : Set α, V₁ ⊂ V(G) ∧ V₁.Nonempty ∧ (G.cutEdges V₁).ncard ≤ 1 ∧
-      V(G.induce V₁).Nonempty ∧ V(G.induce V₁).ncard < V(G).ncard ∧
-      V(G.induce (V(G) \ V₁)).Nonempty ∧ V(G.induce (V(G) \ V₁)).ncard < V(G).ncard := by
-  simp only [Graph.TwoEdgeConnected, not_forall, not_le, exists_prop] at hntec
-  obtain ⟨V₁, hne, hssub, hcut⟩ := hntec
-  refine ⟨V₁, hssub, hne, Nat.lt_succ_iff.mp hcut, hne,
-    Set.ncard_lt_ncard hssub (Set.toFinite _), Set.nonempty_of_ssubset hssub, ?_⟩
-  have hVcard : V₁.ncard + (V(G) \ V₁).ncard = V(G).ncard := by
-    rw [← Set.ncard_union_eq Set.disjoint_sdiff_right (Set.toFinite V₁) (Set.toFinite _),
-      Set.union_sdiff_cancel hssub.subset]
-  have := hne.ncard_pos
-  change (V(G) \ V₁).ncard < V(G).ncard
-  omega
-
 /-- **The cut-edge case** (`lem:pencil-cut-case`; KT 2011 §6.1): if a multigraph `G` is not
 `2`-edge-connected, and every nonempty multigraph with fewer bodies than `G` has a pencil
 realization at the deficiency rank (`HasPencilRealization`), then so does `G`. Here `n = 3`
@@ -103,7 +85,8 @@ theorem hasPencilRealization_of_not_twoEdgeConnected [Finite α] [Finite β] {n 
     HasPencilRealization K n G := by
   have h3 : n = 3 := Graph.eq_add_one_of_bodyBarDim_eq_screwDim hn
   subst h3
-  obtain ⟨V₁, hssub, hne, hcut, h₁ne, h₁lt, h₂ne, h₂lt⟩ := exists_cut_sides hntec
+  obtain ⟨V₁, hssub, hne, hcut, h₁ne, h₁lt, h₂ne, h₂lt⟩ :=
+    Graph.exists_cut_sides_of_not_twoEdgeConnected hntec
   exact (hasGradedPencilRealization_two_iff 3 G).1
     (hasGradedPencilRealization_of_cutEdges (m := 1) hssub hne hcut
       ((hasGradedPencilRealization_two_iff 3 _).2 (hIH _ h₁ne h₁lt))
@@ -126,7 +109,8 @@ theorem hasDistinctPencilRealization_of_not_twoEdgeConnected [Finite α] [Finite
     HasDistinctPencilRealization K n G := by
   have h3 : n = 3 := Graph.eq_add_one_of_bodyBarDim_eq_screwDim hn
   subst h3
-  obtain ⟨V₁, hssub, hne, hcut, h₁ne, h₁lt, h₂ne, h₂lt⟩ := exists_cut_sides hntec
+  obtain ⟨V₁, hssub, hne, hcut, h₁ne, h₁lt, h₂ne, h₂lt⟩ :=
+    Graph.exists_cut_sides_of_not_twoEdgeConnected hntec
   exact (hasGradedDistinctPencilRealization_two_iff 3 G).1
     (hasGradedDistinctPencilRealization_of_cutEdges (m := 1) hssub hne hcut
       ((hasGradedDistinctPencilRealization_two_iff 3 _).2

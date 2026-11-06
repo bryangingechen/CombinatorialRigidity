@@ -70,18 +70,8 @@ theorem _root_.Graph.graded_pencil_realization_theorem [Infinite K] [Finite α] 
         exact ⟨⟨F, normal, plane, h, hr⟩, fun _ => hd⟩
       · exact ⟨hasGradedPencilRealization_of_not_simple G hloop hV hS
           fun G' h1 h2 => (IH G' h1 h2).1, fun h => absurd h hS⟩
-    · simp only [Graph.TwoEdgeConnected, not_forall, not_le, exists_prop] at htec
-      obtain ⟨V₁, hne₁, hssub, hcut⟩ := htec
-      have hcut' : (G.cutEdges V₁).ncard ≤ 1 := Nat.lt_succ_iff.mp hcut
-      have hlt₁ : V(G.induce V₁).ncard < V(G).ncard := Set.ncard_lt_ncard hssub (Set.toFinite _)
-      have hne₂ : (V(G) \ V₁).Nonempty := Set.nonempty_of_ssubset hssub
-      have hlt₂ : V(G.induce (V(G) \ V₁)).ncard < V(G).ncard := by
-        have hVcard : V₁.ncard + (V(G) \ V₁).ncard = V(G).ncard := by
-          rw [← Set.ncard_union_eq Set.disjoint_sdiff_right (Set.toFinite V₁) (Set.toFinite _),
-            Set.union_sdiff_cancel hssub.subset]
-        have := hne₁.ncard_pos
-        change (V(G) \ V₁).ncard < _
-        omega
+    · obtain ⟨V₁, hssub, hne₁, hcut', -, hlt₁, hne₂, hlt₂⟩ :=
+        Graph.exists_cut_sides_of_not_twoEdgeConnected htec
       obtain ⟨h₁, hd₁⟩ := IH _ hne₁ hlt₁
       obtain ⟨h₂, hd₂⟩ := IH _ hne₂ hlt₂
       exact ⟨hasGradedPencilRealization_of_cutEdges hssub hne₁ hcut' h₁ h₂, fun hS =>

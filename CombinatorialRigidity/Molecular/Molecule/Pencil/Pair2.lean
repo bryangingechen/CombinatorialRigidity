@@ -495,9 +495,7 @@ theorem pencilPair_of_not_twoEdgeConnected [Finite α] [Finite β] [Infinite K] 
     hasPencilRealization_of_not_twoEdgeConnected hn hntec
       (fun G' hne' hlt' => (hIH G' hne' hlt').2.2)⟩
   have := hSimple.toLoopless
-  simp only [Graph.TwoEdgeConnected, not_forall, not_le, exists_prop] at hntec
-  obtain ⟨V₁, hne, hssub, hcut_lt2⟩ := hntec
-  have hcut_le : (G.cutEdges V₁).ncard ≤ 1 := Nat.lt_succ_iff.mp hcut_lt2
+  obtain ⟨V₁, hssub, hne, hcut_le, -⟩ := Graph.exists_cut_sides_of_not_twoEdgeConnected hntec
   set V₂ := V(G) \ V₁
   rcases Set.eq_empty_or_nonempty (G.cutEdges V₁) with hC0 | ⟨e_c, he_c⟩
   · -- no edge crosses `V₁`

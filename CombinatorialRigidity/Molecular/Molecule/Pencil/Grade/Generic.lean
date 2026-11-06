@@ -103,9 +103,7 @@ theorem liftAttains_of_simple [Infinite K] [Finite α] [Finite β] (r : ℕ) {G 
   -- a cut edge
   by_cases htec : G.TwoEdgeConnected
   swap
-  · simp only [Graph.TwoEdgeConnected, not_forall, not_le, exists_prop] at htec
-    obtain ⟨V₁, hne₁, hssub, hcut_lt2⟩ := htec
-    have hcut : (G.cutEdges V₁).ncard ≤ 1 := Nat.lt_succ_iff.mp hcut_lt2
+  · obtain ⟨V₁, hssub, hne₁, hcut, -⟩ := Graph.exists_cut_sides_of_not_twoEdgeConnected htec
     obtain ⟨e, -, u, v, huv, hu, hv⟩ := hdisc V₁ hne₁ hssub
     -- a side of one body: a pendant body
     have hpend : ∀ {V₁ : Set α} {e : β} {u v : α}, G.IsLink e u v → u ∈ V₁ → v ∉ V₁ →

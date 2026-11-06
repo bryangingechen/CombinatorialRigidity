@@ -146,7 +146,7 @@ to be re-derived by re-reading entries later.
   reaches it by its source name, inside its `namespace`, and `#print axioms` works there.
 - **Status:** idiom. **Lifted to:** TACTICS-QUIRKS *Symptom index* (2).
 
-### [open] The two sides of a cut from `¬ G.TwoEdgeConnected` are unfolded at each cut case
+### [resolved] The two sides of a cut from `¬ G.TwoEdgeConnected` are unfolded at each cut case
 - **Where it bit:** CLEANUP-42 round 4, task 5: `Pencil/ArmsAssembly.lean`'s private
   `exists_cut_sides` (a nonempty `V₁ ⊂ V(G)` crossed by at most one edge, both sides nonempty with
   fewer bodies than `G`). The same unfolding (`simp only [Graph.TwoEdgeConnected, not_forall,
@@ -158,7 +158,7 @@ to be re-derived by re-reading entries later.
 - **Proposed fix:** a public `Graph.exists_cut_sides_of_not_twoEdgeConnected` beside
   `Graph.TwoEdgeConnected` (`Molecular/Deficiency.lean`), and the copies rewritten through it, with
   the next commit that edits `Deficiency.lean` (a declaration there rebuilds most of `Molecular/`).
-- **Status:** open.
+- **Status:** resolved in HOMES task 6: public `Graph.exists_cut_sides_of_not_twoEdgeConnected` beside `Graph.TwoEdgeConnected`; `ArmsAssembly.lean`'s private copy deleted, the inline unfoldings in `Pair2.lean`, `MainComponent/CoverageCut.lean`, `Grade/Reduction.lean` and `Grade/Generic.lean` now call it (`Pair.lean` and `Grade/LiftSmall.lean` had none left).
 
 ### [idiom] 42m build 6b: a `pair_iff` applied to a `![…]` lemma inline times out, and four small traps
 - **Where it bit:** Phase 42m, `Pencil/Grade/EarFree.lean` (`span_pencilConfigPoint_eq_top`,
@@ -749,7 +749,7 @@ to be re-derived by re-reading entries later.
   defeq of closed terms (TACTICS-QUIRKS § 38, pin the heavy argument explicit).
 - **Status:** idiom.
 
-### [open] `mulTilde` has no vertex-set lemma
+### [resolved] `mulTilde` has no vertex-set lemma
 - **Where it bit:** Phase 41a, item P4: `mulTilde_removeVertex_le_splitOff`
   (`Molecular/Induction/ForestSurgery/EdgeSplitting.lean`) proved its vertex half by `exact hx`,
   a defeq through mathlib's `Graph.deleteVerts`, which a `module` does not see through.
@@ -759,7 +759,7 @@ to be re-derived by re-reading entries later.
 - **Proposed fix:** `@[simp] lemma vertexSet_mulTilde : V(G.mulTilde n) = V(G) := rfl` beside
   `mem_edgeSet_mulTilde` (`Molecular/Deficiency.lean`). It changes a public `.olean`, so it rides
   a commit that rebuilds the tree anyway.
-- **Status:** open.
+- **Status:** resolved in HOMES task 6: `@[simp] vertexSet_mulTilde` beside `mem_edgeSet_mulTilde`; `EdgeSplitting.lean`'s `simpa using hx` and `Contraction.lean`'s `simp` use it.
 
 ### [open] The tree's link hypotheses are in the form at links; `RecordsLinks` is the form on `E(G)`
 - **Where it bit:** Phase 41a, item 2: the callers of the four link lemmas gathered onto

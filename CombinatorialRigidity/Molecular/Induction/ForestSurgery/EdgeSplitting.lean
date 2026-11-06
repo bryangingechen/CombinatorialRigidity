@@ -79,7 +79,7 @@ lemma mulTilde_removeVertex_le_splitOff {G : Graph α β} {v a b : α} {e₀ : �
   refine ⟨?_, ?_⟩
   · -- Vertex sets: both are `V(G) \ {v}`.
     intro x hx
-    simpa [mulTilde] using hx
+    simpa using hx
   · -- Links: a link of `(G_v)̃` (a `v`-avoiding `G`-link) is a `splitOff` link (first disjunct).
     intro p x y hp
     simp only [mulTilde_isLink, removeVertex_isLink] at hp ⊢

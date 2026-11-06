@@ -58,7 +58,7 @@ lemma rigidContract_collapseTo_isRepFun {H : Graph α β} {r : α} (hr : r ∈ V
     (hconn : (H.mulTilde n).Preconnected) :
     (H.mulTilde n).connPartition.IsRepFun (collapseTo r V(H)) := by
   have hsupp : ∀ {x : α}, x ∈ (H.mulTilde n).connPartition.supp ↔ x ∈ V(H) := by
-    intro x; rw [Graph.connPartition_supp]; simp [mulTilde]
+    intro x; rw [Graph.connPartition_supp]; simp
   refine Partition.IsRepFun.mk' _ _ hsupp (fun x hx => ?_) (fun x hx => ?_) (fun x y hxy => ?_)
   · -- `x ∉ V(H)`: `collapseTo` is the identity.
     simp [collapseTo, hx]

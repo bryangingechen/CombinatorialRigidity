@@ -1070,7 +1070,7 @@ theorem molecule_generic_square_packing_witness :
       x ≠ y ∧ s(x, y) = e := fun _ _ _ ↦ Iff.rfl
   have hP : ∀ i, ((⊤ : SimpleGraph (Fin 3)).shadowGraph.mulTilde 3).IsPath (treeWalk i) := by
     intro i
-    fin_cases i <;> simp [treeWalk, path3, Graph.cons_isPath_iff, hV, hL]
+    fin_cases i <;> simp [treeWalk, path3, Graph.cons_isPath_iff, hL]
   have hspan : ∀ i, (treeWalk i).toGraph ≤s (⊤ : SimpleGraph (Fin 3)).shadowGraph.mulTilde 3 := by
     refine fun i ↦ ⟨(hP i).isWalk.toGraph_le, ?_⟩
     rw [WList.toGraph_vertexSet, hV]

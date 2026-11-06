@@ -6,9 +6,9 @@ CLEANUP-42 and ahead of ORIGAMI, in two parts: the friction log's docs and tooli
 2–4), then the lemmas Phase 42 left outside their home files, one task per home file, with the
 mirror lemmas that now meet their entries' own bar (tasks 5–18). No statement changes. Phase 42
 deferred the moves because a declaration added to these files rebuilds most of `Molecular/`
-mid-phase; ORIGAMI will not edit them, so they are cheapest now. Tasks 1–5 landed
-(the docs part, then the tree-wide basics): 62 actionable entries down to 39.
-**Next concrete task:** task 6, `Deficiency.lean`'s two lemmas and the cut-sides copies.
+mid-phase; ORIGAMI will not edit them, so they are cheapest now. Tasks 1–6 landed
+(the docs part, the tree-wide basics, `Deficiency.lean`): 62 actionable entries down to 36.
+**Next concrete task:** task 7, the linear-independence mirrors.
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -24,7 +24,18 @@ public declaration's name, or delete a pinned declaration, does not land that ch
 
 ## Current state
 
-**Task 5 landed** (this commit; Lean): baseline `lake build` (warning-clean) and `lake lint` green
+**Task 6 landed** (this commit; Lean): `Graph.exists_cut_sides_of_not_twoEdgeConnected` (public,
+the private `exists_cut_sides`'s statement and proof) beside `Graph.TwoEdgeConnected`; the private
+copy in `ArmsAssembly.lean` deleted and its two sites, `Pair2.lean`, `MainComponent/CoverageCut.lean`,
+`Grade/Reduction.lean` and `Grade/Generic.lean` go through it. `@[simp] vertexSet_mulTilde` beside
+`mem_edgeSet_mulTilde`: `EdgeSplitting.lean`'s `simpa [mulTilde]` and `Contraction.lean`'s `simp
+[mulTilde]` lose the unfold, and `Nonvacuity.lean`'s `hV` simp argument became unused (dropped; it
+stays in the `rw`). Gates: G2 build (warning-clean after wrapping two long lines) and lint, G3
+`blueprint/lint.sh`, G5 (the five results: the three standard axioms); G4 not needed (no `\lean{}`
+pin names either declaration). Two FRICTION entries `[resolved]`; open entries 38 → 36 (open 24,
+mirror-candidate 10, process 2, blueprint 0).
+
+**Task 5 landed** (`5a88c26a`; Lean): baseline `lake build` (warning-clean) and `lake lint` green
 before editing. `Graph.bodyBarDim_mono` in `BodyBar/Framework.lean` and its four sites;
 `Set.ncard_range_le` and `Set.ncard_eq_ncard_preimage_inl_add_ncard_preimage_inr` in the `Set/Card`
 mirror, the former's three sites, the latter replacing `Nonvacuity.lean`'s private copy.
@@ -145,21 +156,17 @@ the entries it resolved.
 - [x] **3. `TACTICS-GOLF.md`'s index** (`1b49081f`; docs only). Index entries for body §20–§24;
   the list-recursor idiom is body and index §30, its four pointers repointed (two in FRICTION, two
   in `notes/Phase23b.md`, G1 green). FRICTION *sections-index ↔ body drift* `[resolved]`.
-- [x] **4. The friction log's statuses and the archive sweep** (this commit; docs only). 21
+- [x] **4. The friction log's statuses and the archive sweep** (`671661b3`; docs only). 21
   entries `[resolved]`, two `[wontfix]`, five `[idiom]`; the 23 `[resolved]` entries to
   `FRICTION-archive.md`, verbatim (*Current state*). Open entries 62 → 41.
-- [x] **5. The tree-wide basics** (this commit; Lean). `Graph.bodyBarDim_mono` and its four
+- [x] **5. The tree-wide basics** (`5a88c26a`; Lean). `Graph.bodyBarDim_mono` and its four
   sites; `Set.ncard_range_le` (three sites) and the sum-type `ncard` lemma in the `Set/Card`
   mirror. Resolves *`bodyBarDim` has no monotonicity…*, *No `Set.ncard_range_le`…*, part (1) of
   *No `Set.ncard` of a set of a sum type…*.
-- [ ] **6. `Deficiency.lean`** (Lean; sonnet). A public
-  `Graph.exists_cut_sides_of_not_twoEdgeConnected` beside `Graph.TwoEdgeConnected` (from
-  `ArmsAssembly.lean`'s private `exists_cut_sides`, which goes), and the copies through it:
-  `Pair2.lean`, `MainComponent/CoverageCut.lean`, `Grade/Reduction.lean`
-  (`Graph.graded_pencil_realization_theorem`), `Grade/Generic.lean`. `@[simp] vertexSet_mulTilde :
-  V(G.mulTilde n) = V(G)` beside `mem_edgeSet_mulTilde`, and its two sites
-  (`mulTilde_removeVertex_le_splitOff`, `ForestSurgery/EdgeSplitting.lean`; `Contraction.lean`'s
-  `simp [mulTilde]`). Resolves *The two sides of a cut…*, *`mulTilde` has no vertex-set lemma*.
+- [x] **6. `Deficiency.lean`** (this commit; Lean). Public
+  `Graph.exists_cut_sides_of_not_twoEdgeConnected` (four copies and the private original through
+  it) and `@[simp] vertexSet_mulTilde` (two sites). Resolves *The two sides of a cut…*, *`mulTilde`
+  has no vertex-set lemma*.
 - [ ] **7. The linear-independence mirrors** (Lean; sonnet), each at the mirror path of its
   mathlib home (`TACTICS-GOLF.md` §3): `exists_extend_linearIndependent` (from `Pencil/Reseed.lean`,
   for any finite-dimensional `V` and `Fintype ι`); `finrank_span_pair_eq_two` and
@@ -274,8 +281,9 @@ the entries it resolved.
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 6, `Deficiency.lean` (*Lemma checklist*): `exists_cut_sides_of_not_twoEdgeConnected`
-and `vertexSet_mulTilde`, with their sites. After the round:
+**Next concrete task:** task 7, the linear-independence mirrors (*Lemma checklist*):
+`exists_extend_linearIndependent`, `finrank_span_pair_eq_two`, `exists_mem_linearIndependent_pair` and
+the fused two-vector form, at their mirror paths. After the round:
 ORIGAMI's open, with the PI (`notes/Origami.md`).
 
 ## Decisions made during this round

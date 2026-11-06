@@ -578,13 +578,12 @@ theorem _root_.Graph.IsX0Graph.exists_bridgePath_of_not_twoEdgeConnected [Finite
       (∀ i : Fin (k + 1), G.IsLink (e i) (pathVertex a x b i.castSucc) (pathVertex a x b i.succ)) ∧
       (∀ f u v, G.IsLink f u v → (∀ i, f ≠ e i) → (u ∈ V₁ ∧ v ∈ V₁) ∨ (u ∈ V₂ ∧ v ∈ V₂)) ∧
       G.X0Below (G.induce V₁) ∧ G.X0Below (G.induce V₂) := by
-  simp only [Graph.TwoEdgeConnected, not_forall, not_le] at htec
-  obtain ⟨V', hne, hss, hlt⟩ := htec
+  obtain ⟨V', hss, hne, hlt, -⟩ := Graph.exists_cut_sides_of_not_twoEdgeConnected htec
   obtain ⟨u, hu, v, hv, e₀, he₀⟩ :=
     (Graph.connected_iff_forall_exists_adj hG.connected.nonempty).mp hG.connected V' hss hne
   have he₀c : e₀ ∈ G.cutEdges V' := ⟨he₀.edge_mem, u, v, he₀, hu, hv.2⟩
   have hcut : ∀ f ∈ G.cutEdges V', f = e₀ := fun f hf =>
-    (Set.ncard_le_one (s := G.cutEdges V') (Set.toFinite _)).mp (by omega) f hf e₀ he₀c
+    (Set.ncard_le_one (s := G.cutEdges V') (Set.toFinite _)).mp hlt f hf e₀ he₀c
   have hVV : V' ∪ (V(G) \ V') = V(G) := Set.union_sdiff_cancel hss.subset
   have huv : u ≠ v := fun h => hv.2 (h ▸ hu)
   refine exists_bridgePath_of_bridgeEar hG _ (V₁ := V') (V₂ := V(G) \ V') (x := Fin.elim0) (a := u)

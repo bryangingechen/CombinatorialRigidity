@@ -86,6 +86,11 @@ through `mulTilde`, which does not unfold on its own. -/
 lemma mem_edgeSet_mulTilde (G : Graph α β) (n : ℕ) {p : β × Fin (bodyHingeMult n)} :
     p ∈ E(G.mulTilde n) ↔ p.1 ∈ E(G) := Iff.rfl
 
+/-- **Vertex set of `G̃ = (D-1)·G`** (`def:matroid-MG`): the multiplied graph has the vertices of
+`G`. `@[simp]`, beside `mem_edgeSet_mulTilde`, so that `simp` sees through `mulTilde`. -/
+@[simp]
+lemma vertexSet_mulTilde (G : Graph α β) (n : ℕ) : V(G.mulTilde n) = V(G) := rfl
+
 /-- **Incidence of `G̃ = (D-1)·G`** (`def:matroid-MG`): the copy `p` links `x` and `y` in the
 multiplied graph iff its underlying edge `p.1` links them in `G`. It fuses the unfolding of
 `mulTilde` and `edgeMultiply_isLink`; `@[simp]` for the same reason as `mem_edgeSet_mulTilde`. -/
@@ -981,6 +986,25 @@ least two edges joining it to `V(G) ∖ V'`. It implies connectivity
 would have `cutEdges G V' = ∅`. When `|V(G)| ≤ 1` it holds vacuously. -/
 def TwoEdgeConnected (G : Graph α β) : Prop :=
   ∀ V' : Set α, V'.Nonempty → V' ⊂ V(G) → 2 ≤ (G.cutEdges V').ncard
+
+/-- **The two sides of a cut** (`¬ G.TwoEdgeConnected` unfolded): if `G` is not `2`-edge-connected,
+some nonempty `V₁ ⊂ V(G)` is crossed by at most one edge, and the two sides `G[V₁]` and
+`G[V(G) \ V₁]` are nonempty with fewer bodies than `G`. -/
+theorem exists_cut_sides_of_not_twoEdgeConnected [Finite α] {G : Graph α β}
+    (hntec : ¬ G.TwoEdgeConnected) :
+    ∃ V₁ : Set α, V₁ ⊂ V(G) ∧ V₁.Nonempty ∧ (G.cutEdges V₁).ncard ≤ 1 ∧
+      V(G.induce V₁).Nonempty ∧ V(G.induce V₁).ncard < V(G).ncard ∧
+      V(G.induce (V(G) \ V₁)).Nonempty ∧ V(G.induce (V(G) \ V₁)).ncard < V(G).ncard := by
+  simp only [Graph.TwoEdgeConnected, not_forall, not_le, exists_prop] at hntec
+  obtain ⟨V₁, hne, hssub, hcut⟩ := hntec
+  refine ⟨V₁, hssub, hne, Nat.lt_succ_iff.mp hcut, hne,
+    Set.ncard_lt_ncard hssub (Set.toFinite _), Set.nonempty_of_ssubset hssub, ?_⟩
+  have hVcard : V₁.ncard + (V(G) \ V₁).ncard = V(G).ncard := by
+    rw [← Set.ncard_union_eq Set.disjoint_sdiff_right (Set.toFinite V₁) (Set.toFinite _),
+      Set.union_sdiff_cancel hssub.subset]
+  have := hne.ncard_pos
+  change (V(G) \ V₁).ncard < V(G).ncard
+  omega
 
 /-- **`cutEdges` are the crossing edges of the cut labeling** (a step of
 `lem:two-edge-connected-degree`): `cutEdges G V' = crossingEdges G (cutLabeling V' a b)` when
