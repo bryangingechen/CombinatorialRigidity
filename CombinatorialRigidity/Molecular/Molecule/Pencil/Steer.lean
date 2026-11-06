@@ -148,8 +148,8 @@ theorem exists_fillNbr_pencilChartWF_of_standing {G : Graph α β} {seed : Penci
       LinearIndepOn K (nbrSlotPoint seed hubSel nbrSel v) {i | (nbrSel v i).isSome}) :
     ∃ seed' : PencilSeed K α, seed'.hubNormal = seed.hubNormal ∧ seed'.fillHub = seed.fillHub ∧
       PencilChartWF G seed' hubSel nbrSel := by
-  have hn : (3 : ℕ) ≤ Module.finrank K (Fin 4 → K) := by
-    rw [Module.finrank_fin_fun]; norm_num
+  have hn : Fintype.card (Fin 3) ≤ Module.finrank K (Fin 4 → K) := by
+    rw [Module.finrank_fin_fun, Fintype.card_fin]; norm_num
   have key : ∀ v, ∃ f : Fin 3 → Fin 4 → K, ¬ G.PencilHub v →
       (∀ i, (nbrSel v i).isSome = true → f i = nbrSlotPoint seed hubSel nbrSel v i) ∧
         LinearIndependent K f := by

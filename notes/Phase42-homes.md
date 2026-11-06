@@ -6,9 +6,10 @@ CLEANUP-42 and ahead of ORIGAMI, in two parts: the friction log's docs and tooli
 2–4), then the lemmas Phase 42 left outside their home files, one task per home file, with the
 mirror lemmas that now meet their entries' own bar (tasks 5–18). No statement changes. Phase 42
 deferred the moves because a declaration added to these files rebuilds most of `Molecular/`
-mid-phase; ORIGAMI will not edit them, so they are cheapest now. Tasks 1–6 landed
-(the docs part, the tree-wide basics, `Deficiency.lean`): 62 actionable entries down to 36.
-**Next concrete task:** task 7, the linear-independence mirrors.
+mid-phase; ORIGAMI will not edit them, so they are cheapest now. Tasks 1–7 landed
+(the docs part, the tree-wide basics, `Deficiency.lean`, the linear-independence mirrors): 62
+actionable entries down to 34.
+**Next concrete task:** task 8, the two-vector sweep.
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -24,7 +25,21 @@ public declaration's name, or delete a pinned declaration, does not land that ch
 
 ## Current state
 
-**Task 6 landed** (this commit; Lean): `Graph.exists_cut_sides_of_not_twoEdgeConnected` (public,
+**Task 7 landed** (this commit; Lean), all four in the mirror
+`Mathlib/LinearAlgebra/LinearIndependent/Basic.lean` (which already held the pair lemmas' siblings):
+`exists_extend_linearIndependent` (now `[Fintype ι]`, `Fintype.card ι ≤ finrank K M`, a division
+ring; no `FiniteDimensional` hypothesis, the bound forces it), `finrank_span_pair_eq_two` and
+`exists_mem_linearIndependent_pair` (any `AddCommGroup M` over a division ring), and
+`LinearIndepOn.pair_iff_linearIndependent` (`LinearIndepOn R f {i, j} ↔ LinearIndependent R ![f i,
+f j]` at `i ≠ j`, over a ring; a bare-name search of mathlib found no packaged form). Callers:
+`Reseed.lean` (`(M := P) (ι := Fin 3)`) and `Steer.lean` (`hn` restated with `Fintype.card (Fin 3)`);
+`Reseed.lean` and `Grade/TwoPencil.lean` import the mirror. The fused form has no site yet (task 8).
+Gates: G2 build (warning-clean after wrapping two long lines) and lint, G3 `blueprint/lint.sh`, G5
+(the four results `molecular_conjecture`, `molecule_rank_formula`, `jacobs`,
+`isBase_ncard_add_deficiency_eq`: the three standard axioms); G4 not needed (none of the three
+unfused names is `\lean{}`-pinned). Two FRICTION entries `[resolved]`; open entries 36 → 34.
+
+**Task 6 landed** (Lean): `Graph.exists_cut_sides_of_not_twoEdgeConnected` (public,
 the private `exists_cut_sides`'s statement and proof) beside `Graph.TwoEdgeConnected`; the private
 copy in `ArmsAssembly.lean` deleted and its two sites, `Pair2.lean`, `MainComponent/CoverageCut.lean`,
 `Grade/Reduction.lean` and `Grade/Generic.lean` go through it. `@[simp] vertexSet_mulTilde` beside
@@ -167,7 +182,7 @@ the entries it resolved.
   `Graph.exists_cut_sides_of_not_twoEdgeConnected` (four copies and the private original through
   it) and `@[simp] vertexSet_mulTilde` (two sites). Resolves *The two sides of a cut…*, *`mulTilde`
   has no vertex-set lemma*.
-- [ ] **7. The linear-independence mirrors** (Lean; sonnet), each at the mirror path of its
+- [x] **7. The linear-independence mirrors** (landed; Lean; sonnet), each at the mirror path of its
   mathlib home (`TACTICS-GOLF.md` §3): `exists_extend_linearIndependent` (from `Pencil/Reseed.lean`,
   for any finite-dimensional `V` and `Fintype ι`); `finrank_span_pair_eq_two` and
   `exists_mem_linearIndependent_pair` (from `Grade/TwoPencil.lean`, for a vector space over a
@@ -281,10 +296,10 @@ the entries it resolved.
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 7, the linear-independence mirrors (*Lemma checklist*):
-`exists_extend_linearIndependent`, `finrank_span_pair_eq_two`, `exists_mem_linearIndependent_pair` and
-the fused two-vector form, at their mirror paths. After the round:
-ORIGAMI's open, with the PI (`notes/Origami.md`).
+**Next concrete task:** task 8, the two-vector sweep (*Lemma checklist*): repoint the pencil sites
+that bridge `LinearIndepOn.pair_iff` and `LinearIndependent.pair_iff` in two steps through
+`LinearIndepOn.pair_iff_linearIndependent` (re-`grep`; the entry's count was about 25 in 9 files).
+After the round: ORIGAMI's open, with the PI (`notes/Origami.md`).
 
 ## Decisions made during this round
 

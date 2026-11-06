@@ -336,7 +336,8 @@ to be re-derived by re-reading entries later.
   `Mathlib/LinearAlgebra/Dimension/...` (the second needs `P` finite-dimensional, which
   `2 ≤ finrank P` gives), at a cleanup round or with a consumer outside `Grade/`. Not mirrored here:
   the existing mirror `Mathlib/LinearAlgebra/LinearIndependent/Basic.lean` rebuilds most of the tree.
-- **Status:** open (mirror-candidate).
+- **Status:** resolved (HOMES task 7): both lemmas are in the mirror `Mathlib/LinearAlgebra/LinearIndependent/Basic.lean`,
+  for a vector space over a division ring; consumers repointed unchanged.
 
 ### [idiom] Transcribing `C_B`: `Π` is not an identifier, and a `set` basis family times out at `whnf`
 - **Where it bit:** Phase 42k's recon spike of `Pencil/Grade/TwoPencil.lean`.
@@ -1211,7 +1212,9 @@ to be re-derived by re-reading entries later.
   reaches it through that import) consume the mirror. Kept local because the Pencil files were
   non-module and a mirror pulls a module-system import into the cone; that reason lapsed with Phase
   41a's item P5, which made every file a `module`. Lift in a cleanup round or the next toucher.
-- **Status:** open.
+- **Status:** resolved (HOMES task 7): `exists_extend_linearIndependent` is in the mirror
+  `Mathlib/LinearAlgebra/LinearIndependent/Basic.lean`, for `Fintype ι` and a vector space over a
+  division ring, with `Fintype.card ι ≤ finrank K M` (no `FiniteDimensional` hypothesis).
 
 ### [mirror-candidate] No packaged "scale two slots of a `2`-extensor" lemma — `extensor ![a • x, b • y] = (a*b) • extensor ![x, y]`
 - **Where it bit:** Phase 39 (PENCIL) W5-L5 L5-cut-v-f, the re-seeding proportionality brick

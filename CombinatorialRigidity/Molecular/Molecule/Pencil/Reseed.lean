@@ -5,6 +5,7 @@ Authors: Bryan Gin-ge Chen
 -/
 module
 
+public import CombinatorialRigidity.Mathlib.LinearAlgebra.LinearIndependent.Basic
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Engine
 
 /-!
@@ -21,10 +22,11 @@ is not a hub, with the normals of the realization as `hubNormal`. At a body of `
 the selector lists are independent and orthogonal to the point of the body, or to its normal;
 completed to an independent triple orthogonal to it, their `cross₃` is a nonzero multiple of it
 (`exists_fill_cross₃_eq_smul_of_selector`). The completion is a fact of linear algebra
-(`exists_extend_linearIndependent`): a family `Fin n → V` independent on a set of indices, with
-`n ≤ finrank K V`, agrees on that set with an independent family. The one condition of
-`PencilChartWF` that the padding does not give, the independence of the points of the two ends of
-every link, the realization has, and a nonzero scalar at each point keeps it.
+(`exists_extend_linearIndependent`, in the mirror `LinearIndependent/Basic.lean`): a family
+`ι → M` independent on a set of indices, with `Fintype.card ι ≤ finrank K M`, agrees on that set
+with an independent family. The one condition of `PencilChartWF` that the padding does not give,
+the independence of the points of the two ends of every link, the realization has,
+and a nonzero scalar at each point keeps it.
 
 `exists_pencilSeed_of_nondeg` chooses the selectors: each set they list has at most three members
 (`ncard_closedHubNbhd_le_three_of_isNondegPencilRealization` and
@@ -35,7 +37,6 @@ every link, the realization has, and a nonzero scalar at each point keeps it.
 
 * `exists_pencilSeed_of_nondeg`: a nondegenerate realization in the chart, at selectors it chooses.
 * `exists_pencilSeed_of_nondeg_of_selectors`: the same at given selectors.
-* `exists_extend_linearIndependent`: the completion of a family independent on a set of indices.
 -/
 
 @[expose] public section
@@ -47,82 +48,6 @@ namespace CombinatorialRigidity.Molecular
 
 variable {K : Type*} [Field K]
 variable {α β : Type*}
-
-/-! ## Completing a family independent on a set of indices -/
-
-/-- **Completing a family independent on a set of indices** (a step of `lem:pencil-generic-steer`):
-for `g₀ : Fin n → V` linearly independent on a set `s₀` of indices, with `n ≤ finrank K V`, some
-`g'` agrees with `g₀` on `s₀` and is linearly independent. By induction on the number of indices
-outside the set: one of them is given a vector outside the span of the vectors at the set, a span of
-dimension at most the size of the set (`finrank_span_finset_le_card`), less than `n`, and
-`linearIndepOn_insert` adds the index to the set. -/
-theorem exists_extend_linearIndependent {V : Type*} [AddCommGroup V] [Module K V]
-    {n : ℕ} (hn : n ≤ Module.finrank K V)
-    (g₀ : Fin n → V) (s₀ : Finset (Fin n)) (hs₀ : LinearIndepOn K g₀ (s₀ : Set (Fin n))) :
-    ∃ g' : Fin n → V, (∀ i ∈ s₀, g' i = g₀ i) ∧ LinearIndependent K g' := by
-  classical
-  suffices H : ∀ (m : ℕ) (g : Fin n → V) (s : Finset (Fin n)),
-      (Finset.univ \ s).card = m → LinearIndepOn K g (s : Set (Fin n)) →
-      ∃ g' : Fin n → V, (∀ i ∈ s, g' i = g i) ∧ LinearIndependent K g' from
-    H _ g₀ s₀ rfl hs₀
-  intro m
-  induction m with
-  | zero =>
-    intro g s hcard hs
-    have hsub : Finset.univ ⊆ s := by
-      rwa [Finset.card_eq_zero, Finset.sdiff_eq_empty_iff_subset] at hcard
-    have hsu : s = Finset.univ := Finset.Subset.antisymm (Finset.subset_univ s) hsub
-    subst hsu
-    rw [Finset.coe_univ] at hs
-    exact ⟨g, fun _ _ => rfl, linearIndepOn_univ_iff.mp hs⟩
-  | succ m ih =>
-    intro g s hcard hs
-    have hne : (Finset.univ \ s).Nonempty := by
-      rw [← Finset.card_pos, hcard]; omega
-    obtain ⟨i, hi⟩ := hne
-    rw [Finset.mem_sdiff] at hi
-    have his : i ∉ s := hi.2
-    have hscard : s.card < n := by
-      have hss : s ⊂ Finset.univ := by
-        rw [Finset.ssubset_univ_iff]
-        exact fun h => his (h ▸ Finset.mem_univ i)
-      have hlt := Finset.card_lt_card hss
-      rwa [Finset.card_univ, Fintype.card_fin] at hlt
-    have hfr : Module.finrank K (Submodule.span K (g '' (s : Set (Fin n)))) ≤ s.card := by
-      have h1 := finrank_span_finset_le_card (R := K) (s.image g)
-      rw [Finset.coe_image] at h1
-      exact le_trans h1 Finset.card_image_le
-    have hexists : ∃ w : V, w ∉ Submodule.span K (g '' (s : Set (Fin n))) := by
-      by_contra hcon
-      simp only [not_exists, not_not] at hcon
-      rw [Submodule.eq_top_iff'.2 hcon, finrank_top] at hfr
-      omega
-    obtain ⟨w, hw⟩ := hexists
-    have hEqOn : Set.EqOn g (Function.update g i w) (s : Set (Fin n)) := by
-      intro x hx
-      have hxi : x ≠ i := fun h => his (Finset.mem_coe.mp (h ▸ hx))
-      rw [Function.update_of_ne hxi]
-    have hLI_s : LinearIndepOn K (Function.update g i w) (s : Set (Fin n)) := hs.congr hEqOn
-    have himg : (Function.update g i w) '' (s : Set (Fin n)) = g '' (s : Set (Fin n)) :=
-      Set.image_congr (fun x hx => (hEqOn hx).symm)
-    have hnotmem : Function.update g i w i ∉
-        Submodule.span K ((Function.update g i w) '' (s : Set (Fin n))) := by
-      rw [Function.update_self, himg]; exact hw
-    have hLI_ins : LinearIndepOn K (Function.update g i w) (insert i (s : Set (Fin n))) :=
-      (linearIndepOn_insert (by rwa [Finset.mem_coe])).mpr ⟨hLI_s, hnotmem⟩
-    rw [← Finset.coe_insert] at hLI_ins
-    have hcard' : (Finset.univ \ insert i s).card = m := by
-      have heq : Finset.univ \ insert i s = (Finset.univ \ s).erase i := by
-        ext x
-        simp only [Finset.mem_sdiff, Finset.mem_univ, true_and, Finset.mem_insert,
-          Finset.mem_erase, not_or]
-      have hmem : i ∈ Finset.univ \ s := Finset.mem_sdiff.2 ⟨Finset.mem_univ i, his⟩
-      rw [heq, Finset.card_erase_of_mem hmem]
-      omega
-    obtain ⟨g', hg'eq, hg'LI⟩ := ih (Function.update g i w) (insert i s) hcard' hLI_ins
-    refine ⟨g', fun j hj => ?_, hg'LI⟩
-    have hji : j ≠ i := fun h => his (h ▸ hj)
-    rw [hg'eq j (Finset.mem_insert_of_mem hj), Function.update_of_ne hji]
 
 /-! ## A nondegenerate realization in the chart, at given selectors
 
@@ -182,7 +107,8 @@ theorem exists_fill_linearIndependent_hubSlotOf {P : Submodule K (Fin 4 → K)}
     funext i
     simp only [Function.comp_apply, hg₀, hubSlotOf, he i, Submodule.subtype_apply]
   have hdim : 3 ≤ Module.finrank K P := hP
-  obtain ⟨g', hg'eq, hg'LI⟩ := exists_extend_linearIndependent (V := P) (n := 3) hdim g₀ S hLI₀
+  obtain ⟨g', hg'eq, hg'LI⟩ := exists_extend_linearIndependent (M := P) (ι := Fin 3)
+    (by rw [Fintype.card_fin]; exact hdim) g₀ S hLI₀
   refine ⟨fun i => (g' i : Fin 4 → K), ?_, ?_⟩
   · have hslot : ∀ i, hubSlotOf f sel (fun i => (g' i : Fin 4 → K)) i = (g' i : Fin 4 → K) := by
       intro i

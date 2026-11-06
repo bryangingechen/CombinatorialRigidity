@@ -5,6 +5,7 @@ Authors: Bryan Gin-ge Chen
 -/
 module
 
+public import CombinatorialRigidity.Mathlib.LinearAlgebra.LinearIndependent.Basic
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Realization
 
 /-!
@@ -48,27 +49,6 @@ namespace CombinatorialRigidity.Molecular
 variable {K : Type*} [Field K] {α β : Type*}
 
 /-! ## Helpers -/
-
-/-- **Two independent vectors span a plane**: if `x` and `y` are linearly independent, their span
-has dimension two (`finrank_span_eq_card`, as `{x, y}` is the range of `![x, y]`). -/
-theorem finrank_span_pair_eq_two {n : ℕ} {x y : Fin n → K} (h : LinearIndependent K ![x, y]) :
-    Module.finrank K (Submodule.span K {x, y}) = 2 := by
-  rw [← Matrix.range_cons_cons_empty, finrank_span_eq_card h, Fintype.card_fin]
-
-/-- **A nonzero vector has an independent partner in a subspace of dimension at least two**: for
-`b ≠ 0` and `2 ≤ dim P`, some `c ∈ P` makes `![b, c]` linearly independent. `P` does not lie in the
-line `K ∙ b`, of dimension one, and any `c ∈ P` off it will do (`LinearIndependent.pair_iff'`). -/
-theorem exists_mem_linearIndependent_pair {n : ℕ} {P : Submodule K (Fin n → K)} {b : Fin n → K}
-    (hb : b ≠ 0) (hP : 2 ≤ Module.finrank K P) :
-    ∃ c ∈ P, LinearIndependent K ![b, c] := by
-  have hnotle : ¬ P ≤ K ∙ b := fun hle => by
-    have := Submodule.finrank_mono hle
-    rw [finrank_span_singleton hb] at this
-    omega
-  obtain ⟨c, hcP, hcb⟩ := IsConcreteLE.not_le_iff_exists.1 hnotle
-  refine ⟨c, hcP, (LinearIndependent.pair_iff' hb).2 fun a h => hcb ?_⟩
-  rw [← h]
-  exact Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self b)
 
 /-- **A multiple of a screw element in a panel lies in it**, for `k ≥ 1`: if `C` is the extensor of
 `k` vectors orthogonal to `n`, then `a • C` is that of the same vectors with the first scaled by `a`

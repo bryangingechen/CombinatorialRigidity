@@ -11,11 +11,12 @@ public import Mathlib.LinearAlgebra.Finsupp.LinearCombination
 public import Mathlib.LinearAlgebra.Quotient.Basic
 public import Mathlib.LinearAlgebra.Dimension.Constructions
 public import Mathlib.Algebra.Module.Torsion.Field
+public import Mathlib.LinearAlgebra.FiniteDimensional.Basic
 
 /-!
 # Upstream candidates: independent-family facts
 
-Six facts about linearly independent families, all upstream-eligible.
+Nine facts about linearly independent families, all upstream-eligible.
 
 `LinearIndependent.disjoint_span_range_ker` is the converse companion of mathlib's
 `LinearIndependent.map`: if the composite `f ∘ v` is linearly independent, then the span of
@@ -76,6 +77,14 @@ independent pair. Mathlib has the general-family form (`LinearIndependent.map'`,
 hand-rolling that step — which is exactly the friction this lemma removes. The rigidity
 project's cut arms (`Molecular/Molecule/Pencil/Grade/TwoPencil.lean`, `Grade/LiftCutEdge.lean`)
 use it to push one side's adjacent independence through the repositioning automorphism.
+
+`exists_extend_linearIndependent` completes a family independent on a finset of indices to an
+independent family, when `Fintype.card ι ≤ finrank K M` (no `FiniteDimensional` hypothesis: the
+bound forces it). `finrank_span_pair_eq_two` and `exists_mem_linearIndependent_pair` are the plane
+spanned by an independent pair and the independent partner of a nonzero vector in a subspace of
+dimension at least two. `LinearIndepOn.pair_iff_linearIndependent` fuses mathlib's `pair_iff` for
+`LinearIndepOn` and for `LinearIndependent` (the rigidity project's pencil files,
+`Molecular/Molecule/Pencil/`).
 
 Promotion to mathlib: copy-paste into `Mathlib/LinearAlgebra/LinearIndependent/Basic.lean`
 (it imports `linearIndependent_sum` there, `disjoint_span_singleton'` from `Span.Basic`,
@@ -207,3 +216,106 @@ theorem LinearIndepOn.units_smul {R M ι : Type*} [Ring R] [AddCommGroup M] [Mod
     {v : ι → M} {s : Set ι} (hv : LinearIndepOn R v s) (w : ι → Rˣ) :
     LinearIndepOn R (w • v) s :=
   LinearIndependent.units_smul hv fun x : s => w x
+
+/-- **Completing a family independent on a set of indices**: for `g₀ : ι → M` linearly independent
+on a finset `s₀` of indices, with `Fintype.card ι ≤ finrank K M`, some `g'` agrees with `g₀` on `s₀`
+and is linearly independent. By induction on the number of indices outside the set: one of them is
+given a vector outside the span of the vectors at the set, a span of dimension at most the size of
+the set (`finrank_span_finset_le_card`), less than `card ι`, and `linearIndepOn_insert` adds the
+index to the set. -/
+theorem exists_extend_linearIndependent [Fintype ι]
+    (hn : Fintype.card ι ≤ Module.finrank K M)
+    (g₀ : ι → M) (s₀ : Finset (ι)) (hs₀ : LinearIndepOn K g₀ (s₀ : Set (ι))) :
+    ∃ g' : ι → M, (∀ i ∈ s₀, g' i = g₀ i) ∧ LinearIndependent K g' := by
+  classical
+  suffices H : ∀ (m : ℕ) (g : ι → M) (s : Finset (ι)),
+      (Finset.univ \ s).card = m → LinearIndepOn K g (s : Set (ι)) →
+      ∃ g' : ι → M, (∀ i ∈ s, g' i = g i) ∧ LinearIndependent K g' from
+    H _ g₀ s₀ rfl hs₀
+  intro m
+  induction m with
+  | zero =>
+    intro g s hcard hs
+    have hsub : Finset.univ ⊆ s := by
+      rwa [Finset.card_eq_zero, Finset.sdiff_eq_empty_iff_subset] at hcard
+    have hsu : s = Finset.univ := Finset.Subset.antisymm (Finset.subset_univ s) hsub
+    subst hsu
+    rw [Finset.coe_univ] at hs
+    exact ⟨g, fun _ _ => rfl, linearIndepOn_univ_iff.mp hs⟩
+  | succ m ih =>
+    intro g s hcard hs
+    have hne : (Finset.univ \ s).Nonempty := by
+      rw [← Finset.card_pos, hcard]; omega
+    obtain ⟨i, hi⟩ := hne
+    rw [Finset.mem_sdiff] at hi
+    have his : i ∉ s := hi.2
+    have hscard : s.card < Fintype.card ι := by
+      have hss : s ⊂ Finset.univ := by
+        rw [Finset.ssubset_univ_iff]
+        exact fun h => his (h ▸ Finset.mem_univ i)
+      have hlt := Finset.card_lt_card hss
+      rwa [Finset.card_univ] at hlt
+    have hfr : Module.finrank K (Submodule.span K (g '' (s : Set (ι)))) ≤ s.card := by
+      have h1 := finrank_span_finset_le_card (R := K) (s.image g)
+      rw [Finset.coe_image] at h1
+      exact le_trans h1 Finset.card_image_le
+    have hexists : ∃ w : M, w ∉ Submodule.span K (g '' (s : Set (ι))) := by
+      by_contra hcon
+      simp only [not_exists, not_not] at hcon
+      rw [Submodule.eq_top_iff'.2 hcon, finrank_top] at hfr
+      omega
+    obtain ⟨w, hw⟩ := hexists
+    have hEqOn : Set.EqOn g (Function.update g i w) (s : Set (ι)) := by
+      intro x hx
+      have hxi : x ≠ i := fun h => his (Finset.mem_coe.mp (h ▸ hx))
+      rw [Function.update_of_ne hxi]
+    have hLI_s : LinearIndepOn K (Function.update g i w) (s : Set (ι)) := hs.congr hEqOn
+    have himg : (Function.update g i w) '' (s : Set (ι)) = g '' (s : Set (ι)) :=
+      Set.image_congr (fun x hx => (hEqOn hx).symm)
+    have hnotmem : Function.update g i w i ∉
+        Submodule.span K ((Function.update g i w) '' (s : Set (ι))) := by
+      rw [Function.update_self, himg]; exact hw
+    have hLI_ins : LinearIndepOn K (Function.update g i w) (insert i (s : Set (ι))) :=
+      (linearIndepOn_insert (by rwa [Finset.mem_coe])).mpr ⟨hLI_s, hnotmem⟩
+    rw [← Finset.coe_insert] at hLI_ins
+    have hcard' : (Finset.univ \ insert i s).card = m := by
+      have heq : Finset.univ \ insert i s = (Finset.univ \ s).erase i := by
+        ext x
+        simp only [Finset.mem_sdiff, Finset.mem_univ, true_and, Finset.mem_insert,
+          Finset.mem_erase, not_or]
+      have hmem : i ∈ Finset.univ \ s := Finset.mem_sdiff.2 ⟨Finset.mem_univ i, his⟩
+      rw [heq, Finset.card_erase_of_mem hmem]
+      omega
+    obtain ⟨g', hg'eq, hg'LI⟩ := ih (Function.update g i w) (insert i s) hcard' hLI_ins
+    refine ⟨g', fun j hj => ?_, hg'LI⟩
+    have hji : j ≠ i := fun h => his (h ▸ hj)
+    rw [hg'eq j (Finset.mem_insert_of_mem hj), Function.update_of_ne hji]
+
+/-- **Two independent vectors span a plane**: if `x` and `y` are linearly independent, their span
+has dimension two (`finrank_span_eq_card`, as `{x, y}` is the range of `![x, y]`). -/
+theorem finrank_span_pair_eq_two {x y : M} (h : LinearIndependent K ![x, y]) :
+    Module.finrank K (Submodule.span K {x, y}) = 2 := by
+  rw [← Matrix.range_cons_cons_empty, finrank_span_eq_card h, Fintype.card_fin]
+
+/-- **A nonzero vector has an independent partner in a subspace of dimension at least two**: for
+`b ≠ 0` and `2 ≤ dim P`, some `c ∈ P` makes `![b, c]` linearly independent. `P` does not lie in the
+line `K ∙ b`, of dimension one, and any `c ∈ P` off it will do (`LinearIndependent.pair_iff'`). -/
+theorem exists_mem_linearIndependent_pair {P : Submodule K M} {b : M}
+    (hb : b ≠ 0) (hP : 2 ≤ Module.finrank K P) :
+    ∃ c ∈ P, LinearIndependent K ![b, c] := by
+  have hnotle : ¬ P ≤ K ∙ b := fun hle => by
+    have := Submodule.finrank_mono hle
+    rw [finrank_span_singleton hb] at this
+    omega
+  obtain ⟨c, hcP, hcb⟩ := IsConcreteLE.not_le_iff_exists.1 hnotle
+  refine ⟨c, hcP, (LinearIndependent.pair_iff' hb).2 fun a h => hcb ?_⟩
+  rw [← h]
+  exact Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self b)
+
+/-- **A pair of indices is independent iff the pair of vectors is.** Over a ring, for `i ≠ j`,
+`f` is linearly independent on `{i, j}` iff `![f i, f j]` is. The bridge between mathlib's
+`LinearIndepOn.pair_iff` and `LinearIndependent.pair_iff`, whose two right-hand sides agree. -/
+theorem LinearIndepOn.pair_iff_linearIndependent {R M ι : Type*} [Ring R] [AddCommGroup M]
+    [Module R M] {f : ι → M} {i j : ι} (hij : i ≠ j) :
+    LinearIndepOn R f {i, j} ↔ LinearIndependent R ![f i, f j] := by
+  rw [LinearIndepOn.pair_iff f hij, LinearIndependent.pair_iff]
