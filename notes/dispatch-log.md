@@ -237,6 +237,29 @@ overriding `run_lean`). At the close the PI chose to defer all five. A
 round that replaces pinned proofs runs that diff at each such task, even
 when it writes no TeX.
 
+**ARREARS (the cleanup round after HOMES) rows, 2026-11-06, tasks 4–13
+(one coordinator session; the close adds the rest): 3.** Ten dispatches,
+none BLOCKED, no escalation, no `NEEDS_PI`. (1) Task 6's moved-name sweep
+(`7dc78901`) kept `Induction/SparseDeficiency.lean`'s docstring placing
+`deficiencyMerged_le_deficiency` and `partitionDef_map` in
+`Molecular/Deficiency.lean`; both had moved to `Deficiency/Cut.lean`. The
+coordinator caught it by resolving each declaration named beside a
+remaining file mention to its current file (a file-name grep alone passes
+it). Task 7's prompt fixed it in a hygiene block. Task 8's sweep
+(`0f6d16a8`) carried the same shape: a repointed `Motive.lean` docstring
+still placed `finrank_toDualPerp_single_eq` (in `Pencil/Statement.lean`)
+beside the moved pair lemma; task 9 fixed it. (2) Coordinator-artifact
+defects (F19): task 9's scope-pin said each new file's line goes "beside
+PanelLayer's" in the root, which lists only a selection of modules and has
+no such line; the builder caught it and recorded it. Task 12's prompt
+marked as a hypothesis the open's claim that `RecordsLinks.map` needs only
+mathlib's `Graph`; it was false (the tree's `Graph.map` is the `Matroid`
+package's, and mathlib's `Graph/Maps.lean` cannot be imported beside it),
+so the lemma went to `Operations.lean` and a FRICTION idiom records it.
+(3) Task 4's builder ran a stray `git stash` and popped it at once; the
+content was unchanged and it re-ran every gate. The coordinator confirmed
+from `git stash list` that only the older stash remained.
+
 ## Findings
 
 (Distill recurring lessons here — one entry per lesson, rows cite it.
