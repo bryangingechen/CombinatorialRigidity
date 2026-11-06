@@ -6,8 +6,9 @@ carried over (`notes/Phase42-homes.md` *Moved to a later round*, *Candidates for
 *Hand-off*), with the scope the PI chose at the open (*Decisions*): the blueprint's dependency-graph
 debt, the friction log's archive sweep, a dead pair of `have`s, the splits of the four molecular
 files past the ~1500-line tripwire, and `RecordsLinks` moved to `Graph` with its link hypotheses
-restated. Seventeen tasks; no main result's statement changes.
-**Next concrete task:** task 17, the close (*Lemma checklist*; tasks 1-10 and 12-16 landed, 11 reserved and unused).
+restated. Seventeen tasks at the open; on 2026-11-06 the PI took the four *Candidates* left at task 16
+into the round (*Decisions*), so twenty, the close now task 20; no main result's statement changes.
+**Next concrete task:** task 17, the three defs' link witnesses and two conclusions (*Lemma checklist*; tasks 1-10 and 12-16 landed, 11 reserved and unused).
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -30,8 +31,9 @@ pin's move leaves `lem:pencil-d-condition-linear` unbacked at `lem:pencil-d-ear-
 `gradeSigma`; not defects (an unbacked edge is a check), left as they are. Tasks 6-9 (`7dc78901`,
 `175bcb33`, `0f6d16a8`, `a2d7fe04`): the four splits, pure moves, each with G1-G4 and G6; task 10
 a no-op. Task 12 (`651ecc60`): `RecordsLinks` moved to `Graph`. Tasks 13-15 (`03215eb1`,
-`d7f2d00c`, `c7449832`): 22, 23 and 28 binders restated. Task 16 (this commit): `Pencil/Grade/`'s 37
-(*Decisions*), so no link binder of the open's scope is left in the form at links. **The grep**
+`d7f2d00c`, `c7449832`): 22, 23 and 28 binders restated. Task 16 (`74290376`): `Pencil/Grade/`'s 37
+(*Decisions*), so no link binder of the open's scope is left in the form at links. **The PI's answers
+of 2026-11-06** (*Decisions*) add tasks 17-19 before the close (task 20). **The grep**
 (`recordsLinks_iff_forall_isLink`, 60 Lean mentions): the API's own 12 (the mirror 6, `PanelHinge`'s
 alias and `link_tac` 4, `Operations` 2); records built link by link 8 (`Theorem55` 5, `CaseIII/` 2,
 `Application` 1); one docstring (`Theorem55`); and 39 conversions, all from forms the open left out
@@ -83,23 +85,26 @@ warnings, 0 cache failures):
   (`… → ends e = (u, v) ∨ ends e = (v, u)`), both equivalent to `RecordsLinks G ends`
   (`recordsLinks_iff_forall_isLink`, `RecordsLinks.of_pair`); 48 are pinned. By file group:
   `GenericityDevice` 6, `Pinning` 1, `Coupling` 2, `CaseI` 6, `CaseIII/` 14, `Dictionary` 4,
-  `Pencil/MainComponent/` 26, `Pencil/Grade/` 33. None is a `formalization.yaml` main result. Another
-  24 take the **total form** `∀ e, G.IsLink e (ends e).1 (ends e).2`, which is stronger (every label
-  an edge): restating those would weaken hypotheses, out of scope (*Candidates for the PI*). The
-  counts come from a signature scan; each task re-greps its files.
+  `Pencil/MainComponent/` 26, `Pencil/Grade/` 33. None is a `formalization.yaml` main result.
+  **Five** take the **total form** `∀ e, G.IsLink e (ends e).1 (ends e).2`, which is stronger (every
+  label an edge): four in `GenericityDevice`, one in `Pinning` (the open wrote 24; recounted on
+  2026-11-06, the same five at `6d75d694` and at `74290376`). Restating those weakens hypotheses:
+  task 19, at the PI's word. The counts come from a signature scan; each task re-greps its files.
 - **The dead `have`s:** `Graph.X0AttainsGrade.of_openEar_four` (`Grade/Short.lean:1101`) opens with
   `hax`, `hbx` (lines 1110–1111), used nowhere in it.
 
 ## Scope and standing rules
 
 - **The hygiene rule.** No `formalization.yaml` main result's statement changes, and no blueprint
-  statement's strength. The round's statement changes are tasks 13–16's: each replaces a link
-  hypothesis by the equivalent `RecordsLinks G ends`, so a node pinning one keeps its strength; a
-  node whose prose states the old form is reworded in the same commit (the *changed statement*
-  gate, `CombinatorialRigidity/CLAUDE.md` *Forward-mode slices*). The round's renames are task 12's
-  `RecordsLinks` API, each old name kept as a deprecated alias. A split or move keeps every
-  declaration's name, statement and proof. The one deletion is `extensor_triple_eq_zero_iff`
-  (task 4; dead, unpinned). Anything else out of scope goes under *Candidates* or *Moved*.
+  statement's strength. The round's statement changes are tasks 13–18's: each replaces a link
+  hypothesis, witness or conclusion by the equivalent `RecordsLinks G ends`, so a node pinning one
+  keeps its strength; a node whose prose states the old form is reworded in the same commit (the
+  *changed statement* gate, `CombinatorialRigidity/CLAUDE.md` *Forward-mode slices*). The one
+  exception is task 19's, at the PI's word: five total-form hypotheses weakened to `RecordsLinks`.
+  The round's renames are task 12's `RecordsLinks` API, each old name kept as a deprecated alias. A
+  split or move keeps every declaration's name, statement and proof. The deletions are
+  `extensor_triple_eq_zero_iff` (task 4) and, at the PI's word, `induce_isLink_ends` (task 17), each
+  dead and unpinned. Anything else out of scope goes under *Candidates* or *Moved*.
 - **Writes.** Lean in the files each task names (new files where a split or task 12 says, each a
   `module` with its line in `CombinatorialRigidity.lean`), and the docstrings that name a moved
   declaration's file; TeX in tasks 4–5 and where a restated node's prose needs it;
@@ -120,7 +125,7 @@ warnings, 0 cache failures):
     (G3) `blueprint/lint.sh` green, check 9's total not above its baseline. (G4)
     `blueprint/verify.sh`, `checkdecls` silent, when a pinned declaration moves module or a pin
     changes.
-  - **A task that changes a statement** (13–16): (G5) `#print axioms` of the 21
+  - **A task that changes a statement** (13–19): (G5) `#print axioms` of the 21
     `formalization.yaml` main results, by a scratch `lake lean` file: `[propext,
     Classical.choice, Quot.sound]` each, as at the open.
   - **Every task from 6 on:** (G6) `python3 scripts/blueprint-deps.py --summary`: 0 missing
@@ -181,32 +186,47 @@ resolved.
 - [x] **15. Restate: `Pencil/MainComponent/`** (`c7449832`; Lean). 28 binders in 12 files
   (*Decisions*); task 13's six conversions gone, 15 left, all from `X0Attains`'s existential and one
   conclusion (*Candidates*). FRICTION's `RecordsLinks` entry updated.
-- [x] **16. Restate: `Pencil/Grade/`** (this commit; Lean). 37 binders in 16 files; tasks 13 and
+- [x] **16. Restate: `Pencil/Grade/`** (`74290376`; Lean). 37 binders in 16 files; tasks 13 and
   15's conversions there gone; the tree-wide grep classified (*Current state*). FRICTION *The tree's
   link hypotheses are in the form at links…* stays open, narrowed to the PI's (*Candidates*).
-- [ ] **17. The close** (docs only; opus). Each task's sha; the status surfaces; the queue row
+- [ ] **17. The defs' link witnesses, two conclusions, `induce_isLink_ends`** (Lean; opus; the
+  PI's word, *Decisions*). Read `Graph.RecordsLinks G ends` for the form at links
+  (`∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2`) in: the existential `hlinks` of
+  `Graph.X0Attains` (`MainComponent/Carrier.lean`) and `Graph.X0AttainsGrade` (`Grade/Carrier.lean`),
+  the anonymous one of `LiftAttains` (`Grade/Lift.lean`), the same existential in the conclusion of
+  `Graph.exists_mvPolynomial_le_finrank_span_rigidityRows_pencilPicturePoint` (`MainComponent/Bridge.lean`)
+  and the third conjunct of `exists_molecular_rankHypothesis_generalPosition` (`Modelling.lean`;
+  reword its docstring's bullet). Delete `induce_isLink_ends` (`Grade/LiftCases.lean`; no caller,
+  no pin). Target: `recordsLinks_iff_forall_isLink`'s 60 Lean mentions fall to 21, the 39
+  conversions of *Current state* gone (its classification is task 16's, re-check per site). No
+  TeX: `def:pencil-x0-attains`, `def:pencil-d-x0-attains`, `def:pencil-d-lift-attains`,
+  `lem:pencil-jj-chart`, `thm:panel-hinge-iff-molecular` name no selector condition (read
+  2026-11-06). FRICTION's link-form entry updated (task 18 resolves it). G1, G2, G3, G5, G6.
+- [ ] **18. Case III's pair forms** (Lean; sonnet; the PI's word). In `CaseIII/`: the third
+  conjunct of `PanelHingeFramework.ofNormals_relabel` (`Relabel/Basic.lean`) and the conclusion of
+  `Graph.ChainData.fullLink_recording_of_splitOff_recording` (`Relabel/Chain.lean`), both in pair
+  form, read `Graph.RecordsLinks` (its caller in `Realization.lean` drops its `.of_pair`); and
+  `PanelHingeFramework.rigidityRows_ofNormals_congr_ends_swap` (`Realization.lean`) drops its
+  explicit `hagree`, the pair form coming from its implicit `hlinks`, `hlinks'` by
+  `RecordsLinks.eq_pair_or_swap` (one caller). No TeX: `lem:splitOff-ofNormals-relabel` states
+  no selector condition; the other two are unpinned. Resolves FRICTION's link-form entry. G1-G3,
+  G5, G6.
+- [ ] **19. The total form** (a read-only opus recon, then Lean; the PI's word). The five binders
+  `hends : ∀ e, G.IsLink e (ends e).1 (ends e).2` (or at `F.graph`) of
+  `PanelHingeFramework.exists_good_realization_ofParam`, `exists_relative_full_count_ofParam`,
+  `hasFullRankRealization_of_independent_panelRow`,
+  `BodyHingeFramework.exists_independent_panelRow_subfamily_of_rigidOn` (`GenericityDevice.lean`)
+  and `span_panelRow_eq_rigidityRows` (`Pinning.lean`) read `Graph.RecordsLinks`: weaker, so the
+  lemmas generalize. The recon first: does each proof go through without the total form, and
+  does a pinned node's prose (the middle three, `genericity-and-count.tex`) state it? The build
+  restates those that go through; the rest go under *Moved*. G1-G6 as they apply.
+- [ ] **20. The close** (docs only; opus). Each task's sha; the status surfaces; the queue row
   `done = true`; G6; FRICTION's counts.
 
 ## Candidates for the PI
 
-- **The total-form link hypotheses** (24 declarations, `∀ e, G.IsLink e (ends e).1 (ends e).2`):
-  stronger than `RecordsLinks G ends`, so restating them generalizes the declarations, beyond the
-  equivalent restatement the PI chose. Recorded at the open.
-- **Case III's pair forms outside the binders** (task 14). Two conclusions, `ofNormals_relabel`'s
-  third conjunct and `fullLink_recording_of_splitOff_recording`'s (its one caller takes
-  `.of_pair`), could read `RecordsLinks`, an equivalent restatement of a conclusion. And
-  `rigidityRows_ofNormals_congr_ends_swap`'s `hagree` (the pair form of two selectors) is implied by
-  its implicit `hlinks`, `hlinks'`: dropping it removes an explicit hypothesis (one caller).
-- **Three defs' link witnesses, and two conclusions** (tasks 15-16). The existentials `hlinks` of
-  `Graph.X0Attains`, `Graph.X0AttainsGrade` and `LiftAttains` (pinned at `def:pencil-x0-attains`,
-  `def:pencil-d-x0-attains`, `def:pencil-d-lift-attains`, whose prose names no selector condition),
-  and the conclusions of `exists_mvPolynomial_le_finrank_span_rigidityRows_pencilPicturePoint` and
-  of the pinned `exists_molecular_rankHypothesis_generalPosition`, are in the form at links: 39 sites
-  convert, 13, 15 and 6 where a def is built or destructured, 2 and 3 at the conclusions. Reading
-  `RecordsLinks` there is an equivalent restatement and removes them all.
-- **`induce_isLink_ends`** (`Grade/LiftCases.lean`, task 16): its conclusion is
-  `RecordsLinks.induce`'s at links, and since task 16 it has no caller (they read `.induce`).
-  Deleting it is outside the round's one deletion.
+- None left: the PI took all four of task 16's into the round on 2026-11-06, as tasks 17-19
+  (*Decisions*).
 
 ## Moved to a later round
 
@@ -218,11 +238,12 @@ resolved.
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 17, the close (*Lemma checklist*; docs only): each task's sha, the
-status surfaces (`python3 notes/phasenote.py notes/Phase42-arrears.md --surfaces`), the queue row
-`done = true`, G6, FRICTION's counts, and the *Candidates* put to the PI (the round changed no
-main result's statement). After the close: ORIGAMI's open, with the PI (ROADMAP *Queued
-post-program phases*).
+**Next concrete task:** task 17 (*Lemma checklist*): the existential link witnesses of
+`X0Attains`, `X0AttainsGrade`, `LiftAttains` and two conclusions read `RecordsLinks`, and
+`induce_isLink_ends` goes. Then tasks 18-19, and the close, task 20: each task's sha, the status
+surfaces (`python3 notes/phasenote.py notes/Phase42-arrears.md --surfaces`), the queue row
+`done = true`, G6, FRICTION's counts. After the close: ORIGAMI's open, with the PI (ROADMAP
+*Queued post-program phases*).
 
 ## Decisions made during this round
 
@@ -233,6 +254,14 @@ post-program phases*).
   files HOMES grew past the cap, the PI chose **"All four"** ("Split all four files, one task each.
   Each split rebuilds most of Molecular/."). The twelve older missing edges are in scope by the
   open's choice, announced to the PI with the questions.
+- **The candidates, at the PI's word** (2026-11-06, before the close). Asked about task 16's four
+  *Candidates* one at a time, the PI chose, for the defs' witnesses and two conclusions, **"Take it
+  (Recommended)"** (option text: "Est. 1–2 opus build tasks (tasks 15/16 each did ~30 sites in one
+  dispatch), then the close."); Case III's three, **"Take it (Recommended)"** ("Est. 1 small task in
+  CaseIII/. It removes the last pair forms outside binders."); `induce_isLink_ends`, **"Delete it
+  (Recommended)"** ("A few lines. It rides along with group 1's task if you take that, or goes in its
+  own tiny commit."); the total form, **"Take it, recon first"** ("Add a read-only recon to check
+  whether the 5 proofs survive with only RecordsLinks, then a build task if they do. Est. 2 dispatches."). Tasks 17-19.
 - **The order** (the open). Docs and the dependency graph first, so G6 holds at 0 from task 6 on;
   the splits before task 12, so the restate's tasks edit the final files; the restate bottom-up
   by import order, a caller converting until its own task.
