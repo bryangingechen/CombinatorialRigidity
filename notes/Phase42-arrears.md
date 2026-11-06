@@ -8,7 +8,8 @@ debt, the friction log's archive sweep, a dead pair of `have`s, the splits of th
 files past the ~1500-line tripwire, and `RecordsLinks` moved to `Graph` with its link hypotheses
 restated. Seventeen tasks at the open; on 2026-11-06 the PI took the four *Candidates* left at task 16
 into the round (*Decisions*), so twenty, the close now task 20; no main result's statement changes.
-**Next concrete task:** task 19, the total form (*Lemma checklist*; a read-only opus recon, then Lean; tasks 1-10 and 12-18 landed, 11 reserved and unused).
+**Next concrete task:** task 20, the close (*Lemma checklist*; docs only; tasks 1-10 and 12-19
+landed, 11 reserved and unused).
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -23,7 +24,7 @@ stops; the PI answers in an entry that starts `**PI, <date>:**`.
 
 ## Current state
 
-**Tasks 1-10 and 12-18 landed.** Task 1 (`381dcae1`): the open. Task 2 (`0edd6e7e`): the friction log's
+**Tasks 1-10 and 12-19 landed.** Task 1 (`381dcae1`): the open. Task 2 (`0edd6e7e`): the friction log's
 archive sweep. Task 3 (`6f227b5e`): the dead `have`s. Tasks 4-5 (`a0b498a0`, `ca348e9d`): the
 sixteen missing edges (*Decisions*); G6 at 0 missing since. Unbacked 187 → 190 at task 4: the σ
 pin's move leaves `lem:pencil-d-condition-linear` unbacked at `lem:pencil-d-ear-data`,
@@ -44,19 +45,22 @@ green, docstring-label report total 0), G5 (21 × `[propext, Classical.choice, Q
 missing, unbacked 190, implied 3070, both consistency lines OK); no pin moved, so no G4; no TeX (5
 pinned nodes read). FRICTION: open 7 (the `RecordsLinks` entry stays open, narrowed to task 18).
 
-**Task 18 (this commit):** `ofNormals_relabel`'s third conjunct reads `RecordsLinks` (its proof is
-the default `hlinks`, `recordsLinks_splitOff_relabel`; the caller keeps the name `hrec`, which
-`link_tac` finds by `assumption` for the `ofNormals` below it: a `-` pattern fails there);
-`fullLink_recording_of_splitOff_recording` concludes `RecordsLinks` (`.of_pair` wraps the body; its
-caller's `.of_pair` is gone); `rigidityRows_ofNormals_congr_ends_swap` drops `hagree` and takes
-`hlinks`, `hlinks'` as **explicit** binders (implicit ones are not inferred from the goal, so the
-one caller `hcongr_swap` passes `.of_pair …` and `hends_Gv`; the signature changed beyond the task
-line's wording, the declaration being unpinned). No TeX (the *changed statement* grep of
-`blueprint/src/`: only `lem:splitOff-ofNormals-relabel`, which states no selector condition).
-Gates: G1, G2 (whole-tree `lake build` 0 warnings, 0 cache failures; `lake lint`), G3
-(`blueprint/lint.sh` green, docstring-label total 0), G5 (21 × `[propext, Classical.choice,
-Quot.sound]`), G6 (0 missing, unbacked 190, both consistency lines OK). FRICTION: the link-form
-entry `[resolved]`; open 6, resolved 1.
+**Task 18 (`60204c00`):** `ofNormals_relabel`'s third conjunct reads `RecordsLinks` (the caller
+keeps the name `hrec`, which `link_tac` finds by `assumption`: a `-` pattern fails there);
+`fullLink_recording_of_splitOff_recording` concludes it; `rigidityRows_ofNormals_congr_ends_swap`
+drops `hagree` and takes `hlinks`, `hlinks'` **explicit** (implicit ones are not inferred from the
+goal; unpinned). No TeX. FRICTION: the link-form entry `[resolved]`; open 6, resolved 1.
+
+**Task 19 (this commit),** after its recon, at the PI's word (*Decisions*): the three device lemmas
+take `RecordsLinks` and `hs`; `lem:case-II-placement-old-rows-extract` pins
+`…_of_rigidOn_linking`; `exists_independent_panelRow_subfamily_of_rigidOn` and
+`span_panelRow_eq_rigidityRows` deleted, their docstring mentions repointed (`Pinning`'s header,
+`panelRow`, `span_panelRow_linking_eq_rigidityRows`, `finrank_span_rigidityRows_of_rigidOn`,
+`RecordsLinks.of_forall`, `PanelGeneric`'s two). No total-form binder is left in the tree. Gates:
+G1; G2 (whole-tree `lake build` 0 warnings, 0 cache failures; `lake lint`); G3 (`lint.sh` green,
+docstring-label report unchanged, total 0); G4 (`verify.sh`, `checkdecls` silent); G5 (21 ×
+`[propext, Classical.choice, Quot.sound]`); G6 (0 missing after the repin's one edge, unbacked 190,
+unbacked-transitive 137 → 140, both consistency lines OK). FRICTION: one `[idiom]` (masked rows).
 
 **Verified at the open** (2026-11-05, at `6d75d694`; a whole-tree `lake build` replays clean, 0
 warnings, 0 cache failures):
@@ -112,11 +116,14 @@ warnings, 0 cache failures):
   hypothesis, witness or conclusion by the equivalent `RecordsLinks G ends`, so a node pinning one
   keeps its strength; a node whose prose states the old form is reworded in the same commit (the
   *changed statement* gate, `CombinatorialRigidity/CLAUDE.md` *Forward-mode slices*). The one
-  exception is task 19's, at the PI's word: five total-form hypotheses weakened to `RecordsLinks`.
+  exception is task 19's, at the PI's word (*Decisions*): three total-form hypotheses weakened to
+  `RecordsLinks` plus `hs` (the rows at edges of `G`), two lemmas deleted, a node repinned.
   The round's renames are task 12's `RecordsLinks` API, each old name kept as a deprecated alias. A
   split or move keeps every declaration's name, statement and proof. The deletions are
   `extensor_triple_eq_zero_iff` (task 4) and, at the PI's word, `induce_isLink_ends` (task 17), each
-  dead and unpinned. Anything else out of scope goes under *Candidates* or *Moved*.
+  dead and unpinned, and task 19's `exists_independent_panelRow_subfamily_of_rigidOn` (unpinned by
+  its node's repin) and `span_panelRow_eq_rigidityRows` (its only caller gone). Anything else out
+  of scope goes under *Candidates* or *Moved*.
 - **Writes.** Lean in the files each task names (new files where a split or task 12 says, each a
   `module` with its line in `CombinatorialRigidity.lean`), and the docstrings that name a moved
   declaration's file; TeX in tasks 4–5 and where a restated node's prose needs it;
@@ -204,24 +211,12 @@ resolved.
 - [x] **17. The defs' link witnesses, two conclusions, `induce_isLink_ends`** (`44215b92`; Lean).
   `X0Attains`, `X0AttainsGrade`, `LiftAttains`, `Bridge`'s and `Modelling`'s conclusions read
   `RecordsLinks`; 39 conversions gone (60 → 21); `induce_isLink_ends` deleted (*Decisions*).
-- [x] **18. Case III's pair forms** (this commit; Lean; sonnet; the PI's word). In `CaseIII/`: the third
-  conjunct of `PanelHingeFramework.ofNormals_relabel` (`Relabel/Basic.lean`) and the conclusion of
-  `Graph.ChainData.fullLink_recording_of_splitOff_recording` (`Relabel/Chain.lean`), both in pair
-  form, read `Graph.RecordsLinks` (its caller in `Realization.lean` drops its `.of_pair`); and
-  `PanelHingeFramework.rigidityRows_ofNormals_congr_ends_swap` (`Realization.lean`) drops its
-  explicit `hagree`, the pair form coming from its implicit `hlinks`, `hlinks'` by
-  `RecordsLinks.eq_pair_or_swap` (one caller). No TeX: `lem:splitOff-ofNormals-relabel` states
-  no selector condition; the other two are unpinned. Resolves FRICTION's link-form entry. G1-G3,
-  G5, G6.
-- [ ] **19. The total form** (a read-only opus recon, then Lean; the PI's word). The five binders
-  `hends : ∀ e, G.IsLink e (ends e).1 (ends e).2` (or at `F.graph`) of
-  `PanelHingeFramework.exists_good_realization_ofParam`, `exists_relative_full_count_ofParam`,
-  `hasFullRankRealization_of_independent_panelRow`,
-  `BodyHingeFramework.exists_independent_panelRow_subfamily_of_rigidOn` (`GenericityDevice.lean`)
-  and `span_panelRow_eq_rigidityRows` (`Pinning.lean`) read `Graph.RecordsLinks`: weaker, so the
-  lemmas generalize. The recon first: does each proof go through without the total form, and
-  does a pinned node's prose (the middle three, `genericity-and-count.tex`) state it? The build
-  restates those that go through; the rest go under *Moved*. G1-G6 as they apply.
+- [x] **18. Case III's pair forms** (`60204c00`; Lean). `ofNormals_relabel`'s third conjunct and
+  `fullLink_recording_of_splitOff_recording`'s conclusion read `RecordsLinks`;
+  `rigidityRows_ofNormals_congr_ends_swap` drops `hagree`. Resolves FRICTION's link-form entry.
+- [x] **19. The total form** (this commit; recon, then Lean; the PI's word). The device trio takes
+  `RecordsLinks` and `hs`; `lem:case-II-placement-old-rows-extract` pins `…_of_rigidOn_linking`;
+  `…_of_rigidOn` and `span_panelRow_eq_rigidityRows` deleted (*Decisions*). G1-G6.
 - [ ] **20. The close** (docs only; opus). Each task's sha; the status surfaces; the queue row
   `done = true`; G6; FRICTION's counts.
 
@@ -240,9 +235,8 @@ resolved.
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 19 (*Lemma checklist*): a read-only opus recon of the five `hends`
-total-form binders, then Lean. Then the close, task 20: each task's sha, the status
-surfaces (`python3 notes/phasenote.py notes/Phase42-arrears.md --surfaces`), the queue row
+**Next concrete task:** task 20, the close (*Lemma checklist*; docs only): each task's sha, the
+status surfaces (`python3 notes/phasenote.py notes/Phase42-arrears.md --surfaces`), the queue row
 `done = true`, G6, FRICTION's counts. After the close: ORIGAMI's open, with the PI (ROADMAP
 *Queued post-program phases*).
 
@@ -263,6 +257,21 @@ surfaces (`python3 notes/phasenote.py notes/Phase42-arrears.md --surfaces`), the
   (Recommended)"** ("A few lines. It rides along with group 1's task if you take that, or goes in its
   own tiny commit."); the total form, **"Take it, recon first"** ("Add a read-only recon to check
   whether the 5 proofs survive with only RecordsLinks, then a build task if they do. Est. 2 dispatches."). Tasks 17-19.
+- **The total form, at the PI's word** (2026-11-06, after task 19's recon). Asked about the three
+  lemmas false with only `RecordsLinks` (#1-#3, the device trio), the PI chose **"Adopt
+  RecordsLinks + hs (Recommended)"** (option text: "One build task from the recon's compiled fix.
+  The pinned Lean then matches the two nodes' statements. No main result uses any of the three.");
+  about #4 (true with it) and #5 (false), **"Repin, delete #4 and #5 (Recommended)"** ("The node
+  pins _linking in place of #4; #4 and #5 (both then uncalled, unpinned) are deleted, with their
+  docstring mentions repointed. One task; moves a pin, so verify.sh and the dependency audit
+  run."). Task 19.
+- **Task 19's shapes.** (a) The recon: with only `RecordsLinks`, #1-#3 and #5 are false
+  (kernel-checked counterexamples at `k = 1` on a graph with no edges: a label off `E(G)` with ends
+  `(0, 1)` and a nonzero hinge gives panel rows outside the row space); #4 holds, as `_linking` with
+  `hne` at every label. (b) `hs : ∀ i ∈ s, i.1 ∈ E(G)`; #1's device runs on the rows masked to `0` off `E(G)`
+  (FRICTION). (c) The node's statement block agrees with `_linking` (a nonzero hinge and rows at
+  edges), so unchanged; its proof `\uses` `lem:independent-rows-of-rank`, the one edge the audit
+  found missing, with its prose; three formalization notes reworded, no statement block changed.
 - **The order** (the open). Docs and the dependency graph first, so G6 holds at 0 from task 6 on;
   the splits before task 12, so the restate's tasks edit the final files; the restate bottom-up
   by import order, a caller converting until its own task.

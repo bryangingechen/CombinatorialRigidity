@@ -31,9 +31,9 @@ only the graph and the normals (`isGenericNormals_iff_of_graph_eq`).
 * `lem:generic-normals-abundance` — `exists_isGenericNormals_abundance`: one nonzero
   `MvPolynomial` whose non-vanishing at `q` makes `ofNormals G ends q` generic, for every selector
   `ends` that records the links of `G`. The `annihRowPoly` coordinate family and the evaluation
-  identity are exactly those the genericity device
-  (`PanelHingeFramework.exists_good_realization_ofParam`, `GenericityDevice.lean`) assembles; here
-  they feed the constructive maximal-minor engine
+  identity are those the genericity device
+  (`PanelHingeFramework.exists_good_realization_ofParam`, `GenericityDevice.lean`) assembles at the
+  edges of `G`; here they feed the constructive maximal-minor engine
   `exists_polynomial_ne_zero_of_linearIndependent_at_reindex` per subfamily, and the finite product
   of the per-subfamily witnessing minors is the abundance polynomial (the same shape as the
   bar-joint `SimpleGraph.exists_isGenericPlacement_abundance`, `GenericRigidityMatroid.lean`).
@@ -163,7 +163,7 @@ nonzero polynomial.
 The coordinate family is the genericity device's: the row coordinates against the standard basis
 `Pi.basis (fun _ => screwBasis k)` of `α → ScrewSpace K k` are the degree-2 panel polynomials
 `annihRowPoly` scaled by the body-incidence sign `[u = a] − [v = a]`, and the evaluation identity is
-proven exactly as in `PanelHingeFramework.exists_good_realization_ofParam`
+proven as at an edge in `PanelHingeFramework.exists_good_realization_ofParam`
 (`GenericityDevice.lean`). For each subfamily `s` linearly independent at some assignment, the
 maximal-minor engine `exists_polynomial_ne_zero_of_linearIndependent_at_reindex` supplies a nonzero
 witnessing minor polynomial `Q s`; `P` is the finite product of the `Q s` over the (finitely many,

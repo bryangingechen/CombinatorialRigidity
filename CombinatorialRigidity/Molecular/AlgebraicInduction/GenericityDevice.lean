@@ -105,20 +105,24 @@ theorem exists_good_realization_reindex [Infinite K] [Fintype α] {ι ν σ : Ty
       LinearMap.funLeft_apply, hg]) hcoord hindep
 
 /-- **Independent rows of a panel-hinge framework bound its motions at some normals** (a step of
-`lem:relative-device-count`): if `ends` gives every edge label a link of `G` (`hends`) and the rows
-`panelRow ends i` of `ofNormals G ends q₀` indexed by `s` are linearly independent, there are
-normals `q` with `#s + dim Z(G,q) ≤ D|α|`. The coordinates of the rows in the standard basis
-`Pi.basis (fun _ => screwBasis k)` are the polynomials `annihRowPoly` in the normals, scaled by
-`[u = a] − [v = a]` at the body `a` for an edge with selected ends `u` and `v` (`hg`, by
-`annihRowPoly_eval`; `lem:rows-polynomial-in-normals`). The rows lie in the row space at every `q`,
-so their common kernel contains the motions (`hcoord`), and `exists_good_realization_reindex`
-applies. The normals `q₀` satisfy the bound themselves. Only `exists_relative_full_count_ofParam`
+`lem:relative-device-count`): if `ends` records the links of `G` (`hends`) and the rows
+`panelRow ends i` of `ofNormals G ends q₀` indexed by `s`, at edges of `G` (`hs`), are linearly
+independent, there are normals `q` with `#s + dim Z(G,q) ≤ D|α|`. The proof runs the device on the
+rows at the edges of `G`, the row at a label outside `E(G)` replaced by `0`: on `s` these are the
+given rows. Their coordinates in the standard basis `Pi.basis (fun _ => screwBasis k)` are the
+polynomials `annihRowPoly` in the normals, scaled by `[u = a] − [v = a]` at the body `a` for an
+edge with selected ends `u` and `v` (`hg`, by `annihRowPoly_eval`;
+`lem:rows-polynomial-in-normals`). A row at an edge lies in the row space at every `q`, so the
+common kernel of the rows contains the motions (`hcoord`), and `exists_good_realization_reindex`
+applies. The normals `q₀` satisfy the bound themselves. Without `hs` the statement is false: a row
+at a label outside `E(G)` need not lie in the row space. Only `exists_relative_full_count_ofParam`
 uses it. -/
 theorem PanelHingeFramework.exists_good_realization_ofParam [Infinite K] [Fintype α]
     (G : Graph α β) (ends : β → α × α) [Finite β]
-    (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2)
+    (hends : Graph.RecordsLinks G ends)
     {q₀ : α × Fin (k + 2) → K}
     {s : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)}
+    (hs : ∀ i ∈ s, i.1 ∈ E(G))
     (hindep : LinearIndependent K
       (fun i : s => (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.panelRow ends i)) :
     ∃ q : α × Fin (k + 2) → K,
@@ -141,66 +145,79 @@ theorem PanelHingeFramework.exists_good_realization_ofParam [Infinite K] [Fintyp
   let e : Fin (Module.finrank K (Module.Dual K (α → ScrewSpace K k)))
       ≃ (Σ _ : α, Set.powersetCard (Fin (k + 2)) k) :=
     (Fintype.equivFinOfCardEq hcard).symm
-  -- The row family and its polynomial coordinates.
+  -- The row family at the edges of `G` (`0` at a label outside `E(G)`) and its polynomial
+  -- coordinates.
   set g : (α × Fin (k + 2) → K)
       → (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)
       → Module.Dual K (α → ScrewSpace K k) :=
-    fun q i => (F q).panelRow ends i with hg_def
+    fun q i => if i.1 ∈ E(G) then (F q).panelRow ends i else 0 with hg_def
   set c : (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)
       → (Σ _ : α, Set.powersetCard (Fin (k + 2)) k) → MvPolynomial (α × Fin (k + 2)) K :=
-    fun i j => ((if (ends i.1).1 = j.1 then (1 : K) else 0)
+    fun i j => if i.1 ∈ E(G) then ((if (ends i.1).1 = j.1 then (1 : K) else 0)
         - (if (ends i.1).2 = j.1 then 1 else 0))
-      • annihRowPoly (ends i.1).1 (ends i.1).2 i.2.1 i.2.2 j.2 with hc_def
+      • annihRowPoly (ends i.1).1 (ends i.1).2 i.2.1 i.2.2 j.2 else 0 with hc_def
   -- The evaluation identity `hg`: each row coordinate is the panel polynomial `c`.
   have hg : ∀ q i j, φ (g q i) j = MvPolynomial.eval q (c i j) := by
     intro q i j
     obtain ⟨a, t⟩ := j
-    -- `φ (g q i) ⟨a,t⟩ = (g q i) (B ⟨a,t⟩)`; unfold `g`, `panelRow`, `φ`, the support extensor.
-    rw [hφ, Module.Basis.dualBasis_equivFun, hg_def, hc_def, hB, Pi.basis_apply]
-    change BodyHingeFramework.panelRow _ ends i (Pi.single a (screwBasis k t)) = _
-    rw [BodyHingeFramework.panelRow, BodyHingeFramework.hingeRow_apply, hF,
-      PanelHingeFramework.toBodyHinge_supportExtensor,
-      PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal,
-      PanelHingeFramework.ofNormals_normal, MvPolynomial.smul_eval, annihRowPoly_eval]
-    -- `B⟨a,t⟩ u − B⟨a,t⟩ v = ([u=a]−[v=a])•screwBasis t`; push `annihRow` through by linearity,
-    -- then settle the boole arithmetic `[u=a] − [v=a]` per case.
-    rw [Pi.single_apply, Pi.single_apply]
-    by_cases hu : (ends i.1).1 = a <;> by_cases hv : (ends i.1).2 = a <;>
-      simp only [hu, hv, ite_true, ite_false, sub_zero, zero_sub, sub_self, map_zero,
-        map_neg, one_mul, neg_mul, zero_mul]
-  -- The span containment `hcoord`: the panel rows lie in the rigidity rows (at any hinges), so
-  -- their span is contained and the coannihilator reversed.
+    by_cases hmem : i.1 ∈ E(G)
+    · -- `φ (g q i) ⟨a,t⟩ = (g q i) (B ⟨a,t⟩)`; unfold `g`, `panelRow`, `φ`, the support extensor.
+      rw [hφ, Module.Basis.dualBasis_equivFun, hg_def, hc_def, hB, Pi.basis_apply]
+      simp only [hmem, ite_true]
+      change BodyHingeFramework.panelRow _ ends i (Pi.single a (screwBasis k t)) = _
+      rw [BodyHingeFramework.panelRow, BodyHingeFramework.hingeRow_apply, hF,
+        PanelHingeFramework.toBodyHinge_supportExtensor,
+        PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal,
+        PanelHingeFramework.ofNormals_normal, MvPolynomial.smul_eval, annihRowPoly_eval]
+      -- `B⟨a,t⟩ u − B⟨a,t⟩ v = ([u=a]−[v=a])•screwBasis t`; push `annihRow` through by
+      -- linearity, then settle the boole arithmetic `[u=a] − [v=a]` per case.
+      rw [Pi.single_apply, Pi.single_apply]
+      by_cases hu : (ends i.1).1 = a <;> by_cases hv : (ends i.1).2 = a <;>
+        simp only [hu, hv, ite_true, ite_false, sub_zero, zero_sub, sub_self, map_zero,
+          map_neg, one_mul, neg_mul, zero_mul]
+    · simp only [hg_def, hc_def, hmem, ite_false, map_zero, Pi.zero_apply]
+  -- The span containment `hcoord`: a row at an edge lies in the rigidity rows (at any hinges),
+  -- so the span is contained and the coannihilator reversed.
   have hsub : ∀ q, Submodule.span K (Set.range (g q)) ≤ Submodule.span K (F q).rigidityRows := by
     intro q
     rw [Submodule.span_le, hg_def]
     rintro _ ⟨⟨e', t₁, t₂⟩, rfl⟩
-    apply Submodule.subset_span
-    refine ⟨e', (ends e').1, (ends e').2, ?_,
-      annihRow ((F q).supportExtensor e') t₁ t₂, ?_, rfl⟩
-    · rw [hF]; exact hends e'
-    · rw [BodyHingeFramework.hingeRowBlock_apply, Submodule.mem_dualAnnihilator]
+    by_cases hmem : e' ∈ E(G)
+    · simp only [hmem, ite_true]
+      apply Submodule.subset_span
+      refine ⟨e', (ends e').1, (ends e').2, hends e' hmem,
+        annihRow ((F q).supportExtensor e') t₁ t₂, ?_, rfl⟩
+      rw [BodyHingeFramework.hingeRowBlock_apply, Submodule.mem_dualAnnihilator]
       intro x hx
       rw [Submodule.mem_span_singleton] at hx
       obtain ⟨r, rfl⟩ := hx
       rw [map_smul, annihRow_apply_self, smul_zero]
+    · simp only [hmem, ite_false]
+      exact Submodule.zero_mem _
   have hcoord : ∀ q, (F q).infinitesimalMotions
       ≤ (Submodule.span K (Set.range (g q))).dualCoannihilator := by
     intro q
     rw [(F q).infinitesimalMotions_eq_dualCoannihilator]
     exact Submodule.dualCoannihilator_anti (hsub q)
-  exact exists_good_realization_reindex e F g c φ hg hcoord hindep
+  -- On `s`, at edges of `G`, the family is the given rows.
+  have hindep' : LinearIndependent K (fun i : s => g q₀ i) := by
+    have : (fun i : s => g q₀ i) = fun i : s => (F q₀).panelRow ends i :=
+      funext fun i => by simp only [hg_def, hs i i.2, ite_true]
+    rw [this]; exact hindep
+  exact exists_good_realization_reindex e F g c φ hg hcoord hindep'
 
-/-- **Independent rows bound the motions** (`lem:relative-device-count`): if `ends` gives every edge
-label a link of `G`, `V(G)` is nonempty, and at the normals `q₀` some `m ≥ D(|V(G)| − 1)` rows
-`panelRow ends i` of `ofNormals G ends q₀` are linearly independent (`hindep`, `hcard`), there are
-normals `q` with `dim Z(G,q) ≤ D(|V(G)ᶜ| + 1)`. It takes `q` from `exists_good_realization_ofParam`
-and substitutes `|α| = |V(G)| + |V(G)ᶜ|` (`Set.ncard_add_ncard_compl`). Only
-`hasFullRankRealization_of_independent_panelRow` uses it. -/
+/-- **Independent rows bound the motions** (`lem:relative-device-count`): if `ends` records the
+links of `G`, `V(G)` is nonempty, and at the normals `q₀` some `m ≥ D(|V(G)| − 1)` rows
+`panelRow ends i` of `ofNormals G ends q₀` at edges of `G` are linearly independent (`hs`,
+`hindep`, `hcard`), there are normals `q` with `dim Z(G,q) ≤ D(|V(G)ᶜ| + 1)`. It takes `q` from
+`exists_good_realization_ofParam` and substitutes `|α| = |V(G)| + |V(G)ᶜ|`
+(`Set.ncard_add_ncard_compl`). Only `hasFullRankRealization_of_independent_panelRow` uses it. -/
 theorem PanelHingeFramework.exists_relative_full_count_ofParam [Infinite K] [Finite α]
     (G : Graph α β) (ends : β → α × α) [Finite β]
-    (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2) (hne : V(G).Nonempty)
+    (hends : Graph.RecordsLinks G ends) (hne : V(G).Nonempty)
     {q₀ : α × Fin (k + 2) → K}
     {s : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)}
+    (hs : ∀ i ∈ s, i.1 ∈ E(G))
     (hindep : LinearIndependent K
       (fun i : s => (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.panelRow ends i))
     (hcard : screwDim k * (V(G).ncard - 1) ≤ Nat.card s) :
@@ -209,7 +226,7 @@ theorem PanelHingeFramework.exists_relative_full_count_ofParam [Infinite K] [Fin
         (PanelHingeFramework.ofNormals G ends q).toBodyHinge.infinitesimalMotions
         ≤ screwDim k * ((V(G))ᶜ.ncard + 1) := by
   have : Fintype α := Fintype.ofFinite α
-  obtain ⟨q, hq⟩ := PanelHingeFramework.exists_good_realization_ofParam G ends hends hindep
+  obtain ⟨q, hq⟩ := PanelHingeFramework.exists_good_realization_ofParam G ends hends hs hindep
   refine ⟨q, ?_⟩
   -- `1 ≤ |V(G)|` since `V(G)` is nonempty.
   have h1 : 1 ≤ V(G).ncard := (Set.ncard_pos (Set.toFinite _)).2 hne
@@ -224,21 +241,22 @@ theorem PanelHingeFramework.exists_relative_full_count_ofParam [Infinite K] [Fin
   omega
 
 /-- **A rigid realization from independent rows** (`lem:realization-of-independent-rows`): under the
-hypotheses of `exists_relative_full_count_ofParam`, `G` has a full-rank realization: at the normals
-`q` of that lemma, `ofNormals G ends q` is infinitesimally rigid on `V(G)`
-(`isInfinitesimallyRigidOn_vertexSet_of_finrank_le`). No declaration uses it. -/
+hypotheses of `exists_relative_full_count_ofParam`, the rows at edges of `G`, `G` has a full-rank
+realization: at the normals `q` of that lemma, `ofNormals G ends q` is infinitesimally rigid on
+`V(G)` (`isInfinitesimallyRigidOn_vertexSet_of_finrank_le`). No declaration uses it. -/
 theorem PanelHingeFramework.hasFullRankRealization_of_independent_panelRow
     [Infinite K] [Finite α] [Finite β]
     (G : Graph α β) (ends : β → α × α)
-    (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2) (hne : V(G).Nonempty)
+    (hends : Graph.RecordsLinks G ends) (hne : V(G).Nonempty)
     {q₀ : α × Fin (k + 2) → K}
     {s : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)}
+    (hs : ∀ i ∈ s, i.1 ∈ E(G))
     (hindep : LinearIndependent K
       (fun i : s => (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.panelRow ends i))
     (hcard : screwDim k * (V(G).ncard - 1) ≤ Nat.card s) :
     PanelHingeFramework.HasFullRankRealization K k G := by
   obtain ⟨q, hq⟩ :=
-    PanelHingeFramework.exists_relative_full_count_ofParam G ends hends hne hindep hcard
+    PanelHingeFramework.exists_relative_full_count_ofParam G ends hends hne hs hindep hcard
   refine ⟨PanelHingeFramework.ofNormals G ends q,
     PanelHingeFramework.ofNormals_graph G ends q, ?_⟩
   have hG : (PanelHingeFramework.ofNormals G ends q).toBodyHinge.graph = G := rfl
@@ -377,8 +395,8 @@ and of the lemmas that use it): if `V(G)` is nonempty and every motion is consta
 `rank R(G,p) = D(|V(G)| − 1)`. The rank is `D|α| − dim Z(G,p)`
 (`finrank_span_rigidityRows_add_finrank_infinitesimalMotions`), and `dim Z(G,p) = D(|V(G)ᶜ| + 1)`
 (`finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet`). No condition on the hinges
-is needed; the rows `panelRow` span the row space only at nondegenerate hinges
-(`span_panelRow_eq_rigidityRows`). -/
+is needed; the rows `panelRow` at the links span the row space only at nondegenerate hinges
+(`span_panelRow_linking_eq_rigidityRows`). -/
 theorem BodyHingeFramework.finrank_span_rigidityRows_of_rigidOn
     [Finite α] (F : BodyHingeFramework K k α β) (hnev : F.graph.vertexSet.Nonempty)
     (hrig : F.IsInfinitesimallyRigidOn F.graph.vertexSet) :
@@ -487,66 +505,6 @@ theorem finrank_span_rigidityRows_of_single_edge [Finite α] [Finite β] {m : �
 
 /-! ## Independent rows from rigidity or from a bound on the rank -/
 
-/-- **Independent rows of a framework rigid on `V(G)`** (`lem:case-II-placement-old-rows-extract`,
-its second claim): if `ends` gives every edge label a link of `G` (`hends`), every hinge is
-nondegenerate (`hne`, at every label), `V(G)` is nonempty and every motion is constant on `V(G)`,
-then some `D(|V(G)| − 1)` rows `panelRow ends i` are linearly independent. The rows span the row
-space (`span_panelRow_eq_rigidityRows`), of dimension `D(|V(G)| − 1)`
-(`finrank_span_rigidityRows_of_rigidOn`), and `Submodule.exists_fun_fin_finrank_span_eq` picks a
-basis among them; their indices form the set `s`.
-
-A star forest gives fewer rows: `exists_independent_rigidityRows_of_starForest` gives `D − 1` at
-each of its edges, at most `(D − 1)(|V| − 1)` in all, fewer than `D(|V| − 1)` when `|V| ≥ 2`. No
-declaration uses this lemma: `exists_independent_panelRow_subfamily_of_rigidOn_linking` is the form
-the proofs use, which asks `hends` and `hne` only at links. -/
-theorem BodyHingeFramework.exists_independent_panelRow_subfamily_of_rigidOn
-    [Finite α] [Finite β] (F : BodyHingeFramework K k α β) {ends : β → α × α}
-    (hends : ∀ e, F.graph.IsLink e (ends e).1 (ends e).2)
-    (hne : ∀ e, F.supportExtensor e ≠ 0)
-    (hnev : F.graph.vertexSet.Nonempty)
-    (hrig : F.IsInfinitesimallyRigidOn F.graph.vertexSet) :
-    ∃ s : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
-      Nat.card s = screwDim k * (F.graph.vertexSet.ncard - 1) ∧
-      LinearIndependent K (fun i : s => F.panelRow ends (i : β × _ × _)) := by
-  classical
-  have : Fintype α := Fintype.ofFinite α
-  set T := Set.range (F.panelRow ends) with hT
-  have : Module.Finite K (Submodule.span K T) :=
-    Module.Finite.span_of_finite K (Set.finite_range _)
-  -- At nondegenerate hinges the panel rows span the rigidity rows
-  -- (`span_panelRow_eq_rigidityRows`), whose span has dimension `D(|V| − 1)`
-  -- (`finrank_span_rigidityRows_of_rigidOn`).
-  have hfin : Module.finrank K (Submodule.span K T)
-      = screwDim k * (F.graph.vertexSet.ncard - 1) := by
-    rw [hT, F.span_panelRow_eq_rigidityRows hends hne]
-    exact F.finrank_span_rigidityRows_of_rigidOn hnev hrig
-  -- Extract a `Fin (D(|V| − 1))`-indexed independent subfamily of *actual* panel rows.
-  obtain ⟨f, hfmem, hfspan, hfindep⟩ := Submodule.exists_fun_fin_finrank_span_eq K T
-  choose idx hidx using hfmem
-  -- Re-index each chosen row by its `(edge, ⋀^k-pair)`; injective since the rows are independent.
-  set j : Fin (Module.finrank K (Submodule.span K T))
-      → (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k) :=
-    fun i => idx i with hj
-  have hjinj : Function.Injective j := by
-    intro a b hab
-    rw [hj] at hab
-    simp only at hab
-    have : f a = f b := by rw [← hidx a, ← hidx b, hab]
-    exact hfindep.injective this
-  refine ⟨Set.range j, ?_, ?_⟩
-  · simp only [Nat.card_range_of_injective hjinj, Nat.card_eq_fintype_card, Fintype.card_fin, hfin]
-  · -- The `range j`-subfamily of `panelRow` is `f` reindexed across `Equiv.ofInjective j`.
-    have hreindex : (fun i : Set.range j => F.panelRow ends (i : β × _ × _))
-        ∘ (Equiv.ofInjective j hjinj) = f := by
-      funext a
-      simp only [Function.comp_apply, Equiv.ofInjective_apply]
-      rw [hj]
-      exact hidx a
-    have hindep2 :=
-      hfindep.comp (Equiv.ofInjective j hjinj).symm (Equiv.ofInjective j hjinj).symm.injective
-    rw [← hreindex, Function.comp_assoc, Equiv.self_comp_symm, Function.comp_id] at hindep2
-    exact hindep2
-
 /-- **Independent rows from a bound on the rank** (`lem:independent-rows-of-rank`): if `ends` gives
 every link of `G` its ends (`hends`), the hinge at every link is nondegenerate (`hne`) and
 `N ≤ rank R(G,p)`, then some `N` rows `panelRow ends i` at links of `G` are linearly independent.
@@ -606,12 +564,16 @@ theorem BodyHingeFramework.exists_independent_panelRow_subfamily_of_le_finrank
     rw [← hreindex, Function.comp_assoc, Equiv.self_comp_symm, Function.comp_id] at hindep2
     exact hindep2
 
-/-- **Independent rows at links of a framework rigid on `V(G)`** (a step of
+/-- **Independent rows at links of a framework rigid on `V(G)`**
+(`lem:case-II-placement-old-rows-extract`, its second claim; a step of
 `lem:generic-realization-of-rigid`, `lem:claim-6-4`, `lem:case-II-realization-placement` and
-`lem:case-I-realization-h65`): `exists_independent_panelRow_subfamily_of_rigidOn` with `hends` and
-`hne` asked only at links: some `D(|V(G)| − 1)` rows at links of `G` are linearly independent. It is
+`lem:case-I-realization-h65`): if `ends` records the links of `G` (`hends`), the hinge at every link
+is nondegenerate (`hne`), `V(G)` is nonempty and every motion is constant on `V(G)`, then some
+`D(|V(G)| − 1)` rows at links of `G` are linearly independent. It is
 `exists_independent_panelRow_subfamily_of_le_finrank` at `N = D(|V(G)| − 1)`, the rank of
-`finrank_span_rigidityRows_of_rigidOn`. -/
+`finrank_span_rigidityRows_of_rigidOn`. A star forest gives fewer rows:
+`exists_independent_rigidityRows_of_starForest` gives `D − 1` at each of its edges, at most
+`(D − 1)(|V| − 1)` in all, fewer than `D(|V| − 1)` when `|V| ≥ 2`. -/
 theorem BodyHingeFramework.exists_independent_panelRow_subfamily_of_rigidOn_linking
     [Finite α] [Finite β] (F : BodyHingeFramework K k α β) {ends : β → α × α}
     (hends : Graph.RecordsLinks F.graph ends)

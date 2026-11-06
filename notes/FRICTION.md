@@ -110,6 +110,21 @@ moment you resolve the entry) is what makes the sweep a pure
 to be re-derived by re-reading entries later.
 
 ## Open
+### [idiom] A total-form selector hypothesis is load-bearing when a row family ranges over every label; mask the rows to `0` off `E(G)`
+- **Where it bit:** ARREARS task 19: `exists_good_realization_ofParam`, its two callers
+  (`GenericityDevice.lean`) and `span_panelRow_eq_rigidityRows` (`Pinning.lean`, now deleted) took
+  `hends : ∀ e, G.IsLink e (ends e).1 (ends e).2`. With `Graph.RecordsLinks G ends` in its place all
+  four are false: the family `panelRow ends` is indexed by every label, and at a label off `E(G)`
+  with ends `(u, v)`, `u ≠ v`, and a nonzero hinge, its rows lie outside the row space (a recon's
+  kernel-checked counterexamples, `k = 1`, a graph with no edges).
+- **Friction:** the device's `hsub` (every row of the family lies in the rigidity rows) used
+  `hends e'` at an arbitrary label, so the "stronger form" was the proof's only source of that step.
+- **Fix:** ask the rows of `s` to be at edges (`hs : ∀ i ∈ s, i.1 ∈ E(G)`) and run
+  `exists_good_realization_reindex` on the family masked to `0` off `E(G)`
+  (`fun q i => if i.1 ∈ E(G) then … else 0`, its coordinate polynomials likewise): a zero row lies
+  in every span, and on `s` the family is the given one, so no reindexing to a subtype. Before
+  weakening a hypothesis, check every index the proof quantifies over.
+- **Status:** idiom.
 ### [idiom] Mathlib's `Graph/Maps.lean` cannot be imported beside the `Matroid` package's `Graph/Map.lean`; `IsLink.of_le` is the package's
 - **Where it bit:** ARREARS task 12: the mirror `Mathlib/Combinatorics/Graph/RecordsLinks.lean`,
   meant to import only mathlib's `Graph` files, first imported `Mathlib.Combinatorics.Graph.Maps`

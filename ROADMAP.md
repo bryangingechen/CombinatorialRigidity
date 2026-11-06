@@ -1440,7 +1440,8 @@ research note of its own, `notes/Strata.md`, which holds PENCIL-D's evidence.
   left: the blueprint's dependency-graph debt (HOMES's five edges and twelve older missing ones),
   the friction log's archive sweep, the splits of `Deficiency.lean`, `RigidityMatrix/Basic.lean`,
   `Meet.lean` and `PanelLayer.lean`, and, at the PI's choice, `RecordsLinks` moved to `Graph` with
-  the link hypotheses restated in its terms (equivalent restatements, no main result's statement).
+  the link hypotheses restated in its terms (equivalent restatements, but for three hypotheses
+  weakened and two lemmas deleted at the PI's word; no main result's statement).
   **Next:** `notes/Phase42-arrears.md`'s **Status**; then ORIGAMI's open, with the PI.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole

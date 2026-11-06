@@ -98,9 +98,8 @@ theorem RecordsLinks.of_isLink_imp (h : RecordsLinks G ends)
   · rw [h1, h2]; exact he.symm
 
 /-- **The total form gives the condition** (`fmlnote:panel-hinge-nondegenerate`): if every label `e`
-links in `G` the two bodies that `ends` gives it, then `ends` records the links of `G`. This is the
-form of the hypothesis `hends` of `exists_good_realization_ofParam`. It asks every label to be an
-edge of `G`, which the condition does not. -/
+links in `G` the two bodies that `ends` gives it, then `ends` records the links of `G`. The total
+form asks every label to be an edge of `G`, which the condition does not. -/
 theorem RecordsLinks.of_forall (h : ∀ e, G.IsLink e (ends e).1 (ends e).2) :
     RecordsLinks G ends :=
   fun e _ => h e

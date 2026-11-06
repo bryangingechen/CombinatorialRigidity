@@ -17,9 +17,9 @@ and Tanigawa 2011, *A proof of the molecular conjecture*, Discrete Comput. Geom.
 presented in `sec:molecular-algebraic-induction`. The file proves:
 
 * the rows `panelRow` of `R(G,p)`, indexed by an edge and a pair of coordinates, the forms of
-  `lem:rows-polynomial-in-normals`: they span the row space where every hinge is nondegenerate, and
-  `D − 1` of them at a nondegenerate hinge between two distinct bodies are linearly independent
-  (`lem:case-II-placement-new-rows`);
+  `lem:rows-polynomial-in-normals`: those at the links span the row space where the hinges at the
+  links are nondegenerate, and `D − 1` of them at a nondegenerate hinge between two distinct bodies
+  are linearly independent (`lem:case-II-placement-new-rows`);
 * the predicate `RankHypothesis`, `dim Z(G,p) = D + k'`, the form of the target rank in
   `rem:rank-hypothesis-relative`: at `k' = 0` it is infinitesimal rigidity
   (`lem:trivial-motions-rank-bound`), and it reads off the motions that vanish at one body
@@ -55,67 +55,14 @@ variable {α β : Type*}
 `lem:rows-polynomial-in-normals`): for an endpoint selector `ends : β → α × α`, the row at
 `(e, t₁, t₂)` is `hingeRow u v (annihRow C t₁ t₂)`, where `(u, v) = ends e` and `C = C(p(e))`: the
 form `annihRow C t₁ t₂`, which vanishes at `C`, applied to the relative screw `S u − S v`. If the
-selector gives every edge label a link of `F.graph` and every hinge is nondegenerate, these rows
-span the row space (`span_panelRow_eq_rigidityRows`). For a panel-hinge framework their coordinates
-are, up to sign at the columns of `u` and `v`, the values of the polynomials `annihRowPoly` in the
-normals (`annihRowPoly_eval`). -/
+selector records the links of `F.graph` and the hinges at the links are nondegenerate, the rows at
+the links span the row space (`span_panelRow_linking_eq_rigidityRows`). For a panel-hinge framework
+their coordinates are, up to sign at the columns of `u` and `v`, the values of the polynomials
+`annihRowPoly` in the normals (`annihRowPoly_eval`). -/
 noncomputable def panelRow (F : BodyHingeFramework K k α β) (ends : β → α × α)
     (i : β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k) :
     Module.Dual K (α → ScrewSpace K k) :=
   hingeRow (ends i.1).1 (ends i.1).2 (annihRow (F.supportExtensor i.1) i.2.1 i.2.2)
-
-/-- **The panel rows span the row space** (a step of `lem:case-II-placement-old-rows-extract`; the
-spanning of `lem:rows-polynomial-in-normals`): if the selector gives every edge label a link of
-`F.graph` (`hends`) and every hinge is nondegenerate (`hne`), the rows `F.panelRow ends` span the
-same space as `F.rigidityRows`. Each form `annihRow C t₁ t₂` vanishes at `C`, so it lies in the
-hinge-row block `(span {C})^⊥` and its row `hingeRow` is a row of `R(G,p)`. Conversely, for `C ≠ 0`
-these forms span the block (`span_annihRow_eq_dualAnnihilator`), and a row `hingeRow u v r` at an
-edge `e` has `(u, v) = ends e` or its reverse (`IsLink.eq_and_eq_or_eq_and_eq`), where
-`hingeRow v u r = hingeRow u v (-r)`. With `infinitesimalMotions_eq_dualCoannihilator`, `Z(G,p)` is
-then the space on which every panel row vanishes. -/
-theorem span_panelRow_eq_rigidityRows (F : BodyHingeFramework K k α β) {ends : β → α × α}
-    (hends : ∀ e, F.graph.IsLink e (ends e).1 (ends e).2)
-    (hne : ∀ e, F.supportExtensor e ≠ 0) :
-    Submodule.span K (Set.range (F.panelRow ends)) = Submodule.span K F.rigidityRows := by
-  apply le_antisymm
-  · rw [Submodule.span_le]
-    rintro _ ⟨⟨e, t₁, t₂⟩, rfl⟩
-    apply Submodule.subset_span
-    refine ⟨e, (ends e).1, (ends e).2, hends e, annihRow (F.supportExtensor e) t₁ t₂, ?_, rfl⟩
-    rw [hingeRowBlock_apply, ← span_annihRow_eq_dualAnnihilator _ (hne e)]
-    exact Submodule.subset_span ⟨(t₁, t₂), rfl⟩
-  · rw [Submodule.span_le]
-    rintro _ ⟨e, u, v, he, r, hr, rfl⟩
-    -- `r` lies in the span of `annihRow (C(p(e)))`, and `(u,v) = ends e` or its reverse.
-    rw [hingeRowBlock_apply, ← span_annihRow_eq_dualAnnihilator _ (hne e)] at hr
-    -- The map `r ↦ hingeRow u v r = (screwDiff u v).dualMap r` is linear in `r`; its image of the
-    -- annihRow span is the span of the (panelRow) images, by `Submodule.map_span`.
-    have hmap : ∀ w x : α,
-        (∀ t₁ t₂, hingeRow w x (annihRow (F.supportExtensor e) t₁ t₂)
-          ∈ Submodule.span K (Set.range (F.panelRow ends))) →
-        ∀ ρ ∈ Submodule.span K (Set.range (fun p :
-          Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k =>
-            annihRow (F.supportExtensor e) p.1 p.2)),
-        hingeRow w x ρ ∈ Submodule.span K (Set.range (F.panelRow ends)) := by
-      intro w x hbase ρ hρ
-      rw [hingeRow_eq_dualMap]
-      have himg : Submodule.map (screwDiff w x).dualMap (Submodule.span K (Set.range (fun p :
-            Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k =>
-              annihRow (F.supportExtensor e) p.1 p.2)))
-          ≤ Submodule.span K (Set.range (F.panelRow ends)) := by
-        rw [Submodule.map_span, Submodule.span_le]
-        rintro _ ⟨_, ⟨⟨t₁, t₂⟩, rfl⟩, rfl⟩
-        rw [← hingeRow_eq_dualMap]; exact hbase t₁ t₂
-      exact himg ⟨ρ, hρ, rfl⟩
-    -- The orientation of `e`: endpoints match `ends e` directly or are swapped.
-    rcases (hends e).eq_and_eq_or_eq_and_eq he with ⟨hu, hv⟩ | ⟨hu, hv⟩
-    · exact hmap u v (fun t₁ t₂ =>
-        Submodule.subset_span ⟨(e, t₁, t₂), by rw [panelRow, hu, hv]⟩) r hr
-    · -- swapped: `hingeRow u v r = hingeRow v u (-r)`, and `-r` is in the same span.
-      rw [hingeRow_swap]
-      exact hmap v u (fun t₁ t₂ =>
-        Submodule.subset_span ⟨(e, t₁, t₂), by rw [panelRow, hu, hv]⟩) (-r)
-        ((Submodule.neg_mem_iff _).2 hr)
 
 /-- **A panel row of a linking edge is a row of `R(G,p)`**: if the edge `i.1` links its selected
 ends `ends i.1` in `F.graph` (`hlink`), then `F.panelRow ends i ∈ F.rigidityRows`, as the form
@@ -165,13 +112,17 @@ theorem hingeRow_mem_rigidityRows (F : BodyHingeFramework K k α β)
   ⟨e, u, v, hlink, r, hr, rfl⟩
 
 /-- **The panel rows of the linking edges span the row space** (a step of
-`lem:independent-rows-of-rank`): if the selector records the links of `F.graph` (`hends`), and the
+`lem:independent-rows-of-rank` and `lem:case-II-placement-old-rows-extract`; the spanning of
+`lem:rows-polynomial-in-normals`): if the selector records the links of `F.graph` (`hends`), and the
 hinges of those edges are nondegenerate (`hne`), then the panel rows at the indices `(e, t₁, t₂)`
-with `e` linking `ends e` span the row space. Unlike `span_panelRow_eq_rigidityRows`, it asks
-nothing at an edge label that is not an edge of `F.graph`, such as an edge of a larger graph whose
-selector a framework on a subgraph keeps; the rows of `R(G,p)` come from the edges of `F.graph`
-alone. The proof is that of
-`span_panelRow_eq_rigidityRows`, at the linking edges. -/
+with `e` linking `ends e` span the row space. It asks nothing at an edge label that is not an edge
+of `F.graph`, such as an edge of a larger graph whose selector a framework on a subgraph keeps: the
+rows of `R(G,p)` come from the edges of `F.graph` alone, and a panel row at another label need not
+lie in their span. Each form `annihRow C t₁ t₂` vanishes at `C`, so it lies in the hinge-row block
+`(span {C})^⊥` and its row `hingeRow` is a row of `R(G,p)`. Conversely, for `C ≠ 0` these forms span
+the block (`span_annihRow_eq_dualAnnihilator`), and a row `hingeRow u v r` at an edge `e` has
+`(u, v) = ends e` or its reverse (`IsLink.eq_and_eq_or_eq_and_eq`), where
+`hingeRow v u r = hingeRow u v (-r)`. -/
 theorem span_panelRow_linking_eq_rigidityRows (F : BodyHingeFramework K k α β) {ends : β → α × α}
     (hends : Graph.RecordsLinks F.graph ends)
     (hne : ∀ e, F.graph.IsLink e (ends e).1 (ends e).2 → F.supportExtensor e ≠ 0) :

@@ -225,10 +225,11 @@ proof of KT Theorem~5.5 does not use, and what it uses instead.
   At $q$ the $m$ rows are again linearly independent, and they lie in
   the row space of $R(G,q)$ (\cref{lem:rows-polynomial-in-normals}), so
   $m + \dim Z(G,q) \le D|W|$. It then
-  substitutes $|W| = |V(G)| + |W \setminus V(G)|$, as above. It assumes
-  that every edge label is an edge of $G$, whose ends the endpoint
-  selector gives (\cref{fmlnote:panel-hinge-nondegenerate}). No main
-  result uses it.
+  substitutes $|W| = |V(G)| + |W \setminus V(G)|$, as above. It reads
+  the ends of each edge from the endpoint selector
+  (\cref{fmlnote:panel-hinge-nondegenerate}), and asks, as the statement
+  does, that the $m$ rows be rows at edges of $G$: a row at a label
+  outside $E(G)$ need not lie in the row space. No main result uses it.
 \end{fmlnote}
 
 \begin{lemma}[Rigidity on $V(G)$ from a bound on the motions]
@@ -287,8 +288,8 @@ proof of KT Theorem~5.5 does not use, and what it uses instead.
 
 \begin{fmlnote}
   The pinned theorem takes $q$ from the pinned theorem of
-  \cref{lem:relative-device-count}, under the same assumption on the
-  endpoint selector. Its conclusion is the first predicate of
+  \cref{lem:relative-device-count}, with the rows at edges of $G$ as
+  there. Its conclusion is the first predicate of
   \cref{fmlnote:generic-full-rank}. No main result uses it.
 \end{fmlnote}
 
@@ -418,7 +419,7 @@ of linear forms.
 
 \begin{lemma}[The motions and independent rows of a framework rigid on $V(G)$]
   \label{lem:case-II-placement-old-rows-extract}
-  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.exists_independent_panelRow_subfamily_of_rigidOn,
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.exists_independent_panelRow_subfamily_of_rigidOn_linking,
         CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet}
   \leanok
   \uses{def:rigidity-matrix, lem:rank-delete-vertex,
@@ -437,7 +438,7 @@ of linear forms.
 \begin{proof}
   \leanok
   \uses{lem:rank-delete-vertex, lem:relative-screw-split,
-        lem:rows-polynomial-in-normals}
+        lem:rows-polynomial-in-normals, lem:independent-rows-of-rank}
   Fix a body $w \in V(G)$. A motion that vanishes at $w$ vanishes on
   $V(G)$, as it is constant there. So
   $\operatorname{pinned}(w) = Z_{V(G)}(G,p)$, and by KT Lemma~5.1
@@ -449,15 +450,18 @@ of linear forms.
   $\operatorname{rank} R(G,p) = D|W| - \dim Z(G,p) = D(|V(G)| - 1)$. If
   the hinges are nondegenerate, the rows of $R(G,p)$ span its row space
   (the proof of \cref{lem:rows-polynomial-in-normals}), and
-  $D(|V(G)| - 1)$ of them are linearly independent.
+  \cref{lem:independent-rows-of-rank} with $N = D(|V(G)| - 1)$ gives
+  $D(|V(G)| - 1)$ of them that are linearly independent.
 \end{proof}
 
 \begin{fmlnote}
   The second pinned theorem is the dimension of $Z(G,p)$, and the first
   the independent rows. The first reads the ends of each edge from the
-  endpoint selector (\cref{fmlnote:panel-hinge-nondegenerate}), and it
-  asks both the selector's ends and a nondegenerate hinge at every edge
-  label, so that every label is an edge. No main result uses it.
+  endpoint selector (\cref{fmlnote:panel-hinge-nondegenerate}), asks for
+  a nondegenerate hinge only at the edges of $G$, and gives rows at edges
+  of $G$. It is a step of \cref{lem:generic-realization-of-rigid},
+  \cref{lem:claim-6-4}, \cref{lem:case-II-realization-placement} and
+  \cref{lem:case-I-realization-h65}.
 \end{fmlnote}
 
 \begin{lemma}[Rows shared by two frameworks]
