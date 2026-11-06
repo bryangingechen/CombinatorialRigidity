@@ -274,7 +274,7 @@ to be re-derived by re-reading entries later.
   a mirror under `Mathlib/LinearAlgebra/` (mirror candidate), at a cleanup round.
 - **Status:** open (42l's deferral, tracked in `notes/Phase42l.md` *Hand-off*).
 
-### [open] 42k build 2: the one-edge count and the two-body edge lemma sit in `Pencil/Grade/Arms.lean`
+### [mirror-candidate] 42k build 2: the one-edge count and the two-body edge lemma sit in `Pencil/Grade/Arms.lean`
 - **Where it bit:** Phase 42k, build 2 (`lem:pencil-d-base-case`), `Pencil/Grade/Arms.lean`:
   `finrank_span_rigidityRows_of_single_edge` (a framework on two bodies and one edge with a
   nonzero hinge has rank `D − 1`, its target) is about `BodyHingeFramework` rows and the
@@ -291,7 +291,10 @@ to be re-derived by re-reading entries later.
   with `hn : bodyBarDim n = screwDim k`, with the next commit that edits `GenericityDevice.lean`;
   the graph lemma to a mirror of `Mathlib/Combinatorics/Graph/Simple.lean` (mirror candidate), at a
   cleanup round.
-- **Status:** open (42k's deferral, `notes/Phase42k.md` *Hand-off*).
+- **Status:** mirror-candidate (retagged from `open` at HOMES task 10, which moved the count,
+  unchanged at `m + 1`, beside `finrank_span_rigidityRows_add_deficiency_le` in
+  `GenericityDevice.lean`; the round moves lemmas as they are, so no form at `k`). The graph lemma
+  stays in `Grade/Arms.lean`, its own bar unmet (`notes/Phase42-homes.md` *Scope*).
 
 ### [idiom] Three snags transcribing 42k's base and cut cases to `Grade/Arms.lean`
 - **Where it bit:** Phase 42k's recon spike of the base and cut cases (build 2).
@@ -321,7 +324,9 @@ to be re-derived by re-reading entries later.
   beside the pair form, which becomes its `j = 2` case (with FRICTION's `contragredientEquiv`, the
   other `Meet.lean` debt); `ExtensorInPanel.smul` beside `ExtensorInPanel`; `dotPerp_map_eq` beside
   `finrank_dotPerp`.
-- **Status:** open (42k's deferral, tracked in `notes/Phase42k.md` *Hand-off*).
+- **Status:** open, `dotPerp_map_eq` only (HOMES task 12). HOMES task 9 moved the graded lemma
+  into `Meet.lean`, with the pair form its `j = 2` case, and task 10 moved `ExtensorInPanel.smul`
+  beside `ExtensorInPanel` (`RigidityMatrix/Basic.lean`).
 
 ### [resolved] No two-vector `finrank_span_pair` or "independent partner in a subspace" lemma
 - **Where it bit:** Phase 42k, build 1, `Pencil/Grade/TwoPencil.lean`: `finrank_span_pair_eq_two`
@@ -609,7 +614,7 @@ to be re-derived by re-reading entries later.
   (`gradeEmbed h x j = x ⟨j, _⟩` for `↑j < k' + 1`) would shorten a second.
 - **Status:** idiom.
 
-### [open] `BodyHingeFramework.map` and the zero-hinge motion lemmas sit in `Pencil/Grade/Embedding.lean`, not beside `mapExtensor`
+### [resolved] `BodyHingeFramework.map` and the zero-hinge motion lemmas sit in `Pencil/Grade/Embedding.lean`, not beside `mapExtensor`
 - **Where it bit:** Phase 42c, `lem:screw-embedding-rank` (`Pencil/Grade/Embedding.lean`). The
   grade-changing `BodyHingeFramework.map` (hinges `φ C(p(e))`) belongs beside `mapExtensor` in
   `RigidityMatrix/Basic.lean`, `isInfinitesimalMotion_iff_of_supportExtensor_eq_zero` there too, and
@@ -624,7 +629,12 @@ to be re-derived by re-reading entries later.
   scratch under `open scoped Graph`, `linear_combination h1 - h2 - h3` hit TACTICS-QUIRKS § 48.
 - **Proposed fix:** move the three with the next commit that edits `Basic.lean` or
   `GenericityDevice.lean` for another reason.
-- **Status:** open (tracked under PD-CARRIER / PD-STEPS / PD-COVERAGE, `notes/Phase42-design.md` §3).
+- **Status:** resolved (HOMES task 10): `map`, `map_graph` and `map_supportExtensor` beside
+  `mapExtensor`, `isInfinitesimalMotion_iff_of_supportExtensor_eq_zero` after
+  `isInfinitesimalMotion_iff` (its proof needs it), both in `RigidityMatrix/Basic.lean`;
+  `finrank_infinitesimalMotions_of_supportExtensor_eq_zero` beside the rigid-on-`V(G)` count in
+  `GenericityDevice.lean`. `Embedding.lean` keeps its import of `GenericityDevice` for
+  rank–nullity.
 
 ### [open] No linear-equivalence form of `contragredient`; the `normalsJoin` map lemma sits outside `PanelLayer.lean`
 - **Where it bit:** Phase 42b, `lem:pencil-d-rank-collineation` (`Pencil/Grade/Collineation.lean`,
@@ -639,16 +649,16 @@ to be re-derived by re-reading entries later.
   exteriorPower.map_apply_ιMulti]; congr 1; funext i; fin_cases i <;> rfl`; mathlib's
   `LinearEquiv.smulOfUnit` has no `_apply` lemma (`smulOfNeZero` has one, so `M` uses it); and
   `LinearMap.det ↑g ≠ 0` for an equiv is `LinearEquiv.coe_det g ▸ (LinearEquiv.det g).ne_zero`.
-- **Proposed fix:** `contragredientEquiv` beside `contragredient` in `Meet.lean`, still open. The
-  `normalsJoin` half landed with Phase 42c's `lem:pencil-d-embedding-join` as
+- **Proposed fix:** `contragredientEquiv` beside `contragredient` in `Meet.lean`, landed with HOMES
+  task 9. The `normalsJoin` half landed with Phase 42c's `lem:pencil-d-embedding-join` as
   `exteriorPower_map_normalsJoin` (any linear `f : K^(k'+2) → K^(k+2)`), in
   `Pencil/Grade/Embedding.lean`. Its natural home is `PanelLayer.lean`, beside `normalsJoin`, where
   `Collineation.lean`'s inline proof above could call it; the move is deferred, since a new
   declaration there rebuilds most of `Molecular/`. The `k + 2 - 2` cast to `ScrewSpace K k` was no
   friction: `rfl` closes `det g • ⋀^(k+2-2) h (complementIso _ X) = det g • screwEquivOfLinearEquiv h (…)`.
-- **Status:** open (`contragredientEquiv`; and the move of `exteriorPower_map_normalsJoin` to
-  `PanelLayer.lean`, with the next commit that edits that file; both tracked under PD-CARRIER /
-  PD-STEPS / PD-COVERAGE, `notes/Phase42-design.md` §3).
+- **Status:** open, the move of `exteriorPower_map_normalsJoin` to `PanelLayer.lean` only (HOMES
+  task 11); `contragredientEquiv` landed with task 9, and `Collineation.lean`'s inline equivalence
+  calls it.
 
 ### [mirror-candidate] Grade-general extensor and panel lemmas live in `Pencil/Grade/Realization.lean`
 - **Where it bit:** Phase 42b, `lem:pencil-d-point-configuration`. The project had only grade-2 or
@@ -661,7 +671,9 @@ to be re-derived by re-reading entries later.
 - **Proposed fix:** move the first to `Meet.lean` and the second to `PanelLayer.lean`, each beside
   its grade-2 form, which then becomes a one-line corollary. Not done here: both files are upstream
   of most of the tree, and the commit stays on one file.
-- **Status:** open (mirror-candidate, project-internal).
+- **Status:** open (mirror-candidate, project-internal), `extensorInPanel_panelSupportExtensor_gen`
+  only (HOMES task 11): task 9 moved `span_range_eq_of_extensor_eq_grade` into `Meet.lean`, with
+  `span_range_eq_of_extensor_eq` its `j = 2` case.
 
 ### [idiom] `C ≠ 0 → C.val ≠ 0` for a screw is `ScrewSpace.val_injective.ne hC`
 - **Where it bit:** Phase 42b, `Pencil/Grade/Realization.lean` (three sites). `ScrewSpace` has no
@@ -682,7 +694,7 @@ to be re-derived by re-reading entries later.
   `exact annihRow_apply_self _ t₁ t₂` in the other orientation).
 - **Status:** idiom.
 
-### [open] `hingeRow` has no additive form through a third body
+### [resolved] `hingeRow` has no additive form through a third body
 - **Where it bit:** Phase 41e, item U12's spike (`case_II_placement_rank`, `CaseII.lean`, KT's column
   operation as a row operation): writing `hingeRow a b ρ` as `hingeRow a v ρ + hingeRow v b ρ` took
   `rw [← sub_add_cancel (hingeRow a b ρ) (hingeRow v b ρ), hingeRow_sub_hingeRow_eq a v b ρ]`,
@@ -691,7 +703,8 @@ to be re-derived by re-reading entries later.
 - **Proposed fix:** `hingeRow_add_hingeRow (u v w) (r) : hingeRow u v r + hingeRow v w r =
   hingeRow u w r` beside `hingeRow_sub_hingeRow_eq` in `RigidityMatrix/Basic.lean`; not added at
   U12, to keep the commit off a deep zone file.
-- **Status:** open.
+- **Status:** resolved (HOMES task 10): `hingeRow_add_hingeRow` as proposed, proved through
+  `hingeRow_sub_hingeRow_eq` and `sub_add_cancel`; `case_II_placement_rank`'s site is one `rw`.
 
 ### [idiom] A link of `G.mulTilde n` projects as `G.2 p.1 x y`: `.2` on it blocks dot notation
 - **Where it bit:** Phase 41e, item U3 (`circuit_diff_isSpanningTreePacking`, `Operations.lean`): `hy : (R.IsLink p x y)` for `R = G̃ ↾ _` unfolds under `rcases` to `p ∈ _ ∧ G.2 p.1 x y`, and `hy.2.left_eq_or_eq h` fails ("does not have the necessary form").

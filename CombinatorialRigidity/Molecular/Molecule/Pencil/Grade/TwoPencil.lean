@@ -48,21 +48,6 @@ namespace CombinatorialRigidity.Molecular
 
 variable {K : Type*} [Field K] {α β : Type*}
 
-/-! ## Helpers -/
-
-/-- **A multiple of a screw element in a panel lies in it**, for `k ≥ 1`: if `C` is the extensor of
-`k` vectors orthogonal to `n`, then `a • C` is that of the same vectors with the first scaled by `a`
-(`extensor_update_smul`), still orthogonal to `n`. -/
-theorem ExtensorInPanel.smul {k : ℕ} [NeZero k] {C : ScrewSpace K k} {n : Fin (k + 2) → K}
-    (h : ExtensorInPanel C n) (a : K) : ExtensorInPanel (a • C) n := by
-  classical
-  obtain ⟨p, hp, hperp⟩ := h
-  refine ⟨Function.update p 0 (a • p 0), ?_, fun i => ?_⟩
-  · rw [ScrewSpace.val_smul, hp, extensor_update_smul]
-  · rcases eq_or_ne i 0 with rfl | hi
-    · rw [Function.update_self, smul_dotProduct, hperp, smul_zero]
-    · rw [Function.update_of_ne hi]; exact hperp i
-
 /-! ## `lem:pencil-d-two-pencil-extension` -/
 
 /-- **The hinge of a two-dimensional subspace** (`C_B` of `lem:pencil-d-two-pencil-extension`): for

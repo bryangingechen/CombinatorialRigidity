@@ -140,44 +140,6 @@ theorem exists_plane_single_zero_one {k : ℕ} [NeZero k] :
   · simp only [f, Pi.basisFun_apply]; rfl
   · simp only [f, Pi.basisFun_apply]; rfl
 
-/-- **One edge between two bodies has rank `D − 1`** (a step of `lem:pencil-d-base-case`): if `G`
-has two bodies and one edge `e`, whose hinge is nonzero, the rows of the framework span a space of
-dimension `D(|V(G)| − 1) − def(G̃) = D − 1`, as the deficiency is `1`
-(`Graph.deficiency_of_single_edge`). The rows are at least the `D − 1` independent rows of `e`
-(`BodyHingeFramework.exists_independent_rigidityRows_of_edge`, `lem:edge-rows-independent`), and
-at most the target (`BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le`,
-`lem:relative-deficiency-rank-bound`). -/
-theorem finrank_span_rigidityRows_of_single_edge [Finite α] [Finite β] {m : ℕ} {G : Graph α β}
-    {F : BodyHingeFramework K (m + 1) α β} (hFg : F.graph = G) {x y : α} {e : β} (hxy : x ≠ y)
-    (hl : G.IsLink e x y) (hV : V(G) = {x, y}) (hE : E(G) = {e})
-    (hC : F.supportExtensor e ≠ 0) :
-    (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
-      = screwDim (m + 1) * ((V(G).ncard : ℤ) - 1) - G.deficiency (m + 2) := by
-  have hn : Graph.bodyBarDim (m + 2) = screwDim (m + 1) := Graph.bodyBarDim_add_one_eq_screwDim _
-  have hdef : G.deficiency (m + 2) = 1 := Graph.deficiency_of_single_edge hxy hl hV hE
-  have hne : V(F.graph).Nonempty := hFg ▸ ⟨x, hl.left_mem⟩
-  have hub := F.finrank_span_rigidityRows_add_deficiency_le (n := m + 2) hn hne
-    (fun e' u v h _ => by
-      have he' : e' ∈ E(G) := (hFg ▸ h).edge_mem
-      rw [hE, Set.mem_singleton_iff] at he'
-      exact he' ▸ hC)
-  rw [hFg] at hub
-  obtain ⟨r, hr_li, hr_mem⟩ :=
-    F.exists_independent_rigidityRows_of_edge (u := x) (v := y) hxy (hFg ▸ hl) hC
-  have hmono : screwDim (m + 1) - 1 ≤ Module.finrank K (Submodule.span K F.rigidityRows) := by
-    have hm := Submodule.finrank_mono
-      (Submodule.span_mono (Set.range_subset_iff.mpr hr_mem) :
-        Submodule.span K (Set.range r) ≤ Submodule.span K F.rigidityRows)
-    rwa [finrank_span_eq_card hr_li, Fintype.card_fin] at hm
-  have hD := three_le_screwDim (k := m + 1) (by omega)
-  have hV2 : V(G).ncard = 2 := by rw [hV, Set.ncard_pair hxy]
-  rw [hV2, hdef] at hub ⊢
-  zify at hmono
-  push_cast at hub ⊢
-  rw [Nat.cast_sub (by omega : 1 ≤ screwDim (m + 1))] at hmono
-  push_cast at hmono
-  linarith
-
 /-- **The edges of a loopless graph on at most two bodies join its two bodies** (a step of
 `lem:pencil-d-base-case`): if `G` is loopless, has at most two bodies and an edge, then it has
 exactly two bodies `x ≠ y`, and every edge links `x` and `y`. -/

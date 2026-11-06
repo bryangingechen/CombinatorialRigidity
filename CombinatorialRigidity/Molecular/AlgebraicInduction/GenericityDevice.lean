@@ -22,8 +22,10 @@ file proves:
 * that rows of one framework that are rows of another stay independent
   (`lem:case-II-placement-old-rows`);
 * the dimension of the motions and the rank of a framework rigid on `V(G)`
-  (`lem:case-II-placement-old-rows-extract`), and the bound on the rank by the deficiency
-  (`lem:relative-deficiency-rank-bound`, in `sec:molecular-deficiency-rank-bound`);
+  (`lem:case-II-placement-old-rows-extract`), and of the motions of one with zero hinges on a
+  connected graph (`lem:screw-embedding-rank`); the bound on the rank by the deficiency
+  (`lem:relative-deficiency-rank-bound`, in `sec:molecular-deficiency-rank-bound`), an equality
+  for one edge between two bodies (`lem:pencil-d-base-case`);
 * independent rows from a bound on the rank (`lem:independent-rows-of-rank`) and from rigidity
   (`lem:case-II-placement-old-rows-extract`);
 * a polynomial in the normals off whose zeros a bound on the rank holds (`lem:genericity-device`,
@@ -334,6 +336,19 @@ theorem BodyHingeFramework.finrank_infinitesimalMotions_of_isInfinitesimallyRigi
   rw [Nat.mul_succ]
   omega
 
+/-- **The dimension of the motions of a framework with zero hinges on a connected graph** (a step of
+`lem:screw-embedding-rank`): `D(|V(G)ᶜ| + 1)`. A motion takes equal values at the ends of every link
+(`isInfinitesimalMotion_iff_of_supportExtensor_eq_zero`), so it is constant on `V(G)`
+(`Graph.Preconnected.eq_of_forall_isLink`), and the count is
+`finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet`. -/
+theorem BodyHingeFramework.finrank_infinitesimalMotions_of_supportExtensor_eq_zero [Finite α]
+    (F : BodyHingeFramework K k α β) (hG : F.graph.Connected)
+    (h0 : ∀ e, F.supportExtensor e = 0) :
+    Module.finrank K F.infinitesimalMotions = screwDim k * ((F.graph.vertexSet)ᶜ.ncard + 1) :=
+  F.finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet hG.nonempty
+    fun S hS _ hu _ hv => hG.pre.eq_of_forall_isLink
+      ((F.isInfinitesimalMotion_iff_of_supportExtensor_eq_zero h0 S).mp hS) hu hv
+
 /-- **Rank–nullity for the rigidity matrix** (the identity `dim Z(G,p) = D|W| − rank R(G,p)` of
 `def:rigidity-matrix`): for a body-hinge framework on finitely many bodies `α`,
 `rank R(G,p) + dim Z(G,p) = D·|α|`, as `Z(G,p)` is the common kernel of the rows
@@ -427,6 +442,44 @@ theorem BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le
   have h1 : 1 ≤ F.graph.vertexSet.ncard := (Set.ncard_pos (Set.toFinite _)).2 hne
   rw [Nat.card_eq_fintype_card, ← Nat.card_eq_fintype_card] at hcompl
   zify [h1] at hcompl hhub hsplit ⊢
+  linarith
+
+/-- **One edge between two bodies has rank `D − 1`** (a step of `lem:pencil-d-base-case`): if `G`
+has two bodies and one edge `e`, whose hinge is nonzero, the rows of the framework span a space of
+dimension `D(|V(G)| − 1) − def(G̃) = D − 1`, as the deficiency is `1`
+(`Graph.deficiency_of_single_edge`). The rows are at least the `D − 1` independent rows of `e`
+(`BodyHingeFramework.exists_independent_rigidityRows_of_edge`, `lem:edge-rows-independent`), and
+at most the target (`BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le`,
+`lem:relative-deficiency-rank-bound`). -/
+theorem finrank_span_rigidityRows_of_single_edge [Finite α] [Finite β] {m : ℕ} {G : Graph α β}
+    {F : BodyHingeFramework K (m + 1) α β} (hFg : F.graph = G) {x y : α} {e : β} (hxy : x ≠ y)
+    (hl : G.IsLink e x y) (hV : V(G) = {x, y}) (hE : E(G) = {e})
+    (hC : F.supportExtensor e ≠ 0) :
+    (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
+      = screwDim (m + 1) * ((V(G).ncard : ℤ) - 1) - G.deficiency (m + 2) := by
+  have hn : Graph.bodyBarDim (m + 2) = screwDim (m + 1) := Graph.bodyBarDim_add_one_eq_screwDim _
+  have hdef : G.deficiency (m + 2) = 1 := Graph.deficiency_of_single_edge hxy hl hV hE
+  have hne : V(F.graph).Nonempty := hFg ▸ ⟨x, hl.left_mem⟩
+  have hub := F.finrank_span_rigidityRows_add_deficiency_le (n := m + 2) hn hne
+    (fun e' u v h _ => by
+      have he' : e' ∈ E(G) := (hFg ▸ h).edge_mem
+      rw [hE, Set.mem_singleton_iff] at he'
+      exact he' ▸ hC)
+  rw [hFg] at hub
+  obtain ⟨r, hr_li, hr_mem⟩ :=
+    F.exists_independent_rigidityRows_of_edge (u := x) (v := y) hxy (hFg ▸ hl) hC
+  have hmono : screwDim (m + 1) - 1 ≤ Module.finrank K (Submodule.span K F.rigidityRows) := by
+    have hm := Submodule.finrank_mono
+      (Submodule.span_mono (Set.range_subset_iff.mpr hr_mem) :
+        Submodule.span K (Set.range r) ≤ Submodule.span K F.rigidityRows)
+    rwa [finrank_span_eq_card hr_li, Fintype.card_fin] at hm
+  have hD := three_le_screwDim (k := m + 1) (by omega)
+  have hV2 : V(G).ncard = 2 := by rw [hV, Set.ncard_pair hxy]
+  rw [hV2, hdef] at hub ⊢
+  zify at hmono
+  push_cast at hub ⊢
+  rw [Nat.cast_sub (by omega : 1 ≤ screwDim (m + 1))] at hmono
+  push_cast at hmono
   linarith
 
 /-! ## Independent rows from rigidity or from a bound on the rank -/

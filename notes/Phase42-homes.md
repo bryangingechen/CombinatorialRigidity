@@ -6,11 +6,11 @@ CLEANUP-42 and ahead of ORIGAMI, in two parts: the friction log's docs and tooli
 2–4), then the lemmas Phase 42 left outside their home files, one task per home file, with the
 mirror lemmas that now meet their entries' own bar (tasks 5–18). No statement changes. Phase 42
 deferred the moves because a declaration added to these files rebuilds most of `Molecular/`
-mid-phase; ORIGAMI will not edit them, so they are cheapest now. Tasks 1–9 landed
-(the docs part, the tree-wide basics, `Deficiency.lean`, the linear-independence mirrors, the
-two-vector sweep): 62 actionable entries down to 33 (heading tags: open 23, mirror-candidate 8,
-process 2, blueprint 0).
-**Next concrete task:** task 10, `RigidityMatrix/Basic.lean` and `GenericityDevice.lean` (*Lemma checklist*).
+mid-phase; ORIGAMI will not edit them, so they are cheapest now. Tasks 1–10 landed
+(the docs part, the tree-wide basics, `Deficiency.lean`, the linear-independence mirrors and their
+sweep, `Meet.lean`, `RigidityMatrix/Basic.lean` with `GenericityDevice.lean`): 62 actionable
+entries down to 31 (heading tags: open 20, mirror-candidate 9, process 2, blueprint 0).
+**Next concrete task:** task 11, `PanelLayer.lean` (*Lemma checklist*).
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -26,33 +26,37 @@ public declaration's name, or delete a pinned declaration, does not land that ch
 
 ## Current state
 
-**Task 9 landed** (this commit; Lean): the two grade lemmas moved into `Meet.lean` unchanged:
-`exists_smul_extensor_eq_of_mem_span_range_grade` (from `Grade/TwoPencil.lean`) before
-`exists_smul_extensor_eq_of_mem_span_range`, and `span_range_eq_of_extensor_eq_grade` (from
-`Grade/Realization.lean`) before `span_range_eq_of_extensor_eq`. The two `j = 2` statements are
-byte for byte as before (sliced, not retyped); their proofs are now one line through the grade forms
-(about 60 lines gone). New `contragredientEquiv` and `@[simp] coe_contragredientEquiv` (by `rfl`)
-after `contragredient`; `Grade/Collineation.lean`'s inline equivalence is `contragredientEquiv g`,
-and `contragredient_toDual_pairing g` still fits the coerced `h` by defeq. Docstring repoints:
-`Realization.lean`'s module doc and the moved lemmas' "(`Meet.lean`)" tags. G4 not needed (only
-`span_range_eq_of_extensor_eq` is pinned, `meet.tex:579`, and it keeps its name and statement).
-Gates: G2 `lake build` (6249 jobs, 0 warnings or errors, 0 cache failures) and `lake lint`, G3
-`blueprint/lint.sh`, G1. **G5, the full list:** `#print axioms` of every declaration
-`formalization.yaml` names (44 of them): each is `[propext, Classical.choice, Quot.sound]`. The
-coordinator's run at `a654dd56` over the 21 main results agrees. No FRICTION entry is retagged
-(the three entries' `Meet.lean` parts resolve; the other parts stay with tasks 10 and 11).
+**Task 10 landed** (this commit; Lean), every statement sliced, not retyped. Into
+`RigidityMatrix/Basic.lean`: `ExtensorInPanel.smul` after `ExtensorInPanel`; `map`, `map_graph`
+and `map_supportExtensor` after `mapExtensor_supportExtensor` (the namespace's `variable {k : ℕ}`
+is now `{k' k : ℕ}`, so `map`'s binders keep their order);
+`isInfinitesimalMotion_iff_of_supportExtensor_eq_zero` after `isInfinitesimalMotion_iff`, not
+beside `mapExtensor`, as its proof calls that later lemma; new `hingeRow_add_hingeRow` after
+`hingeRow_sub_hingeRow_eq`, through it and `sub_add_cancel`, with `case_II_placement_rank`'s one
+`sub_add_cancel` site one `rw` (the copy in `notes/reconcile-formal/` is a record and stays). Into
+`GenericityDevice.lean`: `finrank_infinitesimalMotions_of_supportExtensor_eq_zero` after the
+rigid-on-`V(G)` count, and `finrank_span_rigidityRows_of_single_edge` (still at `m + 1`)
+after `finrank_span_rigidityRows_add_deficiency_le`. `Embedding.lean` keeps its `GenericityDevice`
+import (it calls rank–nullity and the zero-hinge count). Docstring repoints: the three files' module
+docs and `map`'s pointer to `screwEmbed`. Gates: G2 `lake build` (6249 jobs, 0 warnings or errors,
+0 cache failures) and `lake lint`; G3 `blueprint/lint.sh` (check 9's total 0); G4
+`blueprint/verify.sh`, `checkdecls` silent (`map` is pinned, `lem:screw-embedding-rank`); G1. G5:
+`#print axioms` of the 63 constants `formalization.yaml` names (its 21 `declaration:` entries and
+42 in its descriptions), each `[propext, Classical.choice, Quot.sound]`. FRICTION: two entries
+`[resolved]`, *42k build 2* retagged `[mirror-candidate]` (its graph lemma stays), and task 9's
+three stale status lines brought up to date.
 
-**Tasks 1-8** are in the checklist below, one line each. Details kept only where no line carries
-them: task 7's `exists_extend_linearIndependent` is `[Fintype ι]` with `Fintype.card ι ≤ finrank K M`
-over a division ring and takes no `FiniteDimensional` hypothesis (the bound forces it once `ι` is
+**Tasks 1-9** are in the checklist below, one line each. Details kept only where no line carries
+them: task 9's two `j = 2` statements are byte for byte as before, and
+`contragredient_toDual_pairing g` still fits the coerced `contragredientEquiv g` by defeq; task 7's
+`exists_extend_linearIndependent` is `[Fintype ι]` with `Fintype.card ι ≤ finrank K M` over a
+division ring and takes no `FiniteDimensional` hypothesis (the bound forces it once `ι` is
 nonempty); task 8 left `Pair.lean` (four), `Nonvacuity.lean` (two) and
 `MatroidIdentification.lean:125` in scalar form for its own sake, and its `Grade/LiftCases` sites
-(five) came in the corrective after `bb4c09d6` misfiled them; the heading-tag recount after task 8
-is open 23, mirror-candidate 8, process 2, blueprint 0 = 33 (62 at the open). Task 5 proved
-`Set.ncard_range_le` by `ncard_image_le` on `univ` (the mirror's import closure lacks
-`Finite.card_range_le`); task 6 dropped `Nonvacuity.lean`'s `hV` simp argument; task 4 moved 23
-`[resolved]` entries to `FRICTION-archive.md` (pointer sweep: none needed), and tasks 2-3 are
-tooling and index fixes.
+(five) came in the corrective after `bb4c09d6` misfiled them. Task 5 proved `Set.ncard_range_le` by
+`ncard_image_le` on `univ` (the mirror's import closure lacks `Finite.card_range_le`); task 6
+dropped `Nonvacuity.lean`'s `hV` simp argument; task 4 moved 23 `[resolved]` entries to
+`FRICTION-archive.md` (pointer sweep: none needed), and tasks 2-3 are tooling and index fixes.
 
 **Verified at the open** (2026-11-05, at `445d8069`):
 - **The review.** Of the 62 entries, about 30 can be fixed now (tasks 2–18). The rest are process
@@ -162,24 +166,16 @@ the entries it resolved.
 - [x] **7. The linear-independence mirrors** (`a293975a`; Lean). Four lemmas in the
   `LinearIndependent/Basic` mirror, the fused two-vector form among them. Resolves *No packaged
   "extend a `LinearIndepOn` partial family…"*, *No two-vector `finrank_span_pair`…*.
-- [x] **8. The two-vector sweep** (`bb4c09d6`, corrective this commit; Lean). 22 two-step sites in 9
+- [x] **8. The two-vector sweep** (`bb4c09d6`, corrective `a654dd56`; Lean). 22 two-step sites in 9
   pencil files through the fused form. Resolves *No `n`-ary (`n ≥ 3`) analogue of `LinearIndepOn.pair_iff`*.
-- [x] **9. `Meet.lean`** (this commit; Lean). The two grade lemmas moved in, the two `j = 2`
+- [x] **9. `Meet.lean`** (`2ae15d09`; Lean). The two grade lemmas moved in, the two `j = 2`
   lemmas re-proved through them (statements unchanged); `contragredientEquiv` and its one site.
   Resolves `Meet.lean`'s parts of *42k's home debts*, *No linear-equivalence form of
   `contragredient`…* and *Grade-general extensor and panel lemmas…*.
-- [ ] **10. `RigidityMatrix/Basic.lean` and `GenericityDevice.lean`** (Lean; sonnet). Into
-  `Basic.lean`: `ExtensorInPanel.smul` (from `Grade/TwoPencil.lean`) beside `ExtensorInPanel`;
-  `BodyHingeFramework.map`, `map_graph`, `map_supportExtensor` and
-  `isInfinitesimalMotion_iff_of_supportExtensor_eq_zero` (from `Grade/Embedding.lean`) beside
-  `mapExtensor`; a new `hingeRow_add_hingeRow (u v w) (r) : hingeRow u v r + hingeRow v w r =
-  hingeRow u w r` beside `hingeRow_sub_hingeRow_eq`, with any `sub_add_cancel` site through it.
-  Into `GenericityDevice.lean`: `finrank_span_rigidityRows_of_single_edge` (from `Grade/Arms.lean`)
-  beside `finrank_span_rigidityRows_add_deficiency_le`, and
-  `finrank_infinitesimalMotions_of_supportExtensor_eq_zero` (from `Grade/Embedding.lean`), whose
-  import of `GenericityDevice` goes if unused. Resolves *`BodyHingeFramework.map` and the
-  zero-hinge motion lemmas…*, *`hingeRow` has no additive form…*, the one-edge count of *42k build
-  2…*, `ExtensorInPanel.smul` of *42k's home debts*.
+- [x] **10. `RigidityMatrix/Basic.lean` and `GenericityDevice.lean`** (this commit; Lean). Five
+  moves into `Basic.lean`, two into `GenericityDevice.lean`, new `hingeRow_add_hingeRow` and its one
+  site. Resolves *`BodyHingeFramework.map` and the zero-hinge motion lemmas…*, *`hingeRow` has no
+  additive form…*, the count of *42k build 2…*, `ExtensorInPanel.smul` of *42k's home debts*.
 - [ ] **11. `PanelLayer.lean`** (Lean; sonnet). Beside `normalsJoin`: `normalsJoin_add_right`,
   `normalsJoin_smul_right`, `normalsJoin_zero_left`, `exists_linearMap_normalsJoin_eq` (from
   `Grade/Polygon.lean`); `normalsJoin_sub_left`, `normalsJoin_zero_right`, `normalsJoinLin`,
@@ -263,7 +259,7 @@ the entries it resolved.
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 10, `RigidityMatrix/Basic.lean` and `GenericityDevice.lean` (*Lemma checklist*).
+**Next concrete task:** task 11, `PanelLayer.lean` (*Lemma checklist*).
 After the round: ORIGAMI's open, with the PI (`notes/Origami.md`).
 
 ## Decisions made during this round
@@ -278,3 +274,8 @@ After the round: ORIGAMI's open, with the PI (`notes/Origami.md`).
 - **Moves are unchanged** (the open): where an entry proposed restating a lemma (the one-edge count
   at `k`, `panelSupportExtensor` defined through `complementScrew`), the round moves it as it is.
 - **The queue row is attended** (the open): the driver stops before it, and the PI may flip it.
+- **A move keeps the written statement; its implicit binders follow the new file's `variable`
+  order** (task 10). Keep the old order where a one-token `variable` edit does it (`{k' k : ℕ}` in
+  `Basic.lean`); otherwise confirm no caller passes the name with `@`
+  (`finrank_infinitesimalMotions_of_supportExtensor_eq_zero` now leads with `{k}`, as
+  `GenericityDevice.lean`'s declarations do).

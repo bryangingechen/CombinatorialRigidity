@@ -53,7 +53,7 @@ independent (`exists_independent_panelRow_subfamily_of_le_finrank`). At `q₀` t
 `±C` (`panelSupportExtensor_add_smul_right`) and that of `va` is `±t C`
 (`panelSupportExtensor_add_smul_left`). Every row of `G_v^{ab}` lies in the row space of `R(G, q₀)`:
 at an edge `e ≠ e₀` it is a row of `R(G, q₀)`, as `e` has there the same hinge up to sign, and at
-`ab` it is `hingeRow a v ρ + hingeRow v b ρ` (`hingeRow_sub_hingeRow_eq`), with `ρ` vanishing on `C`
+`ab` it is `hingeRow a v ρ + hingeRow v b ρ` (`hingeRow_add_hingeRow`), with `ρ` vanishing on `C`
 and so on the hinges of `va` and `vb`: KT's column operation (eqs. (6.14)–(6.16)) as a row
 operation. These rows vanish on the screw assignments that vanish off `v`, where some `D − 1` rows
 of `vb` stay linearly independent (`exists_independent_panelRow_subfamily_of_edge`,
@@ -202,9 +202,7 @@ theorem PanelHingeFramework.case_II_placement_rank [DecidableEq α] [Finite α] 
         (hrec' e₀ a b he₀ab) t₁ t₂, hq₀a, hq₀b]
     set ρ := annihRow (panelSupportExtensor n_a n_b) t₁ t₂ with hρ_def
     have hρC : ρ (panelSupportExtensor n_a n_b) = 0 := annihRow_apply_self _ t₁ t₂
-    -- `hingeRow a b ρ = hingeRow a v ρ + hingeRow v b ρ`
-    rw [← sub_add_cancel (BodyHingeFramework.hingeRow a b ρ) (BodyHingeFramework.hingeRow v b ρ),
-      BodyHingeFramework.hingeRow_sub_hingeRow_eq a v b ρ]
+    rw [← BodyHingeFramework.hingeRow_add_hingeRow a v b ρ]
     exact Submodule.add_mem _
       (Submodule.subset_span (FG.hingeRow_mem_rigidityRows hG_ea.symm (hblock_a ρ hρC)))
       (Submodule.subset_span (FG.hingeRow_mem_rigidityRows hG_eb (hblock_b ρ hρC)))

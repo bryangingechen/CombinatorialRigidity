@@ -47,7 +47,8 @@ No basis of the screw space is fixed. A row of `R(G,p)` is the linear form `S �
 screw assignments, for an edge with ends `u` and `v` and a linear form `r` on the screw space that
 vanishes at `C(e)`, and the rank of `R(G,p)` is the dimension of the span of the rows. The file also
 defines the transport of a framework along a linear automorphism of the screw space (`mapExtensor`,
-`thm:projective-invariance`) and the extensors that lie in a panel (`ExtensorInPanel`,
+`thm:projective-invariance`) and along any linear map of screw spaces, which may change the grade
+(`map`, `lem:screw-embedding-rank`), and the extensors that lie in a panel (`ExtensorInPanel`,
 `def:genuine-hinge-realization`). `Bricks.lean` proves the rank-addition lemmas
 (`sec:molecular-rigidity-matrix-blocks`).
 -/
@@ -233,6 +234,19 @@ def ExtensorInPanel {k : ℕ} (C : ScrewSpace K k) (n : Fin (k + 2) → K) : Pro
   ∃ p : Fin k → Fin (k + 2) → K,
     C.val = extensor p ∧ ∀ i, p i ⬝ᵥ n = 0
 
+/-- **A multiple of a screw element in a panel lies in it**, for `k ≥ 1`: if `C` is the extensor of
+`k` vectors orthogonal to `n`, then `a • C` is that of the same vectors with the first scaled by `a`
+(`extensor_update_smul`), still orthogonal to `n`. -/
+theorem ExtensorInPanel.smul {k : ℕ} [NeZero k] {C : ScrewSpace K k} {n : Fin (k + 2) → K}
+    (h : ExtensorInPanel C n) (a : K) : ExtensorInPanel (a • C) n := by
+  classical
+  obtain ⟨p, hp, hperp⟩ := h
+  refine ⟨Function.update p 0 (a • p 0), ?_, fun i => ?_⟩
+  · rw [ScrewSpace.val_smul, hp, extensor_update_smul]
+  · rcases eq_or_ne i 0 with rfl | hi
+    · rw [Function.update_self, smul_dotProduct, hperp, smul_zero]
+    · rw [Function.update_of_ne hi]; exact hperp i
+
 /-- **A nonzero screw in a panel is decomposable, with a nonzero leading vector**: if `C ≠ 0` lies
 in a panel (`ExtensorInPanel`), then `C` is the extensor of `k` vectors, the first of them nonzero.
 The vectors are those `ExtensorInPanel` gives; a nonzero extensor has linearly independent vectors
@@ -319,14 +333,15 @@ end RankArithmetic
 
 namespace BodyHingeFramework
 
-variable {k : ℕ} {α β : Type*}
+variable {k' k : ℕ} {α β : Type*}
 
 /-! ## The hinge constraint and the hinge-row block (`def:hinge-constraint`, `def:hinge-row-block`)
 
 The framework of a hinge assignment (`ofHinge`), the transport along an automorphism of the screw
-space (`mapExtensor`), the hinge-row block with its membership test (`mem_hingeRowBlock_iff`), and
-the hinge constraint `S u − S v ∈ span C(p(e))` with its form as the `D − 1` equations of the
-hinge-row block (`hingeConstraint_iff_hingeRowBlock`). -/
+space (`mapExtensor`) and along any linear map of screw spaces (`map`), the hinge-row block with
+its membership test (`mem_hingeRowBlock_iff`), and the hinge constraint `S u − S v ∈ span C(p(e))`
+with its form as the `D − 1` equations of the hinge-row block (`hingeConstraint_iff_hingeRowBlock`).
+-/
 
 /-- **The framework of a hinge assignment** (the affine hinges of `def:hinge-constraint`): each edge
 label `e` gets `k` points `hinge e` of `K^(k+1)`, and its supporting extensor is
@@ -370,6 +385,26 @@ theorem mapExtensor_graph (F : BodyHingeFramework K k α β)
 theorem mapExtensor_supportExtensor (F : BodyHingeFramework K k α β)
     (Λ : ScrewSpace K k ≃ₗ[K] ScrewSpace K k) (e : β) :
     (F.mapExtensor Λ).supportExtensor e = Λ (F.supportExtensor e) := rfl
+
+/-- **The framework mapped along a linear map of screw spaces** (`lem:screw-embedding-rank`): for a
+body-hinge framework `F` at grade `k'` and a linear map `φ : ScrewSpace K k' → ScrewSpace K k`, the
+framework at grade `k` on the same multigraph whose supporting extensor at each edge label `e` is
+`φ C(p(e))`. When `φ` is the screw embedding (`screwEmbed`, `Pencil/Grade/Embedding.lean`), a hinge
+of two panels goes to the hinge of the embedded panels (`screwEmbed_panelSupportExtensor`). Unlike
+`mapExtensor`, it may change the grade. -/
+def map (F : BodyHingeFramework K k' α β) (φ : ScrewSpace K k' →ₗ[K] ScrewSpace K k) :
+    BodyHingeFramework K k α β where
+  graph := F.graph
+  supportExtensor e := φ (F.supportExtensor e)
+
+@[simp]
+theorem map_graph (F : BodyHingeFramework K k' α β) (φ : ScrewSpace K k' →ₗ[K] ScrewSpace K k) :
+    (F.map φ).graph = F.graph := rfl
+
+@[simp]
+theorem map_supportExtensor (F : BodyHingeFramework K k' α β)
+    (φ : ScrewSpace K k' →ₗ[K] ScrewSpace K k) (e : β) :
+    (F.map φ).supportExtensor e = φ (F.supportExtensor e) := rfl
 
 /-- **The hinge constraint** at an edge label `e` with ends `u` and `v` (`def:hinge-constraint`; KT
 eq. (2.3), p. 653): a screw assignment `S : α → ScrewSpace K k` satisfies it if
@@ -525,6 +560,15 @@ theorem hingeRow_sub_hingeRow_eq (u v w : α) (r : Module.Dual K (ScrewSpace K k
     rw [LinearMap.sub_apply, hingeRow_apply, hingeRow_apply, hingeRow_apply, ← map_sub,
       sub_sub_sub_cancel_right]
 
+/-- **Two rows through a middle body add to a row** (`def:rigidity-matrix`; KT's column operation
+as a row operation, eqs. (6.14)–(6.16), p. 679): `hingeRow u v r + hingeRow v w r = hingeRow u w r`,
+as `(S u − S v) + (S v − S w) = S u − S w`, the sum form of `hingeRow_sub_hingeRow_eq`. In Case II
+the row of `ab` is the sum of the rows of `av` and `vb` with the same form
+(`PanelHingeFramework.case_II_placement_rank`, `lem:case-II-realization-placement`). -/
+theorem hingeRow_add_hingeRow (u v w : α) (r : Module.Dual K (ScrewSpace K k)) :
+    hingeRow (k := k) (α := α) u v r + hingeRow v w r = hingeRow u w r := by
+  rw [← hingeRow_sub_hingeRow_eq u v w r, sub_add_cancel]
+
 /-- **The forms of one edge are independent** (`lem:edge-rows-independent`, its claim for linear
 forms): for `u ≠ v` and linearly independent forms `r i` on the screw space, the forms
 `hingeRow u v (r i)` on screw assignments are linearly independent. `hingeRow u v` is the dual map
@@ -617,6 +661,15 @@ theorem isInfinitesimalMotion_iff (F : BodyHingeFramework K k α β) (S : α →
       ∀ e u v, F.graph.IsLink e u v →
         S u - S v ∈ Submodule.span K {F.supportExtensor e} :=
   Iff.rfl
+
+/-- **The motions of a framework with zero hinges** (a step of `lem:screw-embedding-rank`): if every
+supporting extensor is zero, a screw assignment is a motion exactly when it takes equal values at
+the two ends of every link, as the span of zero is zero. -/
+theorem isInfinitesimalMotion_iff_of_supportExtensor_eq_zero (F : BodyHingeFramework K k α β)
+    (h0 : ∀ e, F.supportExtensor e = 0) (S : α → ScrewSpace K k) :
+    F.IsInfinitesimalMotion S ↔ ∀ e u v, F.graph.IsLink e u v → S u = S v := by
+  simp only [isInfinitesimalMotion_iff, h0, Submodule.span_zero_singleton, Submodule.mem_bot,
+    sub_eq_zero]
 
 /-- **The space `Z(G,p)` of infinitesimal motions** (`def:rigidity-matrix`): the submodule of the
 screw assignments `α → ScrewSpace K k` that are infinitesimal motions (`IsInfinitesimalMotion`), the

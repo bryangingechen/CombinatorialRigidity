@@ -30,11 +30,14 @@ embedding passes through the complement isomorphisms as the panel support extens
 
 `lem:screw-embedding-rank`: a body-hinge framework `F` at grade `k'` maps along any injective
 linear map `φ` of screw spaces to the framework `F.map φ` at grade `k`, with the hinge `φ C(p(e))`
-at each edge `e`, and on a connected graph the rank grows by `(D − D′)(|V(G)| − 1)`. The motions
-of `F.map φ` are the sum of `φ ∘ Z(F)` and the assignments equal at the ends of every link, which
-are those of the framework with zero hinges; their intersection is `φ ∘ ·` of the same
-assignments at grade `k'`. Their dimensions, `D(|V(G)ᶜ| + 1)` and `D′(|V(G)ᶜ| + 1)`, count the
-bodies off `V(G)`, and rank–nullity at both grades cancels them.
+at each edge `e` (`BodyHingeFramework.map`, `RigidityMatrix/Basic.lean`), and on a connected graph
+the rank grows by `(D − D′)(|V(G)| − 1)`. The motions of `F.map φ` are the sum of `φ ∘ Z(F)` and
+the assignments equal at the ends of every link, which are those of the framework with zero hinges
+(`isInfinitesimalMotion_iff_of_supportExtensor_eq_zero`, `RigidityMatrix/Basic.lean`); their
+intersection is `φ ∘ ·` of the same assignments at grade `k'`. Their dimensions, `D(|V(G)ᶜ| + 1)`
+and `D′(|V(G)ᶜ| + 1)` (`finrank_infinitesimalMotions_of_supportExtensor_eq_zero`,
+`AlgebraicInduction/GenericityDevice.lean`), count the bodies off `V(G)`, and rank–nullity at both
+grades cancels them.
 
 `lem:pencil-d-embed-realization`: for `1 ≤ k' ≤ k`, a pencil realization at grade `k'`
 (`HasPencilPlaneRealization`) maps to one at grade `k`, with the hinges `φ C_e`, the normals `ι b_v`
@@ -49,8 +52,6 @@ or not, goes up at a fixed deficiency parameter.
 
 * `gradeEmbed`: the embedding `ι`, for `k' ≤ k`.
 * `screwEmbed`: the screw embedding `φ`.
-* `BodyHingeFramework.map`: the framework with the hinges `φ C(p(e))`, for a linear map `φ` of
-  screw spaces.
 
 ## Main results
 
@@ -204,48 +205,6 @@ theorem screwEmbed_panelSupportExtensor (h : k' ≤ k) (n₁ n₂ : Fin (k' + 2)
 namespace BodyHingeFramework
 
 variable {α β : Type*}
-
-/-- **The framework mapped along a linear map of screw spaces** (`lem:screw-embedding-rank`): for a
-body-hinge framework `F` at grade `k'` and a linear map `φ : ScrewSpace K k' → ScrewSpace K k`, the
-framework at grade `k` on the same multigraph whose supporting extensor at each edge label `e` is
-`φ C(p(e))`. When `φ` is the screw embedding (`screwEmbed`), a hinge of two panels goes to the hinge
-of the embedded panels (`screwEmbed_panelSupportExtensor`). Unlike `mapExtensor`, it may change the
-grade. -/
-def map (F : BodyHingeFramework K k' α β) (φ : ScrewSpace K k' →ₗ[K] ScrewSpace K k) :
-    BodyHingeFramework K k α β where
-  graph := F.graph
-  supportExtensor e := φ (F.supportExtensor e)
-
-@[simp]
-theorem map_graph (F : BodyHingeFramework K k' α β) (φ : ScrewSpace K k' →ₗ[K] ScrewSpace K k) :
-    (F.map φ).graph = F.graph := rfl
-
-@[simp]
-theorem map_supportExtensor (F : BodyHingeFramework K k' α β)
-    (φ : ScrewSpace K k' →ₗ[K] ScrewSpace K k) (e : β) :
-    (F.map φ).supportExtensor e = φ (F.supportExtensor e) := rfl
-
-/-- **The motions of a framework with zero hinges** (a step of `lem:screw-embedding-rank`): if every
-supporting extensor is zero, a screw assignment is a motion exactly when it takes equal values at
-the two ends of every link, as the span of zero is zero. -/
-theorem isInfinitesimalMotion_iff_of_supportExtensor_eq_zero (F : BodyHingeFramework K k α β)
-    (h0 : ∀ e, F.supportExtensor e = 0) (S : α → ScrewSpace K k) :
-    F.IsInfinitesimalMotion S ↔ ∀ e u v, F.graph.IsLink e u v → S u = S v := by
-  simp only [isInfinitesimalMotion_iff, h0, Submodule.span_zero_singleton, Submodule.mem_bot,
-    sub_eq_zero]
-
-/-- **The dimension of the motions of a framework with zero hinges on a connected graph** (a step of
-`lem:screw-embedding-rank`): `D(|V(G)ᶜ| + 1)`. A motion takes equal values at the ends of every link
-(`isInfinitesimalMotion_iff_of_supportExtensor_eq_zero`), so it is constant on `V(G)`
-(`Graph.Preconnected.eq_of_forall_isLink`), and the count is
-`finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet`. -/
-theorem finrank_infinitesimalMotions_of_supportExtensor_eq_zero [Finite α]
-    (F : BodyHingeFramework K k α β) (hG : F.graph.Connected)
-    (h0 : ∀ e, F.supportExtensor e = 0) :
-    Module.finrank K F.infinitesimalMotions = screwDim k * ((F.graph.vertexSet)ᶜ.ncard + 1) :=
-  F.finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet hG.nonempty
-    fun S hS _ hu _ hv => hG.pre.eq_of_forall_isLink
-      ((F.isInfinitesimalMotion_iff_of_supportExtensor_eq_zero h0 S).mp hS) hu hv
 
 /-- **The motions of the mapped framework** (`lem:screw-embedding-rank`, its motion count): for an
 injective linear map `φ` of screw spaces and a framework `F` on a connected graph,
