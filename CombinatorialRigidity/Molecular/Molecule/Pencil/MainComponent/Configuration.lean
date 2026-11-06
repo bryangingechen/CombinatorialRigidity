@@ -207,7 +207,7 @@ meet `panelSupportExtensor p_u p_v` of the two polar planes, which the polarity 
 takes the join `p_u ∧ p_v` to (`screwComplementIso_mk_extensor`, over every field). -/
 theorem ofNormals_toBodyHinge_eq_mapExtensor_pointJoinFramework (G : Graph α β)
     (ends : β → α × α) (p : α → Fin 4 → K)
-    {hlinks : PanelHingeFramework.RecordsLinks G ends} :
+    {hlinks : Graph.RecordsLinks G ends} :
     (PanelHingeFramework.ofNormals (k := 2) G ends (fun x => p x.1 x.2)).toBodyHinge
       = (pointJoinFramework G ends p).mapExtensor screwComplementIso := by
   have hsupp : (PanelHingeFramework.ofNormals (k := 2) G ends
@@ -270,7 +270,7 @@ of a link lies in `E(G)`, where the patch is the join at whatever `ends` names, 
 framework. -/
 theorem finrank_span_rigidityRows_pencilConfigFramework (G : Graph α β) (ends : β → α × α)
     (q : α × Fin 2 → K) (z : α → K)
-    {hlinks : PanelHingeFramework.RecordsLinks G ends} :
+    {hlinks : Graph.RecordsLinks G ends} :
     Module.finrank K (Submodule.span K (pencilConfigFramework G ends q z).rigidityRows)
       = Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 2) G ends
           (fun p => pencilConfigPoint q z p.1 p.2)).toBodyHinge.rigidityRows) := by

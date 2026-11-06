@@ -656,10 +656,10 @@ theorem finrank_ofNormals_ends {k : ℕ} {G : Graph α β} {ends ends' : β → 
         q).toBodyHinge.rigidityRows) := by
   set F₁ := (PanelHingeFramework.ofNormals (k := k) G ends q).toBodyHinge
   set F₂ := (PanelHingeFramework.ofNormals (k := k) G ends' q).toBodyHinge
-  have hr : PanelHingeFramework.RecordsLinks G ends :=
-    (PanelHingeFramework.recordsLinks_iff_forall_isLink).2 h
-  have hr' : PanelHingeFramework.RecordsLinks G ends' :=
-    (PanelHingeFramework.recordsLinks_iff_forall_isLink).2 h'
+  have hr : Graph.RecordsLinks G ends :=
+    (Graph.recordsLinks_iff_forall_isLink).2 h
+  have hr' : Graph.RecordsLinks G ends' :=
+    (Graph.recordsLinks_iff_forall_isLink).2 h'
   have hprop : ∀ e u v, F₁.graph.IsLink e u v →
       ∃ c' : K, c' ≠ 0 ∧ c' • F₁.supportExtensor e = F₂.supportExtensor e := by
     intro e u v he
@@ -982,8 +982,8 @@ theorem lift_transfer [Infinite K] [Finite α] [Finite β] {r : ℕ} {G : Graph 
         liftVec (bG s p.1) (fun i => ζc (i, p.1)) p.2 := fun p =>
       isPolyFun_liftVec (p := fun _ => bG s p.1) (u := fun ζc i => ζc (i, p.1))
         (fun j => isPolyFun_const _) (fun i => isPolyFun_apply (i, p.1)) p.2
-    have hrecH : PanelHingeFramework.RecordsLinks H ends :=
-      (PanelHingeFramework.recordsLinks_iff_forall_isLink).2 hlinksH
+    have hrecH : Graph.RecordsLinks H ends :=
+      (Graph.recordsLinks_iff_forall_isLink).2 hlinksH
     have hne₀ : ∀ e, H.IsLink e (ends e).1 (ends e).2 →
         (PanelHingeFramework.ofNormals (k := r + 1 + 1) H ends
           (fun p => liftNormal (bG s) (fun i => (lam i).1) p.1 p.2)

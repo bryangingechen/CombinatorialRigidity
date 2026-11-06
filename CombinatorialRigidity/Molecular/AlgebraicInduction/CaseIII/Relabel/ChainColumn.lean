@@ -529,7 +529,7 @@ theorem _root_.Graph.ChainData.chainData_freshEdge_slot_mem [DecidableEq α]
         (G.removeVertex (cd.vtx ⟨(i : ℕ), by omega⟩)) ends
           (cd.shiftSeedAdv q ((i : ℕ) - 1))).toBodyHinge.rigidityRows := by
   classical
-  have hG := PanelHingeFramework.RecordsLinks.of_pair hrec
+  have hG := Graph.RecordsLinks.of_pair hrec
   -- `i` as an element of `Fin cd.d`, for `shiftBodyListAsc_foldl_mem_span_rigidityRows`.
   let i' : Fin cd.d := ⟨(i : ℕ), hid⟩
   have hi'v : (i' : ℕ) = (i : ℕ) := rfl
@@ -621,7 +621,7 @@ theorem _root_.Graph.ChainData.chainData_freshEdge_perp_of_baseRedundancy
     -- `hingeRow v₀ v₂ ρ₀` as a combination of forms in the blocks of rows of
     -- `ofNormals (G − vᵢ) ends qρ`:
     (hlink : ∀ j, G.IsLink (ev j) (uv j) (vv j))
-    {hlinks : PanelHingeFramework.RecordsLinks (G.removeVertex (cd.vtx i)) ends}
+    {hlinks : Graph.RecordsLinks (G.removeVertex (cd.vtx i)) ends}
     (hrv : ∀ j, rv j ∈ (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i)) ends
       qρ).toBodyHinge.hingeRowBlock (ev j))
     (hcomb : (∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j))

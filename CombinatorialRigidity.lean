@@ -19,6 +19,7 @@ public import CombinatorialRigidity.LinearRigidityMatroid
 public import CombinatorialRigidity.Matroid.Constructions.Submodular
 public import CombinatorialRigidity.Matroid.Constructions.Union
 public import CombinatorialRigidity.Mathlib.Combinatorics.Graph.Delete
+public import CombinatorialRigidity.Mathlib.Combinatorics.Graph.RecordsLinks
 public import CombinatorialRigidity.Mathlib.Combinatorics.SimpleGraph.Acyclic
 public import CombinatorialRigidity.Mathlib.Combinatorics.SimpleGraph.Connectivity.Connected
 public import CombinatorialRigidity.Mathlib.Combinatorics.SimpleGraph.DeleteEdges

@@ -110,6 +110,21 @@ moment you resolve the entry) is what makes the sweep a pure
 to be re-derived by re-reading entries later.
 
 ## Open
+### [idiom] Mathlib's `Graph/Maps.lean` cannot be imported beside the `Matroid` package's `Graph/Map.lean`; `IsLink.of_le` is the package's
+- **Where it bit:** ARREARS task 12: the mirror `Mathlib/Combinatorics/Graph/RecordsLinks.lean`,
+  meant to import only mathlib's `Graph` files, first imported `Mathlib.Combinatorics.Graph.Maps`
+  for `RecordsLinks.map`.
+- **Friction:** (1) the mirror built alone, but `Operations.lean` importing it failed: `import
+  Mathlib.Combinatorics.Graph.Maps failed, environment already contains 'Graph.map_map' from
+  Matroid.Graph.Map`. Both files declare `Graph.map`; the tree's (through `Deficiency.lean`'s
+  `Matroid.Graph.Tree`) is the package's, with its `@[simps]` `Graph.map_isLink`. (2)
+  `he.of_le hle` failed in the mirror, "Invalid field notation" on `he : G'.2 x y z`: `IsLink.of_le`
+  is the package's (`Matroid/Graph/Subgraph/Basic.lean`), not mathlib's.
+- **Proposed fix:** a lemma about `Graph.map` lives in a project file whose import closure has the
+  package's `Graph/Map.lean` (`RecordsLinks.map` is in `Induction/Operations.lean`); a mirror proof
+  uses mathlib's `Graph.IsLink.mono (hHG : H ≤ G) (h : H.IsLink e x y)`, as `he.mono hle`.
+- **Status:** idiom.
+
 ### [idiom] No `Set.ncard` of a set of a sum type by its two preimages; three traps counting `K_{2,3}`'s edges
 - **Where it bit:** CLEANUP-42 round 4, task 8: `Nonvacuity.lean`'s private
   `ncard_eq_ncard_preimage_inl_add`, `k23_ncard_edgeSet_induce_le`, `k23_partitionDef_nonneg` and
@@ -505,18 +520,6 @@ to be re-derived by re-reading entries later.
   5) or RESTATE touches their declarations; the conversions then go. For the field under
   `Q.graph = G`: a lemma `PanelHingeFramework.recordsLinks_of_graph_eq (hQg : Q.graph = G) :
   RecordsLinks G Q.ends` and a `link_base_tac` branch that applies it with `hQg` in scope.
-- **Status:** open.
-
-### [open] `RecordsLinks` lives in `PanelHingeFramework`, and a body-hinge predicate reads it
-- **Where it bit:** Phase 41b, item 10a: `BodyHingeFramework.IsGenericHingePoints`
-  (`GenericLift/HingeGeneric.lean`) quantifies over the selectors `ends` with `RecordsLinks G ends`,
-  a condition on a graph and a selector that names no panel. The file opens
-  `PanelHingeFramework (RecordsLinks)`, and calls `PanelHingeFramework.recordsLinks_endsOf`.
-- **Friction:** a body-hinge file reaches into the panel carrier's namespace for a graph predicate,
-  and a reader looks for it there.
-- **Proposed fix:** move `RecordsLinks` and its lemmas to the namespace `Molecular` (or `Graph`),
-  with deprecated aliases, in a cleanup round (`notes/Phase41-design.md` §2, *Item 10's recon*,
-  "Not planned").
 - **Status:** open.
 
 
@@ -3483,6 +3486,26 @@ limitations. Worth a once-over so future agents don't re-litigate.
   sites, so a named lemma saves no line; the sites keep it.
 
 ## Mirrored
+
+### [mirrored] `Graph.RecordsLinks` — an endpoint selector that records the links of a multigraph (was `PanelHingeFramework.RecordsLinks`)
+- **Where it bit:** Phase 41b, item 10a: `BodyHingeFramework.IsGenericHingePoints`
+  (`GenericLift/HingeGeneric.lean`) quantifies over the selectors `ends` with `RecordsLinks G ends`,
+  a condition on a graph and a selector that names no panel. The file opens
+  `PanelHingeFramework (RecordsLinks)`, and calls `PanelHingeFramework.recordsLinks_endsOf`.
+- **Friction:** a body-hinge file reaches into the panel carrier's namespace for a graph predicate,
+  and a reader looks for it there.
+- **Proposed fix:** move `RecordsLinks` and its lemmas to the namespace `Molecular` (or `Graph`),
+  with deprecated aliases, in a cleanup round (`notes/Phase41-design.md` §2, *Item 10's recon*,
+  "Not planned").
+- **Resolution:** ARREARS task 12: `Graph.RecordsLinks` and eleven of its lemmas in the mirror, in
+  the upstream namespace; `Graph.recordsLinks_endsOf`, `Graph.RecordsLinks.update_splitOff` and
+  `Graph.RecordsLinks.map` in `Molecular/Induction/Operations.lean`, beside `endsOf` and `splitOff`
+  (`map` there because the tree's `Graph.map` is the `Matroid` package's; the idiom entry *Mathlib's
+  `Graph/Maps.lean` cannot be imported beside the `Matroid` package's `Graph/Map.lean`…*). The
+  fifteen old names are `@[deprecated (since := "2026-11-05")]` aliases in `PanelHinge.lean`;
+  `HingeGeneric.lean` no longer opens `PanelHingeFramework`.
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/Combinatorics/Graph/RecordsLinks.lean` (a new upstream file).
 
 ### [mirrored] `Set.ncard_union_range_of_injective` — adding `k` new elements listed by `Fin k` adds `k` to the cardinality
 - **Where it bit:** RECONCILE round 3, task 38.24 (`F-316`): the bodies of an ear or of a chain of

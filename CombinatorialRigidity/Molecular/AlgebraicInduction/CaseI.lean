@@ -89,9 +89,9 @@ with rigidity for the rank.
 
 The normals are those of the realization `Q` of `Qcf`, and general position is a condition on the
 normals alone. `Q` is `ofNormals Q.graph Q.ends nrm`, and `Q.ends` records the links of `Gc.map f`
-(the field `isLink_ends`, as `Q.graph = Gc.map f`), as `ends'` does (`RecordsLinks.map`). So the two
-frameworks have the same motions (`infinitesimalMotions_ofNormals_eq_of_ends_swap`), and the
-reoriented framework is rigid, as `Q` is by its rank. -/
+(the field `isLink_ends`, as `Q.graph = Gc.map f`), as `ends'` does (`Graph.RecordsLinks.map`). So
+the two frameworks have the same motions (`infinitesimalMotions_ofNormals_eq_of_ends_swap`), and
+the reoriented framework is rigid, as `Q` is by its rank. -/
 theorem PanelHingeFramework.hasGenericRealization_transport_relabel
     [Finite α] (Gc : Graph α β) (f : α → α) (ends : β → α × α)
     {n : ℕ} (hne : V(Gc.map f).Nonempty) (hdef : (Gc.map f).deficiency n = 0)
@@ -104,7 +104,7 @@ theorem PanelHingeFramework.hasGenericRealization_transport_relabel
         (fun e => (f (ends e).1, f (ends e).2)) nrm).toBodyHinge.IsInfinitesimallyRigidOn
         V(Gc.map f) := by
   obtain ⟨Q, hQg, hQgp, hQrank⟩ := Qcf
-  have hQrec : PanelHingeFramework.RecordsLinks (Gc.map f) Q.ends := hQg ▸ Q.isLink_ends
+  have hQrec : Graph.RecordsLinks (Gc.map f) Q.ends := hQg ▸ Q.isLink_ends
   -- Rigidity from the rank (`isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows`).
   have hne' : Q.toBodyHinge.graph.vertexSet.Nonempty := by
     rw [PanelHingeFramework.toBodyHinge_graph, hQg]; exact hne
@@ -125,7 +125,7 @@ theorem PanelHingeFramework.hasGenericRealization_transport_relabel
     simpa only [hnrm, PanelHingeFramework.ofNormals_normal] using hQgp a b hab
   refine ⟨nrm, hgp', ?_⟩
   -- The two selectors `Q.ends` and `endsM := f ∘ (parent ends)` both record the links of
-  -- `Q.graph = Gc.map f` (`hQrec` and `RecordsLinks.map`), so
+  -- `Q.graph = Gc.map f` (`hQrec` and `Graph.RecordsLinks.map`), so
   -- `infinitesimalMotions_ofNormals_eq_of_ends_swap` equates the motion spaces of
   -- `Q = ofNormals Q.graph Q.ends nrm` and `ofNormals Q.graph endsM nrm`.
   have hmot : (PanelHingeFramework.ofNormals (Gc.map f) endsM nrm).toBodyHinge.infinitesimalMotions
@@ -168,7 +168,7 @@ theorem PanelHingeFramework.finrank_span_rigidityRows_ofNormals_relabel_eq
           (fun e => (f (ends e).1, f (ends e).2)) nrm).toBodyHinge.rigidityRows) : ℤ)
         = screwDim k * ((V(Gc.map f).ncard : ℤ) - 1) - (Gc.map f).deficiency n := by
   obtain ⟨Q, hQg, hQgp, hQrank⟩ := Qcf
-  have hQrec : PanelHingeFramework.RecordsLinks (Gc.map f) Q.ends := hQg ▸ Q.isLink_ends
+  have hQrec : Graph.RecordsLinks (Gc.map f) Q.ends := hQg ▸ Q.isLink_ends
   set endsM : β → α × α := fun e => (f (ends e).1, f (ends e).2) with hendsM
   set nrm := (fun p => Q.normal p.1 p.2 : α × Fin (k + 2) → K) with hnrm
   -- General position transfers to `ofNormals … endsM …` verbatim (the normals are `Q.normal`,
@@ -230,11 +230,11 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_IH_relabel_linking
   refine ⟨N, ?_, ?_⟩
   · -- `(N : ℤ) = ...` from `hrank_eq`, which already has this form.
     exact_mod_cast hrank_eq
-  -- Step 2: derive `hendsM_link` — `endsM` records `Gc.map f`'s links (`RecordsLinks.map`).
+  -- Step 2: derive `hendsM_link` — `endsM` records `Gc.map f`'s links (`Graph.RecordsLinks.map`).
   have hendsM_link : ∀ e u v, (Gc.map f).IsLink e u v →
       (Gc.map f).IsLink e (endsM e).1 (endsM e).2 :=
-    PanelHingeFramework.recordsLinks_iff_forall_isLink.mp
-      ((PanelHingeFramework.recordsLinks_iff_forall_isLink.mpr hends).map f)
+    Graph.recordsLinks_iff_forall_isLink.mp
+      ((Graph.recordsLinks_iff_forall_isLink.mpr hends).map f)
   -- Step 3: `hne` — support extensor nonzero at `nrm` for every `Gc.map f`-link at `endsM`.
   have hne : ∀ e, (Gc.map f).IsLink e (endsM e).1 (endsM e).2 →
       (PanelHingeFramework.ofNormals (Gc.map f) endsM nrm).toBodyHinge.supportExtensor e ≠ 0 := by
@@ -266,7 +266,7 @@ theorem PanelHingeFramework.finrank_span_rigidityRows_ofNormals_eq
         (PanelHingeFramework.ofNormals Gv ends nrm).toBodyHinge.rigidityRows) : ℤ)
         = screwDim k * ((V(Gv).ncard : ℤ) - 1) - Gv.deficiency n := by
   obtain ⟨Q, hQg, hQgp, hQrank⟩ := hQv
-  have hQrec : PanelHingeFramework.RecordsLinks Gv Q.ends := hQg ▸ Q.isLink_ends
+  have hQrec : Graph.RecordsLinks Gv Q.ends := hQg ▸ Q.isLink_ends
   set nrm := (fun p => Q.normal p.1 p.2 : α × Fin (k + 2) → K) with hnrm
   -- General position transfers to `ofNormals Gv ends nrm` verbatim (the normals are `Q.normal`,
   -- unchanged by the selector; `IsGeneralPosition` reads only the normals).
@@ -385,7 +385,7 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set_proj_ev
     (hsupp : ∀ i ∈ t, G.IsLink (i : β × _ × _).1 (ends (i : β × _ × _).1).1
       (ends (i : β × _ × _).1).2)
     (hcount : m ≤ Nat.card t)
-    {hlinks : PanelHingeFramework.RecordsLinks G ends}
+    {hlinks : Graph.RecordsLinks G ends}
     (hindep : LinearIndependent K (fun i : t => (extProj (k := k) proj).dualMap
       ((PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.panelRow ends (i : β × _ × _)))) :
     ∃ Qc : MvPolynomial (α × Fin (k + 2)) K, MvPolynomial.eval q₀ Qc ≠ 0 ∧
@@ -481,7 +481,7 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set_proj [F
     (hsupp : ∀ i ∈ t, G.IsLink (i : β × _ × _).1 (ends (i : β × _ × _).1).1
       (ends (i : β × _ × _).1).2)
     (hcount : m ≤ Nat.card t)
-    {hlinks : PanelHingeFramework.RecordsLinks G ends}
+    {hlinks : Graph.RecordsLinks G ends}
     (hindep : LinearIndependent K (fun i : t => (extProj (k := k) proj).dualMap
       ((PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.panelRow ends (i : β × _ × _)))) :
     ∃ Qc : MvPolynomial (α × Fin (k + 2)) K, Qc ≠ 0 ∧

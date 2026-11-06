@@ -101,7 +101,7 @@ theorem exists_rankHypothesis_isGeneralPosition4_of_two_le [Finite α] [Finite �
     rankHypothesis_genuine_of_theorem_55_gen
       (K := ℝ) (k := 2) (n := 3) (by norm_num) hn G hV hspan hSimple
   have hQ0ends : ∀ e u v, G.IsLink e u v → G.IsLink e (Q0.ends e).1 (Q0.ends e).2 :=
-    hQ0g ▸ recordsLinks_iff_forall_isLink.mp Q0.isLink_ends
+    hQ0g ▸ Graph.recordsLinks_iff_forall_isLink.mp Q0.isLink_ends
   -- View `Q0` as the free-normal framework at its own normals `q₀ = fun p => Q0.normal p.1 p.2`.
   have hself : ofNormals (k := 2) G Q0.ends (fun p => Q0.normal p.1 p.2) = Q0 :=
     ofNormals_eq_self_of_graph_eq Q0 hQ0g
@@ -236,7 +236,7 @@ theorem exists_rankHypothesis_isGeneralPosition4 [Finite α] [Finite β]
     have hdef0 : G.deficiency 3 = 0 := by rw [Graph.deficiency_of_edgeSet_empty hE, hV1]; simp
     -- The moment-curve normals at the constant parameter `1` are in general position (order four).
     set ends : β → α × α := fun _ => (Classical.arbitrary α, Classical.arbitrary α) with hends
-    have hrecG : RecordsLinks G ends := fun e he => by simp [hE] at he
+    have hrecG : Graph.RecordsLinks G ends := fun e he => by simp [hE] at he
     have hinj : Function.Injective (fun _ : α => (1 : ℝ)) := fun a b _ => Subsingleton.elim a b
     obtain ⟨Q_gp4, hmoment, hpred⟩ := exists_generalPosition4_polynomial G ends
     set q : α × Fin 4 → ℝ := fun p => PanelHingeFramework.momentCurve (1 : ℝ) p.2 with hq

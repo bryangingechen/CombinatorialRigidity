@@ -90,7 +90,7 @@ framework only through its support extensor, and `(ofNormals G ends q).toBodyHin
 is `panelSupportExtensor` of the two normals `q`/`ends` supply (`toBodyHinge_supportExtensor`,
 `ofNormals_normal`, `ofNormals_ends`), independent of `G`. -/
 theorem normalRow_eq_panelRow (G : Graph α β) (ends : β → α × α)
-    {hlinks : PanelHingeFramework.RecordsLinks G ends} (q : α × Fin (k + 2) → K)
+    {hlinks : Graph.RecordsLinks G ends} (q : α × Fin (k + 2) → K)
     (i : β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k) :
     normalRow ends q i = (ofNormals G ends q).toBodyHinge.panelRow ends i := rfl
 
@@ -126,7 +126,7 @@ theorem normalRow_eq_of_swap {ends ends' : β → α × α} (q : α × Fin (k + 
 after `def:generic-normals`): each gives an edge its two ends, in the same order or exchanged
 (`normalRow_eq_of_swap`). -/
 theorem normalRow_eq_of_recordsLinks {G : Graph α β} {ends ends' : β → α × α}
-    (h : RecordsLinks G ends) (h' : RecordsLinks G ends') (q : α × Fin (k + 2) → K)
+    (h : Graph.RecordsLinks G ends) (h' : Graph.RecordsLinks G ends') (q : α × Fin (k + 2) → K)
     {i : β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k}
     (hi : i.1 ∈ E(G)) : normalRow ends q i = normalRow ends' q i := by
   obtain ⟨e, t₁, t₂⟩ := i
@@ -141,7 +141,7 @@ whatever their selectors (`normalRow_eq_of_recordsLinks`). -/
 theorem isGenericNormals_iff_of_graph_eq {P P' : PanelHingeFramework K k α β}
     (hg : P.graph = P'.graph) (hn : P.normal = P'.normal) :
     P.IsGenericNormals ↔ P'.IsGenericNormals := by
-  have hrec : RecordsLinks P.graph P'.ends := by rw [hg]; exact P'.isLink_ends
+  have hrec : Graph.RecordsLinks P.graph P'.ends := by rw [hg]; exact P'.isLink_ends
   have hq : (fun p : α × Fin (k + 2) => P.normal p.1 p.2) = fun p => P'.normal p.1 p.2 := by
     rw [hn]
   unfold IsGenericNormals
@@ -171,7 +171,7 @@ since the index type is finite) subfamilies — matching the bar-joint
 `SimpleGraph.exists_isGenericPlacement_abundance` product route. The product runs over every
 subfamily, so it serves the subfamilies at the edges of `G` in particular. -/
 theorem exists_isGenericNormals_abundance [Finite α] [Finite β] (G : Graph α β)
-    (ends : β → α × α) (hlinks : RecordsLinks G ends) :
+    (ends : β → α × α) (hlinks : Graph.RecordsLinks G ends) :
     ∃ P : MvPolynomial (α × Fin (k + 2)) K, P ≠ 0 ∧
       ∀ q, MvPolynomial.eval q P ≠ 0 → (ofNormals G ends q).IsGenericNormals := by
   classical
@@ -243,7 +243,7 @@ theorem exists_isGenericNormals [Infinite K] [Nonempty α] [Finite α] [Finite �
   classical
   have : Inhabited α := Classical.inhabited_of_nonempty ‹_›
   obtain ⟨P, hP0, hP⟩ := exists_isGenericNormals_abundance (K := K) (k := k) G G.endsOf
-    (recordsLinks_endsOf G)
+    (Graph.recordsLinks_endsOf G)
   obtain ⟨q, hq⟩ := MvPolynomial.exists_eval_ne_zero hP0
   exact ⟨ofNormals G G.endsOf q, rfl, hP q hq⟩
 
@@ -359,7 +359,7 @@ case `panelSupportExtensor_swap` negates the extensor, so the two row families a
 per-edge `±1`. A per-index `Kˣ`-scaling transports linear independence
 (`LinearIndependent.units_smul_iff`), giving back the `normalRow` family's independence. -/
 theorem exists_independent_normalRow_of_le_finrank [Finite α] [Finite β]
-    (Q : PanelHingeFramework K k α β) {ends : β → α × α} (hends : RecordsLinks Q.graph ends)
+    (Q : PanelHingeFramework K k α β) {ends : β → α × α} (hends : Graph.RecordsLinks Q.graph ends)
     (hC : ∀ e ∈ E(Q.graph), Q.toBodyHinge.supportExtensor e ≠ 0)
     {N : ℕ} (hN : N ≤ Module.finrank K (Submodule.span K Q.toBodyHinge.rigidityRows)) :
     ∃ s : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
@@ -492,7 +492,7 @@ theorem finrank_span_rigidityRows_of_isGenericNormals [Infinite K] [Finite α] [
     linarith [hcompl, hZ]
   -- The witness transplant at `Q0`, with `Q`'s selector: `N := finrank (span Q0's rigidity rows)`
   -- independent `normalRow Q.ends`-rows at edges, at `Q0`'s own normals.
-  have hrec : RecordsLinks Q0.graph Q.ends := by rw [hQ0g, ← hQ]; exact Q.isLink_ends
+  have hrec : Graph.RecordsLinks Q0.graph Q.ends := by rw [hQ0g, ← hQ]; exact Q.isLink_ends
   obtain ⟨s, hsE, hscard, hsli⟩ := exists_independent_normalRow_of_le_finrank Q0 hrec hQ0C le_rfl
   -- Genericity of `Q` transfers that subfamily's independence from `Q0`'s normals to `Q`'s.
   have hLIq := hq s (fun i hi => by rw [hQ, ← hQ0g]; exact hsE i hi) ⟨_, hsli⟩

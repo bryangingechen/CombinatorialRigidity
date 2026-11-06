@@ -83,9 +83,9 @@ moved back by `ρ⁻¹`, so the `ρ` of the normals cancels the `ρ⁻¹` of the
 theorem PanelHingeFramework.ofNormals_supportExtensor_relabel_perm {Gt : Graph α β}
     (ρ : Equiv.Perm α) (σ : Equiv.Perm β)
     {ends₀ : β → α × α} {q₀ : α × Fin (k + 2) → K} (f : β)
-    {hlinks : PanelHingeFramework.RecordsLinks Gt
+    {hlinks : Graph.RecordsLinks Gt
       (fun e => (ρ.symm (ends₀ (σ e)).1, ρ.symm (ends₀ (σ e)).2))}
-    {hlinks' : PanelHingeFramework.RecordsLinks Gt ends₀} :
+    {hlinks' : Graph.RecordsLinks Gt ends₀} :
     (PanelHingeFramework.ofNormals Gt
         (fun e => (ρ.symm (ends₀ (σ e)).1, ρ.symm (ends₀ (σ e)).2))
         (fun p => q₀ (ρ p.1, p.2))).toBodyHinge.supportExtensor f =
@@ -105,7 +105,7 @@ theorem PanelHingeFramework.blockRow_relabel_perm {Gt : Graph α β}
     (ρ : Equiv.Perm α) {endsσρ : β → α × α} {qρ : α × Fin (k + 2) → K}
     {a b : α} {q₀ : α × Fin (k + 2) → K} {e_t : β}
     (hlink : Gt.IsLink e_t (ρ.symm a) (ρ.symm b))
-    {hlinks : PanelHingeFramework.RecordsLinks Gt endsσρ}
+    {hlinks : Graph.RecordsLinks Gt endsσρ}
     (hsupp : (PanelHingeFramework.ofNormals Gt endsσρ qρ).toBodyHinge.supportExtensor e_t
       = panelSupportExtensor (fun i => q₀ (a, i)) (fun i => q₀ (b, i)))
     {ρ' : Module.Dual K (ScrewSpace K k)}
@@ -133,8 +133,8 @@ theorem PanelHingeFramework.rigidityRow_relabel_to_genuine {Gt : Graph α β}
     (ρ : Equiv.Perm α) {endsσρ : β → α × α} {qρ : α × Fin (k + 2) → K}
     {Gs : Graph α β} {ends₀ : β → α × α} {q₀ : α × Fin (k + 2) → K}
     {f f' : β} {u w u' w' : α} {r : Module.Dual K (ScrewSpace K k)}
-    {hlinks : PanelHingeFramework.RecordsLinks Gs ends₀}
-    {hlinks' : PanelHingeFramework.RecordsLinks Gt endsσρ}
+    {hlinks : Graph.RecordsLinks Gs ends₀}
+    {hlinks' : Graph.RecordsLinks Gt endsσρ}
     (hr : r ∈ (PanelHingeFramework.ofNormals Gs ends₀ q₀).toBodyHinge.hingeRowBlock f)
     (hu : ρ.symm u = u') (hw : ρ.symm w = w')
     (hlinkGt : Gt.IsLink f' u' w')
@@ -176,11 +176,11 @@ theorem PanelHingeFramework.recordsLinks_splitOff_relabel [DecidableEq α] [Deci
     (hclv : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b)
     (hcla : ∀ e x, G.IsLink e a x → e = eₐ ∨ e = e_c)
     (he₀ : e₀ ∉ E(G)) (he₁ : e₁ ∉ E(G)) (he₁₀ : e₁ ≠ e₀)
-    {ends₀ : β → α × α} (hQrec : RecordsLinks (G.splitOff v a b e₀) ends₀) :
-    RecordsLinks (G.splitOff a v c e₁)
+    {ends₀ : β → α × α} (hQrec : Graph.RecordsLinks (G.splitOff v a b e₀) ends₀) :
+    Graph.RecordsLinks (G.splitOff a v c e₁)
       (fun e => (Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).1,
           Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).2)) := by
-  refine recordsLinks_iff_forall_isLink.mpr fun e' u w he' => ?_
+  refine Graph.recordsLinks_iff_forall_isLink.mpr fun e' u w he' => ?_
   have hρρ : ∀ x : α, Equiv.swap a v (Equiv.swap a v x) = x := fun x => Equiv.swap_apply_self a v x
   have hbe₁ : e_b ≠ e₁ := fun h => he₁ (h ▸ hG_eb.edge_mem)
   have h₀ec : e₀ ≠ e_c := fun h => he₀ (h ▸ hG_ec.edge_mem)
@@ -234,11 +234,11 @@ theorem PanelHingeFramework.ofNormals_relabel [DecidableEq α] [DecidableEq β]
     (hQrig :
       (PanelHingeFramework.ofNormals (G.splitOff v a b e₀) ends₀
         q₀).toBodyHinge.IsInfinitesimallyRigidOn V(G.splitOff v a b e₀))
-    (hlinks : RecordsLinks (G.splitOff a v c e₁)
+    (hlinks : Graph.RecordsLinks (G.splitOff a v c e₁)
       (fun e => (Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).1,
           Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).2)) :=
       recordsLinks_splitOff_relabel hG_ea hG_eb hG_ec hav hbv hcv hca heab hclv hcla he₀ he₁ he₁₀
-        (RecordsLinks.of_pair hQrec)) :
+        (Graph.RecordsLinks.of_pair hQrec)) :
     (PanelHingeFramework.ofNormals (G.splitOff a v c e₁)
         (fun e => (Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).1,
           Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).2))
@@ -358,10 +358,10 @@ theorem PanelHingeFramework.rigidityRows_ofNormals_relabel [DecidableEq α] [Dec
     (hcla : ∀ e x, G.IsLink e a x → e = eₐ ∨ e = e_c)
     (he₀ : e₀ ∉ E(G)) (he₁ : e₁ ∉ E(G)) (he₁₀ : e₁ ≠ e₀)
     (ends₀ : β → α × α) (q₀ : α × Fin (k + 2) → K)
-    {hlinks : PanelHingeFramework.RecordsLinks (G.splitOff a v c e₁)
+    {hlinks : Graph.RecordsLinks (G.splitOff a v c e₁)
       (fun e => (Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).1,
           Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).2))}
-    {hlinks' : PanelHingeFramework.RecordsLinks (G.splitOff v a b e₀) ends₀} :
+    {hlinks' : Graph.RecordsLinks (G.splitOff v a b e₀) ends₀} :
     (PanelHingeFramework.ofNormals (G.splitOff a v c e₁)
         (fun e => (Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).1,
           Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).2))
@@ -453,7 +453,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_splitOff_relabel [F
     PanelHingeFramework.HasGenericFullRankRealization K k n (G.splitOff a v c e₁) := by
   classical
   obtain ⟨Q, hQg, hQgp, hQrank⟩ := hQ
-  have hQrec : PanelHingeFramework.RecordsLinks (G.splitOff v a b e₀) Q.ends := hQg ▸ Q.isLink_ends
+  have hQrec : Graph.RecordsLinks (G.splitOff v a b e₀) Q.ends := hQg ▸ Q.isLink_ends
   -- Derive rigidity from the rank hypothesis.
   have hne_in : V(G.splitOff v a b e₀).Nonempty :=
     ⟨a, by rw [Graph.vertexSet_splitOff]; exact ⟨hG_ea.right_mem, by simp [hav]⟩⟩
@@ -649,7 +649,7 @@ theorem _root_.Graph.ChainData.seedAdvance_wstep_hstep
       ends' f = ends f)
     (hrec : ∀ f x y, (G.removeVertex (cd.vtx ⟨s + 1, by omega⟩)).IsLink f x y →
       ends f = (x, y) ∨ ends f = (y, x))
-    {hlinks : PanelHingeFramework.RecordsLinks (G.removeVertex (cd.vtx ⟨s + 2, by omega⟩)) ends'} :
+    {hlinks : Graph.RecordsLinks (G.removeVertex (cd.vtx ⟨s + 2, by omega⟩)) ends'} :
     (cd.vtx ⟨s + 3, by omega⟩ ≠ cd.vtx ⟨s + 2, by omega⟩ ∧
         cd.vtx ⟨s + 3, by omega⟩ ≠ cd.vtx ⟨s + 1, by omega⟩) ∧
       (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨s + 1, by omega⟩)) ends

@@ -71,7 +71,7 @@ admissible. It cuts once at the last bridge and adds up along the path; a single
   `span_supportExtensor_ofNormals_eq`, a step of it and of `lem:pencil-splitoff-special-rank`: the
   hinge at a recorded link is the panel extensor of its two ends, in either orientation. A selector
   recording every link of `G` records every link of an induced subgraph
-  (`PanelHingeFramework.RecordsLinks.induce`), so the steps read the rank of a side at the selector
+  (`Graph.RecordsLinks.induce`), so the steps read the rank of a side at the selector
   of `G`.
 * `Graph.IsAdmissiblePicture.exists_dotProduct_of_ncard_closedNbhd_le_three`:
   `lem:pencil-three-points`, three points impose nothing: at an admissible picture every height
@@ -372,7 +372,7 @@ theorem _root_.Graph.X0Attains.of_cutVertex [Infinite K] [Finite α] [Finite β]
   set ends := G.endsOf with hendsdef
   have hends : ∀ e u w, G.IsLink e u w → G.IsLink e (ends e).1 (ends e).2 :=
     fun e _ _ he => G.isLink_endsOf he.edge_mem
-  have hendsG := PanelHingeFramework.recordsLinks_iff_forall_isLink.mpr hends
+  have hendsG := Graph.recordsLinks_iff_forall_isLink.mpr hends
   obtain ⟨q, hq⟩ := MvPolynomial.exists_eval_ne_zero (mul_ne_zero (mul_ne_zero hP₁ hP₂) hPm)
   rw [map_mul, map_mul] at hq
   obtain ⟨-, R₁, ⟨z₁, hz₁, hR₁⟩, hatt₁⟩ := hgood₁ q (left_ne_zero_of_mul (left_ne_zero_of_mul hq))
@@ -404,7 +404,7 @@ theorem _root_.Graph.X0Attains.of_cutVertex [Infinite K] [Finite α] [Finite β]
           ends (fun p => pencilConfigPoint q z p.1 p.2)).toBodyHinge.rigidityRows) := by
     intro X endsX hendsX
     refine PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr _ hendsX
-      (PanelHingeFramework.recordsLinks_iff_forall_isLink.mp (hendsG.induce X)) ?_
+      (Graph.recordsLinks_iff_forall_isLink.mp (hendsG.induce X)) ?_
     intro x hx i
     exact pencilConfigPoint_liftingRestrict X q z hx i
   rw [Graph.vertexSet_induce G V₁] at hr₁
@@ -1085,7 +1085,7 @@ theorem _root_.Graph.X0Attains.of_bridgePath [Infinite K] [Finite α] [Finite β
   set ends := G.endsOf with hendsdef
   have hends : ∀ f u w, G.IsLink f u w → G.IsLink f (ends f).1 (ends f).2 :=
     fun f _ _ hf => G.isLink_endsOf hf.edge_mem
-  have hendsG := PanelHingeFramework.recordsLinks_iff_forall_isLink.mpr hends
+  have hendsG := Graph.recordsLinks_iff_forall_isLink.mpr hends
   obtain ⟨q, hq⟩ := MvPolynomial.exists_eval_ne_zero (mul_ne_zero (mul_ne_zero hP₁ hP₂) hPm)
   rw [map_mul, map_mul] at hq
   obtain ⟨-, R₁, ⟨z₁, hz₁, hR₁⟩, hatt₁⟩ := hgood₁ q (left_ne_zero_of_mul (left_ne_zero_of_mul hq))
@@ -1128,7 +1128,7 @@ theorem _root_.Graph.X0Attains.of_bridgePath [Infinite K] [Finite α] [Finite β
           ends (fun p => pencilConfigPoint q z p.1 p.2)).toBodyHinge.rigidityRows) := by
     intro X endsX hendsX
     refine PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr _ hendsX
-      (PanelHingeFramework.recordsLinks_iff_forall_isLink.mp (hendsG.induce X)) ?_
+      (Graph.recordsLinks_iff_forall_isLink.mp (hendsG.induce X)) ?_
     intro x hx i
     exact pencilConfigPoint_liftingRestrict X q z hx i
   rw [Graph.vertexSet_induce G V₁] at hr₁

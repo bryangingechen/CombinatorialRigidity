@@ -89,7 +89,6 @@ records the links of `G`; at one such selector it is the same condition
 namespace CombinatorialRigidity.Molecular.BodyHingeFramework
 
 open scoped Graph
-open PanelHingeFramework (RecordsLinks)
 
 variable {k : ℕ}
 variable {K : Type*} [Field K]
@@ -214,7 +213,7 @@ theorem hingeAnnihRowPoly_eval (e : β) (q : β × Fin k × Fin (k + 1) → K)
 
 /-- **A hinge-point assignment generic for row independence over a multigraph**
 (`def:generic-hinge-points`). The assignment `q` is *generic over `G`* when, at every endpoint
-selector `ends` that records the links of `G` (`PanelHingeFramework.RecordsLinks`), every
+selector `ends` that records the links of `G` (`Graph.RecordsLinks`), every
 subfamily of the annihilator rows at the edges of `G` that is linearly independent at *some*
 hinge-point assignment is linearly independent at `q` — the panel layer's `IsGenericNormals`
 shape, transported to hinge points. A body-hinge framework has no selector of its own, and
@@ -225,7 +224,7 @@ is asked at every such selector; at one of them it is the same condition
 parameter space (in particular one with a hinge at infinity) does not transfer, which is why the
 witness assembly (`lem:hinge-point-witness`) re-places the panel witness inside this space. -/
 def IsGenericHingePoints (G : Graph α β) (q : β × Fin k × Fin (k + 1) → K) : Prop :=
-  ∀ ends : β → α × α, RecordsLinks G ends →
+  ∀ ends : β → α × α, Graph.RecordsLinks G ends →
     ∀ s : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
       (∀ i ∈ s, (i : β × _ × _).1 ∈ E(G)) →
       (∃ q' : β × Fin k × Fin (k + 1) → K,
@@ -244,11 +243,11 @@ theorem hingePointRow_eq_neg_of_swap {ends ends' : β → α × α} (q : β × F
 
 /-- **Two selectors that record the links of `G` give equally independent rows at its edges**
 (`def:generic-hinge-points`, the remark after it): at an edge of `G` the two selectors give the
-same two bodies, in the same order or exchanged (`RecordsLinks.eq_or_swap`), so each row read with
-`ends'` is `±1` times the row read with `ends` (`hingePointRow_eq_neg_of_swap`), and a unit
-rescaling keeps a family's linear independence (`LinearIndependent.units_smul_iff`). -/
+same two bodies, in the same order or exchanged (`Graph.RecordsLinks.eq_or_swap`), so each row
+read with `ends'` is `±1` times the row read with `ends` (`hingePointRow_eq_neg_of_swap`), and a
+unit rescaling keeps a family's linear independence (`LinearIndependent.units_smul_iff`). -/
 theorem linearIndependent_hingePointRow_iff_of_recordsLinks {G : Graph α β}
-    {ends ends' : β → α × α} (h : RecordsLinks G ends) (h' : RecordsLinks G ends')
+    {ends ends' : β → α × α} (h : Graph.RecordsLinks G ends) (h' : Graph.RecordsLinks G ends')
     (q : β × Fin k × Fin (k + 1) → K)
     {s : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)}
     (hs : ∀ i ∈ s, (i : β × _ × _).1 ∈ E(G)) :
@@ -275,7 +274,7 @@ assignment is linearly independent at `q`. Another such selector gives each of t
 sign (`linearIndependent_hingePointRow_iff_of_recordsLinks`), so the order of the ends does not
 matter. -/
 theorem isGenericHingePoints_iff_of_recordsLinks {G : Graph α β} {ends : β → α × α}
-    (h : RecordsLinks G ends) {q : β × Fin k × Fin (k + 1) → K} :
+    (h : Graph.RecordsLinks G ends) {q : β × Fin k × Fin (k + 1) → K} :
     IsGenericHingePoints G q ↔
       ∀ s : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
         (∀ i ∈ s, (i : β × _ × _).1 ∈ E(G)) →
@@ -491,7 +490,7 @@ theorem supportExtensor_ofHinge_ne_zero_of_isGenericHingePoints (hk1 : 1 ≤ k)
   -- The selector `G.endsOf`, with an end of `e` as the default body, records the links of `G`.
   have : Inhabited α := ⟨x⟩
   set ends := G.endsOf with hends_def
-  have hends : RecordsLinks G ends := PanelHingeFramework.recordsLinks_endsOf G
+  have hends : Graph.RecordsLinks G ends := Graph.recordsLinks_endsOf G
   -- A link between distinct bodies has two distinct ends.
   have huv : (ends e).1 ≠ (ends e).2 := by
     rcases hxy.eq_and_eq_or_eq_and_eq (hends e he) with ⟨h1, h2⟩ | ⟨h1, h2⟩
@@ -861,7 +860,7 @@ family `hingePointRow ends q₀`. -/
 theorem exists_hingePoints_independent_hingePointRow [Infinite K] [Finite α] [Finite β] {n : ℕ}
     (hk1 : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
     (G : Graph α β) (hne : V(G).Nonempty) (hspan : V(G) = Set.univ)
-    {ends : β → α × α} (hends : RecordsLinks G ends) :
+    {ends : β → α × α} (hends : Graph.RecordsLinks G ends) :
     ∃ (q₀ : β × Fin k × Fin (k + 1) → K)
       (s : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)),
       (∀ i ∈ s, (i : β × _ × _).1 ∈ E(G)) ∧
@@ -992,7 +991,7 @@ theorem finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints [Infinite K]
       = screwDim k * (V(G).ncard - 1 : ℤ) - G.deficiency n := by
   classical
   have : Inhabited α := ⟨hne.some⟩
-  have hends : RecordsLinks G G.endsOf := PanelHingeFramework.recordsLinks_endsOf G
+  have hends : Graph.RecordsLinks G G.endsOf := Graph.recordsLinks_endsOf G
   -- The witness assembly at the selector `G.endsOf`: `q₀` and an independent subfamily `s` at edges
   -- of `G`, of exactly the target rank.
   obtain ⟨q₀, s, hsE, hscard, hsli⟩ :=
@@ -1177,8 +1176,8 @@ theorem isMaxRankHingePoints_of_isGenericHingePoints [Finite α] [Finite β] (hk
     rw [Submodule.finrank_eq_zero.mpr (Subsingleton.elim _ _)]
     exact Nat.zero_le _
   have : Inhabited α := ⟨x⟩
-  have hends : RecordsLinks G G.endsOf := PanelHingeFramework.recordsLinks_endsOf G
-  have hendsE : RecordsLinks (G ↾ E') G.endsOf := hends.mono Graph.restrict_le
+  have hends : Graph.RecordsLinks G G.endsOf := Graph.recordsLinks_endsOf G
+  have hendsE : Graph.RecordsLinks (G ↾ E') G.endsOf := hends.mono Graph.restrict_le
   -- A fixed affinely independent family, put at every label whose hinge in `q'` is degenerate.
   set pRef : Fin k → Fin (k + 1) → K :=
     (Pi.basisFun K (Fin (k + 1)) : Fin (k + 1) → Fin (k + 1) → K) ∘ Fin.castSucc

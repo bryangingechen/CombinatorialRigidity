@@ -365,7 +365,7 @@ is injective. -/
 theorem molecular_rigid_iff_square_rigid {V : Type*} [Fintype V] (G : SimpleGraph V)
     [DecidableRel G.Adj] (hmin : ∀ v, 2 ≤ G.degree v) :
     (∃ (ends : Sym2 V → V × V) (c : V → EuclideanSpace ℝ (Fin 3)),
-      PanelHingeFramework.RecordsLinks G.shadowGraph ends ∧ (∀ u v, G.Adj u v → c u ≠ c v) ∧
+      Graph.RecordsLinks G.shadowGraph ends ∧ (∀ u v, G.Adj u v → c u ≠ c v) ∧
       (molecularOfCentres G.shadowGraph ends c).IsInfinitesimallyRigid) ↔
     ∃ p : Framework V 3, G.square.IsInfinitesimallyRigid p := by
   classical
@@ -410,7 +410,7 @@ theorem molecular_rigid_iff_square_rigid {V : Type*} [Fintype V] (G : SimpleGrap
     inhabit V
     -- A placement generic for row independence and in general position.
     obtain ⟨c, hgen, hgp⟩ := exists_isGenericPlacement_isGeneralPositionPlacement (V := V)
-    have hends := PanelHingeFramework.recordsLinks_endsOf G.shadowGraph
+    have hends := Graph.recordsLinks_endsOf G.shadowGraph
     refine ⟨G.shadowGraph.endsOf, c, hends, fun u v huv h => G.ne_of_adj huv (hgp.injective h),
       ?_⟩
     set F := molecularOfCentres G.shadowGraph G.shadowGraph.endsOf c
@@ -425,7 +425,7 @@ theorem molecular_rigid_iff_square_rigid {V : Type*} [Fintype V] (G : SimpleGrap
     have hkey : Module.finrank ℝ F.infinitesimalMotions
         = Module.finrank ℝ (LinearMap.ker (G.square.RigidityMap c)) :=
       molecular_finrank_motions_eq_square_ker hshadow
-        (PanelHingeFramework.recordsLinks_iff_forall_isLink.mp hends) hmin hgp
+        (Graph.recordsLinks_iff_forall_isLink.mp hends) hmin hgp
     have htriv := Submodule.finrank_mono F.trivialMotions_le_infinitesimalMotions
     rw [F.finrank_trivialMotions] at htriv
     rw [← BodyHingeFramework.rankHypothesis_zero_iff, BodyHingeFramework.RankHypothesis]

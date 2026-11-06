@@ -297,7 +297,7 @@ theorem theorem_55_base_producer_empty_gp_gen
   -- The endpoint selector is irrelevant (no links); pick a constant body `w ∈ V(G)`.
   obtain ⟨w, _⟩ := hne
   set ends : β → α × α := fun _ => (w, w) with hends_def
-  have hrecG : PanelHingeFramework.RecordsLinks G ends := fun e he => by simp [hE] at he
+  have hrecG : Graph.RecordsLinks G ends := fun e he => by simp [hE] at he
   -- The general-position polynomial, and normals `q₀` off its zeros.
   obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
     PanelHingeFramework.exists_generalPosition_polynomial (K := K) (k := k) G ends
@@ -345,7 +345,7 @@ theorem theorem_55_base_producer_single_edge_gp_gen
     PanelHingeFramework.HasGenericFullRankRealization K k n G := by
   classical
   set ends : β → α × α := fun _ => (x, y) with hends_def
-  have hrecG : PanelHingeFramework.RecordsLinks G ends := fun e' he' => by
+  have hrecG : Graph.RecordsLinks G ends := fun e' he' => by
     rw [hEG, Set.mem_singleton_iff] at he'
     subst he'; exact hl
   -- The general-position polynomial, and normals `q₀` off its zeros.
@@ -530,7 +530,7 @@ private theorem case_I_h65_old_span {α β : Type*} (FG Fv : BodyHingeFramework 
 `ofNormals_ends` and `ofNormals_normal`. It depends only on the selector and the normals, not on the
 graph. -/
 private theorem case_I_h65_ofNormals_supportExtensor {α β : Type*} (G : Graph α β)
-    (ends : β → α × α) {hlinks : PanelHingeFramework.RecordsLinks G ends} (q : α × Fin (k + 2) → K)
+    (ends : β → α × α) {hlinks : Graph.RecordsLinks G ends} (q : α × Fin (k + 2) → K)
     (e : β) :
     (PanelHingeFramework.ofNormals G ends q).toBodyHinge.supportExtensor e =
       panelSupportExtensor (fun i => q ((ends e).1, i)) (fun i => q ((ends e).2, i)) := by
@@ -604,7 +604,7 @@ theorem PanelHingeFramework.case_I_realization_h65_gen
   have hQv : PanelHingeFramework.HasGenericFullRankRealization K k n Gv :=
     (hIH Gv hGvmin hGvV2 hGvlt).1 hGvSimple
   obtain ⟨Q_v, hQvg, _, _⟩ := id hQv
-  have hQvrec : RecordsLinks Gv Q_v.ends := hQvg ▸ Q_v.isLink_ends
+  have hQvrec : Graph.RecordsLinks Gv Q_v.ends := hQvg ▸ Q_v.isLink_ends
   have hGvdef : Gv.deficiency n = 0 := hGvmin.deficiency_eq
   have h1Gv : 1 ≤ V(Gv).ncard := (Set.ncard_pos (Set.toFinite _)).2 hGvne
   have hGvloop : Gv.Loopless := hGvSimple.toLoopless
@@ -820,7 +820,7 @@ genuine hinge on every edge. It takes the record of the links of `G'` by `Q.ends
 `G' ≤ G` (`hle`), from which its field `isLink_ends` follows. -/
 private noncomputable def PanelHingeFramework.reaimSubLink (k : ℕ) {α β : Type*}
     (Q : PanelHingeFramework K k α β) (G G' : Graph α β) (x₀ y₀ : α)
-    (hlinks : PanelHingeFramework.RecordsLinks G' Q.ends := by link_tac)
+    (hlinks : Graph.RecordsLinks G' Q.ends := by link_tac)
     (hle : G' ≤ G := by assumption) :
     PanelHingeFramework K k α β where
   graph := G
@@ -832,7 +832,7 @@ private noncomputable def PanelHingeFramework.reaimSubLink (k : ℕ) {α β : Ty
     else if h' : ∃ u v, G.IsLink e u v then (h'.choose, h'.choose_spec.choose)
     else (x₀, y₀)
   isLink_ends := by
-    refine PanelHingeFramework.recordsLinks_iff_forall_isLink.mpr fun e u v he => ?_
+    refine Graph.recordsLinks_iff_forall_isLink.mpr fun e u v he => ?_
     by_cases h' : ∃ u v, G'.IsLink e u v
     · simp only [h', ↓reduceDIte]
       obtain ⟨u', v', hl'⟩ := h'
@@ -850,7 +850,7 @@ outside `G'`, so they never enter the `withGraph G'` constraint family. This is 
 identity the `withGraph`-monotonicity `hgen` bound consumes. -/
 private theorem PanelHingeFramework.reaimSubLink_withGraph_infinitesimalMotions {k : ℕ}
     {α β : Type*} (Q : PanelHingeFramework K k α β) (G G' : Graph α β) (x₀ y₀ : α)
-    (hQg : Q.graph = G') {hlinks : PanelHingeFramework.RecordsLinks G' Q.ends} {hle : G' ≤ G} :
+    (hQg : Q.graph = G') {hlinks : Graph.RecordsLinks G' Q.ends} {hle : G' ≤ G} :
     ((Q.reaimSubLink k G G' x₀ y₀).toBodyHinge.withGraph G').infinitesimalMotions
       = Q.toBodyHinge.infinitesimalMotions := by
   apply (BodyHingeFramework.infinitesimalMotions_eq_of_isLink_supportExtensor
@@ -1176,7 +1176,7 @@ theorem case_cut_edge_realization_gp_gen [Infinite K] [DecidableEq β] [Finite �
   -- ── Step 7: Motion-space / finrank equality between QFᵢ.ends and G.endsOf at q₀ᵢ ─────────
   -- The swap-invariance of the motion space: G.endsOf and QF₁.ends both record the links of
   -- (G.induce V₁).
-  have hQF₁rec : PanelHingeFramework.RecordsLinks (G.induce V₁) QF₁.ends :=
+  have hQF₁rec : Graph.RecordsLinks (G.induce V₁) QF₁.ends :=
     hQF₁g ▸ QF₁.isLink_ends
   have hmot₁ :
       (PanelHingeFramework.ofNormals (G.induce V₁) G.endsOf q₀₁).toBodyHinge.infinitesimalMotions
@@ -1207,7 +1207,7 @@ theorem case_cut_edge_realization_gp_gen [Infinite K] [DecidableEq β] [Finite �
     rw [hmot₁, hmotQF₁] at hcompl1
     omega
   -- Analogously for side 2.
-  have hQF₂rec : PanelHingeFramework.RecordsLinks (G.induce V₂) QF₂.ends :=
+  have hQF₂rec : Graph.RecordsLinks (G.induce V₂) QF₂.ends :=
     hQF₂g ▸ QF₂.isLink_ends
   have hmot₂ :
       (PanelHingeFramework.ofNormals (G.induce V₂) G.endsOf q₀₂).toBodyHinge.infinitesimalMotions
@@ -1913,7 +1913,7 @@ def phComap (P' : PanelHingeFramework K k α β') (G : Graph α β) (ι : β ↪
   normal := P'.normal
   ends := P'.ends ∘ ι
   isLink_ends := by
-    rw [PanelHingeFramework.recordsLinks_iff_forall_isLink]
+    rw [Graph.recordsLinks_iff_forall_isLink]
     intro e u v he
     have h := P'.isLink_ends.isLink (show P'.graph.IsLink (ι e) u v from hP' ▸ ⟨e, rfl, he⟩)
     rw [hP'] at h
@@ -2210,7 +2210,7 @@ theorem PanelHingeFramework.rankHypothesis_genuine_of_theorem_55_gen_of_supply [
     (PanelHingeFramework.theorem_55_minimalKDof_gen_of_supply (K := K) hk1 hn hfresh G'
       hG'min hG'V2).1 hG'Simple
   have hQ'gp := hQ'np.isGeneralPosition
-  have hQ'rec : RecordsLinks G' Q'.ends := hQ'g ▸ Q'.isLink_ends
+  have hQ'rec : Graph.RecordsLinks G' Q'.ends := hQ'g ▸ Q'.isLink_ends
   -- Two distinct bodies for the off-edge selector.
   have hVcard : 2 ≤ Fintype.card α := by
     have : V(G).ncard = Fintype.card α := by
@@ -2288,7 +2288,7 @@ its edges relabelled along `inl : β ↪ β ⊕ Fin (D(|α| − 1) + 1)` (`Graph
 simple with the deficiency of `G` and has a supply of fresh labels (`Graph.freshEdgeSupply_padded`);
 its framework, pulled back along `inl` (`phComap`), has the same normals and motions, and its hinge
 at `e` is the one at `inl e`. Like that of every panel-hinge framework (the field `isLink_ends`),
-its selector gives each edge of `G` its two ends (`recordsLinks_iff_forall_isLink`). The
+its selector gives each edge of `G` its two ends (`Graph.recordsLinks_iff_forall_isLink`). The
 general-position form of Theorem 5.6 (`lem:theorem-56-general-position`) reads the witness's rows
 through it (`exists_rankPolynomial_of_le_finrank_linking`). -/
 theorem PanelHingeFramework.rankHypothesis_genuine_of_theorem_55_gen [Infinite K]
@@ -2359,7 +2359,7 @@ theorem
     (PanelHingeFramework.theorem_55_minimalKDof_gen_of_supply (K := K) hk1 hn hfresh G'
       hG'min hG'V2).1 hG'Simple
   have hQ'gp := hQ'np.isGeneralPosition
-  have hQ'rec : RecordsLinks G' Q'.ends := hQ'g ▸ Q'.isLink_ends
+  have hQ'rec : Graph.RecordsLinks G' Q'.ends := hQ'g ▸ Q'.isLink_ends
   -- Re-aim `Q'` to graph `G`, recording a genuine `G`-link on every edge; GP is `Q'`'s normals.
   let Q := Q'.reaimSubLink k G G' x₀ y₀
   have hQg : Q.graph = G := rfl

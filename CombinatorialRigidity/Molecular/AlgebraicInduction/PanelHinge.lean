@@ -18,9 +18,10 @@ molecular conjecture*, Discrete Comput. Geom. **45**), presented in
 `sec:molecular-algebraic-induction-panel`, `sec:molecular-algebraic-induction-withgraph` and
 `sec:molecular-algebraic-induction-base`. The file defines:
 
-* the condition that an endpoint selector record the links of a multigraph (`RecordsLinks`, the
-  condition of `fmlnote:panel-hinge-nondegenerate`), with its forms under the graph operations and
-  the tactic `link_tac` that proves it from a hypothesis in scope;
+* the tactic `link_tac`, which proves from a hypothesis in scope that an endpoint selector records
+  the links of a multigraph (`Graph.RecordsLinks`, the condition of
+  `fmlnote:panel-hinge-nondegenerate`), and the condition's old names in `PanelHingeFramework`,
+  deprecated;
 * panel-hinge frameworks and their body-hinge interpretation (`def:panel-hinge-framework`), with the
   frameworks `withMomentNormals`, `ofParam` and `ofNormals` of given normals, and hinge-coplanar
   body-hinge frameworks (`def:hinge-coplanar`);
@@ -50,194 +51,70 @@ variable {K : Type*} [Field K]
 
 open scoped Graph
 
-/-! ## Selectors that record the links of a multigraph (`fmlnote:panel-hinge-nondegenerate`)
+/-! ## The link condition's old names
 
-A panel-hinge framework reads the two ends of an edge off an endpoint selector `ends : β → α × α`,
-since mathlib's `Graph` keeps the ends of an edge as a relation. The frameworks of
-`def:panel-hinge-framework` are those whose selector gives each edge of the multigraph its two ends,
-in either order (`fmlnote:panel-hinge-nondegenerate`): the selector *records the links* of the
-multigraph, `RecordsLinks`. The condition has two forms at the links of the multigraph
-(`recordsLinks_iff_forall_isLink`, `recordsLinks_iff_eq_or_swap`). It passes to a subgraph, an
-induced subgraph and the image under a map of the bodies, and to the splitting-off with the ends of
-the new edge recorded; the endpoint choice `G.endsOf` meets it. The tactic `link_tac` proves it from
-a hypothesis in scope. -/
+The condition that a selector record the links of a multigraph
+(`fmlnote:panel-hinge-nondegenerate`) is `Graph.RecordsLinks`, with its lemmas in
+`Mathlib/Combinatorics/Graph/RecordsLinks.lean`; `Graph.recordsLinks_endsOf`,
+`Graph.RecordsLinks.update_splitOff` and `Graph.RecordsLinks.map` are in
+`Induction/Operations.lean`. Until 2026-11-05 they were in the namespace `PanelHingeFramework`;
+the old names are deprecated aliases. -/
 
-section RecordsLinks
+@[deprecated (since := "2026-11-05")]
+alias PanelHingeFramework.RecordsLinks := Graph.RecordsLinks
 
-variable {α β : Type*}
+@[deprecated (since := "2026-11-05")]
+alias PanelHingeFramework.RecordsLinks.isLink := Graph.RecordsLinks.isLink
 
-/-- **A selector that records the links of a multigraph** (the condition on the selector of
-`fmlnote:panel-hinge-nondegenerate`): every edge `e` of `G` links the two bodies that `ends` gives
-it, `G.IsLink e (ends e).1 (ends e).2`. The condition is asked of the edges of `G` only, and puts
-none on a label outside `E(G)`. -/
-def PanelHingeFramework.RecordsLinks (G : Graph α β) (ends : β → α × α) : Prop :=
-  ∀ e ∈ E(G), G.IsLink e (ends e).1 (ends e).2
+@[deprecated (since := "2026-11-05")]
+alias PanelHingeFramework.recordsLinks_iff_forall_isLink := Graph.recordsLinks_iff_forall_isLink
 
-namespace PanelHingeFramework
+@[deprecated (since := "2026-11-05")]
+alias PanelHingeFramework.RecordsLinks.eq_or_swap := Graph.RecordsLinks.eq_or_swap
 
-variable {G G' : Graph α β} {ends : β → α × α}
+@[deprecated (since := "2026-11-05")]
+alias PanelHingeFramework.recordsLinks_iff_eq_or_swap := Graph.recordsLinks_iff_eq_or_swap
 
-/-- **A recorded link** (`fmlnote:panel-hinge-nondegenerate`): if `ends` records the links of `G`
-and `e` links `u` and `v` in `G`, then `e` links the two bodies that `ends` gives it. -/
-theorem RecordsLinks.isLink (h : RecordsLinks G ends) {e : β} {u v : α} (he : G.IsLink e u v) :
-    G.IsLink e (ends e).1 (ends e).2 :=
-  h e he.edge_mem
+@[deprecated (since := "2026-11-05")]
+alias PanelHingeFramework.RecordsLinks.of_isLink_imp := Graph.RecordsLinks.of_isLink_imp
 
-/-- **The condition at the links** (`fmlnote:panel-hinge-nondegenerate`): `ends` records the links
-of `G` iff, at every link of `G` at `e`, `e` links the two bodies that `ends` gives it. An edge of
-`G` has two ends (`Graph.exists_isLink_of_mem_edgeSet`). -/
-theorem recordsLinks_iff_forall_isLink :
-    RecordsLinks G ends ↔ ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2 := by
-  refine ⟨fun h _ _ _ => h.isLink, fun h e he => ?_⟩
-  obtain ⟨x, y, hxy⟩ := Graph.exists_isLink_of_mem_edgeSet he
-  exact h e x y hxy
+@[deprecated (since := "2026-11-05")]
+alias PanelHingeFramework.RecordsLinks.of_forall := Graph.RecordsLinks.of_forall
 
-/-- **A recorded link, up to order** (`fmlnote:panel-hinge-nondegenerate`): if `ends` records the
-links of `G` and `e` links `u` and `v` in `G`, then `ends e` is `(u, v)` or `(v, u)`. The ends of an
-edge are determined up to order (`IsLink.eq_and_eq_or_eq_and_eq`). -/
-theorem RecordsLinks.eq_or_swap (h : RecordsLinks G ends) {e : β} {u v : α}
-    (he : G.IsLink e u v) :
-    ((ends e).1 = u ∧ (ends e).2 = v) ∨ ((ends e).1 = v ∧ (ends e).2 = u) :=
-  (h.isLink he).eq_and_eq_or_eq_and_eq he
+@[deprecated (since := "2026-11-05")]
+alias PanelHingeFramework.RecordsLinks.of_pair := Graph.RecordsLinks.of_pair
 
-/-- **The condition up to order** (`fmlnote:panel-hinge-nondegenerate`): `ends` records the links of
-`G` iff, at every link of `G` at `e` from `u` to `v`, `ends e` is `(u, v)` or `(v, u)`. It is a base
-form of `link_tac`. -/
-theorem recordsLinks_iff_eq_or_swap :
-    RecordsLinks G ends ↔ ∀ e u v, G.IsLink e u v →
-      ((ends e).1 = u ∧ (ends e).2 = v) ∨ ((ends e).1 = v ∧ (ends e).2 = u) := by
-  refine ⟨fun h _ _ _ => h.eq_or_swap, fun h => recordsLinks_iff_forall_isLink.mpr ?_⟩
-  intro e u v he
-  rcases h e u v he with ⟨h1, h2⟩ | ⟨h1, h2⟩
-  · rw [h1, h2]; exact he
-  · rw [h1, h2]; exact he.symm
+@[deprecated (since := "2026-11-05")]
+alias PanelHingeFramework.RecordsLinks.of_split := Graph.RecordsLinks.of_split
 
-/-- **The condition passes to a graph with fewer links** (`fmlnote:panel-hinge-nondegenerate`): if
-`ends` records the links of `G` and every link of `G'` is one of `G` (`hG'`), then `ends` records
-the links of `G'`, as it gives a link of `G'` the same two ends in some order. -/
-theorem RecordsLinks.of_isLink_imp (h : RecordsLinks G ends)
-    (hG' : ∀ e u v, G'.IsLink e u v → G.IsLink e u v) : RecordsLinks G' ends := by
-  refine recordsLinks_iff_forall_isLink.mpr fun e u v he => ?_
-  rcases h.eq_or_swap (hG' e u v he) with ⟨h1, h2⟩ | ⟨h1, h2⟩
-  · rw [h1, h2]; exact he
-  · rw [h1, h2]; exact he.symm
+@[deprecated (since := "2026-11-05")]
+alias PanelHingeFramework.RecordsLinks.congr := Graph.RecordsLinks.congr
 
-/-- **The total form gives the condition** (`fmlnote:panel-hinge-nondegenerate`): if every label `e`
-links in `G` the two bodies that `ends` gives it, then `ends` records the links of `G`. This is the
-form of the hypothesis `hends` of `exists_good_realization_ofParam`. It asks every label to be an
-edge of `G`, which the condition does not. -/
-theorem RecordsLinks.of_forall (h : ∀ e, G.IsLink e (ends e).1 (ends e).2) :
-    RecordsLinks G ends :=
-  fun e _ => h e
+@[deprecated (since := "2026-11-05")]
+alias PanelHingeFramework.RecordsLinks.mono := Graph.RecordsLinks.mono
 
-/-- **The condition from the pair form** (`fmlnote:panel-hinge-nondegenerate`): if at every link of
-`G` at `e` from `u` to `v` the pair `ends e` is `(u, v)` or `(v, u)`, then `ends` records the links
-of `G`. This is the form of Case III's selector hypotheses (`hrec`, `hQrec`);
-`recordsLinks_iff_eq_or_swap` compares the pair coordinatewise. -/
-theorem RecordsLinks.of_pair (h : ∀ e u v, G.IsLink e u v → ends e = (u, v) ∨ ends e = (v, u)) :
-    RecordsLinks G ends := by
-  refine recordsLinks_iff_eq_or_swap.mpr fun e u v he => ?_
-  rcases h e u v he with h' | h' <;> simp [h']
+@[deprecated (since := "2026-11-05")]
+alias PanelHingeFramework.RecordsLinks.induce := Graph.RecordsLinks.induce
 
-/-- **The condition from a subgraph and two edges at a body** (a step of
-`lem:case-III-candidate-dispatch-d3` and `lem:case-III-chain-dispatch`, through
-`case_III_realization_of_rank`): let `ends` record the links of `G'`, every link of `G'` be one of
-`G` (`hle`), `e_a` and `e_b` link `v` to `a` and to `b` in `G` with `ends e_a = (v, a)` and
-`ends e_b = (v, b)`, and every link of `G` be at `e_a`, at `e_b` or a link of `G'` (`hsplit`). Then
-`ends` records the links of `G`. In Case III, `G'` is `G − v` and `e_a`, `e_b` are the two edges at
-the body `v` of degree two. -/
-theorem RecordsLinks.of_split (hG' : RecordsLinks G' ends)
-    (hle : ∀ e u w, G'.IsLink e u w → G.IsLink e u w)
-    {e_a e_b : β} {v a b : α} (hG_ea : G.IsLink e_a v a) (hends_ea : ends e_a = (v, a))
-    (hG_eb : G.IsLink e_b v b) (hends_eb : ends e_b = (v, b))
-    (hsplit : ∀ e u w, G.IsLink e u w → e = e_a ∨ e = e_b ∨ G'.IsLink e u w) :
-    RecordsLinks G ends := by
-  refine recordsLinks_iff_forall_isLink.mpr fun e u w he => ?_
-  rcases hsplit e u w he with rfl | rfl | h
-  · rw [hends_ea]; exact hG_ea
-  · rw [hends_eb]; exact hG_eb
-  · exact hle _ _ _ (hG'.isLink h)
+@[deprecated (since := "2026-11-05")]
+alias PanelHingeFramework.recordsLinks_endsOf := Graph.recordsLinks_endsOf
 
-/-- **Selectors that agree at the links** (`fmlnote:panel-hinge-nondegenerate`): if `ends` records
-the links of `G` and `ends'` agrees with it at every link of `G` (`hagree`), then `ends'` records
-them too. Case III changes a selector at labels that are not links of `G − v`
-(`case_III_candidate_dispatch`, `chainData_dispatch_interior_of_discriminator`,
-`chainData_dispatch_floor_of_discriminator`). -/
-theorem RecordsLinks.congr {ends' : β → α × α} (h : RecordsLinks G ends)
-    (hagree : ∀ e u v, G.IsLink e u v → ends e = ends' e) : RecordsLinks G ends' := by
-  refine recordsLinks_iff_forall_isLink.mpr fun e u v he => ?_
-  rw [← hagree e u v he]
-  exact h.isLink he
+@[deprecated (since := "2026-11-05")]
+alias PanelHingeFramework.RecordsLinks.map := Graph.RecordsLinks.map
 
-/-- **The condition passes to a subgraph** (`fmlnote:panel-hinge-nondegenerate`): if `ends` records
-the links of `G` and `G' ≤ G`, then `ends` records the links of `G'`, as a link of `G'` is one of
-`G` (`IsLink.of_le`). -/
-theorem RecordsLinks.mono (h : RecordsLinks G ends) (hle : G' ≤ G) : RecordsLinks G' ends :=
-  h.of_isLink_imp fun _ _ _ he => he.of_le hle
-
-/-- **The condition passes to an induced subgraph** (a step of `thm:pencil-x0-cut`,
-`thm:pencil-x0-bridge`, `thm:pencil-x0-contract-additive` and the open-ear steps, from
-`thm:pencil-x0-open-ear` to the steps at one to four interior bodies): if `ends` records the links
-of `G`, it records those of `G.induce X`, as a link of `G.induce X` is one of `G` with both ends in
-`X`. -/
-theorem RecordsLinks.induce (h : RecordsLinks G ends) (X : Set α) :
-    RecordsLinks (G.induce X) ends :=
-  h.of_isLink_imp fun _ _ _ he => he.1
-
-/-- **The endpoint choice records the links** (`fmlnote:graph-operations`): `G.endsOf` records the
-links of `G` (`Graph.isLink_endsOf`). -/
-theorem recordsLinks_endsOf [Inhabited α] (G : Graph α β) : RecordsLinks G G.endsOf :=
-  fun _ he => G.isLink_endsOf he
-
-/-- **The image of a selector records the links of the image graph** (a step of
-`lem:rank-transport-relabel-of-le-finrank`, `lem:rank-polynomial-IH-relabel` and `lem:claim-6-4`):
-if `ends` records the links of `Gc`, then `e ↦ (f (ends e).1, f (ends e).2)` records those of
-`Gc.map f`. A link of `Gc.map f` at `e` is the image under `f` of a link of `Gc` at `e`
-(`Graph.map_isLink`), so `e` links the ends that `ends` gives it in `Gc`, and their images in
-`Gc.map f`. With `Gc = G ＼ E(H)` and `f = Graph.collapseTo r V(H)`, `Gc.map f` is the contraction
-`G.rigidContract H r`. -/
-theorem RecordsLinks.map {Gc : Graph α β} (h : RecordsLinks Gc ends) (f : α → α) :
-    RecordsLinks (Gc.map f) fun e => (f (ends e).1, f (ends e).2) := by
-  refine recordsLinks_iff_forall_isLink.mpr fun e u v he => ?_
-  rw [Graph.map_isLink] at he ⊢
-  obtain ⟨x, y, hxy, -, -⟩ := he
-  exact ⟨_, _, h.isLink hxy, rfl, rfl⟩
-
-open Classical in
-/-- **A selector of `G`, relinked at the new edge, records the links of the split-off** (a step of
-`thm:pencil-x0-splitoff`, `lem:pencil-splitoff-special-rank`, `thm:pencil-x0-open-ear-two-orbit`,
-`thm:pencil-x0-open-ear-three` and `thm:pencil-x0-open-ear-four`): if `ends` records the links of
-`G` and `e₀` links `u` and `w` in `G.splitOff v u w e₀` (`hl₀`), then `ends` with `e₀` sent to
-`(u, w)` records the links of `G.splitOff v u w e₀`. Its other links are links of `G` that avoid
-`v`. -/
-theorem RecordsLinks.update_splitOff (h : RecordsLinks G ends) {v u w : α} {e₀ : β}
-    (hl₀ : (G.splitOff v u w e₀).IsLink e₀ u w) :
-    RecordsLinks (G.splitOff v u w e₀) (Function.update ends e₀ (u, w)) := by
-  refine recordsLinks_iff_forall_isLink.mpr fun f p p' hf => ?_
-  by_cases hf1 : f = e₀
-  · subst hf1
-    rw [Function.update_self]
-    exact hl₀
-  · rw [Function.update_of_ne hf1]
-    rcases hf with ⟨-, hf, hp, hp'⟩ | ⟨h', -⟩
-    · refine Or.inl ⟨hf1, h.isLink hf, ?_, ?_⟩ <;>
-        rcases h.eq_or_swap hf with ⟨h1, h2⟩ | ⟨h1, h2⟩ <;>
-        simp only [h1, h2] <;> assumption
-    · exact absurd h' hf1
-
-end PanelHingeFramework
-
-end RecordsLinks
+@[deprecated (since := "2026-11-05")]
+alias PanelHingeFramework.RecordsLinks.update_splitOff := Graph.RecordsLinks.update_splitOff
 
 /-- **The fill-in tactic for the link condition** (`fmlnote:panel-hinge-nondegenerate`): proves
-`RecordsLinks G ends` from what is in scope. It tries the base forms (`link_base_tac`: a hypothesis
-in any of the condition's forms, the field `isLink_ends` of a framework on `G`, or the endpoint
-choice `G.endsOf`); then a base form for a larger graph, with the inclusion from `link_le_tac`
-(`RecordsLinks.mono`); then, from a base form for a graph `G'`, the record of a splitting-off of
-`G'` with the new edge's link in scope (`RecordsLinks.update_splitOff`), of an induced subgraph of
-`G'` (`RecordsLinks.induce`) or of the image of `G'` under a map of the bodies (`RecordsLinks.map`).
-It fills in the field `isLink_ends` of a structure literal and the record arguments of `ofParam` and
-`ofNormals`. Its rules come after the structure `PanelHingeFramework`. -/
+`Graph.RecordsLinks G ends` from what is in scope. It tries the base forms (`link_base_tac`: a
+hypothesis in any of the condition's forms, the field `isLink_ends` of a framework on `G`, or the
+endpoint choice `G.endsOf`); then a base form for a larger graph, with the inclusion from
+`link_le_tac` (`Graph.RecordsLinks.mono`); then, from a base form for a graph `G'`, the record of a
+splitting-off of `G'` with the new edge's link in scope (`Graph.RecordsLinks.update_splitOff`), of
+an induced subgraph of `G'` (`Graph.RecordsLinks.induce`) or of the image of `G'` under a map of the
+bodies (`Graph.RecordsLinks.map`). It fills in the field `isLink_ends` of a structure literal and
+the record arguments of `ofParam` and `ofNormals`. Its rules come after the structure
+`PanelHingeFramework`. -/
 syntax (name := linkTac) "link_tac" : tactic
 
 /-! ## The panel-hinge framework (`def:panel-hinge-framework`)
@@ -251,8 +128,8 @@ supporting `k`-extensor is the Grassmann–Cayley meet `panelSupportExtensor (no
 (`def:panel-support-extensor`). Because each edge's two endpoints are not a function of the edge
 alone in mathlib's relational `Graph`, the structure also carries an explicit endpoint selector
 `ends : β → α × α`; the supporting extensor of `e` is the meet of the two normals at `ends e`. Its
-field `isLink_ends` asks that the selector record the links of the multigraph (`RecordsLinks`), so
-the hinge at an edge is the meet at its two ends.
+field `isLink_ends` asks that the selector record the links of the multigraph
+(`Graph.RecordsLinks`), so the hinge at an edge is the meet at its two ends.
 
 The body-hinge interpretation `toBodyHinge` (`def:panel-hinge-framework`) feeds this support
 extensor into the rigidity-matrix rank theory verbatim: it is the `BodyHingeFramework`
@@ -283,7 +160,7 @@ structure PanelHingeFramework (K : Type*) [Field K] (k : ℕ) (α β : Type*) wh
   /-- The link condition (`fmlnote:panel-hinge-nondegenerate`): the selector records the links of
   the multigraph, so each edge joins the two bodies that `ends` gives it. A label outside
   `E(graph)` is unconstrained. A structure literal without the field proves it by `link_tac`. -/
-  isLink_ends : PanelHingeFramework.RecordsLinks graph ends := by link_tac
+  isLink_ends : Graph.RecordsLinks graph ends := by link_tac
 
 /-! ### The rules of `link_tac`
 
@@ -291,21 +168,22 @@ They come after the structure, as they name its field `isLink_ends`; the syntax 
 before it, for the field's default. The base forms and the inclusion of a subgraph have tactics of
 their own, `link_base_tac` and `link_le_tac`. -/
 
-/-- **The base forms of the link condition**, the first step of `link_tac`: `RecordsLinks G ends`
-from a hypothesis in scope; from the field of a framework on `G` (`PanelHingeFramework.isLink_ends`)
-or the endpoint choice `G.endsOf` (`recordsLinks_endsOf`); or from a hypothesis in the form at links
-(`recordsLinks_iff_forall_isLink`), the total form (`RecordsLinks.of_forall`), the coordinatewise
-form up to order (`recordsLinks_iff_eq_or_swap`) or the pair form (`RecordsLinks.of_pair`). -/
+/-- **The base forms of the link condition**, the first step of `link_tac`:
+`Graph.RecordsLinks G ends` from a hypothesis in scope; from the field of a framework on `G`
+(`PanelHingeFramework.isLink_ends`) or the endpoint choice `G.endsOf` (`Graph.recordsLinks_endsOf`);
+or from a hypothesis in the form at links (`Graph.recordsLinks_iff_forall_isLink`), the total form
+(`Graph.RecordsLinks.of_forall`), the coordinatewise form up to order
+(`Graph.recordsLinks_iff_eq_or_swap`) or the pair form (`Graph.RecordsLinks.of_pair`). -/
 syntax (name := linkBaseTac) "link_base_tac" : tactic
 macro_rules
   | `(tactic| link_base_tac) => `(tactic| first
   | assumption
   | exact PanelHingeFramework.isLink_ends _
-  | exact PanelHingeFramework.recordsLinks_endsOf _
-  | exact PanelHingeFramework.recordsLinks_iff_forall_isLink.mpr (by assumption)
-  | exact PanelHingeFramework.RecordsLinks.of_forall (by assumption)
-  | exact PanelHingeFramework.recordsLinks_iff_eq_or_swap.mpr (by assumption)
-  | exact PanelHingeFramework.RecordsLinks.of_pair (by assumption))
+  | exact Graph.recordsLinks_endsOf _
+  | exact Graph.recordsLinks_iff_forall_isLink.mpr (by assumption)
+  | exact Graph.RecordsLinks.of_forall (by assumption)
+  | exact Graph.recordsLinks_iff_eq_or_swap.mpr (by assumption)
+  | exact Graph.RecordsLinks.of_pair (by assumption))
 
 /-- **The inclusion of a subgraph**, the side condition of `link_tac`: `G' ≤ G` from a hypothesis in
 scope; for the deletion of a body, of edges or of bodies (`Graph.removeVertex_le`,
@@ -325,27 +203,27 @@ macro_rules
 macro_rules
   | `(tactic| link_tac) => `(tactic| first
   | link_base_tac
-  | exact PanelHingeFramework.RecordsLinks.mono (by assumption)
+  | exact Graph.RecordsLinks.mono (by assumption)
       (by link_le_tac)
-  | exact PanelHingeFramework.RecordsLinks.mono
-      (PanelHingeFramework.recordsLinks_iff_forall_isLink.mpr (by assumption))
+  | exact Graph.RecordsLinks.mono
+      (Graph.recordsLinks_iff_forall_isLink.mpr (by assumption))
       (by link_le_tac)
-  | exact PanelHingeFramework.RecordsLinks.mono
-      (PanelHingeFramework.RecordsLinks.of_forall (by assumption))
+  | exact Graph.RecordsLinks.mono
+      (Graph.RecordsLinks.of_forall (by assumption))
       (by link_le_tac)
-  | exact PanelHingeFramework.RecordsLinks.mono
-      (PanelHingeFramework.recordsLinks_iff_eq_or_swap.mpr (by assumption))
+  | exact Graph.RecordsLinks.mono
+      (Graph.recordsLinks_iff_eq_or_swap.mpr (by assumption))
       (by link_le_tac)
-  | exact PanelHingeFramework.RecordsLinks.mono
-      (PanelHingeFramework.RecordsLinks.of_pair (by assumption))
+  | exact Graph.RecordsLinks.mono
+      (Graph.RecordsLinks.of_pair (by assumption))
       (by link_le_tac)
-  | exact PanelHingeFramework.RecordsLinks.mono (PanelHingeFramework.isLink_ends _)
+  | exact Graph.RecordsLinks.mono (PanelHingeFramework.isLink_ends _)
       (by link_le_tac)
-  | exact PanelHingeFramework.RecordsLinks.mono (PanelHingeFramework.recordsLinks_endsOf _)
+  | exact Graph.RecordsLinks.mono (Graph.recordsLinks_endsOf _)
       (by link_le_tac)
-  | exact PanelHingeFramework.RecordsLinks.update_splitOff (by link_base_tac) (by assumption)
-  | exact PanelHingeFramework.RecordsLinks.induce (by link_base_tac) _
-  | exact PanelHingeFramework.RecordsLinks.map (by link_base_tac) _)
+  | exact Graph.RecordsLinks.update_splitOff (by link_base_tac) (by assumption)
+  | exact Graph.RecordsLinks.induce (by link_base_tac) _
+  | exact Graph.RecordsLinks.map (by link_base_tac) _)
 
 namespace PanelHingeFramework
 
@@ -512,7 +390,7 @@ automatically in general position (`isGeneralPosition_ofParam`), so every hinge 
 bodies is transversal. The selector must record the links of `G` (`hlinks`, filled in by
 `link_tac`). -/
 def ofParam (G : Graph α β) (ends : β → α × α) (param : α → K)
-    (hlinks : RecordsLinks G ends := by link_tac) :
+    (hlinks : Graph.RecordsLinks G ends := by link_tac) :
     PanelHingeFramework K k α β where
   graph := G
   normal := fun a => momentCurve (param a)
@@ -520,17 +398,17 @@ def ofParam (G : Graph α β) (ends : β → α × α) (param : α → K)
 
 @[simp]
 theorem ofParam_graph (G : Graph α β) (ends : β → α × α) (param : α → K)
-    {hlinks : RecordsLinks G ends} :
+    {hlinks : Graph.RecordsLinks G ends} :
     (ofParam (k := k) G ends param).graph = G := rfl
 
 @[simp]
 theorem ofParam_ends (G : Graph α β) (ends : β → α × α) (param : α → K)
-    {hlinks : RecordsLinks G ends} :
+    {hlinks : Graph.RecordsLinks G ends} :
     (ofParam (k := k) G ends param).ends = ends := rfl
 
 @[simp]
 theorem ofParam_normal (G : Graph α β) (ends : β → α × α) (param : α → K)
-    {hlinks : RecordsLinks G ends} (a : α) :
+    {hlinks : Graph.RecordsLinks G ends} (a : α) :
     (ofParam (k := k) G ends param).normal a = momentCurve (param a) := rfl
 
 /-- **The panel framework from a free normal assignment** (the frameworks of
@@ -544,7 +422,7 @@ polynomials in `q` (`lem:rows-polynomial-in-normals`). `ofParam` is the case
 `q (a, i) = (param a)^i`, by definition. The selector must record the links of `G` (`hlinks`,
 filled in by `link_tac`). -/
 def ofNormals (G : Graph α β) (ends : β → α × α) (q : α × Fin (k + 2) → K)
-    (hlinks : RecordsLinks G ends := by link_tac) :
+    (hlinks : Graph.RecordsLinks G ends := by link_tac) :
     PanelHingeFramework K k α β where
   graph := G
   normal := fun a i => q (a, i)
@@ -552,17 +430,17 @@ def ofNormals (G : Graph α β) (ends : β → α × α) (q : α × Fin (k + 2) 
 
 @[simp]
 theorem ofNormals_graph (G : Graph α β) (ends : β → α × α) (q : α × Fin (k + 2) → K)
-    {hlinks : RecordsLinks G ends} :
+    {hlinks : Graph.RecordsLinks G ends} :
     (ofNormals (k := k) G ends q).graph = G := rfl
 
 @[simp]
 theorem ofNormals_ends (G : Graph α β) (ends : β → α × α) (q : α × Fin (k + 2) → K)
-    {hlinks : RecordsLinks G ends} :
+    {hlinks : Graph.RecordsLinks G ends} :
     (ofNormals (k := k) G ends q).ends = ends := rfl
 
 @[simp]
 theorem ofNormals_normal (G : Graph α β) (ends : β → α × α) (q : α × Fin (k + 2) → K)
-    {hlinks : RecordsLinks G ends} (a : α) :
+    {hlinks : Graph.RecordsLinks G ends} (a : α) :
     (ofNormals (k := k) G ends q).normal a = fun i => q (a, i) := rfl
 
 /-- **A framework is `ofNormals` of its own data** (where a realization `Q` of `G` is read as
@@ -573,7 +451,7 @@ theorem ofNormals_normal (G : Graph α β) (ends : β → α × α) (q : α × F
 mentions `G`, so rewriting `G` to `Q.graph` under it is not type correct; the proof substitutes
 `hG` instead. -/
 theorem ofNormals_eq_self_of_graph_eq (Q : PanelHingeFramework K k α β) {G : Graph α β}
-    (hG : Q.graph = G) {hlinks : RecordsLinks G Q.ends} :
+    (hG : Q.graph = G) {hlinks : Graph.RecordsLinks G Q.ends} :
     ofNormals G Q.ends (fun p => Q.normal p.1 p.2) hlinks = Q := by
   subst hG; rfl
 
@@ -584,7 +462,7 @@ the hinge of `ofNormals Gv endsσρ qρ` at `f` is `C(qρ(x, ·), qρ(y, ·))`, 
 `Gv`. -/
 theorem ofNormals_supportExtensor_eq_panel_of_ends
     (Gv : Graph α β) {endsσρ : β → α × α} {qρ : α × Fin (k + 2) → K}
-    {hlinks : RecordsLinks Gv endsσρ} (f : β) {x y : α} (hf : endsσρ f = (x, y)) :
+    {hlinks : Graph.RecordsLinks Gv endsσρ} (f : β) {x y : α} (hf : endsσρ f = (x, y)) :
     (ofNormals Gv endsσρ qρ).toBodyHinge.supportExtensor f
       = panelSupportExtensor (fun j => qρ (x, j)) (fun j => qρ (y, j)) := by
   simp only [toBodyHinge_supportExtensor, ofNormals_normal, ofNormals_ends, hf]
@@ -597,7 +475,8 @@ the form (`panelSupportExtensor_swap`, `annihRow_neg`), and swapping the ends ne
 (`hingeRow_swap`). Only `case_II_realization_all_k` uses it. -/
 theorem ofNormals_panelRow_eq_hingeRow_of_ends_or_swap
     (G : Graph α β) (ends : β → α × α) (q : α × Fin (k + 2) → K)
-    {hlinks : RecordsLinks G ends} {e : β} {u w : α} (hends : ends e = (u, w) ∨ ends e = (w, u))
+    {hlinks : Graph.RecordsLinks G ends} {e : β} {u w : α}
+    (hends : ends e = (u, w) ∨ ends e = (w, u))
     (t₁ t₂ : Set.powersetCard (Fin (k + 2)) k) :
     (ofNormals G ends q).toBodyHinge.panelRow ends (e, t₁, t₂)
       = BodyHingeFramework.hingeRow u w
@@ -615,7 +494,7 @@ bodies get distinct parameters and moment-curve points at distinct parameters ar
 independent (`momentCurve_pair_linearIndependent`). Only `isGeneralPosition_withMomentNormals`
 uses it. -/
 theorem isGeneralPosition_ofParam (G : Graph α β) (ends : β → α × α) {param : α → K}
-    {hlinks : RecordsLinks G ends} (hparam : Function.Injective param) :
+    {hlinks : Graph.RecordsLinks G ends} (hparam : Function.Injective param) :
     (ofParam (k := k) G ends param).IsGeneralPosition := by
   intro a b hab
   simp only [ofParam_normal]
@@ -635,7 +514,7 @@ direction part of a moment-curve point is, by definition, the moment-curve point
 and two of those at distinct parameters are linearly independent
 (`momentCurve_pair_linearIndependent`). -/
 theorem isNonparallel_ofParam (hk : 1 ≤ k) (G : Graph α β) (ends : β → α × α) {param : α → K}
-    {hlinks : RecordsLinks G ends} (hparam : Function.Injective param) :
+    {hlinks : Graph.RecordsLinks G ends} (hparam : Function.Injective param) :
     (ofParam (k := k) G ends param).IsNonparallel := by
   obtain ⟨k, rfl⟩ := Nat.exists_eq_add_of_le' hk
   exact fun a b hab => momentCurve_pair_linearIndependent fun h => hab (hparam h)
@@ -671,7 +550,7 @@ the proof of `lem:case-I-realization`. The formal proofs of `lem:case-I-realizat
 `lem:theorem-55-base-producer-empty`, `lem:theorem-55-base-producer-single` and
 `lem:pencil-jj-chart` use it as well. -/
 theorem exists_generalPosition_polynomial [Finite α] (G : Graph α β) (ends : β → α × α)
-    (hlinks : RecordsLinks G ends := by link_tac) :
+    (hlinks : Graph.RecordsLinks G ends := by link_tac) :
     ∃ Q : MvPolynomial (α × Fin (k + 2)) K,
       (∀ param : α → K, Function.Injective param →
         MvPolynomial.eval (fun p => momentCurve (param p.1) p.2) Q ≠ 0) ∧
@@ -708,7 +587,7 @@ direction parts `Fin.init` of normals in `K^(k+2)` are normals in `K^(k+1)`, so 
 polynomial of `exists_generalPosition_polynomial` one dimension lower, its variables renamed along
 `Fin.castSucc`. The moment curve one dimension lower is the direction part of the moment curve. -/
 theorem exists_nonparallel_polynomial [Finite α] (hk : 1 ≤ k) (G : Graph α β)
-    (ends : β → α × α) (hlinks : RecordsLinks G ends := by link_tac) :
+    (ends : β → α × α) (hlinks : Graph.RecordsLinks G ends := by link_tac) :
     ∃ Q : MvPolynomial (α × Fin (k + 2)) K,
       (∀ param : α → K, Function.Injective param →
         MvPolynomial.eval (fun p => momentCurve (param p.1) p.2) Q ≠ 0) ∧
@@ -726,8 +605,9 @@ theorem exists_nonparallel_polynomial [Finite α] (hk : 1 ≤ k) (G : Graph α �
 underlying multigraph of `P` by a subgraph `G' ≤ P.graph` (`hle`), keeping the per-body panel
 normals `normal` and the endpoint selector `ends`, hence every panel support extensor. The panel
 analogue of `BodyHingeFramework.withGraph`, restricted to subgraphs: a link of `G'` is one of
-`P.graph`, so the selector records it (`RecordsLinks.mono`), and the hinge of `P.withGraph G' hle`
-at a link of `G'` is the meet of the panels of its ends. No main result uses it. -/
+`P.graph`, so the selector records it (`Graph.RecordsLinks.mono`), and the hinge of
+`P.withGraph G' hle` at a link of `G'` is the meet of the panels of its ends. No main result uses
+it. -/
 def withGraph (P : PanelHingeFramework K k α β) (G' : Graph α β) (hle : G' ≤ P.graph) :
     PanelHingeFramework K k α β where
   graph := G'
@@ -774,7 +654,7 @@ the index and the hinge `C`, which reads the normals only at those two bodies, a
 the graph. Katoh and Tanigawa's `(G, p₁)` keeps the hinges of the edges of `G_v`, so these edges
 have the same rows in `R(G, p₁)` as in `R(G_v^{ab}, q)` (KT eq. (6.13)). No declaration uses it. -/
 theorem ofNormals_panelRow_eq_of_ends_seed_eq (G Gv : Graph α β) (ends : β → α × α)
-    {hlinks : RecordsLinks G ends} {hlinks' : RecordsLinks Gv ends}
+    {hlinks : Graph.RecordsLinks G ends} {hlinks' : Graph.RecordsLinks Gv ends}
     (q₀ q : α × Fin (k + 2) → K) (e : β)
     (h₁ : (fun i => q₀ ((ends e).1, i)) = fun i => q ((ends e).1, i))
     (h₂ : (fun i => q₀ ((ends e).2, i)) = fun i => q ((ends e).2, i))
@@ -865,7 +745,7 @@ theorem withNormal_normal_of_ne (P : PanelHingeFramework K k α β) (v : α) (n 
 assignment `fun p ↦ if p.1 = v then n p.2 else q p`, gives `(ofNormals G ends q).withNormal v n`.
 The two frameworks have the same graph and selector, and their normals agree by cases on `a = v`. -/
 theorem ofNormals_update_eq_withNormal (G : Graph α β) (ends : β → α × α)
-    {hlinks : RecordsLinks G ends}
+    {hlinks : Graph.RecordsLinks G ends}
     (q : α × Fin (k + 2) → K) (v : α) (n : Fin (k + 2) → K) :
     ofNormals (k := k) G ends (fun p => if p.1 = v then n p.2 else q p)
       = (ofNormals (k := k) G ends q).withNormal v n := by
@@ -1010,7 +890,7 @@ def HasFullRankRealization (K : Type*) [Field K] (k : ℕ) (G : Graph α β) : P
 panel-hinge framework `Q` on `G` (`Q.graph = G`) has normals in general position
 (`Q.IsGeneralPosition`) and rows of rank `D(|V(G)| − 1) − def(G̃)`, with the deficiency read at `n`
 (`G.deficiency n`). Its endpoint selector `Q.ends` gives each link of `G` its two ends, in either
-order, as every panel-hinge framework's does (`isLink_ends`, `RecordsLinks.eq_or_swap`).
+order, as every panel-hinge framework's does (`isLink_ends`, `Graph.RecordsLinks.eq_or_swap`).
 
 KT Theorem 5.5 gives a realization that is nonparallel if `G` is simple (KT p. 670), and the normals
 of a nonparallel realization are in general position (`def:panel-general-position`). The formal

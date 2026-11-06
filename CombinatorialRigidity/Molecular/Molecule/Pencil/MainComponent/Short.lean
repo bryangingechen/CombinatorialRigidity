@@ -81,7 +81,7 @@ holds, unlike the rank bound (`exists_mvPolynomial_le_finrank_sup_span_pointJoin
 * `splitOff_ear_four` and `splitOff_ear_three`: steps of the two, `G″` has the open ear
   `a − x 0 − x 2 − x 3 − b`, resp. `a − x 0 − x 2 − b`, on `V₁`; `induce_splitOff_ear`, with the
   same `G[V₁]`. A selector of `G`, relinked at the freed label, records the links of the split-off
-  (`PanelHingeFramework.RecordsLinks.update_splitOff`).
+  (`Graph.RecordsLinks.update_splitOff`).
 * `Graph.exists_earBase_splitOff` and `Graph.X0Attains.of_openEar_splitOff`: steps of the two, the
   base data, and the two choices of ear data and the count, given that `x 1` can be put back off a
   polynomial in the ear data.
@@ -436,10 +436,10 @@ theorem _root_.Graph.exists_earBase_splitOff [Infinite K] [Finite α] {G : Graph
   set H := G.splitOff v u w e₀ with hH
   have hle : G.induce V₁ ≤ H := hind ▸ Graph.induce_le (hcover ▸ Set.subset_union_left)
   set ends'' := Function.update ends e₀ (u, w) with hends''def
-  have hendsG := PanelHingeFramework.recordsLinks_iff_forall_isLink.mpr hends
+  have hendsG := Graph.recordsLinks_iff_forall_isLink.mpr hends
   have hends'' : ∀ f p p', H.IsLink f p p' → H.IsLink f (ends'' f).1 (ends'' f).2 :=
     fun _ _ _ => (hendsG.update_splitOff hl₀).isLink
-  have hendsI := PanelHingeFramework.recordsLinks_iff_forall_isLink.mp (hendsG.induce V₁)
+  have hendsI := Graph.recordsLinks_iff_forall_isLink.mp (hendsG.induce V₁)
   have hnot : ∀ f p p', (G.induce V₁).IsLink f p p' → f ≠ e₀ := by
     rintro f p p' ⟨hf, hp, hp'⟩ rfl
     rcases he₀ p p' hf with h | h
@@ -644,7 +644,7 @@ theorem _root_.Graph.X0Attains.of_openEar_splitOff [Infinite K] [Finite α] [Fin
   set ends'' := Function.update ends e₀ (u, w)
   have hends'' : ∀ f p p', G''.IsLink f p p' → G''.IsLink f (ends'' f).1 (ends'' f).2 :=
     fun _ _ _ =>
-      ((PanelHingeFramework.recordsLinks_iff_forall_isLink.mpr hends).update_splitOff hl₀'').isLink
+      ((Graph.recordsLinks_iff_forall_isLink.mpr hends).update_splitOff hl₀'').isLink
   obtain ⟨q', z₁, la, lb, sstar, ρM, hqm', hadm₂, hpicstar, hrk₂, hne₂, hz₁s, hlas, hlbs, hρG,
       hρ2, hrk₁, hrk₁''⟩ :=
     Graph.exists_earBase_splitOff hm hcover'' hinj'' hyV₁ ha hb hab hpath'' hsep'' hl₀'' he₀ hind

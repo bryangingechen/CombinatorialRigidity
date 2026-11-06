@@ -264,7 +264,7 @@ No declaration uses it: the count of KT eq. (6.12), `case_II_placement_rank`, ta
 `G_v^{ab}` into the row space of `R(G, q₀)` instead. -/
 theorem PanelHingeFramework.exists_independent_panelRow_transport {α β : Type*}
     (G₁ G₂ : Graph α β) (ends₁ ends₂ : β → α × α) (q₁ q₂ : α × Fin (k + 2) → K)
-    {hlinks₁ : RecordsLinks G₁ ends₁} {hlinks₂ : RecordsLinks G₂ ends₂}
+    {hlinks₁ : Graph.RecordsLinks G₁ ends₁} {hlinks₂ : Graph.RecordsLinks G₂ ends₂}
     {s₁ s₂ : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)}
     (f : s₂ → s₁) (hf : Function.Injective f)
     (hrow : ∀ i : s₂, (PanelHingeFramework.ofNormals G₂ ends₂ q₂).toBodyHinge.panelRow ends₂
@@ -716,7 +716,7 @@ independent at every `q` with `Q(q) ≠ 0`. The coordinates of the rows in the s
 (`exists_polynomial_ne_zero_of_linearIndependent_at`). -/
 theorem PanelHingeFramework.exists_rankPolynomial_of_linearIndependent [Finite α] [Finite β]
     (G : Graph α β) (ends : β → α × α) {q₀ : α × Fin (k + 2) → K}
-    {hlinks : RecordsLinks G ends}
+    {hlinks : Graph.RecordsLinks G ends}
     {s : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)}
     (hindep : LinearIndependent K
       (fun i : s => (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.panelRow ends i)) :
@@ -984,7 +984,7 @@ theorem PanelHingeFramework.hasNonparallelFullRankRealization_of_generic [Infini
     HasNonparallelFullRankRealization K k n G := by
   obtain ⟨Q, hQg, hQgp, hQrank⟩ := h
   have hends : ∀ e u v, G.IsLink e u v → G.IsLink e (Q.ends e).1 (Q.ends e).2 :=
-    recordsLinks_iff_forall_isLink.mp (hQg ▸ Q.isLink_ends)
+    Graph.recordsLinks_iff_forall_isLink.mp (hQg ▸ Q.isLink_ends)
   have hself : ofNormals G Q.ends (fun p => Q.normal p.1 p.2) = Q :=
     ofNormals_eq_self_of_graph_eq Q hQg
   -- The rank polynomial at the normals of `Q`, whose hinges are nondegenerate.

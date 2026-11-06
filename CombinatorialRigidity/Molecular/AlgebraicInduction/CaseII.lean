@@ -67,8 +67,8 @@ theorem PanelHingeFramework.case_II_placement_rank [DecidableEq α] [Finite α] 
     (hav : a ≠ v) (hbv : b ≠ v) (hG_ea : G.IsLink e_a v a) (hG_eb : G.IsLink e_b v b)
     (hclv : ∀ e x, G.IsLink e v x → e = e_a ∨ e = e_b)
     (he₀ : e₀ ∉ E(G.removeVertex v))
-    (ends : β → α × α) (hlinks : RecordsLinks G ends)
-    (endsv : β → α × α) (hlinksv : RecordsLinks (G.splitOff v a b e₀) endsv)
+    (ends : β → α × α) (hlinks : Graph.RecordsLinks G ends)
+    (endsv : β → α × α) (hlinksv : Graph.RecordsLinks (G.splitOff v a b e₀) endsv)
     {q : α × Fin (k + 2) → K}
     (hne : ∀ e, (G.splitOff v a b e₀).IsLink e (endsv e).1 (endsv e).2 →
       (PanelHingeFramework.ofNormals (G.splitOff v a b e₀) endsv q).toBodyHinge.supportExtensor e
@@ -356,8 +356,8 @@ theorem PanelHingeFramework.case_II_placement [DecidableEq α] [Finite α] [Fini
     (hav : a ≠ v) (hbv : b ≠ v) (hG_ea : G.IsLink e_a v a) (hG_eb : G.IsLink e_b v b)
     (hclv : ∀ e x, G.IsLink e v x → e = e_a ∨ e = e_b)
     (he₀ : e₀ ∉ E(G.removeVertex v))
-    (ends : β → α × α) (hlinks : RecordsLinks G ends)
-    (endsv : β → α × α) (hlinksv : RecordsLinks (G.splitOff v a b e₀) endsv)
+    (ends : β → α × α) (hlinks : Graph.RecordsLinks G ends)
+    (endsv : β → α × α) (hlinksv : Graph.RecordsLinks (G.splitOff v a b e₀) endsv)
     {q : α × Fin (k + 2) → K}
     (hne : ∀ e, (G.splitOff v a b e₀).IsLink e (endsv e).1 (endsv e).2 →
       (PanelHingeFramework.ofNormals (G.splitOff v a b e₀) endsv q).toBodyHinge.supportExtensor e
@@ -567,7 +567,7 @@ theorem PanelHingeFramework.case_II_realization_all_k
   -- ── Step 3: the induction hypothesis at `Gab`, at deficiency `c − 1`. ──────────────────────────
   obtain ⟨Q, hQg, hQgp, hQrank⟩ := (hIH (c - 1) Gab hGab hGab_ne hGab_lt).1 hGab_simple
   -- Its selector records the links of `Gab` (the field `isLink_ends`, as `Q.graph = Gab`).
-  have hQrec : PanelHingeFramework.RecordsLinks Gab Q.ends := hQg ▸ Q.isLink_ends
+  have hQrec : Graph.RecordsLinks Gab Q.ends := hQg ▸ Q.isLink_ends
   -- Set up the IH normal function q := Q.normal.
   set q : α × Fin (k + 2) → K := fun p => Q.normal p.1 p.2 with hq_def
   -- ── Step 4: the normals `n_a` and `n_b` of `a` and `b`. ────────────────────────────────────────
@@ -623,7 +623,7 @@ theorem PanelHingeFramework.case_II_realization_all_k
   set q₀ : α × Fin (k + 2) → K :=
     fun p => if p.1 = v then (n_a + (1 : K) • n_b) p.2 else q p with hq₀_def
   obtain ⟨hne_G, hcount⟩ := PanelHingeFramework.case_II_placement_rank G hav hbv hG_ea hG_eb hclv
-    (Graph.notMem_edgeSet_removeVertex he₀ v) ends (PanelHingeFramework.recordsLinks_endsOf G)
+    (Graph.notMem_edgeSet_removeVertex he₀ v) ends (Graph.recordsLinks_endsOf G)
     Q.ends hQrec hne_q hNrank_q one_ne_zero q₀ rfl
   -- ── Step 15: the count `N + (D − 1) = D(|V(G)| − 1) − c`. ──────────────────────────────────────
   have hVGab_card : V(Gab).ncard = V(G).ncard - 1 := by

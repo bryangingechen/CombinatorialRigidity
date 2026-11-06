@@ -183,7 +183,7 @@ independent by the minor of a tuple that lists them.
 rank polynomial of `exists_rankPolynomial_of_le_finrank_linking` and the polynomial of
 `exists_nonparallel_polynomial` (`MvPolynomial.exists_eval_ne_zero`). -/
 theorem exists_generalPosition4_polynomial [Finite α] (G : Graph α β) (ends : β → α × α)
-    (hlinks : PanelHingeFramework.RecordsLinks G ends := by link_tac) :
+    (hlinks : Graph.RecordsLinks G ends := by link_tac) :
     ∃ Q : MvPolynomial (α × Fin 4) ℝ,
       (∀ param : α → ℝ, Function.Injective param → (∀ a, param a ≠ 0) →
         MvPolynomial.eval (fun p => PanelHingeFramework.momentCurve (param p.1) p.2) Q ≠ 0) ∧

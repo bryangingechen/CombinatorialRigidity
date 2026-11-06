@@ -6,6 +6,7 @@ Authors: Bryan Gin-ge Chen
 module
 
 public import CombinatorialRigidity.Molecular.Deficiency.Corank
+public import CombinatorialRigidity.Mathlib.Combinatorics.Graph.RecordsLinks
 public import CombinatorialRigidity.Mathlib.GroupTheory.Perm.List
 
 /-!
@@ -31,7 +32,10 @@ from `Molecular/Deficiency.lean`, it proves:
 * removal and splitting off at a vertex (`def:graph-operations`) and their common subgraph
   (`lem:splitoff-edge-substitution`), `sec:molecular-induction-operations`, with an endpoint
   choice for the edges of `G` (`endsOf`, `fmlnote:graph-operations`) and the vertex count after
-  splitting off (`lem:reduction-measure`);
+  splitting off (`lem:reduction-measure`); the endpoint choice records the links of `G`
+  (`recordsLinks_endsOf`), a selector relinked at the new edge those of the split-off
+  (`RecordsLinks.update_splitOff`), and the image of a selector those of the image graph
+  (`RecordsLinks.map`; `Graph.RecordsLinks`, `fmlnote:panel-hinge-nondegenerate`);
 * KT Lemma 6.7(ii), that splitting off keeps the graph simple (`lem:splitoff-simple`,
   `sec:simplicity-and-adjacent-pair`), and a cycle through a vertex of degree at least three as
   a proper rigid subgraph (`lem:chain-cycle-dichotomy`);
@@ -78,7 +82,8 @@ lemma vertexSet_inducedSpan (G : Graph α β) (n : ℕ) (X : Set (β × Fin (bod
 The formalization fixes, for each edge of `G`, an ordered pair of its ends, the *endpoint
 choice* of `G` (`fmlnote:graph-operations`). The realizations of the algebraic induction take
 the ends of the edges of `G` from it, as the endpoint selector `ends : β → α × α` of a
-panel-hinge framework (`fmlnote:panel-hinge-nondegenerate`).
+panel-hinge framework (`fmlnote:panel-hinge-nondegenerate`); it records the links of `G`
+(`recordsLinks_endsOf`).
 -/
 
 open Classical in
@@ -114,6 +119,11 @@ lemma is stated for the edges of `G`: at an `e ∉ E(G)` both ends are `default`
 lemma endsOf_fst_ne_snd [Inhabited α] (G : Graph α β) [G.Loopless] {e : β} (he : e ∈ E(G)) :
     (G.endsOf e).1 ≠ (G.endsOf e).2 :=
   (G.isLink_endsOf he).ne
+
+/-- **The endpoint choice records the links** (`fmlnote:graph-operations`): `G.endsOf` records the
+links of `G` (`Graph.isLink_endsOf`). -/
+theorem recordsLinks_endsOf [Inhabited α] (G : Graph α β) : RecordsLinks G G.endsOf :=
+  fun _ he => G.isLink_endsOf he
 
 /-! ## A circuit induces a rigid subgraph (`lem:circuit-induces-rigid`; KT Lemma 3.4) -/
 
@@ -641,7 +651,12 @@ theorem contract_matroidMG_deficiency_eq [DecidableEq β] [Finite α] [Finite β
 
 Two of the operations of `def:graph-operations` (`sec:molecular-induction-operations`): the
 removal of a vertex and splitting off at a vertex (KT §4.1, p. 660). Edge-splitting and the
-contraction of a subgraph (`def:rigid-contraction`) are in `ReducibleVertex.lean`. -/
+contraction of a subgraph (`def:rigid-contraction`) are in `ReducibleVertex.lean`. A selector that
+records the links of `G` (`Graph.RecordsLinks`, `fmlnote:panel-hinge-nondegenerate`), relinked at
+the new edge, records those of the split-off (`RecordsLinks.update_splitOff`), and its image under
+a map of the vertices those of the image graph, the form of the contraction (`RecordsLinks.map`).
+The map is the `Matroid` package's `Graph.map`, which the mirror file
+`Mathlib/Combinatorics/Graph/RecordsLinks.lean` cannot import. -/
 
 /-- **Removal** `G_v = G − v` (`def:graph-operations`): delete `v` and its edges, as mathlib's
 `Graph.deleteVerts {v}`. -/
@@ -833,6 +848,43 @@ Its callers are `exists_isBase_vb_fiber_eq_one_of_removeVertex_isKDof`
 lemma removeVertex_le_splitOff {G : Graph α β} {v a b : α} {e₀ : β} (he₀ : e₀ ∉ E(G)) :
     G.removeVertex v ≤ G.splitOff v a b e₀ :=
   removeVertex_le_splitOff_of_notMem_removeVertex (notMem_edgeSet_removeVertex he₀ v)
+
+open Classical in
+/-- **A selector of `G`, relinked at the new edge, records the links of the split-off** (a step of
+`thm:pencil-x0-splitoff`, `lem:pencil-splitoff-special-rank`, `thm:pencil-x0-open-ear-two-orbit`,
+`thm:pencil-x0-open-ear-three` and `thm:pencil-x0-open-ear-four`): if `ends` records the links of
+`G` and `e₀` links `u` and `w` in `G.splitOff v u w e₀` (`hl₀`), then `ends` with `e₀` sent to
+`(u, w)` records the links of `G.splitOff v u w e₀`. Its other links are links of `G` that avoid
+`v`. -/
+theorem RecordsLinks.update_splitOff {G : Graph α β} {ends : β → α × α} (h : RecordsLinks G ends)
+    {v u w : α} {e₀ : β} (hl₀ : (G.splitOff v u w e₀).IsLink e₀ u w) :
+    RecordsLinks (G.splitOff v u w e₀) (Function.update ends e₀ (u, w)) := by
+  refine recordsLinks_iff_forall_isLink.mpr fun f p p' hf => ?_
+  by_cases hf1 : f = e₀
+  · subst hf1
+    rw [Function.update_self]
+    exact hl₀
+  · rw [Function.update_of_ne hf1]
+    rcases hf with ⟨-, hf, hp, hp'⟩ | ⟨h', -⟩
+    · refine Or.inl ⟨hf1, h.isLink hf, ?_, ?_⟩ <;>
+        rcases h.eq_or_swap hf with ⟨h1, h2⟩ | ⟨h1, h2⟩ <;>
+        simp only [h1, h2] <;> assumption
+    · exact absurd h' hf1
+
+/-- **The image of a selector records the links of the image graph** (a step of
+`lem:rank-transport-relabel-of-le-finrank`, `lem:rank-polynomial-IH-relabel` and `lem:claim-6-4`):
+if `ends` records the links of `Gc`, then `e ↦ (f (ends e).1, f (ends e).2)` records those of
+`Gc.map f`. A link of `Gc.map f` at `e` is the image under `f` of a link of `Gc` at `e`
+(`Graph.map_isLink`), so `e` links the ends that `ends` gives it in `Gc`, and their images in
+`Gc.map f`. With `Gc = G ＼ E(H)` and `f = Graph.collapseTo r V(H)`, `Gc.map f` is the contraction
+`G.rigidContract H r`. -/
+theorem RecordsLinks.map {ends : β → α × α} {Gc : Graph α β} (h : RecordsLinks Gc ends)
+    (f : α → α) :
+    RecordsLinks (Gc.map f) fun e => (f (ends e).1, f (ends e).2) := by
+  refine recordsLinks_iff_forall_isLink.mpr fun e u v he => ?_
+  rw [Graph.map_isLink] at he ⊢
+  obtain ⟨x, y, hxy, -, -⟩ := he
+  exact ⟨_, _, h.isLink hxy, rfl, rfl⟩
 
 /-- **When `G_v^{ab}` is simple** (a step of `lem:splitoff-simple`): `G_v^{ab}` is simple if none
 of its links joins a vertex to itself (`hloop`) and any two of its links between the same two

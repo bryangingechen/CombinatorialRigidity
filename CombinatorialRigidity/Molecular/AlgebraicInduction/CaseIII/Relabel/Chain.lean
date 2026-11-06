@@ -94,7 +94,7 @@ takes the record of the links of `G` (`hlinks`) explicitly, as `shiftBodyFramewo
 and `ofNormals` reaches the subgraph `G − v_{s+1}` from it by `link_tac`. -/
 noncomputable def _root_.Graph.ChainData.shiftBodyFrameworkAsc [DecidableEq α] {G : Graph α β}
     {n : ℕ} (cd : G.ChainData n) {s : ℕ} (hs : s + 1 < cd.d + 1) (ends : β → α × α)
-    (hlinks : PanelHingeFramework.RecordsLinks G ends) (q : α × Fin (k + 2) → K) :
+    (hlinks : Graph.RecordsLinks G ends) (q : α × Fin (k + 2) → K) :
     BodyHingeFramework K k α β :=
   (PanelHingeFramework.ofNormals (cd.shiftBodyGraph hs) ends (cd.shiftSeedAdv q s)).toBodyHinge
 
@@ -105,7 +105,7 @@ noncomputable def _root_.Graph.ChainData.shiftBodyFrameworkAsc [DecidableEq α] 
 function of `s`, an argument filled in by `link_tac` would take the applied `s` in its place. -/
 noncomputable def _root_.Graph.ChainData.shiftBodyFrameworkAscTotal [DecidableEq α] {G : Graph α β}
     {n : ℕ} (cd : G.ChainData n) (ends : β → α × α)
-    (hlinks : PanelHingeFramework.RecordsLinks G ends) (q : α × Fin (k + 2) → K) :
+    (hlinks : Graph.RecordsLinks G ends) (q : α × Fin (k + 2) → K) :
     ℕ → BodyHingeFramework K k α β :=
   fun s => if h : s + 1 < cd.d + 1 then cd.shiftBodyFrameworkAsc h ends hlinks q
     else cd.shiftBodyFrameworkAsc (s := 0) (by have := cd.hd; omega) ends hlinks q
@@ -113,7 +113,7 @@ noncomputable def _root_.Graph.ChainData.shiftBodyFrameworkAscTotal [DecidableEq
 /-- For `s + 1 ≤ d`, `shiftBodyFrameworkAscTotal s` is `shiftBodyFrameworkAsc s`. -/
 theorem _root_.Graph.ChainData.shiftBodyFrameworkAscTotal_eq [DecidableEq α] {G : Graph α β}
     {n : ℕ} (cd : G.ChainData n) (ends : β → α × α)
-    (hlinks : PanelHingeFramework.RecordsLinks G ends) (q : α × Fin (k + 2) → K) {s : ℕ}
+    (hlinks : Graph.RecordsLinks G ends) (q : α × Fin (k + 2) → K) {s : ℕ}
     (hs : s + 1 < cd.d + 1) :
     cd.shiftBodyFrameworkAscTotal ends hlinks q s = cd.shiftBodyFrameworkAsc hs ends hlinks q := by
   rw [Graph.ChainData.shiftBodyFrameworkAscTotal, dite_eq_left hs]
@@ -137,14 +137,14 @@ theorem _root_.Graph.ChainData.shiftBodyListAsc_foldl_mem_span_rigidityRows
     {φ : Module.Dual K (α → ScrewSpace K k)}
     (hφ : φ ∈ Submodule.span K
       (cd.shiftBodyFrameworkAsc (s := 0) (by have := i.2; omega) ends
-      (PanelHingeFramework.RecordsLinks.of_pair hrec) q).rigidityRows) :
+      (Graph.RecordsLinks.of_pair hrec) q).rigidityRows) :
     ((cd.shiftBodyListAsc i).foldl
         (fun T b => (BodyHingeFramework.wstep (k := k) b.1 b.2.1 b.2.2).comp T) LinearMap.id) φ
       ∈ Submodule.span K
           (cd.shiftBodyFrameworkAsc (s := (i : ℕ) - 1) (by have := i.2; omega) ends
-      (PanelHingeFramework.RecordsLinks.of_pair hrec) q).rigidityRows
+      (Graph.RecordsLinks.of_pair hrec) q).rigidityRows
             := by
-  have hG := PanelHingeFramework.RecordsLinks.of_pair hrec
+  have hG := Graph.RecordsLinks.of_pair hrec
   have hiv : (i : ℕ) < cd.d := i.2
   -- The frameworks `shiftBodyFrameworkAscTotal`, and the label `edge (s + 2)` at step `s` (any
   -- label past the range: the moves reach only `s ≤ i − 2 < d`).
@@ -378,7 +378,7 @@ theorem PanelHingeFramework.chainData_bottom_relabel
         φ = BodyHingeFramework.hingeRow
             (cd.vtx (⟨2, by have := i.isLt; omega⟩ : Fin cd.d).castSucc)
             (cd.vtx (⟨0, by have := i.isLt; omega⟩ : Fin cd.d).castSucc) ρ')
-    {hlinks : PanelHingeFramework.RecordsLinks (G.removeVertex (cd.vtx i.castSucc))
+    {hlinks : Graph.RecordsLinks (G.removeVertex (cd.vtx i.castSucc))
       (fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
           (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2))} :
     (LinearMap.funLeft K (ScrewSpace K k) (cd.shiftPerm i.castSucc).symm).dualMap φ ∈
@@ -523,7 +523,7 @@ theorem PanelHingeFramework.case_III_bottom_relabel
       ∃ ρ' : Module.Dual K (ScrewSpace K k),
         ρ' (panelSupportExtensor (fun i => q (a, i)) (fun i => q (b, i))) = 0 ∧
         φ = BodyHingeFramework.hingeRow a b ρ')
-    {hlinks : PanelHingeFramework.RecordsLinks (G.removeVertex a) ends₃} :
+    {hlinks : Graph.RecordsLinks (G.removeVertex a) ends₃} :
     (LinearMap.funLeft K (ScrewSpace K k) (Equiv.swap a v)).dualMap φ ∈
       (PanelHingeFramework.ofNormals (G.removeVertex a) ends₃
         (fun p => q (Equiv.swap a v p.1, p.2))).toBodyHinge.rigidityRows ∨

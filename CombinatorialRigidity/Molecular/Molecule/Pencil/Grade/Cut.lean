@@ -140,8 +140,8 @@ theorem _root_.Graph.X0AttainsGrade.of_cutVertex [Infinite K] [Finite α] [Finit
   set ends := G.endsOf with hendsdef
   have hends : ∀ e u w, G.IsLink e u w → G.IsLink e (ends e).1 (ends e).2 :=
     fun e _ _ he => G.isLink_endsOf he.edge_mem
-  have hendsG := PanelHingeFramework.recordsLinks_iff_forall_isLink.mpr hends
-  have hendsI (X : Set α) := PanelHingeFramework.recordsLinks_iff_forall_isLink.mp (hendsG.induce X)
+  have hendsG := Graph.recordsLinks_iff_forall_isLink.mpr hends
+  have hendsI (X : Set α) := Graph.recordsLinks_iff_forall_isLink.mp (hendsG.induce X)
   obtain ⟨q, hq⟩ := MvPolynomial.exists_eval_ne_zero (mul_ne_zero (mul_ne_zero hP₁ hP₂) hPm)
   rw [map_mul, map_mul] at hq
   obtain ⟨-, R₁, ⟨z₁, hz₁, hR₁⟩, hatt₁⟩ := hgood₁ q (left_ne_zero_of_mul (left_ne_zero_of_mul hq))
@@ -244,8 +244,8 @@ theorem _root_.Graph.X0AttainsGrade.of_bridgePath [Infinite K] [Finite α] [Fini
   set ends := G.endsOf with hendsdef
   have hends : ∀ f u w, G.IsLink f u w → G.IsLink f (ends f).1 (ends f).2 :=
     fun f _ _ hf => G.isLink_endsOf hf.edge_mem
-  have hendsG := PanelHingeFramework.recordsLinks_iff_forall_isLink.mpr hends
-  have hendsI (X : Set α) := PanelHingeFramework.recordsLinks_iff_forall_isLink.mp (hendsG.induce X)
+  have hendsG := Graph.recordsLinks_iff_forall_isLink.mpr hends
+  have hendsI (X : Set α) := Graph.recordsLinks_iff_forall_isLink.mp (hendsG.induce X)
   obtain ⟨q, hq⟩ := MvPolynomial.exists_eval_ne_zero (mul_ne_zero (mul_ne_zero hP₁ hP₂) hPm)
   rw [map_mul, map_mul] at hq
   obtain ⟨-, R₁, ⟨z₁, hz₁, hR₁⟩, hatt₁⟩ := hgood₁ q (left_ne_zero_of_mul (left_ne_zero_of_mul hq))

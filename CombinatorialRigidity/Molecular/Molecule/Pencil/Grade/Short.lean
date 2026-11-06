@@ -276,10 +276,10 @@ theorem _root_.Graph.exists_earBase_splitOff_grade [Infinite K] [Finite α] {G :
   set H := G.splitOff v u w e₀ with hH
   have hle : G.induce V₁ ≤ H := hind ▸ Graph.induce_le (hcover ▸ Set.subset_union_left)
   set ends'' := Function.update ends e₀ (u, w) with hends''def
-  have hendsG := PanelHingeFramework.recordsLinks_iff_forall_isLink.mpr hends
+  have hendsG := Graph.recordsLinks_iff_forall_isLink.mpr hends
   have hends'' : ∀ f p p', H.IsLink f p p' → H.IsLink f (ends'' f).1 (ends'' f).2 :=
     fun _ _ _ => (hendsG.update_splitOff hl₀).isLink
-  have hendsI := PanelHingeFramework.recordsLinks_iff_forall_isLink.mp (hendsG.induce V₁)
+  have hendsI := Graph.recordsLinks_iff_forall_isLink.mp (hendsG.induce V₁)
   have hnot : ∀ f p p', (G.induce V₁).IsLink f p p' → f ≠ e₀ := by
     rintro f p p' ⟨hf, hp, hp'⟩ rfl
     rcases he₀ p p' hf with h | h
@@ -639,7 +639,7 @@ theorem _root_.Graph.X0AttainsGrade.of_openEar_splitOff_of_base [Infinite K] [Fi
   set ends'' := Function.update ends e₀ (u, w)
   have hends'' : ∀ f p p', G''.IsLink f p p' → G''.IsLink f (ends'' f).1 (ends'' f).2 :=
     fun _ _ _ =>
-      ((PanelHingeFramework.recordsLinks_iff_forall_isLink.mpr hends).update_splitOff hl₀'').isLink
+      ((Graph.recordsLinks_iff_forall_isLink.mpr hends).update_splitOff hl₀'').isLink
   obtain ⟨q', z₁, zs, la, lb, sstar, ρM, hqm', hadm₂, hpicstar, hrk₂, hne₂, hz₁s, hlas, hlbs, hρG,
       hρ2, hrk₁, hrk₁'', hzs, hzsR, hz₁zs, hlaz, hlbz⟩ :=
     Graph.exists_earBase_splitOff_grade hk hcover'' hinj'' hyV₁ ha hb hab hpath'' hsep'' hl₀'' he₀
@@ -650,8 +650,8 @@ theorem _root_.Graph.X0AttainsGrade.of_openEar_splitOff_of_base [Infinite K] [Fi
   set ρJ := ρM.map (complementScrew K (m + 1)).symm.toLinearMap with hρJ
   -- the insertion hypothesis, a polynomial condition on the ear data
   -- `ρJ` is `G[V₁]`'s relative screws at the base configuration `(q*, z₁)`
-  have hendsI := PanelHingeFramework.recordsLinks_iff_forall_isLink.mp
-    ((PanelHingeFramework.recordsLinks_iff_forall_isLink.mpr hends).induce V₁)
+  have hendsI := Graph.recordsLinks_iff_forall_isLink.mp
+    ((Graph.recordsLinks_iff_forall_isLink.mpr hends).induce V₁)
   have hρJ' : ρJ = joinRelScrews (G.induce V₁) (pencilConfigPointGrade q' z₁) a b := by
     rw [hρJ, ← hρG sstar, ← map_relScrews_ofNormals_eq_joinRelScrews hends
       (fun f p p' hf => hf.of_le (Graph.induce_le (hcover ▸ Set.subset_union_left)))

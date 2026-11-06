@@ -7,7 +7,7 @@ carried over (`notes/Phase42-homes.md` *Moved to a later round*, *Candidates for
 debt, the friction log's archive sweep, a dead pair of `have`s, the splits of the four molecular
 files past the ~1500-line tripwire, and `RecordsLinks` moved to `Graph` with its link hypotheses
 restated. Seventeen tasks; no main result's statement changes.
-**Next concrete task:** task 12, `RecordsLinks` to `Graph` (*Lemma checklist*; tasks 9-10 landed, 11 reserved and unused).
+**Next concrete task:** task 13, restate the link hypotheses upstream of Case III (*Lemma checklist*; task 12 landed, 11 reserved and unused).
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -22,7 +22,7 @@ stops; the PI answers in an entry that starts `**PI, <date>:**`.
 
 ## Current state
 
-**Tasks 1-10 landed.** Task 1 (`381dcae1`): the open. Task 2 (`0edd6e7e`): the friction log's
+**Tasks 1-10 and 12 landed.** Task 1 (`381dcae1`): the open. Task 2 (`0edd6e7e`): the friction log's
 archive sweep, 22 `[resolved]` entries to `FRICTION-archive.md`; FRICTION's counts now open 8,
 mirror-candidate 8, process 2, blueprint 0, resolved 0. Task 3 (`6f227b5e`): `hax`, `hbx` deleted
 from `X0AttainsGrade.of_openEar_four`. Task 4 (`a0b498a0`): HOMES's four missing edges closed
@@ -37,9 +37,11 @@ docstring-label report unchanged), G4 (`checkdecls` silent); G6 **0 missing**, u
 implied 3070, 802 nodes, consistency OK (the built graph's 1885 edges), as at task 5.
 Task 7 (`175bcb33`): `RigidityMatrix/Basic.lean` split in two, a pure move (*Decisions*); same gates,
 G6 unchanged. Task 8 (`0f6d16a8`): `Meet.lean` split in two, a pure move (*Decisions*); same gates,
-G6 **0 missing**, unbacked 190, implied 3070, both consistency lines OK, as at task 7. Task 9 (this
-commit): `PanelLayer.lean` split in three, a pure move; same gates, G6 unchanged. Task 10 closed as a
-no-op: each split recorded its sizes in `PERFORMANCE.md` *(C)* item 3, now closed.
+G6 **0 missing**, unbacked 190, implied 3070, both consistency lines OK, as at task 7. Task 9
+(`a2d7fe04`): `PanelLayer.lean` split in three, a pure move; same gates, G6 unchanged. Task 10 closed
+as a no-op: each split recorded its sizes in `PERFORMANCE.md` *(C)* item 3, now closed. Task 12 (this
+commit): `RecordsLinks` moved to `Graph` (*Decisions*); G1, G2, G3; no pin moved or renamed, so no G4;
+G6 unchanged. FRICTION now open 7, mirrored 72, idiom 249.
 
 **Verified at the open** (2026-11-05, at `6d75d694`; a whole-tree `lake build` replays clean, 0
 warnings, 0 cache failures):
@@ -71,7 +73,8 @@ warnings, 0 cache failures):
   section `RecordsLinks`), with 14 lemmas there and `link_tac` after them; 206 mentions in 26 Lean
   files; no pin names it (two pins have `recordsLinks` in their names). Of its lemmas, only
   `recordsLinks_endsOf` and `RecordsLinks.update_splitOff` need `Induction/Operations.lean`
-  (`Graph.endsOf`, `Graph.splitOff`); the rest need only mathlib's `Graph`. `Pinning.lean` and
+  (`Graph.endsOf`, `Graph.splitOff`); the rest need only mathlib's `Graph` (task 12: not
+  `RecordsLinks.map`, whose `Graph.map` is the `Matroid` package's). `Pinning.lean` and
   `Molecule/Dictionary.lean`, which state link hypotheses, import neither `PanelHinge` nor
   `Operations` (`Operations.lean` is 2680 lines).
 - **The link hypotheses.** 92 declarations take a binder in the form at links
@@ -156,21 +159,18 @@ resolved.
 - [x] **8. Split `Meet.lean`** (`0f6d16a8`; Lean, a pure move). `Meet.lean` 672, new
   `MeetHyperplanes.lean` 908 (lines 672-1542: the `a ∨ v` section through the meet of two
   hyperplanes). Four live docstrings and two TACTICS-GOLF lines repointed.
-- [x] **9. Split `AlgebraicInduction/PanelLayer.lean`** (this commit; Lean, a pure move).
+- [x] **9. Split `AlgebraicInduction/PanelLayer.lean`** (`a2d7fe04`; Lean, a pure move).
   `PanelLayer.lean` 1162 (the panel support extensor), new `PanelHingeForms.lean` 223 (imports
   `PanelLayer`) and `DeficiencyBound.lean` 476 (imports `Deficiency`, `ColumnOperation`, not
   `PanelLayer`). 36 users import the part they use. The root lists no `PanelLayer`, so neither new
   file is added to it (reached through `Theorem55`). Also repointed task 8's `Motive.lean` mention
   of `finrank_toDualPerp_single_eq` (`Statement.lean`).
-- [x] **10. `notes/PERFORMANCE.md` *(C)* item 3** (no-op, this commit): tasks 6-9 each recorded
+- [x] **10. `notes/PERFORMANCE.md` *(C)* item 3** (no-op, `a2d7fe04`): tasks 6-9 each recorded
   their sizes there, and task 9 closed the item.
 - [ ] **11. (reserved)** for a split that does not fit its task (*One task, one dispatch*).
-- [ ] **12. `RecordsLinks` to `Graph`** (Lean; opus). `Graph.RecordsLinks` and its lemmas in the
-  `Graph` namespace, in a new low-level file importing only mathlib's `Graph` files it needs, so
-  `Pinning.lean` and `Dictionary.lean` can import it; `recordsLinks_endsOf` and `update_splitOff`
-  beside `endsOf` and `splitOff` in `Operations.lean`. Every old name a
-  `@[deprecated (since := "2026-11-05")] alias`. The 26 files' mentions and `link_tac`'s rules use
-  the new names. Resolves FRICTION *`RecordsLinks` lives in `PanelHingeFramework`…*.
+- [x] **12. `RecordsLinks` to `Graph`** (this commit; Lean). The def and 11 lemmas in the new mirror
+  `Graph/RecordsLinks.lean`, three in `Operations.lean`; 15 deprecated aliases; 33 callers renamed.
+  Resolves FRICTION *`RecordsLinks` lives in `PanelHingeFramework`…* (now `[mirrored]`).
 - [ ] **13. Restate the link hypotheses: upstream of Case III** (Lean; opus). `Pinning`,
   `Dictionary`, `GenericityDevice`, `Coupling`, `CaseI` (19 binders): each to `RecordsLinks G ends`,
   proofs through `.isLink` / `.eq_or_swap`; a downstream caller not yet restated converts with
@@ -203,9 +203,12 @@ resolved.
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 12, `RecordsLinks` to `Graph` (*Lemma checklist*; G6 at 0 missing).
-After the close: ORIGAMI's open, with
-the PI (ROADMAP *Queued post-program phases*).
+**Next concrete task:** task 13, restate the link hypotheses upstream of Case III (*Lemma
+checklist*; G6 at 0 missing). `Pinning.lean` and `Dictionary.lean` reach `Graph.RecordsLinks` by a
+`public import` of `CombinatorialRigidity.Mathlib.Combinatorics.Graph.RecordsLinks`; the three
+lemmas in `Operations.lean` (`recordsLinks_endsOf`, `RecordsLinks.update_splitOff`,
+`RecordsLinks.map`) they do not reach. After the close: ORIGAMI's open, with the PI (ROADMAP
+*Queued post-program phases*).
 
 ## Decisions made during this round
 
@@ -254,3 +257,11 @@ the PI (ROADMAP *Queued post-program phases*).
   (b) `Basic.lean` uses nothing of it; nine files import it by use (`Claim612`, `PanelLayer`, four in
   `Pencil/`, three in `Pencil/Grade/`). (c) Sweep: four docstrings and
   TACTICS-GOLF 1422, 1551 repointed; the dated records (GOLF 1470, QUIRKS 1646, 2520, 2541, 2564) stay.
+- **Task 12's shapes.** (a) The def and 11 lemmas are a mirror,
+  `Mathlib/Combinatorics/Graph/RecordsLinks.lean` (a new upstream file; mathlib's `Graph/Delete.lean`
+  its one import); `mono` goes through mathlib's `IsLink.mono`, as `IsLink.of_le` is the `Matroid`
+  package's. (b) `RecordsLinks.map` joins the two `Operations.lean` lemmas: the tree's `Graph.map` is
+  the package's, and mathlib's `Graph/Maps.lean` cannot be imported beside it (both declare
+  `Graph.map_map`). (c) The aliases are in `PanelHinge.lean`; every mention is `Graph.`-qualified
+  (in `PanelHingeFramework` a bare name resolves to the alias). (d) The root lists the mirror, beside
+  `Graph/Delete.lean`'s.
