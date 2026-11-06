@@ -45,11 +45,10 @@ exterior power past `⋀²` is used. The *radical* of a form `φ` on `⋀² V` i
   joins of the ear do not span both stars once `d ≥ 4`.
 
 Helpers whose homes are other files, moved with the next commit that edits those files
-(`notes/Phase42h.md` *Hand-off*): the `normalsJoin` lemmas `normalsJoin_sub_left`,
-`normalsJoin_zero_right`, `normalsJoinLin` and `normalsJoin_add_smul_add_smul` belong in
-`AlgebraicInduction/PanelLayer.lean`, and the `pathVertex` lemmas `pathVertex_add_smul`,
-`pathVertex_succ_castSucc`, `pathVertex_eq_of_val_eq` and `pathVertex_zero_single` in
-`MainComponent/Cut.lean`.
+(`notes/Phase42h.md` *Hand-off*): the `pathVertex` lemmas `pathVertex_add_smul`,
+`pathVertex_succ_castSucc`, `pathVertex_eq_of_val_eq` and `pathVertex_zero_single` belong in
+`MainComponent/Cut.lean`. The `normalsJoin` lemmas this file used are in
+`AlgebraicInduction/PanelLayer.lean`.
 -/
 
 @[expose] public section
@@ -79,13 +78,6 @@ theorem starGrade_smul {c : K} (hc : c ≠ 0) (y : Fin (k + 2) → K) :
     funext fun u => normalsJoin_smul_left c y u
   rw [starGrade, starGrade, h, ← Set.smul_set_range]
   exact Submodule.span_smul_eq_of_isUnit _ _ hc.isUnit
-
-/-- The join is subtractive in its first argument, from `normalsJoin_add_left` and
-`normalsJoin_smul_left`. -/
-theorem normalsJoin_sub_left (a b c : Fin (k + 2) → K) :
-    normalsJoin (a - b) c = normalsJoin (k := k) a c - normalsJoin b c := by
-  rw [sub_eq_add_neg, normalsJoin_add_left, ← neg_one_smul K b, normalsJoin_smul_left]
-  module
 
 /-- `lem:pencil-d-two-stars`, part (1), the kernel. For any `y`, `y'`, the sum of their stars is
 the kernel of `⋀²` of the quotient map `K^(k+2) → K^(k+2) ⧸ ⟨y, y'⟩`. The stars lie in it, as
@@ -127,8 +119,7 @@ theorem starGrade_sup_starGrade_eq_ker (y y' : Fin (k + 2) → K) :
       | mem x hx =>
         obtain ⟨v, rfl⟩ := hx
         have hv : v = ![v 0, v 1] := by funext i; fin_cases i <;> rfl
-        rw [exteriorPower.map_apply_ιMulti, hv]
-        change normalsJoin (v 0) (v 1) - normalsJoin (P (v 0)) (P (v 1)) ∈ _
+        rw [hv, ιMulti_pair_eq_normalsJoin, exteriorPower_map_normalsJoin]
         have : normalsJoin (v 0) (v 1) - normalsJoin (P (v 0)) (P (v 1)) =
             normalsJoin (v 0 - P (v 0)) (v 1) - normalsJoin (v 1 - P (v 1)) (P (v 0)) := by
           rw [normalsJoin_sub_left, normalsJoin_sub_left, normalsJoin_swap (v 1) (P (v 0)),
@@ -541,14 +532,6 @@ theorem exists_mvPolynomial_dual_kernel_curve [Infinite K] {σ ι κ E : Type*} 
 
 /-! ## A span containing two stars, at four or more interior bodies (`lem:pencil-d-stars-four`) -/
 
-/-- The join `w ∨ ·` with a fixed first point, as a linear map (`normalsJoin_add_right`,
-`normalsJoin_smul_right`). -/
-noncomputable def normalsJoinLin (w : Fin (k + 2) → K) :
-    (Fin (k + 2) → K) →ₗ[K] ⋀[K]^2 (Fin (k + 2) → K) where
-  toFun u := normalsJoin w u
-  map_add' := normalsJoin_add_right w
-  map_smul' t u := normalsJoin_smul_right t w u
-
 /-- A form on `⋀² K^(k+2)` that vanishes at every join is zero. -/
 theorem eq_zero_of_forall_normalsJoin_eq_zero {φ : Module.Dual K (⋀[K]^2 (Fin (k + 2) → K))}
     (h : ∀ u w, φ (normalsJoin u w) = 0) : φ = 0 :=
@@ -582,15 +565,6 @@ theorem forall_mem_normalsJoin_eq_zero_of_pivot {S : Submodule K (Fin (k + 2) �
     ∀ u ∈ S, ∀ v, φ₀ (normalsJoin u v) = 0 := by
   have hp' := h p hp (by rw [normalsJoin_self, map_zero])
   exact fun u hu => h u hu (hp' u)
-
-/-- The join of two points moving along lines, expanded in `t`:
-`(a + t a') ∨ (b + t b') = a ∨ b + t (a' ∨ b + a ∨ b') + t² (a' ∨ b')`. -/
-theorem normalsJoin_add_smul_add_smul (a a' b b' : Fin (k + 2) → K) (t : K) :
-    normalsJoin (a + t • a') (b + t • b') = normalsJoin a b +
-      t • (normalsJoin a' b + normalsJoin a b') + t ^ 2 • normalsJoin (k := k) a' b' := by
-  rw [normalsJoin_add_left, normalsJoin_add_right, normalsJoin_add_right, normalsJoin_smul_left,
-    normalsJoin_smul_left, normalsJoin_smul_right, normalsJoin_smul_right]
-  module
 
 /-- The path sequence is affine in its interior bodies: moving them along `x'` moves the sequence
 along `pathVertex 0 x' 0`, the ends fixed. -/
@@ -711,10 +685,6 @@ theorem exists_mvPolynomial_repr_starsFamily {n r : ℕ} (bρ : Fin r → ⋀[K]
       rw [MvPolynomial.comp_aeval_apply]
       simp [hPPe]
     rw [this, normalsJoinPoly_eval]
-
-/-- The join with a zero second argument vanishes. -/
-theorem normalsJoin_zero_right (a : Fin (k + 2) → K) : normalsJoin a (0 : Fin (k + 2) → K) = 0 := by
-  rw [normalsJoin_swap, normalsJoin_zero_left, neg_zero]
 
 /-- The path sequence at an index of value `i + 1` is the interior body `x i`. -/
 theorem pathVertex_eq_of_val_eq {α : Type*} {n : ℕ} (a b : α) (x : Fin n → α) {idx : Fin (n + 2)}

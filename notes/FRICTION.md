@@ -367,7 +367,7 @@ to be re-derived by re-reading entries later.
 - **Status:** open (42e's deferral, extended; tracked under PD-CARRIER's, `notes/Phase42-design.md`
   §3).
 
-### [open] The `normalsJoin` linearity and minor lemmas sit in `Pencil/Grade/Polygon.lean`, not `PanelLayer.lean`
+### [resolved] The `normalsJoin` linearity and minor lemmas sit in `Pencil/Grade/Polygon.lean`, not `PanelLayer.lean`
 - **Where it bit:** Phase 42g, `Pencil/Grade/Polygon.lean`: `normalsJoin_add_right`, `normalsJoin_smul_right`,
   `normalsJoin_zero_left` and `exists_linearMap_normalsJoin_eq` (a `2 × 2` minor as a functional on `⋀²`)
   are about `normalsJoin`, whose home is `AlgebraicInduction/PanelLayer.lean`. Phase 42h,
@@ -378,7 +378,9 @@ to be re-derived by re-reading entries later.
 - **Proposed fix:** move them beside `normalsJoin` (with `exteriorPower_map_normalsJoin`, above) with the
   next commit that edits `PanelLayer.lean` for another reason: a new declaration there rebuilds most of
   `Molecular/`.
-- **Status:** open (42c's deferral, extended; tracked under PD-STEPS, `notes/Phase42-design.md` §3).
+- **Status:** resolved (HOMES task 11): the eight declarations beside `normalsJoin` in
+  `PanelLayer.lean`, unchanged, with `exteriorPower_map_normalsJoin`; the new fold
+  `ιMulti_pair_eq_normalsJoin` (by `rfl`) replaces `starGrade_sup_starGrade_eq_ker`'s `change`.
 
 ### [open] The `pathVertex` lemmas of 42h sit in `Pencil/Grade/Stars.lean` and `Grade/Short.lean`, not `MainComponent/Cut.lean`
 - **Where it bit:** Phase 42h, `Pencil/Grade/Stars.lean`: `pathVertex_add_smul` (the path sequence
@@ -425,7 +427,7 @@ to be re-derived by re-reading entries later.
 - **Status:** open (42i's deferral, a cleanup-round fold; tracked under PD-STEPS,
   `notes/Phase42-design.md` §3).
 
-### [open] `complementScrew` sits in `Pencil/Grade/Short.lean`, not `PanelLayer.lean`
+### [resolved] `complementScrew` sits in `Pencil/Grade/Short.lean`, not `PanelLayer.lean`
 - **Where it bit:** Phase 42h, `Pencil/Grade/Short.lean`: `complementScrew K k`, the complement
   isomorphism `complementIso (j := 2)` of `⋀² K^(k+2)` onto `ScrewSpace K k` as a named
   equivalence. `Graph.X0AttainsGrade.of_openEar_splitOff` moves the hinge span to the join span
@@ -439,7 +441,10 @@ to be re-derived by re-reading entries later.
   through it, with the `normalsJoin` moves above: the next commit that edits `PanelLayer.lean` for
   another reason (a new declaration there rebuilds most of `Molecular/`). Its two companions stay
   in `Grade/Short.lean`, their one consumer.
-- **Status:** open (42h's deferral; tracked under PD-STABLE's, `notes/Phase42-design.md` §3).
+- **Status:** resolved (HOMES task 11): `complementScrew` beside `panelSupportExtensor`, unchanged,
+  with `panelSupportExtensor_eq_complementScrew` by `rfl`; the definition of `panelSupportExtensor`
+  is not restated (the round moves, it does not restate). The two companions stay in
+  `Grade/Short.lean`.
 
 ### [mirror-candidate] No `Fin.val_succAbove` or per-member `Submodule.span_range_smul_eq`; three general helpers sit in `Pencil/Grade/Short.lean`
 - **Where it bit:** Phase 42h, `Pencil/Grade/Short.lean`: `coe_succAbove_one` and
@@ -636,7 +641,7 @@ to be re-derived by re-reading entries later.
   `GenericityDevice.lean`. `Embedding.lean` keeps its import of `GenericityDevice` for
   rank–nullity.
 
-### [open] No linear-equivalence form of `contragredient`; the `normalsJoin` map lemma sits outside `PanelLayer.lean`
+### [resolved] No linear-equivalence form of `contragredient`; the `normalsJoin` map lemma sits outside `PanelLayer.lean`
 - **Where it bit:** Phase 42b, `lem:pencil-d-rank-collineation` (`Pencil/Grade/Collineation.lean`,
   `panelSupportExtensor_linearEquiv_eq_det_smul` and its caller). The screw map
   `screwEquivOfLinearEquiv` takes a `LinearEquiv`, and `Meet.lean`'s `contragredient` is a `LinearMap`;
@@ -656,11 +661,12 @@ to be re-derived by re-reading entries later.
   `Collineation.lean`'s inline proof above could call it; the move is deferred, since a new
   declaration there rebuilds most of `Molecular/`. The `k + 2 - 2` cast to `ScrewSpace K k` was no
   friction: `rfl` closes `det g • ⋀^(k+2-2) h (complementIso _ X) = det g • screwEquivOfLinearEquiv h (…)`.
-- **Status:** open, the move of `exteriorPower_map_normalsJoin` to `PanelLayer.lean` only (HOMES
-  task 11); `contragredientEquiv` landed with task 9, and `Collineation.lean`'s inline equivalence
-  calls it.
+- **Status:** resolved (HOMES tasks 9 and 11): `contragredientEquiv` beside `contragredient`, and
+  `Collineation.lean`'s inline equivalence calls it (task 9); `exteriorPower_map_normalsJoin`
+  beside `normalsJoin` in `PanelLayer.lean`, and `Collineation.lean`'s inline join is its `.symm`
+  (task 11).
 
-### [mirror-candidate] Grade-general extensor and panel lemmas live in `Pencil/Grade/Realization.lean`
+### [resolved] Grade-general extensor and panel lemmas live in `Pencil/Grade/Realization.lean`
 - **Where it bit:** Phase 42b, `lem:pencil-d-point-configuration`. The project had only grade-2 or
   `K⁴` forms: `span_range_eq_of_extensor_eq` (`Meet.lean`, two vectors),
   `extensorInPanel_panelSupportExtensor` (`PanelLayer.lean`, `Fin 4`) and
@@ -671,9 +677,10 @@ to be re-derived by re-reading entries later.
 - **Proposed fix:** move the first to `Meet.lean` and the second to `PanelLayer.lean`, each beside
   its grade-2 form, which then becomes a one-line corollary. Not done here: both files are upstream
   of most of the tree, and the commit stays on one file.
-- **Status:** open (mirror-candidate, project-internal), `extensorInPanel_panelSupportExtensor_gen`
-  only (HOMES task 11): task 9 moved `span_range_eq_of_extensor_eq_grade` into `Meet.lean`, with
-  `span_range_eq_of_extensor_eq` its `j = 2` case.
+- **Status:** resolved (HOMES tasks 9 and 11): `span_range_eq_of_extensor_eq_grade` in `Meet.lean`,
+  with `span_range_eq_of_extensor_eq` its `j = 2` case (task 9);
+  `extensorInPanel_panelSupportExtensor_gen` in `PanelLayer.lean`, with
+  `extensorInPanel_panelSupportExtensor` its `Fin 4` case, one line (task 11).
 
 ### [idiom] `C ≠ 0 → C.val ≠ 0` for a screw is `ScrewSpace.val_injective.ne hC`
 - **Where it bit:** Phase 42b, `Pencil/Grade/Realization.lean` (three sites). `ScrewSpace` has no

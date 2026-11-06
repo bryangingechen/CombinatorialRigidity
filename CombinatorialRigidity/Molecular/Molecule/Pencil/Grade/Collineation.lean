@@ -49,9 +49,9 @@ variable {α β : Type*}
 `h` of it (`⟨h x, g y⟩ = ⟨x, y⟩` for the coordinate pairing, as `contragredient_toDual_pairing`),
 `panelSupportExtensor (g n₁) (g n₂) = det g • Λ_h (panelSupportExtensor n₁ n₂)`, where `Λ_h` is the
 screw map of `h` (`def:induced-screw-map`). The join of `g n₁` and `g n₂` is the image of the join
-of `n₁` and `n₂` under `⋀² g`, and the transformation law of the complement isomorphism
-(`complementIso_map_contragredient_eq`) moves `⋀² g` across it as `det g • ⋀^k h`, which is `Λ_h`
-on `ScrewSpace K k` by definition. -/
+of `n₁` and `n₂` under `⋀² g` (`exteriorPower_map_normalsJoin`), and the transformation law of the
+complement isomorphism (`complementIso_map_contragredient_eq`) moves `⋀² g` across it as
+`det g • ⋀^k h`, which is `Λ_h` on `ScrewSpace K k` by definition. -/
 theorem panelSupportExtensor_linearEquiv_eq_det_smul
     (g h : (Fin (k + 2) → K) ≃ₗ[K] (Fin (k + 2) → K))
     (hgh : ∀ x y, (Pi.basisFun K (Fin (k + 2))).toDual (h x) (g y)
@@ -62,10 +62,8 @@ theorem panelSupportExtensor_linearEquiv_eq_det_smul
           • BodyHingeFramework.screwEquivOfLinearEquiv h (panelSupportExtensor n₁ n₂) := by
   have hjoin : normalsJoin (g n₁) (g n₂)
       = exteriorPower.map 2 (g : (Fin (k + 2) → K) →ₗ[K] (Fin (k + 2) → K))
-          (normalsJoin n₁ n₂) := by
-    rw [normalsJoin, normalsJoin, exteriorPower.map_apply_ιMulti]
-    congr 1
-    funext i; fin_cases i <;> rfl
+          (normalsJoin n₁ n₂) :=
+    (exteriorPower_map_normalsJoin _ n₁ n₂).symm
   rw [panelSupportExtensor, hjoin,
     complementIso_map_contragredient_eq _ _ (h : (Fin (k + 2) → K) →ₗ[K] (Fin (k + 2) → K))
       g.surjective hgh]

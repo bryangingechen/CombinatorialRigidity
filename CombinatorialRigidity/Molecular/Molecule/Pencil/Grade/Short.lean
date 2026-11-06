@@ -43,11 +43,11 @@ bodies (which uses the variant `_of_base`).
   discharged by `lem:pencil-d-stars-four`, `lem:pencil-d-ear-data` (3) and `lem:pencil-d-insertion`.
 
 Helpers whose homes are other files, moved with the next commit that edits those files
-(`notes/Phase42h.md` *Hand-off*): `complementScrew` belongs beside `panelSupportExtensor` in
-`AlgebraicInduction/PanelLayer.lean`; `pathVertex_comp_succAbove_one`, `pathVertex_smul_comp` and
+(`notes/Phase42h.md` *Hand-off*): `pathVertex_comp_succAbove_one`, `pathVertex_smul_comp` and
 `pathVertex_map` in `MainComponent/Cut.lean`; and the upstream candidates `coe_succAbove_one` and
 `coe_succAbove_two`, as one `Fin.val_succAbove`, in the mirror `Mathlib/Data/Fin/Basic.lean`, and
-`span_range_smul_eq` (`notes/FRICTION.md`).
+`span_range_smul_eq` (`notes/FRICTION.md`). `complementScrew` is in
+`AlgebraicInduction/PanelLayer.lean`, beside `panelSupportExtensor`.
 -/
 
 @[expose] public section
@@ -445,13 +445,6 @@ theorem _root_.Graph.exists_earBase_splitOff_grade [Infinite K] [Finite α] {G :
   · simp [hz₁def, Graph.liftingRestrict_apply, ht]
 
 /-! ## The factoring through `G″`, in every dimension -/
-
-/-- **The complement isomorphism, as the polarity from joins to screws**:
-`complementIso : ⋀² K^(k+2) ≃ ⋀^k K^(k+2)` with target `ScrewSpace K k` (the form
-`screwComplementIso` takes at every grade). -/
-noncomputable def complementScrew (K : Type*) [Field K] (k : ℕ) :
-    ⋀[K]^2 (Fin (k + 2) → K) ≃ₗ[K] ScrewSpace K k :=
-  complementIso (k := k) (j := 2) (by omega)
 
 /-- **The hinges of `ofNormals` along a family of links are the polar images of the joins**
 (`span_supportExtensor_comp_eq_map_pointJoin` at every grade): the span of the hinges at the labels

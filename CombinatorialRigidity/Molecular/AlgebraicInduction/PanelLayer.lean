@@ -22,11 +22,13 @@ panel by a normal vector in `K^(k+2)`, in homogeneous coordinates, and the hinge
 normals `n₁` and `n₂` by its extensor `C(n₁, n₂) = *(n₁ ∨ n₂)`, the panel support extensor
 (`def:panel-support-extensor`). As in `RigidityMatrix/Basic.lean`, `d = k + 1`. The file proves:
 
-* for the join `normalsJoin n₁ n₂` of two normals and the panel support extensor: linearity in the
-  first normal, the sign under a swap, that they are nonzero iff the normals are linearly
-  independent, that panel support extensors are independent iff their joins are
+* for the join `normalsJoin n₁ n₂` of two normals and the panel support extensor: linearity in
+  each normal (the join in the second as the linear map `normalsJoinLin`), the sign under a swap,
+  the join's `2 × 2` minors as forms on `⋀²` and its image under `⋀²f` for a linear map `f`, the
+  complement isomorphism as the equivalence `complementScrew`, that they are nonzero iff the normals
+  are linearly independent, that panel support extensors are independent iff their joins are
   (`lem:panel-support-extensor-independence`), and that the panel support extensor is a join of
-  `d − 1` vectors of both panels (`lem:panel-support-extensor-join`);
+  `d − 1` vectors of both panels, so lies in both (`lem:panel-support-extensor-join`);
 * vectors orthogonal to given normals, two independent extensors in one panel
   (`lem:extensor-pair-in-panel`), and a nonzero extensor in two panels;
 * normals whose panel support extensors are independent: up to `D` pairs
@@ -45,7 +47,7 @@ normals `n₁` and `n₂` by its extensor `C(n₁, n₂) = *(n₁ ∨ n₂)`, th
 
 namespace CombinatorialRigidity.Molecular
 
-variable {k : ℕ}
+variable {k' k : ℕ}
 variable {K : Type*} [Field K]
 
 /-! ## The panel support extensor (`def:panel-support-extensor`)
@@ -64,6 +66,13 @@ complement isomorphism (`panelSupportExtensor`). -/
 noncomputable def normalsJoin (n₁ n₂ : Fin (k + 2) → K) :
     ⋀[K]^2 (Fin (k + 2) → K) :=
   exteriorPower.ιMulti K 2 ![n₁, n₂]
+
+/-- **The join, folded from `ιMulti`**: `ιMulti K 2 ![a, b] = normalsJoin a b`, the definition of
+`normalsJoin` read right to left, for a goal stated in `exteriorPower.ιMulti` (the span induction of
+`starGrade_sup_starGrade_eq_ker`). -/
+theorem ιMulti_pair_eq_normalsJoin (a b : Fin (k + 2) → K) :
+    exteriorPower.ιMulti K 2 ![a, b] = normalsJoin a b :=
+  rfl
 
 /-- **The join of two normals is their extensor**: as an element of the exterior algebra,
 `normalsJoin n₁ n₂ = extensor ![n₁, n₂]` (`def:extensor`). -/
@@ -194,6 +203,73 @@ theorem normalsJoin_smul_left (c : K) (n₁ n₂ : Fin (k + 2) → K) :
   congr 2
   all_goals (funext i; fin_cases i <;> simp)
 
+/-- The join is additive in its second argument, by antisymmetry from `normalsJoin_add_left`. -/
+theorem normalsJoin_add_right (a b c : Fin (k + 2) → K) :
+    normalsJoin a (b + c) = normalsJoin (k := k) a b + normalsJoin a c := by
+  rw [normalsJoin_swap, normalsJoin_add_left, neg_add, ← normalsJoin_swap, ← normalsJoin_swap]
+
+/-- The join is homogeneous in its second argument, by antisymmetry from `normalsJoin_smul_left`. -/
+theorem normalsJoin_smul_right (t : K) (a b : Fin (k + 2) → K) :
+    normalsJoin a (t • b) = t • normalsJoin (k := k) a b := by
+  rw [normalsJoin_swap, normalsJoin_smul_left, normalsJoin_swap b a, smul_neg]
+
+/-- The join is subtractive in its first argument, from `normalsJoin_add_left` and
+`normalsJoin_smul_left`. -/
+theorem normalsJoin_sub_left (a b c : Fin (k + 2) → K) :
+    normalsJoin (a - b) c = normalsJoin (k := k) a c - normalsJoin b c := by
+  rw [sub_eq_add_neg, normalsJoin_add_left, ← neg_one_smul K b, normalsJoin_smul_left]
+  module
+
+/-- The join with a zero first argument vanishes. -/
+theorem normalsJoin_zero_left (b : Fin (k + 2) → K) : normalsJoin (0 : Fin (k + 2) → K) b = 0 := by
+  simpa using normalsJoin_smul_left (0 : K) (0 : Fin (k + 2) → K) b
+
+/-- The join with a zero second argument vanishes. -/
+theorem normalsJoin_zero_right (a : Fin (k + 2) → K) : normalsJoin a (0 : Fin (k + 2) → K) = 0 := by
+  rw [normalsJoin_swap, normalsJoin_zero_left, neg_zero]
+
+/-- The join of two points moving along lines, expanded in `t`:
+`(a + t a') ∨ (b + t b') = a ∨ b + t (a' ∨ b + a ∨ b') + t² (a' ∨ b')`. -/
+theorem normalsJoin_add_smul_add_smul (a a' b b' : Fin (k + 2) → K) (t : K) :
+    normalsJoin (a + t • a') (b + t • b') = normalsJoin a b +
+      t • (normalsJoin a' b + normalsJoin a b') + t ^ 2 • normalsJoin (k := k) a' b' := by
+  rw [normalsJoin_add_left, normalsJoin_add_right, normalsJoin_add_right, normalsJoin_smul_left,
+    normalsJoin_smul_left, normalsJoin_smul_right, normalsJoin_smul_right]
+  module
+
+/-- The join `w ∨ ·` with a fixed first point, as a linear map (`normalsJoin_add_right`,
+`normalsJoin_smul_right`). -/
+noncomputable def normalsJoinLin (w : Fin (k + 2) → K) :
+    (Fin (k + 2) → K) →ₗ[K] ⋀[K]^2 (Fin (k + 2) → K) where
+  toFun u := normalsJoin w u
+  map_add' := normalsJoin_add_right w
+  map_smul' t u := normalsJoin_smul_right t w u
+
+/-- Every `2 × 2` minor of two linear functionals is a linear functional on `⋀²`: `φ (a ∨ b) = ψ₁ a
+* ψ₂ b - ψ₂ a * ψ₁ b`. It is the determinant of the alternating map `![a, b] ↦ ![ψ₁, ψ₂]`, and
+detects independence of joins without a basis of `⋀²`. -/
+theorem exists_linearMap_normalsJoin_eq (ψ₁ ψ₂ : (Fin (k + 2) → K) →ₗ[K] K) :
+    ∃ φ : ⋀[K]^2 (Fin (k + 2) → K) →ₗ[K] K,
+      ∀ a b, φ (normalsJoin a b) = ψ₁ a * ψ₂ b - ψ₂ a * ψ₁ b := by
+  refine ⟨exteriorPower.alternatingMapLinearEquiv
+    ((Matrix.detRowAlternating : (Fin 2 → K) [⋀^Fin 2]→ₗ[K] K).compLinearMap
+      (LinearMap.pi ![ψ₁, ψ₂])), fun a b => ?_⟩
+  rw [normalsJoin, exteriorPower.alternatingMapLinearEquiv_apply_ιMulti]
+  change Matrix.det (Matrix.of fun i => LinearMap.pi ![ψ₁, ψ₂] (![a, b] i)) = _
+  simp [Matrix.det_fin_two]
+
+/-- **A linear map takes the join of two normals to the join of their images** (a step of
+`lem:pencil-d-embedding-join`): `⋀²f (n₁ ∨ n₂) = f n₁ ∨ f n₂` for a linear map
+`f : K^(k'+2) → K^(k+2)`, the defining property of `exteriorPower.map` on the join
+`normalsJoin n₁ n₂ = exteriorPower.ιMulti K 2 ![n₁, n₂]` (`exteriorPower.map_apply_ιMulti`). -/
+theorem exteriorPower_map_normalsJoin (f : (Fin (k' + 2) → K) →ₗ[K] (Fin (k + 2) → K))
+    (n₁ n₂ : Fin (k' + 2) → K) :
+    exteriorPower.map 2 f (normalsJoin n₁ n₂) = normalsJoin (f n₁) (f n₂) := by
+  rw [normalsJoin, normalsJoin, exteriorPower.map_apply_ιMulti]
+  congr 1
+  funext i
+  fin_cases i <;> rfl
+
 /-- **The panel support extensor** (`def:panel-support-extensor`): `C(n₁, n₂)` is
 `complementIso (normalsJoin n₁ n₂)`, the image of the join of the two normals under the complement
 isomorphism `⋀² K^(k+2) ≃ ⋀^k K^(k+2)` (`def:meet-complement-iso`), an element of the screw space
@@ -201,6 +277,20 @@ isomorphism `⋀² K^(k+2) ≃ ⋀^k K^(k+2)` (`def:meet-complement-iso`), an el
 an extensor of their intersection (`lem:panel-support-extensor-join`). -/
 noncomputable def panelSupportExtensor (n₁ n₂ : Fin (k + 2) → K) : ScrewSpace K k :=
   complementIso (k := k) (j := 2) (by omega) (normalsJoin n₁ n₂)
+
+/-- **The complement isomorphism, as the polarity from joins to screws**:
+`complementIso : ⋀² K^(k+2) ≃ ⋀^k K^(k+2)` with target `ScrewSpace K k` (the form
+`screwComplementIso` takes at every grade). The panel support extensor is its value at the join
+(`panelSupportExtensor_eq_complementScrew`). -/
+noncomputable def complementScrew (K : Type*) [Field K] (k : ℕ) :
+    ⋀[K]^2 (Fin (k + 2) → K) ≃ₗ[K] ScrewSpace K k :=
+  complementIso (k := k) (j := 2) (by omega)
+
+/-- **The panel support extensor through `complementScrew`**:
+`C(n₁, n₂) = complementScrew K k (normalsJoin n₁ n₂)`, by definition. -/
+theorem panelSupportExtensor_eq_complementScrew (n₁ n₂ : Fin (k + 2) → K) :
+    panelSupportExtensor n₁ n₂ = complementScrew K k (normalsJoin n₁ n₂) :=
+  rfl
 
 /-- **The panel support extensor is nonzero iff the normals are linearly independent** (the remark
 after `def:panel-support-extensor`): `complementIso` is injective, and the join is nonzero iff the
@@ -481,8 +571,8 @@ theorem exists_extensor_eq_panelSupportExtensor_gen [NeZero k] {n₁ n₂ : Fin 
     · rw [Function.update_of_ne hi]; exact hq_perp i
 
 /-- **The panel support extensor as a join, in `K⁴`**: the case `k = 2` of
-`exists_extensor_eq_panelSupportExtensor_gen`. Its users are `extensorInPanel_panelSupportExtensor`
-and two lemmas of `Molecule/Pencil/Statement.lean` (`lem:pencil-transport-in-to-through`,
+`exists_extensor_eq_panelSupportExtensor_gen`. Its users are two lemmas of
+`Molecule/Pencil/Statement.lean` (`lem:pencil-transport-in-to-through`,
 `lem:pencil-transport-through-to-in`). -/
 theorem exists_extensor_eq_panelSupportExtensor {n₁ n₂ : Fin 4 → K}
     (h : LinearIndependent K ![n₁, n₂]) :
@@ -491,16 +581,26 @@ theorem exists_extensor_eq_panelSupportExtensor {n₁ n₂ : Fin 4 → K}
       ∀ i, p i ⬝ᵥ n₁ = 0 ∧ p i ⬝ᵥ n₂ = 0 :=
   exists_extensor_eq_panelSupportExtensor_gen (k := 2) h
 
+/-- **The panel support extensor lies in both panels, in every grade** (`ExtensorInPanel`): for
+`k ≥ 1` and linearly independent `n₁ n₂ : K^(k+2)`, `C(n₁, n₂)` lies in the panel of `n₁` and in
+that of `n₂`, the same vectors serving for both (`exists_extensor_eq_panelSupportExtensor_gen`,
+`lem:panel-support-extensor-join`). The case `k = 2` is `extensorInPanel_panelSupportExtensor`. -/
+theorem extensorInPanel_panelSupportExtensor_gen {k : ℕ} [NeZero k] {n₁ n₂ : Fin (k + 2) → K}
+    (h : LinearIndependent K ![n₁, n₂]) :
+    ExtensorInPanel (panelSupportExtensor (k := k) n₁ n₂) n₁ ∧
+    ExtensorInPanel (panelSupportExtensor (k := k) n₁ n₂) n₂ := by
+  obtain ⟨p, heq, hperp⟩ := exists_extensor_eq_panelSupportExtensor_gen h
+  exact ⟨⟨p, heq, fun i => (hperp i).1⟩, ⟨p, heq, fun i => (hperp i).2⟩⟩
+
 /-- **The panel support extensor lies in both panels** (`ExtensorInPanel`,
 `def:genuine-hinge-realization`): for linearly independent `n₁ n₂ : K⁴`, `C(n₁, n₂)` lies in the
-panel of `n₁` and in that of `n₂`, the same vectors serving for both
-(`exists_extensor_eq_panelSupportExtensor`). It serves `lem:cycle-pencil-realization`. -/
+panel of `n₁` and in that of `n₂`, the same vectors serving for both: the case `k = 2` of
+`extensorInPanel_panelSupportExtensor_gen`. It serves `lem:cycle-pencil-realization`. -/
 theorem extensorInPanel_panelSupportExtensor {n₁ n₂ : Fin 4 → K}
     (h : LinearIndependent K ![n₁, n₂]) :
     ExtensorInPanel (panelSupportExtensor (k := 2) n₁ n₂) n₁ ∧
-    ExtensorInPanel (panelSupportExtensor (k := 2) n₁ n₂) n₂ := by
-  obtain ⟨p, heq, hperp⟩ := exists_extensor_eq_panelSupportExtensor h
-  exact ⟨⟨p, heq, fun i => (hperp i).1⟩, ⟨p, heq, fun i => (hperp i).2⟩⟩
+    ExtensorInPanel (panelSupportExtensor (k := 2) n₁ n₂) n₂ :=
+  extensorInPanel_panelSupportExtensor_gen (k := 2) h
 
 /-- **A nonzero extensor in two panels**: for any `n₁ n₂ : K^(k+2)`, some nonzero
 `C : ScrewSpace K k` lies in both panels (`ExtensorInPanel`). The vectors orthogonal to `n₁` and

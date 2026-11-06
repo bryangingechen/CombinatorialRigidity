@@ -6,11 +6,11 @@ CLEANUP-42 and ahead of ORIGAMI, in two parts: the friction log's docs and tooli
 2–4), then the lemmas Phase 42 left outside their home files, one task per home file, with the
 mirror lemmas that now meet their entries' own bar (tasks 5–18). No statement changes. Phase 42
 deferred the moves because a declaration added to these files rebuilds most of `Molecular/`
-mid-phase; ORIGAMI will not edit them, so they are cheapest now. Tasks 1–10 landed
+mid-phase; ORIGAMI will not edit them, so they are cheapest now. Tasks 1–11 landed
 (the docs part, the tree-wide basics, `Deficiency.lean`, the linear-independence mirrors and their
-sweep, `Meet.lean`, `RigidityMatrix/Basic.lean` with `GenericityDevice.lean`): 62 actionable
-entries down to 31 (heading tags: open 20, mirror-candidate 9, process 2, blueprint 0).
-**Next concrete task:** task 11, `PanelLayer.lean` (*Lemma checklist*).
+sweep, `Meet.lean`, `RigidityMatrix/Basic.lean` with `GenericityDevice.lean`, `PanelLayer.lean`):
+62 actionable entries down to 27 (heading tags: open 17, mirror-candidate 8, process 2, blueprint
+0). **Next concrete task:** task 12, `Grade/Realization.lean` (*Lemma checklist*).
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -26,28 +26,38 @@ public declaration's name, or delete a pinned declaration, does not land that ch
 
 ## Current state
 
-**Task 10 landed** (this commit; Lean), every statement sliced, not retyped. Into
-`RigidityMatrix/Basic.lean`: `ExtensorInPanel.smul` after `ExtensorInPanel`; `map`, `map_graph`
-and `map_supportExtensor` after `mapExtensor_supportExtensor` (the namespace's `variable {k : ℕ}`
-is now `{k' k : ℕ}`, so `map`'s binders keep their order);
-`isInfinitesimalMotion_iff_of_supportExtensor_eq_zero` after `isInfinitesimalMotion_iff`, not
-beside `mapExtensor`, as its proof calls that later lemma; new `hingeRow_add_hingeRow` after
-`hingeRow_sub_hingeRow_eq`, through it and `sub_add_cancel`, with `case_II_placement_rank`'s one
-`sub_add_cancel` site one `rw` (the copy in `notes/reconcile-formal/` is a record and stays). Into
-`GenericityDevice.lean`: `finrank_infinitesimalMotions_of_supportExtensor_eq_zero` after the
-rigid-on-`V(G)` count, and `finrank_span_rigidityRows_of_single_edge` (still at `m + 1`)
-after `finrank_span_rigidityRows_add_deficiency_le`. `Embedding.lean` keeps its `GenericityDevice`
-import (it calls rank–nullity and the zero-hinge count). Docstring repoints: the three files' module
-docs and `map`'s pointer to `screwEmbed`. Gates: G2 `lake build` (6249 jobs, 0 warnings or errors,
-0 cache failures) and `lake lint`; G3 `blueprint/lint.sh` (check 9's total 0); G4
-`blueprint/verify.sh`, `checkdecls` silent (`map` is pinned, `lem:screw-embedding-rank`); G1. G5:
-`#print axioms` of the 63 constants `formalization.yaml` names (its 21 `declaration:` entries and
-42 in its descriptions), each `[propext, Classical.choice, Quot.sound]`. FRICTION: two entries
-`[resolved]`, *42k build 2* retagged `[mirror-candidate]` (its graph lemma stays), and task 9's
-three stale status lines brought up to date.
+**Task 11 landed** (this commit; Lean; one dispatch, nothing split off). The eleven moved
+declarations are sliced, not retyped (each block, statement and proof, found verbatim in the new
+`PanelLayer.lean` against HEAD). After `normalsJoin_smul_left`: `normalsJoin_add_right`,
+`normalsJoin_smul_right`, `normalsJoin_zero_left`, `exists_linearMap_normalsJoin_eq` (from
+`Grade/Polygon.lean`), `normalsJoin_sub_left`, `normalsJoin_zero_right`,
+`normalsJoin_add_smul_add_smul`, `normalsJoinLin` (from `Grade/Stars.lean`) and
+`exteriorPower_map_normalsJoin` (from `Grade/Embedding.lean`; `Grade/Collineation.lean`'s inline
+`hjoin` is now its `.symm`). After `normalsJoin`, the new fold `ιMulti_pair_eq_normalsJoin` (by
+`rfl`): `starGrade_sup_starGrade_eq_ker`'s `rw` and `change` are one `rw [hv,
+ιMulti_pair_eq_normalsJoin, exteriorPower_map_normalsJoin]`. After `panelSupportExtensor` (itself
+unchanged): `complementScrew` (from `Grade/Short.lean`) and new
+`panelSupportExtensor_eq_complementScrew`, by `rfl`. Before the `Fin 4`
+`extensorInPanel_panelSupportExtensor`: `extensorInPanel_panelSupportExtensor_gen` (from
+`Grade/Realization.lean`), the `Fin 4` lemma now `extensorInPanel_panelSupportExtensor_gen (k := 2)
+h` (statement unchanged). Every import cone checked first by a scratch file importing only
+`PanelLayer`. **Binder order** (the task-10 decision below; `#check @…` after the build):
+`complementScrew` and `extensorInPanel_panelSupportExtensor_gen` bind their own `K`, `k` and keep
+their order; the seven `normalsJoin` lemmas and `normalsJoinLin` go from `{K} [Field K] {k}` to
+`{k} {K} [Field K]`, and `exteriorPower_map_normalsJoin` from `{K} [Field K] {k' k}` to `{k' k} {K}
+[Field K]` (`PanelLayer.lean`'s `variable {k : ℕ}` is now `{k' k : ℕ}`); no caller passes any of
+them with `@`. Docstring repoints: the module docs of `PanelLayer`, `Polygon`, `Stars`,
+`Embedding` and `Short`, `exists_extensor_eq_panelSupportExtensor`'s users, `Collineation`'s step.
+Gates: G2 `lake build` (6249 jobs, 0 warnings or errors, 0 cache failures) and `lake lint`; G3
+`blueprint/lint.sh` (check 9's total 0, the label report unchanged); G4 `blueprint/verify.sh`,
+`checkdecls` silent (`exteriorPower_map_normalsJoin` is pinned, `lem:pencil-d-embedding-join`);
+G5: `#print axioms` of the 63 `formalization.yaml` constants, each `[propext, Classical.choice,
+Quot.sound]`, as at task 10; G1. FRICTION: four entries `[resolved]`.
 
-**Tasks 1-9** are in the checklist below, one line each. Details kept only where no line carries
-them: task 9's two `j = 2` statements are byte for byte as before, and
+**Tasks 1-10** are in the checklist below, one line each. Details kept only where no line carries
+them: task 10 put `isInfinitesimalMotion_iff_of_supportExtensor_eq_zero` after
+`isInfinitesimalMotion_iff` (its proof calls it), and `Embedding.lean` keeps its
+`GenericityDevice` import; task 9's two `j = 2` statements are byte for byte as before, and
 `contragredient_toDual_pairing g` still fits the coerced `contragredientEquiv g` by defeq; task 7's
 `exists_extend_linearIndependent` is `[Fintype ι]` with `Fintype.card ι ≤ finrank K M` over a
 division ring and takes no `FiniteDimensional` hypothesis (the bound forces it once `ι` is
@@ -172,22 +182,12 @@ the entries it resolved.
   lemmas re-proved through them (statements unchanged); `contragredientEquiv` and its one site.
   Resolves `Meet.lean`'s parts of *42k's home debts*, *No linear-equivalence form of
   `contragredient`…* and *Grade-general extensor and panel lemmas…*.
-- [x] **10. `RigidityMatrix/Basic.lean` and `GenericityDevice.lean`** (this commit; Lean). Five
-  moves into `Basic.lean`, two into `GenericityDevice.lean`, new `hingeRow_add_hingeRow` and its one
-  site. Resolves *`BodyHingeFramework.map` and the zero-hinge motion lemmas…*, *`hingeRow` has no
+- [x] **10. `RigidityMatrix/Basic.lean` and `GenericityDevice.lean`** (`47b63f92`; Lean). Seven
+  moves, new `hingeRow_add_hingeRow`. Resolves *`BodyHingeFramework.map`…*, *`hingeRow` has no
   additive form…*, the count of *42k build 2…*, `ExtensorInPanel.smul` of *42k's home debts*.
-- [ ] **11. `PanelLayer.lean`** (Lean; sonnet). Beside `normalsJoin`: `normalsJoin_add_right`,
-  `normalsJoin_smul_right`, `normalsJoin_zero_left`, `exists_linearMap_normalsJoin_eq` (from
-  `Grade/Polygon.lean`); `normalsJoin_sub_left`, `normalsJoin_zero_right`, `normalsJoinLin`,
-  `normalsJoin_add_smul_add_smul` (from `Grade/Stars.lean`); `exteriorPower_map_normalsJoin` (from
-  `Grade/Embedding.lean`), with `Grade/Collineation.lean`'s inline join through it; a new fold
-  `ιMulti K 2 ![a, b] = normalsJoin a b`, with `starGrade_sup_starGrade_eq_ker`'s `change` through
-  it. `complementScrew` (from `Grade/Short.lean`) beside `panelSupportExtensor`, with
-  `panelSupportExtensor_eq_complementScrew` by `rfl` (the definition itself unchanged).
-  `extensorInPanel_panelSupportExtensor_gen` (from `Grade/Realization.lean`) beside
-  `extensorInPanel_panelSupportExtensor`, which becomes its `Fin 4` case. Resolves *The
-  `normalsJoin` linearity and minor lemmas…*, *`complementScrew` sits in…*, and the rest of *No
-  linear-equivalence form of `contragredient`…* and *Grade-general extensor and panel lemmas…*.
+- [x] **11. `PanelLayer.lean`** (this commit; Lean; opus). Eleven moves, the new fold and `rfl`
+  equation, the `Fin 4` case. Resolves *The `normalsJoin` linearity…*, *`complementScrew` sits
+  in…*, *No linear-equivalence form…*, *Grade-general extensor…*.
 - [ ] **12. `Grade/Realization.lean`** (Lean; sonnet). Beside `finrank_dotPerp`: `dotPerp_sup`,
   `dotPerp_inf`, `dotPerp_antitone`, `dotPerp_top`, `finrank_dotPerp_add` and
   `finrank_dotPerp_span_singleton_of_ne_zero` (from `Grade/Feasible.lean`), and `dotPerp_map_eq`
@@ -251,7 +251,9 @@ the entries it resolved.
 
 ## Moved to a later round
 
-- None yet.
+- **`PanelLayer.lean`'s split** (task 11): 1705 → 1805 lines, past the ~1500 tripwire
+  (`CombinatorialRigidity/CLAUDE.md`) since before the round; its three `/-! ##` sections are the
+  seams. A split is not a home move, so not this round's.
 
 ## Blockers / open questions
 
@@ -259,7 +261,8 @@ the entries it resolved.
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 11, `PanelLayer.lean` (*Lemma checklist*).
+**Next concrete task:** task 12, `Grade/Realization.lean` (*Lemma checklist*): seven `dotPerp`
+lemmas beside `finrank_dotPerp`, one commit.
 After the round: ORIGAMI's open, with the PI (`notes/Origami.md`).
 
 ## Decisions made during this round
@@ -278,4 +281,4 @@ After the round: ORIGAMI's open, with the PI (`notes/Origami.md`).
   order** (task 10). Keep the old order where a one-token `variable` edit does it (`{k' k : ℕ}` in
   `Basic.lean`); otherwise confirm no caller passes the name with `@`
   (`finrank_infinitesimalMotions_of_supportExtensor_eq_zero` now leads with `{k}`, as
-  `GenericityDevice.lean`'s declarations do).
+  `GenericityDevice.lean`'s declarations do; task 11's nine reorderings are in *Current state*).

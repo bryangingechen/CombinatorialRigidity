@@ -57,8 +57,9 @@ or not, goes up at a fixed deficiency parameter.
 
 * `gradeEmbed_injective`, `screwEmbed_injective`: both are injective, `⋀²ι` by
   `exteriorPower.map_injective_field`.
-* `exteriorPower_map_normalsJoin`: `⋀²f (u ∨ w) = f u ∨ f w` for a linear map `f`.
-* `screwEmbed_panelSupportExtensor`: `φ C(u, w) = C(ι u, ι w)` (`lem:pencil-d-embedding-join`).
+* `screwEmbed_panelSupportExtensor`: `φ C(u, w) = C(ι u, ι w)` (`lem:pencil-d-embedding-join`),
+  through `⋀²f (u ∨ w) = f u ∨ f w` for a linear map `f` (`exteriorPower_map_normalsJoin`,
+  `AlgebraicInduction/PanelLayer.lean`).
 * `BodyHingeFramework.finrank_span_rigidityRows_map_injective`: for `φ` injective and `G` connected,
   `rank R(G, φp) = rank R(G, p) + (D − D′)(|V(G)| − 1)` (`lem:screw-embedding-rank`).
 * `HasPencilPlaneRealization.map_gradeEmbed`, `hasGradedPencilRealization_of_le`,
@@ -177,18 +178,6 @@ theorem screwEmbed_injective (h : k' ≤ k) : Function.Injective (screwEmbed (K 
       (complementIso (k := k') (j := 2) (by omega)).symm.injective
 
 /-! ## The hinge of two panels (`lem:pencil-d-embedding-join`) -/
-
-/-- **A linear map takes the join of two normals to the join of their images** (a step of
-`lem:pencil-d-embedding-join`): `⋀²f (n₁ ∨ n₂) = f n₁ ∨ f n₂` for a linear map
-`f : K^(k'+2) → K^(k+2)`, the defining property of `exteriorPower.map` on the join
-`normalsJoin n₁ n₂ = exteriorPower.ιMulti K 2 ![n₁, n₂]` (`exteriorPower.map_apply_ιMulti`). -/
-theorem exteriorPower_map_normalsJoin (f : (Fin (k' + 2) → K) →ₗ[K] (Fin (k + 2) → K))
-    (n₁ n₂ : Fin (k' + 2) → K) :
-    exteriorPower.map 2 f (normalsJoin n₁ n₂) = normalsJoin (f n₁) (f n₂) := by
-  rw [normalsJoin, normalsJoin, exteriorPower.map_apply_ιMulti]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
 
 /-- **The screw embedding of a hinge of two panels** (`lem:pencil-d-embedding-join`): for normals
 `n₁, n₂ ∈ K^(k'+2)`, `φ` takes the panel support extensor `C(n₁, n₂)` to `C(ι n₁, ι n₂)`. The

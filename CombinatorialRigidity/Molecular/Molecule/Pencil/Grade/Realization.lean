@@ -290,17 +290,6 @@ theorem linearIndependent_single_zero_one {k : ℕ} :
     one_ne_zero, zero_add] at h0 h1
   exact ⟨h0, h1⟩
 
-/-- **The panel support extensor lies in both panels, in every grade** (`ExtensorInPanel`): for
-`k ≥ 1` and linearly independent `n₁ n₂ : K^(k+2)`, `C(n₁, n₂)` lies in the panel of `n₁` and in
-that of `n₂`, the same vectors serving for both (`exists_extensor_eq_panelSupportExtensor_gen`,
-`lem:panel-support-extensor-join`). The case `k = 2` is `extensorInPanel_panelSupportExtensor`. -/
-theorem extensorInPanel_panelSupportExtensor_gen {k : ℕ} [NeZero k] {n₁ n₂ : Fin (k + 2) → K}
-    (h : LinearIndependent K ![n₁, n₂]) :
-    ExtensorInPanel (panelSupportExtensor (k := k) n₁ n₂) n₁ ∧
-    ExtensorInPanel (panelSupportExtensor (k := k) n₁ n₂) n₂ := by
-  obtain ⟨p, heq, hperp⟩ := exists_extensor_eq_panelSupportExtensor_gen h
-  exact ⟨⟨p, heq, fun i => (hperp i).1⟩, ⟨p, heq, fun i => (hperp i).2⟩⟩
-
 /-- **The panel support extensor passes through the orthogonal of a subspace containing both
 normals** (a step of `lem:pencil-d-point-configuration`): for `k ≥ 1`, linearly independent
 `n₁ n₂ : K^(k+2)` and a subspace `A` containing both, `C(n₁, n₂)` passes through `A^⊥`

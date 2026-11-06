@@ -40,11 +40,10 @@ and `screwDim (m + 1)` is `D`.
   body `c j` at `Y (polygonCollapse D M j)`, and the lemmas say which `D` edges of the cycle on `M`
   bodies carry the joins `J_0, ..., J_{D-1}`.
 
-Helpers: `normalsJoin` is linear in its second argument too (`normalsJoin_add_right`,
-`normalsJoin_smul_right`), vanishes at `0` (`normalsJoin_zero_left`) and has every 2 × 2 minor as a
-linear functional on `⋀²` (`exists_linearMap_normalsJoin_eq`), which is how the star and the base
-triangle avoid a basis of `⋀²`. The `Fin` index lemmas for the insertion are in
-`Mathlib/Data/Fin/Basic.lean`.
+Helpers: `normalsJoin`'s linearity in its second argument and its `2 × 2` minors as linear
+functionals on `⋀²` (`exists_linearMap_normalsJoin_eq`), which is how the star and the base triangle
+avoid a basis of `⋀²`, are in `AlgebraicInduction/PanelLayer.lean`. The `Fin` index lemmas for the
+insertion are in `Mathlib/Data/Fin/Basic.lean`.
 -/
 
 @[expose] public section
@@ -52,31 +51,6 @@ triangle avoid a basis of `⋀²`. The `Fin` index lemmas for the insertion are 
 namespace CombinatorialRigidity.Molecular
 
 variable {K : Type*} [Field K] {k m : ℕ}
-
-/-! ## Joins: linearity in the second normal, and a minor -/
-
-/-- The join is additive in its second argument, by antisymmetry from `normalsJoin_add_left`. -/
-theorem normalsJoin_add_right (a b c : Fin (k + 2) → K) :
-    normalsJoin a (b + c) = normalsJoin (k := k) a b + normalsJoin a c := by
-  rw [normalsJoin_swap, normalsJoin_add_left, neg_add, ← normalsJoin_swap, ← normalsJoin_swap]
-
-/-- The join is homogeneous in its second argument, by antisymmetry from `normalsJoin_smul_left`. -/
-theorem normalsJoin_smul_right (t : K) (a b : Fin (k + 2) → K) :
-    normalsJoin a (t • b) = t • normalsJoin (k := k) a b := by
-  rw [normalsJoin_swap, normalsJoin_smul_left, normalsJoin_swap b a, smul_neg]
-
-/-- Every `2 × 2` minor of two linear functionals is a linear functional on `⋀²`: `φ (a ∨ b) = ψ₁ a
-* ψ₂ b - ψ₂ a * ψ₁ b`. It is the determinant of the alternating map `![a, b] ↦ ![ψ₁, ψ₂]`, and
-detects independence of joins without a basis of `⋀²`. -/
-theorem exists_linearMap_normalsJoin_eq (ψ₁ ψ₂ : (Fin (k + 2) → K) →ₗ[K] K) :
-    ∃ φ : ⋀[K]^2 (Fin (k + 2) → K) →ₗ[K] K,
-      ∀ a b, φ (normalsJoin a b) = ψ₁ a * ψ₂ b - ψ₂ a * ψ₁ b := by
-  refine ⟨exteriorPower.alternatingMapLinearEquiv
-    ((Matrix.detRowAlternating : (Fin 2 → K) [⋀^Fin 2]→ₗ[K] K).compLinearMap
-      (LinearMap.pi ![ψ₁, ψ₂])), fun a b => ?_⟩
-  rw [normalsJoin, exteriorPower.alternatingMapLinearEquiv_apply_ιMulti]
-  change Matrix.det (Matrix.of fun i => LinearMap.pi ![ψ₁, ψ₂] (![a, b] i)) = _
-  simp [Matrix.det_fin_two]
 
 /-! ## Three consecutive vertices (`lem:pencil-d-polygon-normal`) -/
 
@@ -225,10 +199,6 @@ theorem exists_linearEquiv_polygon_normal {n : ℕ} [NeZero n] (hn : 3 ≤ n)
 theorem finrank_exteriorPower_two_eq_screwDim :
     Module.finrank K (⋀[K]^2 (Fin (k + 2) → K)) = screwDim k := by
   rw [exteriorPower.finrank_eq, Module.finrank_pi, Fintype.card_fin]
-
-/-- The join with a zero first argument vanishes. -/
-theorem normalsJoin_zero_left (b : Fin (k + 2) → K) : normalsJoin (0 : Fin (k + 2) → K) b = 0 := by
-  simpa using normalsJoin_smul_left (0 : K) (0 : Fin (k + 2) → K) b
 
 /-- `lem:pencil-d-polygon-star` (CERT workbook, S4). A closed `n`-gon with independent joins and `n
 < D = screwDim k` has a vertex `Y i` and a vector `u` with `Y i ∨ u` outside the span `W(Y)` of
