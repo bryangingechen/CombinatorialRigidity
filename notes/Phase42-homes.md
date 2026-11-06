@@ -6,9 +6,9 @@ CLEANUP-42 and ahead of ORIGAMI, in two parts: the friction log's docs and tooli
 2–4), then the lemmas Phase 42 left outside their home files, one task per home file, with the
 mirror lemmas that now meet their entries' own bar (tasks 5–18). No statement changes. Phase 42
 deferred the moves because a declaration added to these files rebuilds most of `Molecular/`
-mid-phase; ORIGAMI will not edit them, so they are cheapest now. Tasks 1–4 (the docs part)
-landed: 62 actionable entries down to 41.
-**Next concrete task:** task 5, the tree-wide basics (the round's first Lean task and baseline).
+mid-phase; ORIGAMI will not edit them, so they are cheapest now. Tasks 1–5 landed
+(the docs part, then the tree-wide basics): 62 actionable entries down to 39.
+**Next concrete task:** task 6, `Deficiency.lean`'s two lemmas and the cut-sides copies.
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -24,7 +24,18 @@ public declaration's name, or delete a pinned declaration, does not land that ch
 
 ## Current state
 
-**Task 4 landed** (this commit; docs only): `notes/FRICTION.md`'s statuses, then the archive sweep.
+**Task 5 landed** (this commit; Lean): baseline `lake build` (warning-clean) and `lake lint` green
+before editing. `Graph.bodyBarDim_mono` in `BodyBar/Framework.lean` and its four sites;
+`Set.ncard_range_le` and `Set.ncard_eq_ncard_preimage_inl_add_ncard_preimage_inr` in the `Set/Card`
+mirror, the former's three sites, the latter replacing `Nonvacuity.lean`'s private copy.
+`Set.ncard_range_le` is proved by `ncard_image_le` on `univ`: the mirror's import closure lacks
+`Finite.card_range_le`. Gates: G2 build and lint, G3 `blueprint/lint.sh` green, G5 (`#print axioms`
+of `molecular_conjecture`, `molecular_conjecture_multigraph`, `molecule_rank_formula`, `jacobs`,
+`isBase_ncard_add_deficiency_eq`: the three standard axioms), G4 not needed (no pinned
+declaration moved). Three FRICTION entries retagged (two `[resolved]`, one `[idiom]`; the sweep to
+the archive stays with task 19).
+
+**Task 4 landed** (`671661b3`; docs only): `notes/FRICTION.md`'s statuses, then the archive sweep.
 Retagged: 21 entries `[resolved]` (the `lean_local_search` entry, fixed upstream; nine `[process]`
 and `[blueprint]` entries already resolved, the un-instantiable lemma's gaining a **Lifted to:**
 `DESIGN.md`'s satisfiability corollaries; the two stale entries, whose two remaining shear sites
@@ -137,17 +148,10 @@ the entries it resolved.
 - [x] **4. The friction log's statuses and the archive sweep** (this commit; docs only). 21
   entries `[resolved]`, two `[wontfix]`, five `[idiom]`; the 23 `[resolved]` entries to
   `FRICTION-archive.md`, verbatim (*Current state*). Open entries 62 → 41.
-- [ ] **5. The tree-wide basics** (Lean; sonnet). Baseline first (G2's build and lint, before
-  editing). `Graph.bodyBarDim_mono : Monotone bodyBarDim` in `BodyBar/Framework.lean` beside
-  `six_le_bodyBarDim`, and the four sites through it: `Connected.deficiency_le_deficiency_of_le`
-  and `Connected.deficiency_eq_of_deficiency_two_add_three_le` (`Deficiency.lean`),
-  `Graph.deficiencyMerged_two_add_two_le_of_three_le` (`Induction/SparseDeficiency.lean`), the
-  private `exists_chainBound` (`Grade/Coverage.lean`). In the `Mathlib/Data/Set/Card.lean` mirror:
-  `Set.ncard_range_le [Finite ι] (f : ι → α) : (Set.range f).ncard ≤ Nat.card ι` and its three
-  sites (*Verified at the open*); `Set.ncard_eq_ncard_preimage_inl_add_ncard_preimage_inr` in
-  place of `Nonvacuity.lean`'s private `ncard_eq_ncard_preimage_inl_add`. Resolves *`bodyBarDim`
-  has no monotonicity…*, *No `Set.ncard_range_le`…*, part (1) of *No `Set.ncard` of a set of a
-  sum type…*.
+- [x] **5. The tree-wide basics** (this commit; Lean). `Graph.bodyBarDim_mono` and its four
+  sites; `Set.ncard_range_le` (three sites) and the sum-type `ncard` lemma in the `Set/Card`
+  mirror. Resolves *`bodyBarDim` has no monotonicity…*, *No `Set.ncard_range_le`…*, part (1) of
+  *No `Set.ncard` of a set of a sum type…*.
 - [ ] **6. `Deficiency.lean`** (Lean; sonnet). A public
   `Graph.exists_cut_sides_of_not_twoEdgeConnected` beside `Graph.TwoEdgeConnected` (from
   `ArmsAssembly.lean`'s private `exists_cut_sides`, which goes), and the copies through it:
@@ -270,8 +274,8 @@ the entries it resolved.
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 5, the tree-wide basics (*Lemma checklist*): the round's first Lean
-task, which runs the baseline `lake build` and `lake lint` before editing. After the round:
+**Next concrete task:** task 6, `Deficiency.lean` (*Lemma checklist*): `exists_cut_sides_of_not_twoEdgeConnected`
+and `vertexSet_mulTilde`, with their sites. After the round:
 ORIGAMI's open, with the PI (`notes/Origami.md`).
 
 ## Decisions made during this round

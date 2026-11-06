@@ -965,9 +965,8 @@ theorem deficiencyMerged_two_add_two_le_of_three_le [Finite α] [Finite β] {G :
     linarith
   · have hZd := deficiency_eq_zero_of_deficiency_eq_zero_of_le (G := G.induce Z) (by decide) hn
       ⟨a, haZ⟩ (deficiency_three_induce_eq_zero_of_tight (fun Y hY => hSv Y (hY.trans hZV)) hZ3 hZ1)
-    have hD : 1 ≤ bodyBarDim n := by
-      unfold bodyBarDim
-      exact (Nat.le_div_iff_mul_le (by norm_num)).mpr (by nlinarith)
+    have hD : 1 ≤ bodyBarDim n :=
+      (by decide : 1 ≤ bodyBarDim 3).trans (bodyBarDim_mono hn)
     exact hδ (deficiencyMerged_eq_deficiency_of_mem hD hZV hZd haZ hbZ)
 
 /-- **A non-adjacent pair outside every rigid set** (`lem:deficiency-two-body-chain`): let `G` be

@@ -503,9 +503,7 @@ theorem _root_.Graph.deficiency_induce_add_le_of_ear [Finite α] [Finite β] {G 
         obtain ⟨j, rfl⟩ := hu
         exact absurd hu₁ (hxV₁ j)
     have hcn : ((G.induce (Set.range x)).crossingEdges g).ncard ≤ k - 1 := by
-      refine (Set.ncard_le_ncard hce (Set.toFinite _)).trans ?_
-      rw [← Nat.card_coe_set_eq]
-      exact (Finite.card_range_le _).trans (by simp)
+      exact (Set.ncard_le_ncard hce (Set.toFinite _)).trans ((Set.ncard_range_le _).trans (by simp))
     rw [Graph.partitionDef, hnp]
     have hcn' : (((G.induce (Set.range x)).crossingEdges g).ncard : ℤ) ≤ (k : ℤ) - 1 := by
       have := hcn; omega

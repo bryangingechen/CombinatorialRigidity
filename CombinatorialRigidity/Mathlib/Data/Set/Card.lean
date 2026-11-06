@@ -36,6 +36,10 @@ copy-paste. See `DESIGN.md` "Mirror directory".
   and `Nat.card_fin`. The combinatorial-rigidity project uses it to count the bodies of an ear
   or of a chain of bridges in `Molecular/Molecule/Pencil/MainComponent/` (`Cut.lean`,
   `Ear.lean`, `Short.lean`, `Orbit.lean`, `SplitOff.lean`).
+* `Set.ncard_range_le` — `(range f).ncard ≤ Nat.card ι` for `[Finite ι]`. Fuses
+  `Nat.card_coe_set_eq` and `Finite.card_range_le`.
+* `Set.ncard_eq_ncard_preimage_inl_add_ncard_preimage_inr` — a finite set of a sum type has
+  `|Z| = |Sum.inl ⁻¹' Z| + |Sum.inr ⁻¹' Z|`.
 -/
 
 @[expose] public section
@@ -85,5 +89,20 @@ theorem ncard_union_range_of_injective {s : Set α} {k : ℕ} {z : Fin k → α}
     (s ∪ range z).ncard = s.ncard + k := by
   rw [ncard_union_eq (disjoint_right.mpr (forall_mem_range.mpr hzs)) hs
     (image_univ (f := z) ▸ finite_univ.image z), ncard_range_of_injective hz, Nat.card_fin]
+
+/-- The range of a map from a finite type has at most as many elements as the type. -/
+theorem ncard_range_le {ι : Type*} [_root_.Finite ι] (f : ι → α) :
+    (range f).ncard ≤ Nat.card ι := by
+  rw [← ncard_univ, ← image_univ]; exact ncard_image_le (toFinite _)
+
+/-- A finite set of a sum type has as many members as its left and right parts together,
+`|Z| = |Sum.inl ⁻¹' Z| + |Sum.inr ⁻¹' Z|`, as it is the disjoint union of their images. -/
+theorem ncard_eq_ncard_preimage_inl_add_ncard_preimage_inr {β : Type*}
+    [_root_.Finite α] [_root_.Finite β]
+    (Z : Set (α ⊕ β)) : Z.ncard = (Sum.inl ⁻¹' Z).ncard + (Sum.inr ⁻¹' Z).ncard := by
+  conv_lhs => rw [← image_preimage_inl_union_image_preimage_inr Z]
+  rw [ncard_union_eq (by simp [disjoint_left]) (toFinite _) (toFinite _),
+    ncard_image_of_injective _ Sum.inl_injective,
+    ncard_image_of_injective _ Sum.inr_injective]
 
 end Set

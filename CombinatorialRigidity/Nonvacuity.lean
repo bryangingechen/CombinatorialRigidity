@@ -825,15 +825,6 @@ private theorem k23_pencilNondegFeasible : PencilNondegFeasible ℝ (K₂₃) :=
         · simp [h]
         · simp [hH] at he
 
-/-- A finite set of a sum type has as many members as its left and right parts together,
-`|Z| = |Sum.inl ⁻¹' Z| + |Sum.inr ⁻¹' Z|`, as it is the disjoint union of their images. -/
-private theorem ncard_eq_ncard_preimage_inl_add {α β : Type*} [Finite α] [Finite β]
-    (Z : Set (α ⊕ β)) : Z.ncard = (Sum.inl ⁻¹' Z).ncard + (Sum.inr ⁻¹' Z).ncard := by
-  conv_lhs => rw [← Set.image_preimage_inl_union_image_preimage_inr Z]
-  rw [Set.ncard_union_eq (by simp [Set.disjoint_left]) (Set.toFinite _) (Set.toFinite _),
-    Set.ncard_image_of_injective _ Sum.inl_injective,
-    Set.ncard_image_of_injective _ Sum.inr_injective]
-
 /-- **`K_{2,3}[Z]` has at most `i · j` edges**, with `i` and `j` the numbers of bodies of `Z` of
 degree three and of degree two: each edge is a pair `s(Sum.inl i, Sum.inr j)` of a body of each
 kind in `Z`. -/
@@ -860,7 +851,7 @@ private theorem k23_partitionDef_nonneg :
   have hc : (((K₂₃).induce Z).crossingEdges id).ncard ≤ E((K₂₃).induce Z).ncard :=
     Set.ncard_le_ncard (fun e he => he.1) (Set.toFinite _)
   have hE := k23_ncard_edgeSet_induce_le Z
-  have hZ := ncard_eq_ncard_preimage_inl_add Z
+  have hZ := Set.ncard_eq_ncard_preimage_inl_add_ncard_preimage_inr Z
   have hpos := (Set.ncard_pos (Set.toFinite Z)).mpr hne
   have hi : (Sum.inl ⁻¹' Z).ncard ≤ 2 := by simpa using Set.ncard_le_card (Sum.inl ⁻¹' Z)
   have hj : (Sum.inr ⁻¹' Z).ncard ≤ 3 := by simpa using Set.ncard_le_card (Sum.inr ⁻¹' Z)

@@ -329,8 +329,7 @@ theorem _root_.Graph.X0Attains.of_cycle_of_certificate [Infinite K] [Finite α] 
     by_cases hge : ∃ j, g' = e j
     · obtain ⟨j, rfl⟩ := hge; exact Or.inr ⟨j, rfl⟩
     · exact Or.inl (honly _ _ _ hl (fun j h => hge ⟨j, h⟩))
-  have hre : (Set.range e).ncard ≤ k + 1 := by
-    rw [← Nat.card_coe_set_eq]; exact (Finite.card_range_le _).trans (by simp)
+  have hre : (Set.range e).ncard ≤ k + 1 := (Set.ncard_range_le e).trans (by simp)
   have hEcard : E(G).ncard ≤ k + 2 :=
     (Set.ncard_le_ncard hE (Set.toFinite _)).trans ((Set.ncard_insert_le _ _).trans
       (by omega))

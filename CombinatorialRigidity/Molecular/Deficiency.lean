@@ -2422,10 +2422,7 @@ theorem Connected.numParts_le_ncard_crossingEdges_add_one [Finite α] [Finite β
 monotone and `|P| − 1 ≤ d_G(P)` (`Connected.numParts_le_ncard_crossingEdges_add_one`). -/
 theorem Connected.deficiency_le_deficiency_of_le [Finite α] [Finite β] {G : Graph α β}
     (hG : G.Connected) {n m : ℕ} (hnm : n ≤ m) : G.deficiency m ≤ G.deficiency n := by
-  have hD : (bodyBarDim n : ℤ) ≤ bodyBarDim m := by
-    have : bodyBarDim n ≤ bodyBarDim m := by
-      unfold bodyBarDim; exact Nat.div_le_div_right (Nat.mul_le_mul hnm (Nat.succ_le_succ hnm))
-    exact_mod_cast this
+  have hD : (bodyBarDim n : ℤ) ≤ bodyBarDim m := by exact_mod_cast bodyBarDim_mono hnm
   have : Nonempty α := ⟨hG.nonempty.some⟩
   refine ciSup_le fun f => le_trans ?_ (G.partitionDef_le_deficiency n f)
   have hp : ((G.numParts f : ℤ) - 1) ≤ (G.crossingEdges f).ncard := by
@@ -2455,10 +2452,7 @@ theorem Connected.deficiency_eq_of_deficiency_two_add_three_le [Finite α] [Fini
   refine ciSup_le fun f => ?_
   have hc := hG.numParts_le_ncard_crossingEdges_add_one f
   have h2 := G.partitionDef_le_deficiency 2 f
-  have hD : (bodyBarDim n' : ℤ) ≤ bodyBarDim n := by
-    have : bodyBarDim n' ≤ bodyBarDim n := by
-      unfold bodyBarDim; exact Nat.div_le_div_right (Nat.mul_le_mul hn (Nat.succ_le_succ hn))
-    exact_mod_cast this
+  have hD : (bodyBarDim n' : ℤ) ≤ bodyBarDim n := by exact_mod_cast bodyBarDim_mono hn
   have hb2 : (bodyBarDim 2 : ℤ) = 3 := by simp [bodyBarDim]
   unfold partitionDef at h2 ⊢
   rw [hb2] at h2

@@ -110,7 +110,7 @@ moment you resolve the entry) is what makes the sweep a pure
 to be re-derived by re-reading entries later.
 
 ## Open
-### [mirror-candidate] No `Set.ncard` of a set of a sum type by its two preimages; three traps counting `K_{2,3}`'s edges
+### [idiom] No `Set.ncard` of a set of a sum type by its two preimages; three traps counting `K_{2,3}`'s edges
 - **Where it bit:** CLEANUP-42 round 4, task 8: `Nonvacuity.lean`'s private
   `ncard_eq_ncard_preimage_inl_add`, `k23_ncard_edgeSet_induce_le`, `k23_partitionDef_nonneg` and
   `k23_partitionDef_id` (the singleton values of `K_{2,3}`).
@@ -126,7 +126,9 @@ to be re-derived by re-reading entries later.
   [Finite β] (s : Set (α ⊕ β)) : s.ncard = (Sum.inl ⁻¹' s).ncard + (Sum.inr ⁻¹' s).ncard` in
   `Mathlib/Data/Set/Card.lean` (the private helper's statement); not mirrored now: one call site,
   and the round writes only the files its tasks name.
-- **Status:** mirror-candidate (open; a cleanup round). (2) and (3) idiom.
+- **Status:** idiom. (1) resolved (Phase 42-homes task 5):
+  `Set.ncard_eq_ncard_preimage_inl_add_ncard_preimage_inr` in the `Set/Card` mirror, and
+  `Nonvacuity.lean`'s private copy is gone.
 
 ### [idiom] A degree in `Graph.OfSimpleGraph`, and `#print axioms` of a `private` declaration
 - **Where it bit:** CLEANUP-42 round 4, task 7: `Nonvacuity.lean`'s private `k23_degree` and
@@ -534,7 +536,7 @@ to be re-derived by re-reading entries later.
   writes it.
 - **Status:** idiom.
 
-### [open] `bodyBarDim` has no monotonicity or lower-bound lemma; each consumer unfolds it
+### [resolved] `bodyBarDim` has no monotonicity or lower-bound lemma; each consumer unfolds it
 - **Where it bit:** Phase 42d, COUNT-A: `Graph.deficiencyMerged_two_add_two_le_of_three_le`
   (`Molecular/Induction/SparseDeficiency.lean`, `lem:deficiency-two-body-chain-d`) gets
   `1 ≤ bodyBarDim n` from `3 ≤ n` by `unfold bodyBarDim` and `Nat.le_div_iff_mul_le` with
@@ -556,7 +558,9 @@ to be re-derived by re-reading entries later.
   the public lemma). Not a site: round 4's spike for task 5 carried a private `n = 3` from
   `bodyBarDim n = screwDim 2`, which `Graph.eq_add_one_of_bodyBarDim_eq_screwDim`
   (`AlgebraicInduction/PanelLayer.lean`) already gives; task 5 calls it.
-- **Status:** open.
+- **Status:** resolved (Phase 42-homes task 5): `Graph.bodyBarDim_mono` in `BodyBar/Framework.lean`,
+  and the four sites (`Deficiency.lean`'s two, `SparseDeficiency.lean`'s, `Grade/Coverage.lean`'s)
+  go through it.
 
 ### [idiom] `Set.nonempty_of_ncard_ne_zero (by omega)` against `V(G.induce Y).Nonempty` needs `(s := Y)`
 - **Where it bit:** Phase 42d, COUNT-B: `Graph.IsX0Graph.exists_additiveCoreAt`
@@ -1018,7 +1022,7 @@ to be re-derived by re-reading entries later.
   `exact_mod_cast` the `ℕ` lemma rather than `rw` it and `push_cast`.
 - **Status:** idiom.
 
-### [mirror-candidate] No `Set.ncard_range_le` — `(Set.range f).ncard ≤ Nat.card ι` takes `← Nat.card_coe_set_eq` then `Finite.card_range_le`
+### [resolved] No `Set.ncard_range_le` — `(Set.range f).ncard ≤ Nat.card ι` takes `← Nat.card_coe_set_eq` then `Finite.card_range_le`
 - **Where it bit:** Phase 40g build 1, `Graph.deficiency_induce_add_le_of_ear`
   (`Molecule/Pencil/MainComponent/Ear.lean`), bounding the crossing edges of the interior bodies by
   `k − 1`. The spike carried a three-line local helper `ncard_range_le_of_fin` instead; the first
@@ -1031,7 +1035,10 @@ to be re-derived by re-reading entries later.
   `Framework.lean`, so landing it rebuilds nearly the whole tree for one call site. The second
   call site landed in build 2 with the same inline glue: `Graph.X0Attains.of_cycle_of_certificate`
   (`MainComponent/Chain.lean`), `(Set.range e).ncard ≤ k + 1`.
-- **Status:** open (mirror candidate).
+- **Status:** resolved (Phase 42-homes task 5): `Set.ncard_range_le` in the `Set/Card` mirror, and
+  the three sites (`MainComponent/Ear.lean`, `MainComponent/Chain.lean`, `Grade/Chain.lean`) go
+  through it; the proof is `ncard_image_le` on `univ`, since `Finite.card_range_le` is outside the
+  mirror's import closure.
 
 ### [mirror-candidate] No lemma that a ring hom commutes with `crossProduct`
 - **Where it bit:** Phase 40g build 2, `eval_joinPicturePoly` (`MainComponent/Flat.lean`): the

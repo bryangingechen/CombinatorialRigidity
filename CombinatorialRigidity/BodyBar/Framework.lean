@@ -72,6 +72,10 @@ theorem six_le_bodyBarDim {n : ℕ} (hn : 3 ≤ n) : 6 ≤ bodyBarDim n := by
   calc 6 * 2 = 3 * 4 := by norm_num
     _ ≤ n * (n + 1) := Nat.mul_le_mul hn (by omega)
 
+/-- **The body-bar dimension is monotone**: `bodyBarDim n = n(n+1)/2` grows with `n`. -/
+theorem bodyBarDim_mono : Monotone bodyBarDim := fun _ _ hnm =>
+  Nat.div_le_div_right (Nat.mul_le_mul hnm (Nat.succ_le_succ hnm))
+
 /-- **The body-bar dimension is at least `3` once `n ≥ 2`**, the bound the theorems for
 `n ≥ 2` use (`bodyBarDim 2 = 3`). From `2 · bodyBarDim n = n(n+1)` by `nlinarith`. -/
 theorem three_le_bodyBarDim_of_two_le {n : ℕ} (hn : 2 ≤ n) : 3 ≤ bodyBarDim n := by

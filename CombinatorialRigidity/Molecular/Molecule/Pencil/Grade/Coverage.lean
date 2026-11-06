@@ -40,10 +40,8 @@ private theorem exists_chainBound {m : ℕ} (hm : 2 ≤ m) :
     ∃ ℓ, 3 * (ℓ + 1) ≤ Graph.bodyBarDim (m + 2) ∧ ((m = 2 ∧ ℓ = 2) ∨ ℓ = 3) := by
   obtain rfl | hm3 : m = 2 ∨ 3 ≤ m := by omega
   · exact ⟨2, by decide, Or.inl ⟨rfl, rfl⟩⟩
-  · refine ⟨3, ?_, Or.inr rfl⟩
-    unfold Graph.bodyBarDim
-    rw [Nat.le_div_iff_mul_le (by norm_num)]
-    nlinarith
+  · exact ⟨3, (by decide : 3 * (3 + 1) ≤ Graph.bodyBarDim 5).trans
+      (Graph.bodyBarDim_mono (by omega)), Or.inr rfl⟩
 
 /-! ## The coverage (`thm:pencil-d-coverage`) -/
 
