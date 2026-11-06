@@ -6,6 +6,7 @@ Authors: Bryan Gin-ge Chen
 module
 
 public import CombinatorialRigidity.Mathlib.Algebra.Module.Submodule.Union
+public import CombinatorialRigidity.Molecular.MeetHyperplanes
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Statement
 public import CombinatorialRigidity.Molecular.GenericLift.HingeGeneric
 
@@ -147,9 +148,9 @@ orthogonal to one vector of `K⁴` form a space of dimension at least `3`, which
 /-- **Every linear automorphism of `Kⁿ` has a contragredient** (`lem:pencil-cut-nondegeneracy`): for
 `g : Kⁿ ≃ₗ Kⁿ` there is a linear automorphism `h` with `g x ⬝ᵥ h y = x ⬝ᵥ y` for all `x, y`, the
 inverse transpose of `g`: with `A = LinearMap.toMatrix' g`, `h` is `Matrix.toLinearEquiv'` of
-`(A⁻¹)ᵀ`. `contragredient` (`Meet.lean`) gives the same map as a linear map; the moves of a pencil
-realization (`hasPencilPanelRealization_mapExtensor_screwEquivOfLinearEquiv`) take `h` as a linear
-equivalence, which keeps the normals nonzero. -/
+`(A⁻¹)ᵀ`. `contragredient` (`MeetHyperplanes.lean`) gives the same map as a linear map; the moves
+of a pencil realization (`hasPencilPanelRealization_mapExtensor_screwEquivOfLinearEquiv`) take `h`
+as a linear equivalence, which keeps the normals nonzero. -/
 theorem exists_contragredient_linearEquiv {n : ℕ} (g : (Fin n → K) ≃ₗ[K] (Fin n → K)) :
     ∃ h : (Fin n → K) ≃ₗ[K] (Fin n → K), ∀ x y : Fin n → K, g x ⬝ᵥ h y = x ⬝ᵥ y := by
   set A : Matrix (Fin n) (Fin n) K :=

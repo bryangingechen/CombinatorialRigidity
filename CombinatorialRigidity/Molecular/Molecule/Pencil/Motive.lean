@@ -6,6 +6,7 @@ Authors: Bryan Gin-ge Chen
 module
 
 public import CombinatorialRigidity.Mathlib.Combinatorics.Graph.Delete
+public import CombinatorialRigidity.Molecular.MeetHyperplanes
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Arms
 
 /-!
@@ -490,7 +491,7 @@ theorem linearIndependent_triple_of_linearIndepOn (f : α → Fin 4 → K) {x y 
 /-- **The vectors of `K⁴` orthogonal to three independent vectors form a space of dimension `1`**:
 its dimension and that of the span of the three, which is `3` (`finrank_span_eq_card`), add up to
 `4` (`finrank_toDualPerp_add_finrank_span`). The form for three vectors of
-`finrank_toDualPerp_single_eq` and `finrank_toDualPerp_pair_eq` (`Meet.lean`). -/
+`finrank_toDualPerp_single_eq` and `finrank_toDualPerp_pair_eq` (`MeetHyperplanes.lean`). -/
 theorem finrank_toDualPerp_triple_eq {n : Fin 3 → Fin 4 → K} (hn : LinearIndependent K n) :
     Module.finrank K
         (⨅ j : Fin 3, LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip (n j))

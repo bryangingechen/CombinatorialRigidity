@@ -5,6 +5,7 @@ Authors: Bryan Gin-ge Chen
 -/
 module
 
+public import CombinatorialRigidity.Molecular.MeetHyperplanes
 public import CombinatorialRigidity.Molecular.RigidityMatrix.Basic
 public import CombinatorialRigidity.Molecular.RigidityMatrix.ColumnOperation
 public import Mathlib.LinearAlgebra.Quotient.Pi
@@ -361,9 +362,9 @@ theorem panelSupportExtensor_add_smul_left (n₁ n₂ : Fin (k + 2) → K) (t : 
   exact map_smul _ _ _
 
 /-- **The panel support extensor as the complement of an extensor**:
-`C(n₁, n₂) = complementIso (extensor ![n₁, n₂])`, from `normalsJoin_coe`. `Meet.lean` states its
-lemmas in this form (`extensor_join_proportional_complementIso_meet`), and the proofs of Case III
-and of `lem:panel-support-extensor-join` apply them through it. -/
+`C(n₁, n₂) = complementIso (extensor ![n₁, n₂])`, from `normalsJoin_coe`. `MeetHyperplanes.lean`
+states its lemmas in this form (`extensor_join_proportional_complementIso_meet`), and the proofs of
+Case III and of `lem:panel-support-extensor-join` apply them through it. -/
 theorem panelSupportExtensor_eq_complementIso_extensor (n₁ n₂ : Fin (k + 2) → K) :
     panelSupportExtensor n₁ n₂
       = complementIso (k := k) (j := 2) (by omega)

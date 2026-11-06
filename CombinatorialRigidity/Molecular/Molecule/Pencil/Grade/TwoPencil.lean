@@ -6,6 +6,7 @@ Authors: Bryan Gin-ge Chen
 module
 
 public import CombinatorialRigidity.Mathlib.LinearAlgebra.LinearIndependent.Basic
+public import CombinatorialRigidity.Molecular.MeetHyperplanes
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Realization
 
 /-!

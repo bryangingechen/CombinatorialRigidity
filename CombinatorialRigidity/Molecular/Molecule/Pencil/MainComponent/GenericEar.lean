@@ -5,6 +5,7 @@ Authors: Bryan Gin-ge Chen
 -/
 module
 
+public import CombinatorialRigidity.Molecular.MeetHyperplanes
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GenericSteer
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Coverage
 

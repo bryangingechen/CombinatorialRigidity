@@ -7,7 +7,7 @@ carried over (`notes/Phase42-homes.md` *Moved to a later round*, *Candidates for
 debt, the friction log's archive sweep, a dead pair of `have`s, the splits of the four molecular
 files past the ~1500-line tripwire, and `RecordsLinks` moved to `Graph` with its link hypotheses
 restated. Seventeen tasks; no main result's statement changes.
-**Next concrete task:** task 7, the split of `RigidityMatrix/Basic.lean` (*Lemma checklist*).
+**Next concrete task:** task 9, the split of `AlgebraicInduction/PanelLayer.lean` (*Lemma checklist*).
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -35,8 +35,9 @@ Task 6 (`7dc78901`): `Deficiency.lean` split into four files, a pure move (*Deci
 G1, G2 (whole-tree `lake build` 0 warnings, 0 cache failures; `lake lint`), G3 (check 9 at 0, the
 docstring-label report unchanged), G4 (`checkdecls` silent); G6 **0 missing**, unbacked 190,
 implied 3070, 802 nodes, consistency OK (the built graph's 1885 edges), as at task 5.
-Task 7 (this commit): `RigidityMatrix/Basic.lean` split in two, a pure move (*Decisions*); same gates,
-G6 unchanged.
+Task 7 (`175bcb33`): `RigidityMatrix/Basic.lean` split in two, a pure move (*Decisions*); same gates,
+G6 unchanged. Task 8 (this commit): `Meet.lean` split in two, a pure move (*Decisions*); same gates,
+G6 **0 missing**, unbacked 190, implied 3070, both consistency lines OK, as at task 7.
 
 **Verified at the open** (2026-11-05, at `6d75d694`; a whole-tree `lake build` replays clean, 0
 warnings, 0 cache failures):
@@ -145,13 +146,14 @@ resolved.
 - [x] **6. Split `Deficiency.lean`** (`7dc78901`; Lean, a pure move). `Deficiency.lean` 851,
   `Deficiency/Cut.lean` 1207 (with the merged deficiency, the cut vertex), `Deficiency/Corank.lean`
   1371, `Deficiency/MinimalKDof.lean` 569; seven docstrings, three TACTICS-QUIRKS lines repointed.
-- [x] **7. Split `RigidityMatrix/Basic.lean`** (this commit; Lean, a pure move). `Basic.lean` 819,
+- [x] **7. Split `RigidityMatrix/Basic.lean`** (`175bcb33`; Lean, a pure move). `Basic.lean` 819,
   `RigidityMatrix/ColumnOperation.lean` 915 (lines 817-1683: the column operation, the star-forest
   rows, the trivial motions and rank lemmas). Also repointed task 6's missed mention in
   `Induction/SparseDeficiency.lean` (`deficiencyMerged_le_deficiency`, `partitionDef_map`, now
   `Deficiency/Cut.lean`).
-- [ ] **8. Split `Meet.lean`** (Lean; sonnet). At a seam near line 689 (the `a ∨ v` sections on),
-  the rest to a new file. A pure move.
+- [x] **8. Split `Meet.lean`** (this commit; Lean, a pure move). `Meet.lean` 672, new
+  `MeetHyperplanes.lean` 908 (lines 672-1542: the `a ∨ v` section through the meet of two
+  hyperplanes). Four live docstrings and two TACTICS-GOLF lines repointed.
 - [ ] **9. Split `AlgebraicInduction/PanelLayer.lean`** (Lean; sonnet). Along its three sections:
   the panel support extensor stays (to line 1162); the hinge forms (1163–1358) and the deficiency
   bound (1359–1805) to new files. A pure move. HOMES *Moved to a later round*.
@@ -197,8 +199,8 @@ resolved.
 
 ## Hand-off / next phase
 
-**Next concrete task:** task 8, the split of `Meet.lean` at its `a ∨ v` sections (*Lemma checklist*;
-a pure move, G6 at 0 missing). After the close: ORIGAMI's open, with
+**Next concrete task:** task 9, the split of `AlgebraicInduction/PanelLayer.lean` along its three
+sections (*Lemma checklist*; a pure move, G6 at 0 missing). After the close: ORIGAMI's open, with
 the PI (ROADMAP *Queued post-program phases*).
 
 ## Decisions made during this round
@@ -243,3 +245,8 @@ the PI (ROADMAP *Queued post-program phases*).
   `columnOp`, `Bricks` `linearIndependent_sum_pinned_block`; all three add the new file beside
   `Basic`; `ScrewVelocity` keeps `Basic` alone. (c) Sweep: every live Lean mention of
   `RigidityMatrix/Basic.lean` names a declaration that stayed; TACTICS-QUIRKS' are history, stay.
+- **Task 8's shapes.** (a) The seam is line 672, the `a ∨ v` section; nothing is `private`. The new
+  file, `MeetHyperplanes.lean` (after its closing `lem:meet-two-hyperplanes`), imports `Meet`.
+  (b) `Basic.lean` uses nothing of it; nine files import it by use (`Claim612`, `PanelLayer`, four in
+  `Pencil/`, three in `Pencil/Grade/`). (c) Sweep: four docstrings and
+  TACTICS-GOLF 1422, 1551 repointed; the dated records (GOLF 1470, QUIRKS 1646, 2520, 2541, 2564) stay.

@@ -6,6 +6,7 @@ Authors: Bryan Gin-ge Chen
 module
 
 public import CombinatorialRigidity.Molecular.AlgebraicInduction.Theorem55
+public import CombinatorialRigidity.Molecular.MeetHyperplanes
 public import CombinatorialRigidity.Molecular.Molecule.Duality
 
 /-!
@@ -427,8 +428,9 @@ theorem exists_linearIndependent_extensor_pair_through_given_point {n q : Fin 4 
 /-! ## Two hinges in one panel pass through a common point -/
 
 /-- **The vectors of `K⁴` orthogonal to a nonzero `n` form a space of dimension `3`**: the case of
-one vector of `finrank_toDualPerp_add_finrank_span` (`Meet.lean`), as `finrank (span {n}) = 1`
-(`finrank_span_singleton`). It is the panel `n^⊥` in which the hinges of a body lie. -/
+one vector of `finrank_toDualPerp_add_finrank_span` (`MeetHyperplanes.lean`), as
+`finrank (span {n}) = 1` (`finrank_span_singleton`). It is the panel `n^⊥` in which the hinges of a
+body lie. -/
 theorem finrank_toDualPerp_single_eq {n : Fin 4 → K} (hn : n ≠ 0) :
     Module.finrank K
         (LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip n) : Submodule K (Fin 4 → K)) = 3 := by

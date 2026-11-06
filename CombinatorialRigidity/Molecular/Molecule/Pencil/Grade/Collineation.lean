@@ -6,6 +6,7 @@ Authors: Bryan Gin-ge Chen
 module
 
 public import CombinatorialRigidity.Molecular.GenericLift.HingeGeneric
+public import CombinatorialRigidity.Molecular.MeetHyperplanes
 
 /-!
 # A collineation of the normals keeps the rank, at every grade

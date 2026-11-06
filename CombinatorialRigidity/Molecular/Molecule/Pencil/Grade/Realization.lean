@@ -7,6 +7,7 @@ module
 
 public import CombinatorialRigidity.Mathlib.LinearAlgebra.Matrix.BilinearForm
 public import CombinatorialRigidity.Molecular.GenericLift.HingeGeneric
+public import CombinatorialRigidity.Molecular.MeetHyperplanes
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Motive
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Statement
 public import Mathlib.LinearAlgebra.BilinearForm.Orthogonal

@@ -38,6 +38,7 @@ public import CombinatorialRigidity.Molecular.Induction.ForestSurgery.ChainExtra
 public import CombinatorialRigidity.Molecular.Induction.ForestSurgery.Reduction
 public import CombinatorialRigidity.Molecular.Induction.SparseDeficiency
 public import CombinatorialRigidity.Molecular.Meet
+public import CombinatorialRigidity.Molecular.MeetHyperplanes
 public import CombinatorialRigidity.Molecular.Molecule.Application
 public import CombinatorialRigidity.Molecular.Molecule.Carrier
 public import CombinatorialRigidity.Molecular.Molecule.Dictionary

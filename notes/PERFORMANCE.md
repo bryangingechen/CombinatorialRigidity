@@ -1103,6 +1103,10 @@ Surveyed the other raised-budget decls and next-largest files:
    at its column-operation section: `Basic.lean` 819 lines,
    `RigidityMatrix/ColumnOperation.lean` 915 (the column operation, the
    star-forest row independence, the trivial motions and rank lemmas).
+   Task 8 split `Meet.lean` at its `a ∨ v` section: `Meet.lean` 672 lines,
+   `MeetHyperplanes.lean` 908 (the `2`-extensors `a ∨ v`, the coordinate
+   pairing and the dot product, the transformation law of `*`, the meet of
+   two hyperplanes).
 4. **The three other CaseI budgets (:9142 400k, :9528 800k, :9896
    800k)** — in the cut-edge / Case-I-nonsimple producers
    (`case_cut_edge_realization{,_gp}`, `case_I_realization_nonsimple`).
