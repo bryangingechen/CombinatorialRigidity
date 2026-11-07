@@ -140,8 +140,8 @@ in every `Pᵈ` (Results 12–19), which PENCIL-D sets out to prove.
     `d−1−k` dimensions of the screw space, those through `A` span `C(d−k, 2)`. A **pencil**
     configuration (`k = d−3` with `B`) is a configuration of every type, so by Monotonicity a
     pencil theorem implies all `2(d−1)`. Katoh–Tanigawa's all-`d` theorem is the type `(−1, B)`.
-    Polarity sends `(d−2)`-flats to lines, so it identifies "through a point" with KT only at
-    `d = 3`. At `d = 2` panel and pencil coincide (pins collinear per body, Jackson–Jordán 2008).
+    Polarity identifies "through a point" with KT only at `d = 3`; at `d = 2` panel and pencil
+    coincide (Jackson–Jordán 2008). `k = d−2` makes a body's hinges equal: `rem:pencil-d-strongest`.
 13. `[PROVED]` **The pencil of `Pᵈ` in dual form, and its parameters.** A panel configuration
     (hinge `uv` = `B_u ∩ B_v`, dual `b_u ∧ b_v`) is a pencil iff the panels of each closed
     neighbourhood share a `(d−3)`-flat, iff each `b_{N[v]}` lies in a plane: the same condition
