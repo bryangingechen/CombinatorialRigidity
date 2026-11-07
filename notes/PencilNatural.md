@@ -1,9 +1,10 @@
 # PENCIL-NATURAL — a simpler or more natural pencil proof (planning note)
 
-**Status:** queued by the PI on 2026-11-07, ahead of ORIGAMI; unopened, attended (it opens with the
-PI). **Next concrete task:** the recon of §4, read-only, then the PI's decisions on its verdicts.
-The blueprint exposition the PI wants (§5) waits for those decisions. Same editing discipline as
-phase notes (≤ 8-line entries, lift cross-cutting lessons).
+**Status:** queued by the PI on 2026-11-07, ahead of ORIGAMI; unopened, attended. The recon of §4
+ran the same day, in three parallel tracks, and its verdicts are §3. The PI took two decisions (§6).
+**Next concrete task:** the PI's decisions D1–D5 of §6. Then the open, with the order of §6. The
+blueprint exposition (§5) comes last. Same editing discipline as phase notes (≤ 8-line entries,
+lift cross-cutting lessons).
 
 ## 1. The PI's words (verbatim)
 
@@ -49,69 +50,141 @@ general point of the main component is degenerate (`K_{2,3}`,
 `lem:pencil-x0-two-hubs-obstruction`), so C is separate from B; an induction on `d` fails because
 contraction moves every height along its curve (`notes/Phase42-design.md` §2.2).
 
-## 3. Candidates (2026-11-07, unverified unless marked)
 
-- **N1. The `d = 3` generic step through C.** `liftAttains_of_simple` (`Pencil/Grade/Generic.lean`)
-  takes `r : ℕ`, with `d = r + 3`. Outside docstrings, nothing in `Pencil/Grade/` names
-  `pencilPair_of_nonempty` or `hasGenericPencilRealization_of_IH` (grep, this session). If
-  `liftAttains_of_simple 0` with `lem:pencil-d-nondegenerate-three` gives the `d = 3` generic
-  conjunct, then A need not host it, and every `d ≥ 3` has the shape A, B, C with no interleaving.
-  C uses `lem:pencil-generic-steer` (the `P³` parametrization), so the steer stays. Not built.
-- **N2. A as a normal-form lemma.** Every multigraph is built from `K₁` and simple 2-edge-connected
-  graphs by adding a loop, joining along a cut edge and expanding a body into a parallel pair. Each
-  operation keeps a realization at the deficiency rank. Is this cleaner than a five-case induction?
-- **N3. The `d = 3` rows at short chains.** The four rows at chains with one or two interior bodies
-  (`thm:pencil-x0-open-ear-one`, `-open-ear-two`, `-open-ear-two-orbit`, `-splitoff`) are the ones
-  that the count of `lem:pencil-d-chain-count` removes for `d ≥ 4`. At `D = 6` that count gives
-  only `ℓ = 1`. Its exception, every chain with one interior body and `def₃ = 0`, cannot be handed
-  down: no lower dimension shares the target. Can a finer count, or another decomposition, remove
-  these rows at `d = 3`? This is the main lever, since `d ≥ 4` leans on `d = 3` through the
-  embedding. A numerics probe could list the graphs (under a stated cap) where only these rows
-  apply, and test whether another step applies there.
-- **N4. The gap as the organizing measure.** The flat rank and Jackson–Jordán's equality give a
-  flat configuration rank of `D(n−1) − def₂`. The target is `D(n−1) − def_d`, so the heights
-  recover `def₂ − def_d`. Does ordering B's cases by what each step does to this gap give a more
-  natural table, or a shorter proof of the coverage (Theorem S)?
-- **N5. One gluing lemma.** Cuts are glued three times: A's cut edge by a projective repositioning,
-  B's cut vertex and chain of bridges, and C's cut edge and pendant body. Is a shared lemma
-  possible, or does each statement force its own?
-- **N6. Anything else**, including whether B and C could share one statement on some other
-  sublocus that avoids the `K_{2,3}` obstruction.
+## 3. Candidates and the recon's verdicts (2026-11-07)
 
-## 4. The recon (brief)
+These are the recon's verdicts, read-only (§4). The probes behind the figures are uncommitted. They
+sit in the gitignored `scratch/pencil-natural/`, so each figure is tagged "measured, script not
+retained" until D4 of §6 banks them.
 
-- **Rung and mode:** `recon-opus`, read-only (`.claude/agents-core/recon.md`): the verdict is the
-  return, recorded here by the session that dispatches it.
-- **Question:** can the proof of §2 be made simpler, or its case structure more natural, without
-  weakening any main result's statement? Settle N1–N6, and re-check each obstruction of §2 for
-  whether it forces the shape for this route or only for the current statements.
-- **Deliverable:** one verdict per candidate (GO, NO-GO or OPEN), each with its source or witness,
-  the Lean and blueprint it touches sized in files and approximate lines, and a recommended order.
-  N1 needs a `lake lean` witness that `liftAttains_of_simple 0` gives the `d = 3` generic motive.
-  Every count or "no other step applies" names its population and cap (`HARNESS.md` *Evidence*). A
-  figure from an uncommitted probe is tagged "measured, script not retained".
-- **Out of scope:** Lean or blueprint edits, the exposition of §5, and new mathematics past a
-  sizing. A GO that changes mathematics gets a second, fresh read before it is built.
-- **Inputs:** `blueprint/src/chapter/pencil.tex`, `main-component.tex`, `pencil-d.tex`;
-  `notes/Phase42-design.md` §2 (the step table, the route verdict, the obligations);
-  `notes/Cleanup42.md` (the proof-route ledger); `notes/Phase40-simplify-verdicts.md` (the last
-  simplification recon, so as not to repeat it).
+- **N1. The `d = 3` generic conjunct by C: GO.** `liftAttains_of_simple 0`, then
+  `LiftAttains.hasGradedGenericPencilRealization`, then `hasGradedGenericPencilRealization_two_iff`
+  gives `HasGenericPencilRealization K 3 G` at every simple, nonempty, feasible `G`, with no cast.
+  The Lean spike `lake lean`s with 0 errors and 0 `sorry`, on the standard axioms. A kernel walk of
+  its closure finds no `d = 3` main-component statement, nor its generic machinery: no `x0Gen`,
+  `pencilPair_of_*`, `hasGenericPencilRealization_of_IH` or reduction. A control on the landed
+  `x0Gen` finds them all (measured, script not retained). Three restructures, each keeping every
+  main statement byte-identical, are listed after this list.
+- **N2. A as a normal form: GO for the restatement; the strict normal form waits on N1.**
+  `thm:pencil-reduction`'s cases (iv) and (v) are dead: all three callers pass one function to both
+  (`Statements.lean`, `X0.lean`, `Grade/Reduction.lean`; checked). Restate it on five structural
+  cases: loop; at most two bodies; not 2EC; non-simple; simple 2EC. Lean about −170 lines across 6
+  files; blueprint about −40 lines. `lem:pencil-min-degree-rigid` leaves the route (§6 (b)). The
+  base stays "loopless, ≤ 2 bodies", because the parallel-pair expansion fails on two bodies.
+- **N3. The short-chain rows at `d = 3`: two of four go (GO, it changes mathematics, so a fresh
+  read first).** Open-ear-two and the split-off are never needed. A restructured Theorem S′, with
+  long ears, two-orbit, open-ear-one and the core, is `thm:pencil-d-chain-or-core` at `ℓ = 1`, with
+  those two steps standing in for the embedding. It is built from landed lemmas plus a ~40-line
+  extraction from `SparseDeficiency.lean`. It revises the 42f record (`notes/Phase42-design.md`
+  §1: "in `P³` both are load-bearing"; both are used, neither is needed). Sizing: TeX net about
+  −500; Lean about −1,000 (`SplitOff.lean` whole, 748) and +150–200.
+- **N3, the rest: NO-GO without new mathematics.** These graphs each admit one step only:
+  - W8 (`K₄` with its 4-cycle `0-2-1-3` subdivided once; open-ear-one only);
+  - DK4 (`K₄` with every edge subdivided twice; two-orbit only, with no proper rigid set at all);
+  - `K₄` with one edge kept and five subdivided twice (two-orbit only).
 
-## 5. After the recon
+  The count's bound at `D = 6`, `ℓ = 2` is attained at DK4. Probe: the census over
+  `geng -C -t -d2`, `n ≤ 13`, `m ≤ (3n−4)/2`, is exhaustive for the class rows 1–5 leave (42,501
+  members). Two hub sweeps (not exhaustive) cover 4,781 and 5,964 more. 0 graphs are stepless
+  once the two rows are dropped (measured, script not retained).
+- **N4. The gap `def₂ − def₃` as the measure: NO-GO; an exposition line only.** It is not monotone:
+  open-ear-one raises it by 1, and three rows keep it. Its per-row table rests on an identity whose
+  `≤` half is not landed (derived by hand, about 30 TeX lines). Every step of the `d ≥ 4` table is
+  gap-non-increasing (derived, not measured). After N3, open-ear-one is `d = 3`'s only raising row.
+- **N5. One gluing lemma: NO-GO.** The count is already shared. The alignments differ:
+  - A moves one side by a linear map, with no nondegeneracy;
+  - B has no group action: a common main picture and two open conditions;
+  - C's sides overlap on the cut edge, since the hub conditions read across the cut.
 
-The PI decides at a stop. Then any simplification the PI takes lands first. The blueprint
-exposition comes last: a road map in the manner of KT §1.1, with the A/B/C structure and the
-intuitions below as they stand after the simplifications. These are the readings offered on
-2026-11-07; the recon checks them before any goes into the blueprint.
+  N1b or N1c retires A's `d = 3` glue (`Arms.lean`), which leaves two gluings.
+- **N6. B and C on one statement: NO-GO.** C's locus is empty at infeasible graphs such as `K₄`,
+  where B still owes the distinct conjunct. B is degenerate at `K_{2,3}`, and more widely: by hand,
+  every planar-rigid set is flat on the main component (one panel). This "flatness reading" is an
+  exposition candidate that needs a fresh read. No proof needs it as a Lean node (~100–200 lines).
 
-- **I1, the gap** (N4): the heights only have to recover `def₂ − def_d`. At a gap of zero there is
-  nothing to do (the equal-deficiencies row).
-- **I2, bodies of degree two are free** (`sec:pencil-cycle`). Three points always lie in a plane,
-  so the pencil condition constrains only hubs. In a chain only `x₁` and `x_k` are tied to the
-  hubs' planes. So the chain, not KT's single vertex, is the unit removed: a long chain has free
-  heights enough to make its hinges independent, and the short chains are the tight cases.
-- **I3, a planar-rigid set is one body.** `def₂ = 0` gives `dim L = 3`: affine heights, one
-  3-space. This is why such a set is contracted, and what C's `lem:pencil-d-ear-free` uses.
-- **I4, a larger `D` gives slack.** When every chain is short, counting forces a rigid core
-  (`thm:pencil-d-chain-or-core`). So for `d ≥ 4` the rows that put a point in `Π_a ∩ Π_b` drop out:
-  two planes always share a line only in `P³`.
+The three restructures of N1 (sizes from a kernel liveness walk; measured, script not retained):
+
+- **N1a**, the minimal one. `x0Gen` comes from C, so A no longer hosts `thm:pencil-generic-step`.
+  Lean about −1.9k lines (`GenericEar.lean`, `GenericTriangle.lean` whole); 6 blueprint nodes.
+- **N1b.** No case of A reads its hypothesis's generic conjunct, so the `d = 3` generic glue goes
+  (`Pair`, `Pair2`, `Arms`, part (b) of `lem:pencil-generic-steer`). Lean about −4.1k; 11 nodes.
+- **N1c.** `pencilPair_of_nonempty` is the `m = 1` case of `Graph.graded_pencil_conditioned_pair`.
+  The graded A already proves bare ∧ distinct at `d = 3` without `Pair`, `Pair2` or `X0`. Lean
+  about −4.6k across 17 files; 15 nodes, including `pencil.tex`'s five A cases.
+
+All three need the same blueprint fixes:
+- remove or reverse the `\uses` edges `pencil-d.tex:6673` and `:6755`, which would close a cycle;
+- the `sec:pencil-d-lift` intro's "proved inside the induction of the reduction" becomes false;
+- about 17 "At `d = 3` this is …" remarks change.
+
+A fresh read must confirm that `sec:pencil-d-generic` uses no `d = 3` generic node as a premise.
+
+**The four obstructions of §2.** All are forced by the route; none by a main statement.
+- Minimality (`K₄ ⊃ C₄`; the minimal spanning subgraphs are its three `C₄`s) forces A over every
+  multigraph, but not cases (iv) and (v).
+- The parallel edges and `K_{2,3}` force B's locus. C is the escape for `K_{2,3}`.
+- Induction on `d` is forced only against the add-one-height step. As an outer induction it is a
+  route choice that removes no step (Tier 2, `notes/Phase42-design.md` §2.2).
+
+## 4. The recon (done 2026-11-07)
+
+The brief (rung `recon-opus`, read-only, every count with its population and cap) ran in three
+parallel tracks:
+- T1: N1, with the session's one Lean build slot;
+- T2: N3, N4, I1, I2 and I4;
+- T3: N2, N5, N6, the obstructions and I3.
+
+The returns are recorded in §3 and §5. The T1 spike and the T2 probe are kept, uncommitted, in
+`scratch/pencil-natural/`. The T2 probe needs nauty's `geng`.
+
+## 5. After the recon: the exposition
+
+It comes last: a road map in the manner of KT §1.1, with the A/B/C structure as it stands after the
+simplifications. Where the reduction plays KT Theorem 4.9's role, cite it in a remark or glue text
+(§6 (a)). The counting heir of KT Lemmas 4.5–4.6 is B's chain count (`lem:pencil-d-chain-count`).
+The intuitions, as the recon corrected them:
+
+- **I1, the gap** (N4): confirmed. The heights recover `def₂ − def_d`
+  (`thm:pencil-flat-rank`, `thm:pencil-jj-equality`). Say that the gap shrinks or splits along most
+  steps, not all: open-ear-one raises it.
+- **I2, degree-two bodies**: half confirmed. "Three points lie in a plane" holds
+  (`lem:pencil-three-points`). But the condition sits on hubs' closed neighbourhoods, so a hub's
+  degree-two neighbour is constrained, and degree-two bodies carry an independence condition. The
+  chain is the unit removed only at `k ≥ 5`, open-ear-one and (pre-N3) open-ear-two. At `k = 2`
+  (orbit), 3 and 4, one interior body is suppressed for comparison.
+- **I3, a planar-rigid set is one body**: needs correction. `dim L = 3` holds at a main picture
+  only. Contraction is also at `D`-rigid additive cores that need not be planar-rigid. C's
+  `lem:pencil-d-ear-free` uses `def₂(W₀ − x) = 1` (`IsPencilGoodEar.deficiency_eq`; checked): one
+  height more, so that set spans `P³` and lifts as one body of `P³`.
+- **I4, slack at larger `D`**: needs correction. Counting forces a core only at a chain with
+  `k ≥ 2`. At all `k = 1`, the core comes from `def₃ > 0` (tight parts), and W8 has none. The `P³`
+  rows drop out of the dimension-`d` table only, since they still run at `d = 3` through the
+  embedding. Not extending them was a design choice (Phase42-design §2.2, §2.5).
+
+## 6. The PI's decisions
+
+**PI, 2026-11-07, on N2's call (a), whether the reduction may stop mirroring KT Theorem 4.9:** "I
+think we should be free to diverge from KT Theorem 4.9, but if it plays a similar role in the proof
+as KT Theorem 4.9 does in the KT proof, then it's worth a reference (perhaps just in a remark or in
+surrounding glue text)."
+
+**PI, 2026-11-07, on N2's call (b), `lem:pencil-min-degree-rigid`, after asking why it would
+retire:** "Let's keep it off the route for now; perhaps we could move it into a separate appendix."
+The blueprint's `\appendix` holds only `retrospective.tex` today.
+
+Open, for the PI:
+- **D1.** Which N1 restructure: N1a, N1b or N1c? Do the explicit `d = 3` generic constructions stay
+  as exposition (the appendix of (b))? C at `d = 3` says only "a general realization attains".
+- **D2.** Commission the fresh read of Theorem S′ (N3), which revises the 42f record.
+- **D3.** The other fresh reads: N1's premise check of `sec:pencil-d-generic`, and N6's flatness
+  reading.
+- **D4.** Bank the probes in `notes/scripts/`, with `geng` as a second exception to stdlib-only, or
+  keep the figures tagged.
+- **D5.** Open PENCIL-NATURAL as a numbered phase.
+
+Order, if all are taken:
+1. N1. N1a stands alone; N1c, if chosen, before N2, since it leaves one caller of the reduction.
+2. N2's restatement.
+3. The fresh reads, in parallel.
+4. N3's build.
+5. The exposition.

@@ -1457,9 +1457,12 @@ research note of its own, `notes/Strata.md`, which holds PENCIL-D's evidence.
   that set the proof's inductions beside KT's *Road Map of the Proof* (KT §1.1). It opens with a
   read-only recon on six candidates. Among them: proving the `d = 3` generic conjunct by the
   every-dimension lift induction, so that the reduction need not host it, and removing the `d = 3`
-  coverage rows at chains with one or two interior bodies. The PI's decisions follow. The
-  intuitions the PI wants in the blueprint come after any simplification. Plan, the PI's words and
-  the recon's brief: `notes/PencilNatural.md`.
+  coverage rows at chains with one or two interior bodies. The recon ran the same day. The `d = 3`
+  generic conjunct does follow from the every-dimension induction, and that removes up to 4.6k
+  Lean lines. Two of the four short-chain rows are redundant, pending a fresh read; the other two
+  are needed. **Next:** the PI's decisions on the verdicts, then the open. The intuitions the PI
+  wants in the blueprint come after any simplification. Plan, the PI's words, verdicts and open
+  decisions: `notes/PencilNatural.md`.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid
