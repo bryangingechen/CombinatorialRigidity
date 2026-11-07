@@ -2,9 +2,9 @@
 
 **Status:** queued by the PI on 2026-11-07, ahead of ORIGAMI; unopened, attended. The recon of §4
 ran the same day, in three parallel tracks, and its verdicts are §3. The PI took two decisions (§6).
-**Next concrete task:** the PI's decisions D1–D5 of §6. Then the open, with the order of §6. The
-blueprint exposition (§5) comes last. Same editing discipline as phase notes (≤ 8-line entries,
-lift cross-cutting lessons).
+**Next concrete task:** in a new attended session, put D1–D5 of §6 to the PI (deferred there on
+2026-11-07). Then the open, with the order of §6; the blueprint exposition (§5) comes last. Same
+editing discipline as phase notes (≤ 8-line entries, lift cross-cutting lessons).
 
 ## 1. The PI's words (verbatim)
 
@@ -86,7 +86,8 @@ retained" until D4 of §6 banks them.
   The count's bound at `D = 6`, `ℓ = 2` is attained at DK4. Probe: the census over
   `geng -C -t -d2`, `n ≤ 13`, `m ≤ (3n−4)/2`, is exhaustive for the class rows 1–5 leave (42,501
   members). Two hub sweeps (not exhaustive) cover 4,781 and 5,964 more. 0 graphs are stepless
-  once the two rows are dropped (measured, script not retained).
+  once the two rows are dropped. Under the census's cap no graph has two-orbit as its only step;
+  the first found is the 14-body `K₄` family (measured, script not retained).
 - **N4. The gap `def₂ − def₃` as the measure: NO-GO; an exposition line only.** It is not monotone:
   open-ear-one raises it by 1, and three rows keep it. Its per-row table rests on an identity whose
   `≤` half is not landed (derived by hand, about 30 TeX lines). Every step of the `d ≥ 4` table is
@@ -135,7 +136,9 @@ parallel tracks:
 - T3: N2, N5, N6, the obstructions and I3.
 
 The returns are recorded in §3 and §5. The T1 spike and the T2 probe are kept, uncommitted, in
-`scratch/pencil-natural/`. The T2 probe needs nauty's `geng`.
+`scratch/pencil-natural/`, which is gitignored and local to the machine that ran them. The T2
+probe needs nauty's `geng`. If they are lost, N1's spike is rebuilt from §3's three-line core,
+and the T2 figures stay tagged.
 
 ## 5. After the recon: the exposition
 
@@ -172,15 +175,21 @@ surrounding glue text)."
 retire:** "Let's keep it off the route for now; perhaps we could move it into a separate appendix."
 The blueprint's `\appendix` holds only `retrospective.tex` today.
 
-Open, for the PI:
+Open, for the PI. **Deferred by the PI on 2026-11-07 to a future session**, which starts here. Each
+item gives the recommendation offered that day:
 - **D1.** Which N1 restructure: N1a, N1b or N1c? Do the explicit `d = 3` generic constructions stay
   as exposition (the appendix of (b))? C at `d = 3` says only "a general realization attains".
-- **D2.** Commission the fresh read of Theorem S′ (N3), which revises the 42f record.
+  Offered: N1c, the only variant that proves A once and gives every `d` one shape. Its cost is
+  that `pencil.tex` stops proving `d = 3` on its own terms. N1a is a subset of N1c, so it can
+  land first either way.
+- **D2.** Commission the fresh read of Theorem S′ (N3), which revises the 42f record. Offered: yes,
+  as the largest change to the mathematics, and a cheap read.
 - **D3.** The other fresh reads: N1's premise check of `sec:pencil-d-generic`, and N6's flatness
-  reading.
+  reading. Offered: the premise check yes, before any blueprint change; the flatness reading at
+  the exposition.
 - **D4.** Bank the probes in `notes/scripts/`, with `geng` as a second exception to stdlib-only, or
-  keep the figures tagged.
-- **D5.** Open PENCIL-NATURAL as a numbered phase.
+  keep the figures tagged. Offered: bank them, since N3's GO rests on the census.
+- **D5.** Open PENCIL-NATURAL as a numbered phase. Offered: yes, once D1 and D2 are settled.
 
 Order, if all are taken:
 1. N1. N1a stands alone; N1c, if chosen, before N2, since it leaves one caller of the reduction.
