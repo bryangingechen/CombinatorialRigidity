@@ -1315,7 +1315,8 @@ CLEANUP-42, opened 2026-11-05 at the PI's word ahead of ORIGAMI: round 1, the ro
 closed; round 4, the folds, the witnesses and the docstrings (`notes/Phase42-fold.md`), closed the
 same day, and CLEANUP-42 with it; then HOMES, a cleanup round of Phase 42's deferred lemma homes
 and the friction log (`notes/Phase42-homes.md`), closed the same day; then ARREARS, a cleanup round
-of what HOMES left (`notes/Phase42-arrears.md`), closed 2026-11-06; then ORIGAMI, with the PI
+of what HOMES left (`notes/Phase42-arrears.md`), closed 2026-11-06; then PENCIL-NATURAL, a recon
+on simplifying the pencil proof (`notes/PencilNatural.md`), and ORIGAMI, each with the PI
 (*Queued post-program phases*). Detail →
 `notes/Phase42a.md` to `notes/Phase42m.md` + `notes/Phase42-design.md`.
 
@@ -1347,7 +1348,8 @@ ahead of ORIGAMI, and it opened the same day as Phase 42 and closed 2026-11-05, 
 for a cleanup after Phase 42, **CLEANUP-42**, and opened it on 2026-11-05, ahead of ORIGAMI; it
 closed the same day. The same day the PI opened **HOMES** ahead of ORIGAMI, a cleanup round of the
 lemmas Phase 42 left outside their home files and of the friction log; it closed the same day, and
-the PI opened **ARREARS**, a cleanup round of what HOMES left; it closed 2026-11-06.)
+the PI opened **ARREARS**, a cleanup round of what HOMES left; it closed 2026-11-06. On 2026-11-07
+the PI queued **PENCIL-NATURAL** ahead of ORIGAMI.)
 A longer **unqueued**
 idea backlog from the same survey (KT-template subvariety questions,
 e.g. Tanigawa's identified-panel-hinge Problem 1, plus known-math
@@ -1408,7 +1410,8 @@ research note of its own, `notes/Strata.md`, which holds PENCIL-D's evidence.
   entries, 307 `done` and 25 `left`, none `reported` (its header). **PENCIL-D**
   opened next, as Phase 42, and closed 2026-11-05; **CLEANUP-42** opened next, at the PI's word
   (2026-11-05), and closed the same day; **HOMES** opened next and closed the same day (below);
-  **ARREARS** opened next and closed 2026-11-06 (below); **ORIGAMI** is next, with the PI.
+  **ARREARS** opened next and closed 2026-11-06 (below); **PENCIL-NATURAL** is next, then
+  **ORIGAMI**, each with the PI.
 - **PENCIL-D** — the pencil realization theorem in every dimension: opened 2026-10-29 with the PI
   as Phase 42 and closed 2026-11-05, proving it in every dimension `d ≥ 3` (§42 above; plan
   `notes/Phase42-design.md`).
@@ -1426,7 +1429,8 @@ research note of its own, `notes/Strata.md`, which holds PENCIL-D's evidence.
   `d = 3` case (Theorem S's core and four cases of the reduction), added two non-vacuity witnesses,
   at `K₂` and `K_{2,3}`, fixed the stale Lean docstrings, and gave the folded `d = 3` nodes their
   dependency edges and formalization notes, with no statement changed. Plan, the PI's words and
-  the ledger: `notes/Cleanup42.md`. HOMES followed (below). **Next:** ORIGAMI's open, with the PI.
+  the ledger: `notes/Cleanup42.md`. HOMES followed (below). **Next:** PENCIL-NATURAL's open, then
+  ORIGAMI's, each with the PI.
 - **HOMES** — a cleanup round after CLEANUP-42, opened 2026-11-05 at the PI's word after a review
   of the open friction entries, and closed the same day: the friction log's docs and tooling fixes
   and an archive sweep, then the lemmas Phase 42 left outside their home files (deferred because a
@@ -1446,8 +1450,16 @@ research note of its own, `notes/Strata.md`, which holds PENCIL-D's evidence.
   for three: at the PI's word, three genericity-device lemmas' total-form hypotheses (every label an
   edge) were weakened to `RecordsLinks` plus a new hypothesis that the rows they take are at edges,
   and one blueprint node was repinned. Four lemmas left without a caller were deleted, one by the
-  open's scope and three at the PI's word. No main result's statement changed. **Next:** ORIGAMI's
-  open, with the PI.
+  open's scope and three at the PI's word. No main result's statement changed. **Next:**
+  PENCIL-NATURAL's open (below), then ORIGAMI's, each with the PI.
+- **PENCIL-NATURAL** — can the pencil realization theorem's proof be made simpler, or its cases
+  more natural? Queued by the PI on 2026-11-07, ahead of ORIGAMI and attended, after a session
+  that set the proof's inductions beside KT's *Road Map of the Proof* (KT §1.1). It opens with a
+  read-only recon on six candidates. Among them: proving the `d = 3` generic conjunct by the
+  every-dimension lift induction, so that the reduction need not host it, and removing the `d = 3`
+  coverage rows at chains with one or two interior bodies. The PI's decisions follow. The
+  intuitions the PI wants in the blueprint come after any simplification. Plan, the PI's words and
+  the recon's brief: `notes/PencilNatural.md`.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

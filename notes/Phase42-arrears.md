@@ -12,8 +12,8 @@ PI's word, task 19 weakened three total-form hypotheses to `RecordsLinks` plus a
 repinned one node. Four lemmas left without a caller were deleted, one by the open's scope and
 three at the PI's word (*Scope*). No main result's statement changed, and `formalization.yaml` is
 unchanged. FRICTION's actionable entries went from 18 to 16 (*Current state*).
-**Next concrete task:** ORIGAMI's open, with the PI (ROADMAP *Queued post-program phases*).
-Round manual: `CLEANUP.md`.
+**Next concrete task:** PENCIL-NATURAL's open, with the PI (queued 2026-11-07 ahead of ORIGAMI;
+`notes/PencilNatural.md`), then ORIGAMI's. Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -246,10 +246,11 @@ resolved.
 
 ## Hand-off / next phase
 
-**Next concrete task:** ORIGAMI's open, with the PI (ROADMAP *Queued post-program phases*;
-`notes/Origami.md`). ARREARS is done: the round closed with this commit, and the queue's
-`42-arrears` row is `done = true`. ORIGAMI, the queue's next row, is attended, so it opens with the
-PI and takes its phase number then.
+**Next concrete task:** PENCIL-NATURAL's open, with the PI (ROADMAP *Queued post-program phases*;
+`notes/PencilNatural.md`): the PI queued it on 2026-11-07, after this close, ahead of ORIGAMI. Its
+first task is a read-only recon. ARREARS is done: the round closed with its task 20, and the
+queue's `42-arrears` row is `done = true`. PENCIL-NATURAL and ORIGAMI, the queue's next rows, are
+attended, so each opens with the PI.
 
 **What carries over:** nothing of the round's scope (*Candidates*, *Moved*: none). Left: task 18's
 `[resolved]` FRICTION entry, for the next archive sweep; and, for the coordinator, the grooming of

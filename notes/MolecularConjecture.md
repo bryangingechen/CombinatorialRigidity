@@ -814,7 +814,8 @@ round of what HOMES left (the dependency-graph debt, four file splits, `RecordsL
 `Graph` with its link hypotheses restated; `notes/Phase42-arrears.md`), opened the same day at the
 PI's word and closed 2026-11-06. Still queued,
 codenamed:
-**ORIGAMI** (the planar-blocks / molecular-origami
+**PENCIL-NATURAL** (a recon on simplifying the pencil proof, queued 2026-11-07 ahead of ORIGAMI,
+`notes/PencilNatural.md`, with the PI), **ORIGAMI** (the planar-blocks / molecular-origami
 conjecture, `notes/Origami.md`, with the PI), **PIN** (a second,
 independent proof of the 2-d molecular conjecture by Jackson–Jordán 2008's
 pin-collinear route, re-scoped at 40a's close; unplanned), **UPSTREAM** (mathlib upstreaming) and
