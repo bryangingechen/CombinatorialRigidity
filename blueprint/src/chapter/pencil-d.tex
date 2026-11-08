@@ -48,8 +48,8 @@ realization in dimension $d$ has one at the deficiency rank
 (\cref{thm:pencil-d-generic}). We define nondegenerate realizations in
 dimension $d$ (\cref{sec:pencil-d-nondegenerate}), lift the nondegenerate
 realizations in dimension three to dimension $d$
-(\cref{sec:pencil-d-lift}), and run the induction of
-\cref{sec:main-component-statements} on the lifts
+(\cref{sec:pencil-d-lift}), and show, by induction on the number of
+bodies, that a general lift has the deficiency rank
 (\cref{sec:pencil-d-generic}). The chapter ends with the three conjuncts
 together (\cref{cor:pencil-d-conditioned-pair}).
 
@@ -5142,11 +5142,11 @@ which is a condition on the minors of that size.
 \subsection{Lifts of nondegenerate realizations}
 \label{sec:pencil-d-lift}
 
-At $d = 3$ there is a polynomial parametrization of the nondegenerate
-realizations (\cref{lem:pencil-generic-steer}). It writes the point of a
-body as the vector orthogonal to three normals of $K^4$. In dimension $d$
-the subspaces of the hubs around a body need not meet in a line, and we
-do not parametrize the nondegenerate realizations in dimension $d$.
+In dimension three there is a polynomial parametrization of the
+nondegenerate realizations (\cref{lem:pencil-generic-steer}). It writes
+the point of a body as the vector orthogonal to three normals of $K^4$.
+In dimension $d$ the subspaces of the hubs around a body need not meet in
+a line, and we do not parametrize the nondegenerate realizations in dimension $d$.
 Instead we keep the parametrization in dimension three and lift. A
 nondegenerate realization $(b^0, \Pi^0)$ in dimension three is lifted by
 $d - 3$ functions on the bodies, each agreeing on every closed
@@ -5546,11 +5546,8 @@ one (\cref{lem:pencil-d-lift-realization}).
   (\cref{lem:pencil-x0-fibre-intersection}), and a common point gives
   $r^*$.
 
-  At $d = 3$ the only lift is the realization, and the lemma keeps its
-  rank as a lower bound off the zero set of a polynomial in the points.
-  In dimension $d$ the lifts form
-  the space $\mathcal{L}(b^0, \Pi^0)^m$, whose dimension can jump. The
-  section $Z_i(b^0)$ lies in $\widetilde L(b^0)$ where
+  The lifts form the space $\mathcal{L}(b^0, \Pi^0)^m$, whose dimension
+  can jump. The section $Z_i(b^0)$ lies in $\widetilde L(b^0)$ where
   $\dim \widetilde L(b^0)$ does not fall below its value at $b^*$
   (\cref{lem:pencil-polynomial-section}), and this is why (1) asks for
   the least value at $r^*$.
@@ -5621,11 +5618,7 @@ one (\cref{lem:pencil-d-lift-realization}).
   $\lambda$ has, on $H$, the normals of the lift of $r^0|_H$ by the
   restriction of $\lambda$, which gives the claim.
 
-  At $d = 3$ the only lift is the realization, and the lemma combines a
-  generic realization of a subgraph with a general nondegenerate
-  realization of $G$, the rank of the subgraph being a lower bound off
-  the zero set of a polynomial. In dimension $d$
-  the rank is read at a lift, and the lifts of $G$ must restrict onto the
+  The rank is read at a lift, and the lifts of $G$ must restrict onto the
   lifts of $H$, which is (T2).
 \end{proof}
 
@@ -5723,9 +5716,6 @@ the conditioned pair in every dimension
   with no crossing edge), the targets add too. The product of the
   polynomials of \cref{def:pencil-d-lift-attains} for the two sides,
   each in the normals of its side, serves for $G$.
-
-  At $d = 3$ every lift is the realization, and the counts take
-  $D = 6$; $2D - 3(D - 1) < 0$ holds for every $D \ge 4$.
 \end{proof}
 
 \begin{fmlnote}
@@ -6042,9 +6032,8 @@ the conditioned pair in every dimension
   \cref{lem:relative-deficiency-rank-bound}).
   \Cref{lem:pencil-d-lift-one-witness} completes the proof.
 
-  At $d = 3$ the lift is the realization itself, and the triangle has
-  rank $12$. In dimension $d$ the lifts of $x_1$ and $x_2$
-  are read off that of $c$, and the triangle has rank $2D$.
+  The lifts of $x_1$ and $x_2$ are read off that of $c$, and the
+  triangle has rank $2D$, which is $12$ at $d = 3$.
 \end{proof}
 
 \begin{fmlnote}
@@ -6177,11 +6166,9 @@ the conditioned pair in every dimension
   attains it.
   \Cref{lem:pencil-d-lift-one-witness} completes the proof.
 
-  At $d = 3$ the lift is the realization itself: the attaining
-  configuration $(q, z^1)$ is the generic realization. In
-  dimension $d$ the first height makes the realization nondegenerate in
-  dimension three, the other $d - 3$ heights are a lift of it, and the
-  coverage in dimension $d$ supplies heights that do both at once.
+  The first height makes the realization nondegenerate in dimension
+  three, the other $d - 3$ heights are a lift of it, and the coverage in
+  dimension $d$ supplies heights that do both at once.
 \end{proof}
 
 % Source: NONDEG workbook, S33 (O8, the good-ear lemma returning W_0; review 1's F1), with
@@ -6382,15 +6369,10 @@ the conditioned pair in every dimension
   $\operatorname{tgt}_d(G)$ (\cref{lem:relative-deficiency-rank-bound}).
   \Cref{lem:pencil-d-lift-one-witness} completes the proof.
 
-  At $d = 3$ the lift is the realization itself: the point of $x$ goes
-  anywhere on the line $\Pi^0_a \cap \Pi^0_b$ off the span of $b^0_a$ and
-  $b^0_b$, and the hypothesis on the lifts is empty. The dimension
-  enters only through the lift of $x$, which does not exist at $d = 3$.
-  In dimension $d$ the lift of $x$ must agree with the lifts of both $a$
-  and $b$ at the normal $b^0_x$, which lies in both of their subspaces. So
-  a lift of $H$ extends to $G$ only if
-  $\varphi_a(b^0_x) = \varphi_b(b^0_x)$, a linear condition, which the
-  hypothesis asks of every lift of $H$.
+  The lift of $x$ must agree with the lifts of both $a$ and $b$ at the
+  normal $b^0_x$, which lies in both of their subspaces. So a lift of $H$
+  extends to $G$ only if $\varphi_a(b^0_x) = \varphi_b(b^0_x)$, a linear
+  condition, which the hypothesis asks of every lift of $H$.
 \end{proof}
 
 At $W_0$ and $x$ of \cref{lem:pencil-d-good-ear} we show the hypothesis
@@ -6634,11 +6616,9 @@ So its subspace can be chosen after the points of $X$
   $b$ of $x$ lie in $X$, and $b^0_x$ lies in both of their subspaces, so
   $\varphi_a(b^0_x) = \psi(b^0_x) = \varphi_b(b^0_x)$.
 
-  At $d = 3$ no lift is needed: the hypothesis of
-  \cref{lem:pencil-d-lift-ear} on the lifts is empty, so it holds at every
-  body of degree two with hub neighbours. The lemma
-  holds in every dimension, as it concerns realizations in dimension
-  three; it is the reason we take $x$ inside a minimal planar-rigid set.
+  The lemma concerns realizations in dimension three only, so it does not
+  depend on $d$. It is the reason we take $x$ inside a minimal
+  planar-rigid set.
 \end{proof}
 
 % Source: NONDEG workbook, S26 (its (B) not used), with S36's consequence and S38's
@@ -6703,6 +6683,26 @@ So its subspace can be chosen after the points of $X$
   \cref{lem:pencil-d-nondegenerate-three}.
 \end{proof}
 
+\begin{remark}[A route without lifts at $d = 3$]
+  At $d = 3$ the generic conjunct can also be proved inside the induction
+  of the reduction (\cref{thm:pencil-reduction}), at a simple
+  two-edge-connected graph $G$, from the conditioned pair at the graphs
+  with fewer bodies. Without a planar-rigid set, a general configuration
+  of $G$ is a nondegenerate realization at the deficiency rank, as in the
+  proof of \cref{lem:pencil-d-lift-no-rigid}. A triangle is realized directly.
+  Otherwise $G$ has a pendant triangle, or a body $x$ of degree two with
+  hub neighbours $a$ and $b$ (\cref{lem:pencil-d-good-ear}). Remove the
+  two bodies of degree two of the triangle, or $x$. The smaller graph has
+  a generic realization that extends to $G$: the two removed bodies go
+  into the panel of their common neighbour, and the point of $x$ onto the
+  line where the panels of $a$ and $b$ meet. At $x$ this needs only that
+  removing $x$ does not raise the deficiency, not that $x$ lie in a
+  minimal planar-rigid set (\cref{lem:pencil-d-ear-free}). We prove the
+  generic conjunct by the lift instead, as one induction for every
+  $d \ge 3$. The reduction then proves only the first two conjuncts, once
+  for every $d$ (\cref{thm:pencil-d-realization-theorem}).
+\end{remark}
+
 % Source: NONDEG workbook, S38 (its verdict on Q4) for the third conjunct; the first two are
 % thm:pencil-d-realization-theorem.
 \begin{corollary}[The conditioned pair, in every dimension]
@@ -6727,5 +6727,5 @@ So its subspace can be chosen after the points of $X$
   \cref{lem:pencil-d-rank-agrees-three} and
   \cref{lem:pencil-d-nondegenerate-three}, these are the three conjuncts
   of the conditioned pair (\cref{def:pencil-conditioned-pair}), which is
-  how \cref{thm:pencil-conditioned-pair-nonempty} is proved.
+  how \cref{thm:pencil-realization-theorem} is proved.
 \end{proof}

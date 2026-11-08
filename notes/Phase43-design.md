@@ -5,7 +5,7 @@ with no main result's statement to change. **43a** READS closed the same day (`n
 the three fresh reads held, and each layer's inputs from them are in §2. **43b** LIFT3 opened on
 2026-11-08 as one sub-phase, at the PI's choice (§1); its work log and slice plan are
 `notes/Phase43b.md`. The later layers open one at a time, each at the PI's word (§1, D5). Next:
-43b's slice 4 (slices 1–3 landed).
+43b's close (slices 1–4 landed).
 
 This file is the phase's entry point: the target (§0), the PI's decisions (§1, verbatim), the
 layers by stable code (§2) and the open questions (§3). The recon record stays in
@@ -78,7 +78,8 @@ In order. A letter is minted when a layer opens.
     (`cor:pencil-d-conditioned-pair`'s) to `thm:pencil-conditioned-pair-nonempty`: removed, then
     reversed (N1a needs only `:6673`). At the open the reversal was placed on the nodes whose pins
     carry the route: `:6673`'s on `thm:pencil-x0-generic-attains` (`x0Gen`, slice 1), `:6755`'s
-    on `thm:pencil-conditioned-pair-nonempty` (slice 2). The `d = 3` nodes' own edges move with
+    on `thm:pencil-conditioned-pair-nonempty` (slice 2; folded into
+    `thm:pencil-realization-theorem` at slice 4). The `d = 3` nodes' own edges move with
     their proofs.
   - **Kept, restated.** `lem:pencil-generic-steer` (a) and its parametrization, and
     `lem:pencil-rigid-good-ear` (3 of 5 pins), are C's premises; so are

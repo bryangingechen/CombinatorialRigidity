@@ -150,9 +150,7 @@ configuration is an adjacent-distinct pencil realization
 (\cref{lem:pencil-x0-distinct-statement}). The second is the case $d = 3$
 of the generic conjunct in every dimension (\cref{thm:pencil-d-generic}),
 proved in \cref{sec:pencil-d} by an induction of its own, which uses no
-result that rests on the second statement. The conditioned pair at every
-multigraph with at least one body is the case $d = 3$ of the conditioned
-pair in every dimension (\cref{thm:pencil-conditioned-pair-nonempty}).
+result that rests on the second statement.
 
 \subsection{Planar pictures, the lifting space, and the main component}
 \label{sec:main-component-carrier}
@@ -4891,9 +4889,8 @@ no two of them are adjacent, a rigid set that avoids one of them.
 \label{sec:main-component-statements}
 
 This subsection proves the two main-component statements
-(\cref{def:pencil-main-component-statements}), and the conditioned pair
-at every multigraph with at least one body. The distinct
-statement is immediate (\cref{lem:pencil-x0-distinct-statement}): the
+(\cref{def:pencil-main-component-statements}). The distinct statement is
+immediate (\cref{lem:pencil-x0-distinct-statement}): the
 general configuration of a simple two-edge-connected graph on at least
 three bodies attains, and one attaining configuration is an
 adjacent-distinct realization. The generic statement does not follow in
@@ -5332,7 +5329,13 @@ consequences of nondegeneracy-feasibility in
   $\{y, a, b\}$ would be a triangle with two hubs.
 \end{proof}
 
-We collect these results in the main theorem of this chapter.
+We collect these results in the main theorem of this chapter. Its
+generic statement follows from the case $d = 3$ of
+\cref{thm:pencil-d-generic}.
+The pencil realization theorem does not rest on the two main-component
+statements. It is the case $d = 3$ of the conditioned pair in every
+dimension (\cref{cor:pencil-d-conditioned-pair}), which uses the distinct
+statement in dimension $d$ and \cref{thm:pencil-d-generic} directly.
 
 \begin{theorem}[The general point of the main component attains]
   \label{thm:pencil-x0-generic-attains}
@@ -5369,31 +5372,4 @@ We collect these results in the main theorem of this chapter.
   (\cref{lem:pencil-d-nondegenerate-three}). The forward reference is not
   circular, as the proof of \cref{thm:pencil-d-generic} uses no result
   that rests on the generic statement.
-\end{proof}
-
-The conditioned pair holds at every multigraph with at least one body,
-not only at those on the whole ambient body set. It is the case $d = 3$ of
-the conditioned pair in every dimension, whose reduction uses the distinct
-statement in dimension $d$ and whose generic conjunct is the lift.
-
-\begin{theorem}[The conditioned pair at every nonempty multigraph]
-  \label{thm:pencil-conditioned-pair-nonempty}
-  \lean{CombinatorialRigidity.Molecular.pencilPair_of_nonempty}
-  \leanok
-  \uses{def:pencil-conditioned-pair}
-  Let $K$ be an infinite field. Every multigraph with at least one body
-  satisfies the conditioned pair at $d = 3$
-  (\cref{def:pencil-conditioned-pair}).
-\end{theorem}
-\begin{proof}
-  \leanok
-  \uses{cor:pencil-d-conditioned-pair, lem:pencil-d-rank-agrees-three,
-        lem:pencil-d-nondegenerate-three}
-  It is the case $d = 3$ of \cref{cor:pencil-d-conditioned-pair}. At
-  $d = 3$, a pencil realization at the deficiency rank and an
-  adjacent-distinct one in the sense of \cref{sec:pencil-d} are those of
-  \cref{sec:pencil} (\cref{lem:pencil-d-rank-agrees-three}), and so are
-  nondegeneracy-feasibility and a generic realization
-  (\cref{lem:pencil-d-nondegenerate-three}). So the three conjuncts of the
-  corollary at $d = 3$ are those of the conditioned pair.
 \end{proof}

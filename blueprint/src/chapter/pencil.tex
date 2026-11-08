@@ -613,10 +613,10 @@ Katoh and Tanigawa's induction statement asks for more than the rank.
 When the graph is simple, their realization must also be nonparallel,
 that is, no two of its panels are parallel (KT p.~668; KT Theorem~5.5,
 p.~670). This subsection defines a pencil analogue, the nondegenerate
-pencil realization, and strengthens the statement of the induction to
-include it. The strengthened statement, the conditioned pair, asks for a
-nondegenerate realization at the deficiency rank under two conditions on
-the graph. We show that neither condition can be dropped. Throughout, $k = 2$, so panel normals and concurrency
+pencil realization, and strengthens the statement of
+\cref{thm:pencil-realization-theorem} to include it. The strengthened
+statement, the conditioned pair, asks for a nondegenerate realization at
+the deficiency rank under two conditions on the graph. We show that neither condition can be dropped. Throughout, $k = 2$, so panel normals and concurrency
 points lie in $K^4$.
 
 The pencil condition constrains the hinges at a body only when the body
@@ -710,7 +710,7 @@ A generic pencil realization is adjacent-distinct, and an
 adjacent-distinct one is in particular a pencil realization at the
 deficiency rank.
 
-The induction statement asks for a generic realization under two
+The strengthened statement asks for a generic realization under two
 conditions. Simplicity alone, the condition of KT Theorem~5.5, is not
 enough, since $K_4$ is simple and not nondegeneracy-feasible.
 Nondegeneracy-feasibility alone is not enough either. Two bodies joined
@@ -827,9 +827,16 @@ dimension three.
 \end{theorem}
 \begin{proof}
   \leanok
-  \uses{thm:pencil-conditioned-pair-nonempty}
-  The second claim is \cref{thm:pencil-conditioned-pair-nonempty}, the
-  case $d = 3$ of the conditioned pair in every dimension. A multigraph on
+  \uses{cor:pencil-d-conditioned-pair, lem:pencil-d-rank-agrees-three,
+        lem:pencil-d-nondegenerate-three}
+  The second claim is the case $d = 3$ of
+  \cref{cor:pencil-d-conditioned-pair}. At $d = 3$, a pencil realization
+  at the deficiency rank and an adjacent-distinct one in the sense of
+  \cref{sec:pencil-d} are those of \cref{sec:pencil}
+  (\cref{lem:pencil-d-rank-agrees-three}), and so are
+  nondegeneracy-feasibility and a generic realization
+  (\cref{lem:pencil-d-nondegenerate-three}). So the three conjuncts of the
+  corollary at $d = 3$ are those of the conditioned pair. A multigraph on
   the whole ambient body set has a body, as that set is nonempty, so the
   first claim is a case of the second.
 \end{proof}

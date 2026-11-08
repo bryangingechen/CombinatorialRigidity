@@ -28,8 +28,8 @@ is a generic realization (`LiftAttains.hasGradedGenericPencilRealization`), whic
 generic pencil realization (`hasGradedGenericPencilRealization_two_iff`,
 `lem:pencil-d-nondegenerate-three`).
 
-The conditioned pair at every graph with at least one body (`thm:pencil-conditioned-pair-nonempty`)
-is the case `d = 3` of the conditioned pair in every dimension
+The conditioned pair at every graph with at least one body (the general claim of
+`thm:pencil-realization-theorem`) is the case `d = 3` of the conditioned pair in every dimension
 (`Graph.graded_pencil_conditioned_pair`, `cor:pencil-d-conditioned-pair`), read through the bridges
 of `lem:pencil-d-rank-agrees-three` and `lem:pencil-d-nondegenerate-three`; at a graph on the whole
 ambient body set it is the pencil realization theorem.
@@ -38,8 +38,8 @@ ambient body set it is the pencil realization theorem.
 
 * `x0Dist`: `lem:pencil-x0-distinct-statement`, the distinct main-component statement.
 * `x0Gen`: `thm:pencil-x0-generic-attains`, the generic main-component statement.
-* `pencilPair_of_nonempty`: `thm:pencil-conditioned-pair-nonempty`, the conditioned pair at every
-  graph with at least one body.
+* `pencilPair_of_nonempty`: the general claim of `thm:pencil-realization-theorem`, the conditioned
+  pair at every graph with at least one body.
 * `pencil_realization_theorem`: `thm:pencil-realization-theorem`, the conditioned pair at every
   multigraph on the whole ambient body set.
 -/
@@ -76,8 +76,8 @@ theorem x0Gen [Finite α] [Finite β] [Infinite K] : X0Gen K α β :=
     (liftAttains_of_simple 0 hS (Set.nonempty_of_ncard_ne_zero (by omega))
       hfeas).hasGradedGenericPencilRealization
 
-/-- **The conditioned pair at every nonempty multigraph** (`thm:pencil-conditioned-pair-nonempty`,
-and the general claim of `thm:pencil-realization-theorem`): over an infinite field, for finite `α`
+/-- **The conditioned pair at every nonempty multigraph** (the general claim of
+`thm:pencil-realization-theorem`): over an infinite field, for finite `α`
 and `β`, every graph with at least one body satisfies the conditioned pair at `n = 3`. It is the
 case `m = 1` (`d = 3`) of `Graph.graded_pencil_conditioned_pair` (`cor:pencil-d-conditioned-pair`):
 its three conjuncts are those of `PencilPair K 3` through `hasGradedPencilRealization_two_iff`,

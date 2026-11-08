@@ -1224,7 +1224,7 @@ discharge point.
 - **`thm:pencil-conditional-realization-main-component`, with
   `def:pencil-main-component-statements`** — [done (Phase 40's close, and round 3 of the
   post-Phase-40 cleanup); retired 2026-11-08 with its pins (Phase 43b slice 2): the theorem is the
-  case `d = 3` of `cor:pencil-d-conditioned-pair` (`thm:pencil-conditioned-pair-nonempty`); the
+  case `d = 3` of `cor:pencil-d-conditioned-pair` (`thm:pencil-realization-theorem`); the
   account of the main component it carried stays in `sec:pencil-main-component-route`'s opening and
   `sec:main-component`'s introduction; git keeps the entry's text]
 - **`thm:pencil-conditional-realization-pair` (kernels (K), (K-bare))** — [closed — superseded

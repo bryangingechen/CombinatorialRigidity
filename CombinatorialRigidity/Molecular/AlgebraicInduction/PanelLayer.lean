@@ -409,15 +409,6 @@ theorem exists_linearIndependent_perp_of_normals {r m : ℕ} (N : Fin r → Fin 
   -- LI of `f` in the subtype lifts to LI of `p = f.val` in the ambient space.
   exact hfli.map' L.ker.subtype (Submodule.ker_subtype _)
 
-/-- **Three independent vectors orthogonal to a normal of `K⁴`**: for `n : K⁴`, there are three
-linearly independent vectors orthogonal to `n` (all of `K⁴` when `n = 0`), the case `r = 1`,
-`m = 3`, `k = 2` of `exists_linearIndependent_perp_of_normals`. It has no project consumer. -/
-theorem exists_three_perp (n : Fin 4 → K) :
-    ∃ v : Fin 3 → Fin 4 → K, LinearIndependent K v ∧ ∀ i, v i ⬝ᵥ n = 0 := by
-  obtain ⟨v, hvli, hperp⟩ :=
-    exists_linearIndependent_perp_of_normals (k := 2) ![n] (m := 3) (le_refl 4)
-  exact ⟨v, hvli, fun i => by simpa using hperp i 0⟩
-
 /-- **Two independent extensors in one panel of `K^(k+2)`** (the form for `K^(d+1)` after
 `lem:extensor-pair-in-panel`): for `1 ≤ k` and `n : K^(k+2)`, there are `p, q : Fin k → K^(k+2)`,
 with every `p i` and `q i` orthogonal to `n`, whose extensors are linearly independent in

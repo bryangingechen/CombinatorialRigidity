@@ -1371,9 +1371,9 @@ a red herring — it's just where the heartbeat budget ran dry; profile to find 
 
 To prove that two grade-`k` extensors built from *overlapping* `Fin k`-tuples (e.g. the
 first `k` and last `k` of `k+1` independent panel vectors) are linearly independent, do **not**
-hand-roll a left-multiplication / isolation argument. That works at `k = 2`
-(`linearIndependent_pair_extensor_of_li3`: left-join with the leftover vector to kill the
-cross term) but does not generalize — the general fact is one mathlib lemma.
+hand-roll a left-multiplication / isolation argument. That works at `k = 2` (for independent
+`a, b, c`, left-join `s • (a ∨ b) + t • (a ∨ c) = 0` with `c`, then with `b`: each join kills
+one cross term) but does not generalize — the general fact is one mathlib lemma.
 
 **Pattern.** Each `k`-extensor is `ExteriorAlgebra.ιMulti_family ℝ k v s` for a `k`-subset
 `s : Set.powersetCard (Fin (k+1)) k` (via `ofFinEmbEquiv` of an `OrderEmbedding` —
@@ -1395,7 +1395,7 @@ Three glue facts close it: `s₁ ≠ s₂` reduces to embedding inequality via
 the `LinearMap.linearIndependent_iff` idiom (§7-adjacent: the injective
 `(⋀^k …).subtype ∘ₗ (ScrewSpace.equivExteriorPower k)`, `ker = ⊥`). Concrete instance:
 `exists_linearIndependent_extensor_pair_perp_grade` (`PanelLayer.lean`, Phase 23a Leaf 1b),
-the general-grade replacement for the `d = 3` `linearIndependent_pair_extensor_of_li3`.
+the general-grade replacement for the `k = 2` isolation argument.
 
 ## 19. Re-orienting a proportionality `c • x = y` into `c⁻¹ • y = x`
 

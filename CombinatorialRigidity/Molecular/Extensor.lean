@@ -279,64 +279,6 @@ theorem extensor_ne_zero_iff_linearIndependent {d k : ℕ}
     rw [hid, Function.comp_id]
     exact hzero
 
-/-- **Three independent vectors give two independent `2`-extensors with a common vector**: if
-`a, b, c` are linearly independent, then `a ∨ b` and `a ∨ c` are linearly independent in
-`⋀² K^(d+1)`. It has no project consumer.
-
-Let `s • (a ∨ b) + t • (a ∨ c) = 0`. The join with `c` on the left kills the second term, which
-repeats `c`, and turns the first into `s • (c ∨ a ∨ b)`, which is nonzero as `c, a, b` are linearly
-independent; so `s = 0`. The join with `b` on the left gives `t = 0` (`LinearIndependent.pair_iff`).
--/
-theorem linearIndependent_pair_extensor_of_li3 {d : ℕ}
-    {a b c : Fin (d + 1) → K} (hv : LinearIndependent K ![a, b, c]) :
-    LinearIndependent K ![extensor ![a, b], extensor ![a, c]] := by
-  rw [LinearIndependent.pair_iff]
-  -- The two "isolating" extensors `c ∨ (a ∨ b)` and `b ∨ (a ∨ c)`, both nonzero.
-  have hcab : extensor ![c] ∨ₑ extensor ![a, b] = extensor ![c, a, b] := by
-    rw [join_extensor]; congr 1; ext i; fin_cases i <;> rfl
-  have hbac : extensor ![b] ∨ₑ extensor ![a, c] = extensor ![b, a, c] := by
-    rw [join_extensor]; congr 1; ext i; fin_cases i <;> rfl
-  -- `![c, a, b]` and `![b, a, c]` are independent (reindexings of the independent `![a, b, c]`).
-  have hcab_ne : extensor (![c, a, b] : Fin 3 → Fin (d + 1) → K) ≠ 0 := by
-    rw [extensor_ne_zero_iff_linearIndependent]
-    have heq : (![a, b, c] ∘ ![2, 0, 1] : Fin 3 → Fin (d + 1) → K) = ![c, a, b] := by
-      ext i; fin_cases i <;> rfl
-    rw [← heq]; exact hv.comp ![2, 0, 1] (by decide)
-  have hbac_ne : extensor (![b, a, c] : Fin 3 → Fin (d + 1) → K) ≠ 0 := by
-    rw [extensor_ne_zero_iff_linearIndependent]
-    have heq : (![a, b, c] ∘ ![1, 0, 2] : Fin 3 → Fin (d + 1) → K) = ![b, a, c] := by
-      ext i; fin_cases i <;> rfl
-    rw [← heq]; exact hv.comp ![1, 0, 2] (by decide)
-  -- The two cross terms vanish: `c ∨ (a ∨ c)` and `b ∨ (a ∨ b)` repeat a vector.
-  have hccac : extensor ![c] ∨ₑ extensor ![a, c] = 0 := by
-    rw [join_extensor]
-    have heq : (Fin.append ![c] ![a, c] : Fin (1 + 2) → Fin (d + 1) → K) = ![c, a, c] := by
-      ext i; refine Fin.addCases (fun i => ?_) (fun i => ?_) i <;> (fin_cases i <;> rfl)
-    rw [heq]
-    exact extensor_eq_zero_of_eq ![c, a, c] (a := 0) (b := 2) rfl (by decide)
-  have hbbab : extensor ![b] ∨ₑ extensor ![a, b] = 0 := by
-    rw [join_extensor]
-    have heq : (Fin.append ![b] ![a, b] : Fin (1 + 2) → Fin (d + 1) → K) = ![b, a, b] := by
-      ext i; refine Fin.addCases (fun i => ?_) (fun i => ?_) i <;> (fin_cases i <;> rfl)
-    rw [heq]
-    exact extensor_eq_zero_of_eq ![b, a, b] (a := 0) (b := 2) rfl (by decide)
-  intro s t hst
-  refine ⟨?_, ?_⟩
-  · -- Left-multiply `hst` by `extensor ![c]`; the `a ∨ c` term dies.
-    have key : extensor ![c] * (s • extensor ![a, b] + t • extensor ![a, c]) = 0 := by
-      rw [hst, mul_zero]
-    rw [mul_add, mul_smul_comm, mul_smul_comm, ← join_def, ← join_def, hcab, hccac,
-      smul_zero, add_zero] at key
-    -- `key : s • extensor ![c, a, b] = 0`, with `extensor ![c, a, b] ≠ 0`.
-    exact (smul_eq_zero.mp key).resolve_right hcab_ne
-  · -- Left-multiply `hst` by `extensor ![b]`; the `a ∨ b` term dies.
-    have key : extensor ![b] * (s • extensor ![a, b] + t • extensor ![a, c]) = 0 := by
-      rw [hst, mul_zero]
-    rw [mul_add, mul_smul_comm, mul_smul_comm, ← join_def, ← join_def, hbbab, hbac,
-      smul_zero, zero_add] at key
-    -- `key : t • extensor ![b, a, c] = 0`, with `extensor ![b, a, c] ≠ 0`.
-    exact (smul_eq_zero.mp key).resolve_right hbac_ne
-
 /-- **Extensor of an affine subspace** (`def:affine-subspace-extensor`): for points
 `p₁, …, pₖ ∈ K^d`, `C(p) = p̄₁ ∨ ⋯ ∨ p̄ₖ ∈ ⋀^k K^(d+1)`, the extensor of their homogeneous
 coordinate vectors. It is nonzero iff the points are affinely independent
