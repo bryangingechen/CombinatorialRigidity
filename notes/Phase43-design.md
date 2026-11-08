@@ -4,9 +4,10 @@
 with no main result's statement to change. **43a** READS closed 2026-11-07 (`notes/Phase43a.md`):
 the three fresh reads held, and each layer's inputs from them are in §2. **43b** LIFT3 closed
 2026-11-08 (`notes/Phase43b.md`): the `d = 3` theorem is the case `d = 3` of the theorem in every
-dimension, and the reduction's cases are proved once. **43c** NORMAL and SPRIME, one sub-phase at
-the PI's word, opened 2026-11-08 (`notes/Phase43c.md`): the reduction on five structural cases,
-then Theorem S′ at `d = 3`. EXPO opens after it, at the PI's word (§1, D5).
+dimension, and the reduction's cases are proved once. **43c** NORMAL and SPRIME closed 2026-11-08
+(`notes/Phase43c.md`): the reduction on five structural cases, and Theorem S′ at `d = 3`, with
+the two unnecessary steps gone. No sub-phase is open. EXPO, the last layer, opens at the PI's word
+(§1, D5). Next: EXPO's open, with the PI.
 
 This file is the phase's entry point: the target (§0), the PI's decisions (§1, verbatim), the
 layers by stable code (§2) and the open questions (§3). The recon record stays in
@@ -119,49 +120,29 @@ In order. A letter is minted when a layer opens.
   changed. The premise check (43a) found no cycle (`notes/pencil-natural/premise_closure.py`,
   `PremiseClosure.lean`). The build's inputs (the edges, the kept premises, the counts) are in
   `git show dc26fbfd:notes/Phase43-design.md`, §2.
-- **NORMAL** (N2; 43c's slice 1, opened 2026-11-08, `notes/Phase43c.md`). `thm:pencil-reduction`
-  on five structural cases: a loop; at most two bodies; not 2-edge-connected; non-simple; simple
-  and 2-edge-connected. Cases (iv) and (v) merge; `lem:pencil-min-degree-rigid` leaves the route
-  for a new appendix chapter, its Lean kept (§1 (b), and 2026-11-08 item 2); "cf. KT Theorem 4.9"
-  leaves the reduction's title for one glue sentence, the remark itself EXPO's (§1 (a), and
-  2026-11-08 item 3). LIFT3 left `thm:pencil-reduction` one caller,
-  `Graph.graded_pencil_realization_theorem` (`Grade/Reduction.lean`,
-  `thm:pencil-d-realization-theorem`), which already hands cases (iii)–(v) to one argument; so the
-  restated reduction loses `n` and `hD`, its simple case takes no induction hypothesis, and it
-  moves beside that caller (spike `notes/pencil-natural/NormalSpike.lean`).
-- **SPRIME** (N3; 43c's slices after NORMAL, `notes/Phase43c.md`). Theorem S′, which S′'s fresh
-  read confirmed (43a): open-ear-two and the split-off leave the `d = 3` coverage. It revises the
-  42f record (`notes/Phase42-design.md` §1, "in `P³` both are load-bearing") to name the sense:
-  used by Phase 40's route, not needed. **S′ is stated at `d = 3` only** (the PI, 2026-11-08, §1):
-  `thm:pencil-d-theorem-s` and `def:pencil-d-usable-chain` fold into the `d = 3` nodes, and "the
-  move" below, written for the general form, is read at `n = 3` with `exists_additiveCoreAt`,
-  `ChainUsableAt` and `chainUsable_iff_chainUsableAt_three` deleted. **Verdict at the pin
-  (2026-11-08):** S′ holds as Lean, the main results re-checked in the kernel (`SprimeSpike.lean`);
-  a walk cuts slices A, B, C, the sizes and §2's misses (`notes/Phase43c.md` items 3–5). The read's
-  inputs for the build:
-  - **The move.** Not `exists_chain_or_core` at `ℓ = 1`: Theorem S itself,
-    `Graph.IsX0Graph.exists_additiveCoreAt` (only consumer `exists_additiveCore`,
-    `CoverageTheoremS.lean`), with its blocking hypothesis `¬ ChainUsableAt` losing the `k = 2`
-    merged-equality and `k = 1` split-off disjuncts; its conclusion unchanged. In the body, `hk2`
-    becomes a case on a `k = 2` chain with non-adjacent ends (NEW-1, then NEW-2), and the
-    `def > 0`, all-`k = 1` branch calls `exists_core_of_deficiency_three_pos`. `ChainUsable(At)`
-    and `X0Reduces` lose the two disjuncts and constructors. About 130 lines become 150.
-  - **NEW-1** (`Induction/SparseDeficiency.lean`): at a sparse `G`, non-adjacent `a ≠ b` with
-    the two-orbit bound failing lie in a rigid `Z`, `|Z| ≥ 3`; the body of
-    `deficiencyMerged_two_add_two_le_of_three_le`, extracted (net about +6;
-    `lem:deficiency-two-body-chain` restated). **NEW-2** (`Grade/TheoremS.lean`): a rigid
-    `Y ⊆ V₁` gives a core avoiding `x₀`; `exists_additiveCoreAt_of_partitionDef_nonpos` less its
-    first step (about +8; `lem:pencil-d-chain-core` gains the form).
-  - **Sizes** (from line ranges, not a liveness walk). TeX net about −450 (−530 if
-    `thm:pencil-d-theorem-s` folds into a `d = 3` S′): `sec:main-component-splitoff` (330 lines,
-    with `lem:pencil-curve-limit`), `thm:pencil-x0-open-ear-two`,
-    `lem:deficiency-one-body-chain-d`, two table rows and
-    `rem:pencil-x0-theta`'s `k = 2` step. Lean about −1,100, +40–90: `SplitOff.lean` (748),
-    open-ear-two in `MainComponent/Short.lean`, two `SparseDeficiency.lean` bounds, and code only
-    the split-off uses (`Ear.lean`'s `finrank_span_rigidityRows_eq_add_of_motions`, `Bridge.lean`'s
-    `finite_setOf_finrank_lt_of_curve`, `Mathlib/Data/Matrix/Mul.lean`). The deletion gate must
-    catch dead names in docstrings of `Mathlib/LinearAlgebra/Matrix/NonsingularInverse.lean`,
-    `Mathlib/Algebra/MvPolynomial/Polynomial.lean` and `Induction/Operations.lean`.
+- **NORMAL** (N2; 43c's slice 1, `2b010699`; `notes/Phase43c.md`). **Verdict: done as planned.**
+  `thm:pencil-reduction` (`Graph.pencil_reduction`, moved to `Grade/Reduction.lean` beside its one
+  caller, `Graph.graded_pencil_realization_theorem`) is on five structural cases: a loop; at most
+  two bodies; not 2-edge-connected; not simple; simple and 2-edge-connected, the last with no
+  induction hypothesis, and its statement has no `n`, `hD` or finiteness.
+  `lem:pencil-min-degree-rigid` is in the new appendix `sec:further-results`, its Lean kept (§1 (b),
+  and 2026-11-08 item 2); "cf. KT Theorem 4.9" left the title for one glue paragraph, the remark
+  itself EXPO's (§1 (a), and 2026-11-08 item 3). The plan, with the spike
+  `notes/pencil-natural/NormalSpike.lean`, is `git show b9e9e2b2:notes/Phase43-design.md`, §2.
+- **SPRIME** (N3; 43c's slices after NORMAL, `27fd2c06` to `b9e9e2b2`; `notes/Phase43c.md`).
+  **Verdict: done as planned, with one simplification at the PI's review.** Theorem S′ holds as Lean
+  at `d = 3` (`Graph.IsX0Graph.exists_additiveCore`, its hypothesis `¬ ChainUsable` two disjuncts
+  weaker), so open-ear-two and the split-off left the `d = 3` coverage (`X0Reduces` two constructors
+  fewer). This revises the 42f record (`notes/Phase42-design.md` §1, "in `P³` both are
+  load-bearing") to name the sense: used by Phase 40's route, not needed. S′ is stated at `d = 3`
+  only (§1), so `thm:pencil-d-theorem-s`, `def:pencil-d-usable-chain` and their Lean went. Its proof
+  cites `lem:pencil-d-maximal-rigid-core` as the Lean does (§1, the 43c coordinator's session), and
+  `lem:deficiency-core-bound`, the case `d = 3` of the kept `-d` node, went with its two pins. NEW-1
+  and NEW-2 (slice A) are the rigid-set forms of the two chain lemmas. With NORMAL, 23 declarations,
+  13 nodes and three Lean files went, two declarations came, and no main result's statement changed.
+  The pin's spike and walk stay banked (`notes/pencil-natural/SprimeSpike.lean`, `sprime_walk.py`)
+  as its record, naming what slices B and C deleted. The read's inputs for the build (the move,
+  NEW-1 and NEW-2, the sizes) are `git show b9e9e2b2:notes/Phase43-design.md`, §2.
 - **EXPO**. The road map (`notes/PencilNatural.md` §5), with the A/B/C structure as it stands after
   the layers above, I1–I4 as corrected, and the flatness reading, which its read confirmed once
   stated precisely (43a). Last. The read's inputs:
@@ -197,8 +178,17 @@ In order. A letter is minted when a layer opens.
     cut.
   - **From NORMAL** (43c's open). The KT Theorem 4.9 remark, where its content is: the
     main-component induction's contraction and degree-two steps, in the coverage or in the road
-    map (§1, 2026-11-08 item 3); the reduction keeps one glue sentence. Which chapter
-    `thm:pencil-reduction` lives in (`pencil.tex`; its only user is in `pencil-d.tex`).
+    map (§1, 2026-11-08 item 3); the reduction keeps one glue paragraph (`pencil.tex`,
+    `sec:pencil-reduction`'s lead). Which chapter `thm:pencil-reduction` lives in (`pencil.tex`;
+    its only user is in `pencil-d.tex`). The recon's "heir of KT Lemmas 4.5–4.6"
+    (`notes/PencilNatural.md` §5) for the count that finds the bodies of degree two: that count is
+    part (1) of `lem:pencil-x0-sparse-count`, and `lem:pencil-d-chain-count` is KT Lemma 4.6's
+    count of the edges along the chains.
+  - **From SPRIME** (43c's close). The `d = 3` coverage's steps are now
+    `def:pencil-x0-reduces`' list (equal deficiencies, cut vertex, chain of bridges, cycle, open
+    ears with `k ≥ 5`, `3`, `4`, `2` at non-adjacent ends and `1`, two contractions); the road map
+    names these, not Phase 40's (ROADMAP §40 keeps the split-off as the record of what Phase 40
+    built). `rem:pencil-x0-theta` reaches `θ(1,3,3)` at a core.
 
 ## 3. Open questions
 

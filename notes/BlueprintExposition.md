@@ -333,6 +333,13 @@ so no entry is added; the five entries whose nodes left are retirement notes. Th
 Phase-43b section below. **Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of
 51).
 
+**Phase-43c close (2026-11-08).** NORMAL restated the reduction on five structural cases, and SPRIME
+replaced Theorem S by Theorem S′, which counts fewer chains as usable, and deleted the two steps and
+the `d = 3` core bound it no longer needs; no argument was rerouted for difficulty, so no entry is
+added. The entries those nodes touch were annotated as the slices landed. The verdict is the
+Phase-43c section below. **Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of
+51).
+
 ## Format
 
 One entry per node, grouped by destination blueprint chapter:
@@ -1970,6 +1977,32 @@ proof as a whole is EXPO's (`notes/Phase43-design.md` §2).
 **Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51); six done entries now
 name retired nodes (two since 2026-10-04, four since this sub-phase), and the closed one a deleted
 node.
+
+### Phase 43c (NORMAL and SPRIME: the reduction on structural cases, then Theorem S′, structural edit — no new chapter)
+
+**No new entries — judged at the sub-phase close (2026-11-08).** The source is the project's own:
+the PENCIL-NATURAL recon's N2 and N3 (`notes/PencilNatural.md` §3), N3 confirmed by 43a's fresh
+read. The sub-phase added no argument that a paper compresses. `thm:pencil-reduction` lost its two
+cases that needed a proper rigid subgraph or a vertex of degree two, as its one caller already
+settled both by one argument; `lem:pencil-min-degree-rigid` moved, whole, to the further-results
+appendix. Theorem S′ (`thm:pencil-x0-theorem-s`) counts fewer chains as usable, and its proof finds
+every core with lemmas that the chapters already prove in every dimension
+(`lem:pencil-d-maximal-rigid-core`, `lem:pencil-d-chain-core`,
+`lem:pencil-d-core-positive-deficiency`); the 40m entry's insight stands, and the entry says so. The
+two steps S′ no longer needs, and the `d = 3` core bound, went with their nodes (13 nodes and
+`sec:main-component-splitoff`); no node decomposed or rerouted for difficulty. The entries the
+sub-phase touched were annotated as its slices landed: the Phase-39 entry of `thm:pencil-reduction`
+(restated), the 40j entry of `thm:pencil-x0-splitoff` and the 40l entry of
+`lem:deficiency-one-body-chain`'s part (2) (retirement notes), the 40l entry of
+`lem:deficiency-core-bound-d` (repointed: the argument written at the deleted `d = 3` node now lives
+in its proof) and the 40m entry of `thm:pencil-x0-theorem-s` (restated as S′). The close's re-read
+of the prose the sub-phase wrote (`pencil.tex`'s reduction, the appendix, `main-component.tex`'s
+coverage, `pencil-d.tex`'s deficiency and chains sections, `intro.tex`) found nothing to change; one
+sentence of `rem:pencil-x0-theta` was reworded at the coordinator's word. The account of the proof
+as a whole is EXPO's (`notes/Phase43-design.md` §2).
+**Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51); seven done entries now
+name retired nodes (two since 2026-10-04, four since 43b, one since this sub-phase), one more a
+retired part and pin, and the closed one a deleted node.
 
 ## Retroactive coverage
 

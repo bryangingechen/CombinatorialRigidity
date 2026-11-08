@@ -3146,7 +3146,10 @@ rigidity-matrix row-functional plumbing). **Lifted to:** TACTICS-QUIRKS § 30.
   `notes/Phase43-design.md` §1): `selftest()` exempts an in-progress row whose
   `notes/PhaseN-design.md` **Status:** header says no sub-phase is open (the new
   `between_sub_phases()`), and reports that state; tested on a scratch copy of the tree between
-  43b and 43c (green, the exemption named) and with the header's sentence removed (red).
+  43b and 43c (green, the exemption named) and with the header's sentence removed (red). First
+  live use at 43c's close (2026-11-08): `OK: selftest — 136 notes, 0 ACTIVE (between sub-phases:
+  43. A simpler pencil proof (post-program) — PENCIL-NATURAL; its design doc says no sub-phase is
+  open)`.
 
 ### [resolved] The Lean MCP's `lean_local_search` misses every declaration whose name ends its line
 - **Where it bit:** Phase 40n (2026-09-28): `not_isNondegPencilRealization_of_two_hubs_three_common`

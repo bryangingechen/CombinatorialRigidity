@@ -186,13 +186,13 @@ dimension $d \ge 3$, stated above. Phase 43, in progress, looks for a
 simpler proof of it, with no change to what it proves: a first check,
 confirmed by independent reads, found that the three-dimensional case can
 follow from the argument for every dimension, and that two of its cases
-are unnecessary. The first step is complete: the three-dimensional
+are unnecessary. Both changes are made: the three-dimensional
 nondegenerate claim, and then the whole three-dimensional theorem, are now
 taken from the argument for every dimension, and the separate
 three-dimensional argument is gone, its cases proved once for every
-dimension, with a short note on the old route. The second step, under
-way, restates the reduction on structural cases and then removes the two
-unnecessary cases.
+dimension, with a short note on the old route; the reduction is restated
+on structural cases; and the two unnecessary cases are gone. A road map of
+the proof comes last.
 
 ### How the pencil realization theorem is proved
 

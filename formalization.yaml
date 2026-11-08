@@ -310,9 +310,14 @@ status:
     CombinatorialRigidity.Molecular.liftAttains_of_simple), then the whole theorem as the case
     d = 3 of Graph.graded_pencil_conditioned_pair, deleting the three-dimensional arguments they
     replace, so that the reduction is proved once, in every dimension; a remark keeps the old
-    three-dimensional route. The main results' statements and axioms are unchanged. Its second
-    step, in progress, restates the reduction on structural cases and then removes the two
-    three-dimensional cases found unnecessary.
+    three-dimensional route. Its second step (closed 2026-11-08) restated the reduction on five
+    structural cases (Graph.pencil_reduction: a loop, at most two bodies, a cut edge, parallel
+    edges, and a simple two-edge-connected multigraph, which takes no induction hypothesis) and
+    removed the two three-dimensional steps found unnecessary, an open ear with two interior
+    bodies whose ends may be adjacent and the splitting-off of a body of degree two: where no
+    chain of bodies of degree two is usable, the graph has a rigid core to contract
+    (Graph.IsX0Graph.exists_additiveCore). The main results' statements and axioms are
+    unchanged. A road map of the proof comes last.
   sorry_count: 0
   sorry_in_definitions: 0
   axioms: ["propext", "Classical.choice", "Quot.sound"]          # only Lean/mathlib standard axioms; no project-specific axioms
