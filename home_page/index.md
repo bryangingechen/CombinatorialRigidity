@@ -186,8 +186,9 @@ dimension $d \ge 3$, stated above. Phase 43, in progress, looks for a
 simpler proof of it, with no change to what it proves: a first check,
 confirmed by independent reads, found that the three-dimensional case can
 follow from the argument for every dimension, and that two of its cases
-are unnecessary. The first change, the three-dimensional case taken from
-the argument for every dimension, is under way.
+are unnecessary. The first change, the three-dimensional nondegenerate
+claim taken from the argument for every dimension, has landed; the
+three-dimensional reduction is next.
 
 ### How the pencil realization theorem is proved
 
@@ -210,8 +211,9 @@ these lifts over the pictures at which the lifting space is smallest. For
 every simple connected graph of minimum degree at least two, a general
 member of it attains the deficiency rank, by an induction through
 cut-vertex, bridge, cycle, ear, split-off and contraction steps; this gives
-the first statement. The second does not follow this way, and is proved
-instead inside the reduction's own induction.
+the first statement. The second does not follow this way; it is the
+three-dimensional case of the nondegenerate claim in every dimension,
+whose induction (below) needs no three-dimensional argument of its own.
 
 In every dimension, phase 42 likewise formalized a proof first worked out
 on paper and independently checked. A paper check found most of the

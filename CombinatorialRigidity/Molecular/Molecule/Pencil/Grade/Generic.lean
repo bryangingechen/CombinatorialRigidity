@@ -18,13 +18,12 @@ public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Reduction
   generic realization in dimension `r + 3` (`IsNondegPencilPlaneRealization.lift`).
 * `liftAttains_of_simple`: the general lift attains at every simple nondegeneracy-feasible graph
   with a body, by strong induction on the number of bodies, following the case split of the
-  conditioned pair and the generic step in dimension three (`pencilPair_of_nonempty`,
-  `hasGenericPencilRealization_of_IH`; `thm:pencil-conditioned-pair-nonempty`,
-  `thm:pencil-generic-step`), here on the general lift. The arms: at most two bodies, a cut with no
-  crossing edge, a cut edge or a pendant body (`Grade/LiftCutEdge.lean`, `Grade/LiftCases.lean`),
-  a triangle, no rigid subgraph (`Grade/LiftNoRigid.lean`), and the good ear or pendant triangle
-  of `Grade/GoodEar.lean`, whose ear arm gets its condition from `holdsGenerally_earFree`
-  (`Grade/EarFree.lean`) at the selectors `liftAttains_of_ear` is given.
+  conditioned pair in dimension three, here on the general lift; at `r = 0` it gives the generic
+  main-component statement (`x0Gen`, `thm:pencil-x0-generic-attains`). The arms: at most two
+  bodies, a cut with no crossing edge, a cut edge or a pendant body (`Grade/LiftCutEdge.lean`,
+  `Grade/LiftCases.lean`), a triangle, no rigid subgraph (`Grade/LiftNoRigid.lean`), and the good
+  ear or pendant triangle of `Grade/GoodEar.lean`, whose ear arm gets its condition from
+  `holdsGenerally_earFree` (`Grade/EarFree.lean`) at the selectors `liftAttains_of_ear` is given.
 * `hasGradedGenericPencilRealization_of_simple` (`thm:pencil-d-generic`), and
   `Graph.graded_pencil_conditioned_pair` (`cor:pencil-d-conditioned-pair`): the three conjuncts,
   the first two being `Graph.graded_pencil_realization_theorem`'s (`Grade/Reduction.lean`).

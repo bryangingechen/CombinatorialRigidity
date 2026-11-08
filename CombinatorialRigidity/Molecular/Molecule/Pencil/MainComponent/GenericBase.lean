@@ -10,12 +10,13 @@ public import Matroid.Graph.Constructions.Sum
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Steer
 
 /-!
-# A new body joined to two bodies, and the generic realization without a planar-rigid set
+# A new body joined to two bodies, and the planes of a configuration without a planar-rigid set
 
-The case of the generic main-component statement at a graph with no planar-rigid set
-(`thm:pencil-x0-base-generic`, `sec:main-component-statements`): over an infinite field, a graph
-that satisfies the standing hypotheses, is nondegeneracy-feasible and has no planar-rigid set has a
-generic pencil realization, a configuration over a general picture.
+The steps at a graph with no planar-rigid set (`sec:main-component-statements`) that the general
+lift uses there (`lem:pencil-d-lift-no-rigid`, `Grade/LiftNoRigid.lean`): over an infinite field, at
+a graph that satisfies the standing hypotheses and has no planar-rigid set, a configuration over a
+general picture is nondegenerate when the planes of its bodies differ, and they differ at a general
+solution of the lifting system.
 
 At a configuration `(q, z)` with `q` admissible and `z ∈ L(q)`, the plane normal of a body is a
 nonzero multiple of `(h₀, h₁, −1, h₂)`, where `h = (h₀, h₁, h₂)` gives the plane of the body, the
@@ -29,9 +30,9 @@ new body joined to `u` and to `w` (`def:pencil-two-ear-graph`). Without a planar
 `def₂(G_{uw}) + 1 ≤ def₂(G)` (`addTwoEar_deficiency`), so at a general picture the lifting space of
 `G_{uw}` has the smaller dimension. The solutions of the lifting system of `G` with equal planes at
 `u` and `w` extend, injectively, to solutions for `G_{uw}` (`finrank_ker_inf_planeDiff_le`), so they
-form a proper subspace (`exists_planes_separate`, `lem:pencil-x0-planes-separate`). The theorem then
-takes a picture off the zero sets of finitely many polynomials, and over it one solution of the
-lifting system off the zero sets of finitely many more (`exists_mem_forall_eval_ne_zero`, from
+form a proper subspace (`exists_planes_separate`, `lem:pencil-x0-planes-separate`). Over a picture
+off the zero sets of finitely many polynomials, one solution of the lifting system lies off the zero
+sets of finitely many more (`exists_mem_forall_eval_ne_zero`, from
 `lem:pencil-x0-fibre-intersection`).
 
 ## Main definitions
@@ -48,9 +49,8 @@ lifting system off the zero sets of finitely many more (`exists_mem_forall_eval_
   hub and two of its hub neighbours have collinear picture points is a nondegenerate pencil
   realization when the planes differ at the two ends of every edge joining two hubs and at any two
   hubs adjacent to one body that is not a hub.
-* `Graph.IsX0Graph.hasGenericPencilRealization_of_forall_deficiency_two_ne_zero`:
-  `thm:pencil-x0-base-generic`, a graph that satisfies the standing hypotheses, is
-  nondegeneracy-feasible and has no planar-rigid set has a generic pencil realization.
+* `exists_mem_forall_eval_ne_zero`: from `lem:pencil-x0-fibre-intersection`, finitely many
+  polynomials, each nonzero at some point of a subspace, are nonzero together at one point of it.
 -/
 
 @[expose] public section
@@ -764,11 +764,12 @@ theorem isNondeg_pencilConfig_of_planeDiff [Fintype α] [Finite β] {G : Graph �
     rw [← hrange, linearIndepOn_range_iff htinj]
     exact linearIndependent_pencilConfigPoint_of_linearIndependent_pencilPicturePoint z hli
 
-/-- **Finitely many open conditions on a fibre meet** (a step of `thm:pencil-x0-base-generic`, from
-`lem:pencil-x0-fibre-intersection` by induction on their number): over an infinite field, if each of
-finitely many polynomials `p i` is nonzero at some point of the subspace `L`, then one point of `L`
-makes all of them nonzero. The induction step applies `MvPolynomial.exists_mem_eval_ne_zero₂` to the
-product of the polynomials so far and the next one. -/
+/-- **Finitely many open conditions on a fibre meet** (a step of `lem:pencil-d-lift-no-rigid` and
+`lem:pencil-d-ear-extend`, from `lem:pencil-x0-fibre-intersection` by induction on their number):
+over an infinite field, if each of finitely many polynomials `p i` is nonzero at some point of the
+subspace `L`, then one point of `L` makes all of them nonzero. The induction step applies
+`MvPolynomial.exists_mem_eval_ne_zero₂` to the product of the polynomials so far and the next one.
+-/
 theorem exists_mem_forall_eval_ne_zero [Infinite K] {σ ι : Type*} [Finite ι]
     {L : Submodule K (σ → K)} (p : ι → MvPolynomial σ K)
     (h : ∀ i, ∃ x ∈ L, MvPolynomial.eval x (p i) ≠ 0) :
@@ -823,126 +824,5 @@ theorem exists_det_poly (x y w : α) (hxy : x ≠ y) (hxw : x ≠ w) (hyw : y �
     rw [hdet, Matrix.det_fin_three]
     simp [pencilPicturePoint, hq₀, hxy, hxw, Ne.symm hyw]
   exact ⟨D, fun h0 => hD0 (by rw [h0, map_zero]), hli⟩
-
-/-- **The general configuration is nondegenerate without a planar-rigid set**
-(`thm:pencil-x0-base-generic`): let `K` be infinite and let `G` satisfy the standing hypotheses, be
-nondegeneracy-feasible and have `def₂(G[Y]) ≠ 0` for every set `Y` of at least two bodies. Then `G`
-has a generic pencil realization, a configuration over a general picture.
-
-Proof. Every closed hub-neighbourhood has at most three members
-(`PencilNondegFeasible.hub_conditions`, `lem:pencil-feasible-hub-conditions`). Take a picture `q`
-off the zero sets of three kinds of nonzero polynomial: one witnessing that the general
-configuration of `G` attains (`Graph.IsX0Graph.x0Attains`, `thm:pencil-x0-coverage`), whose
-non-roots are admissible; for every three distinct bodies, the determinant of their homogeneous
-picture points (`exists_det_poly`); and for every two distinct bodies, the polynomial of
-`exists_planes_separate`. Over `q`, the attaining heights contain the non-roots of a polynomial in
-the heights that is nonzero at some solution of the lifting system, and for two distinct bodies `u`
-and `w` some coordinate of `h_u − h_w` is nonzero at a solution. One solution makes all these
-finitely many polynomials nonzero (`exists_mem_forall_eval_ne_zero`). At it the planes of any two
-distinct bodies differ, so the configuration is a nondegenerate pencil realization
-(`isNondeg_pencilConfig_of_planeDiff`), and its height is attaining, so the realization has the
-deficiency rank (`finrank_span_rigidityRows_pencilConfigFramework`,
-`lem:pencil-config-point-join-rank`). -/
-theorem _root_.Graph.IsX0Graph.hasGenericPencilRealization_of_forall_deficiency_two_ne_zero
-    [Infinite K] [Finite α] [Finite β] {G : Graph α β} (hG : G.IsX0Graph)
-    (hfeas : PencilNondegFeasible K G)
-    (hS : ∀ Y ⊆ V(G), 2 ≤ Y.ncard → (G.induce Y).deficiency 2 ≠ 0) :
-    HasGenericPencilRealization K 3 G := by
-  have := Fintype.ofFinite α
-  classical
-  have : G.Simple := hG.simple
-  obtain ⟨hF1, -⟩ := hfeas.hub_conditions
-  obtain ⟨ends, Patt, hends, hPatt0, hPatt⟩ := hG.x0Attains (K := K)
-  have h3 := hG.three_le_ncard_closedNbhd
-  -- the planes of every pair of distinct bodies separate
-  have hsep : ∀ p : α × α, ∃ P : MvPolynomial (α × Fin 2) K, P ≠ 0 ∧
-      (p.1 ≠ p.2 → p.1 ∈ V(G) → p.2 ∈ V(G) → ∀ q, MvPolynomial.eval q P ≠ 0 →
-        ∃ x ∈ LinearMap.ker ((G.liftingMatrix K).map (MvPolynomial.eval q)).mulVecLin,
-          planeDiff p.1 p.2 x ≠ 0) := by
-    intro p
-    by_cases hp : p.1 ≠ p.2 ∧ p.1 ∈ V(G) ∧ p.2 ∈ V(G)
-    · obtain ⟨P, hP0, hP⟩ := exists_planes_separate (K := K) hG.simple h3 hS hp.1 hp.2.1 hp.2.2
-      exact ⟨P, hP0, fun _ _ _ => hP⟩
-    · exact ⟨1, one_ne_zero, fun h1 h2 h3 => absurd ⟨h1, h2, h3⟩ hp⟩
-  choose Psep hPsep0 hPsep using hsep
-  -- general position at every triple of distinct bodies
-  have hgpP : ∀ t : α × α × α, ∃ D : MvPolynomial (α × Fin 2) K, D ≠ 0 ∧
-      (t.1 ≠ t.2.1 → t.1 ≠ t.2.2 → t.2.1 ≠ t.2.2 → ∀ q, MvPolynomial.eval q D ≠ 0 →
-        LinearIndependent K ![pencilPicturePoint q t.1, pencilPicturePoint q t.2.1,
-          pencilPicturePoint q t.2.2]) := by
-    intro t
-    by_cases ht : t.1 ≠ t.2.1 ∧ t.1 ≠ t.2.2 ∧ t.2.1 ≠ t.2.2
-    · obtain ⟨D, hD0, hD⟩ := exists_det_poly (K := K) t.1 t.2.1 t.2.2 ht.1 ht.2.1 ht.2.2
-      exact ⟨D, hD0, fun _ _ _ => hD⟩
-    · exact ⟨1, one_ne_zero, fun h1 h2 h3 => absurd ⟨h1, h2, h3⟩ ht⟩
-  choose Dgp hDgp0 hDgp using hgpP
-  set Q : MvPolynomial (α × Fin 2) K := Patt * (∏ p, Psep p) * (∏ t, Dgp t) with hQdef
-  have hQ0 : Q ≠ 0 := mul_ne_zero (mul_ne_zero hPatt0
-    (Finset.prod_ne_zero_iff.mpr fun p _ => hPsep0 p))
-    (Finset.prod_ne_zero_iff.mpr fun t _ => hDgp0 t)
-  obtain ⟨q, hq⟩ := MvPolynomial.exists_eval_ne_zero hQ0
-  rw [hQdef, map_mul, map_mul, map_prod, map_prod] at hq
-  have hq1 := left_ne_zero_of_mul (left_ne_zero_of_mul hq)
-  have hq2 := Finset.prod_ne_zero_iff.mp (right_ne_zero_of_mul (left_ne_zero_of_mul hq))
-  have hq3 := Finset.prod_ne_zero_iff.mp (right_ne_zero_of_mul hq)
-  obtain ⟨hadm, R, ⟨z₀, hz₀, hRz₀⟩, hrank⟩ := hPatt q hq1
-  set Lk := LinearMap.ker ((G.liftingMatrix K).map (MvPolynomial.eval q)).mulVecLin with hLk
-  -- one linear coordinate per pair, nonzero somewhere on the kernel
-  have hwit : ∀ p : α × α, ∃ ℓ : MvPolynomial (α ⊕ (α × Fin 3)) K,
-      (∃ x ∈ Lk, MvPolynomial.eval x ℓ ≠ 0) ∧
-      (p.1 ≠ p.2 → p.1 ∈ V(G) → p.2 ∈ V(G) → ∀ x, MvPolynomial.eval x ℓ ≠ 0 →
-        planeDiff p.1 p.2 x ≠ 0) := by
-    intro p
-    by_cases hp : p.1 ≠ p.2 ∧ p.1 ∈ V(G) ∧ p.2 ∈ V(G)
-    · obtain ⟨x, hx, hxd⟩ := hPsep p hp.1 hp.2.1 hp.2.2 q (hq2 p (Finset.mem_univ _))
-      obtain ⟨i, hi⟩ : ∃ i, planeDiff p.1 p.2 x i ≠ 0 := by
-        by_contra hc
-        push Not at hc
-        exact hxd (funext hc)
-      refine ⟨MvPolynomial.X (Sum.inr (p.1, i)) - MvPolynomial.X (Sum.inr (p.2, i)),
-        ⟨x, hx, by simpa [planeDiff_apply] using hi⟩, fun _ _ _ y hy hd => hy ?_⟩
-      have := congr_fun hd i
-      simp only [planeDiff_apply, Pi.zero_apply] at this
-      simp [this]
-    · exact ⟨1, ⟨0, Lk.zero_mem, by simp⟩, fun h1 h2 h3 => absurd ⟨h1, h2, h3⟩ hp⟩
-  choose ℓ hℓex hℓ using hwit
-  -- the attaining heights, on the kernel
-  have hRex : ∃ x ∈ Lk, MvPolynomial.eval x (MvPolynomial.rename Sum.inl R) ≠ 0 := by
-    rw [← G.map_ker_liftingMatrix q] at hz₀
-    obtain ⟨x, hx, rfl⟩ := hz₀
-    refine ⟨x, hx, ?_⟩
-    rw [MvPolynomial.eval_rename]
-    exact hRz₀
-  obtain ⟨x, hxL, hxall⟩ := exists_mem_forall_eval_ne_zero (L := Lk)
-    (fun o : Option (α × α) => o.elim (MvPolynomial.rename Sum.inl R) ℓ)
-    (fun o => by cases o with
-      | none => exact hRex
-      | some p => exact hℓex p)
-  have hxR := hxall none
-  simp only [Option.elim, MvPolynomial.eval_rename] at hxR
-  have hxℓ : ∀ p, MvPolynomial.eval x (ℓ p) ≠ 0 := fun p => hxall (some p)
-  have hpd : ∀ a b, a ≠ b → a ∈ V(G) → b ∈ V(G) → planeDiff a b x ≠ 0 :=
-    fun a b hab ha hb => hℓ (a, b) hab ha hb x (hxℓ (a, b))
-  set z : α → K := fun a => x (Sum.inl a) with hzdef
-  have hz : z ∈ G.liftingSpace q := by
-    rw [← G.map_ker_liftingMatrix q]
-    exact ⟨x, hxL, rfl⟩
-  -- at every body, the three members of its closed neighbourhood that admissibility gives
-  let sel : α → Fin 3 → α := fun v => if hv : v ∈ V(G) then (hadm.2 v hv).choose else fun _ => v
-  have hsel : ∀ v ∈ V(G), (∀ i, sel v i ∈ G.closedNbhd v) ∧
-      LinearIndependent K (fun i => pencilPicturePoint q (sel v i)) := by
-    intro v hv
-    simp only [sel, hv, ↓reduceDIte]
-    exact (hadm.2 v hv).choose_spec
-  have hnd := isNondeg_pencilConfig_of_planeDiff (K := K) hF1 hadm
-    (fun v w₁ w₂ _ _ _ h1 h2 h12 => hDgp (v, w₁, w₂) (Ne.symm h1) (Ne.symm h2) h12 q
-      (hq3 _ (Finset.mem_univ _)))
-    hxL (fun e a b hl _ _ => hpd a b hl.ne hl.left_mem hl.right_mem)
-    (fun v hv _ a ha b hb hab => hpd a b hab ha.1.1 hb.1.1)
-    hends hsel
-  refine ⟨pencilConfigFramework G ends q z, pencilNormalOfPicture q z sel, pencilConfigPoint q z,
-    hnd, ?_⟩
-  rw [finrank_span_rigidityRows_pencilConfigFramework]
-  exact hrank z hz hxR
 
 end CombinatorialRigidity.Molecular

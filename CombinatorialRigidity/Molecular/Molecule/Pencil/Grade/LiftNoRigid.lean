@@ -18,8 +18,7 @@ configuration attains in dimension `d = r + 3`, has its general lift attaining i
 (`liftAttains_of_forall_deficiency_two_ne_zero`).
 
 A nondegenerate configuration `(q, z⁰)` over a general picture is the realization `r*` in dimension
-three, as at `d = 3`
-(`Graph.IsX0Graph.hasGenericPencilRealization_of_forall_deficiency_two_ne_zero`): its first height
+three (`isNondeg_pencilConfig_of_planeDiff`, `MainComponent/GenericBase.lean`): its first height
 `z⁰` has the planes of any two distinct bodies distinct (`exists_planeDiff_ne_zero_poly`), and the
 other heights of an attaining `z` are a lift of it
 (`mem_liftMaps_pencilConfigPoint_iff`, `liftNormal_pencilConfigPoint`). `dim L̃` is least at `r*`

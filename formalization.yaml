@@ -304,8 +304,10 @@ status:
     nondegenerate claim by lifting nondegenerate three-dimensional pencil realizations to dimension
     d (CombinatorialRigidity.Molecular.hasGradedGenericPencilRealization_of_simple). Phase 43 (in
     progress) looks for a simpler proof of the pencil realization theorem, with no main result's
-    statement to change; its first step, under way, takes the three-dimensional nondegenerate claim
-    from that lifting argument. It has no Lean yet.
+    statement to change; its first step takes the three-dimensional nondegenerate claim from that
+    lifting argument (CombinatorialRigidity.Molecular.x0Gen, the case d = 3 of
+    CombinatorialRigidity.Molecular.liftAttains_of_simple) and deletes the three-dimensional
+    argument it replaces; the three-dimensional reduction is next.
   sorry_count: 0
   sorry_in_definitions: 0
   axioms: ["propext", "Classical.choice", "Quot.sound"]          # only Lean/mathlib standard axioms; no project-specific axioms
@@ -609,7 +611,9 @@ status:
     description: >-
       The pencil realization theorem in its general form (phase 40): over any infinite field, every
       multigraph with at least one body, spanning or not, satisfies the conditioned pencil pair at
-      n = 3. pencil_realization_theorem and the generic main-component statement x0Gen are corollaries.
+      n = 3: phase 39's reduction at the two main-component statements x0Dist and x0Gen, the second
+      the case d = 3 of the lift CombinatorialRigidity.Molecular.liftAttains_of_simple (phase 43).
+      pencil_realization_theorem is a corollary.
     sorry_count: 0
     axioms: ["propext", "Classical.choice", "Quot.sound"]
     comparator_config: ""
@@ -707,8 +711,8 @@ fidelity:
     tests; the statements proved are the same. The pencil realization theorem has no literature
     source; it is formalized from the project's own informal proof, whose second main-component statement
     did not follow as planned (at K_{2,3}, two bodies with three common neighbours, no
-    configuration over a general picture is nondegenerate) and is proved instead inside the
-    pencil reduction's own induction. Its form in every dimension (phase 42) is likewise formalized
+    configuration over a general picture is nondegenerate) and is proved instead as the case
+    d = 3 of the nondegenerate claim in every dimension, by phase 42's lifting argument. Its form in every dimension (phase 42) is likewise formalized
     from the project's own informal proof, the blueprint chapter on the pencil in every dimension:
     each Lean statement is at least as strong as its blueprint node, save that one lemma's case of
     two bodies assumes the type of bodies nonempty, an artifact of the formal carrier at zero bodies
@@ -947,8 +951,9 @@ alignment:
         least one body (pencilPair_of_nonempty). The route is phase 39's reduction
         CombinatorialRigidity.Molecular.pencil_realization_theorem_of_X0 to the two main-component
         statements CombinatorialRigidity.Molecular.X0Dist and CombinatorialRigidity.Molecular.X0Gen,
-        which phase 40 proves as CombinatorialRigidity.Molecular.x0Dist and
-        CombinatorialRigidity.Molecular.x0Gen. The non-simple bare case is
+        which phase 40 proves as CombinatorialRigidity.Molecular.x0Dist, and phase 43 as
+        CombinatorialRigidity.Molecular.x0Gen, the case d = 3 of
+        CombinatorialRigidity.Molecular.liftAttains_of_simple. The non-simple bare case is
         CombinatorialRigidity.Molecular.hasPencilRealization_of_not_simple (Katoh-Tanigawa
         Lemma 6.2's parallel-edge contraction, without minimality).
 

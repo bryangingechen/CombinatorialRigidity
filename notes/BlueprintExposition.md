@@ -1654,19 +1654,9 @@ types). The two-hubs obstruction and route B, which move the generic statement i
 reduction's induction, belong to the Phase-39 entry `thm:pencil-conditional-realization-main-component`
 above, `[pending]` until Phase 40's close. The ledger is now **2 pending / 48 done** (of 50).
 
-- **`thm:pencil-x0-base-generic` /
-  `Graph.IsX0Graph.hasGenericPencilRealization_of_forall_deficiency_two_ne_zero`, with
-  `lem:pencil-x0-planes-separate` and `lem:pencil-x0-conjunct-three`** — [done (the three nodes'
-  proofs, at 40n's B1–B3 and close)] **(b)** the informal base ((MC-14), informal modulo
-  Jackson–Jordán in characteristic zero) reads nondegeneracy off (MC-12)'s conditions on the hub
-  pairs, and gets each from (MC-13): an isomorphism of `G_e`'s lifting space with the equal-planes
-  heights at pictures with the new body off a line, and the exact value of `def₂(G_e)`. **Stable
-  insight:** an injection and an inequality are enough, at every pair of distinct bodies at once.
-  The equal-planes heights extend to `G_e` at any picture of the new body; at a graph with no
-  planar-rigid set the partition case analysis gives `def₂(G_e) ≤ def₂(G) − 1`; Jackson–Jordán's
-  equality at both graphs, over every infinite field, then separates the two planes off one
-  polynomial, the new body's picture fixed at a non-root. (MC-12)'s sufficient half needs neither the standing hypotheses nor
-  feasibility ((MC-189)). Pointer: `notes/Phase40n.md`; `notes/Phase40-design.md` §3 MOTIVES.
+- **`thm:pencil-x0-base-generic`** — [done (40n); retired 2026-11-08 with its pin (Phase 43b slice 1):
+  the case is the lift's, `lem:pencil-d-lift-no-rigid`, whose steps `lem:pencil-x0-planes-separate`
+  and `lem:pencil-x0-conjunct-three` keep their exposited proofs; git keeps the entry's text]
 
 ### `main-component.tex` — Phase 40o (MOTIVES-EARS: the steering and the two ear steps)
 
@@ -1699,9 +1689,10 @@ round 3 of the post-Phase-40 cleanup, a roadmap with a notation list: the Phase-
 says where the account now is). The
 ledger is now **0 pending / 50 done / 1 closed as superseded** (of 51).
 
-- **`lem:pencil-rigid-good-ear` / `Graph.IsX0Graph.exists_oneEar_or_pendantTriangle`, with
-  `Graph.exists_eq_triple_of_minimal` and `Graph.exists_closedEar_two_of_triangle`** — [done (the
-  node's proof, at 40p's B1)] **(b)** the informal (MC-129) settles the all-hub case by `G[W₀]`
+- **`lem:pencil-rigid-good-ear` / `Graph.IsX0Graph.exists_minimalRigid_ear_or_pendantTriangle`,
+  with `Graph.exists_eq_triple_of_minimal` and `Graph.closedEar_two_of_triangle`** — [done (the
+  node's proof, at 40p's B1); restated 2026-11-08 (Phase 43b slice 1) to stop at the tight set, N3's
+  rigidity now `lem:pencil-d-good-ear`'s (iv)] **(b)** the informal (MC-129) settles the all-hub case by `G[W₀]`
   being a cycle, walks the maximal chain of bodies of degree two through the chosen body, and gets
   the rigidity of `W₀ ∖ {y}` from its connectivity and its bridges. **Stable insight:** at a
   minimal planar-rigid set `W₀` the singleton values do all the work. Two adjacent bodies of `W₀`

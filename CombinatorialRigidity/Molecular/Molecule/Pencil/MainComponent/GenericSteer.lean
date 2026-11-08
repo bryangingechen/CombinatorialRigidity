@@ -34,8 +34,7 @@ closed neighbourhood. The first realization is written in the chart, and the sec
 selectors.
 
 The cut-edge case with one body on a side (`hasGenericPencilRealization_pendant_of_IH`,
-`Pair2.lean`), `lem:pencil-generic-one-ear` and `lem:pencil-generic-pendant-triangle`
-(`MainComponent/GenericEar.lean`, `MainComponent/GenericTriangle.lean`) use both parts.
+`Pair2.lean`) uses both parts.
 
 ## Main definitions
 
@@ -797,11 +796,10 @@ theorem exists_isNondegPencilRealization_steer [Finite α] [Finite β] [Infinite
     exact hcondD j
 
 /-- **Three members in the closed neighbourhood in a subgraph** (for the hypotheses of part (b) of
-`lem:pencil-generic-steer`, in `lem:pencil-generic-one-ear`, `lem:pencil-generic-pendant-triangle`
-and `lem:pencil-pair-loop-base-cut`): at a simple `G`, a body `v` of `H ≤ G` that is not a hub of
-`H`, whose neighbours in `G` that are not its neighbours in `H` lie in a set `L` with
-`|L| + 2 ≤ deg_G v`, has three members in its closed neighbourhood in `H`: as it is not a hub of
-`H`, it has at most two neighbours there, and at least `deg_G v - |L| ≥ 2` of them. -/
+`lem:pencil-generic-steer`, in `lem:pencil-pair-loop-base-cut`): at a simple `G`, a body `v` of
+`H ≤ G` that is not a hub of `H`, whose neighbours in `G` that are not its neighbours in `H` lie in
+a set `L` with `|L| + 2 ≤ deg_G v`, has three members in its closed neighbourhood in `H`: as it is
+not a hub of `H`, it has at most two neighbours there, and at least `deg_G v - |L| ≥ 2` of them. -/
 theorem ncard_closedNbhd_eq_three_of_demoted [Finite α] {G H : Graph α β} (hS : G.Simple)
     (hle : H ≤ G) {v : α} (hvnot : ¬ H.PencilHub v) (hvH : v ∈ V(H))
     {L : Set α} (hL : N(G, v) ⊆ L ∪ N(H, v)) (hdeg : L.ncard + 2 ≤ G.degree v) :

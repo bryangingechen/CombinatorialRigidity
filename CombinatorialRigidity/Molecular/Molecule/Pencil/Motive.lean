@@ -201,15 +201,6 @@ theorem hasDistinctPencilRealization_of_generic {n : ℕ} {G : Graph α β}
   obtain ⟨F, normal, point, ⟨hreal, hadj, _, _⟩, hrank⟩ := h
   exact ⟨F, normal, point, hreal, hadj, hrank⟩
 
-/-- **A generic pencil realization is one at the deficiency rank** (the remark after
-`def:pencil-distinct-motive`): forget the three conditions of nondegeneracy
-(`IsNondegPencilRealization`), through the adjacent-distinct realization
-(`hasDistinctPencilRealization_of_generic`, `hasPencilRealization_of_distinct`). The pencil form of
-`hasPanelRealization_of_generic`. -/
-theorem hasPencilRealization_of_generic {n : ℕ} {G : Graph α β}
-    (h : HasGenericPencilRealization K n G) : HasPencilRealization K n G :=
-  hasPencilRealization_of_distinct (hasDistinctPencilRealization_of_generic h)
-
 /-- **A graph with a loop is not nondegeneracy-feasible** (a step of
 `lem:pencil-pair-loop-base-cut`, case (1)): a loop `e` at `v` is a link `G.IsLink e v v`, at which
 `IsNondegPencilRealization` asks that `![point v, point v]` be linearly independent, while
@@ -508,14 +499,12 @@ neighbours whose points are independent have no nondegenerate realization with t
 (`lem:pencil-feasible-hub-conditions`, `lem:pencil-x0-two-hubs-obstruction`). In each, the normals
 of the two hubs are independent, and the vectors orthogonal to both form a space of dimension `2`
 (`finrank_toDualPerp_pair_eq`), which holds no three independent vectors
-(`not_linearIndependent_of_dotProduct_eq_zero_pair`, which the one-body ear of
-`MainComponent/GenericEar.lean` also uses). The first also serves `lem:pencil-generic-steer`
-(`MainComponent/GenericSteer.lean`). -/
+(`not_linearIndependent_of_dotProduct_eq_zero_pair`). The first also serves
+`lem:pencil-generic-steer` (`MainComponent/GenericSteer.lean`). -/
 
 /-- **Three vectors orthogonal to two independent vectors are dependent** (a step of
-`lem:pencil-feasible-hub-conditions`, `lem:pencil-x0-two-hubs-obstruction` and
-`lem:pencil-generic-one-ear`): they lie in `n_a^⊥ ∩ n_b^⊥`, of dimension two
-(`finrank_toDualPerp_pair_eq`). -/
+`lem:pencil-feasible-hub-conditions` and `lem:pencil-x0-two-hubs-obstruction`): they lie in
+`n_a^⊥ ∩ n_b^⊥`, of dimension two (`finrank_toDualPerp_pair_eq`). -/
 theorem not_linearIndependent_of_dotProduct_eq_zero_pair {na nb : Fin 4 → K}
     (hab : LinearIndependent K ![na, nb]) (p : Fin 3 → Fin 4 → K)
     (h : ∀ i, p i ⬝ᵥ na = 0 ∧ p i ⬝ᵥ nb = 0) : ¬ LinearIndependent K p := by

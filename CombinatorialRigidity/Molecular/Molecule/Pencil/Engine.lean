@@ -26,12 +26,11 @@ of the matrix of its coordinates (`exists_polynomial_ne_zero_of_linearIndependen
 over an infinite field, finitely many polynomials, each nonzero at some point, have a common
 non-root.
 
-The second gives three facts on `cross₃`. `cross₃` of three independent vectors is a nonzero
+The second gives two facts on `cross₃`. `cross₃` of three independent vectors is a nonzero
 multiple of any nonzero vector orthogonal to them, which writing a given nondegenerate realization
-in the chart uses (`exists_pencilSeed_of_nondeg_of_selectors`, `Reseed.lean`). The `cross₃` of three
-distinct standard basis vectors is a nonzero multiple of the fourth, for part (a) of
-`lem:pencil-generic-steer` (`MainComponent/GenericSteer.lean`). And a nonzero vector orthogonal to a
-nonzero `n` is `cross₃` of `n` and two more, for `lem:pencil-generic-pendant-triangle`.
+in the chart uses (`exists_pencilSeed_of_nondeg_of_selectors`, `Reseed.lean`). And the `cross₃` of
+three distinct standard basis vectors is a nonzero multiple of the fourth, for part (a) of
+`lem:pencil-generic-steer` (`MainComponent/GenericSteer.lean`).
 
 ## Main definitions
 
@@ -584,64 +583,5 @@ theorem exists_smul_pencilChartPoint_of_hubSlotNormal_eq_pi_single
   obtain ⟨cc, hcc, hcross⟩ :=
     exists_smul_cross₃_pi_single (K := K) (hσd 0) (hσd 1) (hσd 2) h01 h02 h12
   exact ⟨cc, hcc, by rw [pencilChartPoint, hslot 0, hslot 1, hslot 2, hcross]⟩
-
-/-! ## A nonzero vector orthogonal to a nonzero `n` as `cross₃` of `n` and two more
-
-For a nonzero `n` orthogonal to a nonzero `q`, two vectors, each outside the span of those before
-it, complete `n` to an independent triple orthogonal to `q`, whose `cross₃` is a nonzero multiple of
-`q`, and rescaling the last vector gives `q` (`exists_cross₃_eq_of_ne_zero_of_dotProduct_eq_zero`).
-The pendant triangle of `lem:pencil-generic-pendant-triangle` uses it
-(`MainComponent/GenericTriangle.lean`). -/
-
-/-- **A nonzero vector orthogonal to a nonzero `n` is `cross₃` of `n` and two more** (a step of
-`lem:pencil-generic-pendant-triangle`): for `n ≠ 0` and `q ≠ 0` orthogonal to it, there are `y`,
-`z` with `![n, y, z]` linearly independent and `cross₃ n y z = q`. The vectors orthogonal to `q`
-form a space of dimension `3` (`finrank_toDualPerp_single_eq`) that holds `n`; two vectors of it,
-each outside the span of those before it, complete `n` to an independent triple there, whose
-`cross₃` is `c • q` with `c ≠ 0` (`exists_smul_cross₃_eq_of_linearIndependent`); and multiplying
-the last vector by `c⁻¹` gives `q` (`cross₃_smul_thd`) and keeps the triple independent. -/
-theorem exists_cross₃_eq_of_ne_zero_of_dotProduct_eq_zero {n q : Fin 4 → K}
-    (hn : n ≠ 0) (hq : q ≠ 0) (hqn : q ⬝ᵥ n = 0) :
-    ∃ y z : Fin 4 → K, LinearIndependent K ![n, y, z] ∧ cross₃ n y z = q := by
-  set V : Submodule K (Fin 4 → K) := LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip q) with hV
-  have hmemV : ∀ x : Fin 4 → K, x ∈ V ↔ x ⬝ᵥ q = 0 := by
-    intro x
-    simp only [hV, LinearMap.mem_ker, LinearMap.flip_apply, piBasisFun_toDual_eq_dotProduct]
-  have hVdim : Module.finrank K V = 3 := finrank_toDualPerp_single_eq hq
-  have hnV : n ∈ V := (hmemV n).2 (by rw [dotProduct_comm]; exact hqn)
-  have hpick : ∀ S : Submodule K (Fin 4 → K), Module.finrank K S < Module.finrank K V →
-      ∃ y0, y0 ∈ V ∧ y0 ∉ S := by
-    intro S hlt
-    by_contra hcon
-    push Not at hcon
-    have hle : V ≤ S := fun x hx => hcon x hx
-    have := Submodule.finrank_mono hle
-    omega
-  have hnLI : LinearIndependent K (![n] : Fin 1 → Fin 4 → K) := by
-    rw [linearIndependent_unique_iff]; simpa using hn
-  obtain ⟨y0, hy0V, hy0⟩ := hpick (Submodule.span K (Set.range (![n] : Fin 1 → Fin 4 → K)))
-    (by rw [finrank_span_eq_card hnLI, hVdim]; simp)
-  have hny0LI : LinearIndependent K (![n, y0] : Fin 2 → Fin 4 → K) := by
-    have hsnoc := linearIndependent_finSnoc.mpr ⟨hnLI, hy0⟩
-    rwa [show Fin.snoc (![n] : Fin 1 → Fin 4 → K) y0 = ![n, y0] from by
-      funext i; fin_cases i <;> simp] at hsnoc
-  obtain ⟨z0, hz0V, hz0⟩ := hpick (Submodule.span K (Set.range (![n, y0] : Fin 2 → Fin 4 → K)))
-    (by rw [finrank_span_eq_card hny0LI, hVdim]; simp)
-  have hnyzLI : LinearIndependent K (![n, y0, z0] : Fin 3 → Fin 4 → K) := by
-    have hsnoc := linearIndependent_finSnoc.mpr ⟨hny0LI, hz0⟩
-    rwa [show Fin.snoc (![n, y0] : Fin 2 → Fin 4 → K) z0 = ![n, y0, z0] from by
-      funext i; fin_cases i <;> simp] at hsnoc
-  have hq_y0 : q ⬝ᵥ y0 = 0 := by rw [dotProduct_comm]; exact (hmemV y0).1 hy0V
-  have hq_z0 : q ⬝ᵥ z0 = 0 := by rw [dotProduct_comm]; exact (hmemV z0).1 hz0V
-  obtain ⟨c, hcne, hc⟩ := exists_smul_cross₃_eq_of_linearIndependent hnyzLI hq hqn hq_y0 hq_z0
-  refine ⟨y0, c⁻¹ • z0, ?_, ?_⟩
-  · have hw : LinearIndependent K
-        ((![(1 : Kˣ), 1, Units.mk0 c⁻¹ (inv_ne_zero hcne)] : Fin 3 → Kˣ) •
-          (![n, y0, z0] : Fin 3 → Fin 4 → K)) := hnyzLI.units_smul _
-    have heq : ((![(1 : Kˣ), 1, Units.mk0 c⁻¹ (inv_ne_zero hcne)] : Fin 3 → Kˣ) •
-        (![n, y0, z0] : Fin 3 → Fin 4 → K)) = ![n, y0, c⁻¹ • z0] := by
-      funext i; fin_cases i <;> simp [Units.smul_def]
-    rwa [heq] at hw
-  · rw [cross₃_smul_thd, hc, inv_smul_smul₀ hcne]
 
 end CombinatorialRigidity.Molecular

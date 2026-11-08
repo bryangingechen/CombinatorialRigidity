@@ -92,8 +92,6 @@ nonzero, it lies in every panel that holds both points, and it passes through bo
   `pointJoin_add_left`, `pointJoin_smul_left`, `pointJoin_sub_left`, `pointJoin_add_right`,
   `pointJoin_smul_right`, `pointJoin_sub_right` and `pointJoin_add_smul_self_right`: the join is
   alternating and bilinear, and unchanged by moving its second point along the first.
-* `pointJoin_ne_zero`, `extensorInPanel_pointJoin` and `extensorThroughPoint_pointJoin`: the
-  incidences of a join, for `MainComponent/GenericEar.lean` and `GenericTriangle.lean`.
 * `linearIndependent_pencilConfigPoint_triple`: three configuration points over independent picture
   points are independent, at every height.
 * `exists_mvPolynomial_linearIndependent_pointJoin_picture` and
@@ -810,32 +808,6 @@ theorem pointJoin_add_smul_self_right (y v : Fin 4 → K) (c : K) :
     pointJoin y (v + c • y) = pointJoin y v := by
   rw [pointJoin_swap (v + c • y) y, pointJoin_add_smul_left, pointJoin_self, smul_zero, add_zero,
     ← pointJoin_swap]
-
-/-- **A join of two independent points is nonzero** (a step of `lem:pencil-generic-one-ear`,
-`lem:pencil-generic-pendant-triangle` and `thm:pencil-generic-step`): its extensor is nonzero
-(`extensor_ne_zero_iff_linearIndependent`). -/
-theorem pointJoin_ne_zero {p p' : Fin 4 → K} (h : LinearIndependent K ![p, p']) :
-    pointJoin p p' ≠ 0 := by
-  intro h0
-  have hval := congrArg ScrewSpace.val h0
-  rw [pointJoin, ScrewSpace.val_mk, ScrewSpace.val_zero] at hval
-  exact (extensor_ne_zero_iff_linearIndependent _).mpr h hval
-
-/-- **A join of two points of a panel lies in it** (a step of `lem:pencil-generic-one-ear`,
-`lem:pencil-generic-pendant-triangle` and `thm:pencil-generic-step`): if `p · n = 0` and
-`p' · n = 0`, then `p ∧ p'` lies in the panel of `n` (`ExtensorInPanel`), by the family
-`![p, p']`. -/
-theorem extensorInPanel_pointJoin {p p' n : Fin 4 → K} (hp : p ⬝ᵥ n = 0) (hp' : p' ⬝ᵥ n = 0) :
-    ExtensorInPanel (pointJoin p p') n :=
-  ⟨![p, p'], ScrewSpace.val_mk _ _, Fin.forall_fin_two.mpr ⟨hp, hp'⟩⟩
-
-/-- **A join passes through its two points** (a step of `lem:pencil-generic-one-ear`,
-`lem:pencil-generic-pendant-triangle` and `thm:pencil-generic-step`): `p ∧ p'` passes through `p`
-and through `p'` (`ExtensorThroughPoint`), as both lie in the span of `![p, p']`. -/
-theorem extensorThroughPoint_pointJoin (p p' : Fin 4 → K) :
-    ExtensorThroughPoint (pointJoin p p') p ∧ ExtensorThroughPoint (pointJoin p p') p' :=
-  ⟨⟨![p, p'], ScrewSpace.val_mk _ _, Submodule.subset_span ⟨0, rfl⟩⟩,
-    ⟨![p, p'], ScrewSpace.val_mk _ _, Submodule.subset_span ⟨1, rfl⟩⟩⟩
 
 /-- **Independence of joins is read in flat coordinates** (`lem:pencil-join-flat`): a family of
 joins is linearly independent when the family of its flat coordinates is. -/

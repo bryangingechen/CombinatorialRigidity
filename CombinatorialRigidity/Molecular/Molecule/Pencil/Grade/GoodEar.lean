@@ -13,8 +13,7 @@ public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Good
 The node `lem:pencil-d-good-ear` of `blueprint/src/chapter/pencil-d.tex`, `sec:pencil-d-generic`:
 the good ear of `lem:pencil-rigid-good-ear`, returning the minimal planar-rigid set `W₀` and with
 the extra clauses (iii) to (v) that the ear's lift needs (`Graph.IsPencilGoodEar`). The proof
-re-opens that of `Graph.IsX0Graph.exists_oneEar_or_pendantTriangle`, whose core
-(`Graph.IsX0Graph.exists_minimalRigid_ear_or_pendantTriangle`) returns `W₀`.
+starts from `Graph.IsX0Graph.exists_minimalRigid_ear_or_pendantTriangle`, which returns `W₀`.
 
 * (iii): the ends keep two neighbours in `X = W₀ \ {x}` by the triangle step
   (`Graph.exists_eq_triple_of_minimal`, with `a` not adjacent to `b`); `s(X) = 1`

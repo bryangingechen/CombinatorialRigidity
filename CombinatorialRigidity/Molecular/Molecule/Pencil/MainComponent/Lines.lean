@@ -57,9 +57,8 @@ of `b`, along one of four curves (`exists_insertion_two_aux`), chosen by which j
 * `linearIndependent_pointJoin_tetra` and `span_pointJoin_tetra_eq_top`: `lem:pencil-tetrahedron`,
   the six joins of four independent points are independent, so they span `Λ²K⁴` (the case `d = 3` of
   KT 2011 Lemma 2.1).
-* `linearIndependent_pointJoin_pair`: a step of `thm:pencil-x0-open-ear-one` and of
-  `lem:pencil-generic-one-ear`, the two joins through the middle one of three independent points are
-  independent.
+* `linearIndependent_pointJoin_pair`: a step of `thm:pencil-x0-open-ear-one`, the two joins through
+  the middle one of three independent points are independent.
 * `star_sup_star_le_ker_klein` and `five_le_finrank_star_sup_star`: `lem:pencil-two-stars`, every
   line through `y₁` or `y₂` pairs to zero with `y₁ ∧ y₂`, and the lines through two independent
   points span at least five dimensions.
@@ -198,8 +197,8 @@ theorem span_pointJoin_tetra_eq_top {p : Fin 4 → Fin 4 → K} (hp : LinearInde
     (by rw [Fintype.card_fin, screwSpace_finrank]; rfl)
 
 /-- **The two joins through the middle one of three independent points are independent** (a step of
-`thm:pencil-x0-open-ear-one` and of `lem:pencil-generic-one-ear`): extend `p, u, r` to a basis of
-`K⁴`; the joins `p ∧ u`, `u ∧ r` are two of the six joins of its tetrahedron. -/
+`thm:pencil-x0-open-ear-one`): extend `p, u, r` to a basis of `K⁴`; the joins `p ∧ u`, `u ∧ r` are
+two of the six joins of its tetrahedron. -/
 theorem linearIndependent_pointJoin_pair {p u r : Fin 4 → K}
     (h : LinearIndependent K ![p, u, r]) :
     LinearIndependent K ![pointJoin p u, pointJoin u r] := by

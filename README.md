@@ -216,8 +216,9 @@ formula for pin-collinear frameworks, derived here from the plane case. The main
 closure of these lifts over the pictures at which the lifting space is smallest. For every simple
 connected graph of minimum degree at least two, a general member of it attains the deficiency rank,
 by an induction through cut-vertex, bridge, cycle, ear, split-off and contraction steps; this gives
-the first statement. The second does not follow this way, and is proved instead inside the
-reduction's own induction.
+the first statement. The second does not follow this way; it is the three-dimensional case of the
+nondegenerate claim in every dimension, whose induction (phase 42, below) needs no
+three-dimensional argument of its own.
 
 Phase 41 (closed 2026-10-29) ended a review of the blueprint against the
 Lean: the statements that claimed more or less than their Lean
@@ -247,10 +248,11 @@ Phase 43, in progress, looks for a simpler proof of the pencil realization
 theorem, with no change to what it proves. A first check found that the
 three-dimensional case can follow from the argument for every dimension
 instead of having an argument of its own, and that two of its cases are
-unnecessary; independent reads confirmed both. The first change is under
-way: the three-dimensional nondegenerate claim is to come from the argument
-for every dimension, and its own three-dimensional argument to go. A road
-map of the proof, in the manner of Katoh and Tanigawa's, comes last.
+unnecessary; independent reads confirmed both. The first change has
+landed: the three-dimensional nondegenerate claim now comes from the
+argument for every dimension, and its own three-dimensional argument is
+gone. The three-dimensional reduction is next. A road map of the proof, in
+the manner of Katoh and Tanigawa's, comes last.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries

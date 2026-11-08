@@ -61,7 +61,6 @@ for every `w` (`dotProduct_cross₃`). From this:
 
 * it is orthogonal to `x`, `y` and `z`, as a determinant with two equal rows vanishes
   (`cross₃_dotProduct_fst`, `cross₃_dotProduct_snd`, `cross₃_dotProduct_thd`);
-* it is homogeneous in its third argument, as the determinant is in a row (`cross₃_smul_thd`);
 * it is nonzero exactly when `x`, `y` and `z` are linearly independent
   (`cross₃_ne_zero_iff_linearIndependent`).
 
@@ -84,15 +83,9 @@ noncomputable def cross₃ (x y z : Fin 4 → K) : Fin 4 → K :=
   (Pi.basisFun K (Fin 4)).toDualEquiv.symm (cross₃Functional x y z)
 
 omit [Field K] in
-/-- Replacing row `2` of the matrix with rows `x, y, z0, w` by `a` gives the matrix with rows
-`x, y, a, w`, for `cross₃_smul_thd`. -/
-private theorem cons_updateRow_two (x y z0 w a : Fin 4 → K) :
-    (Matrix.of ![x, y, z0, w]).updateRow 2 a = Matrix.of ![x, y, a, w] := by
-  funext i j; fin_cases i <;> simp [Matrix.updateRow_apply]
-
-omit [Field K] in
-/-- The row-`3` form of `cons_updateRow_two`, which turns the matrix of `cross₃Functional` into the
-one with rows `x, y, z, w` (`dotProduct_cross₃`). -/
+/-- Replacing row `3` of the matrix with rows `x, y, z, w0` by `a` gives the matrix with rows
+`x, y, z, a`, which turns the matrix of `cross₃Functional` into the one with rows `x, y, z, w`
+(`dotProduct_cross₃`). -/
 private theorem cons_updateRow_three (x y z w0 a : Fin 4 → K) :
     (Matrix.of ![x, y, z, w0]).updateRow 3 a = Matrix.of ![x, y, z, a] := by
   funext i j; fin_cases i <;> simp [Matrix.updateRow_apply]
@@ -117,15 +110,6 @@ theorem cross₃_dotProduct_snd (x y z : Fin 4 → K) : cross₃ x y z ⬝ᵥ y 
 /-- **`cross₃ x y z` is orthogonal to `z`**, as `cross₃_dotProduct_fst`. -/
 theorem cross₃_dotProduct_thd (x y z : Fin 4 → K) : cross₃ x y z ⬝ᵥ z = 0 := by
   rw [dotProduct_cross₃]; exact Matrix.det_zero_of_row_eq (i := 2) (j := 3) (by decide) rfl
-
-/-- **`cross₃` is homogeneous in its third argument**: `cross₃ x y (c • z) = c • cross₃ x y z`, as
-the determinant is homogeneous in a row (`Matrix.det_updateRow_smul`). -/
-theorem cross₃_smul_thd (c : K) (x y z : Fin 4 → K) :
-    cross₃ x y (c • z) = c • cross₃ x y z := by
-  rw [← dotProduct_eq_iff]; intro w
-  rw [smul_dotProduct, dotProduct_cross₃, dotProduct_cross₃,
-    ← cons_updateRow_two x y z w (c • z), Matrix.det_updateRow_smul,
-    cons_updateRow_two, smul_eq_mul]
 
 /-- **`cross₃` is nonzero exactly when its arguments are independent**:
 `cross₃ x y z ≠ 0 ↔ LinearIndependent K ![x, y, z]`. If `x, y, z` are dependent, so are `x, y, z, w`

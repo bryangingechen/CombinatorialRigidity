@@ -5143,8 +5143,7 @@ which is a condition on the minors of that size.
 \subsection{Lifts of nondegenerate realizations}
 \label{sec:pencil-d-lift}
 
-At $d = 3$ the generic conjunct is proved inside the induction of the
-reduction, through a polynomial parametrization of the nondegenerate
+At $d = 3$ there is a polynomial parametrization of the nondegenerate
 realizations (\cref{lem:pencil-generic-steer}). It writes the point of a
 body as the vector orthogonal to three normals of $K^4$. In dimension $d$
 the subspaces of the hubs around a body need not meet in a line, and we
@@ -5648,9 +5647,8 @@ one (\cref{lem:pencil-d-lift-realization}).
 
 This section proves that the general lift attains in dimension $d$ at
 every simple nondegeneracy-feasible multigraph with a body, by strong
-induction on the number of bodies (\cref{thm:pencil-d-generic}). We follow
-the case split of \cref{thm:pencil-conditioned-pair-nonempty} and
-\cref{thm:pencil-generic-step}. On at most two bodies and at a triangle
+induction on the number of bodies (\cref{thm:pencil-d-generic}). On at
+most two bodies and at a triangle
 every lift attains, and a disconnected multigraph reduces to its parts
 (\cref{lem:pencil-d-lift-small}). At a cut edge, at a body of degree one
 and at a pendant triangle the lifts of the smaller graphs extend
@@ -5727,10 +5725,9 @@ the conditioned pair in every dimension
   polynomials of \cref{def:pencil-d-lift-attains} for the two sides,
   each in the normals of its side, serves for $G$.
 
-  At $d = 3$, part (1) is the direct construction of
-  \cref{thm:pencil-generic-step} at the triangle and of
-  \cref{lem:pencil-pair-loop-base-cut} on at most two bodies, and (2) its
-  case of a cut with no crossing edge. The counts read $D$ in place of
+  At $d = 3$, part (1) on at most two bodies is the construction of
+  \cref{lem:pencil-pair-loop-base-cut}, and (2) its case of a cut with no
+  crossing edge. The counts read $D$ in place of
   $6$, and $2D - 3(D - 1) < 0$ holds for every $D \ge 4$.
 \end{proof}
 
@@ -6055,8 +6052,8 @@ the conditioned pair in every dimension
   \cref{lem:relative-deficiency-rank-bound}).
   \Cref{lem:pencil-d-lift-one-witness} completes the proof.
 
-  At $d = 3$ this is \cref{lem:pencil-generic-pendant-triangle}, whose
-  triangle has rank $12$. In dimension $d$ the lifts of $x_1$ and $x_2$
+  At $d = 3$ the lift is the realization itself, and the triangle has
+  rank $12$. In dimension $d$ the lifts of $x_1$ and $x_2$
   are read off that of $c$, and the triangle has rank $2D$.
 \end{proof}
 
@@ -6190,8 +6187,8 @@ the conditioned pair in every dimension
   attains it.
   \Cref{lem:pencil-d-lift-one-witness} completes the proof.
 
-  At $d = 3$ this is \cref{thm:pencil-x0-base-generic}: there the
-  attaining configuration $(q, z^1)$ is itself the generic realization. In
+  At $d = 3$ the lift is the realization itself: the attaining
+  configuration $(q, z^1)$ is the generic realization. In
   dimension $d$ the first height makes the realization nondegenerate in
   dimension three, the other $d - 3$ heights are a lift of it, and the
   coverage in dimension $d$ supplies heights that do both at once.
@@ -6237,10 +6234,10 @@ the conditioned pair in every dimension
         lem:deficiency-add-body, lem:deficiency-singleton-bound,
         lem:deficiency-tight-rigid, lem:deficiency-rigid-higher,
         lem:deficiency-merge-rigid, lem:deficiency-ear-merge, lem:cut-edge-decomposition}
-  The proof of \cref{lem:pencil-rigid-good-ear} takes a planar-rigid set
-  $W_0$ with as few bodies as possible, which gives (i), and returns the
-  pendant triangle or a body $x \in W_0$ of degree two whose neighbours
-  $a, b \in W_0$ are hubs. They are not adjacent, or $x a b$ would be a
+  \Cref{lem:pencil-rigid-good-ear}, at a planar-rigid set $W_0$ with as
+  few bodies as possible, gives (i), and returns the pendant triangle or a
+  body $x \in W_0$ of degree two whose neighbours $a \ne b$ in $W_0$ are
+  hubs. They are not adjacent, or $x a b$ would be a
   triangle with two hubs.
 
   (iii) Suppose $a$ had only one neighbour $a'$ in $W_0$ besides $x$.
@@ -6282,15 +6279,13 @@ the conditioned pair in every dimension
   with three neighbours in $W_0$, all hubs, would be a hub with four
   members in its closed hub-neighbourhood.
 
-  At $d = 3$ this is \cref{lem:pencil-rigid-good-ear}, which returns the
-  body $x$ alone, with $\operatorname{def}_3(G - x) \le
-  \operatorname{def}_3(G)$. The other parts are read off its proof, and
-  do not depend on the dimension except (iv), which holds at every
-  $D \ge 3$.
+  The statement of \cref{lem:pencil-rigid-good-ear} gives (i) and (ii),
+  and also $|X| \ge 3$ and $s(X) \le 1$. The other parts do not depend on
+  the dimension except (iv), which holds at every $D \ge 3$.
 \end{proof}
 
 \begin{fmlnote}
-  The formalization proves (iii) with $s(X) \le 1$ read off the proof of
+  The formalization proves (iii) with $s(X) \le 1$ read off
   \cref{lem:pencil-rigid-good-ear}, as the first paragraph reads (i) and
   (ii) off it; with $\operatorname{def}_2(G[X]) \le 1$ by the case split
   above on the partitions of $X$, stated as a lemma of its own beside
@@ -6302,7 +6297,7 @@ the conditioned pair in every dimension
   \operatorname{def}_2(G[X_2]) + 3 \ge 3$ (part~(1) of
   \cref{lem:cut-edge-decomposition}, as a deficiency is never negative),
   against $\operatorname{def}_2(G[X]) = 1$. It reads $|X| \ge 3$ off that
-  proof too, before the minimum degree, not as $G$ is simple: were
+  lemma too, before the minimum degree, not as $G$ is simple: were
   $X = \{a, b\}$, $s(X) \le 1$ would need the edge $ab$, and $x a b$
   would be a triangle with two hubs.
 \end{fmlnote}
@@ -6397,9 +6392,9 @@ the conditioned pair in every dimension
   $\operatorname{tgt}_d(G)$ (\cref{lem:relative-deficiency-rank-bound}).
   \Cref{lem:pencil-d-lift-one-witness} completes the proof.
 
-  At $d = 3$ this is \cref{lem:pencil-generic-one-ear}, where the point of
-  $x$ goes anywhere on the line $\Pi^0_a \cap \Pi^0_b$ off the span of
-  $b^0_a$ and $b^0_b$, with no hypothesis on the lifts. The dimension
+  At $d = 3$ the lift is the realization itself: the point of $x$ goes
+  anywhere on the line $\Pi^0_a \cap \Pi^0_b$ off the span of $b^0_a$ and
+  $b^0_b$, and the hypothesis on the lifts is empty. The dimension
   enters only through the lift of $x$, which does not exist at $d = 3$.
   In dimension $d$ the lift of $x$ must agree with the lifts of both $a$
   and $b$ at the normal $b^0_x$, which lies in both of their subspaces. So
@@ -6649,9 +6644,9 @@ So its subspace can be chosen after the points of $X$
   $b$ of $x$ lie in $X$, and $b^0_x$ lies in both of their subspaces, so
   $\varphi_a(b^0_x) = \psi(b^0_x) = \varphi_b(b^0_x)$.
 
-  At $d = 3$ no lift is needed, and the step at $x$ holds at every body of
-  degree two with hub neighbours and $\operatorname{def}_3(G - x) \le
-  \operatorname{def}_3(G)$ (\cref{lem:pencil-generic-one-ear}). The lemma
+  At $d = 3$ no lift is needed, and the hypothesis of
+  \cref{lem:pencil-d-lift-ear} holds at every body of degree two with hub
+  neighbours, as it asks nothing of the lifts. The lemma
   holds in every dimension, as it concerns realizations in dimension
   three; it is the reason we take $x$ inside a minimal planar-rigid set.
 \end{proof}
@@ -6676,8 +6671,7 @@ So its subspace can be chosen after the points of $X$
         lem:pencil-d-lift-pendant-triangle, lem:pencil-d-lift-no-rigid,
         thm:pencil-d-coverage, lem:pencil-feasible-hub-conditions,
         lem:pencil-d-good-ear, lem:pencil-d-lift-ear, lem:pencil-d-ear-free,
-        def:cut-edges-2ec, lem:two-edge-connected-degree,
-        thm:pencil-conditioned-pair-nonempty}
+        def:cut-edges-2ec, lem:two-edge-connected-degree}
   By \cref{lem:pencil-d-nondegenerate-feasible}, such a multigraph is
   nondegeneracy-feasible. We show that at every simple
   nondegeneracy-feasible multigraph $G$ with at least one body, the general
@@ -6714,25 +6708,9 @@ So its subspace can be chosen after the points of $X$
   of \cref{lem:pencil-d-lift-ear} holds by \cref{lem:pencil-d-ear-free},
   and \cref{lem:pencil-d-lift-ear} applies.
 
-  At $d = 3$ this is the generic conjunct of
-  \cref{thm:pencil-conditioned-pair-nonempty}, through
-  \cref{lem:pencil-d-nondegenerate-three}, and the case split is that of
-  \cref{thm:pencil-generic-step}. There the dimension enters in three
-  places. First, the parametrization of the nondegenerate realizations
-  (\cref{lem:pencil-generic-steer}) writes the point of a body as the
-  vector orthogonal to three normals of $K^4$. In dimension $d$ we keep it
-  in dimension three, and the induction statement asks for a general lift
-  of a general realization (\cref{def:pencil-d-lift-attains}). Second,
-  without a planar-rigid set, the general configuration is a generic
-  realization (\cref{thm:pencil-x0-base-generic}). In dimension $d$ a
-  nondegenerate configuration in dimension three is lifted by heights
-  that attain, which the coverage in dimension $d$ provides. Third, at a
-  body $x$ of degree two with hub neighbours, the point of $x$ goes on the
-  line where the panels of its neighbours meet
-  (\cref{lem:pencil-generic-one-ear}). In dimension $d$ the lift of $x$
-  is forced, and exists only under a linear condition on the lifts of
-  $G - x$. We take $x$ in a minimal planar-rigid set, where the condition
-  holds (\cref{lem:pencil-d-ear-free}).
+  At $d = 3$ the theorem gives the generic main-component statement
+  (\cref{thm:pencil-x0-generic-attains}), through
+  \cref{lem:pencil-d-nondegenerate-three}.
 \end{proof}
 
 % Source: NONDEG workbook, S38 (its verdict on Q4) for the third conjunct; the first two are
