@@ -304,10 +304,12 @@ status:
     nondegenerate claim by lifting nondegenerate three-dimensional pencil realizations to dimension
     d (CombinatorialRigidity.Molecular.hasGradedGenericPencilRealization_of_simple). Phase 43 (in
     progress) looks for a simpler proof of the pencil realization theorem, with no main result's
-    statement to change; its first step takes the three-dimensional nondegenerate claim from that
-    lifting argument (CombinatorialRigidity.Molecular.x0Gen, the case d = 3 of
-    CombinatorialRigidity.Molecular.liftAttains_of_simple) and deletes the three-dimensional
-    argument it replaces; the three-dimensional reduction is next.
+    statement to change; its first step takes the three-dimensional theorem from the argument in
+    every dimension: the nondegenerate claim from that lifting argument
+    (CombinatorialRigidity.Molecular.x0Gen, the case d = 3 of
+    CombinatorialRigidity.Molecular.liftAttains_of_simple), then the whole theorem as the case
+    d = 3 of Graph.graded_pencil_conditioned_pair, deleting the three-dimensional arguments they
+    replace; the rest of the three-dimensional reduction is next.
   sorry_count: 0
   sorry_in_definitions: 0
   axioms: ["propext", "Classical.choice", "Quot.sound"]          # only Lean/mathlib standard axioms; no project-specific axioms
@@ -598,9 +600,9 @@ status:
       satisfies the conditioned pencil pair at n = 3 - a hinge-coplanar realization in which each
       body's hinges also pass through a common point of its panel, attaining rank D(|V|-1) - def(G~),
       with the points of adjacent bodies distinct when the multigraph is simple, and a nondegenerate
-      one at that rank when it also has a nondegenerate pencil realization. It is
-      pencil_realization_theorem_of_X0 (phase 39's reduction to the two main-component statements
-      X0Dist and X0Gen) applied to x0Dist and x0Gen (phase 40).
+      one at that rank when it also has a nondegenerate pencil realization. It is pencilPair_of_nonempty
+      at a spanning multigraph, which has a body; since phase 43 that is the case d = 3 of the theorem
+      in every dimension, Graph.graded_pencil_conditioned_pair.
     sorry_count: 0
     axioms: ["propext", "Classical.choice", "Quot.sound"]
     comparator_config: ""
@@ -611,8 +613,10 @@ status:
     description: >-
       The pencil realization theorem in its general form (phase 40): over any infinite field, every
       multigraph with at least one body, spanning or not, satisfies the conditioned pencil pair at
-      n = 3: phase 39's reduction at the two main-component statements x0Dist and x0Gen, the second
-      the case d = 3 of the lift CombinatorialRigidity.Molecular.liftAttains_of_simple (phase 43).
+      n = 3. Since phase 43 it is the case d = 3 (Lean's m = 1) of
+      Graph.graded_pencil_conditioned_pair, through the four d = 3 bridges
+      (hasGradedPencilRealization_two_iff, hasGradedDistinctPencilRealization_two_iff,
+      gradedPencilNondegFeasible_two_iff, hasGradedGenericPencilRealization_two_iff).
       pencil_realization_theorem is a corollary.
     sorry_count: 0
     axioms: ["propext", "Classical.choice", "Quot.sound"]
@@ -630,7 +634,7 @@ status:
       D = (d+1 choose 2); one whose normals at the two ends of each edge are linearly independent
       when the multigraph is simple; and a nondegenerate one at that rank when it is simple and has
       a nondegenerate pencil realization. Lean's m is d - 2 >= 1. At d = 3 the three claims are
-      pencilPair_of_nonempty's. The route has no row of its own: the coverage
+      pencilPair_of_nonempty's, which is proved so (phase 43). The route has no row of its own: the coverage
       Graph.IsX0Graph.x0AttainsGrade (phase 42j: at every simple connected graph of minimum degree
       at least two, a general picture with general heights attains the deficiency rank in dimension
       d), phase 39's reduction in every dimension, Graph.graded_pencil_realization_theorem (phase
@@ -948,14 +952,15 @@ alignment:
       note: >-
         The conclusion is CombinatorialRigidity.Molecular.PencilPair K 3 G, over any infinite
         field: for every spanning multigraph (pencil_realization_theorem), and for every multigraph with at
-        least one body (pencilPair_of_nonempty). The route is phase 39's reduction
-        CombinatorialRigidity.Molecular.pencil_realization_theorem_of_X0 to the two main-component
-        statements CombinatorialRigidity.Molecular.X0Dist and CombinatorialRigidity.Molecular.X0Gen,
-        which phase 40 proves as CombinatorialRigidity.Molecular.x0Dist, and phase 43 as
-        CombinatorialRigidity.Molecular.x0Gen, the case d = 3 of
-        CombinatorialRigidity.Molecular.liftAttains_of_simple. The non-simple bare case is
-        CombinatorialRigidity.Molecular.hasPencilRealization_of_not_simple (Katoh-Tanigawa
-        Lemma 6.2's parallel-edge contraction, without minimality).
+        least one body (pencilPair_of_nonempty). Since phase 43 the route is the case d = 3 of the
+        theorem in every dimension (the entry below), through the four d = 3 bridges named there;
+        its non-simple bare case is Katoh-Tanigawa Lemma 6.2's parallel-edge contraction, without
+        minimality (CombinatorialRigidity.Molecular.hasGradedPencilRealization_of_not_simple). The
+        two main-component statements CombinatorialRigidity.Molecular.X0Dist and
+        CombinatorialRigidity.Molecular.X0Gen, which phase 40 proves as
+        CombinatorialRigidity.Molecular.x0Dist and phase 43 as CombinatorialRigidity.Molecular.x0Gen
+        (the case d = 3 of CombinatorialRigidity.Molecular.liftAttains_of_simple), are the d = 3
+        forms of its steps.
 
     - source: "The pencil realization theorem in every dimension (posed and proved by this project, 2026; no literature source found)"
       lean: "Graph.graded_pencil_conditioned_pair"
@@ -973,8 +978,7 @@ alignment:
         CombinatorialRigidity.Molecular.hasGradedPencilRealization_two_iff,
         CombinatorialRigidity.Molecular.hasGradedDistinctPencilRealization_two_iff,
         CombinatorialRigidity.Molecular.gradedPencilNondegFeasible_two_iff and
-        CombinatorialRigidity.Molecular.hasGradedGenericPencilRealization_two_iff. The route, as
-        the pencil_realization_theorem entry above names x0Dist and x0Gen: the coverage
+        CombinatorialRigidity.Molecular.hasGradedGenericPencilRealization_two_iff. The route: the coverage
         Graph.IsX0Graph.x0AttainsGrade (phase 42j), phase 39's reduction in every dimension
         Graph.graded_pencil_realization_theorem (phase 42k; the first two conjuncts), and the
         generic theorem CombinatorialRigidity.Molecular.hasGradedGenericPencilRealization_of_simple

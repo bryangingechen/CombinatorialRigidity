@@ -324,8 +324,7 @@ deficiency ranks, and a nonzero hinge `C` in the panels of both ends of every li
 deficiency rank: each side's hinges on its own links, `C` on every other label, and each body's
 normal and subspace from its own side. The rank is `finrank_span_rigidityRows_cutEdge_eq`
 (`lem:block-rank-cut` and `lem:relative-deficiency-rank-bound`), with the deficiency split
-`Graph.deficiency_eq_of_cutEdges_ncard_le_one` (`lem:cut-edge-decomposition` (1)). It is
-`exists_hasPencilPanelRealization_glue` (`Pencil/Arms.lean`) with subspaces in place of points. -/
+`Graph.deficiency_eq_of_cutEdges_ncard_le_one` (`lem:cut-edge-decomposition` (1)). -/
 theorem exists_hasPencilPlaneRealization_glue [Finite α] [Finite β] {k n : ℕ} (hk : 1 ≤ k)
     (hn : Graph.bodyBarDim n = screwDim k)
     {G : Graph α β} {V₁ : Set α} (hssub : V₁ ⊂ V(G)) (hne : V₁.Nonempty)

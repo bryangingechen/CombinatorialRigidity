@@ -20,8 +20,8 @@ deficiency rank (`HasGradedPencilRealization`), and an adjacent-distinct one
 and at a cut edge and at parallel edges from `Grade/Arms.lean`, and at a simple
 two-edge-connected multigraph from the distinct statement
 (`Graph.hasGradedDistinctPencilRealization_of_twoEdgeConnected`, `Grade/Coverage.lean`). At
-`d = 3` these are `hasPencilRealization_of_not_simple` and `pencilPair_of_X0`
-(`Pencil/X0.lean`), with the assembly of `pencilPair_of_arms` (`Pencil/Pair2.lean`).
+`d = 3` it gives the first two conjuncts of the conditioned pair, through
+`Graph.graded_pencil_conditioned_pair` (`pencilPair_of_nonempty`, `MainComponent/Statements.lean`).
 
 ## Main results
 

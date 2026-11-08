@@ -26,9 +26,13 @@ The generic statement is the case `d = 3` of the generic conjunct in every dimen
 body, the general lift attains (`liftAttains_of_simple`, at `r = 0`), and an attaining general lift
 is a generic realization (`LiftAttains.hasGradedGenericPencilRealization`), which at `d = 3` is a
 generic pencil realization (`hasGradedGenericPencilRealization_two_iff`,
-`lem:pencil-d-nondegenerate-three`). With the two statements, every graph with at least one body
-satisfies the conditioned pair (`thm:pencil-conditioned-pair-nonempty`), and so does every graph on
-the whole ambient body set (`thm:pencil-conditional-realization-main-component`).
+`lem:pencil-d-nondegenerate-three`).
+
+The conditioned pair at every graph with at least one body (`thm:pencil-conditioned-pair-nonempty`)
+is the case `d = 3` of the conditioned pair in every dimension
+(`Graph.graded_pencil_conditioned_pair`, `cor:pencil-d-conditioned-pair`), read through the bridges
+of `lem:pencil-d-rank-agrees-three` and `lem:pencil-d-nondegenerate-three`; at a graph on the whole
+ambient body set it is the pencil realization theorem.
 
 ## Main results
 
@@ -74,23 +78,25 @@ theorem x0Gen [Finite α] [Finite β] [Infinite K] : X0Gen K α β :=
 
 /-- **The conditioned pair at every nonempty multigraph** (`thm:pencil-conditioned-pair-nonempty`,
 and the general claim of `thm:pencil-realization-theorem`): over an infinite field, for finite `α`
-and `β`, every graph with at least one body satisfies the conditioned pair at `n = 3`. The reduction
-`pencilPair_of_arms` (`thm:pencil-conditional-realization-pair`) asks for its contraction and split
-cases, and `pencilPair_of_X0` (`thm:pencil-conditional-realization-main-component`, its three cases)
-at the two main-component statements, now proved (`x0Dist`, `x0Gen`), proves both, as it uses none
-of the hypotheses that distinguish them. -/
+and `β`, every graph with at least one body satisfies the conditioned pair at `n = 3`. It is the
+case `m = 1` (`d = 3`) of `Graph.graded_pencil_conditioned_pair` (`cor:pencil-d-conditioned-pair`):
+its three conjuncts are those of `PencilPair K 3` through `hasGradedPencilRealization_two_iff`,
+`hasGradedDistinctPencilRealization_two_iff` (`lem:pencil-d-rank-agrees-three`),
+`hasGradedGenericPencilRealization_two_iff` and `gradedPencilNondegFeasible_two_iff`
+(`lem:pencil-d-nondegenerate-three`). -/
 theorem pencilPair_of_nonempty [Finite α] [Finite β] [Infinite K] (G : Graph α β)
-    (hne : V(G).Nonempty) : PencilPair K 3 G :=
-  pencilPair_of_arms (fun G hloop hV _ hIH => pencilPair_of_X0 x0Dist x0Gen G hloop hV hIH)
-    (fun G hloop hV _ _ _ hIH => pencilPair_of_X0 x0Dist x0Gen G hloop hV hIH) G hne
+    (hne : V(G).Nonempty) : PencilPair K 3 G := by
+  obtain ⟨hbare, hdist, hgen⟩ := Graph.graded_pencil_conditioned_pair (K := K) (m := 1) le_rfl hne
+  exact ⟨fun hS hfeas => (hasGradedGenericPencilRealization_two_iff 3 G).1
+      (hgen hS ((gradedPencilNondegFeasible_two_iff G).2 hfeas)),
+    fun hS => (hasGradedDistinctPencilRealization_two_iff 3 G).1 (hdist hS),
+    (hasGradedPencilRealization_two_iff 3 G).1 hbare⟩
 
 /-- **The pencil realization theorem** (`thm:pencil-realization-theorem`): over an infinite field,
 for finite `α` and `β` with `α` nonempty, every multigraph on the whole ambient body set satisfies
-the conditioned pair at `n = 3`. It is `pencil_realization_theorem_of_X0`
-(`thm:pencil-conditional-realization-main-component`) at the two main-component statements, now
-proved (`x0Dist`, `x0Gen`), so it assumes neither. -/
+the conditioned pair at `n = 3`. It is `pencilPair_of_nonempty`, as such a multigraph has a body. -/
 theorem pencil_realization_theorem [Nonempty α] [Finite α] [Finite β] [Infinite K]
     (G : Graph α β) (hspan : V(G) = Set.univ) : PencilPair K 3 G :=
-  pencil_realization_theorem_of_X0 x0Dist x0Gen G hspan
+  pencilPair_of_nonempty G (hspan ▸ Set.univ_nonempty)
 
 end CombinatorialRigidity.Molecular

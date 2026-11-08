@@ -5,7 +5,7 @@ with no main result's statement to change. **43a** READS closed the same day (`n
 the three fresh reads held, and each layer's inputs from them are in §2. **43b** LIFT3 opened on
 2026-11-08 as one sub-phase, at the PI's choice (§1); its work log and slice plan are
 `notes/Phase43b.md`. The later layers open one at a time, each at the PI's word (§1, D5). Next:
-43b's slice 1 (N1a).
+43b's slice 3 (slices 1–2 landed).
 
 This file is the phase's entry point: the target (§0), the PI's decisions (§1, verbatim), the
 layers by stable code (§2) and the open questions (§3). The recon record stays in

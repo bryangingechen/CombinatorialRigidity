@@ -586,8 +586,7 @@ theorem exists_smul_eq_of_mem_range_map_subtype_grade {d : ℕ}
 basis of `lem:pencil-d-two-pencil-extension`): if `v : Fin j → K^(d+1)` is linearly independent and
 every `u i` lies in the span of the `v i`, then `extensor u = c • extensor v` for some `c`. Both
 lie in the image of `⋀^j W`, `W = span (range v)`, which is a line
-(`finrank_exteriorPower_self_eq_one`). The case `j = 2` is
-`exists_smul_extensor_eq_of_mem_span_range`. -/
+(`finrank_exteriorPower_self_eq_one`). `span_range_eq_of_extensor_eq_grade` is a converse. -/
 theorem exists_smul_extensor_eq_of_mem_span_range_grade {d j : ℕ}
     (u v : Fin j → Fin (d + 1) → K) (hv : LinearIndependent K v)
     (hu : ∀ i, u i ∈ Submodule.span K (Set.range v)) :
@@ -613,23 +612,10 @@ theorem exists_smul_extensor_eq_of_mem_span_range_grade {d j : ℕ}
   obtain ⟨c, hc⟩ := hxu
   exact ⟨c, congrArg Subtype.val hc⟩
 
-/-- **Two `2`-extensors of pairs in the same plane are proportional** (a step of
-`lem:pencil-generic-steer`): for a linearly independent pair `v` and a pair `u` whose vectors lie in
-`span (range v)`, `c • extensor v = extensor u` for some `c`. Both lie in the image of `⋀² P`,
-`P = span (range v)`, which is a line (`finrank_exteriorPower_self_eq_one`), and `extensor v ≠ 0`
-(`extensor_ne_zero_iff_linearIndependent`). `span_range_eq_of_extensor_eq` is a converse. -/
-theorem exists_smul_extensor_eq_of_mem_span_range
-    {d : ℕ} (u v : Fin 2 → Fin (d + 1) → K) (hv : LinearIndependent K v)
-    (hu : ∀ i, u i ∈ Submodule.span K (Set.range v)) :
-    ∃ c : K, c • (⟨extensor v, extensor_mem_exteriorPower v⟩ : ⋀[K]^2 (Fin (d + 1) → K))
-      = ⟨extensor u, extensor_mem_exteriorPower u⟩ := by
-  obtain ⟨c, hc⟩ := exists_smul_extensor_eq_of_mem_span_range_grade u v hv hu
-  exact ⟨c, Subtype.ext hc⟩
-
 /-! ## Equal nonzero `2`-extensors span the same plane (`lem:decomposable-extensor-span-unique`)
 
-A converse of `exists_smul_extensor_eq_of_mem_span_range`: a nonzero `2`-extensor determines the
-plane spanned by its two vectors. -/
+A converse of `exists_smul_extensor_eq_of_mem_span_range_grade`: a nonzero `2`-extensor determines
+the plane spanned by its two vectors. -/
 
 /-- **Equal nonzero extensors span the same subspace, in every grade** (the argument of
 `lem:decomposable-extensor-span-unique` with `j` vectors in place of two): if

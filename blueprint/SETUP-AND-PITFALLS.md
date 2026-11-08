@@ -120,8 +120,8 @@ pip install -r requirements.txt          # plastex, leanblueprint, invoke
   the proof (`AUTHORING.md` principle D). Found at `40-exposition` task 6
   on `thm:pencil-conditional-realization-pair`, the only case; moving its
   notes changes the graph, so that round left them (`notes/Cleanup40.md`).
-  Moved by `40-simplify` task 10h (`528381ef`, verdict `m5`): the node now
-  draws filled.
+  Moved by `40-simplify` task 10h (`528381ef`, verdict `m5`): the node
+  drew filled until Phase 43b deleted it.
 - **A `\uses` of a remark draws its users as not fully proved.** The dep
   graph draws only theorem-like nodes, so `\uses{rem:…}` draws no edge,
   and `lint.sh` passes it, as the label exists. But leanblueprint counts

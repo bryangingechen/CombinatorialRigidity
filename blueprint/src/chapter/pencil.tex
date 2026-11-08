@@ -30,17 +30,19 @@ subgraph. So we induct over every multigraph, not only over the minimal
 ones (\cref{thm:pencil-reduction}). \Cref{sec:pencil-reduction}
 states this induction and proves its cases at a loop, on at most two
 bodies and at a cut edge. \Cref{sec:pencil-nondegenerate} adds the
-distinct points and the nondegenerate realizations to the induction
-statement. Katoh and Tanigawa's induction statement likewise asks for
-nonparallel realizations (KT Theorem~5.5). The cases at a loop, on at
-most two bodies and at a cut edge hold for the strengthened statement
-too, so it follows from the two remaining cases
-(\cref{thm:pencil-conditional-realization-pair}).
-\Cref{sec:pencil-main-component-route} proves these two cases,
-where $G$ has a proper rigid subgraph and where it is two-edge-connected
-without one. At a simple two-edge-connected multigraph both follow from
-two statements (\cref{def:pencil-main-component-statements}), which
-\cref{sec:main-component} proves by lifting pictures of $G$ in the plane.
+distinct points and the nondegenerate realizations to the statement, the
+conditioned pair. Katoh and Tanigawa's induction statement likewise asks
+for nonparallel realizations (KT Theorem~5.5).
+\Cref{sec:pencil-main-component-route} states two statements on simple
+two-edge-connected multigraphs (\cref{def:pencil-main-component-statements}),
+which \cref{sec:main-component} proves by lifting pictures of $G$ in the
+plane, and proves the theorem. It is the case $d = 3$ of the conditioned
+pair in every dimension $d \ge 3$ (\cref{cor:pencil-d-conditioned-pair}).
+There the reduction gives the first two conjuncts
+(\cref{sec:pencil-d-reduction}), and at a simple two-edge-connected
+multigraph it uses the first statement in dimension $d$. A nondegenerate
+realization in dimension three, lifted, gives the third
+(\cref{thm:pencil-d-generic}).
 
 Two parts of the chapter are not used in the proof of
 \cref{thm:pencil-realization-theorem}. \Cref{sec:pencil-duality} shows that the
@@ -609,12 +611,13 @@ We take the five cases in the order of the lemmas below. The loop
 case~(i) is \cref{lem:pencil-loop-case}. The cut-edge case~(iii) is
 \cref{lem:pencil-cut-case}, after two lemmas on projective
 automorphisms. The base case~(ii) is \cref{lem:pencil-base-case}. The
-contraction and split cases, (iv) and~(v), are left for later
-subsections. \Cref{sec:pencil-nondegenerate} strengthens the statement
-that the induction proves. \Cref{sec:pencil-main-component-route} then
-proves both cases by one argument, which rests on
-\cref{sec:main-component}. That argument and \cref{sec:main-component}
-contract proper rigid subgraphs, using
+contraction and split cases, (iv) and~(v), are proved in every
+dimension, by one argument (\cref{thm:pencil-d-realization-theorem}):
+at a two-edge-connected multigraph it uses the distinct main-component
+statement in dimension $d$ (\cref{lem:pencil-d-distinct-statement}),
+which rests on the argument of \cref{sec:main-component}, or contracts two
+parallel edges (\cref{lem:pencil-d-nonsimple-case}). That argument and
+\cref{sec:main-component} contract proper rigid subgraphs, using
 \cref{lem:pencil-contraction-deficiency}: contraction leaves the
 deficiency unchanged.
 
@@ -822,9 +825,7 @@ p.~670). This subsection defines a pencil analogue, the nondegenerate
 pencil realization, and strengthens the statement of the induction to
 include it. The strengthened statement, the conditioned pair, asks for a
 nondegenerate realization at the deficiency rank under two conditions on
-the graph. We show that neither condition can be dropped. The
-subsection ends with the reduction of \cref{thm:pencil-reduction} for the
-conditioned pair. Throughout, $k = 2$, so panel normals and concurrency
+the graph. We show that neither condition can be dropped. Throughout, $k = 2$, so panel normals and concurrency
 points lie in $K^4$.
 
 The pencil condition constrains the hinges at a body only when the body
@@ -952,108 +953,23 @@ conditions.
   $D = 6$. The theorems that use them take $d = 3$, where the two agree.
 \end{fmlnote}
 
-We now prove the reduction for the conditioned pair, beginning with the
-three cases that \cref{sec:pencil-reduction} proves for the bare
-statement.
-
-\begin{lemma}[The conditioned pair at a loop, on at most two bodies and at a cut edge]
-  \label{lem:pencil-pair-loop-base-cut}
-  \lean{CombinatorialRigidity.Molecular.pencilPair_loop_base_cut}
-  \leanok
-  \uses{def:pencil-conditioned-pair, def:cut-edges-2ec}
-  Let $K$ be an infinite field and $G$ a multigraph.
-  \begin{enumerate}
-    \item If $G$ has a loop, and every nonempty multigraph with fewer
-      vertices than $G$, or with as many vertices and fewer edges,
-      satisfies the conditioned pair at $d = 3$
-      (\cref{def:pencil-conditioned-pair}), then so does $G$.
-    \item If $G$ is loopless and has one or two vertices, it satisfies
-      the conditioned pair at $d = 3$.
-    \item If $G$ is loopless with $|V(G)| \ge 3$ and not
-      two-edge-connected (\cref{def:cut-edges-2ec}), and every nonempty
-      multigraph on fewer vertices than $G$ satisfies the conditioned
-      pair at $d = 3$, then so does $G$.
-  \end{enumerate}
-\end{lemma}
-\begin{proof}
-  \leanok
-  \uses{lem:pencil-loop-case, lem:pencil-base-case, lem:pencil-cut-case,
-        def:pencil-nondegenerate, lem:pencil-generic-steer}
-  In each case the bare conjunct is \cref{lem:pencil-loop-case},
-  \cref{lem:pencil-base-case} or \cref{lem:pencil-cut-case}. In case~(1)
-  the first of these applies to $G$ with the loop deleted, which has as
-  many vertices as $G$ and fewer edges. The other two conjuncts are
-  needed only when $G$ is simple. A multigraph with a loop is not simple.
-  A simple multigraph on at most two bodies has at most one edge, and a
-  direct construction gives it a nondegenerate realization at the
-  deficiency rank. At a cut edge, the adjacent-distinct conjunct is the
-  second form of \cref{lem:pencil-cut-case}.
-
-  It remains to prove the generic conjunct in case~(3). Let $G$ be simple
-  and nondegeneracy-feasible, with at most one edge crossing a nonempty
-  proper subset $V_1$ of $V(G)$. A nondegenerate realization of $G$
-  restricts to one of a subgraph, provided no body of the subgraph drops
-  from degree three or more to degree two. So, except in the last case
-  below, each smaller graph used is nondegeneracy-feasible, and the
-  hypothesis of case~(3) gives it a generic realization. If no edge
-  crosses, the generic realizations of the two sides together form one of
-  $G$. Suppose one edge $uv$ crosses, with $u \in V_1$. If both sides have
-  at least two bodies, we use each side together with the far end of
-  $uv$, so that $u$ keeps its degree in the first and $v$ in the second.
-  We move the second as in \cref{lem:pencil-cut-case}, by an automorphism
-  that also avoids finitely many subspaces, and join the two along $uv$.
-
-  If one side is a single body, say $v$, we use $G - v$, and give $v$ a
-  point and a panel that avoid finitely many subspaces. The body $v$ has
-  degree one, so it is not a pencil hub, and it is the only neighbour
-  that a body of $G - v$ loses. By \cref{lem:pencil-generic-steer}(a), $G - v$
-  is then nondegeneracy-feasible, by a realization whose normals are
-  independent on the closed hub-neighbourhood in $G$ of every body. By
-  part~(b) of the same lemma, the generic realization of $G - v$ moves,
-  at the same rank, to one whose normals are independent on these sets,
-  as a realization of $G$ requires.
-\end{proof}
-
-\begin{theorem}[The conditioned pair from the contraction and split cases]
-  \label{thm:pencil-conditional-realization-pair}
-  \lean{CombinatorialRigidity.Molecular.pencilPair_of_arms}
-  \leanok
-  \uses{thm:pencil-reduction, def:pencil-conditioned-pair, def:rigid-subgraph,
-        def:cut-edges-2ec}
-  Let $K$ be an infinite field. Consider two kinds of loopless
-  multigraphs $G$ with $|V(G)| \ge 3$: those with a proper rigid subgraph
-  (\cref{def:rigid-subgraph}), and those that are two-edge-connected,
-  have no proper rigid subgraph and have a vertex of degree two. Suppose
-  that each such $G$ satisfies the conditioned pair at $d = 3$
-  (\cref{def:pencil-conditioned-pair}) whenever every nonempty multigraph
-  on fewer vertices than $G$ does. Then every nonempty multigraph
-  satisfies the conditioned pair at $d = 3$.
-\end{theorem}
-\begin{proof}
-  \leanok
-  \uses{thm:pencil-reduction, lem:pencil-pair-loop-base-cut}
-  Apply \cref{thm:pencil-reduction} with the conditioned pair at $d = 3$
-  as the property. Its cases at a loop, on at most two vertices and at a
-  cut edge are \cref{lem:pencil-pair-loop-base-cut}. Its contraction and
-  split cases are the two hypotheses.
-\end{proof}
-
-\subsection{Reduction to the main component}
+\subsection{The main-component statements, and the theorem}
 \label{sec:pencil-main-component-route}
 
-This subsection proves the two hypotheses of
-\cref{thm:pencil-conditional-realization-pair}, the contraction and
-split cases for the conditioned pair, and with them the pencil
-conjecture. At a simple two-edge-connected multigraph, both cases follow
-from two statements: the multigraph has an adjacent-distinct pencil
-realization at the deficiency rank, and a generic one when it is
-nondegeneracy-feasible. These are the
-main-component statements, proved in \cref{sec:main-component}. A
-loopless two-edge-connected multigraph that is not simple has two
-parallel edges, and we contract them, as Katoh and Tanigawa do
-(KT Lemma~6.2).
+This subsection states two statements on a simple two-edge-connected
+multigraph: it has an adjacent-distinct pencil realization at the
+deficiency rank, and a generic one when it is nondegeneracy-feasible.
+These are the main-component statements, proved in
+\cref{sec:main-component}. It then proves the pencil realization theorem,
+as the case $d = 3$ of the conditioned pair in every dimension
+(\cref{cor:pencil-d-conditioned-pair}). Its reduction
+(\cref{sec:pencil-d-reduction}) uses the first statement in dimension
+$d$ at a simple two-edge-connected multigraph. At a loopless
+two-edge-connected multigraph that is not simple, it contracts two
+parallel edges, as Katoh and Tanigawa do (KT Lemma~6.2).
 
-The idea is to build pencil realizations by lifting planar pictures.
+The idea of \cref{sec:main-component} is to build pencil realizations
+by lifting planar pictures.
 Place each body $v$ at a point $q_v = (x_v, y_v)$ of the plane, with
 adjacent bodies at distinct points and no closed neighbourhood on a
 line. Such a picture is admissible (\cref{def:pencil-admissible-picture}).
@@ -1168,40 +1084,6 @@ dimension three.
   \cref{lem:pencil-d-rank-agrees-three}.
 \end{fmlnote}
 
-\begin{theorem}[Pencil realization from the two main-component statements]
-  \label{thm:pencil-conditional-realization-main-component}
-  \lean{CombinatorialRigidity.Molecular.pencilPair_of_X0,
-        CombinatorialRigidity.Molecular.pencil_realization_theorem_of_X0}
-  \leanok
-  \uses{thm:pencil-reduction, def:pencil-conditioned-pair,
-        def:pencil-main-component-statements}
-  Let $K$ be an infinite field. If the distinct and the generic
-  main-component statements (\cref{def:pencil-main-component-statements})
-  hold, then every multigraph on the whole ambient body set satisfies the
-  conditioned pair at $d = 3$.
-\end{theorem}
-\begin{proof}
-  \leanok
-  \uses{thm:pencil-conditional-realization-pair,
-        lem:pencil-pair-loop-base-cut, lem:pencil-nonsimple-case}
-  By \cref{thm:pencil-conditional-realization-pair}, it suffices to
-  prove the contraction and split cases for the conditioned pair, and one
-  argument proves both. Let $G$ be a loopless multigraph on at
-  least three bodies, and suppose that every nonempty multigraph on fewer
-  bodies satisfies the conditioned pair. There are three cases.
-  \begin{itemize}
-    \item If $G$ is not two-edge-connected, it satisfies the conditioned
-      pair by the cut-edge case of \cref{lem:pencil-pair-loop-base-cut}.
-    \item If $G$ is two-edge-connected and simple, the two statements
-      give its adjacent-distinct and generic conjuncts. An
-      adjacent-distinct realization is in particular one at the
-      deficiency rank, which is the bare conjunct.
-    \item If $G$ is two-edge-connected and not simple, its
-      adjacent-distinct and generic conjuncts are vacuous, and its bare
-      conjunct follows from \cref{lem:pencil-nonsimple-case}.
-  \end{itemize}
-\end{proof}
-
 \begin{theorem}[The pencil realization theorem]
   \label{thm:pencil-realization-theorem}
   \lean{CombinatorialRigidity.Molecular.pencil_realization_theorem,
@@ -1217,10 +1099,9 @@ dimension three.
 \end{theorem}
 \begin{proof}
   \leanok
-  \uses{thm:pencil-conditional-realization-main-component,
-        thm:pencil-x0-generic-attains, thm:pencil-conditioned-pair-nonempty}
-  The two main-component statements hold over every infinite field
-  (\cref{thm:pencil-x0-generic-attains}). So the first claim follows from
-  \cref{thm:pencil-conditional-realization-main-component}. The second
-  claim is \cref{thm:pencil-conditioned-pair-nonempty}.
+  \uses{thm:pencil-conditioned-pair-nonempty}
+  The second claim is \cref{thm:pencil-conditioned-pair-nonempty}, the
+  case $d = 3$ of the conditioned pair in every dimension. A multigraph on
+  the whole ambient body set has a body, as that set is nonempty, so the
+  first claim is a case of the second.
 \end{proof}

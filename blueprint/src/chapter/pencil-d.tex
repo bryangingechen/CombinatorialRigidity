@@ -4312,14 +4312,14 @@ dimension $d$. Over an infinite field it gives every multigraph with at
 least one body a pencil realization at the deficiency rank in dimension
 $d$, and an adjacent-distinct one when the multigraph is simple
 (\cref{thm:pencil-d-realization-theorem}). At $d = 3$ these are the
-first two conjuncts of \cref{thm:pencil-realization-theorem}, and we
-keep its proof. It is the induction of \cref{thm:pencil-reduction}, with
-the cases at a loop, on at most two bodies and at a cut edge
-(\cref{lem:pencil-loop-case}, \cref{lem:pencil-base-case},
-\cref{lem:pencil-cut-case}). At a two-edge-connected multigraph it uses
-the distinct main-component statement, or contracts two parallel edges
-(\cref{thm:pencil-conditional-realization-main-component},
-\cref{lem:pencil-nonsimple-case}).
+first two conjuncts of \cref{thm:pencil-realization-theorem}, whose proof
+is this one. It is the induction of \cref{thm:pencil-reduction}, with
+the cases at a loop, on at most two bodies and at a cut edge, at $d = 3$
+\cref{lem:pencil-loop-case}, \cref{lem:pencil-base-case} and
+\cref{lem:pencil-cut-case}. At a two-edge-connected multigraph it uses
+the distinct main-component statement in dimension $d$, or contracts two
+parallel edges, at $d = 3$ \cref{lem:pencil-x0-distinct-statement} and
+\cref{lem:pencil-nonsimple-case}.
 
 The cases at a loop, at a cut edge and at parallel edges each place a
 hinge that must lie in the panels of its two ends and pass through
@@ -4590,8 +4590,7 @@ $K^{d+1}$ chosen to meet it (\cref{lem:pencil-d-cut-reposition}).
   $b_u$ and $b_v$ (\cref{lem:pencil-d-two-pencil-extension}). The rank
   is $D - 1$, as before.
 
-  At $d = 3$ this is \cref{lem:pencil-base-case}, with the
-  adjacent-distinct case of \cref{lem:pencil-pair-loop-base-cut}. There
+  At $d = 3$ its first form is \cref{lem:pencil-base-case}. There
   the two independent hinges are two lines through the point of the
   panel (\cref{lem:extensor-pair-through-point}). In dimension $d$ they
   are the polars of two lines through $b$ inside $\Pi$, and the counts
@@ -4805,10 +4804,7 @@ $K^{d+1}$ chosen to meet it (\cref{lem:pencil-d-cut-reposition}).
   Say that a multigraph has property $\mathcal P$ if it has a pencil
   realization at the deficiency rank in dimension $d$, and an
   adjacent-distinct one when it is simple. We apply the induction of
-  \cref{thm:pencil-reduction} to $\mathcal P$, as
-  \cref{thm:pencil-conditional-realization-pair} and
-  \cref{thm:pencil-conditional-realization-main-component} apply it to
-  the conditioned pair. Let $G$ be a multigraph with at least one body.
+  \cref{thm:pencil-reduction} to $\mathcal P$. Let $G$ be a multigraph with at least one body.
 
   \emph{A loop.} Let $e$ be a loop of $G$. Then $G - e$ has the bodies of
   $G$ and fewer edges, so it has $\mathcal P$, and
@@ -5547,9 +5543,9 @@ one (\cref{lem:pencil-d-lift-realization}).
   (\cref{lem:pencil-x0-fibre-intersection}), and a common point gives
   $r^*$.
 
-  At $d = 3$ the only lift is the realization, and (2) is the step of the
-  proof of \cref{lem:pencil-generic-steer} that keeps the rank as a lower
-  bound off the zero set of a polynomial. In dimension $d$ the lifts form
+  At $d = 3$ the only lift is the realization, and the lemma keeps its
+  rank as a lower bound off the zero set of a polynomial in the points.
+  In dimension $d$ the lifts form
   the space $\mathcal{L}(b^0, \Pi^0)^m$, whose dimension can jump. The
   section $Z_i(b^0)$ lies in $\widetilde L(b^0)$ where
   $\dim \widetilde L(b^0)$ does not fall below its value at $b^*$
@@ -5622,10 +5618,10 @@ one (\cref{lem:pencil-d-lift-realization}).
   $\lambda$ has, on $H$, the normals of the lift of $r^0|_H$ by the
   restriction of $\lambda$, which gives the claim.
 
-  At $d = 3$ this is the step of \cref{lem:pencil-generic-steer}(b) that
-  combines a generic realization of a subgraph with a nondegenerate
-  realization of $G$. There the rank of the subgraph is a lower bound off
-  the zero set of a polynomial in the parameters of $H$. In dimension $d$
+  At $d = 3$ the only lift is the realization, and the lemma combines a
+  generic realization of a subgraph with a general nondegenerate
+  realization of $G$, the rank of the subgraph being a lower bound off
+  the zero set of a polynomial. In dimension $d$
   the rank is read at a lift, and the lifts of $G$ must restrict onto the
   lifts of $H$, which is (T2).
 \end{proof}
@@ -5725,10 +5721,8 @@ the conditioned pair in every dimension
   polynomials of \cref{def:pencil-d-lift-attains} for the two sides,
   each in the normals of its side, serves for $G$.
 
-  At $d = 3$, part (1) on at most two bodies is the construction of
-  \cref{lem:pencil-pair-loop-base-cut}, and (2) its case of a cut with no
-  crossing edge. The counts read $D$ in place of
-  $6$, and $2D - 3(D - 1) < 0$ holds for every $D \ge 4$.
+  At $d = 3$ every lift is the realization, and the counts take
+  $D = 6$; $2D - 3(D - 1) < 0$ holds for every $D \ge 4$.
 \end{proof}
 
 \begin{fmlnote}
@@ -5880,16 +5874,12 @@ the conditioned pair in every dimension
   $\operatorname{tgt}_d(G)$ (\cref{lem:relative-deficiency-rank-bound}).
   \Cref{lem:pencil-d-lift-one-witness} completes the proof.
 
-  At $d = 3$, with two sides of at least two bodies, this is the cut-edge
-  case of \cref{lem:pencil-pair-loop-base-cut}. There the second side is
-  moved by a map that avoids finitely many subspaces, and the generic
-  realizations are combined through \cref{lem:pencil-generic-steer}(b).
-  In dimension $d$ we glue realizations in dimension three by one map,
+  We glue realizations in dimension three by one map,
   which meets the conditions at $u$ and at $v$, the only ones that read
   both sides, once the vectors of each side are linearly independent on
   the closed hub-neighbourhood in $G$ of its end of $uv$. The argument
-  reads no size of the sides. The rank count reads $D - 1$ in place of
-  $5$.
+  reads no size of the sides. The rank rises by $D - 1$, which is $5$ at
+  $d = 3$.
 \end{proof}
 
 % Source: NONDEG workbook, S22, which asks for three bodies, takes E from the conditions of G
@@ -5914,7 +5904,7 @@ the conditioned pair in every dimension
         lem:pencil-d-lift-realization, lem:block-rank-cut,
         lem:cut-edge-decomposition, lem:relative-deficiency-rank-bound, lem:case-III-claim612-panel-point-exists}
   \emph{(T1).} The body $v$ is not a hub, and it is the only neighbour
-  that a body of $H$ loses. By \cref{lem:pencil-generic-steer}(a), read
+  that a body of $H$ loses. By \cref{lem:pencil-generic-steer}, read
   through \cref{lem:pencil-d-nondegenerate-three}, $G$ has a nondegenerate
   realization $r$ in dimension three whose restriction to $H$ is
   nondegenerate. Every closed hub-neighbourhood of $G$ lies in $V(H)$, as
@@ -5973,11 +5963,8 @@ the conditioned pair in every dimension
   (\cref{lem:relative-deficiency-rank-bound}).
   \Cref{lem:pencil-d-lift-one-witness} completes the proof.
 
-  At $d = 3$ this is the cut-edge case of
-  \cref{lem:pencil-pair-loop-base-cut} with a side of one body. There $v$
-  gets a point and a panel avoiding finitely many subspaces, and the rank
-  rises by $5$. In dimension $d$ the lift of $v$ is read off that of $u$,
-  and the rank rises by $D - 1$.
+  The lift of $v$ is read off that of $u$, and the rank rises by
+  $D - 1$, which is $5$ at $d = 3$.
 \end{proof}
 
 % Source: NONDEG workbook, S23, which takes E from the conditions of G at sets containing c,
@@ -6003,7 +5990,7 @@ the conditioned pair in every dimension
         lem:block-rank-cut-vertex, lem:deficiency-cut-vertex,
         lem:relative-deficiency-rank-bound, lem:case-II-placement-old-rows-extract, lem:isInfRigidOn-of-relative-count, lem:panel-support-extensor-independence}
   \emph{(T1).} Of the bodies of $H$ only $c$ can stop being a hub, and the
-  neighbours it loses are not hubs. By \cref{lem:pencil-generic-steer}(a),
+  neighbours it loses are not hubs. By \cref{lem:pencil-generic-steer},
   read through \cref{lem:pencil-d-nondegenerate-three}, $G$ has a
   nondegenerate realization $r$ in dimension three whose restriction to
   $H$ is nondegenerate. Every closed hub-neighbourhood of $G$ lies in
@@ -6332,7 +6319,7 @@ the conditioned pair in every dimension
         def:panel-support-extensor, lem:relative-deficiency-rank-bound, lem:case-III-claim612-panel-point-exists, lem:panel-support-extensor-independence}
   \emph{(T1).} An end of degree three is not a hub of $H$, and the only
   neighbour it loses is $x$, which is not a hub. By
-  \cref{lem:pencil-generic-steer}(a), read through
+  \cref{lem:pencil-generic-steer}, read through
   \cref{lem:pencil-d-nondegenerate-three}, $G$ has a nondegenerate
   realization $r$ in dimension three whose restriction to $H$ is
   nondegenerate. At $r$, the products $b^0_a \cdot n_b$ and
@@ -6731,12 +6718,11 @@ So its subspace can be chosen after the points of $X$
 \begin{proof}
   \leanok
   \uses{thm:pencil-d-realization-theorem, thm:pencil-d-generic,
-        lem:pencil-d-rank-agrees-three, lem:pencil-d-nondegenerate-three,
-        thm:pencil-conditioned-pair-nonempty}
+        lem:pencil-d-rank-agrees-three, lem:pencil-d-nondegenerate-three}
   The first two claims are \cref{thm:pencil-d-realization-theorem}, and
-  the third is \cref{thm:pencil-d-generic}. At $d = 3$ these are the three
-  conjuncts of the conditioned pair (\cref{def:pencil-conditioned-pair},
-  \cref{thm:pencil-conditioned-pair-nonempty}), through
+  the third is \cref{thm:pencil-d-generic}. At $d = 3$, through
   \cref{lem:pencil-d-rank-agrees-three} and
-  \cref{lem:pencil-d-nondegenerate-three}.
+  \cref{lem:pencil-d-nondegenerate-three}, these are the three conjuncts
+  of the conditioned pair (\cref{def:pencil-conditioned-pair}), which is
+  how \cref{thm:pencil-conditioned-pair-nonempty} is proved.
 \end{proof}

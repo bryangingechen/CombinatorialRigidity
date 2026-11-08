@@ -968,7 +968,8 @@ to be re-derived by re-reading entries later.
   (one `MultilinearMap.map_smul_univ`) or the 2-slot specialization. Kept local in `Steer.lean` for
   now to avoid rebuilding the deep-upstream `Extensor.lean` for the rank-brick commit — lift when a
   second consumer appears or in a cleanup round.
-- **Status:** open.
+- **Status:** open. `extensor_pair_smul` was deleted with its one consumer in Phase 43b's slice 2;
+  the two-slot form stays unpackaged, to lift when a consumer appears.
 
 ### [mirror-candidate] No simp-normal form for `Fin.castPred` of a numeral — `![a, b, c] (Fin.castPred 2 ⋯)` stalls where `Fin.castSucc`/`Fin.succ` reduce
 - **Where it bit:** the v4.34.0-rc1 bump cleanup, `Molecular/RigidityMatrix/Claim612.lean`'s
@@ -5658,6 +5659,7 @@ limitations. Worth a once-over so future agents don't re-litigate.
   `Module R M`), a ~10-line exchange proof beside upstream's union lemmas.
 - **Status:** mirrored.
 - **Mirror file:** `Mathlib/Algebra/Module/Submodule/Union.lean` (new mirror file).
+- **No project consumer** since Phase 43b's slice 2 deleted its one user; kept as an upstream candidate.
 
 ### [idiom] A design-doc-pinned signature used `[Nonempty α]`, but its hypothesis's *type* invoked `Graph.endsOf` (needs `[Inhabited α]`) — plus a second `Field ?m` stuck instance from an un-ascribed `obtain`
 - **Where it bit:** Phase 39 (PENCIL) W5-L7b, `Molecular/Molecule/Pencil/Escape.lean`,

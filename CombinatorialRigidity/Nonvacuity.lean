@@ -13,6 +13,7 @@ public import CombinatorialRigidity.Molecular.GenericLift.HingeGeneric
 public import CombinatorialRigidity.Molecular.GenericLift.PanelGeneric
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Generic
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Statements
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Pair
 public import CombinatorialRigidity.PebbleGame.Correctness
 public import Mathlib.Combinatorics.SimpleGraph.Star
 public import CombinatorialRigidity.Molecular.AlgebraicInduction.DeficiencyBound

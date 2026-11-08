@@ -195,9 +195,7 @@ formed at these selectors (`PencilChartWF`), whose point at each `v ∈ V(G)` is
 `point v`, and whose normal at each `v ∈ V(G)` that is not a hub is a nonzero multiple of
 `normal v`. The proof takes the steps of the section header, with the points of the chart at the
 parameters `⟨normal, fillHub, 0⟩`, which do not read `fillNbr`. `exists_pencilSeed_of_nondeg` uses
-it at selectors it chooses, and `exists_isNondegPencilRealization_steer`
-(`MainComponent/GenericSteer.lean`) to write a second realization in the chart at the selectors of a
-first. -/
+it at selectors it chooses. -/
 theorem exists_pencilSeed_of_nondeg_of_selectors
     {G : Graph α β} {F : BodyHingeFramework K 2 α β} {normal point : α → Fin 4 → K}
     (h : IsNondegPencilRealization G F normal point) {hubSel nbrSel : α → Fin 3 → Option α}
@@ -296,8 +294,8 @@ nondegenerate realization of `G`, there are parameters and selectors `hubSel` an
 chart, well formed (`PencilChartWF`), whose point at each `v ∈ V(G)` is a nonzero multiple of
 `point v`, and whose normal at each `v ∈ V(G)` that is not a hub is a nonzero multiple of
 `normal v`. The proof takes the steps of the section header.
-`exists_isNondegPencilRealization_restrict_of_demoted` and `exists_isNondegPencilRealization_steer`
-(`MainComponent/GenericSteer.lean`) use it. -/
+`exists_isNondegPencilRealization_restrict_of_demoted` (`MainComponent/GenericSteer.lean`) uses it.
+-/
 theorem exists_pencilSeed_of_nondeg [Finite α] [Finite β]
     {G : Graph α β} {F : BodyHingeFramework K 2 α β} {normal point : α → Fin 4 → K}
     (h : IsNondegPencilRealization G F normal point) :

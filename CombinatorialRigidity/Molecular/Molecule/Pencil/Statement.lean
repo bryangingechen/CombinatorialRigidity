@@ -26,8 +26,7 @@ has two independent hinges through any point of it (`sec:pencil-base`); that two
 pass through a common point of it, so that the cycles on three and four bodies have rigid pencil
 realizations (`sec:pencil-cycle`); and that two bodies have a common nonzero hinge in both panels
 and through both points exactly when the point of each lies in the panel of the other
-(`sec:pencil-extension`). The last section shows that a nonzero hinge through two independent points
-is a multiple of their join, a step of `lem:pencil-generic-steer`.
+(`sec:pencil-extension`).
 
 ## Main definitions
 
@@ -764,45 +763,5 @@ theorem exists_extensor_two_pencils_iff {n_u n_v pt_u pt_v : Fin 4 → K} (hu_ne
   · rintro ⟨C, hC, h_nu, h_nv, h_tu, h_tv⟩
     exact ⟨dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint hC h_nv h_tu,
            dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint hC h_nu h_tv⟩
-
-/-! ## A hinge through two points
-
-A nonzero hinge through two independent points is a nonzero multiple of their join
-(`exists_smul_eq_extensor_of_extensorThroughPoint_pair`). -/
-
-/-- **A nonzero hinge through two independent points is a multiple of their join** (a step of
-`lem:pencil-generic-steer`): if a nonzero `C : ScrewSpace K 2` passes through `p` and through `q`,
-and `p, q` are linearly independent, then `c • C.val = extensor ![p, q]` for some `c ≠ 0`. So the
-hinge of a link of a nondegenerate realization is the line through the points of its ends, as the
-paragraph after `def:pencil-nondegenerate` says.
-
-The two predicates give families `p'` and `p''` with extensor `C.val`, `p` in the span of `p'` and
-`q` in that of `p''`. As `C ≠ 0` the two spans are equal (`span_range_eq_of_extensor_eq`), so the
-span of `p'` contains the independent pair `p, q`, and `exists_smul_extensor_eq_of_mem_span_range`
-gives `c` with `c • C.val = extensor ![p, q]`. As `extensor ![p, q] ≠ 0`, `c ≠ 0`. -/
-theorem exists_smul_eq_extensor_of_extensorThroughPoint_pair
-    {C : ScrewSpace K 2} {p q : Fin 4 → K} (hC : C ≠ 0)
-    (hp : ExtensorThroughPoint C p) (hq : ExtensorThroughPoint C q)
-    (hpq : LinearIndependent K ![p, q]) :
-    ∃ c : K, c ≠ 0 ∧ c • C.val = extensor ![p, q] := by
-  obtain ⟨p', hp'val, hpmem⟩ := hp
-  obtain ⟨p'', hp''val, hqmem⟩ := hq
-  have hCval : C.val ≠ 0 := fun h0 => hC (ScrewSpace.ext (h0.trans ScrewSpace.val_zero.symm))
-  have hp'ne : extensor p' ≠ 0 := hp'val ▸ hCval
-  have hp'li : LinearIndependent K p' := (extensor_ne_zero_iff_linearIndependent p').1 hp'ne
-  have heq : extensor p' = extensor p'' := by rw [← hp'val, ← hp''val]
-  have hspaneq : Submodule.span K (Set.range p'') = Submodule.span K (Set.range p') :=
-    span_range_eq_of_extensor_eq hp'ne heq
-  have hqmem' : q ∈ Submodule.span K (Set.range p') := hspaneq ▸ hqmem
-  obtain ⟨c, hc⟩ := exists_smul_extensor_eq_of_mem_span_range (u := ![p, q]) (v := p') hp'li
-    (fun i => by fin_cases i; exacts [hpmem, hqmem'])
-  have hcval : c • extensor p' = extensor (![p, q] : Fin 2 → Fin 4 → K) := by
-    have := congrArg (Subtype.val (p := fun x => x ∈ ⋀[K]^2 (Fin 4 → K))) hc
-    simpa only [Submodule.coe_smul] using this
-  refine ⟨c, ?_, ?_⟩
-  · rintro rfl
-    rw [zero_smul] at hcval
-    exact (extensor_ne_zero_iff_linearIndependent ![p, q]).2 hpq hcval.symm
-  · rw [hp'val]; exact hcval
 
 end CombinatorialRigidity.Molecular

@@ -99,9 +99,9 @@ adjacent-distinct pencil realization at the deficiency rank (`HasDistinctPencilR
 so does `G`. It is `hasGradedDistinctPencilRealization_of_cutEdges` (`lem:pencil-d-cut-case`) at
 `m = 1`, through `hasGradedDistinctPencilRealization_two_iff`, whose polarity exchanges the
 independent points here with the independent normals there. The hypothesis is asked only at
-subgraphs of `G`, which both sides of the cut are, so that the conditioned pair
-(`pencilPair_of_not_twoEdgeConnected`, `Pair2.lean`), which gives adjacent-distinct realizations
-only of simple graphs, can supply it at a simple `G`: a subgraph of a simple graph is simple. -/
+subgraphs of `G`, which both sides of the cut are, so that an induction on the conditioned pair,
+which gives adjacent-distinct realizations only of simple graphs, can supply it at a simple `G`: a
+subgraph of a simple graph is simple. -/
 theorem hasDistinctPencilRealization_of_not_twoEdgeConnected [Finite α] [Finite β] {n : ℕ}
     (hn : Graph.bodyBarDim n = screwDim 2)
     {G : Graph α β} (hntec : ¬ G.TwoEdgeConnected)

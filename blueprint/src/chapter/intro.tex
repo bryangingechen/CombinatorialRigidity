@@ -75,12 +75,13 @@ graph of its bar-joint model. Jackson and Jord\'an derive from the formula
 Jacobs' conjecture on the independence of squares of graphs. A later
 chapter proves this conjecture and their degree-one rank formula
 (\cref{sec:jacobs}). Two
-later chapters (\cref{sec:pencil}, \cref{sec:main-component}) prove a
+later chapters (\cref{sec:pencil}, \cref{sec:main-component}) give a
 strengthening of Katoh--Tanigawa's Theorem~5.6 in dimension three that
 appears to be new, the pencil realization theorem, which this project
 posed and proved. Its realizations ask in addition that the hinges at each
 body pass through a common point of the body's panel. The last chapter
-(\cref{sec:pencil-d}) proves it in every dimension $d \ge 3$.
+(\cref{sec:pencil-d}) proves it in every dimension $d \ge 3$, the case
+$d = 3$ included.
 
 \subsection*{Organization of the blueprint}
 
@@ -384,10 +385,10 @@ Phase~41 ended a review of the chapters against the Lean, which corrected
 the statements that claimed more or less than their Lean declarations
 and gave a Lean declaration to each claim the chapters made without one.
 Phase~43, in progress, looks for a simpler proof of the pencil realization
-theorem. Its first step, under way, takes the nondegenerate claim in
-dimension three from the argument in every dimension
-(\cref{thm:pencil-d-generic}), and the chapters now prove that claim this
-way.
+theorem. Its first step, under way, takes the theorem in dimension three
+from the argument in every dimension: first the nondegenerate claim
+(\cref{thm:pencil-d-generic}), then the whole theorem, the case $d = 3$ of
+\cref{cor:pencil-d-conditioned-pair}. The chapters now prove it this way.
 From phase~6 on, the graph is written forward: a chapter's nodes and
 their edges come first, and the statement and proof sketch of a node not
 yet formalized are the plan for its Lean declaration. So the graph is

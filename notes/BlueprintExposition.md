@@ -1231,43 +1231,15 @@ discharge point.
   `notes/Phase39-design.md` § *Lean-track design pass* (V3, V4). The subsection and its eight
   nodes retired with the kernel route (`notes/Phase40-simplify.md`, `1a`), 2026-10-04; git
   history keeps the exposited text.
-- **`thm:pencil-conditional-realization-main-component` /
-  `pencil_conjecture_of_X0`, with `def:pencil-main-component-statements`** —
-  [done (`main-component.tex`, the section introduction, at Phase 40's close,
-  2026-09-29; since round 3 of the post-Phase-40 cleanup, `sec:pencil-main-component-route`'s
-  opening, that introduction and the subsection openings)] **(c)** the reduction itself
-  is final and exposited (the three-way case split in the node's proof); what
-  is not final is the account of the two main-component statements
-  (`X0Dist`/`X0Gen`), hypotheses here and Phase 40's target
-  (`notes/Phase40-design.md`; informal proof `notes/pencil/workbook/K-main*.md`
-  (MC-89), (MC-133), (MC-157)). Under the green-*modulo* rule the fuller
-  exposition — the main component as a vector bundle over planar pictures, the
-  flat rank, the ear/split-off/contraction/cut steps — is written at Phase
-  40's close, in Phase 40's chapter. *Rerouted at 40n's open (2026-09-28):*
-  `thm:pencil-x0-generic-attains`' generic half no longer intersects fibres of
-  `X₀` (refuted at two hubs with three common neighbours); it runs inside the
-  pencil reduction's induction (route B, (MC-183)–(MC-189)), which this
-  entry's account covers at the close; 40n landed its base, 40o its steering and both ear
-  steps, and 40p the good ear and the assembly. *Written at the close* as the section
-  introduction, a walk through the whole argument in order. *Since round 3 of the post-Phase-40
-  cleanup* (task 25) that introduction is a roadmap with a notation list, and the account has
-  three homes. `sec:pencil-main-component-route`'s opening lifts planar pictures to pencil
-  realizations, describes the main component as a bundle over the admissible pictures of least
-  `dim L(q)`, and shows at `K_{2,3}` the two-hubs obstruction that forces route B. The
-  introduction names the one-witness and fibre-intersection lemmas (which stand in for
-  irreducibility, `rem:pencil-x0-main-component`), the flat rank and Jackson–Jordán's equality,
-  the steps of the induction one subsection each, the coverage, and route B for the generic
-  statement. Each subsection's opening states its step's idea; `sec:main-component-cut`'s also
-  states the scheme the steps share.
-- **`thm:pencil-conditional-realization-pair` (kernels (K), (K-bare))** —
-  [closed — superseded (Phase 40's close, 2026-09-29): the main-component route proved the
-  conjecture and the PI retired the kernels] **(c)** the two kernel hypotheses were held as the
-  fallback (PI, 2026-09-25) and bypassed by the main-component route; the
-  theorem's lead-in carried what was stable (why both kernels take the
-  induction hypothesis), and `fmlnote:pencil-conditional-realization-pair-field`
-  the field hypothesis each of the project's routes would need. Both left the chapter with the
-  kernel statement on 2026-10-04 (`notes/Phase40-simplify.md`, `1a`); the label now names the
-  conditioned pair's reduction, and git history keeps the kernel text.
+- **`thm:pencil-conditional-realization-main-component`, with
+  `def:pencil-main-component-statements`** — [done (Phase 40's close, and round 3 of the
+  post-Phase-40 cleanup); retired 2026-11-08 with its pins (Phase 43b slice 2): the theorem is the
+  case `d = 3` of `cor:pencil-d-conditioned-pair` (`thm:pencil-conditioned-pair-nonempty`); the
+  account of the main component it carried stays in `sec:pencil-main-component-route`'s opening and
+  `sec:main-component`'s introduction; git keeps the entry's text]
+- **`thm:pencil-conditional-realization-pair` (kernels (K), (K-bare))** — [closed — superseded
+  (Phase 40's close, 2026-09-29); the node, by then the conditioned pair's reduction, deleted
+  2026-11-08 (Phase 43b slice 2); git keeps the entry's text]
 
 ### Phase 40a (the Katoh–Tanigawa spine at `n = 2`, structural edit — no new chapter)
 

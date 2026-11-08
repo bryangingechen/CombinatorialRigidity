@@ -17,38 +17,29 @@ of `Chart.lean`.
 The first writes the chart in coordinates. A point `q : α × Fin 4 × Fin 4 → K` gives the parameters
 `PencilSeed.ofCoord q`: at each body `v`, `hubNormal v` is `q (v, 0, ·)`, and the padding vector `j`
 of both `fillHub v` and `fillNbr v` is `q (v, j.succ, ·)`. For fixed selectors, the coordinates of
-the points and normals of the chart, of the join of the points of two bodies, and of the forms
-`annihRow` that vanish at that join are polynomials in `q`, as the coordinates of `cross₃` are
-determinants (`cross₃_apply`). So are those of the rows of the chart's rigidity matrix, read through
-an endpoint selector (`pencilRow`). A family of rows, of points or of normals that is linearly
-independent at some `q₀` is independent at every non-root of a polynomial nonzero at `q₀`, a minor
-of the matrix of its coordinates (`exists_polynomial_ne_zero_of_linearIndependent_at_reindex`); and
-over an infinite field, finitely many polynomials, each nonzero at some point, have a common
-non-root.
+the points of the chart are polynomials in `q`, as the coordinates of `cross₃` are determinants
+(`cross₃_apply`). A family of points that is linearly independent at some `q₀` is independent at
+every non-root of a polynomial nonzero at `q₀`, a minor of the matrix of its coordinates
+(`exists_polynomial_ne_zero_of_linearIndependent_at_reindex`); and over an infinite field, finitely
+many polynomials, each nonzero at some point, have a common non-root.
 
 The second gives two facts on `cross₃`. `cross₃` of three independent vectors is a nonzero
 multiple of any nonzero vector orthogonal to them, which writing a given nondegenerate realization
 in the chart uses (`exists_pencilSeed_of_nondeg_of_selectors`, `Reseed.lean`). And the `cross₃` of
-three distinct standard basis vectors is a nonzero multiple of the fourth, for part (a) of
+three distinct standard basis vectors is a nonzero multiple of the fourth, for
 `lem:pencil-generic-steer` (`MainComponent/GenericSteer.lean`).
 
 ## Main definitions
 
 * `PencilSeed.ofCoord`: the parameters of the chart at a point of `α × Fin 4 × Fin 4 → K`.
-* `pencilChartPointPoly`, `pencilChartNormalPoly` and `pencilAnnihRowPoly`: the points and the
-  normals of the chart, and the coordinates of its rows, as polynomials.
-* `pencilRow`: the rows of the chart at a coordinate point, read through an endpoint selector.
+* `pencilChartPointPoly`: the points of the chart as polynomials.
 
 ## Main results
 
-* `exists_polynomial_ne_zero_of_linearIndependent_pencilRow`,
-  `exists_polynomial_ne_zero_of_linearIndependent_pencilChartPoint` and
-  `exists_polynomial_ne_zero_of_linearIndependent_pencilChartNormal`: a family of rows, of points or
-  of normals independent at one coordinate point is independent at every non-root of a polynomial
-  nonzero there.
-* `exists_common_seed_pencilRow_and_polynomials`: over an infinite field, rows independent at some
-  `q₀` and finitely many polynomials, each nonzero at some point, are at one point independent and
-  nonzero.
+* `exists_polynomial_ne_zero_of_linearIndependent_pencilChartPoint`: a family of points independent
+  at one coordinate point is independent at every non-root of a polynomial nonzero there.
+* `exists_common_eval_ne_zero_of_forall_exists`: over an infinite field, finitely many polynomials,
+  each nonzero at some point, have a common non-root.
 * `exists_smul_cross₃_eq_of_linearIndependent`: `cross₃` of three independent vectors is a multiple
   of any nonzero vector orthogonal to them.
 -/
@@ -69,24 +60,11 @@ A point `q : α × Fin 4 × Fin 4 → K` gives the parameters `PencilSeed.ofCoor
 the body, its second the vector, `0` for `hubNormal` and `j.succ` for the padding vector `j` of both
 triples, and its third the coordinate. The variable at `(v, r, i)` is `pencilXPoly r v i`.
 
-Each construction of the chart has a polynomial form, whose value at `q` is the construction at
-`PencilSeed.ofCoord q`, as evaluation is a ring homomorphism and commutes with `Matrix.det`
-(`RingHom.map_det`): `cross₃Poly`, by `cross₃_apply`, which writes the coordinate `i` of
-`cross₃ x y z` as `det[x, y, z, e_i]`; the slots of the two selectors (`hubSlotNormalPoly`,
-`nbrSlotPointPoly`); the points and the normals (`pencilChartPointPoly`, `pencilChartNormalPoly`);
-the coordinates in `screwBasis 2` of the join of the points of two bodies, the `2 × 2` minors of
-their coordinates (`pencilPointJoinPoly`); and the coordinates of the forms `annihRow` that vanish
-at that join (`pencilAnnihRowPoly`), as `annihRowPoly` (`PanelHingeForms.lean`) gives them at the
-join of two panels.
-
-`pencilRow` is the family of rows `hingeRow u v (annihRow C t₁ t₂)`, where `(u, v)` are the bodies
-an endpoint selector gives an edge and `C` is the join of their points: the chart's counterpart of
-`PanelHingeFramework.normalRow` (`GenericLift/PanelGeneric.lean`). It reads no graph: at the
-selector `G.endsOf` and an edge of `G`, it is a rigidity row of the chart's framework on `G`
-(`pencilRow_mem_rigidityRows_of_mem_edgeSet`, `Steer.lean`). Its coordinates are the polynomials
-`pencilAnnihRowPoly`, times `[u = a] − [v = a]` at the coordinates of a body `a`, so a subfamily
-independent at some `q₀` is independent at every non-root of a polynomial nonzero at `q₀`
-(`exists_polynomial_ne_zero_of_linearIndependent_pencilRow`). -/
+Each construction of the chart that the points read has a polynomial form, whose value at `q` is the
+construction at `PencilSeed.ofCoord q`, as evaluation is a ring homomorphism and commutes with
+`Matrix.det` (`RingHom.map_det`): `cross₃Poly`, by `cross₃_apply`, which writes the coordinate `i`
+of `cross₃ x y z` as `det[x, y, z, e_i]`; the slots of the hub selector (`hubSlotNormalPoly`); and
+the points (`pencilChartPointPoly`). -/
 
 /-- **The parameters of the chart at a coordinate point** (a step of `lem:pencil-generic-steer`):
 `hubNormal v` is `q (v, 0, ·)`, and the padding vector `j` of both `fillHub v` and `fillNbr v` is
@@ -180,225 +158,20 @@ theorem pencilChartPointPoly_eval (hubSel : α → Fin 3 → Option α) (v : α)
     hubSlotNormalPoly_eval_funext hubSel v 1 q,
     hubSlotNormalPoly_eval_funext hubSel v 2 q]
 
-/-- **Slot `slot` of `v`'s neighbour selector as a vector of polynomials** (a step of
-`lem:pencil-generic-steer`): the point of the body in it (`pencilChartPointPoly`), or the variables
-of the padding vector `slot` of `v` if it is empty; the form of `nbrSlotPoint`
-(`nbrSlotPointPoly_eval`). These are the variables of `hubSlotNormalPoly`'s padding, as
-`PencilSeed.ofCoord` gives `fillNbr` the coordinates of `fillHub`. -/
-noncomputable def nbrSlotPointPoly (hubSel nbrSel : α → Fin 3 → Option α) (v : α) (slot : Fin 3) :
-    Fin 4 → MvPolynomial (α × Fin 4 × Fin 4) K :=
-  match nbrSel v slot with
-  | some w => pencilChartPointPoly hubSel w
-  | none => pencilXPoly slot.succ v
+/-! ## Independent points, and a common non-root
 
-/-- **The value of `nbrSlotPointPoly`**: at `q`, the coordinate `i` of slot `slot` of `v`'s
-neighbour selector at `PencilSeed.ofCoord q` (`nbrSlotPoint`): `pencilChartPointPoly_eval` at a
-body, and at an empty slot the coordinate `q (v, slot.succ, i)`, which `PencilSeed.ofCoord` gives
-`fillNbr v slot`. -/
-theorem nbrSlotPointPoly_eval (hubSel nbrSel : α → Fin 3 → Option α) (v : α) (slot : Fin 3)
-    (q : α × Fin 4 × Fin 4 → K) (i : Fin 4) :
-    MvPolynomial.eval q (nbrSlotPointPoly hubSel nbrSel v slot i)
-      = nbrSlotPoint (PencilSeed.ofCoord q) hubSel nbrSel v slot i := by
-  simp only [nbrSlotPointPoly, nbrSlotPoint, PencilSeed.ofCoord]
-  cases nbrSel v slot with
-  | some w => exact pencilChartPointPoly_eval hubSel w q i
-  | none => exact pencilXPoly_eval slot.succ v q i
-
-/-- **`nbrSlotPointPoly_eval` for the whole vector**, the form in which `pencilChartNormalPoly_eval`
-rewrites each of its three slots. -/
-theorem nbrSlotPointPoly_eval_funext (hubSel nbrSel : α → Fin 3 → Option α) (v : α) (slot : Fin 3)
-    (q : α × Fin 4 × Fin 4 → K) :
-    (fun j => MvPolynomial.eval q (nbrSlotPointPoly hubSel nbrSel v slot j))
-      = nbrSlotPoint (PencilSeed.ofCoord q) hubSel nbrSel v slot :=
-  funext fun j => nbrSlotPointPoly_eval hubSel nbrSel v slot q j
-
-open Classical in
-/-- **The normal of the chart as a vector of polynomials** (a step of `lem:pencil-generic-steer`):
-the variables of `hubNormal v` at a pencil hub `v`, and at any other body `cross₃Poly` of the three
-slots of `v`'s neighbour selector (`nbrSlotPointPoly`); the form of `pencilChartNormal`
-(`pencilChartNormalPoly_eval`). Whether `v` is a hub depends on `G` alone, so the test is the `if`
-of `pencilChartNormal`. -/
-noncomputable def pencilChartNormalPoly (hubSel nbrSel : α → Fin 3 → Option α) (G : Graph α β)
-    (v : α) : Fin 4 → MvPolynomial (α × Fin 4 × Fin 4) K :=
-  if G.PencilHub v then pencilXPoly 0 v
-  else cross₃Poly (nbrSlotPointPoly hubSel nbrSel v 0) (nbrSlotPointPoly hubSel nbrSel v 1)
-    (nbrSlotPointPoly hubSel nbrSel v 2)
-
-/-- **The value of `pencilChartNormalPoly`**: at `q`, the coordinate `i` of the normal of the chart
-at `PencilSeed.ofCoord q` (`pencilChartNormal`). Both sides test whether `v` is a hub. At a hub the
-value is `q (v, 0, i)`, which `PencilSeed.ofCoord q` gives `hubNormal v`, and elsewhere
-`cross₃Poly_eval` and `nbrSlotPointPoly_eval` give it. -/
-theorem pencilChartNormalPoly_eval (hubSel nbrSel : α → Fin 3 → Option α) (G : Graph α β) (v : α)
-    (q : α × Fin 4 × Fin 4 → K) (i : Fin 4) :
-    MvPolynomial.eval q (pencilChartNormalPoly hubSel nbrSel G v i)
-      = pencilChartNormal (PencilSeed.ofCoord q) hubSel nbrSel G v i := by
-  rw [pencilChartNormalPoly, pencilChartNormal]
-  split_ifs with hv
-  · rw [pencilXPoly_eval]; rfl
-  · rw [cross₃Poly_eval,
-      nbrSlotPointPoly_eval_funext hubSel nbrSel v 0 q,
-      nbrSlotPointPoly_eval_funext hubSel nbrSel v 1 q,
-      nbrSlotPointPoly_eval_funext hubSel nbrSel v 2 q]
-
-/-- **The join of the points of two bodies, in coordinates** (a step of `lem:pencil-generic-steer`):
-for bodies `u`, `v` and a `2`-subset `t` of `Fin 4`, the `2 × 2` minor, at the columns of `t`, of
-the matrix whose rows are the points of `u` and `v` (`pencilChartPointPoly`). Its value at `q` is
-the coordinate at `t`, in `screwBasis 2`, of the join `extensor ![p_u, p_v]` of the points of the
-chart (`pencilPointJoinPoly_eval`). The join lies in `⋀² K⁴`, so no `complementIso` enters, unlike
-the panel layer's `panelSupportPoly` (`PanelLayer.lean`). -/
-noncomputable def pencilPointJoinPoly (hubSel : α → Fin 3 → Option α) (u v : α)
-    (t : Set.powersetCard (Fin 4) 2) : MvPolynomial (α × Fin 4 × Fin 4) K :=
-  (Matrix.of fun i j : Fin 2 =>
-      (![pencilChartPointPoly hubSel u, pencilChartPointPoly hubSel v] i)
-        ((t : Finset (Fin 4)).orderEmbOfFin t.2 j)).det
-
-/-- **The value of `pencilPointJoinPoly`**: at `q`, the coordinate at `t`, in `screwBasis 2`, of the
-join of the points of `u` and `v` at `PencilSeed.ofCoord q`. The coordinates in `screwBasis 2` are
-those in the basis of `⋀² K⁴` (`screwBasis_repr_apply`), where the coordinate at `t` of `ιMulti` of
-two vectors is their minor at the columns of `t` (`exteriorPower.basis_repr_apply`,
-`exteriorPower.ιMultiDual_apply_ιMulti`); evaluation commutes with the determinant, and
-`pencilChartPointPoly_eval` gives each entry. The proof is that of `hingeExtensorPoly_eval`
-(`GenericLift/HingeGeneric.lean`). -/
-theorem pencilPointJoinPoly_eval (hubSel : α → Fin 3 → Option α) (u v : α)
-    (q : α × Fin 4 × Fin 4 → K) (t : Set.powersetCard (Fin 4) 2) :
-    MvPolynomial.eval q (pencilPointJoinPoly hubSel u v t)
-      = (screwBasis 2).repr (ScrewSpace.mk
-          (extensor ![pencilChartPoint (PencilSeed.ofCoord q) hubSel u,
-            pencilChartPoint (PencilSeed.ofCoord q) hubSel v])
-          (extensor_mem_exteriorPower _)) t := by
-  rw [screwBasis_repr_apply]
-  change MvPolynomial.eval q (pencilPointJoinPoly hubSel u v t)
-      = ((Pi.basisFun K (Fin 4)).exteriorPower 2).repr
-          (exteriorPower.ιMulti K 2 ![pencilChartPoint (PencilSeed.ofCoord q) hubSel u,
-            pencilChartPoint (PencilSeed.ofCoord q) hubSel v]) t
-  rw [exteriorPower.basis_repr_apply, exteriorPower.ιMultiDual_apply_ιMulti, pencilPointJoinPoly,
-    (MvPolynomial.eval q).map_det]
-  congr 1
-  ext i j
-  simp only [Matrix.of_apply, Module.Basis.coord_apply, Pi.basisFun_repr,
-    Set.powersetCard.ofFinEmbEquiv_symm_apply]
-  fin_cases i
-  · exact pencilChartPointPoly_eval hubSel u q _
-  · exact pencilChartPointPoly_eval hubSel v q _
-
-/-- **The coordinates of the forms that vanish at a join** (a step of `lem:pencil-generic-steer`):
-`[t₂ = s] C_{t₁} − [t₁ = s] C_{t₂}`, with `C_t = pencilPointJoinPoly hubSel u v t`. Its value at `q`
-is that of `annihRow C t₁ t₂` at the basis vector `screwBasis 2 s`, for `C` the join of the points
-of `u` and `v` (`pencilAnnihRowPoly_eval`). It is `annihRowPoly` (`PanelHingeForms.lean`) with
-`pencilPointJoinPoly` in place of `panelSupportPoly`. -/
-noncomputable def pencilAnnihRowPoly (hubSel : α → Fin 3 → Option α) (u v : α)
-    (t₁ t₂ s : Set.powersetCard (Fin 4) 2) : MvPolynomial (α × Fin 4 × Fin 4) K :=
-  (if t₂ = s then pencilPointJoinPoly hubSel u v t₁ else 0)
-    - (if t₁ = s then pencilPointJoinPoly hubSel u v t₂ else 0)
-
-/-- **The value of `pencilAnnihRowPoly`**: at `q`, the value of `annihRow C t₁ t₂` at
-`screwBasis 2 s`, for `C` the join of the points of `u` and `v` at `PencilSeed.ofCoord q`; the proof
-of `annihRowPoly_eval`, with `pencilPointJoinPoly_eval`. -/
-theorem pencilAnnihRowPoly_eval (hubSel : α → Fin 3 → Option α) (u v : α)
-    (q : α × Fin 4 × Fin 4 → K) (t₁ t₂ s : Set.powersetCard (Fin 4) 2) :
-    MvPolynomial.eval q (pencilAnnihRowPoly hubSel u v t₁ t₂ s) =
-      annihRow (ScrewSpace.mk (extensor ![pencilChartPoint (PencilSeed.ofCoord q) hubSel u,
-          pencilChartPoint (PencilSeed.ofCoord q) hubSel v]) (extensor_mem_exteriorPower _))
-        t₁ t₂ (screwBasis 2 s) := by
-  rw [pencilAnnihRowPoly, annihRow_apply, map_sub,
-    Module.Basis.repr_self_apply (screwBasis 2) (i := s) t₂,
-    Module.Basis.repr_self_apply (screwBasis 2) (i := s) t₁,
-    apply_ite (MvPolynomial.eval q), apply_ite (MvPolynomial.eval q),
-    map_zero, pencilPointJoinPoly_eval, pencilPointJoinPoly_eval, mul_ite, mul_one, mul_zero,
-    mul_ite, mul_one, mul_zero]
-  congr 1
-  · rcases eq_or_ne t₂ s with h | h
-    · rw [ite_eq_left h, ite_eq_left h.symm]
-    · rw [ite_eq_right h, ite_eq_right fun h' => h h'.symm]
-  · rcases eq_or_ne t₁ s with h | h
-    · rw [ite_eq_left h, ite_eq_left h.symm]
-    · rw [ite_eq_right h, ite_eq_right fun h' => h h'.symm]
-
-/-- **The rows of the chart, read through an endpoint selector** (a step of
-`lem:pencil-generic-steer`): for `ends : β → α × α` and a coordinate point `q`, the row at
-`(e, t₁, t₂)` is `hingeRow u v (annihRow C t₁ t₂)`, where `(u, v) = ends e` and `C` is the join of
-the points of `u` and `v` at `PencilSeed.ofCoord q`. It reads `ends` and `q` and no graph, as
-`PanelHingeFramework.normalRow` does. At `G.endsOf` and an edge of `G`, it is the row `panelRow` of
-the chart's framework on `G` (`pencilRow_eq_panelRow_pencilChartFramework`, `Steer.lean`). -/
-noncomputable def pencilRow (hubSel : α → Fin 3 → Option α) (ends : β → α × α)
-    (q : α × Fin 4 × Fin 4 → K)
-    (i : β × Set.powersetCard (Fin 4) 2 × Set.powersetCard (Fin 4) 2) :
-    Module.Dual K (α → ScrewSpace K 2) :=
-  BodyHingeFramework.hingeRow (ends i.1).1 (ends i.1).2
-    (annihRow (ScrewSpace.mk
-        (extensor ![pencilChartPoint (PencilSeed.ofCoord q) hubSel (ends i.1).1,
-          pencilChartPoint (PencilSeed.ofCoord q) hubSel (ends i.1).2])
-        (extensor_mem_exteriorPower _))
-      i.2.1 i.2.2)
-
-/-- **Rows independent at `q₀` stay so off the zero set of a polynomial** (a step of
-`lem:pencil-generic-steer`): if a subfamily of `pencilRow hubSel ends` is linearly independent at
-`q₀`, there is a polynomial, nonzero at `q₀`, at whose every non-root it is independent. It is
-`exists_polynomial_ne_zero_of_linearIndependent_at_reindex` for the forms on `α → ScrewSpace K 2`,
-in the basis dual to `Pi.basis (fun _ => screwBasis 2)`: the coordinate at `(a, s)` of the row at
-`(e, t₁, t₂)` is `pencilAnnihRowPoly` times `[u = a] − [v = a]`, for `(u, v) = ends e`
-(`BodyHingeFramework.hingeRow_apply`, `pencilAnnihRowPoly_eval`), as in
-`PanelHingeFramework.exists_isGenericNormals_abundance` for the rows of normals. -/
-theorem exists_polynomial_ne_zero_of_linearIndependent_pencilRow [Finite α] [Finite β]
-    (hubSel : α → Fin 3 → Option α) (ends : β → α × α)
-    {q₀ : α × Fin 4 × Fin 4 → K}
-    {s : Set (β × Set.powersetCard (Fin 4) 2 × Set.powersetCard (Fin 4) 2)}
-    (h : LinearIndependent K fun i : s => pencilRow hubSel ends q₀ i) :
-    ∃ Q : MvPolynomial (α × Fin 4 × Fin 4) K, MvPolynomial.eval q₀ Q ≠ 0 ∧
-      ∀ q, MvPolynomial.eval q Q ≠ 0 →
-        LinearIndependent K fun i : s => pencilRow hubSel ends q i := by
-  classical
-  have : Fintype α := Fintype.ofFinite α
-  set B : Module.Basis (Σ _ : α, Set.powersetCard (Fin 4) 2) K (α → ScrewSpace K 2) :=
-    Pi.basis (fun _ : α => screwBasis 2) with hB
-  set φ : Module.Dual K (α → ScrewSpace K 2)
-      ≃ₗ[K] ((Σ _ : α, Set.powersetCard (Fin 4) 2) → K) := B.dualBasis.equivFun with hφ
-  have hcard : Fintype.card (Σ _ : α, Set.powersetCard (Fin 4) 2)
-      = Module.finrank K (Module.Dual K (α → ScrewSpace K 2)) := by
-    rw [Subspace.dual_finrank_eq, Module.finrank_eq_card_basis B]
-  let e : Fin (Module.finrank K (Module.Dual K (α → ScrewSpace K 2)))
-      ≃ (Σ _ : α, Set.powersetCard (Fin 4) 2) :=
-    (Fintype.equivFinOfCardEq hcard).symm
-  set g : (α × Fin 4 × Fin 4 → K)
-      → (β × Set.powersetCard (Fin 4) 2 × Set.powersetCard (Fin 4) 2)
-      → Module.Dual K (α → ScrewSpace K 2) :=
-    fun q i => pencilRow hubSel ends q i with hg_def
-  set c : (β × Set.powersetCard (Fin 4) 2 × Set.powersetCard (Fin 4) 2)
-      → (Σ _ : α, Set.powersetCard (Fin 4) 2) → MvPolynomial (α × Fin 4 × Fin 4) K :=
-    fun i j => ((if (ends i.1).1 = j.1 then (1 : K) else 0)
-        - (if (ends i.1).2 = j.1 then 1 else 0))
-      • pencilAnnihRowPoly hubSel (ends i.1).1 (ends i.1).2 i.2.1 i.2.2 j.2 with hc_def
-  have hg : ∀ q i j, φ (g q i) j = MvPolynomial.eval q (c i j) := by
-    intro q i j
-    obtain ⟨a, t⟩ := j
-    rw [hφ, Module.Basis.dualBasis_equivFun, hg_def, hc_def, hB, Pi.basis_apply]
-    change pencilRow hubSel ends q i (Pi.single a (screwBasis 2 t)) = _
-    rw [pencilRow, BodyHingeFramework.hingeRow_apply, MvPolynomial.smul_eval,
-      pencilAnnihRowPoly_eval, Pi.single_apply, Pi.single_apply]
-    by_cases hu : (ends i.1).1 = a <;> by_cases hv : (ends i.1).2 = a <;>
-      simp only [hu, hv, ite_true, ite_false, sub_zero, zero_sub, sub_self, map_zero,
-        map_neg, one_mul, neg_mul, zero_mul]
-  obtain ⟨Q, hQ0, hQ⟩ :=
-    exists_polynomial_ne_zero_of_linearIndependent_at_reindex e g c φ hg (p₀ := q₀) (s := s) h
-  exact ⟨Q, hQ0, hQ⟩
-
-/-! ## Independent points and normals, and a common non-root
-
-The forms of `exists_polynomial_ne_zero_of_linearIndependent_pencilRow` for the points and the
-normals of the chart: a family independent at some `q₀` is independent at every non-root of a
+A family of points of the chart independent at some `q₀` is independent at every non-root of a
 polynomial nonzero at `q₀`, by `exists_polynomial_ne_zero_of_linearIndependent_at_reindex` in the
-coordinates of `K⁴` (`pencilChartPointPoly_eval`, `pencilChartNormalPoly_eval`). These need no
-infinite field. Over an infinite field, finitely many polynomials, each nonzero at some point, have
-a common non-root (`exists_common_eval_ne_zero_of_forall_exists`), at which rows independent at one
-point remain independent (`exists_common_seed_pencilRow_and_polynomials`). As in the proof of
-`lem:pencil-generic-steer`, each condition then holds at one point. -/
+coordinates of `K⁴` (`pencilChartPointPoly_eval`). This needs no infinite field. Over an infinite
+field, finitely many polynomials, each nonzero at some point, have a common non-root
+(`exists_common_eval_ne_zero_of_forall_exists`). As in the proof of `lem:pencil-generic-steer`, each
+condition then holds at one point. -/
 
 /-- **Points of the chart independent at `q₀` stay so off the zero set of a polynomial** (a step of
 `lem:pencil-generic-steer`): for `ends : ι → α`, with `ι` finite, if the points of the chart at
 `ends i`, for `i` in a set `s`, are linearly independent at `q₀`, there is a polynomial, nonzero at
-`q₀`, at whose every non-root they are independent. `exists_isNondegPencilRealization_steer`
-(`MainComponent/GenericSteer.lean`) and `exists_common_seed_linearIndepOn_pencilChartPoint`
-(`Steer.lean`) use it at `ends := id`. -/
+`q₀`, at whose every non-root they are independent.
+`exists_common_seed_linearIndepOn_pencilChartPoint` (`Steer.lean`) uses it at `ends := id`. -/
 theorem exists_polynomial_ne_zero_of_linearIndependent_pencilChartPoint
     {ι : Type*} [Finite ι] (hubSel : α → Fin 3 → Option α) (ends : ι → α)
     {q₀ : α × Fin 4 × Fin 4 → K} {s : Set ι}
@@ -415,27 +188,6 @@ theorem exists_polynomial_ne_zero_of_linearIndependent_pencilChartPoint
     (fun q i j => (pencilChartPointPoly_eval hubSel (ends i) q j).symm)
     h
 
-/-- **Normals of the chart independent at `q₀` stay so off the zero set of a polynomial** (a step of
-`lem:pencil-generic-steer`): the form of
-`exists_polynomial_ne_zero_of_linearIndependent_pencilChartPoint` for the normals of the chart on
-`G` (`pencilChartNormalPoly_eval`). `exists_isNondegPencilRealization_steer` uses it at
-`ends := id`, for the independence of the normals on each of its sets. -/
-theorem exists_polynomial_ne_zero_of_linearIndependent_pencilChartNormal
-    {ι : Type*} [Finite ι] (hubSel nbrSel : α → Fin 3 → Option α) (G : Graph α β) (ends : ι → α)
-    {q₀ : α × Fin 4 × Fin 4 → K} {s : Set ι}
-    (h : LinearIndependent K
-      (fun i : s => pencilChartNormal (PencilSeed.ofCoord q₀) hubSel nbrSel G (ends i))) :
-    ∃ Q : MvPolynomial (α × Fin 4 × Fin 4) K, MvPolynomial.eval q₀ Q ≠ 0 ∧
-      ∀ q, MvPolynomial.eval q Q ≠ 0 →
-        LinearIndependent K
-          (fun i : s => pencilChartNormal (PencilSeed.ofCoord q) hubSel nbrSel G (ends i)) :=
-  exists_polynomial_ne_zero_of_linearIndependent_at_reindex (finCongr (Module.finrank_fin_fun K))
-    (fun q i => pencilChartNormal (PencilSeed.ofCoord q) hubSel nbrSel G (ends i))
-    (fun i j => pencilChartNormalPoly hubSel nbrSel G (ends i) j)
-    (LinearEquiv.refl K (Fin 4 → K))
-    (fun q i j => (pencilChartNormalPoly_eval hubSel nbrSel G (ends i) q j).symm)
-    h
-
 /-- **Finitely many polynomials, each nonzero at some point, have a common non-root** (a step of
 `lem:pencil-generic-steer`): over an infinite field, if each of finitely many polynomials is nonzero
 at some point, then at some point they are all nonzero. Each is then a nonzero polynomial, and
@@ -447,32 +199,6 @@ theorem exists_common_eval_ne_zero_of_forall_exists [Infinite K] {σ ι : Type*}
   MvPolynomial.exists_eval_ne_zero_of_forall_ne_zero P fun i h0 => by
     obtain ⟨q, hq⟩ := h i
     simp [h0] at hq
-
-/-- **Independent rows and finitely many polynomials at one point** (a step of
-`lem:pencil-generic-steer`): over an infinite field, if a subfamily of `pencilRow hubSel ends` is
-linearly independent at `q₀`, and each of finitely many polynomials `P i` is nonzero at some point,
-then at some point the subfamily is independent and every `P i` is nonzero. The polynomial of
-`exists_polynomial_ne_zero_of_linearIndependent_pencilRow`, nonzero at `q₀`, joins the `P i`
-(indexed by `Unit ⊕ ι`), and `exists_common_eval_ne_zero_of_forall_exists` gives the point.
-`exists_isNondegPencilRealization_steer` uses it for rows of the deficiency rank and the polynomials
-of its other conditions. -/
-theorem exists_common_seed_pencilRow_and_polynomials [Finite α] [Finite β] [Infinite K]
-    (hubSel : α → Fin 3 → Option α) (ends : β → α × α)
-    {q₀ : α × Fin 4 × Fin 4 → K}
-    {s : Set (β × Set.powersetCard (Fin 4) 2 × Set.powersetCard (Fin 4) 2)}
-    (hLI : LinearIndependent K fun i : s => pencilRow hubSel ends q₀ i)
-    {ι : Type*} [Finite ι] (P : ι → MvPolynomial (α × Fin 4 × Fin 4) K)
-    (hP : ∀ i, ∃ q, MvPolynomial.eval q (P i) ≠ 0) :
-    ∃ q : α × Fin 4 × Fin 4 → K,
-      LinearIndependent K (fun i : s => pencilRow hubSel ends q i) ∧
-      ∀ i, MvPolynomial.eval q (P i) ≠ 0 := by
-  obtain ⟨Q0, hQ00, hQ0⟩ := exists_polynomial_ne_zero_of_linearIndependent_pencilRow hubSel ends hLI
-  obtain ⟨q, hq⟩ := exists_common_eval_ne_zero_of_forall_exists
-    (Sum.elim (fun _ : Unit => Q0) P)
-    (fun x => match x with
-      | Sum.inl _ => ⟨q₀, hQ00⟩
-      | Sum.inr i => hP i)
-  exact ⟨q, hQ0 q (hq (Sum.inl ())), fun i => hq (Sum.inr i)⟩
 
 /-! ## `cross₃` of three independent vectors orthogonal to a point
 
@@ -527,7 +253,7 @@ Three distinct standard basis vectors of `K⁴` are independent
 (`linearIndependent_pi_single_triple`), and their `cross₃` is a nonzero multiple of the fourth
 (`exists_smul_cross₃_pi_single`), which is nonzero and orthogonal to the three. So a point of the
 chart whose hub slots are three distinct standard basis vectors is a nonzero multiple of the fourth
-(`exists_smul_pencilChartPoint_of_hubSlotNormal_eq_pi_single`), as part (a) of
+(`exists_smul_pencilChartPoint_of_hubSlotNormal_eq_pi_single`), as
 `lem:pencil-generic-steer` uses (`exists_coord_linearIndependent_pencilChartPoint_of_other_nonhub`,
 `MainComponent/GenericSteer.lean`). Only the independence of such points matters there, which a
 nonzero scalar at each point does not change. -/

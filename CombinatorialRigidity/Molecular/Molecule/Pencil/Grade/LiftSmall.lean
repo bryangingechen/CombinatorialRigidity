@@ -250,8 +250,7 @@ section Disconnected
 
 variable {G : Graph α β}
 
-/-- A pencil realization restricts to a subgraph, in the plane form (the form of
-`HasPencilPanelRealization.restrict`). -/
+/-- A pencil realization restricts to a subgraph, in the plane form. -/
 theorem HasPencilPlaneRealization.restrict {k : ℕ} {H : Graph α β}
     {F : BodyHingeFramework K k α β} {b : α → Fin (k + 2) → K}
     {plane : α → Submodule K (Fin (k + 2) → K)} (h : HasPencilPlaneRealization G F b plane)

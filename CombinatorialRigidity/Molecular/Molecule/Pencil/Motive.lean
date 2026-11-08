@@ -22,16 +22,16 @@ is simple, and a nondegenerate one at the deficiency rank when it is also nondeg
 (`def:pencil-generic-motive`, `def:pencil-conditioned-pair`).
 
 The file also proves that a graph with a loop is not nondegeneracy-feasible; that a nondegenerate
-realization restricts to a subgraph, except at a hub of the graph that is not one of the subgraph,
-and moves by a linear automorphism of `K⁴` and a contragredient of it; that the point of a body is
+realization restricts to a subgraph, except at a hub of the graph that is not one of the subgraph;
+that the point of a body is
 orthogonal to the normals of its closed neighbourhood, so that a feasible graph has at most three
 members in each closed hub-neighbourhood and no triangle with two hubs
 (`lem:pencil-feasible-hub-conditions`); and that two hubs with three common neighbours whose points
 are independent have no nondegenerate realization (`lem:pencil-x0-two-hubs-obstruction`). The last
 sections compare the degrees and neighbourhoods of a graph with those of the sides of a cut crossed
-by at most one edge, for the cut-edge case of the conditioned pair (`lem:pencil-pair-loop-base-cut`,
-case (3)): a side with the far end of the crossing edge, a side that no edge leaves, and the side
-opposite a single body.
+by at most one edge, for the cut cases of the lift in every dimension (`lem:pencil-d-lift-small`,
+`lem:pencil-d-lift-cut-edge`): a side with the far end of the crossing edge, and a side that no
+edge leaves.
 
 ## Main definitions
 
@@ -185,8 +185,8 @@ def PencilPair (K : Type*) [Field K] (n : ℕ) (G : Graph α β) : Prop :=
     (G.Simple → HasDistinctPencilRealization K n G) ∧
     HasPencilRealization K n G
 
-/-- **Two edges with the same ends make a graph not simple** (a step of
-`lem:pencil-pair-loop-base-cut`, case (2)): distinct `e` and `f` that both link `x` and `y`
+/-- **Two edges with the same ends make a graph not simple** (a step of the conditioned pair on at
+most two bodies, `pencilPair_of_ncard_le_two`): distinct `e` and `f` that both link `x` and `y`
 contradict `Graph.Simple.eq_of_isLink`. So a simple graph on two bodies has at most one edge
 (`hasGenericPencilRealization_of_ncard_le_two`, `Pair.lean`). -/
 theorem not_simple_of_parallel {G : Graph α β} {e f : β} {x y : α}
@@ -201,8 +201,8 @@ theorem hasDistinctPencilRealization_of_generic {n : ℕ} {G : Graph α β}
   obtain ⟨F, normal, point, ⟨hreal, hadj, _, _⟩, hrank⟩ := h
   exact ⟨F, normal, point, hreal, hadj, hrank⟩
 
-/-- **A graph with a loop is not nondegeneracy-feasible** (a step of
-`lem:pencil-pair-loop-base-cut`, case (1)): a loop `e` at `v` is a link `G.IsLink e v v`, at which
+/-- **A graph with a loop is not nondegeneracy-feasible** (a step of the conditioned pair at a
+loop, `pencilPair_of_isLoopAt`): a loop `e` at `v` is a link `G.IsLink e v v`, at which
 `IsNondegPencilRealization` asks that `![point v, point v]` be linearly independent, while
 `1 • point v + (-1) • point v = 0` (`LinearIndependent.pair_iff`). `pencilPair_of_isLoopAt`
 (`Pair.lean`) discharges with it the generic conjunct of `PencilPair` at a graph with a loop, which
@@ -222,7 +222,7 @@ neighbourhoods lie in those of `G`, so each condition at `H` follows from one at
 independence of the points of the closed neighbourhood of a body that is a hub of `G` and not of
 `H`, which the realization of `G` does not ask. `IsNondegPencilRealization.mono` takes it as a
 hypothesis; `PencilNondegFeasible.mono` gives it at such a body of degree at most one in `H`, and
-`exists_isNondegPencilRealization_restrict_of_demoted` (`lem:pencil-generic-steer`, (a)) chooses a
+`exists_isNondegPencilRealization_restrict_of_demoted` (`lem:pencil-generic-steer`) chooses a
 realization of `G` that restricts when every such body loses only neighbours that are not hubs. -/
 
 /-- **A pencil hub of a subgraph is one of the graph**: for `H ≤ G`, a body of `H` is one of `G`
@@ -248,8 +248,8 @@ theorem _root_.Graph.closedNbhd_mono {G H : Graph α β}
   · exact Or.inr ⟨e, hlink.of_le hle⟩
 
 /-- **A nondegenerate pencil realization restricts to a subgraph** (a step of
-`lem:pencil-generic-steer`, (a), and of `lem:pencil-pair-loop-base-cut`): for `H ≤ G`, the framework
-on `H` with the same supporting extensors, normals and points is a nondegenerate realization of `H`,
+`lem:pencil-generic-steer`): for `H ≤ G`, the framework on `H` with the same supporting
+extensors, normals and points is a nondegenerate realization of `H`,
 given the independence of the points of the closed neighbourhood in `H` of each body of `H` that is
 a hub of `G` and not of `H` (`hdemote`). Each other condition at `H` is one at `G` on a smaller set
 (`Graph.closedHubNbhd_mono`, `Graph.closedNbhd_mono`); the realization of `G` asks nothing of the
@@ -274,8 +274,9 @@ theorem IsNondegPencilRealization.mono {G H : Graph α β} [G.LocallyFinite]
   · exact (hnbhdLI v (hV hv) hGhub).mono (Graph.closedNbhd_mono hle v)
 
 /-- **Feasibility restricts to a subgraph whose demoted hubs have degree at most one** (a step of
-`lem:pencil-pair-loop-base-cut`, case (3)): if each body of `H ≤ G` that is a hub of `G` is a hub of
-`H` or has degree at most one in `H`, and `G` is nondegeneracy-feasible, so is `H`. The realization
+`lem:pencil-d-lift-small`, (2), and of `lem:pencil-d-lift-cut-edge`): if each body of `H ≤ G` that
+is a hub of `G` is a hub of `H` or has degree at most one in `H`, and `G` is nondegeneracy-feasible,
+so is `H`. The realization
 restricts (`IsNondegPencilRealization.mono`). At a body `v` of degree at most one in `H` that is not
 a hub of `H`, the closed neighbourhood lies in `{v, w}` for its one neighbour `w`
 (`Graph.Inc.isPendant_of_degree_le_one`), whose points are independent as `v` and `w` are linked, or
@@ -312,37 +313,6 @@ theorem PencilNondegFeasible.mono {G H : Graph α β} [G.LocallyFinite]
       · exact absurd ⟨e', u, hl'⟩ hinc
     exact (LinearIndepOn.singleton (i := v)
       (hpnz v (Graph.vertexSet_mono hle hv))).mono hsub
-
-/-! ## Moving a nondegenerate realization by an automorphism
-
-The cut-edge case of the conditioned pair moves the realization of one side by a linear automorphism
-`g` of `K⁴` and a contragredient `h` of it, as the cut-edge case does for pencil realizations
-(`hasPencilPanelRealization_mapExtensor_screwEquivOfLinearEquiv`, `lem:pencil-projective-transport`,
-`Arms.lean`). The graph does not change, and neither do its hubs and neighbourhoods; the injective
-`g` and `h` keep each independence (`LinearIndependent.map_injOn`, `LinearIndepOn.map_injOn`). -/
-
-/-- **Moving a nondegenerate pencil realization** (a step of `lem:pencil-pair-loop-base-cut`, case
-(3); the nondegenerate form of `lem:pencil-projective-transport`): moving a nondegenerate pencil
-realization `(F, normal, point)` of `G` by a linear automorphism `g` of `K⁴` and a contragredient
-`h` of it (`g x ⬝ᵥ h y = x ⬝ᵥ y`), the hinges by `screwEquivOfLinearEquiv g`, the points by `g` and
-the normals by `h`, gives a nondegenerate pencil realization of `G`. -/
-theorem IsNondegPencilRealization.mapExtensor_screwEquivOfLinearEquiv
-    {G : Graph α β} {F : BodyHingeFramework K 2 α β} {normal point : α → Fin 4 → K}
-    (g h : (Fin 4 → K) ≃ₗ[K] (Fin 4 → K)) (hgh : ∀ x y : Fin 4 → K, g x ⬝ᵥ h y = x ⬝ᵥ y)
-    (hnd : IsNondegPencilRealization G F normal point) :
-    IsNondegPencilRealization G (F.mapExtensor (BodyHingeFramework.screwEquivOfLinearEquiv g))
-      (fun v => h (normal v)) (fun v => g (point v)) := by
-  obtain ⟨hreal, hadj, hhubLI, hnbhdLI⟩ := hnd
-  refine ⟨hasPencilPanelRealization_mapExtensor_screwEquivOfLinearEquiv g h hgh hreal,
-    fun e u v hl => ?_, fun v hv => ?_, fun v hv hnothub => ?_⟩
-  · have hli := (hadj e u v hl).map_injOn g.toLinearMap g.injective.injOn
-    have heq : g.toLinearMap ∘ ![point u, point v] = ![g (point u), g (point v)] := by
-      funext i; fin_cases i <;> rfl
-    rwa [heq] at hli
-  · have hli := (hhubLI v hv).map_injOn h.toLinearMap h.injective.injOn
-    simpa [Function.comp_def] using hli
-  · have hli := (hnbhdLI v hv hnothub).map_injOn g.toLinearMap g.injective.injOn
-    simpa [Function.comp_def] using hli
 
 /-! ## Incidences and counts at a nondegenerate realization
 
@@ -670,15 +640,15 @@ theorem not_isNondegPencilRealization_of_two_hubs_three_common
 
 /-! ## Degrees in an induced graph
 
-The cut-edge case of the conditioned pair (`lem:pencil-pair-loop-base-cut`, case (3)) compares the
-degree of a body in a side, an induced graph `G[S]`, with its degree in `G`. A body of `S` keeps its
-degree when every link of `G` from it ends in `S`; the sections below apply this to each kind of
-side. -/
+The cut cases of the lift (`lem:pencil-d-lift-small`, (2), and `lem:pencil-d-lift-cut-edge`)
+compare the degree of a body in a side, an induced graph `G[S]`, with its degree in `G`. A body of
+`S` keeps its degree when every link of `G` from it ends in `S`; the sections below apply this to
+each kind of side. -/
 
 /-- **A body whose links all end in `S` keeps its degree in `G[S]`** (a step of
-`lem:pencil-pair-loop-base-cut`): for `v ∈ S` such that every link of `G` from `v` ends in `S`, `v`
-has the same degree in `G.induce S` as in `G`, as its loops and its other edges are those of `G`
-(`Graph.degree_eq_ncard_add_ncard`). -/
+`lem:pencil-d-lift-small` and `lem:pencil-d-lift-cut-edge`): for `v ∈ S` such that every link of
+`G` from `v` ends in `S`, `v` has the same degree in `G.induce S` as in `G`, as its loops and its
+other edges are those of `G` (`Graph.degree_eq_ncard_add_ncard`). -/
 theorem _root_.Graph.degree_induce_eq_of_isLink_mem [Finite β] {G : Graph α β} {S : Set α} {v : α}
     (hv : v ∈ S) (hS : ∀ e y, G.IsLink e v y → y ∈ S) :
     (G.induce S).degree v = G.degree v := by
@@ -697,7 +667,7 @@ theorem _root_.Graph.degree_induce_eq_of_isLink_mem [Finite β] {G : Graph α β
 
 /-! ## The side of a cut with the far end of the crossing edge
 
-In the cut-edge case of the conditioned pair (`lem:pencil-pair-loop-base-cut`, case (3)), let one
+In the cut-edge case of the lift (`lem:pencil-d-lift-cut-edge`, `Grade/LiftCutEdge.lean`), let one
 edge `e₀` join `u₀ ∈ V₁` to `w₀ ∉ V₁`, the only edge crossing `V₁`. When both sides have at least
 two bodies, the case uses each side with the far end of `e₀`, `G[V₁ ∪ {w₀}]`, rather than `G[V₁]`:
 each body of `V₁` keeps its degree there, so that no hub of `G` in `V₁` stops being one, and `w₀`
@@ -791,7 +761,7 @@ theorem _root_.Graph.isLink_induce_union_singleton_of_isLink [Finite β] {G : Gr
       have huv : u = v := huw.trans hvw.symm
       exact absurd (huv ▸ hlG) (G.not_isLoopAt e v)
 
-/-- **Feasibility passes to `G[V₁ ∪ {w₀}]`** (a step of `lem:pencil-pair-loop-base-cut`, case (3)):
+/-- **Feasibility passes to `G[V₁ ∪ {w₀}]`** (a step of `lem:pencil-d-lift-cut-edge`):
 for a loopless `G`, `V₁ ⊆ V(G)`, and `e₀`, `u₀`, `w₀` as in
 `Graph.degree_induce_union_singleton_of_mem`, if `G` is nondegeneracy-feasible, so is
 `G.induce (V₁ ∪ {w₀})`, by `PencilNondegFeasible.mono`: a hub of `G` in `V₁` keeps its degree, and
@@ -937,9 +907,9 @@ theorem _root_.Graph.closedHubNbhd_induce_union_singleton [Finite β] {G : Graph
 
 /-! ## A side that no edge leaves
 
-When no edge crosses `V₁` (`lem:pencil-pair-loop-base-cut`, case (3)), generic realizations of
-`G[V₁]` and of `G[V(G) \ V₁]` together form one of `G`
-(`hasGenericPencilRealization_of_cutEdges_eq_empty`, `Pair.lean`). For a set `S` such that every
+When no edge crosses `V₁` (`lem:pencil-d-lift-small`, (2)), nondegenerate realizations of `G[V₁]`
+and of `G[V(G) \ V₁]` together form one of `G` (`liftAttains_of_cutEdges_eq_empty`,
+`Grade/LiftSmall.lean`). For a set `S` such that every
 link of `G` from a body of `S` ends in `S`, the degree, the closed hub-neighbourhood and the closed
 neighbourhood of a body of `S` are the same in `G[S]` as in `G`; the case applies this to both
 sides. -/
@@ -991,68 +961,5 @@ theorem _root_.Graph.closedNbhd_induce_of_forall_isLink_mem {G : Graph α β}
   · rintro (rfl | ⟨e, hl⟩)
     · exact Or.inl rfl
     · exact Or.inr ⟨e, (Graph.induce_isLink G S e v w).mpr ⟨hl, hv, hS e v w hl hv⟩⟩
-
-/-! ## The side opposite a single body
-
-When one side of the cut is a single body `w₀`, joined to `u₀ ∈ V₁ = V(G) \ {w₀}` by the crossing
-edge `e₀` (`lem:pencil-pair-loop-base-cut`, case (3)), the side with the far end would be `G`
-itself, and the case uses `G[V₁] = G - w₀` (`Pair2.lean`). The two lemmas below hold for any `V₁`
-that `e₀` alone crosses: a body of `V₁` other than `u₀` keeps its degree in `G[V₁]`, and `u₀` loses
-one. -/
-
-/-- **A body of `V₁` other than `u₀` keeps its degree in `G[V₁]`**: with `e₀` joining `u₀ ∈ V₁` to
-`w₀ ∉ V₁`, the only edge crossing `V₁`, an edge of `G` at `v ∈ V₁` with an end outside `V₁` would be
-`e₀`, whose ends are `u₀ ≠ v` and `w₀ ∉ V₁` (`Graph.degree_induce_eq_of_isLink_mem`). The form of
-`Graph.degree_induce_union_singleton_of_mem` for `G[V₁]`. -/
-theorem _root_.Graph.degree_induce_eq_of_ne [Finite β] {G : Graph α β} {V₁ : Set α}
-    {e₀ : β} {u₀ w₀ : α} (hl₀ : G.IsLink e₀ u₀ w₀) (hu₀ : u₀ ∈ V₁) (hw₀ : w₀ ∉ V₁)
-    (hcut : (G.cutEdges V₁).ncard ≤ 1) {v : α} (hv : v ∈ V₁) (hvne : v ≠ u₀) :
-    (G.induce V₁).degree v = G.degree v := by
-  refine Graph.degree_induce_eq_of_isLink_mem hv fun e y hl => ?_
-  by_contra hy₁
-  obtain rfl := Graph.eq_cutEdge_of_isLink_crossing hl₀ hu₀ hw₀ hcut hl hv hy₁
-  rcases hl.eq_and_eq_or_eq_and_eq hl₀ with ⟨hveq, -⟩ | ⟨hveq, -⟩
-  · exact hvne hveq
-  · exact hw₀ (hveq ▸ hv)
-
-/-- **The end `u₀` loses one edge in `G[V₁]`**: for a loopless `G`, and `e₀`, `u₀`, `w₀` and `V₁` as
-in `Graph.degree_induce_eq_of_ne`, `G.degree u₀ = (G.induce V₁).degree u₀ + 1`. The edges of `G` at
-`u₀` are those of `G[V₁]` and `e₀`: another edge leaving `V₁` would cross it, and `e₀` is not an
-edge of `G[V₁]`, as `w₀ ∉ V₁`. -/
-theorem _root_.Graph.degree_eq_degree_induce_succ [Finite β] {G : Graph α β} [G.Loopless]
-    {V₁ : Set α} {e₀ : β} {u₀ w₀ : α} (hl₀ : G.IsLink e₀ u₀ w₀) (hu₀ : u₀ ∈ V₁) (hw₀ : w₀ ∉ V₁)
-    (hcut : (G.cutEdges V₁).ncard ≤ 1) :
-    G.degree u₀ = (G.induce V₁).degree u₀ + 1 := by
-  have hloopG : {e | G.IsLoopAt e u₀} = ∅ := by
-    ext e
-    simp only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false]
-    exact G.not_isLoopAt e u₀
-  have hloopH : {e | (G.induce V₁).IsLoopAt e u₀} = ∅ := by
-    ext e
-    simp only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false]
-    intro h
-    exact G.not_isLoopAt e u₀ ((Graph.induce_isLink G V₁ e u₀ u₀).mp h).1
-  have hwu : w₀ ≠ u₀ := fun h => hw₀ (h ▸ hu₀)
-  have hec_notmem : e₀ ∉ {e | (G.induce V₁).IsNonloopAt e u₀} := by
-    rintro ⟨y, -, hl⟩
-    obtain ⟨hlG, -, hyV₁⟩ := (Graph.induce_isLink G V₁ e₀ u₀ y).mp hl
-    obtain rfl := hlG.right_unique hl₀
-    exact hw₀ hyV₁
-  have hnonloop_eq :
-      {e | G.IsNonloopAt e u₀} = insert e₀ {e | (G.induce V₁).IsNonloopAt e u₀} := by
-    ext e
-    simp only [Set.mem_ofPred_eq, Set.mem_insert_iff]
-    constructor
-    · rintro ⟨y, hyu, hl⟩
-      by_cases hy₁ : y ∈ V₁
-      · exact Or.inr ⟨y, hyu, (Graph.induce_isLink G V₁ e u₀ y).mpr ⟨hl, hu₀, hy₁⟩⟩
-      · have he := Graph.eq_cutEdge_of_isLink_crossing hl₀ hu₀ hw₀ hcut hl hu₀ hy₁
-        exact Or.inl he
-    · rintro (rfl | ⟨y, hyu, hl⟩)
-      · exact ⟨w₀, hwu, hl₀⟩
-      · exact ⟨y, hyu, ((Graph.induce_isLink G V₁ e u₀ y).mp hl).1⟩
-  rw [Graph.degree_eq_ncard_add_ncard, Graph.degree_eq_ncard_add_ncard, hloopG, hloopH,
-    hnonloop_eq, Set.ncard_insert_of_notMem hec_notmem (Set.toFinite _)]
-  omega
 
 end CombinatorialRigidity.Molecular

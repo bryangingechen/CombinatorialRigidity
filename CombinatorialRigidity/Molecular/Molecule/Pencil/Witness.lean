@@ -10,8 +10,8 @@ public import CombinatorialRigidity.Molecular.Molecule.Pencil.Chart
 /-!
 # Distinct standard basis vectors in the slots of a selector
 
-A step of the proof of part (a) of `lem:pencil-generic-steer` (`sec:main-component-statements`): for
-a hub `h` of `G` with two neighbours `w₁` and `w₂`, whose other neighbours are not hubs, parameters
+A step of the proof of `lem:pencil-generic-steer` (`sec:main-component-statements`): for a hub
+`h` of `G` with two neighbours `w₁` and `w₂`, whose other neighbours are not hubs, parameters
 of the chart at which the points of `h`, `w₁` and `w₂` are linearly independent. Each body `w` has
 the standard basis vector `e_{idx w}` of `K⁴` as its `hubNormal`, for an index map
 `idx : α → Fin 4`, and the empty slots of the hub selectors at the three bodies are standard basis

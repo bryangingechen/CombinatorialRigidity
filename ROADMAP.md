@@ -1342,8 +1342,9 @@ Theorem S′ holds, as Theorem S with a weaker hypothesis; and a planar-rigid se
 main picture, which is why the generic conjunct leaves the main component. **43b** LIFT3 (opened
 2026-11-08 as one sub-phase, at the PI's choice): the `d = 3` generic conjunct from the lift, then
 the reduction proved once, in three Lean slices, then the old route as one remark, and the close
-(`notes/Phase43b.md`). Slice 1 landed (`x0Gen` from the lift, the `d = 3` generic route deleted);
-next: slice 2, `pencilPair_of_nonempty` as the `m = 1` case.
+(`notes/Phase43b.md`). Slices 1–2 landed (`x0Gen` from the lift; `pencilPair_of_nonempty` as the
+`m = 1` case of the every-dimension corollary, the `d = 3` reduction for the conditioned pair
+deleted); next: slice 3, the rest of the `d = 3` reduction's deletions.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 

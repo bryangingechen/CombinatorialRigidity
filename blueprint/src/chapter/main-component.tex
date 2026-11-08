@@ -7,14 +7,14 @@ that every simple two-edge-connected multigraph on at least three bodies
 have an adjacent-distinct pencil realization at the deficiency rank
 (\cref{def:pencil-main-component-statements}). The second asks such a
 multigraph for a generic pencil realization when it is
-nondegeneracy-feasible. At a simple two-edge-connected multigraph, the
-contraction and split cases of the pencil reduction follow from the two
-statements. So this section completes the proof of the pencil
-realization theorem (\cref{thm:pencil-realization-theorem}).
+nondegeneracy-feasible. \Cref{sec:pencil-d} runs the argument of this
+section in every dimension $d \ge 3$, where the first statement in
+dimension $d$ gives the contraction and split cases of the pencil
+reduction (\cref{sec:pencil-d-reduction}). The pencil realization
+theorem (\cref{thm:pencil-realization-theorem}) is the case $d = 3$.
 \Cref{sec:pencil-main-component-route}
-derives the two cases from the statements, and sketches the idea of this
-section: to lift planar pictures of the graph to configurations of points
-in $K^4$. It also explains, at $K_{2,3}$, why the generic statement needs
+sketches the idea of this section: to lift planar pictures of the graph
+to configurations of points in $K^4$. It also explains, at $K_{2,3}$, why the generic statement needs
 a further argument. Besides \cref{sec:pencil}, the reader needs the
 deficiency and the merged deficiency of \cref{sec:molecular-deficiency},
 the rank-addition lemmas of \cref{sec:molecular-rigidity-matrix-blocks},
@@ -150,9 +150,9 @@ configuration is an adjacent-distinct pencil realization
 (\cref{lem:pencil-x0-distinct-statement}). The second is the case $d = 3$
 of the generic conjunct in every dimension (\cref{thm:pencil-d-generic}),
 proved in \cref{sec:pencil-d} by an induction of its own, which uses no
-result that rests on the second statement. With the two statements, every
-multigraph with at least one body satisfies the conditioned pair
-(\cref{thm:pencil-conditioned-pair-nonempty}).
+result that rests on the second statement. The conditioned pair at every
+multigraph with at least one body is the case $d = 3$ of the conditioned
+pair in every dimension (\cref{thm:pencil-conditioned-pair-nonempty}).
 
 \subsection{Planar pictures, the lifting space, and the main component}
 \label{sec:main-component-carrier}
@@ -4891,8 +4891,8 @@ no two of them are adjacent, a rigid set that avoids one of them.
 \label{sec:main-component-statements}
 
 This subsection proves the two main-component statements
-(\cref{def:pencil-main-component-statements}), the hypotheses of
-\cref{thm:pencil-conditional-realization-main-component}. The distinct
+(\cref{def:pencil-main-component-statements}), and the conditioned pair
+at every multigraph with at least one body. The distinct
 statement is immediate (\cref{lem:pencil-x0-distinct-statement}): the
 general configuration of a simple two-edge-connected graph on at least
 three bodies attains, and one attaining configuration is an
@@ -4910,8 +4910,8 @@ nondegeneracy-feasible graph, which asks neither two-edge-connectivity
 nor a third body. From this subsection it uses the lemmas on a graph
 without a planar-rigid set (\cref{sec:main-component-sparse};
 \cref{lem:pencil-x0-planes-separate},
-\cref{lem:pencil-x0-conjunct-three}), part (a) of
-\cref{lem:pencil-generic-steer}, and \cref{lem:pencil-rigid-good-ear}: in
+\cref{lem:pencil-x0-conjunct-three}), \cref{lem:pencil-generic-steer},
+and \cref{lem:pencil-rigid-good-ear}: in
 a graph with a planar-rigid set, a minimal one has a body of degree two
 whose neighbours are pencil hubs, or the graph has a pendant triangle,
 two adjacent bodies of degree two with a common neighbour. None of the
@@ -5176,53 +5176,35 @@ of $G_{uw}$. So they form a proper subspace of $L(q)$
 \end{proof}
 
 The next lemma relates the nondegenerate realizations of a graph $G$ and
-of a subgraph $H$. Part (a) shows that a nondegenerate realization of $G$
+of a subgraph $H$. It shows that a nondegenerate realization of $G$
 restricts to one of $H$, under a condition on the hubs of $G$ that are not
 hubs of $H$, so that $H$ is nondegeneracy-feasible. The steps of the
 generic conjunct in every dimension use it, with the parametrization of
 its proof (\cref{lem:pencil-d-lift-ear}, \cref{lem:pencil-d-lift-pendant},
-\cref{lem:pencil-d-lift-pendant-triangle}). Part (b) combines a generic
-realization of $H$ with a second nondegenerate realization, which
-satisfies finitely many further conditions but need not have the
-deficiency rank; the cut-edge case of the reduction uses it
-(\cref{lem:pencil-pair-loop-base-cut}). Up to scalars, the points and the
-hub normals of every nondegenerate realization of $H$ are the values of
-one polynomial map. So the rank of the generic realization, as a lower
-bound, and each condition hold off the zero sets of polynomials, nonzero
-at the generic realization and at the second one respectively. A common
-non-root gives a generic realization with every condition.
+\cref{lem:pencil-d-lift-pendant-triangle}). Up to scalars, the points and
+the hub normals of every nondegenerate realization of $G$ are the values
+of one polynomial map. So each condition of nondegeneracy holds off the
+zero set of a polynomial, nonzero at some parameters, and a common
+non-root gives a realization with every condition.
 
-\begin{lemma}[Nondegenerate and generic realizations of a subgraph]
+\begin{lemma}[Nondegenerate realizations of a subgraph]
   \label{lem:pencil-generic-steer}
   \lean{CombinatorialRigidity.Molecular.exists_pencilSeed_of_nondeg_of_selectors,
-        CombinatorialRigidity.Molecular.exists_isNondegPencilRealization_restrict_of_demoted,
-        CombinatorialRigidity.Molecular.exists_isNondegPencilRealization_steer}
+        CombinatorialRigidity.Molecular.exists_isNondegPencilRealization_restrict_of_demoted}
   \leanok
-  \uses{def:pencil-nondegenerate, def:pencil-generic-motive}
-  Let $K$ be infinite.
-  \textup{(a)} Let $G$ be simple and nondegeneracy-feasible, and let $H$
-  be a subgraph of $G$. Suppose that whenever a pencil hub $h$ of $G$ is a
+  \uses{def:pencil-nondegenerate}
+  Let $K$ be infinite, let $G$ be simple and nondegeneracy-feasible, and
+  let $H$ be a subgraph of $G$. Suppose that whenever a pencil hub $h$ of $G$ is a
   body of $H$ but not a hub of $H$, the neighbours of $h$ in $G$ that are
   not its neighbours in $H$ are not hubs of $G$. Then $G$ has a
   nondegenerate realization whose restriction to $H$ is a nondegenerate
   realization of $H$. In particular $H$ is nondegeneracy-feasible, by a
   realization whose normals are independent on the closed
   hub-neighbourhood in $G$ of every body of $G$.
-  \textup{(b)} Let $H$ have at least one body. Suppose that
-  $H$ has a generic pencil realization, and a nondegenerate realization
-  with normals $n'$ and points $p'$. Let $S_1, \dots, S_k \subseteq V(H)$
-  be sets on which $n'$ is linearly independent, and let $(u_1, w_1),
-  \dots, (u_m, w_m)$ be pairs of bodies of $H$ with
-  $p'_{u_j} \cdot n'_{w_j} \neq 0$. Suppose that every member of every
-  $S_i$, and every $w_j$, is a hub of $H$ or has a closed neighbourhood in
-  $H$ of exactly three members. Then $H$ has a generic pencil realization
-  whose normals are independent on every $S_i$, with
-  $p_{u_j} \cdot n_{w_j} \neq 0$ for every $j$.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:relative-deficiency-rank-bound, lem:pencil-feasible-hub-conditions,
-        lem:independent-rows-of-rank}
+  \uses{lem:pencil-feasible-hub-conditions}
   \emph{A parametrization.} Let $\Gamma$ be a graph whose closed
   hub-neighbourhoods have at most three members. For
   $y_1, y_2, y_3 \in K^4$, let $y_1 \times y_2 \times y_3$ be the vector
@@ -5250,12 +5232,7 @@ non-root gives a generic realization with every condition.
   hinge at each edge is the line through the points of the ends. The normals of each closed
   hub-neighbourhood are independent, as factors of a nonzero product.
   Each of these finitely many conditions says that a polynomial in the
-  parameters is nonzero. If the rank is $r$ at some parameters, it is at
-  least $r$ off the zero set of a polynomial that is nonzero there.
-  Indeed, the hinge of an edge $uv$ is $p_u \vee p_v$ up to a scalar,
-  and the rows of the rigidity matrix at an edge can be taken linear in
-  its hinge, so the minors of the rigidity matrix are polynomials in the
-  parameters.
+  parameters is nonzero.
 
   Conversely, let a nondegenerate realization be given, and let $m_v$ be
   its normal at every hub $v$. At each body $v$, the normals of the closed
@@ -5267,7 +5244,7 @@ non-root gives a generic realization with every condition.
   scalars change neither the nondegeneracy nor the line of any hinge, so
   they do not change the rank.
 
-  \textup{(a)} We parametrize the realizations of $G$, whose closed
+  \emph{The lemma.} We parametrize the realizations of $G$, whose closed
   hub-neighbourhoods have at most three members
   (\cref{lem:pencil-feasible-hub-conditions}). The hubs of $H$ are hubs of
   $G$, and each closed neighbourhood or closed hub-neighbourhood in $H$
@@ -5289,24 +5266,6 @@ non-root gives a generic realization with every condition.
   chosen, or those of a nondegenerate realization of $G$. As $K$ is
   infinite, these finitely many polynomials have a common non-root, and it
   gives the realization.
-
-  \textup{(b)} The graph $H$ is nondegeneracy-feasible, so loopless: the
-  two ends of a loop are one body, whose concurrency point is not
-  projectively distinct from itself. We parametrize the realizations of
-  $H$, and take parameters $s_1$ and $s_2$ that give the
-  generic realization and the second one, up to scalars. The conditions of
-  nondegeneracy, and the rank at $s_1$ as a lower bound, hold off the zero
-  sets of polynomials nonzero at $s_1$. Each member of an $S_i$, and each
-  $w_j$, is a hub, whose normal is a parameter, or its normal is the
-  product of the three points of its closed neighbourhood. So at $s_2$
-  these normals are those of the second realization, up to scalars. Hence
-  the independence on each $S_i$, and each condition
-  $p_{u_j} \cdot n_{w_j} \neq 0$, holds off the zero set of a polynomial
-  nonzero at $s_2$. A common non-root of all these polynomials gives a
-  nondegenerate realization with the conditions, of rank at least the
-  deficiency rank. The deficiency rank bounds the
-  rank of every realization (\cref{lem:relative-deficiency-rank-bound}),
-  so the realization is generic.
 \end{proof}
 
 In a graph with a planar-rigid set, the next lemma finds a body of degree
@@ -5412,9 +5371,10 @@ We collect these results in the main theorem of this chapter.
   that rests on the generic statement.
 \end{proof}
 
-With the two statements, the reduction gives the conditioned pair at every
-multigraph with at least one body, not only at those on the whole ambient
-body set.
+The conditioned pair holds at every multigraph with at least one body,
+not only at those on the whole ambient body set. It is the case $d = 3$ of
+the conditioned pair in every dimension, whose reduction uses the distinct
+statement in dimension $d$ and whose generic conjunct is the lift.
 
 \begin{theorem}[The conditioned pair at every nonempty multigraph]
   \label{thm:pencil-conditioned-pair-nonempty}
@@ -5427,13 +5387,13 @@ body set.
 \end{theorem}
 \begin{proof}
   \leanok
-  \uses{thm:pencil-conditional-realization-pair,
-        thm:pencil-conditional-realization-main-component,
-        thm:pencil-x0-generic-attains}
-  By \cref{thm:pencil-conditional-realization-pair}, it suffices to prove
-  the contraction and split cases for the conditioned pair. The three
-  cases of the proof of
-  \cref{thm:pencil-conditional-realization-main-component} prove both from
-  the two main-component statements, which hold
-  (\cref{thm:pencil-x0-generic-attains}).
+  \uses{cor:pencil-d-conditioned-pair, lem:pencil-d-rank-agrees-three,
+        lem:pencil-d-nondegenerate-three}
+  It is the case $d = 3$ of \cref{cor:pencil-d-conditioned-pair}. At
+  $d = 3$, a pencil realization at the deficiency rank and an
+  adjacent-distinct one in the sense of \cref{sec:pencil-d} are those of
+  \cref{sec:pencil} (\cref{lem:pencil-d-rank-agrees-three}), and so are
+  nondegeneracy-feasibility and a generic realization
+  (\cref{lem:pencil-d-nondegenerate-three}). So the three conjuncts of the
+  corollary at $d = 3$ are those of the conditioned pair.
 \end{proof}
