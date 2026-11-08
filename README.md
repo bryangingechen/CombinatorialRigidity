@@ -202,9 +202,9 @@ equivalence is provably false for the intersection-based panel-hinge
 frameworks the simple-graph statements use.
 
 **How the pencil realization theorem is proved (phases 39–40).** Phase 39 (closed 2026-09-25)
-reduced it, in Lean, to two *main-component statements*: every simple two-edge-connected multigraph
-on at least three bodies has a pencil realization at the deficiency rank with the points of
-adjacent bodies distinct, and a nondegenerate one at that rank whenever it has a nondegenerate
+reduced it, in Lean, to two statements about the main component (below): every simple
+two-edge-connected multigraph on at least three bodies has a pencil realization at the deficiency
+rank with the points of adjacent bodies distinct, and a nondegenerate one at that rank whenever it has a nondegenerate
 pencil realization at all. Phase 40 (closed 2026-09-29) proved both, formalizing a proof first
 worked out informally and independently checked. Its first step extended Theorems 5.5 and 5.6 and
 the molecular conjecture from dimension three down to the plane (above). The proof then lifts
@@ -257,7 +257,8 @@ structural cases (a loop, at most two bodies, a cut edge, parallel edges,
 and a simple two-edge-connected multigraph), and the two unnecessary cases
 are gone: where no other step applies, the proof contracts a rigid set
 instead. A road map of the proof, in the manner of Katoh and Tanigawa's,
-comes last.
+comes last; with it, the two statements of Phase 39 go, as special cases of
+the theorem's claims that no proof uses any more.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries

@@ -1,23 +1,21 @@
 \section{The main component of the pencil configuration space}
 \label{sec:main-component}
 
-This section proves the two main-component statements over every
-infinite field (\cref{thm:pencil-x0-generic-attains}). The first asks
-that every simple two-edge-connected multigraph on at least three bodies
-have an adjacent-distinct pencil realization at the deficiency rank
-(\cref{def:pencil-main-component-statements}). The second asks such a
-multigraph for a generic pencil realization when it is
-nondegeneracy-feasible. \Cref{sec:pencil-d} runs the argument of this
-section in every dimension $d \ge 3$, where the first statement in
-dimension $d$ gives the case of a simple two-edge-connected multigraph in
-the pencil reduction (\cref{sec:pencil-d-reduction}). The pencil realization
-theorem (\cref{thm:pencil-realization-theorem}) is the case $d = 3$.
+This section proves, over every infinite field, that at every simple
+connected multigraph of minimum degree at least two the general
+configuration of the main component attains the deficiency rank
+(\cref{thm:pencil-x0-generic-attains}). \Cref{sec:pencil-d} runs the
+argument of this section in every dimension $d \ge 3$, where it gives the
+case of a simple two-edge-connected multigraph in the pencil reduction
+(\cref{sec:pencil-d-reduction}): an adjacent-distinct realization of the
+whole multigraph. The pencil realization theorem
+(\cref{thm:pencil-realization-theorem}) is the case $d = 3$.
 \Cref{sec:pencil-main-component-route}
 sketches the idea of this section: to lift planar pictures of the graph
-to configurations of points in $K^4$. It also explains, at $K_{2,3}$, why the generic statement needs
-a further argument. Besides \cref{sec:pencil}, the reader needs the
-deficiency and the merged deficiency of \cref{sec:molecular-deficiency},
-the rank-addition lemmas of \cref{sec:molecular-rigidity-matrix-blocks},
+to configurations of points in $K^4$. It also explains, at $K_{2,3}$, why
+the generic conjunct needs a further argument. Besides \cref{sec:pencil},
+the reader needs the deficiency and the merged deficiency of
+\cref{sec:molecular-deficiency}, the rank-addition lemmas of \cref{sec:molecular-rigidity-matrix-blocks},
 and two rank lemmas of Case~I of the algebraic induction
 (\cref{lem:block-rank-contract}, \cref{lem:rank-polynomial-proj-eval}).
 We also use splitting off and
@@ -142,13 +140,14 @@ steps:
 the structural coverage uses. \Cref{sec:main-component-coverage} gives the
 coverage, which completes the induction (\cref{thm:pencil-x0-coverage}).
 
-\Cref{sec:main-component-statements} proves the two main-component
-statements. The first follows from the induction, as an attaining
-configuration is an adjacent-distinct pencil realization
-(\cref{lem:pencil-x0-distinct-statement}). The second is the case $d = 3$
-of the generic conjunct in every dimension (\cref{thm:pencil-d-generic}),
-proved in \cref{sec:pencil-d} by an induction of its own, which uses no
-result that rests on the second statement.
+\Cref{sec:main-component-statements} proves lemmas on nondegenerate
+realizations, for the generic conjunct in every dimension
+(\cref{thm:pencil-d-generic}). The general
+configuration need not be nondegenerate, as at $K_{2,3}$
+(\cref{lem:pencil-x0-two-hubs-obstruction}), so that conjunct is proved
+in \cref{sec:pencil-d} by an induction of its own. The subsection ends
+with the main theorem of this section
+(\cref{thm:pencil-x0-generic-attains}).
 
 \subsection{Planar pictures, the lifting space, and the main component}
 \label{sec:main-component-carrier}
@@ -421,12 +420,11 @@ definition then holds vacuously.
 
 \begin{lemma}[A configuration over an admissible picture is a pencil realization]
   \label{lem:pencil-config-distinct-realization}
-  \lean{Graph.IsAdmissiblePicture.hasDistinctPencilRealization,
-        Graph.IsAdmissiblePicture.hasPencilPanelRealization_pencilConfigFramework}
+  \lean{Graph.IsAdmissiblePicture.hasPencilPanelRealization_pencilConfigFramework}
   \leanok
   \uses{lem:pencil-config-point-join-rank,
         lem:pencil-selector-plane-contains-nbhd,
-        def:pencil-panel-realization, def:pencil-distinct-motive}
+        def:pencil-panel-realization}
   Let $q$ be an admissible picture of $G$, $z \in L(q)$ and
   $p = (q, z)$. Choose at every body $v$ three members of its closed
   neighbourhood with non-collinear picture points, and let $n_v$ be the
@@ -434,10 +432,7 @@ definition then holds vacuously.
   framework $F_p$ of \cref{lem:pencil-config-point-join-rank}, with
   panel normals $n_v$ and concurrency points $p_v$, is a pencil
   realization of $G$ (\cref{def:pencil-panel-realization}) whose
-  adjacent points are linearly independent. If moreover $p$ has rank
-  $6(|V(G)| - 1) - \operatorname{def}(\tilde G)$, then $G$ has an
-  adjacent-distinct pencil realization (\cref{def:pencil-distinct-motive},
-  at $d = 3$).
+  adjacent points are linearly independent.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -781,25 +776,6 @@ its solutions form $L(q)$.
   openness of $U$.
 \end{fmlnote}
 
-\begin{lemma}[The general configuration attaining gives an adjacent-distinct realization]
-  \label{lem:pencil-x0-attains-distinct}
-  \lean{Graph.X0Attains.hasDistinctPencilRealization}
-  \leanok
-  \uses{def:pencil-x0-attains, lem:pencil-config-distinct-realization,
-        def:pencil-distinct-motive}
-  Let $K$ be infinite. If the general configuration of $G$ attains
-  (\cref{def:pencil-x0-attains}), then $G$ has an adjacent-distinct
-  pencil realization (\cref{def:pencil-distinct-motive}, at $d = 3$).
-\end{lemma}
-\begin{proof}
-  \leanok
-  As $K$ is infinite, the nonzero polynomial $P$ of
-  \cref{def:pencil-x0-attains} has a non-root $q$. This picture is
-  admissible, and some $z \in L(q)$ gives $(q, z)$ the rank
-  $6(|V(G)| - 1) - \operatorname{def}(\tilde G)$. Apply
-  \cref{lem:pencil-config-distinct-realization} to $(q, z)$.
-\end{proof}
-
 \begin{lemma}[Two open conditions on a fibre meet]
   \label{lem:pencil-x0-fibre-intersection}
   \lean{MvPolynomial.exists_mem_eval_ne_zero₂}
@@ -827,13 +803,11 @@ Later subsections cite the lemmas themselves.
   \label{thm:pencil-x0-main-component}
   \lean{Graph.exists_mvPolynomial_isMainPicture,
         MvPolynomial.exists_mem_eval_ne_zero₂,
-        Graph.x0Attains_of_exists,
-        Graph.X0Attains.hasDistinctPencilRealization}
+        Graph.x0Attains_of_exists}
   \leanok
   \uses{def:pencil-main-picture, def:pencil-x0-attains,
-        def:pencil-distinct-motive, lem:pencil-x0-main-picture-open,
-        lem:pencil-x0-fibre-intersection, lem:pencil-x0-one-witness,
-        lem:pencil-x0-attains-distinct}
+        lem:pencil-x0-main-picture-open,
+        lem:pencil-x0-fibre-intersection, lem:pencil-x0-one-witness}
   Let $K$ be infinite, and let $G$ have at least one body, no loops, and
   at least three members in every closed neighbourhood. Then the main
   pictures of $G$ (\cref{def:pencil-main-picture}) contain the non-roots
@@ -842,25 +816,20 @@ Later subsections cite the lemmas themselves.
   $L(q)$ are nonzero together somewhere on $L(q)$. Moreover, if a single
   configuration $(q, z)$ with $q$ a main picture and $z \in L(q)$ has
   rank at least $6(|V(G)| - 1) - \operatorname{def}(\tilde G)$, then the
-  general configuration of $G$ attains (\cref{def:pencil-x0-attains}),
-  and $G$ has an adjacent-distinct pencil realization
-  (\cref{def:pencil-distinct-motive}, at $d = 3$).
+  general configuration of $G$ attains (\cref{def:pencil-x0-attains}).
 \end{theorem}
 \begin{proof}
   \leanok
   The first claim is \cref{lem:pencil-x0-main-picture-open}. The second
   is \cref{lem:pencil-x0-fibre-intersection}, applied to the linear
-  subspace $L(q)$ of the heights. For the third, the general
-  configuration attains by \cref{lem:pencil-x0-one-witness}, and then
-  $G$ has an adjacent-distinct pencil realization
-  (\cref{lem:pencil-x0-attains-distinct}).
+  subspace $L(q)$ of the heights. The third is
+  \cref{lem:pencil-x0-one-witness}.
 \end{proof}
 
 \begin{fmlnote}
-  The four pins are, in order, the polynomial of the first claim, the
-  common point of the second, the attainment of the third and the
-  adjacent-distinct realization. Each is also a pin of the lemma that the
-  proof cites for that claim.
+  The three pins are, in order, the polynomial of the first claim, the
+  common point of the second and the attainment of the third. Each is
+  also a pin of the lemma that the proof cites for that claim.
 \end{fmlnote}
 
 \subsection{The flat rank}
@@ -3546,7 +3515,7 @@ lemma are the new points of the two interior bodies.
 
 This subsection proves the estimates on partitions that the structural
 coverage uses (\cref{sec:main-component-coverage}). The proof of the
-generic statement uses some of them too
+generic conjunct uses some of them too
 (\cref{sec:main-component-statements}). Fix a dimension $d$, and let
 $D = \binom{d+1}{2}$, as in \cref{def:D-deficiency}. We call the $D$-deficiency
 $\operatorname{def}_{\tilde G}(P)$ of a partition $P$ its \emph{value}.
@@ -4306,26 +4275,24 @@ no two of them are adjacent, a rigid set that avoids one of them.
 
 \begin{theorem}[The structural coverage]
   \label{thm:pencil-x0-coverage}
-  \lean{Graph.IsX0Graph.x0Reduces, Graph.IsX0Graph.x0Attains,
-        Graph.X0Attains.of_twoEdgeConnected}
+  \lean{Graph.IsX0Graph.x0Reduces, Graph.IsX0Graph.x0Attains}
   \leanok
   \uses{def:pencil-x0-reduces, def:pencil-x0-standing,
-        def:pencil-x0-attains, def:cut-edges-2ec}
+        def:pencil-x0-attains}
   Every graph satisfying the standing hypotheses reduces to the graphs
   smaller than it. Consequently, for $K$ infinite, the general
   configuration of every graph satisfying the standing hypotheses
-  attains, and in particular that of every simple 2-edge-connected graph
-  on at least three bodies.
+  attains.
 \end{theorem}
 \begin{proof}
   \leanok
-  \uses{thm:pencil-x0-reduction-attains, lem:pencil-x0-cut-reduces,
+  \uses{thm:pencil-x0-reduction-attains, def:cut-edges-2ec,
+        lem:pencil-x0-cut-reduces,
         lem:pencil-x0-cycle-reduces, lem:pencil-x0-planar-rigid-reduces,
         lem:pencil-x0-chain-exists, lem:pencil-x0-chain-reduces,
         thm:pencil-x0-theorem-s, lem:deficiency-sparse,
         lem:deficiency-antitone, lem:pencil-contract-standing,
-        lem:pencil-contract-standing-rigid, lem:two-edge-connected-degree,
-        lem:reduction-measure}
+        lem:pencil-contract-standing-rigid, lem:reduction-measure}
   Let $G$ satisfy the standing hypotheses. We take the cases of the
   table in order. If $G$ is not 2-edge-connected, or $G - v$ is
   disconnected for some body $v$, then $G$ reduces by
@@ -4347,31 +4314,24 @@ no two of them are adjacent, a rigid set that avoids one of them.
   \cref{lem:pencil-contract-standing}, \cref{lem:reduction-measure}), and
   $G$ reduces by clause (6) at $W$.
 
-  The rest is \cref{thm:pencil-x0-reduction-attains}. A simple
-  2-edge-connected graph on at least three bodies is connected
-  (\cref{def:cut-edges-2ec}), since no edge leaves the vertices of a
-  component. Its minimum degree is at least two
-  (\cref{lem:two-edge-connected-degree}), so it satisfies the standing
-  hypotheses.
+  The rest is \cref{thm:pencil-x0-reduction-attains}.
 \end{proof}
 
-\subsection{The two main-component statements}
+\subsection{Nondegeneracy, and the main theorem}
 \label{sec:main-component-statements}
 
-This subsection proves the two main-component statements
-(\cref{def:pencil-main-component-statements}). The distinct statement is
-immediate (\cref{lem:pencil-x0-distinct-statement}): the
-general configuration of a simple two-edge-connected graph on at least
-three bodies attains, and one attaining configuration is an
-adjacent-distinct realization. The generic statement does not follow in
-this way. When two pencil hubs have three common neighbours, as in
-$K_{2,3}$, no configuration over a general picture is nondegenerate
-(\cref{lem:pencil-x0-two-hubs-obstruction}).
+When the general configuration attains, one attaining configuration is
+an adjacent-distinct realization at the deficiency rank, in every
+dimension (\cref{lem:pencil-d-x0-attains-distinct}). A generic
+realization does not follow in this way. When two pencil hubs have three
+common neighbours, as in $K_{2,3}$, no configuration over a general
+picture is nondegenerate (\cref{lem:pencil-x0-two-hubs-obstruction}).
 
-We obtain the generic statement instead as the case $d = 3$ of the
-generic conjunct in every dimension (\cref{thm:pencil-d-generic}). Its
-proof lifts a general realization in dimension three to every dimension
-$d \ge 3$, and at $d = 3$ the lift is that realization itself. It is a
+The generic conjunct of the pencil realization theorem is instead the
+case $d = 3$ of the generic conjunct in every dimension
+(\cref{thm:pencil-d-generic}). Its proof lifts a general realization in
+dimension three to every dimension $d \ge 3$, and at $d = 3$ the lift is
+that realization itself. It is a
 strong induction on the number of bodies at a simple
 nondegeneracy-feasible graph, which asks neither two-edge-connectivity
 nor a third body. From this subsection it uses the lemmas on a graph
@@ -4381,37 +4341,9 @@ without a planar-rigid set (\cref{sec:main-component-sparse};
 and \cref{lem:pencil-rigid-good-ear}: in
 a graph with a planar-rigid set, a minimal one has a body of degree two
 whose neighbours are pencil hubs, or the graph has a pendant triangle,
-two adjacent bodies of degree two with a common neighbour. None of the
-results it uses rests on the generic statement.
+two adjacent bodies of degree two with a common neighbour.
 
-\begin{lemma}[The distinct main-component statement]
-  \label{lem:pencil-x0-distinct-statement}
-  \lean{CombinatorialRigidity.Molecular.x0Dist}
-  \leanok
-  \uses{def:pencil-main-component-statements, def:pencil-distinct-motive}
-  Let $K$ be an infinite field. Every simple two-edge-connected
-  multigraph on at least three bodies has a pencil realization at the
-  deficiency rank with adjacent concurrency points distinct: the distinct
-  main-component statement (\cref{def:pencil-main-component-statements})
-  holds.
-\end{lemma}
-\begin{proof}
-  \leanok
-  \uses{thm:pencil-x0-coverage, lem:pencil-x0-attains-distinct,
-        def:pencil-x0-standing, def:cut-edges-2ec,
-        lem:two-edge-connected-degree}
-  A simple two-edge-connected multigraph on at least three bodies is
-  connected (\cref{def:cut-edges-2ec}), since no edge leaves the
-  vertices of a component. Its minimum degree is at least two
-  (\cref{lem:two-edge-connected-degree}), so it satisfies the standing
-  hypotheses (\cref{def:pencil-x0-standing}). Its general configuration
-  attains (\cref{thm:pencil-x0-coverage}).
-  One attaining configuration is such a realization
-  (\cref{lem:pencil-x0-attains-distinct}). No hypothesis on the number of
-  edge labels is used.
-\end{proof}
-
-We record two lemmas for the proof of the generic statement. The first
+We record two lemmas for the proof of the generic conjunct. The first
 part of the first is the bound noted after
 \cref{def:pencil-nondegenerate}.
 
@@ -4470,7 +4402,7 @@ part of the first is the bound noted after
   coordinate maps them to independent homogeneous picture points.
 \end{proof}
 
-The lemma is the reason the generic statement is not proved through the
+The lemma is the reason the generic conjunct is not proved through the
 main component. Let $G$ be simple, with pencil hubs $a \neq b$ and three
 common neighbours $x$, $y$ and $z$. The determinant of the homogeneous
 picture points of $x$, $y$ and $z$ is a nonzero polynomial in the picture
@@ -4487,7 +4419,7 @@ planar-rigid (\cref{lem:deficiency-sparse}). The obstruction therefore
 does not arise in the case without a planar-rigid set, treated below.
 
 At $K_{2,3}$, let $a$ and $b$ be the bodies of degree three, so that $x$,
-$y$ and $z$ are those of degree two. The generic statement asks for a
+$y$ and $z$ are those of degree two. The generic conjunct asks for a
 generic realization of $K_{2,3}$, as $K_{2,3}$ is nondegeneracy-feasible.
 To see this, take linearly independent normals $n_a$ and $n_b$. Put the
 points of $x$, $y$ and $z$ at three distinct points of the line
@@ -4799,47 +4731,23 @@ consequences of nondegeneracy-feasibility in
   $\{y, a, b\}$ would be a triangle with two hubs.
 \end{proof}
 
-We collect these results in the main theorem of this chapter. Its
-generic statement follows from the case $d = 3$ of
-\cref{thm:pencil-d-generic}.
-The pencil realization theorem does not rest on the two main-component
-statements. It is the case $d = 3$ of the conditioned pair in every
-dimension (\cref{cor:pencil-d-conditioned-pair}), which uses the distinct
-statement in dimension $d$ and \cref{thm:pencil-d-generic} directly.
+We close with the main theorem of this section. The coverage in every
+dimension uses it, through the embedding of dimension three
+(\cref{lem:pencil-d-x0-attains-of-le}), and so does the pencil
+realization theorem.
 
 \begin{theorem}[The general point of the main component attains]
   \label{thm:pencil-x0-generic-attains}
-  \lean{Graph.IsX0Graph.x0Attains, CombinatorialRigidity.Molecular.x0Dist,
-        CombinatorialRigidity.Molecular.x0Gen}
+  \lean{Graph.IsX0Graph.x0Attains}
   \leanok
-  \uses{def:pencil-x0-attains, def:pencil-distinct-motive,
-        def:pencil-generic-motive, def:D-deficiency,
-        def:pencil-main-component-statements}
+  \uses{def:pencil-x0-attains, def:D-deficiency}
   Let $K$ be an infinite field. For every simple connected multigraph $G$
   of minimum degree at least two, the general configuration of $G$ attains
   the rank $6(|V(G)| - 1) - \operatorname{def}(\tilde G)$
   (\cref{def:pencil-x0-attains}; \cref{def:D-deficiency}, at $d = 3$).
-  The two main-component statements
-  (\cref{def:pencil-main-component-statements}) hold: every simple
-  two-edge-connected multigraph on at least three bodies has a pencil
-  realization at the deficiency rank with adjacent points distinct
-  (\cref{def:pencil-distinct-motive}), and, wherever a nondegenerate
-  realization exists at all, a generic one
-  (\cref{def:pencil-generic-motive}).
 \end{theorem}
 \begin{proof}
   \leanok
-  \uses{thm:pencil-x0-coverage, lem:pencil-x0-distinct-statement,
-        thm:pencil-d-generic, lem:pencil-d-nondegenerate-three}
-  The first claim is \cref{thm:pencil-x0-coverage}. The distinct statement
-  is \cref{lem:pencil-x0-distinct-statement}. The generic
-  statement is not proved from attaining configurations
-  (\cref{lem:pencil-x0-two-hubs-obstruction}). It is the case $d = 3$ of
-  the generic conjunct in every dimension (\cref{thm:pencil-d-generic}),
-  which asks neither two-edge-connectivity nor a third body: at $d = 3$,
-  nondegeneracy-feasibility and generic realizations in the sense of
-  \cref{sec:pencil-d} are those of \cref{sec:pencil}
-  (\cref{lem:pencil-d-nondegenerate-three}). The forward reference is not
-  circular, as the proof of \cref{thm:pencil-d-generic} uses no result
-  that rests on the generic statement.
+  \uses{thm:pencil-x0-coverage}
+  This is \cref{thm:pencil-x0-coverage}.
 \end{proof}

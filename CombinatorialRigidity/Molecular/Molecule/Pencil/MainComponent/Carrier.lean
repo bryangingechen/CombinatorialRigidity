@@ -332,8 +332,7 @@ The rank is that of `PanelHingeFramework.ofNormals G ends` at the configuration 
 the point-join framework, of the same rank, `lem:pencil-config-point-join-rank`, with nonzero hinges
 wherever adjacent picture points differ). The open set of attaining heights lets a step meet them
 with the non-roots of another polynomial that is nonzero somewhere on the same fibre `L(q)`
-(`lem:pencil-x0-fibre-intersection`); `lem:pencil-x0-attains-distinct` uses one attaining
-configuration.
+(`lem:pencil-x0-fibre-intersection`).
 
 `P ≠ 0` means "off a proper Zariski-closed set of pictures" only over an infinite field: over a
 finite field a nonzero polynomial can vanish at every point (`X ^ |K| − X`), and `X0Attains` then

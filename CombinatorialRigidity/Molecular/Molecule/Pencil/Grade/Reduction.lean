@@ -19,7 +19,7 @@ infinite field and in every dimension `d = m + 2 ≥ 3`, every multigraph with a
 realization at the deficiency rank (`HasGradedPencilRealization`), and an adjacent-distinct one
 (`HasGradedDistinctPencilRealization`) when it is simple. The cases at a loop, on at most two
 bodies, at a cut edge and at parallel edges are from `Grade/Arms.lean`; the case of a simple
-two-edge-connected multigraph is the distinct statement
+two-edge-connected multigraph is an adjacent-distinct realization of the whole multigraph
 (`Graph.hasGradedDistinctPencilRealization_of_twoEdgeConnected`, `Grade/Coverage.lean`), which
 takes no induction hypothesis. At `d = 3` the theorem gives the first two conjuncts of the
 conditioned pair, through `Graph.graded_pencil_conditioned_pair` (`pencilPair_of_nonempty`,
@@ -160,7 +160,7 @@ theorem _root_.Graph.graded_pencil_realization_theorem [Infinite K] [Finite α] 
     intro G hloop hV _ hS IH
     exact ⟨hasGradedPencilRealization_of_not_simple G hloop hV hS
       fun G' h1 h2 => (IH G' h1 h2).1, fun h => absurd h hS⟩
-  · -- simple and two-edge-connected: the distinct statement, with no induction hypothesis
+  · -- simple and two-edge-connected: an adjacent-distinct realization, with no induction hypothesis
     intro G hS hV htec
     have hd := Graph.hasGradedDistinctPencilRealization_of_twoEdgeConnected (K := K) hS hV htec hm
     obtain ⟨F, normal, plane, h, -, hr⟩ := id hd

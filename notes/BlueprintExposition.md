@@ -1241,7 +1241,10 @@ discharge point.
   post-Phase-40 cleanup); retired 2026-11-08 with its pins (Phase 43b slice 2): the theorem is the
   case `d = 3` of `cor:pencil-d-conditioned-pair` (`thm:pencil-realization-theorem`); the
   account of the main component it carried stays in `sec:pencil-main-component-route`'s opening and
-  `sec:main-component`'s introduction; git keeps the entry's text]
+  `sec:main-component`'s introduction; git keeps the entry's text. The definition node followed
+  2026-11-08 (Phase 43d slice 2, at the PI's word), with `lem:pencil-x0-distinct-statement` and
+  their pins: off every route since 43b, each statement a special case of a conjunct of the
+  theorem]
 - **`thm:pencil-conditional-realization-pair` (kernels (K), (K-bare))** — [closed — superseded
   (Phase 40's close, 2026-09-29); the node, by then the conditioned pair's reduction, deleted
   2026-11-08 (Phase 43b slice 2); git keeps the entry's text]

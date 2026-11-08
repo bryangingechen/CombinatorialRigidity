@@ -186,8 +186,7 @@ dimension** (`lem:pencil-d-x0-attains-distinct`): over an infinite field,
 `Graph.X0AttainsGrade K m G` gives `HasGradedDistinctPencilRealization K (m + 1) (m + 2) G`.
 The nonzero picture polynomial `P` has a non-root `q` (`MvPolynomial.exists_eval_ne_zero`), which
 is admissible, with heights `z ∈ L(q)^m` off the zero set of the height polynomial, where the rank
-is attained; `Graph.IsAdmissiblePicture.hasGradedDistinctPencilRealization` applies. It is the
-grade form of `Graph.X0Attains.hasDistinctPencilRealization`. -/
+is attained; `Graph.IsAdmissiblePicture.hasGradedDistinctPencilRealization` applies. -/
 theorem _root_.Graph.X0AttainsGrade.hasGradedDistinctPencilRealization [Infinite K] {G : Graph α β}
     (h : G.X0AttainsGrade K m) : HasGradedDistinctPencilRealization K (m + 1) (m + 2) G := by
   obtain ⟨ends, P, hends, hP, hgood⟩ := h

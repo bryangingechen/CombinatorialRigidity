@@ -33,16 +33,16 @@ states this induction, whose cases are proved in every dimension
 distinct points and the nondegenerate realizations to the statement, the
 conditioned pair. Katoh and Tanigawa's induction statement likewise asks
 for nonparallel realizations (KT Theorem~5.5).
-\Cref{sec:pencil-main-component-route} states two statements on simple
-two-edge-connected multigraphs (\cref{def:pencil-main-component-statements}),
-which \cref{sec:main-component} proves by lifting pictures of $G$ in the
-plane, and proves the theorem. It is the case $d = 3$ of the conditioned
-pair in every dimension $d \ge 3$ (\cref{cor:pencil-d-conditioned-pair}).
-There the reduction gives the first two conjuncts
-(\cref{sec:pencil-d-reduction}), and at a simple two-edge-connected
-multigraph it uses the first statement in dimension $d$. A nondegenerate
-realization in dimension three, lifted, gives the third
-(\cref{thm:pencil-d-generic}).
+\Cref{sec:pencil-main-component-route} sketches how
+\cref{sec:main-component} builds pencil realizations by lifting pictures
+of $G$ in the plane, and proves the theorem. It is the case $d = 3$ of the
+conditioned pair in every dimension $d \ge 3$
+(\cref{cor:pencil-d-conditioned-pair}). There the reduction gives the
+first two conjuncts (\cref{sec:pencil-d-reduction}), and at a simple
+two-edge-connected multigraph it uses an adjacent-distinct realization of
+the whole multigraph in dimension $d$, from the lifted configurations
+(\cref{lem:pencil-d-distinct-statement}). A nondegenerate realization in
+dimension three, lifted, gives the third (\cref{thm:pencil-d-generic}).
 
 Two parts of the chapter are not used in the proof of
 \cref{thm:pencil-realization-theorem}. \Cref{sec:pencil-duality} shows that the
@@ -212,8 +212,8 @@ nondegeneracy-feasible (\cref{sec:pencil-nondegenerate}). A needs an
 adjacent-distinct realization of $K_4$, and B gives one.
 
 \emph{How the parts depend on one another.} A uses B only at a simple
-two-edge-connected multigraph, through the distinct main-component
-statement in dimension $d$ (\cref{lem:pencil-d-distinct-statement}). C
+two-edge-connected multigraph, through its adjacent-distinct realization
+in dimension $d$ (\cref{lem:pencil-d-distinct-statement}). C
 uses the conclusion of B only at a graph without a planar-rigid set, in
 the proof of \cref{thm:pencil-d-generic}. C also uses lemmas proved
 alongside B that are not steps of B: Jackson and Jord\'an's equality,
@@ -694,8 +694,8 @@ None of them asks for a proper rigid subgraph or a vertex of degree two.
 Katoh--Tanigawa need a vertex of degree two when there is no proper
 rigid subgraph, and they find one by an edge count that uses minimality
 (KT Lemmas~4.5 and~4.6, pp.~663--664). We settle a simple
-two-edge-connected multigraph by the first main-component statement,
-applied to the whole graph (\cref{sec:main-component}). Its proof finds
+two-edge-connected multigraph by the main-component induction of
+\cref{sec:main-component}, applied to the whole graph. Its proof finds
 the bodies of degree two by a count of its own. In that proof a graph
 with no planar-rigid set is sparse, and a sparse graph has at least four
 bodies of degree two (\cref{lem:pencil-x0-sparse-count}). In dimension
@@ -762,9 +762,9 @@ at a loop (\cref{lem:pencil-d-loop-case}), on at most two bodies
 (\cref{lem:pencil-d-two-pencil-extension}). Case~(iv) contracts two
 parallel edges, as Katoh and Tanigawa do
 (\cref{lem:pencil-d-nonsimple-case}; KT Lemma~6.2). Case~(v) is settled
-by the distinct main-component statement in dimension $d$
-(\cref{lem:pencil-d-distinct-statement}), which rests on the argument of
-\cref{sec:main-component}. Both arguments contract proper rigid
+by an adjacent-distinct realization of the whole multigraph in dimension
+$d$ (\cref{lem:pencil-d-distinct-statement}), which rests on the argument
+of \cref{sec:main-component}. Both arguments contract proper rigid
 subgraphs, and contraction leaves the deficiency unchanged
 (\cref{lem:pencil-contraction-deficiency}).
 
@@ -965,18 +965,17 @@ conditions.
   $D = 6$. The theorems that use them take $d = 3$, where the two agree.
 \end{fmlnote}
 
-\subsection{The main-component statements, and the theorem}
+\subsection{Lifting planar pictures, and the theorem}
 \label{sec:pencil-main-component-route}
 
-This subsection states two statements on a simple two-edge-connected
-multigraph: it has an adjacent-distinct pencil realization at the
-deficiency rank, and a generic one when it is nondegeneracy-feasible.
-These are the main-component statements, proved in
-\cref{sec:main-component}. It then proves the pencil realization theorem,
-as the case $d = 3$ of the conditioned pair in every dimension
+This subsection sketches the idea of \cref{sec:main-component}. It then
+proves the pencil realization theorem, as the case $d = 3$ of the
+conditioned pair in every dimension
 (\cref{cor:pencil-d-conditioned-pair}). Its reduction
-(\cref{sec:pencil-d-reduction}) uses the first statement in dimension
-$d$ at a simple two-edge-connected multigraph. At a loopless
+(\cref{sec:pencil-d-reduction}) uses, at a simple two-edge-connected
+multigraph, an adjacent-distinct realization of the whole multigraph in
+dimension $d$ from the lifted configurations
+(\cref{lem:pencil-d-distinct-statement}). At a loopless
 two-edge-connected multigraph that is not simple, it contracts two
 parallel edges (\cref{lem:pencil-d-nonsimple-case}), as Katoh and
 Tanigawa do (KT Lemma~6.2).
@@ -1006,32 +1005,15 @@ multigraph whose bodies all have degree at least two, a general
 configuration of the main component has the deficiency rank
 (\cref{thm:pencil-x0-generic-attains}). The proof is a strong induction
 on the number of bodies. A lifted configuration at the deficiency rank
-is an adjacent-distinct pencil realization
-(\cref{lem:pencil-config-distinct-realization}), which gives the first
-statement. The second does not follow in this way. When two pencil hubs
-have three common neighbours, as in $K_{2,3}$, no configuration over a
-general picture is nondegenerate
-(\cref{lem:pencil-x0-two-hubs-obstruction}). The second statement is
-instead the case $d = 3$ of the generic conjunct in every dimension
-(\cref{thm:pencil-d-generic}), which lifts a general realization in
-dimension three.
-
-\begin{definition}[The two main-component statements]
-  \label{def:pencil-main-component-statements}
-  \lean{CombinatorialRigidity.Molecular.X0Dist,
-        CombinatorialRigidity.Molecular.X0Gen}
-  \leanok
-  \uses{def:pencil-distinct-motive, def:pencil-generic-motive,
-        def:pencil-nondegenerate, def:cut-edges-2ec}
-  Let $K$ be a field. The \emph{distinct main-component statement}
-  asserts that every simple two-edge-connected multigraph on at least
-  three bodies has an adjacent-distinct pencil realization at the
-  deficiency rank at $d = 3$ (\cref{def:pencil-distinct-motive}). The
-  \emph{generic main-component statement} asserts that every such
-  multigraph that is nondegeneracy-feasible
-  (\cref{def:pencil-nondegenerate}) has a generic pencil realization at
-  $d = 3$ (\cref{def:pencil-generic-motive}).
-\end{definition}
+is an adjacent-distinct pencil realization, in every dimension
+(\cref{lem:pencil-d-config-realization}). This gives the reduction its
+case at a simple two-edge-connected multigraph. Nondegenerate
+realizations do not follow in this way. When two pencil hubs have three
+common neighbours, as in $K_{2,3}$, no configuration over a general
+picture is nondegenerate (\cref{lem:pencil-x0-two-hubs-obstruction}).
+The third conjunct of the theorem is instead the case $d = 3$ of the
+generic conjunct in every dimension (\cref{thm:pencil-d-generic}), which
+lifts a general realization in dimension three.
 
 \begin{theorem}[The pencil realization theorem]
   \label{thm:pencil-realization-theorem}

@@ -4014,10 +4014,10 @@ embedding, within \cref{thm:pencil-x0-coverage}.
 When the general configuration of a graph attains, the graph has an
 adjacent-distinct pencil realization
 (\cref{lem:pencil-d-x0-attains-distinct}). With the coverage this gives
-the distinct main-component statement in dimension $d$
+every simple two-edge-connected multigraph on at least three bodies an
+adjacent-distinct realization in dimension $d$
 (\cref{lem:pencil-d-distinct-statement}), which the reduction of
-\cref{sec:pencil-d-reduction} uses at the simple two-edge-connected
-multigraphs.
+\cref{sec:pencil-d-reduction} uses at these multigraphs.
 
 % Source: SHORT-CORE workbook (notes/attacks/short-core/workbook.md), S53 (b), through
 % thm:pencil-d-chain-or-core. Its case without a planar-rigid set, on at least four bodies,
@@ -4049,7 +4049,7 @@ multigraphs.
         thm:pencil-d-open-ear-four, thm:pencil-d-open-ear-three,
         lem:pencil-contract-standing-rigid,
         thm:pencil-d-contract-additive, lem:two-edge-connected-degree}
-  At $d = 3$ this is \cref{thm:pencil-x0-coverage}
+  At $d = 3$ the first claim is \cref{thm:pencil-x0-coverage}
   (\cref{lem:pencil-d-x0-attains-three}). Let $d \ge 4$ and
   $D = \binom{d+1}{2}$. Let $\ell = 2$ if $d = 4$, and $\ell = 3$ if
   $d \ge 5$. Then $3(\ell + 1) \le D$, as $D = 10$ at $d = 4$ and
@@ -4144,8 +4144,8 @@ multigraphs.
   (\cref{lem:two-edge-connected-degree}), so it satisfies the standing
   hypotheses.
 
-  At $d = 3$ this is \cref{thm:pencil-x0-coverage}. There the dimension
-  enters in three places. First, the fourth case reads
+  At $d = 3$ the first claim is \cref{thm:pencil-x0-coverage}. There the
+  dimension enters in three places. First, the fourth case reads
   $\operatorname{def}_2(G) = \operatorname{def}_3(G)$. In dimension $d$
   it reads $\operatorname{def}_2(G) = \operatorname{def}_d(G)$, and the
   steps of the first five cases hold in dimension $d$ with the same
@@ -4167,7 +4167,7 @@ multigraphs.
   needs it only at $d = 4$.
 \end{proof}
 
-\begin{lemma}[The distinct main-component statement, in every dimension]
+\begin{lemma}[Adjacent-distinct realizations of simple two-edge-connected multigraphs, in every dimension]
   \label{lem:pencil-d-distinct-statement}
   \lean{Graph.hasGradedDistinctPencilRealization_of_twoEdgeConnected}
   \leanok
@@ -4184,10 +4184,9 @@ multigraphs.
   pencil realization in dimension $d$
   (\cref{lem:pencil-d-x0-attains-distinct}).
 
-  At $d = 3$ this is \cref{lem:pencil-x0-distinct-statement}, through
-  \cref{lem:pencil-d-rank-agrees-three}. The dimension enters only
-  through the coverage. An attaining configuration is a realization with
-  independent points at adjacent bodies in every dimension
+  The dimension enters only through the coverage. An attaining
+  configuration is a realization with independent points at adjacent
+  bodies in every dimension
   (\cref{lem:pencil-d-config-realization}).
 \end{proof}
 
@@ -4204,11 +4203,11 @@ is this one. It is the induction of \cref{thm:pencil-reduction}, with
 the cases at a loop, on at most two bodies and at a cut edge
 (\cref{lem:pencil-d-loop-case}, \cref{lem:pencil-d-base-case},
 \cref{lem:pencil-d-cut-case}). At a simple two-edge-connected multigraph
-it uses the distinct main-component statement in dimension $d$
-(\cref{lem:pencil-d-distinct-statement}), which at $d = 3$ is
-\cref{lem:pencil-x0-distinct-statement}. At a two-edge-connected
-multigraph that is not simple, it contracts two parallel edges, as Katoh
-and Tanigawa do (\cref{lem:pencil-d-nonsimple-case}; KT Lemma~6.2).
+it uses an adjacent-distinct realization of the whole multigraph in
+dimension $d$ (\cref{lem:pencil-d-distinct-statement}). At a
+two-edge-connected multigraph that is not simple, it contracts two
+parallel edges, as Katoh and Tanigawa do
+(\cref{lem:pencil-d-nonsimple-case}; KT Lemma~6.2).
 
 The cases at a loop, at a cut edge and at parallel edges each place a
 hinge that must lie in the panels of its two ends and pass through
@@ -4726,10 +4725,10 @@ $K^{d+1}$ chosen to meet it (\cref{lem:pencil-d-cut-reposition}).
   At $d = 3$ this gives the first two conjuncts of
   \cref{thm:pencil-realization-theorem}
   (\cref{lem:pencil-d-rank-agrees-three}). The dimension enters only
-  through the cases and the distinct main-component statement. The cases
+  through the cases and \cref{lem:pencil-d-distinct-statement}. The cases
   at a loop, on at most two bodies, at a cut edge and at parallel edges
   take their hinges from \cref{lem:pencil-d-two-pencil-extension}, and
-  the distinct statement rests on the coverage in dimension $d$
+  that lemma rests on the coverage in dimension $d$
   (\cref{thm:pencil-d-coverage}). The induction of
   \cref{thm:pencil-reduction} is on the numbers of bodies and edges, and
   its statement does not depend on the dimension.
@@ -6571,8 +6570,8 @@ So its subspace can be chosen after the points of $X$
   of \cref{lem:pencil-d-lift-ear} holds by \cref{lem:pencil-d-ear-free},
   and \cref{lem:pencil-d-lift-ear} applies.
 
-  At $d = 3$ the theorem gives the generic main-component statement
-  (\cref{thm:pencil-x0-generic-attains}), through
+  At $d = 3$ the theorem gives the third conjunct of
+  \cref{thm:pencil-realization-theorem}, through
   \cref{lem:pencil-d-nondegenerate-three}.
 \end{proof}
 

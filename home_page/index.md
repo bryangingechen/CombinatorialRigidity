@@ -192,13 +192,14 @@ taken from the argument for every dimension, and the separate
 three-dimensional argument is gone, its cases proved once for every
 dimension, with a short note on the old route; the reduction is restated
 on structural cases; and the two unnecessary cases are gone. A road map of
-the proof comes last.
+the proof comes last; with it, the two statements of Phase 39 go, as special
+cases of the theorem's claims that no proof uses any more.
 
 ### How the pencil realization theorem is proved
 
 Phase 39 (closed 2026-09-25) reduced the theorem, in Lean, to two
-*main-component statements*: every simple two-edge-connected multigraph on
-at least three bodies has a pencil realization at the deficiency rank with
+statements about the main component (below): every simple two-edge-connected
+multigraph on at least three bodies has a pencil realization at the deficiency rank with
 the points of adjacent bodies distinct, and a nondegenerate one at that rank
 whenever it has a nondegenerate pencil realization at all. Phase 40 (closed
 2026-09-29) proved both, formalizing a proof first worked out informally and
@@ -266,7 +267,7 @@ The table below and `ROADMAP.md` carry the fine-grained status.
 |    24 | 3-D generic bar-joint rigidity matroid (linear-matroid form) | `GenericRigidityMatroid.lean` | ✓ |
 |    25 | projective duality + the molecule modelling equivalence | `SquareGraph.lean`, `GeneralPositionPlacement.lean`, `Molecular/Molecule/` | ✓ |
 |    26 | the molecule application (Corollary 5.7) | `Molecular/Molecule/`, `GenericRigidityMatroid.lean` | ✓ |
-|    39 | the pencil realization theorem: reduction to two main-component statements | `Molecular/Molecule/Pencil/` | ✓ |
+|    39 | the pencil realization theorem: reduction to two statements about the main component | `Molecular/Molecule/Pencil/` | ✓ |
 |    40 | the pencil realization theorem: the main-component proof of the two statements (and the plane case of Theorems 5.5/5.6) | `Molecular/` | ✓ |
 |    41 | each hinge at the ends of its own edge, built into the panel-hinge framework; the generic rank theorems at every graph; a Lean declaration for each claim the blueprint made without one | `Molecular/` | ✓ |
 |    42 | the pencil realization theorem in every dimension: a proof on paper, then its formalization | `Molecular/` | ✓ |

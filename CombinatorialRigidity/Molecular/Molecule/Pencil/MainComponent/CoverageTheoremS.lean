@@ -12,9 +12,8 @@ public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.TheoremS
 
 The structural coverage (`thm:pencil-x0-coverage`, `sec:main-component-coverage`): every graph
 satisfying the standing hypotheses reduces to the graphs smaller than it (`Graph.X0Reduces`). So,
-over an infinite field, the general configuration of every such graph attains, and in particular
-that of every simple 2-edge-connected graph on at least three bodies. The proof takes the cases of
-the chapter's table in order: a graph that is not 2-connected (`lem:pencil-x0-cut-reduces`,
+over an infinite field, the general configuration of every such graph attains. The proof takes the
+cases of the chapter's table in order: a graph that is not 2-connected (`lem:pencil-x0-cut-reduces`,
 `MainComponent/CoverageCut.lean`); a cycle (`lem:pencil-x0-cycle-reduces`,
 `MainComponent/CoverageChain.lean`); equal deficiencies `def₂(G) = def₃(G)`; and a planar-rigid set,
 where `G` contracts a maximal one (`lem:pencil-x0-planar-rigid-reduces`). Otherwise `G` is sparse:
@@ -33,9 +32,8 @@ of degree two (`MainComponent/SparseCount.lean`, `lem:pencil-x0-sparse-count`).
 * `Graph.IsX0Graph.x0Reduces_of_deficiency_two_rigid`: `lem:pencil-x0-planar-rigid-reduces`,
   contraction at a maximal planar-rigid set.
 * `Graph.IsX0Graph.exists_additiveCore`: `thm:pencil-x0-theorem-s`, a core when no chain is usable.
-* `Graph.IsX0Graph.x0Reduces`, `Graph.IsX0Graph.x0Attains` and
-  `Graph.X0Attains.of_twoEdgeConnected`: `thm:pencil-x0-coverage`, the structural coverage and the
-  attainment it gives.
+* `Graph.IsX0Graph.x0Reduces` and `Graph.IsX0Graph.x0Attains`: `thm:pencil-x0-coverage`, the
+  structural coverage and the attainment it gives.
 -/
 
 @[expose] public section
@@ -393,7 +391,7 @@ theorem _root_.Graph.IsX0Graph.x0Reduces {G : Graph α β} (hG : G.IsX0Graph) :
   push Not at hrig
   exact hG.x0Reduces_of_sparse h2c htec hcyc hrig
 
-/-- **The general configuration attains** (`thm:pencil-x0-coverage`, and the first claim of
+/-- **The general configuration attains** (`thm:pencil-x0-coverage`, and
 `thm:pencil-x0-generic-attains`): over an infinite field, the general configuration of every graph
 satisfying the standing hypotheses (simple and connected, of minimum degree at least two) attains,
 by the induction on the number of bodies (`Graph.X0Attains.of_isX0Graph_of_x0Reduces`,
@@ -401,19 +399,5 @@ by the induction on the number of bodies (`Graph.X0Attains.of_isX0Graph_of_x0Red
 theorem _root_.Graph.IsX0Graph.x0Attains [Infinite K] {G : Graph α β} (hG : G.IsX0Graph) :
     G.X0Attains K :=
   Graph.X0Attains.of_isX0Graph_of_x0Reduces (fun _ hG' => hG'.x0Reduces) hG
-
-/-- **The general configuration of a simple 2-edge-connected graph on at least three bodies
-attains** (`thm:pencil-x0-coverage`, its last claim), over an infinite field. Such a graph satisfies
-the standing hypotheses: it is connected (`Graph.preconnected_of_twoEdgeConnected`), and every body
-has degree at least two (`Graph.two_le_degree_of_twoEdgeConnected`,
-`lem:two-edge-connected-degree`). The distinct statement `X0Dist` follows from it (`x0Dist`,
-`lem:pencil-x0-distinct-statement`). -/
-theorem _root_.Graph.X0Attains.of_twoEdgeConnected [Infinite K] {G : Graph α β}
-    (hS : G.Simple) (hV : 3 ≤ V(G).ncard) (htec : G.TwoEdgeConnected) : G.X0Attains K :=
-  Graph.IsX0Graph.x0Attains
-    { simple := hS
-      connected := Graph.connected_iff.mpr ⟨Set.nonempty_of_ncard_ne_zero (by omega),
-        Graph.preconnected_of_twoEdgeConnected htec⟩
-      two_le_degree := fun v hv => Graph.two_le_degree_of_twoEdgeConnected htec hv (by omega) }
 
 end CombinatorialRigidity.Molecular

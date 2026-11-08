@@ -7,8 +7,10 @@ the three fresh reads held, and each layer's inputs from them are in §2. **43b*
 dimension, and the reduction's cases are proved once. **43c** NORMAL and SPRIME closed 2026-11-08
 (`notes/Phase43c.md`): the reduction on five structural cases, and Theorem S′ at `d = 3`, with
 the two unnecessary steps gone. **43d** EXPO, the last layer, is open (2026-11-08, at the PI's
-word, §1; `notes/Phase43d.md`): the road map of the proof, in four prose slices, and its close
-closes Phase 43. Slice 1, the road map, landed; next: 43d's slice 2, the flatness remark.
+word, §1; `notes/Phase43d.md`): the road map of the proof, in five slices, and its close closes
+Phase 43. Slice 1, the road map, landed, and slice 2, inserted at the PI's word (§1, the 43d
+coordinator's session), removed the two main-component statements; next: slice 3, the flatness
+remark.
 
 This file is the phase's entry point: the target (§0), the PI's decisions (§1, verbatim), the
 layers by stable code (§2) and the open questions (§3). The recon record stays in
@@ -150,6 +152,29 @@ throughout):
   sentence. It brings anything contentious back to you before slice 1." Chosen: "Open 43d now
   (Recommended)". Not chosen: "More discussion first".
 
+**PI, 2026-11-08, this coordinator session (verbatim),** after the open's return flagged decision
+D-c as the PI's optional call. The coordinator first gave verified facts: X0Dist, X0Gen, x0Dist and
+x0Gen have no Lean consumer since 43b (only three docstrings outside their home files mention
+them); X0.lean (49 lines) holds just the two definitions; they are not main results in
+formalization.yaml (two of its notes mention them); the phrase "main-component statement" appears
+19 times across pencil.tex, main-component.tex, pencil-d.tex and intro.tex; each statement is a
+special case of a conjunct of the theorem itself; the attaining claim (x0Attains) that
+thm:pencil-x0-generic-attains also carries stays on the route (the d ≥ 4 embedding uses it).
+Question put: "The two main-component statements (X0Dist / X0Gen, proved as x0Dist / x0Gen, with
+the node def:pencil-main-component-statements) are off every proof route since 43b: no Lean
+consumer, and each is a special case of a conjunct of the pencil realization theorem. Keep them, or
+remove them? Removing means: delete the two defs and two theorems (X0.lean whole), delete the def
+node, restate thm:pencil-x0-generic-attains to its attaining claim only (which stays on route), and
+reword the 19 prose mentions. No main result's statement changes."
+Chosen: "Remove in 43d, before slice 3" — offered as: "One added Opus slice (Lean deletion plus
+blueprint rewording), so the road map and the pointer slices never describe a detour. My estimate:
+one slice; the rewording size is my guess, not measured. By your earlier test ('independently
+interesting?'), they are special cases of the theorem's conjuncts."
+Not chosen: "Keep them (the open's D-c)" (thm:pencil-x0-generic-attains stays main-component.tex's
+summary at d = 3, its role prose saying it is off the realization theorem's route); "Remove later,
+after Phase 43" (queue the removal as a cleanup round after 43d closes; EXPO's prose describes them
+as they stand now).
+
 ## 2. The layers, by stable code
 
 In order. A letter is minted when a layer opens.
@@ -161,8 +186,8 @@ In order. A letter is minted when a layer opens.
   SPRIME (S′).
 - **LIFT3** (43b, opened and closed 2026-11-08; N1c; `notes/Phase43b.md`). **Verdict: done as
   planned**, in four slices and the close. `HasGenericPencilRealization K 3 G` is
-  `liftAttains_of_simple 0` (`x0Gen`); `pencilPair_of_nonempty` is the `m = 1` case of
-  `Graph.graded_pencil_conditioned_pair`; the reduction's cases are proved once, in
+  `liftAttains_of_simple 0` (`x0Gen`, removed in 43d's slice 2); `pencilPair_of_nonempty` is the
+  `m = 1` case of `Graph.graded_pencil_conditioned_pair`; the reduction's cases are proved once, in
   `sec:pencil-d-reduction`; the explicit `d = 3` route is one remark after `thm:pencil-d-generic`'s
   proof (D1). 91 declarations and 15 nodes went, none came, and no main result's statement
   changed. The premise check (43a) found no cycle (`notes/pencil-natural/premise_closure.py`,
@@ -191,7 +216,8 @@ In order. A letter is minted when a layer opens.
   The pin's spike and walk stay banked (`notes/pencil-natural/SprimeSpike.lean`, `sprime_walk.py`)
   as its record, naming what slices B and C deleted. The read's inputs for the build (the move,
   NEW-1 and NEW-2, the sizes) are `git show b9e9e2b2:notes/Phase43-design.md`, §2.
-- **EXPO** (43d, opened 2026-11-08 at the PI's word, §1; `notes/Phase43d.md`). The road map
+- **EXPO** (43d, opened 2026-11-08 at the PI's word, §1; `notes/Phase43d.md`; its slice 2, the
+  removal of the main-component statements, at the PI's later word, §1). The road map
   (`notes/PencilNatural.md` §5), with the A/B/C structure as it stands after the layers above,
   I1–I4 as corrected, and the flatness reading, which its read confirmed once stated precisely
   (43a). Last. The read's inputs, re-derived against the chapters at the open (`notes/Phase43d.md`,
@@ -223,9 +249,10 @@ In order. A letter is minted when a layer opens.
     height of `G` restricts to one of `G[W]`, so `W`'s points lie in one plane, each body's panel;
     two members of one closed hub-neighbourhood in `W` then have dependent normals. The `K_{2,3}`
     paragraph's "some set of at least two of them is planar-rigid" understates: all five are.
-  - **From LIFT3** (43b's close). `thm:pencil-x0-generic-attains` stays as `sec:main-component`'s
-    summary, off the realization theorem's route, its role prose a hypothesis to revisit, not a
-    settled exposition; `x0Dist` and `x0Gen` keep no Lean consumer. The old `d = 3` route's one
+  - **From LIFT3** (43b's close). `x0Dist` and `x0Gen` kept no Lean consumer; at the PI's word
+    (§1, the 43d coordinator's session) 43d's slice 2 removed them, with `X0Dist`, `X0Gen` and
+    their node, and restated `thm:pencil-x0-generic-attains` to its attaining claim, which stays
+    on the route through the embedding of dimension three. The old `d = 3` route's one
     home is the remark after `thm:pencil-d-generic`'s proof. Each `d = 3` sentence of
     `sec:pencil-d-reduction` reads its case at `d = 3` with no deleted node behind it, and may be
     cut.

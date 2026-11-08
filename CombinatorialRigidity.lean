@@ -112,7 +112,6 @@ public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Stat
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Reseed
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Steer
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Witness
-public import CombinatorialRigidity.Molecular.Molecule.Pencil.X0
 public import CombinatorialRigidity.Molecular.Molecule.ProjectiveInvariance
 public import CombinatorialRigidity.Molecular.Molecule.ScrewVelocity
 public import CombinatorialRigidity.Molecular.Molecule.Theorem56

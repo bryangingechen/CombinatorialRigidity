@@ -24,7 +24,8 @@ The two nodes of `sec:pencil-d-coverage` (`blueprint/src/chapter/pencil-d.tex`).
 * `Graph.X0AttainsGrade.of_twoEdgeConnected`: its last claim, a simple 2-edge-connected graph on at
   least three bodies.
 * `Graph.hasGradedDistinctPencilRealization_of_twoEdgeConnected`:
-  `lem:pencil-d-distinct-statement`, the distinct statement at one graph.
+  `lem:pencil-d-distinct-statement`, an adjacent-distinct realization of a simple 2-edge-connected
+  graph on at least three bodies.
 -/
 
 @[expose] public section
@@ -136,10 +137,13 @@ theorem _root_.Graph.X0AttainsGrade.of_twoEdgeConnected [Infinite K] [Finite α]
         Graph.preconnected_of_twoEdgeConnected htec⟩
       two_le_degree := fun v hv => Graph.two_le_degree_of_twoEdgeConnected htec hv (by omega) } hm
 
-/-! ## The distinct statement (`lem:pencil-d-distinct-statement`) -/
+/-! ## Adjacent-distinct realizations (`lem:pencil-d-distinct-statement`) -/
 
-/-- **The distinct main-component statement, in every dimension**
-(`lem:pencil-d-distinct-statement`). -/
+/-- **Simple 2-edge-connected graphs have adjacent-distinct realizations, in every dimension**
+(`lem:pencil-d-distinct-statement`): over an infinite field, every simple 2-edge-connected graph on
+at least three bodies has an adjacent-distinct pencil realization in dimension `m + 2`. Its general
+configuration attains (`Graph.X0AttainsGrade.of_twoEdgeConnected`), and an attaining configuration
+gives one (`Graph.X0AttainsGrade.hasGradedDistinctPencilRealization`). -/
 theorem _root_.Graph.hasGradedDistinctPencilRealization_of_twoEdgeConnected [Infinite K]
     [Finite α] [Finite β] {m : ℕ} {G : Graph α β} (hS : G.Simple) (hV : 3 ≤ V(G).ncard)
     (htec : G.TwoEdgeConnected) (hm : 1 ≤ m) :

@@ -19,7 +19,7 @@ public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Reduction
 * `liftAttains_of_simple`: the general lift attains at every simple nondegeneracy-feasible graph
   with a body, by strong induction on the number of bodies, following the case split of the
   conditioned pair in dimension three, here on the general lift; at `r = 0` it gives the generic
-  main-component statement (`x0Gen`, `thm:pencil-x0-generic-attains`). The arms: at most two
+  conjunct of `thm:pencil-realization-theorem` (`pencilPair_of_nonempty`). The arms: at most two
   bodies, a cut with no crossing edge, a cut edge or a pendant body (`Grade/LiftCutEdge.lean`,
   `Grade/LiftCases.lean`), a triangle, no rigid subgraph (`Grade/LiftNoRigid.lean`), and the good
   ear or pendant triangle of `Grade/GoodEar.lean`, whose ear arm gets its condition from

@@ -22,15 +22,13 @@ The point-join framework (`pointJoinFramework`) has at each edge the join `p_u �
 of its ends; with a fixed nonzero hinge off `E(G)`, it is the framework `F_p` of
 `lem:pencil-config-point-join-rank` (`pencilConfigFramework`), whose rank is the rank of the
 configuration. Over an admissible picture and a height in `L(q)`, `F_p` with the plane normals and
-the configuration points is a pencil realization, adjacent-distinct and at the deficiency rank when
-the configuration is attaining (`lem:pencil-config-distinct-realization`); so if the general
-configuration of `G` attains, `G` has an adjacent-distinct pencil realization
-(`lem:pencil-x0-attains-distinct`). An invertible linear map of `K⁴` applied to the points keeps the
-rank (`lem:pencil-rank-collineation`), and so do scaling the heights and adding a globally affine
-height (`lem:pencil-rank-scale-shift`). Over an admissible picture, a height lies in `L(q)` exactly
-when the points of every closed neighbourhood lie in a plane, and if the heights there are
-`a x + b y + c`, every nonzero vector orthogonal to these points is a multiple of `(a, b, -1, c)`
-(`lem:pencil-condition-linear`).
+the configuration points is a pencil realization with adjacent points independent
+(`lem:pencil-config-distinct-realization`). An invertible linear map of `K⁴` applied to the points
+keeps the rank (`lem:pencil-rank-collineation`), and so do scaling the heights and adding a
+globally affine height (`lem:pencil-rank-scale-shift`). Over an admissible picture, a height lies in
+`L(q)` exactly when the points of every closed neighbourhood lie in a plane, and if the heights
+there are `a x + b y + c`, every nonzero vector orthogonal to these points is a multiple of
+`(a, b, -1, c)` (`lem:pencil-condition-linear`).
 
 The rank of a configuration is taken at `PanelHingeFramework.ofNormals G ends` of its points, not of
 its plane normals. Each body's point `p_v` is then the normal of the polar plane `p_v^⊥`, and the
@@ -62,10 +60,8 @@ welds its bodies (its hinge-row block is every functional).
 * `finrank_span_rigidityRows_pencilConfigFramework` and
   `Graph.IsAdmissiblePicture.pencilConfigFramework_supportExtensor_ne_zero`:
   `lem:pencil-config-point-join-rank`.
-* `Graph.IsAdmissiblePicture.hasPencilPanelRealization_pencilConfigFramework` and
-  `Graph.IsAdmissiblePicture.hasDistinctPencilRealization`:
+* `Graph.IsAdmissiblePicture.hasPencilPanelRealization_pencilConfigFramework`:
   `lem:pencil-config-distinct-realization`.
-* `Graph.X0Attains.hasDistinctPencilRealization`: `lem:pencil-x0-attains-distinct`.
 * `not_isNondeg_pencilConfigPoint_of_two_hubs_three_common`: the configuration form of
   `lem:pencil-x0-two-hubs-obstruction`.
 * `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv`:
@@ -372,39 +368,6 @@ theorem _root_.Graph.IsAdmissiblePicture.hasPencilPanelRealization_pencilConfigF
     · exact ⟨(hkey e u v he).2.2.1, (hkey e u v he).2.2.2⟩
     · exact ⟨(hkey e v u he.symm).2.2.2, (hkey e v u he.symm).2.2.1⟩
 
-/-- **An attaining configuration over an admissible picture gives an adjacent-distinct pencil
-realization at the deficiency rank** (`lem:pencil-config-distinct-realization`): if a configuration
-`(q, z)` with `q` admissible and `z ∈ L(q)` has row rank `6(|V(G)| − 1) − def₃(G)` at `ofNormals` of
-its points (the rank `Graph.X0Attains` reads), then `G` has an adjacent-distinct pencil realization
-at the deficiency rank (`HasDistinctPencilRealization`). It is the configuration framework
-(`pencilConfigFramework`) with the configuration points as concurrency points and, as normals, the
-plane normals at the triple that admissibility gives at each body (chosen classically, with a
-placeholder off `V(G)`): a pencil realization
-(`Graph.IsAdmissiblePicture.hasPencilPanelRealization_pencilConfigFramework`), with adjacent points
-independent as adjacent picture points differ (`linearIndependent_pencilConfigPoint_pair`), at the
-rank of `ofNormals` (`finrank_span_rigidityRows_pencilConfigFramework`). -/
-theorem _root_.Graph.IsAdmissiblePicture.hasDistinctPencilRealization {G : Graph α β}
-    {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) {ends : β → α × α}
-    (hends : Graph.RecordsLinks G ends)
-    {z : α → K} (hz : z ∈ G.liftingSpace q)
-    (hrank : (Module.finrank K (Submodule.span K
-        (PanelHingeFramework.ofNormals (k := 2) G ends
-          (fun p => pencilConfigPoint q z p.1 p.2)).toBodyHinge.rigidityRows) : ℤ)
-        = screwDim 2 * ((V(G).ncard : ℤ) - 1) - G.deficiency 3) :
-    HasDistinctPencilRealization K 3 G := by
-  classical
-  let sel : α → Fin 3 → α := fun v => if hv : v ∈ V(G) then (hq.2 v hv).choose else fun _ => v
-  have hsel : ∀ v ∈ V(G), (∀ i, sel v i ∈ G.closedNbhd v) ∧
-      LinearIndependent K (fun i => pencilPicturePoint q (sel v i)) := by
-    intro v hv
-    simp only [sel, hv, ↓reduceDIte]
-    exact (hq.2 v hv).choose_spec
-  refine ⟨pencilConfigFramework G ends q z, pencilNormalOfPicture q z sel, pencilConfigPoint q z,
-    hq.hasPencilPanelRealization_pencilConfigFramework hends hz hsel,
-    fun e u v he => linearIndependent_pencilConfigPoint_pair z (hq.1 e u v he), ?_⟩
-  rw [finrank_span_rigidityRows_pencilConfigFramework]
-  exact hrank
-
 /-- **The configuration form of the two-hubs obstruction** (`lem:pencil-x0-two-hubs-obstruction`):
 let `a ≠ b` be pencil hubs of `G` with common neighbours `x`, `y` and `z`. Over a picture at which
 the picture points of `x`, `y` and `z` are not collinear, no height `h` gives a nondegenerate
@@ -430,21 +393,6 @@ theorem not_isNondeg_pencilConfigPoint_of_two_hubs_three_common
     ?_
   convert hLI using 1
   funext i; fin_cases i <;> rfl
-
-/-- **The general configuration attaining gives an adjacent-distinct pencil realization**
-(`lem:pencil-x0-attains-distinct`, `thm:pencil-x0-main-component`'s last claim): over an infinite
-field, `Graph.X0Attains K G` gives `HasDistinctPencilRealization K 3 G`. The nonzero picture
-polynomial `P` has a non-root `q` (`MvPolynomial.exists_eval_ne_zero`), which is admissible, with a
-height `z ∈ L(q)` off the zero set of the height polynomial, where the rank is attained;
-`Graph.IsAdmissiblePicture.hasDistinctPencilRealization` applies. It uses one attaining
-configuration, as the distinct main-component statement needs (`x0Dist`,
-`MainComponent/Statements.lean`). -/
-theorem _root_.Graph.X0Attains.hasDistinctPencilRealization [Infinite K] {G : Graph α β}
-    (h : G.X0Attains K) : HasDistinctPencilRealization K 3 G := by
-  obtain ⟨ends, P, hends, hP, hgood⟩ := h
-  obtain ⟨q, hq⟩ := MvPolynomial.exists_eval_ne_zero hP
-  obtain ⟨hadm, R, ⟨z, hz, hRz⟩, hall⟩ := hgood q hq
-  exact hadm.hasDistinctPencilRealization hends hz (hall z hz hRz)
 
 /-! ## Collineations, and scaling and affine shifts of the heights, keep the rank -/
 

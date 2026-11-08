@@ -5,30 +5,13 @@ Authors: Bryan Gin-ge Chen
 -/
 module
 
-public import CombinatorialRigidity.Molecular.Molecule.Pencil.X0
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Generic
 
 /-!
-# The two main-component statements and the pencil realization theorem
+# The pencil realization theorem
 
-The proofs of the two main-component statements (`def:pencil-main-component-statements`,
-`sec:main-component-statements`) and of the pencil realization theorem
-(`thm:pencil-realization-theorem`), over an infinite field. The distinct statement is immediate
-(`lem:pencil-x0-distinct-statement`): the general configuration of a simple two-edge-connected graph
-on at least three bodies attains (`Graph.X0Attains.of_twoEdgeConnected`, `thm:pencil-x0-coverage`,
-`MainComponent/CoverageTheoremS.lean`), and one attaining configuration is an adjacent-distinct
-pencil realization (`Graph.X0Attains.hasDistinctPencilRealization`,
-`lem:pencil-x0-attains-distinct`, `MainComponent/Configuration.lean`), with no hypothesis on the
-number of edge labels.
-
-The generic statement is the case `d = 3` of the generic conjunct in every dimension
-(`thm:pencil-d-generic`, `Grade/Generic.lean`): at a simple nondegeneracy-feasible graph with a
-body, the general lift attains (`liftAttains_of_simple`, at `r = 0`), and an attaining general lift
-is a generic realization (`LiftAttains.hasGradedGenericPencilRealization`), which at `d = 3` is a
-generic pencil realization (`hasGradedGenericPencilRealization_two_iff`,
-`lem:pencil-d-nondegenerate-three`).
-
-The conditioned pair at every graph with at least one body (the general claim of
+The proof of the pencil realization theorem (`thm:pencil-realization-theorem`), over an infinite
+field. The conditioned pair at every graph with at least one body (the general claim of
 `thm:pencil-realization-theorem`) is the case `d = 3` of the conditioned pair in every dimension
 (`Graph.graded_pencil_conditioned_pair`, `cor:pencil-d-conditioned-pair`), read through the bridges
 of `lem:pencil-d-rank-agrees-three` and `lem:pencil-d-nondegenerate-three`; at a graph on the whole
@@ -36,8 +19,6 @@ ambient body set it is the pencil realization theorem.
 
 ## Main results
 
-* `x0Dist`: `lem:pencil-x0-distinct-statement`, the distinct main-component statement.
-* `x0Gen`: `thm:pencil-x0-generic-attains`, the generic main-component statement.
 * `pencilPair_of_nonempty`: the general claim of `thm:pencil-realization-theorem`, the conditioned
   pair at every graph with at least one body.
 * `pencil_realization_theorem`: `thm:pencil-realization-theorem`, the conditioned pair at every
@@ -51,30 +32,6 @@ open scoped Graph
 namespace CombinatorialRigidity.Molecular
 
 variable {K : Type*} [Field K] {α β : Type*}
-
-/-- **The distinct main-component statement** (`lem:pencil-x0-distinct-statement`, and the distinct
-statement of `thm:pencil-x0-generic-attains`): over an infinite field, for finite `α` and `β`, every
-simple two-edge-connected multigraph on at least three bodies has an adjacent-distinct pencil
-realization at the deficiency rank at `n = 3` (`X0Dist`). Its general configuration attains
-(`Graph.X0Attains.of_twoEdgeConnected`, `thm:pencil-x0-coverage`), and one attaining configuration
-is such a realization (`Graph.X0Attains.hasDistinctPencilRealization`,
-`lem:pencil-x0-attains-distinct`), with no hypothesis on the number of edge labels. -/
-theorem x0Dist [Finite α] [Finite β] [Infinite K] : X0Dist K α β :=
-  fun _ hS hV htec => (Graph.X0Attains.of_twoEdgeConnected hS hV htec).hasDistinctPencilRealization
-
-/-- **The generic main-component statement** (`thm:pencil-x0-generic-attains`, its generic
-statement): over an infinite field, for finite `α` and `β`, every simple two-edge-connected
-multigraph on at least three bodies that is nondegeneracy-feasible has a generic pencil realization
-at `n = 3` (`X0Gen`). It is the case `d = 3` of the generic conjunct in every dimension, which asks
-neither two-edge-connectivity nor a third body: the general lift attains
-(`liftAttains_of_simple 0`, `thm:pencil-d-generic`), an attaining general lift is a generic
-realization in dimension three (`LiftAttains.hasGradedGenericPencilRealization`), and that is a
-generic pencil realization (`hasGradedGenericPencilRealization_two_iff`,
-`lem:pencil-d-nondegenerate-three`). -/
-theorem x0Gen [Finite α] [Finite β] [Infinite K] : X0Gen K α β :=
-  fun G hS hV _ hfeas => (hasGradedGenericPencilRealization_two_iff 3 G).1
-    (liftAttains_of_simple 0 hS (Set.nonempty_of_ncard_ne_zero (by omega))
-      hfeas).hasGradedGenericPencilRealization
 
 /-- **The conditioned pair at every nonempty multigraph** (the general claim of
 `thm:pencil-realization-theorem`): over an infinite field, for finite `α`

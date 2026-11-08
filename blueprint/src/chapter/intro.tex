@@ -303,10 +303,10 @@ minimal spanning subgraph. In a pencil realization of the subgraph at its
 deficiency rank, the added edges may have no hinges in both panels
 through the points of their ends. So the proof runs the induction over
 every multigraph (\cref{thm:pencil-reduction}). Phase~39 reduced the
-pencil realization theorem to the two \emph{main-component statements}
-(\cref{def:pencil-main-component-statements}). These ask the pencil
-realization theorem's last two claims of every simple two-edge-connected
-multigraph on at least three bodies.
+pencil realization theorem to two statements about the main component of
+the pencil configuration space. These asked the pencil realization
+theorem's last two claims of every simple two-edge-connected multigraph on
+at least three bodies.
 
 Phase~40 proved the two statements (\cref{sec:main-component}). The idea
 is to build pencil realizations by lifting pictures of the graph in the
@@ -330,9 +330,9 @@ on the number of bodies. There are steps at cut vertices, bridges, cycles
 and ears, and steps by contraction. A case analysis,
 the structural coverage, shows that some step applies to every such graph
 (\cref{thm:pencil-x0-coverage}). Over an admissible picture adjacent
-bodies have distinct points, so the first statement follows
-(\cref{lem:pencil-x0-distinct-statement}). The second does not follow in
-this way. At $K_{2,3}$, no configuration over a general picture is
+bodies have distinct points, so the first statement follows (in every
+dimension, \cref{lem:pencil-d-distinct-statement}). The second does not
+follow in this way. At $K_{2,3}$, no configuration over a general picture is
 nondegenerate (\cref{lem:pencil-x0-two-hubs-obstruction}). The second
 statement is instead the case of dimension three of the nondegenerate
 claim in every dimension (\cref{thm:pencil-d-generic}).
@@ -395,7 +395,9 @@ dimension three. Its second step restated the reduction on structural
 cases (\cref{thm:pencil-reduction}) and removed the two cases of the
 three-dimensional case analysis that the proof does not need: where no
 other step applies, \cref{thm:pencil-x0-theorem-s} finds a rigid set to
-contract. A road map of the proof comes last.
+contract. A road map of the proof comes last. With it the two statements
+of phase~39 go, special cases of the theorem's claims that no proof uses
+any more.
 From phase~6 on, the graph is written forward: a chapter's nodes and
 their edges come first, and the statement and proof sketch of a node not
 yet formalized are the plan for its Lean declaration. So the graph is
