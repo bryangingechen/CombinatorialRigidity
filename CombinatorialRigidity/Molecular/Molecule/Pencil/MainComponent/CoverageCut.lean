@@ -22,8 +22,8 @@ body of `W` keeps all its neighbours (`Graph.IsX0Graph.induce_of_gate`). For a c
 `V₁` has that form in `G − x 0`, with `b` as `g`, and the ends keep degree at least two in `G[V₁]`,
 as they have degree at least three in `G` and lose one neighbour each. Splitting off a body whose
 links are one to each of two distinct bodies that are not adjacent keeps the standing hypotheses
-(`Graph.IsX0Graph.splitOff`). At an open ear with one to four interior bodies this gives them at the
-graph with an interior body suppressed, which the ear and split-off steps at a usable chain assume
+(`Graph.IsX0Graph.splitOff`). At an open ear with two to four interior bodies this gives them at
+the graph with `x 1` suppressed, which the ear steps at a usable chain assume
 (`lem:pencil-x0-chain-reduces`).
 
 A graph that is not 2-edge-connected has a nonempty proper set of bodies left by exactly one link.
@@ -397,17 +397,6 @@ theorem _root_.Graph.IsOpenEar.isX0Graph_splitOff_orbit [Finite α] {G : Graph �
   rcases hear.isLink_interior 0 hf with rfl | rfl
   · exact hear.ne (l0.symm.right_unique hf)
   · exact hear.notMem 1 ((l1.right_unique hf) ▸ hear.right_mem)
-
-/-- The standing hypotheses at `G` with `x 0` suppressed, for an open ear with one interior body
-whose ends `a` and `b` are not adjacent (a step of `lem:pencil-x0-chain-reduces`, for
-`Graph.X0Reduces.splitOff`). -/
-theorem _root_.Graph.IsOpenEar.isX0Graph_splitOff_one [Finite α] {G : Graph α β} (hG : G.IsX0Graph)
-    {V₁ : Set α} {x : Fin 1 → α} {a b : α} {e : Fin 2 → β}
-    (hear : G.IsOpenEar V₁ x a b e) (hnadj : ¬ G.Adj a b) :
-    (G.splitOff (x 0) a b (e 0)).IsX0Graph := by
-  have l0 : G.IsLink (e 0) a (x 0) := hear.isLink 0
-  have l1 : G.IsLink (e 1) (x 0) b := hear.isLink 1
-  exact hG.splitOff l0.symm l1 (fun f y hf => hear.isLink_interior 0 hf) hear.ne hnadj
 
 /-! ## A graph that is not 2-edge-connected (`lem:pencil-x0-cut-reduces`(1)) -/
 

@@ -1552,11 +1552,14 @@ core) is the informal proof's own counting. The account of the whole induction s
 Phase-39 entry `thm:pencil-conditional-realization-main-component` above, `[pending]` until Phase
 40's close. The ledger is now **2 pending / 46 done** (of 48).
 
-- **`lem:deficiency-core-bound` / `Graph.partitionDef_induce_id_le_of_maximal`, with
-  `Graph.deficiency_three_induce_eq_zero_of_le`** — [done (the node's proof, expanded at the 40l
-  close)] **(b)** the informal (MC-87)(ii) bounds the singleton values above a maximal rigid set
-  through the partition of `G` into its maximal rigid sets, whose quotient has no rigid set of two
-  or more members ((MC-77)), or through (MC-119)'s finest optimal partition, with the maximal rigid
+- **`lem:deficiency-core-bound-d` /
+  `Graph.partitionDef_induce_id_le_of_maximal_of_three_le_bodyBarDim`, with
+  `Graph.deficiency_induce_eq_zero_of_le`** — [done (the node's proof, expanded at the 40l
+  close on the `d = 3` node `lem:deficiency-core-bound`; repointed 2026-11-08, Phase 43c slice B,
+  which deleted that node and its two pins as the case `d = 3` of this one and moved the argument
+  into this node's proof, read with `def_d`)] **(b)** the informal (MC-87)(ii) bounds the
+  singleton values above a maximal rigid set through the partition of `G` into its maximal rigid
+  sets, whose quotient has no rigid set of two or more members ((MC-77)), or through (MC-119)'s finest optimal partition, with the maximal rigid
   sets of `G − x` treated apart. **Stable insight:** a minimal counterexample needs neither
   partition and treats both cases alike. Part (1): if `W ⊆ Y` is rigid, `s(Y) ≤ s(W)`, and
   `s(W) ≤ s(Q)` whenever `W ⊆ Q ⊊ Y`, then `G[Y]` is rigid — coarsen any partition so that `W`
@@ -1573,15 +1576,10 @@ Phase-39 entry `thm:pencil-conditional-realization-main-component` above, `[pend
   `2 ≤ |Z| < |X|`, has `v₂ ≤ s(X) − s(Z) ≤ 0`; the singletons have `e(X) ≥ 3`, so `v₃ < 0`; only
   `{X}` reaches zero. The 4-cycle of a two-body chain with adjacent ends is rigid this way.
   Pointer: `notes/Phase40l.md`; `notes/Phase40-design.md` §3 COVERAGE (D3).
-- **`lem:deficiency-one-body-chain` / `Graph.deficiencyMerged_three_add_five_le`** — [done (the
-  node's proof, at 40l's B3)] **(b)** the informal (MC-79)(ii) first bullet reads the merged
-  deficiency at a one-body chain off (MC-79)(i)'s formula over the quotient of `G − x` by its
-  maximal rigid sets. **Stable insight:** refine one part. In an optimal merged partition with part
-  `Q ∋ a, b`, refining `Q` by a partition `R` changes the value by `R`'s value in `G[Q]`, so a gap
-  below five bounds every such `R` by `4`, and by `0` when `R` keeps `a` and `b` together. Then
-  every partition of `Q ∪ {x}` has value at most zero (alone, `x`'s two crossing edges cost
-  `10 − 6`; beside others, each crossing edge at `x` costs `5`), so `x` lies in a rigid set.
-  Pointer: `notes/Phase40l.md`; `notes/Phase40-design.md` §3 COVERAGE (D2).
+- **`lem:deficiency-one-body-chain` / `Graph.deficiencyMerged_three_add_five_le`** — [done (40l's
+  B3); retired 2026-11-08 with the node's part (2) and its pin (Phase 43c slice B): Theorem S′
+  (`thm:pencil-x0-theorem-s`) needs no bound at a one-body chain at `D = 6`, and the node keeps the
+  planar bound, its former part (1); git keeps the entry's text]
 
 ### `main-component.tex` — Phase 40m (CHAINS + THEOREM-S: chains, cuts, Theorem S and the covering theorem)
 
@@ -1610,7 +1608,10 @@ MOTIVES. The ledger is now **2 pending / 47 done** (of 49).
   θ-graph, and the contraction step needs neither inequality; so θ-graphs fall under the covering
   theorem's other cases and need no step of their own (`rem:pencil-x0-theta` keeps (MC-139)'s
   covering as a second one). Pointer: `notes/Phase40m.md`; `notes/Phase40-design.md` §3 COVERAGE
-  (D4).
+  (D4). Phase 43c's slice B (2026-11-08) restated the theorem as S′, with fewer usable chains, and
+  its proof on the Lean's route, every core from `lem:pencil-d-maximal-rigid-core` at `d = 3` or
+  `lem:pencil-d-core-positive-deficiency`; the insight stands, and the remark now says that a
+  sparse θ-graph may reach the coverage at a core.
 
 ### `main-component.tex` — Phase 40n (MOTIVES-DIST+BASE: the distinct statement, and the generic realization without a planar-rigid set)
 

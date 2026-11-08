@@ -16,6 +16,9 @@ both, as `n1c_graph.py` does), and the tracked files of the tree. Prints:
    distinctive stem, or of a deleted label, outside the declarations and files the slices delete.
 
 Reads the working tree, so its figures are for that commit (written at 2b010699, 43c's slice 1).
+Once a slice lands, its names are absent from the report and its nodes from the blueprint: the
+edits on an absent node are skipped, and that slice's sweep in (3) is empty, so the landing commit
+runs its own sweep (slice B's, 2026-11-08, also swept the `d = 3` core bound the PI added to it).
 From the repo root (about a minute, nearly all of it `lake lean`):
 
   lake lean notes/pencil-natural/SprimeSpike.lean 2>&1 | python3 notes/pencil-natural/sprime_walk.py
@@ -94,10 +97,15 @@ EDITS = {
     "B": [("lem:deficiency-one-body-chain",
            ["lem:separated-partition-value", "lem:deficiency-one-body-chain-d"], []),
           ("lem:deficiency-two-body-chain", ["lem:deficiency-merge-rigid"], []),
+          # S′'s proof as the Lean runs it (the PI, after the pin): every core from
+          # `lem:pencil-d-maximal-rigid-core`, so the `d = 3` core bound and the two lemmas the
+          # old core argument cited leave its `\uses`
           ("thm:pencil-x0-theorem-s",
            ["lem:deficiency-one-body-chain", "def:pencil-d-usable-chain",
-            "thm:pencil-d-theorem-s"],
-           ["lem:pencil-d-chain-core", "lem:pencil-d-core-positive-deficiency"]),
+            "thm:pencil-d-theorem-s", "lem:deficiency-core-bound", "lem:deficiency-add-body",
+            "lem:deficiency-additive-core"],
+           ["lem:pencil-d-chain-core", "lem:pencil-d-core-positive-deficiency",
+            "lem:pencil-d-maximal-rigid-core"]),
           ("thm:pencil-x0-reduction-attains",
            ["thm:pencil-x0-open-ear-two", "thm:pencil-x0-splitoff"], [])],
     "C": [],
@@ -132,6 +140,9 @@ had = {v for vs in START.values() for v in vs}
 deleted_labels = {}
 for s in ORDER:
     for lab, rem, add in EDITS[s]:
+        if lab not in G:  # a node a landed slice deleted (the walk reads the working tree)
+            print(f"  slice {s}: edit of {lab}: the node is absent")
+            continue
         missing = [r for r in rem if r not in G.get(lab, set())]
         if missing:
             print(f"  slice {s}: edit of {lab} removes {missing}, not among its uses")

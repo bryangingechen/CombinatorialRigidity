@@ -29,10 +29,9 @@ higher one. At the graphs of small deficiency it carries the attaining
 of the general configuration (\cref{thm:pencil-x0-coverage}) from
 dimension three to every dimension, and so gives them adjacent-distinct
 pencil realizations at the deficiency rank in every dimension
-(\cref{sec:pencil-d-stable}). The fourth proves the estimates on
-partitions of \cref{sec:main-component-sparse} in every dimension, and
-with them a core to contract when no chain is usable
-(\cref{sec:pencil-d-deficiency}). The sections after it extend the
+(\cref{sec:pencil-d-stable}). The fourth proves estimates on partitions
+in every dimension, and with them the lemmas that find a core to
+contract (\cref{sec:pencil-d-deficiency}). The sections after it extend the
 induction of \cref{sec:main-component} to every dimension, beginning
 with its setting and the rank of a flat configuration
 (\cref{sec:pencil-d-induction}). They end with the coverage: over an
@@ -900,18 +899,17 @@ it has one in dimension $d$.
 \subsection{The deficiency at every screw dimension}
 \label{sec:pencil-d-deficiency}
 
-The estimates of \cref{sec:main-component-sparse} that compare two
-dimensions are stated there at $d = 3$. They hold in every dimension
-$d$, with $\operatorname{def}_d$ in place of $\operatorname{def}_3$ and
-$D - 1$ in place of $5$, where $D = \binom{d+1}{2}$. At $d = 3$ they are
-\cref{lem:deficiency-core-bound}, part~(2) of
-\cref{lem:deficiency-one-body-chain} and
-\cref{lem:deficiency-two-body-chain}. Two facts replace the comparison
-of the planar value with the value at $d = 3$. A partition of value at
-most zero at $d = 2$ has value at most zero at every $d \ge 2$
-(\cref{lem:deficiency-planar-nonpos}). A graph of deficiency zero in
-some dimension has deficiency zero in every higher one
-(\cref{lem:deficiency-rigid-higher}). We keep the planar notions of
+This section finds cores in every dimension $d$, with
+$D = \binom{d+1}{2}$. The main estimate bounds the singleton values above
+a maximal set of deficiency zero in dimension $d$
+(\cref{lem:deficiency-core-bound-d}); at $d = 3$ it serves the
+structural coverage (\cref{thm:pencil-x0-theorem-s}). Its proof compares
+the planar value of a partition with its value in dimension $d$, as
+\cref{sec:main-component-sparse} does at $d = 3$. Two facts replace that
+comparison. A partition of value at most zero at $d = 2$ has value at
+most zero at every $d \ge 2$ (\cref{lem:deficiency-planar-nonpos}). A
+graph of deficiency zero in some dimension has deficiency zero in every
+higher one (\cref{lem:deficiency-rigid-higher}). We keep the planar notions of
 \cref{sec:main-component-sparse}: the singleton value $s$, sparse graphs
 and tight sets. A tight set $X$ has $\operatorname{def}_3(G[X]) = 0$
 (\cref{lem:deficiency-tight-rigid}), so $\operatorname{def}_d(G[X]) = 0$
@@ -989,67 +987,20 @@ of $P$.
   (\cref{lem:deficiency-singleton-bound}), so $v_d(P') \le 0$
   (\cref{lem:deficiency-planar-nonpos}).
 
-  (2) The proof of part~(2) of \cref{lem:deficiency-core-bound} holds
-  with $\operatorname{def}_d$ in place of $\operatorname{def}_3$. It
-  compares singleton values (\cref{lem:deficiency-add-body}), and it
-  applies part~(1), which holds in dimension $d$.
-\end{proof}
-
-\begin{lemma}[The merged deficiency at a body of degree two, in every dimension]
-  \label{lem:deficiency-one-body-chain-d}
-  \lean{Graph.deficiencyMerged_add_bodyBarDim_sub_one_le}
-  \leanok
-  \uses{def:D-deficiency, def:deficiency-merged}
-  Let $d \ge 2$ and $D = \binom{d+1}{2}$. Let $V_1 \subseteq V(G)$ and
-  $x \in V(G) \setminus V_1$, and let $a \neq b$ in $V_1$ be joined to
-  $x$ by edges. Suppose $\operatorname{def}_d(G[Y]) \neq 0$ for every
-  set $Y$ of at least two bodies containing $x$. Then
-  $\operatorname{def}_d(G[V_1]; a, b) + D - 1 \le
-  \operatorname{def}_d(G[V_1])$.
-\end{lemma}
-\begin{proof}
-  \leanok
-  \uses{lem:deficiency-add-body, lem:separated-partition-value}
-  Suppose otherwise, and let $P$ attain the merged deficiency $m$, with
-  $Q$ the part of $a$ and $b$. Refining $Q$ by a partition $R$ of $Q$
-  changes the value of $P$ by the value of $R$ in $G[Q]$
-  (\cref{lem:separated-partition-value}). Since
-  $\operatorname{def}_d(G[V_1]) \le m + D - 2$, every such $R$ has value
-  at most $D - 2$ in $G[Q]$, and at most $0$ if it keeps $a$ and $b$
-  together.
-
-  We show that $\operatorname{def}_d(G[Q \cup \{x\}]) = 0$, against the
-  hypothesis. Let $R'$ be a partition of $Q \cup \{x\}$, and compare its
-  value with that of its restriction to $Q$
-  (\cref{lem:deficiency-add-body}). If $x$ is alone, its part adds $D$
-  and its two edges to $a$ and $b$ cost $2(D - 1)$, so the value is at
-  most $(D - 2) + D - 2(D - 1) = 0$. If $x$ shares a part, each edge
-  from $x$ to another part costs $D - 1$. When $a$ and $b$ are apart, at
-  least one such edge exists, and the value is at most
-  $(D - 2) - (D - 1) < 0$. When they are together, the value is at
-  most $0$.
-\end{proof}
-
-\begin{lemma}[A non-adjacent pair outside every rigid set, in every dimension]
-  \label{lem:deficiency-two-body-chain-d}
-  \lean{Graph.deficiencyMerged_two_add_two_le_of_three_le}
-  \leanok
-  \uses{def:D-deficiency, def:deficiency-merged}
-  Let $d \ge 3$, let $G$ be sparse, and let $a \neq b$ be bodies of $G$
-  that are not adjacent, with $\operatorname{def}_d(G; a, b) \neq
-  \operatorname{def}_d(G)$. Then $\operatorname{def}_2(G; a, b) + 2 \le
-  \operatorname{def}_2(G)$.
-\end{lemma}
-\begin{proof}
-  \leanok
-  \uses{lem:deficiency-two-body-chain, lem:deficiency-rigid-higher,
-        lem:deficiency-merge-rigid}
-  Otherwise, by part~(1) of \cref{lem:deficiency-two-body-chain}, $a$
-  and $b$ lie in a set $Z$ of at least three bodies with
-  $\operatorname{def}_3(G[Z]) = 0$. As $d \ge 3$,
-  $\operatorname{def}_d(G[Z]) = 0$ (\cref{lem:deficiency-rigid-higher}).
-  Then $\operatorname{def}_d(G; a, b) = \operatorname{def}_d(G)$
-  (\cref{lem:deficiency-merge-rigid}).
+  (2) Suppose not, and take $X \subseteq V(G)$ with $W \subseteq X$ and
+  $s(X) < s(W)$, of least size. Then $X \ne W$, and $s(W) \le s(Q)$ for
+  every $Q \supseteq W$ with fewer bodies than $X$. If $X$ avoids $X_0$,
+  then (1) at $Y = X$ gives $\operatorname{def}_d(G[X]) = 0$, against
+  the maximality of $W$. Otherwise $X_0 = \{x\}$ with $x \in X$; put
+  $Y = X \setminus \{x\}$, which contains $W$. Adding $x$ to $Y$ changes
+  the singleton value by $3 - 2t$, where $t \le 2$ is the number of edges
+  from $x$ into $Y$ (\cref{lem:deficiency-add-body}), and $t \le 1$ if
+  $Y = W$. So $Y \ne W$, since otherwise $s(X) \ge s(W) + 1$. Then
+  $s(Y) \ge s(W)$, as $Y$ has fewer bodies than $X$. Also
+  $s(X) \ge s(Y) - 1$, so $s(X) = s(W) - 1$ and $s(Y) = s(W)$. Now (1)
+  at $Y$ gives $\operatorname{def}_d(G[Y]) = 0$, for a set $Y$ that
+  avoids $X_0$ and strictly contains $W$, against the maximality of
+  $W$.
 \end{proof}
 
 \begin{lemma}[A part of a tight partition has deficiency zero]
@@ -1074,9 +1025,8 @@ of $P$.
   $R$ in $G[Z]$ is at most zero, and $\{Z\}$ attains it.
 \end{proof}
 
-With these estimates the existence of a core when no chain is usable
-(\cref{thm:pencil-x0-theorem-s}) holds in every dimension, with
-rigidity read at $D$ and additivity in the plane. Let $d \ge 2$. A set
+With these estimates we find cores in every dimension, with rigidity
+read at $D$ and additivity in the plane. Let $d \ge 2$. A set
 $W$ of at least two bodies is \emph{rigid in dimension $d$} if
 $\operatorname{def}_d(G[W]) = 0$. A \emph{core in dimension $d$} of $G$
 is a set $W \subsetneq V(G)$ of at least two bodies, rigid in dimension
@@ -1087,27 +1037,9 @@ together with a body $r \in W$ such that
   \operatorname{def}_2(G),
 \]
 where $G/G[W]$ contracts $W$ to $r$ (\cref{def:rigid-contraction}). At
-$d = 3$ it is the core of \cref{thm:pencil-x0-theorem-s}. The chains
-usable in dimension $d$ read the merged deficiencies at $D$, with
-$D - 1$ in place of $5$, and keep the planar condition at two interior
-bodies.
-
-\begin{definition}[Usable chains in every dimension]
-  \label{def:pencil-d-usable-chain}
-  \lean{Graph.ChainUsableAt, Graph.chainUsable_iff_chainUsableAt_three}
-  \leanok
-  \uses{def:pencil-x0-chain, def:deficiency-merged, def:pencil-x0-usable-chain}
-  Let $d \ge 2$ and $D = \binom{d+1}{2}$. A chain
-  $a - x_1 - \cdots - x_k - b$ on $V_1$ (\cref{def:pencil-x0-chain}) is
-  \emph{usable in dimension $d$} if $k \ge 3$; or $k = 2$ and either
-  $\operatorname{def}_d(G[V_1]; a, b) = \operatorname{def}_d(G[V_1])$, or
-  $a$ and $b$ are not adjacent and $\operatorname{def}_2(G[V_1]; a, b) +
-  2 \le \operatorname{def}_2(G[V_1])$; or $k = 1$ and either
-  $\operatorname{def}_d(G[V_1]; a, b) = \operatorname{def}_d(G[V_1])$ or
-  $\operatorname{def}_d(G[V_1]; a, b) + D - 1 \le
-  \operatorname{def}_d(G[V_1])$. At $d = 3$ these are the usable chains
-  of \cref{def:pencil-x0-usable-chain}.
-\end{definition}
+$d = 3$ it is the core of \cref{thm:pencil-x0-theorem-s}, whose proof
+finds it with the lemmas below. In every dimension $d \ge 3$ they find
+the core of \cref{thm:pencil-d-chain-or-core}.
 
 \begin{lemma}[A maximal rigid set is a core, in every dimension]
   \label{lem:pencil-d-maximal-rigid-core}
@@ -1126,69 +1058,14 @@ bodies.
   \leanok
   \uses{lem:deficiency-add-body, lem:deficiency-core-bound-d,
         lem:deficiency-additive-core}
-  As in the proof of \cref{thm:pencil-x0-theorem-s}, let $W$ be maximal
-  among the sets rigid in dimension $d$ that contain $Y$ and avoid
-  $X_0$, and let $r \in W$. Then $W \neq V(G)$, as $X_0$ is nonempty
-  when $G$ is rigid in dimension $d$. A body outside
-  $W$ and $X_0$ with two neighbours in $W$ would enlarge $W$
+  Let $W$ be maximal among the sets rigid in dimension $d$ that contain
+  $Y$ and avoid $X_0$, and let $r \in W$. Then $W \neq V(G)$, as $X_0$
+  is nonempty when $G$ is rigid in dimension $d$. A body outside $W$ and
+  $X_0$ with two neighbours in $W$ would enlarge $W$
   (\cref{lem:deficiency-add-body}, at $D \ge 3$), and the body of $X_0$
   has at most one. By part~(2) of \cref{lem:deficiency-core-bound-d},
   $s(W) \le s(X)$ for every $X \supseteq W$, and
   \cref{lem:deficiency-additive-core} gives the inequality.
-\end{proof}
-
-\begin{theorem}[A core when no chain is usable, in every dimension]
-  \label{thm:pencil-d-theorem-s}
-  \lean{Graph.IsX0Graph.exists_additiveCoreAt}
-  \leanok
-  \uses{def:pencil-d-usable-chain, def:pencil-x0-standing,
-        def:rigid-contraction}
-  Let $d \ge 3$, and let $G$ satisfy the standing hypotheses, with
-  $G - v$ connected for every body $v$, some body of degree other than
-  two, and no planar-rigid set. If no chain of $G$ is usable in
-  dimension $d$, then $G$ has a core in dimension $d$.
-\end{theorem}
-\begin{proof}
-  \leanok
-  \uses{lem:pencil-d-maximal-rigid-core, lem:deficiency-sparse,
-        lem:pencil-x0-sparse-count, lem:pencil-x0-chain-exists,
-        lem:deficiency-one-body-chain-d, lem:deficiency-two-body-chain-d,
-        lem:deficiency-tight-rigid, lem:deficiency-rigid-higher,
-        lem:deficiency-merge-rigid, lem:deficiency-zero-connected}
-  The proof of \cref{thm:pencil-x0-theorem-s}, with rigidity in
-  dimension $d$. A set rigid in dimension three is rigid in dimension $d$
-  (\cref{lem:deficiency-rigid-higher}). As $G$ is sparse
-  (\cref{lem:deficiency-sparse}), it has bodies of degree two, each on a
-  chain (\cref{lem:pencil-x0-sparse-count},
-  \cref{lem:pencil-x0-chain-exists}). As no chain is usable, each has at
-  most two interior bodies. A chain $a - x_1 - x_2 - b$ on
-  $V_1$ has adjacent ends: otherwise
-  $\operatorname{def}_d(G[V_1]; a, b) \neq \operatorname{def}_d(G[V_1])$,
-  and \cref{lem:deficiency-two-body-chain-d} would make it usable. Its
-  $4$-cycle is tight, so rigid in dimension three
-  (\cref{lem:deficiency-tight-rigid}), and so in dimension $d$.
-
-  If $\operatorname{def}_d(G) > 0$, a chain gives a set rigid in
-  dimension $d$: its $4$-cycle, or, at one interior body $x$, a set
-  containing $x$, as otherwise the chain would be usable
-  (\cref{lem:deficiency-one-body-chain-d}). Then
-  \cref{lem:pencil-d-maximal-rigid-core} with $X_0$ empty gives the core.
-
-  If $\operatorname{def}_d(G) = 0$, take a body $x$ of degree two and a
-  set rigid in dimension $d$ that avoids it: off the $4$-cycle of a chain
-  with two interior bodies if two bodies of degree two are adjacent
-  (\cref{lem:pencil-x0-sparse-count} gives four bodies of degree two),
-  and otherwise inside $V(G) \setminus \{x\}$, which contains a set rigid
-  in dimension three as $s_6(V(G) \setminus \{x\}) \le 0$
-  (\cref{lem:pencil-x0-sparse-count}, \cref{lem:deficiency-sparse}). A
-  neighbour of $x$ in a set $W$ rigid in dimension $d$ avoiding $x$ has
-  two neighbours in $W$ (\cref{lem:deficiency-zero-connected}), so degree
-  at least three. Two such neighbours $a$ and $b$ would make $a - x - b$
-  a chain on $V(G) \setminus \{x\}$, usable as
-  $\operatorname{def}_d(G - x; a, b) = \operatorname{def}_d(G - x)$
-  (\cref{lem:deficiency-merge-rigid}). So
-  \cref{lem:pencil-d-maximal-rigid-core} with $X_0 = \{x\}$ gives the
-  core.
 \end{proof}
 
 \begin{lemma}[A core when the deficiency in dimension three is positive]
@@ -2181,12 +2058,9 @@ as in \cref{lem:pencil-contract-additive-kernel}.
 
 At $d = 3$, once the first five cases of the coverage fail, a usable
 chain gives a step, and a core is found when no chain is usable
-(\cref{sec:main-component-coverage}). This core exists in every
-dimension: if no chain is usable in dimension $d$, then $G$ has a core
-in dimension $d$ (\cref{thm:pencil-d-theorem-s}). But a usable chain
-with one interior body, or with two at non-adjacent ends, may meet only
-the conditions of the ear steps of \cref{sec:main-component-orbit}
-(\cref{thm:pencil-x0-open-ear-one} and
+(\cref{sec:main-component-coverage}). A usable chain with one or two
+interior bodies is settled there by an ear step of
+\cref{sec:main-component-orbit} (\cref{thm:pencil-x0-open-ear-one} and
 \cref{thm:pencil-x0-open-ear-two-orbit}). Both steps place the point of
 $x_1$ in $\Pi_a \cap \Pi_b$. Two three-dimensional subspaces of $K^4$
 meet in a subspace of dimension at least two, while for $d \ge 5$ two
@@ -2361,16 +2235,21 @@ in dimension $d$ (\cref{lem:pencil-d-x0-attains-of-le}).
   (\cref{lem:deficiency-rigid-higher}).
 
   At $d = 3$ these graphs are settled by the usable chains and
-  \cref{thm:pencil-x0-theorem-s}, and the dimension enters through
-  usability. A chain with three or more interior bodies is usable. A
-  chain with one or two is usable under a condition on its merged
-  deficiencies, at $D = 6$ or in the plane. In dimension $d$ the count
-  replaces these conditions at the chains with two to $\ell$ interior
-  bodies, and \cref{lem:pencil-d-core-positive-deficiency} replaces them
-  when every chain has one. At $d = 3$ only $\ell = 1$ is allowed, and
-  the theorem then leaves every chain with two or more interior bodies
-  to the ear steps. The two lemmas that give the core hold in every
-  dimension, with rigidity read at $D$ and additivity in the plane.
+  \cref{thm:pencil-x0-theorem-s}, whose proof finds its cores at $d = 3$
+  with \cref{lem:pencil-d-chain-core} and
+  \cref{lem:pencil-d-core-positive-deficiency} too, and with
+  \cref{lem:pencil-d-maximal-rigid-core} directly. There the dimension
+  enters through usability. A chain with three or
+  more interior bodies is usable. A chain with two is usable when its
+  ends are not adjacent and a planar condition on its merged deficiencies
+  holds, and a chain with one when a condition at $D = 6$ holds. In
+  dimension $d$ the count replaces these conditions at the chains with
+  two to $\ell$ interior bodies, and
+  \cref{lem:pencil-d-core-positive-deficiency} replaces them when every
+  chain has one. At $d = 3$ only $\ell = 1$ is allowed, and the theorem
+  then leaves every chain with two or more interior bodies to the ear
+  steps. The two lemmas that give the core hold in every dimension, with
+  rigidity read at $D$ and additivity in the plane.
 \end{proof}
 
 \subsection{Open ears with three or more interior bodies in every dimension}
@@ -4127,10 +4006,10 @@ and $\ell = 3$ from $d = 5$ on. An open ear step settles the first
 (\cref{sec:pencil-d-short}, \cref{sec:pencil-d-long}), and the
 contraction the second (\cref{thm:pencil-d-contract-additive}). So the
 coverage in dimension $d \ge 4$ needs no step in dimension $d$ at a chain
-with one or two interior bodies. The steps at $d = 3$ that split off a
-body of degree two (\cref{thm:pencil-x0-splitoff}) and settle an open ear
-with two interior bodies (\cref{thm:pencil-x0-open-ear-two}) enter only
-through the embedding, within \cref{thm:pencil-x0-coverage}.
+with one or two interior bodies. The steps at $d = 3$ at such chains
+(\cref{thm:pencil-x0-open-ear-one},
+\cref{thm:pencil-x0-open-ear-two-orbit}) enter only through the
+embedding, within \cref{thm:pencil-x0-coverage}.
 
 When the general configuration of a graph attains, the graph has an
 adjacent-distinct pencil realization

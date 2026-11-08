@@ -35,6 +35,10 @@ and one absent after a slice is reported, not an error. Run from the repo root:
    predate it), 17 MAPPED, 26 RECHECKED.
 5. **The slices** (`#sprime_slices`): slice B deletes 10 constants with no surviving user, and
    orphans exactly slice C's 13; slice C deletes those with no surviving user, and orphans none.
+   After the pin the PI added the `d = 3` core bound's two declarations to slice B (12 in all,
+   `notes/Phase43c.md` item 4); they had no user, so they orphan nothing. Once slice A landed, the
+   orphans also list NEW-1 and NEW-2: the after-world reads S′ as the spike's primed form, which
+   uses the primed copies; the landed S′ uses the landed ones.
 -/
 
 open scoped Graph
@@ -623,7 +627,8 @@ form's: a mapped declaration's signature changes only through the changed consta
 elab "#sprime_mapped_same " a:ident b:ident : command => do
   let env ← getEnv
   let (na, nb) := (a.getId, b.getId)
-  let some ca := env.find? na | throwError "unknown {na}"
+  -- a landed constant a slice deleted is reported, as the walk reports it (slice B, 2026-11-08)
+  let some ca := env.find? na | logInfo m!"SAME TYPE UP TO THE MAP {na}: absent"
   let some cb := env.find? nb | throwError "unknown {nb}"
   let mp := sprimeInit
   let f (e : Expr) : Expr := e.replace fun
@@ -817,7 +822,10 @@ def sprimeSliceB : List Name :=
     `Graph.X0Reduces.openEarTwo, `Graph.X0Reduces.splitOff,
     `Graph.IsOpenEar.isX0Graph_splitOff_one,
     `Graph.deficiencyMerged_add_bodyBarDim_sub_one_le, `Graph.deficiencyMerged_three_add_five_le,
-    `Graph.deficiencyMerged_two_add_two_le_of_three_le, `Graph.deficiencyMerged_two_add_two_le]
+    `Graph.deficiencyMerged_two_add_two_le_of_three_le, `Graph.deficiencyMerged_two_add_two_le,
+    -- the `d = 3` core bound, at the PI's word after the pin (`notes/Phase43c.md` item 4): no Lean
+    -- user before SPRIME, so no orphan and no surviving user; listed for the sweep
+    `Graph.deficiency_three_induce_eq_zero_of_le, `Graph.partitionDef_induce_id_le_of_maximal]
 
 /-- Slice C's deletions. -/
 def sprimeSliceC : List Name :=

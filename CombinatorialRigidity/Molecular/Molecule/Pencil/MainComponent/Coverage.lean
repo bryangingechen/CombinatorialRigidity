@@ -16,18 +16,17 @@ The induction on the number of bodies that gives the attainment of the general c
 (`thm:pencil-x0-reduction-attains`, `sec:main-component-coverage`), and open ears (`def:open-ear`).
 A graph `G` *reduces* to a property `P` of graphs (`Graph.X0Reduces`, `def:pencil-x0-reduces`) when
 it meets the further conditions of one step of the induction, with `P` at every graph whose
-attainment that step assumes. Each of the thirteen constructors is one step: the case of equal
+attainment that step assumes. Each of the eleven constructors is one step: the case of equal
 deficiencies (`MainComponent/Bridge.lean`), the cut vertex and the chain of bridges
 (`MainComponent/Cut.lean`), the cycle and the open ear with at least five interior bodies
-(`MainComponent/Chain.lean`), the open ears with two, three or four interior bodies
+(`MainComponent/Chain.lean`), the open ears with three or four interior bodies
 (`MainComponent/Short.lean`) and with one or two at non-adjacent ends (`MainComponent/Orbit.lean`),
-the split-off (`MainComponent/SplitOff.lean`), and the two contractions
-(`MainComponent/Contract.lean`, `MainComponent/ContractAdditive.lean`). `Graph.X0Reduces.x0Attains`
-applies the step of the constructor. With `P` the property of being smaller than `G`
-(`Graph.X0Below`: satisfying the standing hypotheses, with fewer bodies), strong induction on the
-number of bodies gives the attainment at every graph satisfying the standing hypotheses once every
-such graph reduces (`Graph.X0Attains.of_isX0Graph_of_x0Reduces`), which the structural coverage
-proves (`thm:pencil-x0-coverage`, `MainComponent/CoverageTheoremS.lean`).
+and the two contractions (`MainComponent/Contract.lean`, `MainComponent/ContractAdditive.lean`).
+`Graph.X0Reduces.x0Attains` applies the step of the constructor. With `P` the property of being
+smaller than `G` (`Graph.X0Below`: satisfying the standing hypotheses, with fewer bodies), strong
+induction on the number of bodies gives the attainment at every graph satisfying the standing
+hypotheses once every such graph reduces (`Graph.X0Attains.of_isX0Graph_of_x0Reduces`), which the
+structural coverage proves (`thm:pencil-x0-coverage`, `MainComponent/CoverageTheoremS.lean`).
 
 An open ear (`Graph.IsOpenEar`) bundles the hypotheses of the ear steps. The lemmas on it serve the
 chains and the cut cases (`MainComponent/CoverageChain.lean`, `MainComponent/CoverageCut.lean`): the
@@ -341,9 +340,9 @@ theorem _root_.Graph.IsOpenEar.false_of_adj_of_degree_eq_two [Finite β]
 further conditions of one step: each constructor holds the hypotheses of one step theorem beyond the
 standing hypotheses, with `P` at every graph whose attainment that step assumes: the two sides at a
 cut vertex or at a chain of bridges; `G[V₁]` at an open ear, and also `G` with `x 1` suppressed at
-three or four interior bodies and at two with the bound on the merged planar deficiency; `G` with
-`x 0` suppressed at the split-off; and the contraction, with the core at an additive core. The case
-of equal deficiencies and the cycle assume none. -/
+three or four interior bodies and at two with the bound on the merged planar deficiency; and the
+contraction, with the core at an additive core. The case of equal deficiencies and the cycle assume
+none. -/
 inductive _root_.Graph.X0Reduces (P : Graph α β → Prop) (G : Graph α β) : Prop
   | flat (hdef : G.deficiency 2 = G.deficiency 3)
   | cutVertex {V₁ V₂ : Set α} {v : α} (hcover : V₁ ∪ V₂ = V(G)) (hoverlap : V₁ ∩ V₂ = {v})
@@ -372,9 +371,6 @@ inductive _root_.Graph.X0Reduces (P : Graph α β → Prop) (G : Graph α β) : 
   | openEarThree {V₁ : Set α} {x : Fin 3 → α} {a b : α} {e : Fin 4 → β}
       (hear : G.IsOpenEar V₁ x a b e) (h₁ : P (G.induce V₁))
       (h₂ : P (G.splitOff (x 1) (x 0) (x 2) (e 1)))
-  | openEarTwo {V₁ : Set α} {x : Fin 2 → α} {a b : α} {e : Fin 3 → β}
-      (hear : G.IsOpenEar V₁ x a b e) (h₁ : P (G.induce V₁))
-      (hdef : (G.induce V₁).deficiency 3 ≤ G.deficiency 3)
   | openEarTwoSplitOff {V₁ : Set α} {x : Fin 2 → α} {a b : α} {e : Fin 3 → β}
       (hear : G.IsOpenEar V₁ x a b e) (hnadj : ¬ G.Adj a b) (h₁ : P (G.induce V₁))
       (h₂ : P (G.splitOff (x 1) (x 0) b (e 1)))
@@ -383,10 +379,6 @@ inductive _root_.Graph.X0Reduces (P : Graph α β → Prop) (G : Graph α β) : 
       (hear : G.IsOpenEar V₁ x a b e) (hnadj : ¬ G.Adj a b) (h₁ : P (G.induce V₁))
       (hdef : (G.induce V₁).deficiency 3 ≤ G.deficiency 3)
       (hδ₂ : (G.induce V₁).deficiencyMerged 2 a b + 2 ≤ (G.induce V₁).deficiency 2)
-  | splitOff {V₁ : Set α} {x : Fin 1 → α} {a b : α} {e : Fin 2 → β}
-      (hear : G.IsOpenEar V₁ x a b e) (hnadj : ¬ G.Adj a b)
-      (h₁ : P (G.splitOff (x 0) a b (e 0)))
-      (hδ : (G.induce V₁).deficiencyMerged 3 a b + 5 ≤ (G.induce V₁).deficiency 3)
   | rigidContract (htec : G.TwoEdgeConnected) {W : Set α} {r : α} (hr : r ∈ W)
       (hWss : W ⊂ V(G)) (hW2 : 2 ≤ W.ncard) (hdef : (G.induce W).deficiency 2 = 0)
       (hatt : ∀ u ∉ W, ∀ c₁ ∈ W, ∀ c₂ ∈ W, G.Adj u c₁ → G.Adj u c₂ → c₁ = c₂)
@@ -425,18 +417,12 @@ theorem _root_.Graph.X0Reduces.x0Attains [Infinite K] [Finite α] [Finite β]
   | openEarThree hear h₁ h₂ =>
     exact Graph.X0Attains.of_openEar_three hG hear.cover hear.inj hear.notMem hear.left_mem
       hear.right_mem hear.ne hear.isLink hear.sep (hP _ h₁) (hP _ h₂)
-  | openEarTwo hear h₁ hdef =>
-    exact Graph.X0Attains.of_openEar_two hG hear.cover hear.inj hear.notMem hear.left_mem
-      hear.right_mem hear.ne hear.isLink hear.sep (hP _ h₁) hdef
   | openEarTwoSplitOff hear hnadj h₁ h₂ hδ₂ =>
     exact Graph.X0Attains.of_openEar_two_of_splitOff hG hear.cover hear.notMem hear.left_mem
       hear.right_mem hear.isLink hear.sep hnadj (hP _ h₁) (hP _ h₂) hδ₂
   | openEarOne hear hnadj h₁ hdef hδ₂ =>
     exact Graph.X0Attains.of_openEar_one hG hear.cover hear.notMem hear.left_mem hear.right_mem
       hear.isLink hear.sep hnadj (hP _ h₁) hdef hδ₂
-  | splitOff hear hnadj h₁ hδ =>
-    exact Graph.X0Attains.of_splitOff hG hear.cover hear.notMem hear.left_mem hear.right_mem
-      hear.isLink hear.sep hnadj (hP _ h₁) hδ
   | rigidContract htec hr hWss hW2 hdef hatt hc =>
     exact Graph.X0Attains.of_rigidContract hG htec hr hWss hW2 hdef hatt (hP _ hc)
   | additiveContract htec hr hWss hW2 hdef3 hadd hatt hH hc =>

@@ -8,31 +8,30 @@ module
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.SparseCount
 
 /-!
-# A core in every dimension
+# Cores in every dimension
 
-The deficiency counting of the structural coverage in every dimension `d = n ≥ 3`
-(`sec:pencil-d-deficiency`, `blueprint/src/chapter/pencil-d.tex`), with `D = bodyBarDim n`. A set
-`W` is *rigid at `n`* if `def(G̃[W]) = 0` at `n`. A *core at `n`* is a set `W ⊊ V(G)` of at least
-two bodies, rigid at `n`, with no body outside `W` adjacent to two bodies of `W`, and a body `r ∈ W`
-with `def₂(G[W]) + def₂(G / G[W]) ≤ def₂(G)`: rigidity is read at `D`, additivity in the plane. At
+The lemmas that find a core in every dimension `d = n` (`sec:pencil-d-deficiency`,
+`blueprint/src/chapter/pencil-d.tex`), with `D = bodyBarDim n`. A set `W` is *rigid at `n`* if
+`def(G̃[W]) = 0` at `n`. A *core at `n`* is a set `W ⊊ V(G)` of at least two bodies, rigid at `n`,
+with no body outside `W` adjacent to two bodies of `W`, and a body `r ∈ W` with
+`def₂(G[W]) + def₂(G / G[W]) ≤ def₂(G)`: rigidity is read at `D`, additivity in the plane. At
 `n = 3` it is the core of `Graph.IsX0Graph.exists_additiveCore` (`thm:pencil-x0-theorem-s`,
-`MainComponent/CoverageTheoremS.lean`, which is the `n = 3` case of the theorem here).
+`MainComponent/CoverageTheoremS.lean`), whose proof finds it by the lemmas here at `n = 3`; they
+also give the core of `Graph.IsX0Graph.exists_chain_or_core` (`thm:pencil-d-chain-or-core`,
+`Grade/Chains.lean`).
 
-The proofs are those at `n = 3`, with the sparse estimates at `n`
-(`Molecular/Induction/SparseDeficiency.lean`: `lem:deficiency-core-bound-d`,
-`lem:deficiency-one-body-chain-d`, `lem:deficiency-two-body-chain-d`) in place of theirs at `n = 3`,
-and a set rigid at `n = 3` rigid at every `n ≥ 3` (`lem:deficiency-rigid-higher`). The core of a
-graph with `def₃(G) > 0` and no two bodies of degree two adjacent is ONE-CLASS's lemma
-(`notes/Phase42-design.md` §2.3), and the core at a long chain is SHORT-CORE's S52
-(`notes/attacks/short-core/`).
+A maximal set rigid at `n` that avoids at most one body, of degree at most two, is a core, by the
+core bound at `n` (`lem:deficiency-core-bound-d`, `Molecular/Induction/SparseDeficiency.lean`). It
+gives the core at an open ear with two or more interior bodies whose side holds a set rigid at `n`,
+which is SHORT-CORE's S52 (`notes/attacks/short-core/`). The core of a graph with `def₃(G) > 0` and
+no two bodies of degree two adjacent, a set of least singleton value among those rigid at `n`, is
+ONE-CLASS's lemma (`notes/Phase42-design.md` §2.3); it reads the parts of a tight partition at
+`n = 3`, which are rigid at every `n ≥ 3` (`lem:deficiency-rigid-higher`).
 
 ## Main results
 
-* `Graph.ChainUsableAt`: `def:pencil-d-usable-chain`, a chain usable at `n`.
 * `Graph.IsX0Graph.exists_additiveCore_of_rigidAt`: `lem:pencil-d-maximal-rigid-core`, a maximal
   set rigid at `n` that avoids at most one body, of degree at most two, is a core at `n`.
-* `Graph.IsX0Graph.exists_additiveCoreAt`: `thm:pencil-d-theorem-s`, a core at `n` when no chain is
-  usable at `n`.
 * `Graph.IsX0Graph.exists_core_of_deficiency_three_pos`: `lem:pencil-d-core-positive-deficiency`, a
   core at every `n ≥ 3` when `def₃(G) > 0` and no two bodies of degree two are adjacent.
 * `Graph.IsOpenEar.exists_additiveCoreAt_of_deficiency_induce_eq_zero`,
@@ -47,24 +46,7 @@ open scoped Graph
 
 namespace CombinatorialRigidity.Molecular
 
-variable {α β : Type*}
-
-/-- **A chain usable at `n`** (`def:pencil-d-usable-chain`): a chain `a − x 0 − ⋯ − x (k − 1) − b`
-on `V₁` is usable at `n` if `k ≥ 3`; or `k = 2` and either `def_n(G[V₁]; a, b) = def_n(G[V₁])`, or
-`a` and `b` are not adjacent and `def₂(G[V₁]; a, b) + 2 ≤ def₂(G[V₁])`; or `k = 1` and either
-`def_n(G[V₁]; a, b) = def_n(G[V₁])` or `def_n(G[V₁]; a, b) + (D − 1) ≤ def_n(G[V₁])`, with
-`D = bodyBarDim n`. At `n = 3`, where `D − 1 = 5`, these are the conditions of `Graph.ChainUsable`
-(`def:pencil-x0-usable-chain`). -/
-def _root_.Graph.ChainUsableAt (G : Graph α β) (n : ℕ) (V₁ : Set α) (k : ℕ) (a b : α) : Prop :=
-  3 ≤ k ∨
-  (k = 2 ∧ ((G.induce V₁).deficiencyMerged n a b = (G.induce V₁).deficiency n ∨
-    (¬ G.Adj a b ∧
-      (G.induce V₁).deficiencyMerged 2 a b + 2 ≤ (G.induce V₁).deficiency 2))) ∨
-  (k = 1 ∧ ((G.induce V₁).deficiencyMerged n a b = (G.induce V₁).deficiency n ∨
-    (G.induce V₁).deficiencyMerged n a b + ((Graph.bodyBarDim n : ℤ) - 1) ≤
-      (G.induce V₁).deficiency n))
-
-variable [Finite α] [Finite β]
+variable {α β : Type*} [Finite α] [Finite β]
 
 /-! ## A maximal rigid set is a core -/
 
@@ -120,150 +102,6 @@ theorem _root_.Graph.IsX0Graph.exists_additiveCore_of_rigidAt {G : Graph α β}
     (fun x hx => Graph.ncard_setOf_isLink_le_one hG.simple (hattX x hx W hWU hW2 hWd))
   exact ⟨W, r, hWU, hr, hWss, hW2, hWd,
     Graph.deficiency_induce_add_deficiency_rigidContract_le hSv hWV hr hmono, hattW⟩
-
-/-! ## Theorem S in every dimension -/
-
-/-- **A core at `n` when no chain is usable at `n`** (`thm:pencil-d-theorem-s`): let `n ≥ 3`, and
-let `G` satisfy the standing hypotheses, with `G − v` connected for every body `v`, some body of
-degree other than two, and no planar-rigid set. If no chain of `G` is usable at `n`
-(`Graph.ChainUsableAt`), then `G` has a core at `n`: there are `W ⊊ V(G)` with `|W| ≥ 2` and
-`def_n(G[W]) = 0`, no body outside `W` adjacent to two bodies of `W`, and `r ∈ W`, with
-`def₂(G[W]) + def₂(G/G[W]) ≤ def₂(G)`.
-
-The proof of `Graph.IsX0Graph.exists_additiveCore` at `n`. A chain with two interior bodies has
-adjacent ends, by `Graph.deficiencyMerged_two_add_two_le_of_three_le`
-(`lem:deficiency-two-body-chain-d`), and its `4`-cycle is rigid at `n = 3`, so at `n`
-(`Graph.deficiency_eq_zero_of_deficiency_eq_zero_of_le`, `lem:deficiency-rigid-higher`). When
-`def_n(G) > 0`, the chain through a body of degree two gives a set rigid at `n`: its `4`-cycle, or,
-at one interior body, a set containing it, by `Graph.deficiencyMerged_add_bodyBarDim_sub_one_le`
-(`lem:deficiency-one-body-chain-d`). When `def_n(G) = 0`, a body `x` of degree two and a set rigid
-at `n` avoiding it come from the count of the bodies of degree two (`lem:pencil-x0-sparse-count`),
-and two neighbours of `x` in a rigid set would make `a − x − b` usable
-(`Graph.deficiencyMerged_eq_deficiency_of_mem`). Both cases end at
-`Graph.IsX0Graph.exists_additiveCore_of_rigidAt`. -/
-theorem _root_.Graph.IsX0Graph.exists_additiveCoreAt {G : Graph α β} (hG : G.IsX0Graph) {n : ℕ}
-    (hn : 3 ≤ n)
-    (h2c : ∀ v ∈ V(G), (G.induce (V(G) \ {v})).Connected)
-    (hhub : ∃ w ∈ V(G), G.degree w ≠ 2)
-    (hS : ∀ X ⊆ V(G), 2 ≤ X.ncard → (G.induce X).deficiency 2 ≠ 0)
-    (hblk : ∀ (V₁ : Set α) (k : ℕ) (x : Fin k → α) (a b : α) (e : Fin (k + 1) → β),
-      G.IsChain V₁ x a b e → ¬ G.ChainUsableAt n V₁ k a b) :
-    ∃ W r, r ∈ W ∧ W ⊂ V(G) ∧ 2 ≤ W.ncard ∧ (G.induce W).deficiency n = 0 ∧
-      (G.induce W).deficiency 2 + (G.rigidContract (G.induce W) r).deficiency 2 ≤
-        G.deficiency 2 ∧
-      ∀ u ∉ W, ∀ c₁ ∈ W, ∀ c₂ ∈ W, G.Adj u c₁ → G.Adj u c₂ → c₁ = c₂ := by
-  have hD : 3 ≤ Graph.bodyBarDim n := by have := Graph.six_le_bodyBarDim hn; omega
-  have hSv := Graph.one_le_partitionDef_induce_id hS
-  -- a set rigid at `n = 3` is rigid at `n`
-  have hup : ∀ Y : Set α, 2 ≤ Y.ncard → (G.induce Y).deficiency 3 = 0 →
-      (G.induce Y).deficiency n = 0 := fun Y hY2 hY =>
-    Graph.deficiency_eq_zero_of_deficiency_eq_zero_of_le (by decide) hn
-      (Set.nonempty_of_ncard_ne_zero (s := Y) (by omega)) hY
-  -- a chain with two interior bodies that is not usable has adjacent ends
-  have hk2 : ∀ (V₁ : Set α) (x : Fin 2 → α) (a b : α) (e : Fin 3 → β),
-      G.IsChain V₁ x a b e → G.Adj a b := by
-    intro V₁ x a b e hC
-    have hb := hblk _ _ _ _ _ _ hC
-    have hδ : (G.induce V₁).deficiencyMerged n a b ≠ (G.induce V₁).deficiency n :=
-      fun h => hb (Or.inr (Or.inl ⟨rfl, Or.inl h⟩))
-    have hnot : ¬ G.Adj a b → ¬ ((G.induce V₁).deficiencyMerged 2 a b + 2 ≤
-        (G.induce V₁).deficiency 2) := fun hn h => hb (Or.inr (Or.inl ⟨rfl, Or.inr ⟨hn, h⟩⟩))
-    by_contra hnadj
-    have hSv' : ∀ X ⊆ V(G.induce V₁), 2 ≤ X.ncard →
-        1 ≤ ((G.induce V₁).induce X).partitionDef 2 id := fun X hX hX2 => by
-      have hX' : X ⊆ V₁ := hX
-      rw [Graph.induce_induce_of_subset G hX']
-      exact hSv X (hX'.trans (hC.cover ▸ Set.subset_union_left)) hX2
-    have hnadj' : ¬ (G.induce V₁).Adj a b := fun ⟨f, hf⟩ => hnadj ⟨f, hf.1⟩
-    exact hnot hnadj (Graph.deficiencyMerged_two_add_two_le_of_three_le hn hSv' hC.left_mem
-      hC.right_mem hC.ne hnadj' hδ)
-  obtain ⟨v, hv, hv2, -⟩ := hG.exists_degree_eq_two_notMem hSv (s := ∅) (by simp)
-  obtain ⟨V₁, k, x, a, b, e, hC, hvx⟩ := hG.exists_isChain h2c hhub hv2
-  have hbC := hblk _ _ _ _ _ _ hC
-  have hk3 : k < 3 := Nat.lt_of_not_le fun h => hbC (Or.inl h)
-  by_cases hrig : G.deficiency n = 0
-  · -- the rigid case: a body `x₀` of degree two and a set rigid at `n` avoiding it
-    obtain ⟨x₀, hx₀V, hx₀2, Y, hYx₀, hY2, hYd⟩ : ∃ x₀ ∈ V(G), G.degree x₀ = 2 ∧
-        ∃ Y ⊆ V(G) \ {x₀}, 2 ≤ Y.ncard ∧ (G.induce Y).deficiency n = 0 := by
-      by_cases hadj : ∃ v w, G.degree v = 2 ∧ G.degree w = 2 ∧ G.Adj v w
-      · obtain ⟨v', w', hv'2, hw'2, hv'w'⟩ := hadj
-        obtain ⟨V₁', k', x', a', b', e', hC', hv'x'⟩ := hG.exists_isChain h2c hhub hv'2
-        have h2 := hC'.two_le_of_adj hv'x' hv'w' hw'2
-        have h3 : k' < 3 := Nat.lt_of_not_le fun h => hblk _ _ _ _ _ _ hC' (Or.inl h)
-        obtain rfl : k' = 2 := by omega
-        have hab' := hk2 _ _ _ _ _ hC'
-        obtain ⟨hcycV, hcyc2, hcycd⟩ :=
-          hC'.toIsOpenEar.deficiency_three_induce_cycle hab' hSv
-        obtain ⟨x₀, hx₀V, hx₀2, hx₀s⟩ :=
-          hG.exists_degree_eq_two_notMem hSv (s := {x' 0, x' 1})
-            ((Set.ncard_pair_le _ _).trans (by norm_num))
-        refine ⟨x₀, hx₀V, hx₀2, _, fun y hy => ⟨hcycV hy, ?_⟩, hcyc2, hup _ hcyc2 hcycd⟩
-        rintro rfl
-        rcases hy with rfl | rfl | rfl | rfl
-        · exact absurd hx₀2 (by have := hC'.three_le_degree_left; omega)
-        · exact hx₀s (Or.inl rfl)
-        · exact hx₀s (Or.inr rfl)
-        · exact absurd hx₀2 (by have := hC'.three_le_degree_right; omega)
-      · push Not at hadj
-        have hhubs : ∀ v w, G.degree v = 2 → G.Adj v w → 3 ≤ G.degree w := by
-          intro v w hv2' hvw
-          have := hG.two_le_degree w hvw.right_mem
-          by_contra h3
-          exact hadj v w hv2' (by omega) hvw
-        have hval := hG.partitionDef_three_induce_diff_nonpos hhubs hv hv2
-        have hcard : 2 ≤ (V(G) \ {v}).ncard := by
-          have h3 : 3 ≤ V(G).ncard := hG.three_le_ncard_vertexSet
-          rw [Set.ncard_sdiff_singleton_of_mem hv]; omega
-        obtain ⟨Y, hYs, hY2, hYd3⟩ :=
-          Graph.exists_deficiency_induce_eq_zero_of_partitionDef_id_nonpos
-            (G := G) (n := 3) Set.sdiff_subset hcard hval
-        exact ⟨v, hv, hv2, Y, hYs, hY2, hup Y hY2 hYd3⟩
-    obtain ⟨W, r, -, h⟩ := hG.exists_additiveCore_of_rigidAt hD hSv (X₀ := {x₀})
-      Set.subsingleton_singleton (Set.singleton_subset_iff.mpr hx₀V) hYx₀ hY2 hYd
-      (fun h => absurd h (Set.singleton_ne_empty x₀))
-      (fun y hy => by rw [Set.mem_singleton_iff.mp hy, hx₀2]) (by
-        rintro y hy W hW hW2 hWd c₁ hc₁ c₂ hc₂ h₁ h₂
-        rw [Set.mem_singleton_iff] at hy
-        subst hy
-        by_contra hne
-        have hWV : W ⊆ V(G) := hW.trans Set.sdiff_subset
-        have hyW : y ∉ W := fun h => (hW h).2 rfl
-        -- a neighbour of degree two in a rigid set would have degree `≤ 1` there
-        have hhub : ∀ c ∈ W, G.Adj y c → 3 ≤ G.degree c := by
-          intro c hc hyc
-          have h2 := Graph.two_le_degree_of_isKDof_zero (G := G.induce W) (n := n) (by omega)
-            hWd hc hW2
-          have hlt := Graph.degree_induce_lt_of_adj hc hyW hyc.symm
-          have := hG.two_le_degree c (hWV hc)
-          by_contra h3
-          omega
-        obtain ⟨e₁, he₁⟩ := h₁
-        obtain ⟨e₂, he₂⟩ := h₂
-        have hC₁ := hG.isChain_one hx₀2 he₁.symm he₂ hne (hhub c₁ hc₁ ⟨e₁, he₁⟩)
-          (hhub c₂ hc₂ ⟨e₂, he₂⟩)
-        apply hblk _ _ _ _ _ _ hC₁ (Or.inr (Or.inr ⟨rfl, Or.inl ?_⟩))
-        have hWd' : ((G.induce (V(G) \ {y})).induce W).deficiency n = 0 := by
-          rwa [Graph.induce_induce_of_subset G hW]
-        exact Graph.deficiencyMerged_eq_deficiency_of_mem (by omega) hW hWd' hc₁ hc₂)
-    exact ⟨W, r, h⟩
-  · -- the case `def_n(G) > 0`: the chain found gives a set rigid at `n`
-    obtain ⟨Y, hYV, hY2, hYd⟩ : ∃ Y ⊆ V(G), 2 ≤ Y.ncard ∧ (G.induce Y).deficiency n = 0 := by
-      have hk1 := hC.one_le
-      obtain rfl | rfl : k = 1 ∨ k = 2 := by omega
-      · by_contra hno
-        push Not at hno
-        apply hbC (Or.inr (Or.inr ⟨rfl, Or.inr ?_⟩))
-        exact Graph.deficiencyMerged_add_bodyBarDim_sub_one_le (by omega)
-          (hC.cover ▸ Set.subset_union_left) (hC.notMem 0) hC.left_mem hC.right_mem hC.ne
-          (show G.IsLink (e 0) a (x 0) from hC.isLink 0).symm (hC.isLink 1)
-          (fun Y hY _ hY2 => hno Y hY hY2)
-      · obtain ⟨hcycV, hcyc2, hcycd⟩ :=
-          hC.toIsOpenEar.deficiency_three_induce_cycle (hk2 _ _ _ _ _ hC) hSv
-        exact ⟨_, hcycV, hcyc2, hup _ hcyc2 hcycd⟩
-    obtain ⟨W, r, -, h⟩ := hG.exists_additiveCore_of_rigidAt hD hSv (X₀ := ∅)
-      Set.subsingleton_empty (Set.empty_subset _) (by simpa using hYV) hY2 hYd (fun _ => hrig)
-      (by simp) (by simp)
-    exact ⟨W, r, h⟩
 
 /-! ## A core when the deficiency at `n = 3` is positive -/
 

@@ -3213,7 +3213,10 @@ condition on the ear data.
   $\theta$-graph through its general cases: by \cref{cor:pencil-jj-flat}
   when its two deficiencies agree, by contraction when it has a
   planar-rigid set (\cref{sec:main-component-sparse}), and otherwise at a
-  usable chain (\cref{def:pencil-x0-usable-chain}).
+  usable chain (\cref{def:pencil-x0-usable-chain}), or at a core when no
+  chain is usable (\cref{thm:pencil-x0-theorem-s}). The last happens: for
+  $p_1 = 1$ and $p_2 = p_3 = 3$ the two longer paths are chains with two
+  interior bodies and adjacent ends, and neither is usable.
 \end{remark}
 
 \subsection{Open ears with one or two interior bodies at non-adjacent ends}
@@ -3646,8 +3649,7 @@ provided that
 \]
 (\cref{def:deficiency-merged}, at $d = 3$). Here $\delta$ is how far the
 deficiency of $G[V_1]$ drops when only partitions with $a$ and $b$ in one
-part are counted. The structural coverage applies this step to a chain
-$a - x - b$ with $\delta \ge 5$ (\cref{def:pencil-x0-usable-chain}).
+part are counted.
 
 The idea is to put $x$ back on the line through $a$ and $b$. Take a
 configuration of $G''$ at its target rank, and place the point of $x$ on
@@ -4012,17 +4014,19 @@ of $P$ (\cref{def:D-deficiency}). Then
 So a partition whose value at $d = 2$ is at most zero has value at most
 zero at $d = 3$. Planar counts can therefore show that a set is rigid.
 
-From these facts we prove that a tight set is rigid, and that in a
-sparse graph a maximal rigid set has the least singleton value among the
-sets containing it. At a set $W$ of least singleton value among the sets
-containing it, the planar deficiencies of $G[W]$ and of $G/G[W]$ add up
-to at most that of $G$. The contraction step at an additive core
-assumes this inequality (\cref{sec:main-component-contract}).
-Last, we bound the merged deficiencies at the ends of an open ear with
-one or two interior bodies. The split-off step assumes such a bound for
-one interior body (\cref{sec:main-component-splitoff}). So do the ear
-steps at non-adjacent ends, for one or two
-(\cref{sec:main-component-orbit}).
+From these facts we prove that a tight set is rigid. At a set $W$ of
+least singleton value among the sets containing it, the planar
+deficiencies of $G[W]$ and of $G/G[W]$ add up to at most that of $G$.
+The contraction step at an additive core assumes this inequality
+(\cref{sec:main-component-contract}). In a sparse graph a maximal rigid
+set has this least singleton value, which \cref{sec:pencil-d-deficiency}
+proves in every dimension (\cref{lem:deficiency-core-bound-d}). Last, we
+study the ends of an open ear with one or two interior bodies. With one,
+the planar merged deficiency at the ends falls at least two below the
+planar deficiency of $G[V_1]$, a bound that the ear steps at
+non-adjacent ends assume (\cref{sec:main-component-orbit}). With two,
+ends that are not adjacent and at which it falls by less than two lie in
+a rigid set.
 
 \begin{lemma}[The singletons bound the partitions of a sparse graph]
   \label{lem:deficiency-singleton-bound}
@@ -4157,61 +4161,6 @@ steps at non-adjacent ends, for one or two
   and $v_3 = 2s(X) - e(X) < 0$.
 \end{proof}
 
-The structural coverage takes either a maximal rigid set, or a set
-maximal among the rigid sets that avoid one body $x$ of degree two
-(\cref{thm:pencil-x0-theorem-s}). The next lemma treats both, with $X_0$
-empty or $X_0 = \{x\}$.
-
-\begin{lemma}[A maximal rigid set bounds the singleton values above it]
-  \label{lem:deficiency-core-bound}
-  \lean{Graph.deficiency_three_induce_eq_zero_of_le, Graph.partitionDef_induce_id_le_of_maximal}
-  \leanok
-  \uses{def:D-deficiency}
-  Let $G$ be sparse.
-  \begin{enumerate}
-    \item Let $W \subseteq Y \subseteq V(G)$ with $W$ nonempty and
-      $\operatorname{def}_3(G[W]) = 0$. If $s(Y) \le s(W)$, and
-      $s(W) \le s(Q)$ for every $Q$ with $W \subseteq Q \subsetneq Y$,
-      then $\operatorname{def}_3(G[Y]) = 0$.
-    \item Let $W \subseteq V(G)$ be nonempty with
-      $\operatorname{def}_3(G[W]) = 0$, and let $X_0$ be empty or a
-      single body outside $W$ that sends at most two edges into every
-      set avoiding it and at most one into $W$. Suppose $W$ is maximal
-      among the sets $W' \supseteq W$ in $V(G) \setminus X_0$ with
-      $\operatorname{def}_3(G[W']) = 0$. Then $s(W) \le s(X)$ for every
-      $X$ with $W \subseteq X \subseteq V(G)$.
-  \end{enumerate}
-\end{lemma}
-\begin{proof}
-  \leanok
-  \uses{lem:deficiency-merge-rigid, lem:deficiency-singleton-bound,
-        lem:deficiency-add-body, lem:deficiency-core-bound-d}
-  (1) Let $P$ be a partition of $Y$, with values taken in $G[Y]$. Let
-  $P'$ be a partition coarser than $P$ with $W$ inside one part $Q$ and
-  $v_3(P) \le v_3(P')$ (\cref{lem:deficiency-merge-rigid}). If $Q = Y$
-  then $v_3(P') = 0$. Otherwise $v_2(P') \le s(Y) - s(Q) \le 0$
-  (\cref{lem:deficiency-singleton-bound}), so $v_3(P') \le 2v_2(P') \le
-  0$.
-
-  (2) Suppose not, and take $X \subseteq V(G)$ with $W \subseteq X$ and
-  $s(X) < s(W)$, of least size. Then $X \ne W$, and $s(W) \le s(Q)$ for
-  every $Q \supseteq W$ with fewer bodies than $X$. If $X$ avoids $X_0$,
-  then (1) at $Y = X$ makes $G[X]$ rigid, against the maximality of $W$.
-  Otherwise $X_0 = \{x\}$ with $x \in X$; put $Y = X \setminus \{x\}$,
-  which contains $W$. Adding $x$ to $Y$ changes the singleton value by
-  $3 - 2t$, where $t \le 2$ is the number of edges from $x$ into $Y$
-  (\cref{lem:deficiency-add-body}), and $t \le 1$ if $Y = W$. So $Y \ne
-  W$, since otherwise $s(X) \ge s(W) + 1$. Then $s(Y) \ge s(W)$, as $Y$
-  has fewer bodies than $X$. Also $s(X) \ge s(Y) - 1$, so $s(X) = s(W)
-  - 1$ and $s(Y) = s(W)$. Now (1) at $Y$ makes $G[Y]$ rigid, a set
-  avoiding $X_0$ that strictly contains $W$, against the maximality of
-  $W$.
-\end{proof}
-\begin{fmlnote}
-  The formalization proves both parts as the case $d = 3$ of
-  \cref{lem:deficiency-core-bound-d}.
-\end{fmlnote}
-
 \begin{lemma}[The planar deficiencies of a core and its contraction add up to at most that of the graph]
   \label{lem:deficiency-additive-core}
   \lean{Graph.partitionDef_map, Graph.deficiency_induce_add_deficiency_rigidContract_le}
@@ -4247,27 +4196,20 @@ empty or $X_0 = \{x\}$.
   the claim.
 \end{proof}
 
-\begin{lemma}[The deficiencies at a body of degree two]
+\begin{lemma}[The planar merged deficiency at a body of degree two]
   \label{lem:deficiency-one-body-chain}
-  \lean{Graph.not_adj_and_deficiencyMerged_two_add_two_le, Graph.deficiencyMerged_three_add_five_le}
+  \lean{Graph.not_adj_and_deficiencyMerged_two_add_two_le}
   \leanok
   \uses{def:D-deficiency, def:deficiency-merged}
-  Let $V_1 \subseteq V(G)$ and $x \in V(G) \setminus V_1$, and let
-  $a \neq b$ in $V_1$ be joined to $x$ by edges.
-  \begin{enumerate}
-    \item If $G$ is sparse, then $a$ and $b$ are not adjacent, and
-      $\operatorname{def}_2(G[V_1]; a, b) + 2 \le
-      \operatorname{def}_2(G[V_1])$.
-    \item If no set of at least two bodies containing $x$ is rigid, then
-      $\operatorname{def}_3(G[V_1]; a, b) + 5 \le
-      \operatorname{def}_3(G[V_1])$.
-  \end{enumerate}
+  Let $G$ be sparse, let $V_1 \subseteq V(G)$ and $x \in V(G) \setminus
+  V_1$, and let $a \neq b$ in $V_1$ be joined to $x$ by edges. Then $a$
+  and $b$ are not adjacent, and $\operatorname{def}_2(G[V_1]; a, b) + 2
+  \le \operatorname{def}_2(G[V_1])$.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:deficiency-singleton-bound, lem:deficiency-add-body,
-        lem:separated-partition-value, lem:deficiency-one-body-chain-d}
-  (1) An edge $ab$ would give the triangle $\{x, a, b\}$ singleton value
+  \uses{lem:deficiency-singleton-bound, lem:deficiency-add-body}
+  An edge $ab$ would give the triangle $\{x, a, b\}$ singleton value
   zero. Let a partition of $V_1$ with $a$ and $b$ in one part $Z$ attain
   the merged deficiency. Its value plus $s(Z)$ is at most
   $s(V_1) \le \operatorname{def}_2(G[V_1])$
@@ -4276,67 +4218,29 @@ empty or $X_0 = \{x\}$.
   one, as $x$ has at least two edges into $Z$
   (\cref{lem:deficiency-add-body}). As $s(Z \cup \{x\}) \ge 1$ by
   sparsity, $s(Z) \ge 2$.
-
-  (2) Suppose otherwise, and let $P$ attain the merged deficiency $m$,
-  with $Q$ the part of $a$ and $b$. Refining $Q$ by a partition $R$ of
-  $Q$, relabelled apart from the other parts of $P$, changes the value
-  of $P$ by the value of $R$ in $G[Q]$
-  (\cref{lem:separated-partition-value}). Since
-  $\operatorname{def}_3(G[V_1]) \le m + 4$, every such $R$ has value at
-  most $4$ in $G[Q]$, and at most $0$ if it keeps $a$ and $b$ together.
-
-  We show that $G[Q \cup \{x\}]$ is rigid, against the hypothesis. Let
-  $R'$ be a partition of $Q \cup \{x\}$, and compare its value with that
-  of its restriction to $Q$ (\cref{lem:deficiency-add-body}). If $x$ is
-  alone, at least its two edges to $a$ and $b$ cross, and the value drops
-  by at least $10 - 6 = 4$, to at most $0$. If $x$ shares a part, each
-  edge from $x$ to another part costs $5$. When $a$ and $b$ are apart, at
-  least one such edge exists, and the value is at most $4 - 5 < 0$. When
-  they are together, the value is at most $0$.
 \end{proof}
-\begin{fmlnote}
-  The formalization proves part~(2) as the case $d = 3$ of
-  \cref{lem:deficiency-one-body-chain-d}, where $D - 1 = 5$.
-\end{fmlnote}
 
-\begin{lemma}[A non-adjacent pair outside every rigid set]
+\begin{lemma}[A non-adjacent pair with a small planar drop lies in a rigid set]
   \label{lem:deficiency-two-body-chain}
-  \lean{Graph.exists_deficiency_three_induce_eq_zero_of_deficiency_two_lt,
-        Graph.deficiencyMerged_two_add_two_le}
+  \lean{Graph.exists_deficiency_three_induce_eq_zero_of_deficiency_two_lt}
   \leanok
   \uses{def:D-deficiency, def:deficiency-merged}
   Let $G$ be sparse, and let $a \neq b$ be bodies of $G$ that are not
-  adjacent.
-  \begin{enumerate}
-    \item If $\operatorname{def}_2(G) < \operatorname{def}_2(G; a, b) +
-      2$, then $a$ and $b$ lie in a set $Z$ of at least three bodies
-      with $\operatorname{def}_3(G[Z]) = 0$.
-    \item If $\operatorname{def}_3(G; a, b) \neq
-      \operatorname{def}_3(G)$, then $\operatorname{def}_2(G; a, b) + 2
-      \le \operatorname{def}_2(G)$.
-  \end{enumerate}
+  adjacent. If $\operatorname{def}_2(G) < \operatorname{def}_2(G; a, b) +
+  2$, then $a$ and $b$ lie in a set $Z$ of at least three bodies with
+  $\operatorname{def}_3(G[Z]) = 0$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:deficiency-singleton-bound, lem:deficiency-add-body,
-        lem:deficiency-tight-rigid, lem:deficiency-merge-rigid}
-  (1) The part $Z$ of $a$ and $b$ in a partition attaining the planar
+        lem:deficiency-tight-rigid}
+  The part $Z$ of $a$ and $b$ in a partition attaining the planar
   merged deficiency has $s(Z) \le 1$
   (\cref{lem:deficiency-singleton-bound}). The pair $\{a, b\}$ has
   singleton value $3$, as $a$ and $b$ are not adjacent
   (\cref{lem:deficiency-add-body}), so $|Z| \ge 3$, and $Z$ is rigid
   (\cref{lem:deficiency-tight-rigid}).
-
-  (2) Otherwise part~(1) gives a rigid set $Z \ni a, b$, and then
-  $\operatorname{def}_3(G; a, b) = \operatorname{def}_3(G)$
-  (\cref{lem:deficiency-merge-rigid}).
 \end{proof}
-\begin{fmlnote}
-  The formalization proves part~(1) as
-  \texttt{exists\_deficiency\_three\_induce\_eq\_zero\_of\_deficiency\_two\_lt},
-  and part~(2) from it; the case $d = 3$ of
-  \cref{lem:deficiency-two-body-chain-d} comes from the same part~(1).
-\end{fmlnote}
 
 \subsection{The structural coverage}
 \label{sec:main-component-coverage}
@@ -4403,10 +4307,6 @@ $W$ is the set contracted.
   \raggedright a usable chain with $k \ge 5$
     & \raggedright an open ear (\cref{thm:pencil-x0-open-ear})
     & \raggedright $G[V_1]$ \tabularnewline
-  \raggedright a usable chain with $k = 2$ and
-    $\operatorname{def}_3(G[V_1]; a, b) = \operatorname{def}_3(G[V_1])$
-    & \raggedright an open ear (\cref{thm:pencil-x0-open-ear-two})
-    & \raggedright $G[V_1]$ \tabularnewline
   \raggedright a usable chain with $k = 2$, $a$ and $b$ not adjacent,
     and $\operatorname{def}_2(G[V_1]; a, b) + 2 \le
     \operatorname{def}_2(G[V_1])$
@@ -4416,11 +4316,6 @@ $W$ is the set contracted.
     $\operatorname{def}_3(G[V_1]; a, b) = \operatorname{def}_3(G[V_1])$
     & \raggedright an open ear (\cref{thm:pencil-x0-open-ear-one})
     & \raggedright $G[V_1]$ \tabularnewline
-  \raggedright a usable chain with $k = 1$ and
-    $\operatorname{def}_3(G[V_1]; a, b) + 5 \le
-    \operatorname{def}_3(G[V_1])$
-    & \raggedright splitting off $x_1$ (\cref{thm:pencil-x0-splitoff})
-    & \raggedright $G$ with $x_1$ suppressed \tabularnewline
   \raggedright no usable chain
     & \raggedright contraction at an additive core $W$
       (\cref{thm:pencil-x0-contract-additive})
@@ -4428,22 +4323,24 @@ $W$ is the set contracted.
 \end{tabular}
 \end{center}
 The chain rows are the conditions of \cref{def:pencil-x0-usable-chain},
-with $k \ge 3$ split by the step. A chain may meet two of them, and then
-either step applies. \Cref{rem:pencil-x0-theta} follows these cases
-through the $\theta$-graphs.
+with $k \ge 3$ split by the step, so a chain meets at most one of them.
+\Cref{rem:pencil-x0-theta} follows these cases through the
+$\theta$-graphs.
 
-In the last row, \cref{thm:pencil-x0-theorem-s} finds the core. Its
-proof has three steps. First, every chain has one or two interior
-bodies, as a chain with more is usable. Second, each chain gives a rigid
-set. With two interior bodies its ends are adjacent, and the chain and
-its ends form a $4$-cycle, which is rigid. With one interior body, that
-body lies in a rigid set. Third, a maximal rigid set containing the set
-found is the core. In a sparse graph a maximal rigid set has the least
-singleton value among the sets containing it. So the planar deficiencies
-of the core and of the contraction add up to at most that of $G$
-(\cref{sec:main-component-sparse}). When $G$ itself is rigid, a maximal
-rigid set is all of $V(G)$, and we take the core maximal among the rigid
-sets that avoid one body of degree two.
+In the last row, \cref{thm:pencil-x0-theorem-s} finds the core. Every
+chain has one or two interior bodies, as a chain with more is usable.
+The core is a set maximal among the rigid sets that contain a given
+rigid set and avoid at most one given body of degree two
+(\cref{lem:pencil-d-maximal-rigid-core}, at $d = 3$), or, when $G$ is
+not rigid and no two bodies of degree two are adjacent, a set of least
+singleton value among the rigid sets
+(\cref{lem:pencil-d-core-positive-deficiency}). Either way it has the
+least singleton value among the sets containing it, so the planar
+deficiencies of the core and of the contraction add up to at most that
+of $G$ (\cref{sec:main-component-sparse}). The rigid set to start from
+comes from a chain with two interior bodies, inside $V_1$ when its ends
+are not adjacent and its $4$-cycle when they are, or, when $G$ is rigid,
+from the count of the bodies of degree two.
 
 \begin{definition}[One step of the induction]
   \label{def:pencil-x0-reduces}
@@ -4467,18 +4364,13 @@ sets that avoid one body of degree two.
     \item $G$ has an open ear $a - x_1 - \cdots - x_k - b$ on $V_1$,
       $G[V_1]$ satisfies $\mathcal P$, and one of the following holds:
       $k \ge 5$; $k \in \{3, 4\}$ and $G$ with $x_2$ suppressed
-      satisfies $\mathcal P$; $k = 2$ and $\operatorname{def}_3(G[V_1])
-      \le \operatorname{def}_3(G)$; $k = 2$, $a$ and $b$ are not
-      adjacent, $\operatorname{def}_2(G[V_1]; a, b) + 2 \le
+      satisfies $\mathcal P$; $k = 2$, $a$ and $b$ are not adjacent,
+      $\operatorname{def}_2(G[V_1]; a, b) + 2 \le
       \operatorname{def}_2(G[V_1])$ and $G$ with $x_2$ suppressed
       satisfies $\mathcal P$; or $k = 1$, $a$ and $b$ are not adjacent,
       $\operatorname{def}_3(G[V_1]) \le \operatorname{def}_3(G)$ and
       $\operatorname{def}_2(G[V_1]; a, b) + 2 \le
       \operatorname{def}_2(G[V_1])$.
-    \item $G$ has an open ear $a - x - b$ on $V_1$ whose ends are not
-      adjacent, $\operatorname{def}_3(G[V_1]; a, b) + 5 \le
-      \operatorname{def}_3(G[V_1])$, and $G$ with $x$ suppressed
-      satisfies $\mathcal P$.
     \item $G$ is 2-edge-connected, and there are $W \subsetneq V(G)$
       with $|W| \ge 2$, no body outside $W$ adjacent to two bodies of
       $W$, and $r \in W$, such that $G/G[W]$ (collapsing $W$ to $r$)
@@ -4487,10 +4379,9 @@ sets that avoid one body of degree two.
       $\operatorname{def}_2(G[W]) + \operatorname{def}_2(G/G[W]) \le
       \operatorname{def}_2(G)$ and $G[W]$ satisfies $\mathcal P$.
   \end{enumerate}
-  Here suppressing an interior body $x_i$ is the splitting-off
-  $G_{x_i}^{x_{i-1} x_{i+1}}$ (\cref{def:graph-operations}, with $x_0 =
-  a$ and $x_{k+1} = b$) whose new edge carries the label of the edge
-  $x_{i-1} x_i$.
+  Here suppressing $x_2$ is the splitting-off $G_{x_2}^{x_1 x_3}$
+  (\cref{def:graph-operations}, with $x_3 = b$ when $k = 2$) whose new
+  edge carries the label of the edge $x_1 x_2$.
 \end{definition}
 
 \begin{theorem}[The induction on the number of bodies]
@@ -4515,11 +4406,10 @@ sets that avoid one body of degree two.
   \uses{cor:pencil-jj-flat, thm:pencil-x0-cut, thm:pencil-x0-bridge,
         thm:pencil-x0-cycle, thm:pencil-x0-open-ear,
         thm:pencil-x0-open-ear-four, thm:pencil-x0-open-ear-three,
-        thm:pencil-x0-open-ear-two, thm:pencil-x0-open-ear-two-orbit,
-        thm:pencil-x0-open-ear-one, thm:pencil-x0-splitoff,
+        thm:pencil-x0-open-ear-two-orbit, thm:pencil-x0-open-ear-one,
         cor:pencil-x0-contract-rigid, thm:pencil-x0-contract-additive}
   (1) Each clause of \cref{def:pencil-x0-reduces}, and each alternative
-  in clauses (5) and (7), states the further conditions of one step, with
+  in clauses (5) and (6), states the further conditions of one step, with
   $\mathcal P$ at the graphs that the step assumes to attain. The steps
   are equal deficiencies (\cref{cor:pencil-jj-flat}), the cut vertex
   and the chain of bridges (\cref{thm:pencil-x0-cut},
@@ -4527,10 +4417,8 @@ sets that avoid one body of degree two.
   the open ears (\cref{thm:pencil-x0-open-ear},
   \cref{thm:pencil-x0-open-ear-four},
   \cref{thm:pencil-x0-open-ear-three},
-  \cref{thm:pencil-x0-open-ear-two},
   \cref{thm:pencil-x0-open-ear-two-orbit},
-  \cref{thm:pencil-x0-open-ear-one}), the split-off
-  (\cref{thm:pencil-x0-splitoff}) and the two contractions
+  \cref{thm:pencil-x0-open-ear-one}) and the two contractions
   (\cref{cor:pencil-x0-contract-rigid},
   \cref{thm:pencil-x0-contract-additive}). As every graph satisfying
   $\mathcal P$ attains, the step applies.
@@ -4670,13 +4558,10 @@ The next two lemmas settle the first three cases of the table.
   \leanok
   \uses{def:pencil-x0-chain, def:deficiency-merged}
   A chain $a - x_1 - \cdots - x_k - b$ on $V_1$ is \emph{usable} if
-  $k \ge 3$; or $k = 2$ and either $\operatorname{def}_3(G[V_1]; a, b) =
-  \operatorname{def}_3(G[V_1])$, or $a$ and $b$ are not adjacent and
+  $k \ge 3$; or $k = 2$, $a$ and $b$ are not adjacent and
   $\operatorname{def}_2(G[V_1]; a, b) + 2 \le
-  \operatorname{def}_2(G[V_1])$; or $k = 1$ and either
-  $\operatorname{def}_3(G[V_1]; a, b) = \operatorname{def}_3(G[V_1])$ or
-  $\operatorname{def}_3(G[V_1]; a, b) + 5 \le
-  \operatorname{def}_3(G[V_1])$.
+  \operatorname{def}_2(G[V_1])$; or $k = 1$ and
+  $\operatorname{def}_3(G[V_1]; a, b) = \operatorname{def}_3(G[V_1])$.
 \end{definition}
 
 \begin{lemma}[A usable chain gives a reduction]
@@ -4692,25 +4577,21 @@ The next two lemmas settle the first three cases of the table.
   \leanok
   \uses{lem:pencil-x0-chain-standing, lem:deficiency-ear-merge,
         lem:deficiency-one-body-chain, lem:reduction-measure}
-  By the ear clause or the split-off clause of
-  \cref{def:pencil-x0-reduces} at the usable chain, on $V_1$. The graphs
-  $G[V_1]$ and $G$ with an interior body suppressed have fewer bodies
-  than $G$. Both satisfy the standing hypotheses
-  (\cref{lem:pencil-x0-chain-standing}). For the second, the two
-  neighbours of the suppressed body must not be adjacent. When
-  $k \ge 2$, one of them is an interior body, adjacent only to the
-  bodies next to it on the chain. When $k = 1$, they are $a$ and $b$,
-  which are not adjacent as $G$ is sparse
-  (\cref{lem:deficiency-one-body-chain}).
+  By the ear clause of \cref{def:pencil-x0-reduces} at the usable chain,
+  on $V_1$. The graph $G[V_1]$, and for $2 \le k \le 4$ the graph $G$
+  with $x_2$ suppressed, have fewer bodies than $G$. Both satisfy the
+  standing hypotheses (\cref{lem:pencil-x0-chain-standing}). For the
+  second, the two neighbours of $x_2$ must not be adjacent: one of them
+  is $x_1$, adjacent only to $a$ and $x_2$.
 
-  Where $\operatorname{def}_3(G[V_1]; a, b) =
-  \operatorname{def}_3(G[V_1])$, some partition attaining
-  $\operatorname{def}_3(G[V_1])$ has $a$ and $b$ in one part. So
-  $\operatorname{def}_3(G[V_1]) \le \operatorname{def}_3(G)$
-  (\cref{lem:deficiency-ear-merge}), the bound that the ear steps with
-  one or two interior bodies assume. At $k = 1$ sparsity also gives
+  At $k = 1$, sparsity makes $a$ and $b$ not adjacent, with
   $\operatorname{def}_2(G[V_1]; a, b) + 2 \le
   \operatorname{def}_2(G[V_1])$ (\cref{lem:deficiency-one-body-chain}).
+  As $\operatorname{def}_3(G[V_1]; a, b) = \operatorname{def}_3(G[V_1])$,
+  some partition attaining $\operatorname{def}_3(G[V_1])$ has $a$ and $b$
+  in one part. So $\operatorname{def}_3(G[V_1]) \le
+  \operatorname{def}_3(G)$ (\cref{lem:deficiency-ear-merge}), the bound
+  that the ear step with one interior body assumes.
 \end{proof}
 
 \begin{lemma}[Contraction at a maximal planar-rigid set]
@@ -4785,65 +4666,63 @@ no two of them are adjacent, a rigid set that avoids one of them.
 \begin{proof}
   \leanok
   \uses{lem:deficiency-sparse, lem:pencil-x0-sparse-count,
-        lem:pencil-x0-chain-exists, lem:deficiency-one-body-chain,
-        lem:deficiency-two-body-chain, lem:deficiency-tight-rigid,
-        lem:deficiency-add-body, lem:deficiency-merge-rigid,
-        lem:deficiency-core-bound, lem:deficiency-additive-core,
-        lem:deficiency-zero-connected, def:pencil-d-usable-chain,
-        thm:pencil-d-theorem-s}
+        lem:pencil-x0-chain-exists, lem:deficiency-two-body-chain,
+        lem:deficiency-tight-rigid, lem:deficiency-merge-rigid,
+        lem:deficiency-zero-connected, lem:pencil-d-maximal-rigid-core,
+        lem:pencil-d-chain-core, lem:pencil-d-core-positive-deficiency}
+  The conclusion says that $G$ has a core in dimension three
+  (\cref{sec:pencil-d-deficiency}). Each core below comes from
+  \cref{lem:pencil-d-maximal-rigid-core} at $d = 3$, directly or through
+  \cref{lem:pencil-d-chain-core}, or from
+  \cref{lem:pencil-d-core-positive-deficiency}.
+
   \emph{The chains.} As $G$ has no planar-rigid set, it is sparse
   (\cref{lem:deficiency-sparse}). So it has bodies of degree two
   (\cref{lem:pencil-x0-sparse-count}), and each of them lies on a chain
   (\cref{lem:pencil-x0-chain-exists}). No chain has three or more
   interior bodies, as such a chain is usable. Let a chain
-  $a - x_1 - x_2 - b$ on $V_1$ have two. Its ends are adjacent.
-  Otherwise, as the chain is not usable,
-  $\operatorname{def}_3(G[V_1]; a, b) \neq \operatorname{def}_3(G[V_1])$,
-  and \cref{lem:deficiency-two-body-chain} at $G[V_1]$ would make it
-  usable. So $a$, $x_1$, $x_2$ and $b$ induce a $4$-cycle, which is tight
-  and so rigid (\cref{lem:deficiency-tight-rigid}). The body of a chain
-  with one interior body lies in a rigid set, since otherwise the chain
-  would be usable (\cref{lem:deficiency-one-body-chain}).
+  $a - x_1 - x_2 - b$ on $V_1$ have two. If $a$ and $b$ are not
+  adjacent, then, as the chain is not usable,
+  $\operatorname{def}_2(G[V_1]) < \operatorname{def}_2(G[V_1]; a, b) +
+  2$. As $G[V_1]$ is sparse, $a$ and $b$ lie in a set of at least three
+  bodies inside $V_1$ that is rigid
+  (\cref{lem:deficiency-two-body-chain}), and $G$ has a core that avoids
+  $x_1$ (part~(1) of \cref{lem:pencil-d-chain-core}). So we may assume that the ends
+  of every chain with two interior bodies are adjacent. Then $a$, $x_1$,
+  $x_2$ and $b$ induce a $4$-cycle, which is tight and so rigid
+  (\cref{lem:deficiency-tight-rigid}).
 
-  \emph{When $\operatorname{def}_3(G) > 0$.} Take a rigid set given by a
-  chain, and a maximal rigid set $W$ containing it. Then $W \neq V(G)$.
-  A body outside $W$ has at most one neighbour in $W$, as otherwise it
-  would enlarge $W$ (\cref{lem:deficiency-add-body}). By
-  \cref{lem:deficiency-core-bound} with $X_0$ empty, $s(W) \le s(X)$ for
-  every $X \supseteq W$, and \cref{lem:deficiency-additive-core} gives
-  the inequality.
-
-  \emph{When $\operatorname{def}_3(G) = 0$.} We take a body $x$ of degree
-  two and a rigid set that avoids it. If two bodies of degree two are
-  adjacent, they lie on a chain with two interior bodies, whose
-  $4$-cycle is rigid. The $4$-cycle contains two bodies of degree two,
-  and at least four bodies have degree two
-  (\cref{lem:pencil-x0-sparse-count}). So some body $x$ of degree two
-  lies off it. Otherwise let $x$ be any body of degree two. Then
-  $s_6(V(G) \setminus \{x\}) \le 0$ (\cref{lem:pencil-x0-sparse-count}),
-  so $V(G) \setminus \{x\}$ contains a rigid set
-  (\cref{lem:deficiency-sparse}).
-
-  Let $W$ be maximal among the rigid sets that avoid $x$ and contain the
-  one taken. The body $x$ has at most one neighbour in $W$. A neighbour
-  of degree two would have only one neighbour in $W$, while every body of
-  a rigid set has at least two neighbours in it
+  \emph{A rigid set gives a core.} Let $x$ be a body of degree two and
+  $Y$ a rigid set that avoids it. Then $G$ has a core that avoids $x$
+  (\cref{lem:pencil-d-maximal-rigid-core} with $X_0 = \{x\}$), as $x$
+  has at most one neighbour in every rigid set $W$ that avoids it. A
+  neighbour of degree two would have only one neighbour in $W$, while
+  every body of a rigid set has at least two neighbours in it
   (\cref{lem:deficiency-zero-connected}). Two neighbours $a$ and $b$ of
   degree at least three would make $a - x - b$ a chain on
   $V(G) \setminus \{x\}$. As $W$ is rigid and contains $a$ and $b$, the
-  merged deficiency of $G - x$ at $a$ and $b$ would equal its
-  deficiency (\cref{lem:deficiency-merge-rigid}), and the chain would be
-  usable. Every other body outside $W$ has at most one neighbour in $W$,
-  by the maximality of $W$ (\cref{lem:deficiency-add-body}).
-  \Cref{lem:deficiency-core-bound} with $X_0 = \{x\}$ and
-  \cref{lem:deficiency-additive-core} give the inequality.
+  merged deficiency of $G - x$ at $a$ and $b$ would equal its deficiency
+  (\cref{lem:deficiency-merge-rigid}), and the chain would be usable.
+  When $\operatorname{def}_3(G) > 0$, every rigid set gives a core in
+  the same way, with $X_0$ empty.
+
+  \emph{The rigid set.} If two bodies of degree two are adjacent, they
+  lie on a chain with two interior bodies, whose $4$-cycle is rigid. When
+  $\operatorname{def}_3(G) > 0$ it gives a core. Otherwise the
+  $4$-cycle contains two bodies of degree two, and at least four bodies
+  have degree two (\cref{lem:pencil-x0-sparse-count}). So some body $x$
+  of degree two lies off it, and the $4$-cycle gives a core that avoids
+  $x$.
+
+  If no two bodies of degree two are adjacent and
+  $\operatorname{def}_3(G) = 0$, let $x$ be any body of degree two. Then
+  $s_6(V(G) \setminus \{x\}) \le 0$ (\cref{lem:pencil-x0-sparse-count}),
+  so $V(G) \setminus \{x\}$ contains a rigid set
+  (\cref{lem:deficiency-sparse}), which gives a core that avoids $x$.
+  If no two bodies of degree two are adjacent and
+  $\operatorname{def}_3(G) > 0$, then
+  \cref{lem:pencil-d-core-positive-deficiency} at $d = 3$ gives a core.
 \end{proof}
-\begin{fmlnote}
-  The formalization proves this theorem as the case $d = 3$ of
-  \cref{thm:pencil-d-theorem-s}, whose usable chains
-  (\cref{def:pencil-d-usable-chain}) are those of
-  \cref{def:pencil-x0-usable-chain} at $d = 3$.
-\end{fmlnote}
 
 \begin{theorem}[The structural coverage]
   \label{thm:pencil-x0-coverage}
@@ -4886,7 +4765,7 @@ no two of them are adjacent, a rigid set that avoids one of them.
   $G/G[W]$ are smaller than $G$
   (\cref{lem:pencil-contract-standing-rigid},
   \cref{lem:pencil-contract-standing}, \cref{lem:reduction-measure}), and
-  $G$ reduces by clause (7) at $W$.
+  $G$ reduces by clause (6) at $W$.
 
   The rest is \cref{thm:pencil-x0-reduction-attains}. A simple
   2-edge-connected graph on at least three bodies is connected

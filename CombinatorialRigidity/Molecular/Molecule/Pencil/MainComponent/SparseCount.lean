@@ -11,8 +11,8 @@ public import CombinatorialRigidity.Molecular.Induction.SparseDeficiency
 /-!
 # Counting the bodies of degree two, and the `4`-cycle of a chain
 
-The deficiency counting that Theorem S reads (`thm:pencil-x0-theorem-s`, and its graded form
-`thm:pencil-d-theorem-s`), at `d = 3`.
+The deficiency counting that finds a core when no chain is usable (`thm:pencil-x0-theorem-s`), at
+`d = 3`.
 
 ## Main results
 

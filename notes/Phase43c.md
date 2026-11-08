@@ -3,24 +3,20 @@
 **Status:** in progress (opened 2026-11-08 with the PI), the third sub-phase of Phase 43
 (PENCIL-NATURAL): layers NORMAL and SPRIME as one sub-phase, at the PI's choice (design doc §1,
 2026-11-08). Slice 1 (NORMAL) landed: the reduction on five structural cases, beside its one
-caller, and the minimum-degree lemma in a new appendix of further results. SPRIME's pin landed:
-Theorem S′ holds as Lean at `d = 3` in the folded form, with the main results unchanged, and a
-liveness walk cuts SPRIME into slices A (two new lemmas), B (S′) and C (the deletions). Slice A
-landed (NEW-1 and NEW-2, additive). The PI then reviewed the pin's one choice taken in the PI's
-absence and reversed it: S′'s proof cites the maximal-rigid-core lemma, and the `d = 3` core bound
-goes (*Decisions made*, first). In order next: slices B and C, then the sub-phase's last commit.
-The next concrete commit is SPRIME slice B, item 4.
+caller, and the minimum-degree lemma in a new appendix of further results. SPRIME's pin landed,
+with a liveness walk that cuts SPRIME into slices A (two new lemmas), B (S′) and C (the
+deletions). Slices A and B landed: Theorem S′ at `d = 3`, its proof citing the maximal-rigid-core
+lemma as the PI asked, and the `d = 3` core bound deleted, with the main results unchanged. Next:
+slice C, then the sub-phase's last commit. The next concrete commit is SPRIME slice C, item 5.
 
 ## Current state
 
-**Next concrete commit: SPRIME slice B, checklist item 4** (S′ at `d = 3`, the ten deletions and,
-at the PI's word, the `d = 3` core bound;
-Lean and blueprint; Opus, for the prose; the spike's `ChainUsable'`, `exists_additiveCore'` and
-`x0Reduces_of_chainUsable'` are its Lean). Slice A is in the tree: NEW-1
-`Graph.exists_deficiency_three_induce_eq_zero_of_deficiency_two_lt` (`SparseDeficiency.lean`) and
-NEW-2 `Graph.IsOpenEar.exists_additiveCoreAt_of_deficiency_induce_eq_zero` (`TheoremS.lean`), with
-`lem:deficiency-two-body-chain` and `lem:pencil-d-chain-core` each in two parts and
-`lem:deficiency-two-body-chain-d`'s proof via part (1). Mode:
+**Next concrete commit: SPRIME slice C, checklist item 5** (pure deletion: 13 declarations, three
+files, eight nodes and `sec:main-component-splitoff`; Lean, blueprint and docs). Slice B is in the
+tree: `Graph.ChainUsable` on S′'s three conditions, `Graph.X0Reduces` with eleven constructors, and
+`Graph.IsX0Graph.exists_additiveCore` on S′'s proof (`CoverageTheoremS.lean`); twelve declarations
+and five nodes went. Its orphans are slice C's: the 13 declarations (no Lean user; still compiled)
+and `thm:pencil-x0-open-ear-two` and `thm:pencil-x0-splitoff`, which no node uses. Mode:
 structural edit, no new chapter and no red target node; each slice reads and restates the nodes it
 reaches (`CombinatorialRigidity/CLAUDE.md` *Forward-mode slices*).
 
@@ -28,8 +24,9 @@ reaches (`CombinatorialRigidity/CLAUDE.md` *Forward-mode slices*).
 `sorry`, and re-checks every landed consumer in the kernel against S′ and the eleven-clause
 `X0Reduces` (a transport): the four main results' types are unchanged, on the standard three
 axioms. Its walk and `sprime_walk.py` give items 4–5's deletion sets, orphans and sweep. Rerun
-both at each slice: `lake lean notes/pencil-natural/SprimeSpike.lean 2>&1 | python3
-notes/pencil-natural/sprime_walk.py` (a landed slice's names then show as absent).
+both at slice C: `lake lean notes/pencil-natural/SprimeSpike.lean 2>&1 | python3
+notes/pencil-natural/sprime_walk.py`. A landed slice's names show as absent and its sweep is empty,
+so the landing commit sweeps its own names (*Decisions made*, slice B).
 
 **After slice 1.** `Graph.pencil_reduction` lives in `Pencil/Grade/Reduction.lean`, with no `n`,
 `hD` or finiteness, and its simple two-edge-connected case takes no induction hypothesis;
@@ -93,8 +90,12 @@ standard three).
     (2) the current statement, by `lem:deficiency-sparse` and (1); `\lean{NEW-2, …}`.
   - *Gates*: as every Lean slice, and `scripts/check-docstring-labels.py` diffed against the
     parent (two pins move). About +25 Lean lines and +15 TeX.
-- [ ] **4. SPRIME slice B — S′ at `d = 3`, and what loses its last user with it.** The walk:
-  10 deletions, none with a surviving user; it orphans exactly item 5's 13.
+- [x] **4. SPRIME slice B — S′ at `d = 3`, and what loses its last user with it** (landed
+  2026-11-08, as pinned below, the `d = 3` core bound with it; Lean +194/−476, TeX +182/−424).
+  Beyond the list: `pencil-d.tex`'s opening paragraph, the split-off subsection's sentence that the
+  coverage applies it, the module docstrings of `CoverageCut.lean` and `SparseCount.lean`, the
+  ledger's S′ and one-body entries, one FRICTION pointer. Choices: *Decisions made*, slice B. The
+  walk: 10 deletions, none with a surviving user; it orphans exactly item 5's 13.
   - *Lean.* `CoverageTheoremS.lean`: `Graph.ChainUsable` is the spike's `ChainUsable'` (`3 ≤ k`;
     `k = 2`, `a`, `b` not adjacent and `def₂(G[V₁]; a, b) + 2 ≤ def₂(G[V₁])`; `k = 1` and
     `def₃(G[V₁]; a, b) = def₃(G[V₁])`); `Graph.IsChain.x0Reduces_of_chainUsable` loses its
@@ -180,10 +181,9 @@ standard three).
 
 ## Hand-off / next phase
 
-The next concrete commit is *Current state*'s: SPRIME slice B, item 4 (S′, the larger prose).
-Then item 5 (deletions only). Slice B deletes `deficiencyMerged_two_add_two_le_of_three_le` and
-`deficiencyMerged_two_add_two_le`, now written from NEW-1; `lem:deficiency-two-body-chain` part (2)
-and `lem:deficiency-two-body-chain-d` go with them (item 4 lists the restatements).
+The next concrete commit is *Current state*'s: SPRIME slice C, item 5 (deletions only, one
+commit; its lists are the walk's slice-C set, sweep and section (4)). Then item 6, the sub-phase's
+last commit, and EXPO's open at the PI's word.
 
 ## Decisions made during this phase
 
@@ -198,6 +198,14 @@ choices above.
   interesting? If so we could put them in an appendix like we have been for some others, but if
   not then we can lose them." They are the case `d = 3` of the kept `lem:deficiency-core-bound-d`,
   so they go (item 4).
+- **Slice B (item 4).** From the Lean, not item 4's paraphrase: S′'s cores come from
+  `lem:pencil-d-maximal-rigid-core`, directly or through `lem:pencil-d-chain-core`, or from
+  `lem:pencil-d-core-positive-deficiency` (a set of least singleton value, not a maximal one); and
+  part (2)'s moved argument reads with `def_d` only, its singleton values planar, so no `D − 1`.
+  `rem:pencil-x0-theta` names `θ(1,3,3)`, reached at a core. A landed slice's names are absent from
+  the walk, its edits on deleted nodes skipped and its sweep empty, so slice B swept by a
+  boundary-checked grep; the orphans also list NEW-1 and NEW-2, an artefact (the after-world reads
+  S′ as the spike's primed form). `#sprime_mapped_same` now reports a deleted name.
 - **SPRIME's pin (item 2).** S′ holds as Lean at `d = 3` in the folded form, and every consumer
   re-checks in the kernel; §2's route held at every step. The walk confirms §2's deletions and adds
   four declarations and `lem:pencil-weighted-lifting-system-local`; the bounds die with S′ (B), not

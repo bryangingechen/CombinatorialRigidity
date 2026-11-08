@@ -386,8 +386,9 @@ to be re-derived by re-reading entries later.
 
 ### [idiom] `Set.nonempty_of_ncard_ne_zero (by omega)` against `V(G.induce Y).Nonempty` needs `(s := Y)`
 - **Where it bit:** Phase 42d, COUNT-B: `Graph.IsX0Graph.exists_additiveCoreAt`
-  (`Pencil/Grade/TheoremS.lean`), passing `Y.Nonempty` to
-  `Graph.deficiency_eq_zero_of_deficiency_eq_zero_of_le` at `G.induce Y`.
+  (`Pencil/Grade/TheoremS.lean`; deleted with Theorem S in every dimension, Phase 43c slice B, the
+  idiom standing), passing `Y.Nonempty` to `Graph.deficiency_eq_zero_of_deficiency_eq_zero_of_le`
+  at `G.induce Y`.
 - **Friction:** the expected type `V(G.induce Y).Nonempty` assigns `s := V(G.induce Y)`, so the
   `omega` goal is `V(G.induce Y).ncard ≠ 0`, an atom unrelated to `hY2 : 2 ≤ Y.ncard`; omega fails
   with a counterexample.
