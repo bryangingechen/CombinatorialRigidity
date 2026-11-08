@@ -812,11 +812,11 @@ lemmas Phase 42 left outside their home files and of the friction log (`notes/Ph
 opened the same day at the PI's word, ahead of ORIGAMI, and closed then. **ARREARS**, a cleanup
 round of what HOMES left (the dependency-graph debt, four file splits, `RecordsLinks` moved to
 `Graph` with its link hypotheses restated; `notes/Phase42-arrears.md`), opened the same day at the
-PI's word and closed 2026-11-06. Still queued,
-codenamed:
-**PENCIL-NATURAL** (a recon on simplifying the pencil proof, queued 2026-11-07 ahead of ORIGAMI,
-`notes/PencilNatural.md`, with the PI), **ORIGAMI** (the planar-blocks / molecular-origami
-conjecture, `notes/Origami.md`, with the PI), **PIN** (a second,
+PI's word and closed 2026-11-06. **Phase 43** (PENCIL-NATURAL, `notes/Phase43-design.md`) opened
+2026-11-07 with the PI, after a read-only recon: a simpler pencil proof, no main result's
+statement changed, starting with three fresh reads (43a, READS). Summary: ROADMAP §43. Still
+queued, codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
+conjecture, `notes/Origami.md`, the next phase to open after PENCIL-NATURAL, with the PI), **PIN** (a second,
 independent proof of the 2-d molecular conjecture by Jackson–Jordán 2008's
 pin-collinear route, re-scoped at 40a's close; unplanned), **UPSTREAM** (mathlib upstreaming) and
 **VERSO** (the paused verso-blueprint port).

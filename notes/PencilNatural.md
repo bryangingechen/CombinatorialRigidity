@@ -1,10 +1,9 @@
-# PENCIL-NATURAL — a simpler or more natural pencil proof (planning note)
+# PENCIL-NATURAL — a simpler or more natural pencil proof (planning note and recon record)
 
-**Status:** queued by the PI on 2026-11-07, ahead of ORIGAMI; unopened, attended. The recon of §4
-ran the same day, in three parallel tracks, and its verdicts are §3. The PI took two decisions (§6).
-**Next concrete task:** in a new attended session, put D1–D5 of §6 to the PI (deferred there on
-2026-11-07). Then the open, with the order of §6; the blueprint exposition (§5) comes last. Same
-editing discipline as phase notes (≤ 8-line entries, lift cross-cutting lessons).
+**Status:** opened as **Phase 43** on 2026-11-07, with the PI, after the recon of §4 (verdicts §3).
+The plan, the PI's decisions (D1–D5 included) and the layers are `notes/Phase43-design.md`; the
+active work log is `notes/Phase43a.md`. This note stays the recon record, cited by section: §2–§5
+are kept as they were at the open, net of the probes' tags once D4 banks them.
 
 ## 1. The PI's words (verbatim)
 
@@ -55,7 +54,7 @@ contraction moves every height along its curve (`notes/Phase42-design.md` §2.2)
 
 These are the recon's verdicts, read-only (§4). The probes behind the figures are uncommitted. They
 sit in the gitignored `scratch/pencil-natural/`, so each figure is tagged "measured, script not
-retained" until D4 of §6 banks them.
+retained" until D4 (`notes/Phase43-design.md` §1) banks them.
 
 - **N1. The `d = 3` generic conjunct by C: GO.** `liftAttains_of_simple 0`, then
   `LiftAttains.hasGradedGenericPencilRealization`, then `hasGradedGenericPencilRealization_two_iff`
@@ -69,8 +68,9 @@ retained" until D4 of §6 banks them.
   `thm:pencil-reduction`'s cases (iv) and (v) are dead: all three callers pass one function to both
   (`Statements.lean`, `X0.lean`, `Grade/Reduction.lean`; checked). Restate it on five structural
   cases: loop; at most two bodies; not 2EC; non-simple; simple 2EC. Lean about −170 lines across 6
-  files; blueprint about −40 lines. `lem:pencil-min-degree-rigid` leaves the route (§6 (b)). The
-  base stays "loopless, ≤ 2 bodies", because the parallel-pair expansion fails on two bodies.
+  files; blueprint about −40 lines. `lem:pencil-min-degree-rigid` leaves the route (design doc §1
+  (b)). The base stays "loopless, ≤ 2 bodies", because the parallel-pair expansion fails on two
+  bodies.
 - **N3. The short-chain rows at `d = 3`: two of four go (GO, it changes mathematics, so a fresh
   read first).** Open-ear-two and the split-off are never needed. A restructured Theorem S′, with
   long ears, two-orbit, open-ear-one and the core, is `thm:pencil-d-chain-or-core` at `ℓ = 1`, with
@@ -144,7 +144,8 @@ and the T2 figures stay tagged.
 
 It comes last: a road map in the manner of KT §1.1, with the A/B/C structure as it stands after the
 simplifications. Where the reduction plays KT Theorem 4.9's role, cite it in a remark or glue text
-(§6 (a)). The counting heir of KT Lemmas 4.5–4.6 is B's chain count (`lem:pencil-d-chain-count`).
+(design doc §1 (a)). The counting heir of KT Lemmas 4.5–4.6 is B's chain count
+(`lem:pencil-d-chain-count`).
 The intuitions, as the recon corrected them:
 
 - **I1, the gap** (N4): confirmed. The heights recover `def₂ − def_d`
@@ -166,34 +167,5 @@ The intuitions, as the recon corrected them:
 
 ## 6. The PI's decisions
 
-**PI, 2026-11-07, on N2's call (a), whether the reduction may stop mirroring KT Theorem 4.9:** "I
-think we should be free to diverge from KT Theorem 4.9, but if it plays a similar role in the proof
-as KT Theorem 4.9 does in the KT proof, then it's worth a reference (perhaps just in a remark or in
-surrounding glue text)."
-
-**PI, 2026-11-07, on N2's call (b), `lem:pencil-min-degree-rigid`, after asking why it would
-retire:** "Let's keep it off the route for now; perhaps we could move it into a separate appendix."
-The blueprint's `\appendix` holds only `retrospective.tex` today.
-
-Open, for the PI. **Deferred by the PI on 2026-11-07 to a future session**, which starts here. Each
-item gives the recommendation offered that day:
-- **D1.** Which N1 restructure: N1a, N1b or N1c? Do the explicit `d = 3` generic constructions stay
-  as exposition (the appendix of (b))? C at `d = 3` says only "a general realization attains".
-  Offered: N1c, the only variant that proves A once and gives every `d` one shape. Its cost is
-  that `pencil.tex` stops proving `d = 3` on its own terms. N1a is a subset of N1c, so it can
-  land first either way.
-- **D2.** Commission the fresh read of Theorem S′ (N3), which revises the 42f record. Offered: yes,
-  as the largest change to the mathematics, and a cheap read.
-- **D3.** The other fresh reads: N1's premise check of `sec:pencil-d-generic`, and N6's flatness
-  reading. Offered: the premise check yes, before any blueprint change; the flatness reading at
-  the exposition.
-- **D4.** Bank the probes in `notes/scripts/`, with `geng` as a second exception to stdlib-only, or
-  keep the figures tagged. Offered: bank them, since N3's GO rests on the census.
-- **D5.** Open PENCIL-NATURAL as a numbered phase. Offered: yes, once D1 and D2 are settled.
-
-Order, if all are taken:
-1. N1. N1a stands alone; N1c, if chosen, before N2, since it leaves one caller of the reduction.
-2. N2's restatement.
-3. The fresh reads, in parallel.
-4. N3's build.
-5. The exposition.
+Moved verbatim to `notes/Phase43-design.md` §1 at the open (2026-11-07), with D1–D5's answers and
+the order of the layers (§2 there).

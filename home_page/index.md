@@ -182,7 +182,10 @@ than their Lean declarations were corrected, every main result has a
 closed witness that its hypotheses can all be met, and each claim the
 chapters made without a Lean declaration was given one. Phase 42
 (closed 2026-11-05) proved the pencil realization theorem in every
-dimension $d \ge 3$, stated above.
+dimension $d \ge 3$, stated above. Phase 43, in progress, looks for a
+simpler proof of it, with no change to what it proves: a first check
+found that the three-dimensional case can follow from the argument for
+every dimension, and that two of its cases may be unnecessary.
 
 ### How the pencil realization theorem is proved
 
@@ -259,6 +262,7 @@ The table below and `ROADMAP.md` carry the fine-grained status.
 |    40 | the pencil realization theorem: the main-component proof of the two statements (and the plane case of Theorems 5.5/5.6) | `Molecular/` | ✓ |
 |    41 | each hinge at the ends of its own edge, built into the panel-hinge framework; the generic rank theorems at every graph; a Lean declaration for each claim the blueprint made without one | `Molecular/` | ✓ |
 |    42 | the pencil realization theorem in every dimension: a proof on paper, then its formalization | `Molecular/` | ✓ |
+|    43 | a simpler proof of the pencil realization theorem | `Molecular/` | in progress |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
 for the full mathematical and engineering plan,

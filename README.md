@@ -243,6 +243,13 @@ the formal proof there, or gives both routes. It also re-proved the parts
 of the three-dimensional formal proof that duplicated the every-dimension
 one, as its three-dimensional case.
 
+Phase 43, in progress, looks for a simpler proof of the pencil realization
+theorem, with no change to what it proves. A first check found that the
+three-dimensional case can follow from the argument for every dimension
+instead of having an argument of its own, and that two of its cases may be
+unnecessary; independent reads of both come first. A road map of the
+proof, in the manner of Katoh and Tanigawa's, comes last.
+
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries
 cross-cutting design rationale; `TACTICS-GOLF.md` carries idiom / golfing guidance and `TACTICS-QUIRKS.md` covers build-failure rescue.

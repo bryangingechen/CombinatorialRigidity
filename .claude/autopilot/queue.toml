@@ -166,11 +166,12 @@ done = true
 
 # Attended: a read-only recon on simplifying the pencil proof or making its cases more natural, then
 # the PI's decisions, before any of its intuition goes into the blueprint. Queued by the PI on
-# 2026-11-07, ahead of ORIGAMI. Plan, the PI's words and the recon's brief: notes/PencilNatural.md.
+# 2026-11-07, ahead of ORIGAMI, and opened with the PI the same day as Phase 43; its plan is
+# notes/Phase43-design.md (recon record: notes/PencilNatural.md).
 [[item]]
 id = "PENCIL-NATURAL"
 title = "PENCIL-NATURAL: a simpler or more natural pencil proof (recon first)"
-note = "notes/PencilNatural.md"
+note = "notes/Phase43-design.md"
 attended = true
 done = false
 
