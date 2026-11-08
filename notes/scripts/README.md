@@ -1524,8 +1524,9 @@ byte-identical to the recon's outputs but for
 one line format: a set of rows printed in hash order now prints in the table's order, so two
 lines of `--hub … --maxk 2` changed order, no figure. The recon's track T1 (N1) is Lean, a
 spike and its stdlib inventory scripts, outside this harness: `notes/pencil-natural/`, where
-Phase 43b's open extended the spike (its item 5) and added `n1c_graph.py`, each with its
-invocation in its own docstring (`notes/Phase43b.md`).
+Phase 43b's open extended the spike (its item 5) and added `n1c_graph.py`, and Phase 43c's open
+added `NormalSpike.lean` (NORMAL's restated reduction and its caller), each with its invocation
+in its own docstring (`notes/Phase43b.md`, `notes/Phase43c.md`).
 
 | invocation | ~time | cited by |
 |---|---|---|

@@ -1,8 +1,9 @@
 # PENCIL-NATURAL — a simpler or more natural pencil proof (planning note and recon record)
 
 **Status:** opened as **Phase 43** on 2026-11-07, with the PI, after the recon of §4 (verdicts §3).
-The plan, the PI's decisions (D1–D5 included) and the layers are `notes/Phase43-design.md`; no
-sub-phase is open (43a, closed: `notes/Phase43a.md`; 43b, LIFT3, closed: `notes/Phase43b.md`).
+The plan, the PI's decisions (D1–D5 included) and the layers are `notes/Phase43-design.md`;
+43c, NORMAL and SPRIME, is open (`notes/Phase43c.md`; 43a and 43b closed: `notes/Phase43a.md`,
+`notes/Phase43b.md`).
 This note stays the recon record, cited by section: §2–§5 are kept as they were at the open, net
 of the probes' tags once D4 banks them.
 

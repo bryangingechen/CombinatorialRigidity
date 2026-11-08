@@ -3122,6 +3122,32 @@ rigidity-matrix row-functional plumbing). **Lifted to:** TACTICS-QUIRKS § 30.
   between-phases state; tested at HEAD, between phases, with a row in progress and no ACTIVE note,
   and with ROADMAP unreadable.
 
+### [resolved] `check-phase-note.py --selftest` fails while a sub-lettered phase has no sub-phase open
+- **Where it bit:** Phase 43a's close (2026-11-07). Phase 43 stays in progress with its next
+  sub-phase (LIFT3) unopened until the PI's word, so ROADMAP's Status row reads "In progress"
+  while no work log is ACTIVE; `--selftest` reports "the active/closed split is broken". The
+  per-commit modes (default, `--all`) stay green.
+- **Friction:** HOMES task 2 (`c0bf555a`) allowed zero ACTIVE notes between phases only. A
+  sub-lettered phase between sub-phases is the same state one level down (the design doc's status
+  says no sub-phase is open), and the selftest stays red until the next sub-phase opens.
+  Rewording the ROADMAP cell to avoid "in progress" would game the gate.
+- **Proposed fix:** in `roadmap_in_progress`, exempt an in-progress row whose phase's
+  `notes/PhaseN-design.md` **Status:** header says no sub-phase is open. Needs the PI's word as a
+  gate-policy change.
+- **2026-11-08, at 43b's open:** green again, `OK: selftest — 135 notes, 1 ACTIVE; --all green at
+  baseline, --archive red on 51 closed note(s) as expected.` It turns red again at 43b's close,
+  until NORMAL opens, so the fix stays open.
+- **2026-11-08, at 43b's close:** red, as predicted: `FAIL: check-phase-note selftest` — "no
+  ACTIVE note found, yet ROADMAP's Status table has 1 row(s) in progress (43. A simpler pencil
+  proof (post-program) — PENCIL-NATURAL); the active/closed split is broken". The default and
+  `--all` modes are green (`--all`: 135 notes, 51 closed listed, not gated). Red until NORMAL
+  opens; the fix still waits on the PI.
+- **Status:** resolved (Phase 43c's open, at the PI's word of 2026-11-08,
+  `notes/Phase43-design.md` §1): `selftest()` exempts an in-progress row whose
+  `notes/PhaseN-design.md` **Status:** header says no sub-phase is open (the new
+  `between_sub_phases()`), and reports that state; tested on a scratch copy of the tree between
+  43b and 43c (green, the exemption named) and with the header's sentence removed (red).
+
 ### [resolved] The Lean MCP's `lean_local_search` misses every declaration whose name ends its line
 - **Where it bit:** Phase 40n (2026-09-28): `not_isNondegPencilRealization_of_two_hubs_three_common`
   (`Pencil/Motive.lean`, signature on the next line) returned no hit, while

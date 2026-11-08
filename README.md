@@ -252,11 +252,11 @@ unnecessary; independent reads confirmed both. The first step is complete:
 the three-dimensional nondegenerate claim, and then the whole
 three-dimensional theorem, now come from the argument for every dimension,
 and the separate three-dimensional argument is gone, its cases proved once
-for every dimension, with a short note on the old route. Next come the
-reduction restated on structural cases (a loop, at most two bodies, a cut
-edge, parallel edges, and a simple two-edge-connected multigraph) and the
-two unnecessary cases removed. A road map of the proof, in the manner of
-Katoh and Tanigawa's, comes last.
+for every dimension, with a short note on the old route. The second step,
+under way, restates the reduction on structural cases (a loop, at most two
+bodies, a cut edge, parallel edges, and a simple two-edge-connected
+multigraph) and then removes the two unnecessary cases. A road map of the
+proof, in the manner of Katoh and Tanigawa's, comes last.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries

@@ -45,9 +45,9 @@ None.
 
 ## Hand-off / next phase
 
-The next concrete task is Phase 43's, not this sub-phase's: NORMAL's open (the reduction on five
-structural cases), at the PI's word, minting its letter then (`notes/Phase43-design.md` §2,
-NORMAL). The EXPO-facing items 43b leaves are in that section's EXPO entry.
+Phase 43's next sub-phase is open: 43c, NORMAL and SPRIME as one sub-phase at the PI's word
+(`notes/Phase43c.md`, opened 2026-11-08). The EXPO-facing items 43b leaves are in
+`notes/Phase43-design.md` §2, EXPO.
 
 ## Decisions made during this phase
 

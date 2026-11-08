@@ -110,28 +110,6 @@ moment you resolve the entry) is what makes the sweep a pure
 to be re-derived by re-reading entries later.
 
 ## Open
-### [open] `check-phase-note.py --selftest` fails while a sub-lettered phase has no sub-phase open
-- **Where it bit:** Phase 43a's close (2026-11-07). Phase 43 stays in progress with its next
-  sub-phase (LIFT3) unopened until the PI's word, so ROADMAP's Status row reads "In progress"
-  while no work log is ACTIVE; `--selftest` reports "the active/closed split is broken". The
-  per-commit modes (default, `--all`) stay green.
-- **Friction:** HOMES task 2 (`c0bf555a`) allowed zero ACTIVE notes between phases only. A
-  sub-lettered phase between sub-phases is the same state one level down (the design doc's status
-  says no sub-phase is open), and the selftest stays red until the next sub-phase opens.
-  Rewording the ROADMAP cell to avoid "in progress" would game the gate.
-- **Proposed fix:** in `roadmap_in_progress`, exempt an in-progress row whose phase's
-  `notes/PhaseN-design.md` **Status:** header says no sub-phase is open. Needs the PI's word as a
-  gate-policy change.
-- **2026-11-08, at 43b's open:** green again, `OK: selftest — 135 notes, 1 ACTIVE; --all green at
-  baseline, --archive red on 51 closed note(s) as expected.` It turns red again at 43b's close,
-  until NORMAL opens, so the fix stays open.
-- **2026-11-08, at 43b's close:** red, as predicted: `FAIL: check-phase-note selftest` — "no
-  ACTIVE note found, yet ROADMAP's Status table has 1 row(s) in progress (43. A simpler pencil
-  proof (post-program) — PENCIL-NATURAL); the active/closed split is broken". The default and
-  `--all` modes are green (`--all`: 135 notes, 51 closed listed, not gated). Red until NORMAL
-  opens; the fix still waits on the PI.
-- **Status:** open
-
 ### [idiom] A total-form selector hypothesis is load-bearing when a row family ranges over every label; mask the rows to `0` off `E(G)`
 - **Where it bit:** ARREARS task 19: `exists_good_realization_ofParam`, its two callers
   (`GenericityDevice.lean`) and `span_panelRow_eq_rigidityRows` (`Pinning.lean`, now deleted) took

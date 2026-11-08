@@ -815,8 +815,8 @@ round of what HOMES left (the dependency-graph debt, four file splits, `RecordsL
 PI's word and closed 2026-11-06. **Phase 43** (PENCIL-NATURAL, `notes/Phase43-design.md`) opened
 2026-11-07 with the PI, after a read-only recon: a simpler pencil proof, no main result's
 statement changed. Its three fresh reads (43a, READS) closed 2026-11-07, and LIFT3 (43b, the
-`d = 3` theorem from the theorem in every dimension) on 2026-11-08; NORMAL's open is next, with
-the PI. Summary: ROADMAP §43. Still
+`d = 3` theorem from the theorem in every dimension) on 2026-11-08; NORMAL and SPRIME (43c, the
+reduction on structural cases, then Theorem S′) opened the same day as one sub-phase. Summary: ROADMAP §43. Still
 queued, codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
 conjecture, `notes/Origami.md`, the next phase to open after PENCIL-NATURAL, with the PI), **PIN** (a second,
 independent proof of the 2-d molecular conjecture by Jackson–Jordán 2008's

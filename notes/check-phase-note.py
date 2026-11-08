@@ -76,7 +76,9 @@ Modes:
   --last     check the notes changed in HEAD vs HEAD~1 (post-commit audit).
   --selftest assert that --all is green at baseline and --archive is not, and
              that some note is ACTIVE while a ROADMAP Status row is in
-             progress (between phases, none need be).
+             progress (between phases, none need be, nor between two
+             sub-phases of a phase whose design doc's `**Status:**` header
+             says no sub-phase is open).
 
 Why --all does not gate the archive (2026-09-10, `notes/Harness-structure.md`
 D6.7). The loop tells a coordinator to run the docs gates before committing
@@ -397,6 +399,27 @@ def roadmap_in_progress():
     return rows
 
 
+def between_sub_phases(row):
+    """Whether an in-progress Status row is a sub-lettered phase between two of
+    its sub-phases: its design doc `notes/Phase<N>-design.md` exists and its
+    `**Status:**` header says no sub-phase is open. That is the between-phases
+    state one level down, so it needs no ACTIVE note either (the PI's word,
+    2026-11-08, `notes/Phase43-design.md` section 1; `notes/FRICTION-archive.md`
+    *`check-phase-note.py --selftest` fails while a sub-lettered phase has no
+    sub-phase open*). The header, not the ROADMAP cell, is read: rewording the
+    cell to avoid "in progress" would game the gate."""
+    m = re.match(r"(\d+)\.", row)
+    if not m:
+        return False
+    try:
+        with open(f"notes/Phase{m.group(1)}-design.md", encoding="utf-8") as f:
+            text = f.read()
+    except OSError:
+        return False
+    h = re.search(r"^\*\*Status:\*\*(.*?)(?:\n\s*\n|\Z)", text, re.S | re.M)
+    return bool(h and re.search(r"no\s+sub-phase\s+is\s+open", h.group(1), re.I))
+
+
 def selftest():
     """Pin D6.7's property, which is the reason this scope exists: `--all` is
     GREEN at baseline and `--archive` is not. A gate whose documented fallback
@@ -404,7 +427,9 @@ def selftest():
     fails when it regresses. Zero ACTIVE notes is a failure only while a
     ROADMAP Status row is in progress: between phases it is the expected state
     (`notes/FRICTION-archive.md` *`check-phase-note.py --selftest` fails when no
-    phase note is in progress*, fixed in HOMES task 2)."""
+    phase note is in progress*, fixed in HOMES task 2), and so it is between two
+    sub-phases of a sub-lettered phase (`between_sub_phases`, fixed at Phase
+    43c's open)."""
     fails = []
     notes = all_notes()
     parsed = [(n, parse(read_note(n))) for n in notes]
@@ -415,9 +440,16 @@ def selftest():
         if rows is None:
             fails.append("  no ACTIVE note found, and ROADMAP.md could not be read")
         elif rows:
-            fails.append(f"  no ACTIVE note found, yet ROADMAP's Status table has "
-                         f"{len(rows)} row(s) in progress ({'; '.join(rows)}); "
-                         f"the active/closed split is broken")
+            subs = [r for r in rows if between_sub_phases(r)]
+            live = [r for r in rows if r not in subs]
+            if live:
+                fails.append(f"  no ACTIVE note found, yet ROADMAP's Status table has "
+                             f"{len(live)} row(s) in progress ({'; '.join(live)}) whose "
+                             f"design doc does not say no sub-phase is open; the "
+                             f"active/closed split is broken")
+            else:
+                between = (f" (between sub-phases: {'; '.join(subs)}; its design "
+                           f"doc says no sub-phase is open)")
         else:
             between = " (between phases: no ROADMAP Status row in progress)"
     bad_all = [n for n, m in parsed if offenders(n, m, None, archive=False)]

@@ -4,8 +4,9 @@
 with no main result's statement to change. **43a** READS closed 2026-11-07 (`notes/Phase43a.md`):
 the three fresh reads held, and each layer's inputs from them are in §2. **43b** LIFT3 closed
 2026-11-08 (`notes/Phase43b.md`): the `d = 3` theorem is the case `d = 3` of the theorem in every
-dimension, and the reduction's cases are proved once. No sub-phase is open. The later layers open
-one at a time, each at the PI's word (§1, D5). Next: NORMAL's open, with the PI.
+dimension, and the reduction's cases are proved once. **43c** NORMAL and SPRIME, one sub-phase at
+the PI's word, opened 2026-11-08 (`notes/Phase43c.md`): the reduction on five structural cases,
+then Theorem S′ at `d = 3`. EXPO opens after it, at the PI's word (§1, D5).
 
 This file is the phase's entry point: the target (§0), the PI's decisions (§1, verbatim), the
 layers by stable code (§2) and the open questions (§3). The recon record stays in
@@ -56,6 +57,38 @@ LIFT3's shape to you at its open: N1a first as its own sub-phase, or N1c whole a
 then N1b and N1c. About −4.6k Lean lines, 17 files, 15 nodes; the d=3 route collapses to a remark
 (D1)." Not chosen: "N1a alone as 43b".
 
+**PI, 2026-11-08, after 43b's close,** asked whether anything needed discussing before 43c, was
+offered four points, each with a recommendation, and answered them by number. The points as put,
+in short, then the PI's words:
+1. NORMAL had shrunk under LIFT3 (one caller, which already sends cases (iii)–(v) to one
+   argument; the reduction would lose `n` and `hD`, and its simple two-edge-connected case its
+   induction hypothesis), so: "make 43c NORMAL plus SPRIME, with NORMAL as slice 1", or NORMAL
+   alone. **"Agreed, let's fold it into 43c then."**
+2. `lem:pencil-min-degree-rigid` loses its last user under NORMAL: (a) a new short appendix
+   chapter of results off the route, the Lean and the green node kept (recommended); (b) an aside
+   in `pencil.tex`; (c) delete. **"Yes, that sounds like what I had in mind."**
+3. KT Theorem 4.9 (contraction of rigid subgraphs and splitting off at degree two) has its
+   counterpart in the main-component induction, not in the restated reduction: drop "cf. KT
+   Theorem 4.9" from the reduction's title, put the 4.9 remark where its content is (the coverage
+   or EXPO's road map), and keep one glue sentence that the reduction plays only the role of 4.9's
+   outer induction. **"Sounds good."**
+4. The open FRICTION entry on `check-phase-note.py --selftest` (red between sub-phases): approve
+   its proposed fix and land it with 43c's open. **"Yes, let's fix it with the open."**
+
+Then: "Let's do the opening commit of 43c with any fixes / clarifications recorded, and then hand
+off to a fresh coordinate-phase session."
+
+**PI, 2026-11-08, the same session,** answering §3's open question, which folding SPRIME into
+43c brought forward. Question put: "Folding SPRIME into 43c means its open question gets answered
+now (design doc §3). Theorem S′ (a core when no chain is usable) is stated today in every
+dimension (thm:pencil-d-theorem-s, with def:pencil-d-usable-chain), but only d = 3 uses it; the
+d ≥ 4 coverage uses 'long chain or core' instead. Keep S′ general in d, or fold it into a d = 3
+statement?" Chosen: "Fold into d = 3 (Recommended)" — offered as: "One statement and one proof of
+S′ in main-component.tex. thm:pencil-d-theorem-s, def:pencil-d-usable-chain, the d = 3 bridge
+lemma and the formalization note go (about 80 TeX lines beyond SPRIME's −450). pencil-d.tex's
+chains section loses its 'this core exists in every dimension' contrast sentence. A little more
+Lean churn (specializing working code)." Not chosen: "Keep general in d".
+
 ## 2. The layers, by stable code
 
 In order. A letter is minted when a layer opens.
@@ -74,16 +107,24 @@ In order. A letter is minted when a layer opens.
   changed. The premise check (43a) found no cycle (`notes/pencil-natural/premise_closure.py`,
   `PremiseClosure.lean`). The build's inputs (the edges, the kept premises, the counts) are in
   `git show dc26fbfd:notes/Phase43-design.md`, §2.
-- **NORMAL** (N2). `thm:pencil-reduction` on five structural cases: a loop; at most two bodies; not
-  2-edge-connected; non-simple; simple and 2-edge-connected. Cases (iv) and (v) merge;
-  `lem:pencil-min-degree-rigid` leaves the route for an appendix (§1 (b)); KT Theorem 4.9 cited in a
-  remark (§1 (a)). Next to open. LIFT3 left `thm:pencil-reduction` one caller,
+- **NORMAL** (N2; 43c's slice 1, opened 2026-11-08, `notes/Phase43c.md`). `thm:pencil-reduction`
+  on five structural cases: a loop; at most two bodies; not 2-edge-connected; non-simple; simple
+  and 2-edge-connected. Cases (iv) and (v) merge; `lem:pencil-min-degree-rigid` leaves the route
+  for a new appendix chapter, its Lean kept (§1 (b), and 2026-11-08 item 2); "cf. KT Theorem 4.9"
+  leaves the reduction's title for one glue sentence, the remark itself EXPO's (§1 (a), and
+  2026-11-08 item 3). LIFT3 left `thm:pencil-reduction` one caller,
   `Graph.graded_pencil_realization_theorem` (`Grade/Reduction.lean`,
-  `thm:pencil-d-realization-theorem`), which already hands cases (iii)–(v) to one argument.
-- **SPRIME** (N3). Theorem S′, which S′'s fresh read confirmed (43a): open-ear-two and the
-  split-off leave the `d = 3` coverage. It revises the 42f record (`notes/Phase42-design.md` §1,
-  "in `P³` both are load-bearing") to name the sense: used by Phase 40's route, not needed. The
-  read's inputs for the build:
+  `thm:pencil-d-realization-theorem`), which already hands cases (iii)–(v) to one argument; so the
+  restated reduction loses `n` and `hD`, its simple case takes no induction hypothesis, and it
+  moves beside that caller (spike `notes/pencil-natural/NormalSpike.lean`).
+- **SPRIME** (N3; 43c's slices after NORMAL, `notes/Phase43c.md`). Theorem S′, which S′'s fresh
+  read confirmed (43a): open-ear-two and the split-off leave the `d = 3` coverage. It revises the
+  42f record (`notes/Phase42-design.md` §1, "in `P³` both are load-bearing") to name the sense:
+  used by Phase 40's route, not needed. **S′ is stated at `d = 3` only** (the PI, 2026-11-08, §1):
+  `thm:pencil-d-theorem-s` and `def:pencil-d-usable-chain` fold into the `d = 3` nodes, and "the
+  move" below, written for the general form, is read at `n = 3` with `exists_additiveCoreAt`,
+  `ChainUsableAt` and `chainUsable_iff_chainUsableAt_three` deleted. The read's inputs for the
+  build:
   - **The move.** Not `exists_chain_or_core` at `ℓ = 1`: Theorem S itself,
     `Graph.IsX0Graph.exists_additiveCoreAt` (only consumer `exists_additiveCore`,
     `CoverageTheoremS.lean`), with its blocking hypothesis `¬ ChainUsableAt` losing the `k = 2`
@@ -140,11 +181,15 @@ In order. A letter is minted when a layer opens.
     home is the remark after `thm:pencil-d-generic`'s proof. Each `d = 3` sentence of
     `sec:pencil-d-reduction` reads its case at `d = 3` with no deleted node behind it, and may be
     cut.
+  - **From NORMAL** (43c's open). The KT Theorem 4.9 remark, where its content is: the
+    main-component induction's contraction and degree-two steps, in the coverage or in the road
+    map (§1, 2026-11-08 item 3); the reduction keeps one glue sentence. Which chapter
+    `thm:pencil-reduction` lives in (`pencil.tex`; its only user is in `pencil-d.tex`).
 
 ## 3. Open questions
 
 - *Closed 2026-11-08:* whether LIFT3 lands as one sub-phase or two (N1a first). One, 43b, with
   N1a its first slice: the PI's entry of that date, §1.
-- Whether SPRIME keeps Theorem S′ general in `n`, as `thm:pencil-d-theorem-s` is (it holds at
-  every `n ≥ 3`, but is used only at `d = 3`), or folds it and `def:pencil-d-usable-chain` into a
-  `d = 3` S′: decided at SPRIME's open.
+- *Closed 2026-11-08:* whether SPRIME keeps Theorem S′ general in `n`, as
+  `thm:pencil-d-theorem-s` is, or folds it and `def:pencil-d-usable-chain` into a `d = 3` S′.
+  Folded: the PI's entry of that date, §1.

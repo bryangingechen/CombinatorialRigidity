@@ -310,8 +310,9 @@ status:
     CombinatorialRigidity.Molecular.liftAttains_of_simple), then the whole theorem as the case
     d = 3 of Graph.graded_pencil_conditioned_pair, deleting the three-dimensional arguments they
     replace, so that the reduction is proved once, in every dimension; a remark keeps the old
-    three-dimensional route. The main results' statements and axioms are unchanged. Restating
-    the reduction on structural cases is next.
+    three-dimensional route. The main results' statements and axioms are unchanged. Its second
+    step, in progress, restates the reduction on structural cases and then removes the two
+    three-dimensional cases found unnecessary.
   sorry_count: 0
   sorry_in_definitions: 0
   axioms: ["propext", "Classical.choice", "Quot.sound"]          # only Lean/mathlib standard axioms; no project-specific axioms

@@ -190,8 +190,9 @@ are unnecessary. The first step is complete: the three-dimensional
 nondegenerate claim, and then the whole three-dimensional theorem, are now
 taken from the argument for every dimension, and the separate
 three-dimensional argument is gone, its cases proved once for every
-dimension, with a short note on the old route. Next, the reduction is to
-be restated on structural cases.
+dimension, with a short note on the old route. The second step, under
+way, restates the reduction on structural cases and then removes the two
+unnecessary cases.
 
 ### How the pencil realization theorem is proved
 
