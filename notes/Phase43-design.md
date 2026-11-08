@@ -6,8 +6,9 @@ the three fresh reads held, and each layer's inputs from them are in §2. **43b*
 2026-11-08 (`notes/Phase43b.md`): the `d = 3` theorem is the case `d = 3` of the theorem in every
 dimension, and the reduction's cases are proved once. **43c** NORMAL and SPRIME closed 2026-11-08
 (`notes/Phase43c.md`): the reduction on five structural cases, and Theorem S′ at `d = 3`, with
-the two unnecessary steps gone. No sub-phase is open. EXPO, the last layer, opens at the PI's word
-(§1, D5). Next: EXPO's open, with the PI.
+the two unnecessary steps gone. **43d** EXPO, the last layer, is open (2026-11-08, at the PI's
+word, §1; `notes/Phase43d.md`): the road map of the proof, in four prose slices, and its close
+closes Phase 43. Next: 43d's slice 1, the road map.
 
 This file is the phase's entry point: the target (§0), the PI's decisions (§1, verbatim), the
 layers by stable code (§2) and the open questions (§3). The recon record stays in
@@ -102,6 +103,53 @@ are exactly the case `d = 3` of `lem:deficiency-core-bound-d`, which stays (the 
 lemma uses it), so deleting them loses no result. So S′'s proof cites the maximal-rigid-core lemma,
 and `lem:deficiency-core-bound` and its two declarations are deleted (`notes/Phase43c.md` item 4).
 
+**PI, 2026-11-08, at EXPO's open** (a coordinator session after 43c's close; verbatim, the
+coordinator's questions and the options as offered). First check-in. Question put:
+"notes/Phase43d.md doesn't exist, and design doc §1 D5 says each Phase 43 sub-phase opens at your
+word. Is this run that word to open EXPO (the road map of the pencil proof, in the manner of KT
+§1.1) as 43d? The opening commit would be an Opus design pass: the note, the slice plan, and EXPO's
+open items from design doc §2 (where the KT 4.9 remark goes, which chapter holds
+thm:pencil-reduction, the flatness remark, the role of thm:pencil-x0-generic-attains). It would
+bring any of those that need your call back to you before slice 1." Chosen: "Discuss EXPO first" —
+offered as: "We go through EXPO's scope and open items here before anything is dispatched." Not
+chosen: "Open EXPO as 43d (Recommended)".
+
+Then, after the coordinator's summary of EXPO (A the reduction on five structural cases; B the
+main-component induction and its steps; C the lift; why each split is forced; the stale intro.tex
+sentence; one sub-phase, about 3–4 prose slices plus the close, which also closes Phase 43; Opus
+throughout):
+- **Q1.** Question put: "Where should EXPO's road map of the pencil proof (parts A reduction / B
+  main-component induction / C lift, in every dimension) live in the blueprint?" Chosen: "Opening of
+  pencil.tex (Recommended)" — offered as: "A new subsection 'Road map of the proof' right after
+  pencil.tex's introduction, where the reader enters and the theorem is stated. It covers all three
+  chapters; their introductions keep their section-by-section guides and point at it." Not chosen:
+  "Own section first" (a short standalone section placed before pencil.tex, covering pencil.tex,
+  main-component.tex and pencil-d.tex); "In intro.tex" (expand the reader's introduction's pencil
+  paragraphs into the road map; the chapters stay as they are).
+- **Q2.** Question put: "How much intuition should the pencil road map carry, beyond the A/B/C
+  structure and the KT case correspondence?" Chosen: "Structure + intuitions (Recommended)" —
+  offered as: "Also why each split is forced (K4 ⊃ C4, parallel edges, K_{2,3}, no induction on d)
+  and the recon's corrected intuitions: the gap def₂ − def_d that the heights recover, degree-two
+  bodies, a planar-rigid set acting like one body, slack at larger D." Not chosen: "Structure only"
+  (a short map in KT §1.1's register: the three parts, their cases, and how they correspond to KT's
+  Cases I–III; no intuitions).
+- **Q3.** Question put: "The flatness reading: at a main picture every planar-rigid set's points lie
+  in one plane, so two members of one closed hub-neighbourhood in it make the configuration
+  degenerate. That explains why the generic conjunct leaves the main component. No proof uses it.
+  Its argument composes five formalized lemmas plus one step done by hand. How should EXPO treat
+  it?" Chosen: "Unpinned remark (Recommended)" — offered as: "A remark with no Lean, after the
+  K_{2,3} paragraph of the main-component statements (or in the road map), with its argument
+  written out. Includes the doubled-triangle example that the two-hubs lemma misses." Not chosen:
+  "Formalize as further result" (state and prove it in Lean, as a green node in the further-results
+  appendix; adds Lean work to EXPO; the coordinator had not estimated the size); "Leave it out"
+  (the road map mentions K_{2,3} only; no flatness remark).
+- **Q4.** Question put: "After these answers, should I open EXPO as 43d now? That means an Opus
+  design pass that writes notes/Phase43d.md and the slice plan, and settles the small items with
+  recommendations: which chapter holds thm:pencil-reduction, the d = 3 sentences in
+  sec:pencil-d-reduction, the role of thm:pencil-x0-generic-attains, and the stale intro.tex
+  sentence. It brings anything contentious back to you before slice 1." Chosen: "Open 43d now
+  (Recommended)". Not chosen: "More discussion first".
+
 ## 2. The layers, by stable code
 
 In order. A letter is minted when a layer opens.
@@ -143,9 +191,14 @@ In order. A letter is minted when a layer opens.
   The pin's spike and walk stay banked (`notes/pencil-natural/SprimeSpike.lean`, `sprime_walk.py`)
   as its record, naming what slices B and C deleted. The read's inputs for the build (the move,
   NEW-1 and NEW-2, the sizes) are `git show b9e9e2b2:notes/Phase43-design.md`, §2.
-- **EXPO**. The road map (`notes/PencilNatural.md` §5), with the A/B/C structure as it stands after
-  the layers above, I1–I4 as corrected, and the flatness reading, which its read confirmed once
-  stated precisely (43a). Last. The read's inputs:
+- **EXPO** (43d, opened 2026-11-08 at the PI's word, §1; `notes/Phase43d.md`). The road map
+  (`notes/PencilNatural.md` §5), with the A/B/C structure as it stands after the layers above,
+  I1–I4 as corrected, and the flatness reading, which its read confirmed once stated precisely
+  (43a). Last. The read's inputs, re-derived against the chapters at the open (`notes/Phase43d.md`,
+  *Verified at the open*, where I1–I4 are restated; the small items below are its decisions D-a
+  to D-g): (F) holds, its panel clause carried by the
+  lifting system's coefficient vectors; the degeneracy below is proved in one direction only,
+  the converse probe evidence:
   - **(F).** At every main picture of `G`, every height is one affine function on a planar-rigid
     set `W`, so the points of `W` lie in one plane, the panel of each body of `W` (`d = 3`; in
     the polar form, one concurrency point). At `d ≥ 4` each of the `d − 2` heights is affine on
@@ -154,16 +207,15 @@ In order. A letter is minted when a layer opens.
     `lem:pencil-lifting-space-affine`, `lem:pencil-lifting-restrict`,
     `lem:pencil-condition-linear`); "main" rather than "general" needs
     `lem:pencil-polynomial-section`'s argument, by hand. No proof uses it: a remark with no pin.
-  - **Degeneracy.** The general configuration is degenerate exactly when a planar-rigid set holds
-    two members of one closed hub-neighbourhood. `K_{2,3}` is planar-rigid (`def₂ = 0`), so
-    `lem:pencil-x0-two-hubs-obstruction` is an instance; the doubled triangle (three hubs, each
-    pair joined by two paths through one body; 9 bodies) is one the lemma misses, feasible and
-    attaining. A planar-rigid set with no such pair is a triangle or a hub with pendant
-    triangles; `lem:pencil-rigid-good-ear`'s two shapes match: a degree-two body between two hubs
-    (degenerate, so removed and re-added off the main component) and a pendant triangle
-    (harmless). So flatness says why the generic
-    conjunct leaves the main component in every dimension (C lifts nondegenerate `P³`
-    realizations), and sharpens N6's NO-GO.
+  - **Degeneracy.** The general configuration is degenerate when (in the probes, exactly when) a
+    planar-rigid set holds two members of one closed hub-neighbourhood. `K_{2,3}` is planar-rigid
+    (`def₂ = 0`), so `lem:pencil-x0-two-hubs-obstruction` is an instance; the doubled triangle
+    (three hubs, each pair joined by two paths through one body; 9 bodies) is one the lemma misses,
+    feasible and attaining. A planar-rigid set with no such pair is a triangle or a hub with pendant
+    triangles (the probes); `lem:pencil-rigid-good-ear`'s two shapes match: a degree-two body
+    between two hubs (degenerate, so removed and re-added off the main component) and a pendant
+    triangle (harmless). So flatness says why the generic conjunct leaves the main component in
+    every dimension (C lifts nondegenerate `P³` realizations), and sharpens N6's NO-GO.
   - **The draft remark** (the reader's, for after the `K_{2,3}` paragraph of
     `sec:main-component-statements` or the road map): `G[W]` meets the standing hypotheses; its
     lifting space at a general picture has dimension three, so is the affine heights; every

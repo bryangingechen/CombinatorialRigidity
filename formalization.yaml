@@ -165,8 +165,7 @@ sources:                                                          # [required] l
       form; phase 40), over any infinite field, not by Jackson-Jordán's own argument.
       Formalizing that argument as a second proof is a queued item. The pencil realization
       theorem's main-component argument (phase 40) uses their theorem in the form of an equality for the
-      lifting space of a general planar drawing, derived here from the n = 2 rank formula, and
-      transfers their splitting-off case.
+      lifting space of a general planar drawing, derived here from the n = 2 rank formula.
 
   - title: "On the rigidity of molecular graphs"
     authors: ["B. Jackson", "T. Jordán"]

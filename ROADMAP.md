@@ -187,7 +187,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (CLEANUP-42, round 4: the folds, the witnesses and the docstrings) | the `d = 3` Lean that repeats the every-dimension Lean, two non-vacuity witnesses and stale Lean docstrings (Lean; two blueprint pins, the folded nodes' edges and notes, no statement) | ✓ Complete — the `d = 3` Lean proved as the every-dimension Lean's `d = 3` case, two witnesses, no statement changed; CLEANUP-42 complete (see `notes/Phase42-fold.md`; plan `notes/Cleanup42.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (HOMES: Phase 42's deferred lemma homes and the friction log) | the friction log's docs and tooling fixes, then the lemmas Phase 42 left outside their home files and the mirror lemmas that now meet their bar (Lean and notes, no statement) | ✓ Complete — the lemmas in their home files, the friction log's actionable entries 62 to 18, no statement changed (see `notes/Phase42-homes.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (ARREARS: what HOMES left) | the blueprint's dependency-graph debt, the friction log's archive sweep, the splits of four molecular files past the size cap, and `RecordsLinks` moved to `Graph` with its link hypotheses restated (Lean, blueprint edges and notes; no main result's statement) | ✓ Complete — the blueprint's missing dependency edges 16 to 0, the four files split, the link hypotheses in `RecordsLinks` terms (three weakened at the PI's word), no main result's statement changed (see `notes/Phase42-arrears.md`; round manual: `CLEANUP.md`) |
-| 43. A simpler pencil proof (post-program) — PENCIL-NATURAL | the pencil proof's route in `Molecular/Molecule/Pencil/` and its three chapters, no main result's statement (sub-lettered, 43a–) | In progress — 43c, NORMAL and SPRIME, closed: the reduction on structural cases, Theorem S′ at `d = 3` and the two unnecessary steps gone; EXPO's open next, at the PI's word (see `notes/Phase43c.md`; plan `notes/Phase43-design.md`) |
+| 43. A simpler pencil proof (post-program) — PENCIL-NATURAL | the pencil proof's route in `Molecular/Molecule/Pencil/` and its three chapters, no main result's statement (sub-lettered, 43a–) | In progress — 43d, EXPO, open: the road map of the proof, the last layer, whose close closes Phase 43 (see `notes/Phase43d.md`; plan `notes/Phase43-design.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1352,8 +1352,12 @@ further results. Theorem S′, Theorem S with fewer usable chains, is stated at 
 proof cites the maximal-rigid-core lemma as the Lean does (the PI); so the open ear with two
 interior bodies and the split-off step left the `d = 3` coverage, and the `d = 3` core bound with
 them. 23 declarations and 13 blueprint nodes went (three Lean files whole) and 2 declarations came;
-the main results' statements and axioms are unchanged. Next: EXPO's open, the road map, at the PI's
-word.
+the main results' statements and axioms are unchanged. **43d** EXPO (opened 2026-11-08 at the PI's
+word; `notes/Phase43d.md`), the last layer: a road map of the proof in the manner of KT §1.1, at
+the opening of the pencil chapter, with the structure, why each split is forced and the recon's
+intuitions as corrected; a remark, with no Lean, that a planar-rigid set is flat on the main
+component; and the three chapters' introductions pointing at the road map. Blueprint and notes
+only, in four slices; its close closes Phase 43.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 
