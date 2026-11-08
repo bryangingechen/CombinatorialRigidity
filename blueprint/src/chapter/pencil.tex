@@ -18,6 +18,8 @@ make up \cref{thm:pencil-realization-theorem}. Besides
 \cref{sec:molecular-coplanar-multigraph}, the reader needs the
 deficiency and rigid subgraphs of \cref{sec:molecular-deficiency}.
 
+\Cref{sec:pencil-roadmap} gives a road map of the proof, across this
+chapter, \cref{sec:main-component} and \cref{sec:pencil-d}.
 \Cref{sec:pencil-through-point} and \cref{sec:pencil-realization} give
 the definitions. \Cref{sec:pencil-extension} gives an added edge a
 hinge through the points of both its ends. Such a hinge exists only when
@@ -48,6 +50,239 @@ polarity of \cref{lem:polarity-join} takes a pencil
 realization to one with the panel normals and the points exchanged.
 This chapter uses the polarity nowhere else. \Cref{sec:pencil-cycle}
 realizes the cycles on three and four bodies as pencil realizations.
+
+\subsection{Road map of the proof}
+\label{sec:pencil-roadmap}
+
+We prove \cref{thm:pencil-realization-theorem} as the case $d = 3$ of a
+theorem in every dimension $d \ge 3$
+(\cref{cor:pencil-d-conditioned-pair}). Over an infinite field, every
+multigraph with at least one body has a pencil realization at the
+deficiency rank in dimension $d$. If it is simple, it has an
+adjacent-distinct one, which at $d = 3$ means that the points of
+adjacent bodies are distinct. If it is moreover nondegeneracy-feasible,
+that is, if it has a nondegenerate realization at all, then it has a
+nondegenerate one at the deficiency rank.
+
+This subsection describes the proof as a whole, in the manner of Katoh
+and Tanigawa's road map of their own proof (KT~\S1.1,
+pp.~649--650)~\cite{katohTanigawa2011}. They run one combinatorial
+induction over the minimal $k$-dof-graphs, with three cases (KT~\S4).
+They then implement each case geometrically (KT~\S6). Our proof has
+three parts, each stated and proved in every dimension $d \ge 3$.
+Part~A, the reduction, is an induction over all multigraphs, and gives
+the first two claims (\cref{thm:pencil-d-realization-theorem}). Part~B,
+the main-component induction, shows that a general configuration lifted
+from a picture in the plane has the deficiency rank
+(\cref{thm:pencil-d-coverage}). Part~C, the generic conjunct, is an
+induction over the lifts of nondegenerate realizations in dimension
+three, and gives the third claim (\cref{thm:pencil-d-generic}). Both A
+and C use B.
+
+\emph{The reduction.} Katoh and Tanigawa realize a multigraph that is
+not minimal by realizing a minimal spanning subgraph with the same
+deficiency, and adding the remaining edges. For pencil realizations an
+added edge asks two cross-incidences of the realization of the smaller
+graph (\cref{lem:two-pencil-extension-iff}). At $K_4$ and a $4$-cycle in
+it, no pencil realization of the $4$-cycle at the deficiency rank meets
+them (\cref{sec:pencil-reduction}). So A is an induction over every
+multigraph, on $(|V(G)|, |E(G)|)$, with five structural cases
+(\cref{thm:pencil-reduction}). The cases of a loop, of at most two
+bodies and of a cut edge place hinges in two pencils
+(\cref{lem:pencil-d-two-pencil-extension}). At a loopless
+two-edge-connected multigraph with parallel edges, two parallel edges
+are contracted, as Katoh and Tanigawa contract them (KT Lemma~6.2). A
+simple two-edge-connected multigraph on at least three bodies is settled
+by B, applied to the whole graph, with no hypothesis at smaller
+multigraphs. \Cref{sec:pencil-d-reduction} proves the cases in every
+dimension. The reduction plays the role of the induction of KT
+Theorem~4.9 (pp.~666--667). The two steps of that induction, contracting
+a proper rigid subgraph and splitting off at a vertex of degree two,
+have their counterparts in B.
+
+\emph{The main-component induction.} At $d = 3$, we place each body at a
+point of the plane, the picture $q$, and lift it to a point of $K^4$ by
+a height (\cref{sec:pencil-main-component-route}). The lifted point is
+the concurrency point of the body, and each edge gets the line through
+the points of its ends. This configuration is a pencil realization when
+the heights lie in a linear space $L(q)$, the lifting space. In
+dimension $d$ a configuration has $d - 2$ heights, each in $L(q)$
+(\cref{lem:pencil-d-condition-linear}). B shows that the general such
+configuration has the deficiency rank in dimension $d$ at every graph
+satisfying the standing hypotheses: finite, simple and connected, with
+minimum degree at least two (\cref{def:pencil-x0-standing}). It is a
+strong induction on the number of bodies, at a fixed $d$.
+\Cref{sec:main-component} proves it at $d = 3$, and
+\cref{sec:pencil-d-induction} to \cref{sec:pencil-d-coverage} in every
+dimension. B concerns simple graphs only. Two parallel edges would get
+the same hinge, the line through the points of their ends. Two bodies
+joined by two edges would then have rank $5$ at $d = 3$, short of the
+deficiency rank $6$ (\cref{sec:pencil-nondegenerate}). This is why A
+settles parallel edges itself.
+
+Each step of B proves the claim at $G$ from the claim at none, one or
+two graphs with fewer bodies (\cref{def:pencil-x0-reduces}). At $d = 3$
+the steps are equal deficiencies, a cut vertex, a chain of bridges, a
+cycle, open ears, and two contractions. An open ear has $k \ge 5$, three
+or four interior bodies, or, at ends that are not adjacent and under
+conditions on the deficiencies, two or one. A contraction collapses a
+proper set $W$ of at least two bodies to one of its bodies. Either $W$
+is planar-rigid, $\operatorname{def}_2(G[W]) = 0$, where the planar
+deficiency $\operatorname{def}_2$ is the deficiency at $d = 2$
+(\cref{def:D-deficiency}). Or $W$ is an additive core: it is rigid, and
+the planar deficiencies of $G[W]$ and of the contraction add up to at
+most that of $G$.
+
+A chain is a path of bodies of degree two between two bodies of degree
+at least three (\cref{def:pencil-x0-chain}). The structural coverage
+shows that some step applies at every graph satisfying the standing
+hypotheses (\cref{thm:pencil-x0-coverage}). It tests a chain of bridges,
+a cut vertex, a cycle, equal deficiencies and a planar-rigid set first,
+and then the chains. When no step at a chain applies, it finds an
+additive core (\cref{thm:pencil-x0-theorem-s}). In dimension $d \ge 4$
+the coverage takes the first five cases as at $d = 3$
+(\cref{sec:pencil-d-coverage}). Then it embeds dimension three, when
+$\operatorname{def}_3(G) = \operatorname{def}_d(G)$
+(\cref{lem:pencil-d-x0-attains-of-le}). Otherwise it finds a chain with
+many interior bodies or a core (\cref{thm:pencil-d-chain-or-core}).
+
+Two steps of B assume the claim at no smaller graph: the cycle
+(\cref{thm:pencil-x0-cycle}), and equal deficiencies. When
+$\operatorname{def}_2(G) = \operatorname{def}_d(G)$, the general
+configuration has the deficiency rank (\cref{cor:pencil-d-jj-flat}).
+Indeed the flat configuration, with every height zero, already has it
+over a main picture, one at which $\dim L(q)$ is least
+(\cref{def:pencil-main-picture}). This rests on Jackson and Jord\'an's
+equality for $\dim L(q)$~\cite{jacksonJordan2008pin}. We derive it from
+the case $d = 2$ of KT Theorem~5.6 (\cref{thm:pencil-jj-equality}).
+
+Katoh and Tanigawa's Case~(I), the contraction of a proper rigid
+subgraph, corresponds to the contractions of B. The contraction at an
+additive core is KT Lemma~6.3, read on configurations
+(\cref{sec:main-component-contract}). Their Cases~(II) and~(III),
+splitting off at a vertex of degree two, correspond to the steps at an
+open ear, which remove its interior bodies. Splitting off remains at $k
+= 2$, $3$ and $4$. There the step also assumes the claim at $G$ with its
+second interior body suppressed by a splitting-off
+(\cref{def:pencil-x0-reduces}). No step asks whether the deficiency is
+zero or positive, the condition that separates Case~(II) from
+Case~(III). That distinction enters only where the coverage looks for a
+core, in the proofs of \cref{thm:pencil-x0-theorem-s} and
+\cref{thm:pencil-d-chain-or-core}.
+
+Katoh and Tanigawa find a vertex of degree two by an edge count that
+uses minimality (KT Lemmas~4.5 and~4.6, pp.~663--664). We count from
+sparsity instead: $G$ is sparse when every set $X$ of at least two
+bodies spans at most $\frac12(3|X| - 4)$ edges. A graph without a
+planar-rigid set is sparse (\cref{lem:deficiency-sparse}). If it
+satisfies the standing hypotheses, it then has at least four bodies of
+degree two (\cref{lem:pencil-x0-sparse-count}). This is the degree count
+by which Katoh and Tanigawa's proof of their Lemma~4.6 finds a vertex of
+degree two. In dimension $d \ge 4$ the edges along the chains are
+counted as in that proof (\cref{lem:pencil-d-chain-count}). In Katoh and
+Tanigawa's proof the absence of a proper rigid subgraph gives a long
+chain. Here, when every chain is short, a chain with at least two
+interior bodies gives a core (\cref{lem:pencil-d-chain-core}).
+
+\emph{The generic conjunct.} C proves the third claim by a strong
+induction on the number of bodies, over the simple
+nondegeneracy-feasible multigraphs (\cref{thm:pencil-d-generic}). It
+lifts a general nondegenerate realization in dimension three to
+dimension $d$ by $d - 3$ further coordinates (\cref{def:pencil-d-lift}).
+At $d = 3$ the lift is the realization itself. On at most two bodies and
+at a triangle every lift has the deficiency rank, and a disconnected
+multigraph reduces to its parts. At a cut edge, at a body of degree one
+and at a pendant triangle, the lifts of the smaller graphs extend
+(\cref{sec:pencil-d-generic}). Without a planar-rigid set, the heights
+at which a configuration of B has the deficiency rank give a lift at
+that rank (\cref{lem:pencil-d-lift-no-rigid}). Otherwise the graph has a
+pendant triangle, or a minimal planar-rigid set contains a body $x$ of
+degree two whose neighbours are pencil hubs, bodies of degree at least
+three (\cref{lem:pencil-d-good-ear}). The lifts of the graph without $x$
+then extend across $x$ (\cref{lem:pencil-d-lift-ear}).
+
+C is separate from B because the general configurations of B need not be
+nondegenerate. When two pencil hubs have three common neighbours, as in
+$K_{2,3}$, no configuration over a general picture is nondegenerate
+(\cref{lem:pencil-x0-two-hubs-obstruction}). Yet $K_{2,3}$ is
+nondegeneracy-feasible (\cref{sec:main-component-statements}). Nor can C
+take the place of B in A, as C concerns only the nondegeneracy-feasible
+multigraphs. $K_4$ is simple and two-edge-connected but not
+nondegeneracy-feasible (\cref{sec:pencil-nondegenerate}). A needs an
+adjacent-distinct realization of $K_4$, and B gives one.
+
+\emph{How the parts depend on one another.} A uses B only at a simple
+two-edge-connected multigraph, through the distinct main-component
+statement in dimension $d$ (\cref{lem:pencil-d-distinct-statement}). C
+uses the conclusion of B only at a graph without a planar-rigid set, in
+the proof of \cref{thm:pencil-d-generic}. C also uses lemmas proved
+alongside B that are not steps of B: Jackson and Jord\'an's equality,
+the estimates on partitions, and several lemmas of
+\cref{sec:main-component-statements}. Neither B nor C uses the induction
+of A or its cases, and B uses nothing of C. The theorem in every
+dimension combines A and C (\cref{cor:pencil-d-conditioned-pair}).
+
+None of the three parts is an induction on $d$. This is a choice of
+proof, not one forced by an example. The lower dimension enters in two
+places. B embeds dimension three in dimension $d$ at the graphs with
+$\operatorname{def}_3(G) = \operatorname{def}_d(G)$
+(\cref{sec:pencil-d-stable}), and C lifts realizations from dimension
+three. Within B the dimension is fixed, and all $d - 2$ heights are
+chosen together. In the contraction step, for instance, the picture
+moves along a curve, and every height moves with it
+(\cref{sec:pencil-d-contract}).
+
+Four observations explain the shape of B and C.
+
+\emph{The heights recover a gap.} Let $G$ satisfy the standing
+hypotheses. At a main picture $q$, the flat configuration has rank
+$D(|V(G)| - 1) + 3 - \dim L(q)$ (\cref{thm:pencil-d-flat-rank}). At such
+a picture $\dim L(q) = 3 + \operatorname{def}_2(G)$
+(\cref{thm:pencil-jj-equality}). So the flat configuration falls short
+of the deficiency rank by exactly $\operatorname{def}_2(G) -
+\operatorname{def}_d(G)$, and the heights must recover this gap. When
+the two deficiencies agree, there is no gap.
+
+\emph{Bodies of degree two.} A body of degree two, whose closed
+neighbourhood has three members, imposes no condition on the heights
+(\cref{lem:pencil-three-points}). So the conditions that cut out $L(q)$
+sit at the pencil hubs, on their closed neighbourhoods, which may
+contain bodies of degree two. A body that is not a hub still carries a
+condition of nondegeneracy, on the points of its closed neighbourhood
+(\cref{def:pencil-nondegenerate}). The steps of B at an open ear remove
+bodies of degree two, the interior bodies of the ear.
+
+\emph{A planar-rigid set acts as one body.} Contraction at a
+planar-rigid set $W$ assumes the claim only at the contraction, in which
+$W$ is one body (\cref{cor:pencil-x0-contract-rigid}). Both deficiencies
+of $G[W]$ vanish, so its general configuration attains by the case of
+equal deficiencies. The additive cores that the coverage finds when
+there is no planar-rigid set are rigid, but not planar-rigid
+(\cref{thm:pencil-x0-theorem-s}). In C, let $W_0$ be the minimal
+planar-rigid set and $x$ the body of degree two of
+\cref{lem:pencil-d-good-ear}. The rest $X = W_0 \setminus \{x\}$ has
+planar deficiency one. At a general nondegenerate realization in
+dimension three, every lift of the realization restricted to $G[X]$ is
+trivial: one linear form on $K^4$ gives it at every body, as at a single
+body (\cref{lem:pencil-d-ear-free}).
+
+\emph{Room in larger dimensions.} Let $d \ge 4$, and let $G$ satisfy the
+standing hypotheses and fail the first five cases of the coverage. Let
+every chain of $G$ have at most $\ell$ interior bodies, where $3(\ell +
+1) \le D$. A count of the edges along the chains then applies
+(\cref{lem:pencil-d-chain-count}). With it, a chain with at least two
+interior bodies gives a core (\cref{lem:pencil-d-chain-core}). When
+every chain has one interior body, a core exists if
+$\operatorname{def}_3(G) > 0$
+(\cref{lem:pencil-d-core-positive-deficiency}). Otherwise
+$\operatorname{def}_3(G) = \operatorname{def}_d(G) = 0$, and the
+embedding applies (\cref{thm:pencil-d-chain-or-core}). So the larger
+$D$, the longer the chains that the count settles. The coverage takes
+$\ell = 2$ at $d = 4$, and $\ell = 3$ from $d = 5$ on. At $d = 3$ only
+$\ell = 1$ is allowed. There the coverage uses the steps at chains with
+one or two interior bodies (\cref{thm:pencil-x0-open-ear-one} and
+\cref{thm:pencil-x0-open-ear-two-orbit}). In dimension $d \ge 4$ they
+enter only through the embedding.
 
 \subsection{Extensors through a point}
 \label{sec:pencil-through-point}

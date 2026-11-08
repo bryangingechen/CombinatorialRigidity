@@ -6,13 +6,14 @@ where the road map goes, how much intuition it carries and how flatness is treat
 2026-11-08, EXPO's open). Blueprint and notes only: no Lean, and no node's statement changes. In
 order: slice 1 the road map (`pencil.tex`), slice 2 the flatness remark (`main-component.tex`),
 slices 3 and 4 point the chapters at the road map, then the close, which is Phase 43's close too.
-The next concrete commit is slice 1, pinned below.
+Slice 1, the road map (`sec:pencil-roadmap`), landed; the next concrete commit is slice 2, pinned
+below.
 
 ## Current state
 
-**Next concrete commit: slice 1, the road map** (checklist item 1). Mode: a structural edit of three
-existing chapters with one new subsection and one new remark. No dep-graph node is added, deleted
-or restated (a subsection and a remark are not nodes), so the red-node consistency gate has nothing
+**Next concrete commit: slice 2, the flatness remark** (checklist item 2). Mode: a structural
+edit of three existing chapters with one new subsection and one new remark. No dep-graph node is
+added, deleted or restated (a subsection and a remark are not nodes), so the red-node consistency gate has nothing
 to read; each slice re-reads every node its prose cites. Plan: `notes/Phase43-design.md` §2, EXPO
 (the 43a read's inputs), corrected by *Verified at the open* below.
 
@@ -39,7 +40,9 @@ to read; each slice re-reads every node its prose cites. Plan: `notes/Phase43-de
   hub-neighbourhood in one planar-rigid set) makes every configuration over a main picture
   degenerate: proved, from (F). The converse is probe evidence: re-run here, `flatprobe.py` at
   `n ≤ 8` has 55 graphs with no bad pair, one of them degenerate, at a closed hub-neighbourhood of
-  four members. The design doc's "exactly when" is not written.
+  four members, so nondegeneracy-infeasible (`lem:pencil-feasible-hub-conditions`): among feasible
+  graphs the probe found no counterexample to the converse. The design doc's "exactly when" is not
+  written.
 - **I1–I4** (`notes/PencilNatural.md` §5) against the chapters at HEAD, as slice 1 writes them:
   - **I1, the gap: holds, restated.** At a main picture the flat configuration has rank exactly
     the target less `def₂ − def_d` (`thm:pencil-flat-rank`, `thm:pencil-d-flat-rank`, with
@@ -85,59 +88,22 @@ to read; each slice re-reads every node its prose cites. Plan: `notes/Phase43-de
 
 ## Lemma checklist
 
-- [ ] **1. Slice 1 — the road map** (`pencil.tex`; Opus).
-  - **Where.** A new `\subsection{Road map of the proof}`, `\label{sec:pencil-roadmap}`, between
-    the chapter's introduction (ends at line 50) and `sec:pencil-through-point`. The introduction's
-    section guide gains one sentence naming it; its other sentences are slice 3's.
-  - **What it writes**, in KT §1.1's register (what the parts are, which cases, where each is
-    proved; KT pp. 649–650 cited once with `\cite{katohTanigawa2011}`), roughly 100–200 TeX lines:
-    - *The shape.* The theorem in every dimension (`cor:pencil-d-conditioned-pair`), its case
-      `d = 3` (`thm:pencil-realization-theorem`). KT run one combinatorial induction over minimal
-      k-dof-graphs, Cases I–III (KT §4), and implement each case (KT §6); here three parts in every
-      dimension, none an induction on `d`. A gives the first two conjuncts, C the third; A calls B
-      at a simple two-edge-connected multigraph, C calls B where there is no planar-rigid set;
-      neither B nor C calls A.
-    - *A, the reduction* (`thm:pencil-reduction`; cases `sec:pencil-d-reduction`): induction on
-      `(|V|, |E|)` over every multigraph, five structural cases; a loop, at most two bodies and a cut
-      edge by hinges in two pencils, parallel edges by contracting a pair (KT Lemma 6.2), a simple
-      two-edge-connected multigraph whole to B (`lem:pencil-d-distinct-statement`). Forced by
-      `K₄ ⊃ C₄`, and by parallel edges, which B cannot hold. It plays the role of the induction of
-      KT Theorem 4.9, not of its two steps (decision D-d).
-    - *B, the main-component induction* (`sec:main-component`; `sec:pencil-d-induction` to
-      `sec:pencil-d-coverage`): on `|V|` at a fixed `d`, over the standing hypotheses; the claim
-      that the general configuration attains; its base, equal deficiencies, through Jackson and
-      Jordán's equality from KT Theorem 5.6 at `d = 2` (`thm:pencil-jj-equality`). The steps at
-      `d = 3` are `def:pencil-x0-reduces`' list (design doc §2, *From SPRIME*), the coverage
-      `thm:pencil-x0-coverage` with `thm:pencil-x0-theorem-s`; in dimension `d ≥ 4` the first five
-      cases, the embedding (`lem:pencil-d-x0-attains-of-le`), then a long chain or a core
-      (`thm:pencil-d-chain-or-core`). KT's Case I is the contraction (KT Lemma 6.3 read on
-      configurations, as `sec:main-component-contract` says); Cases II and III are the steps at
-      chains of bodies of degree two, splitting off surviving as the comparison graph at
-      `k = 2, 3, 4`; KT Lemmas 4.5–4.6 as decision D-e. Whether to say that KT's split of II from
-      III (positive or zero degrees of freedom) has no counterpart: only if the slice confirms that
-      no step of `def:pencil-x0-reduces` splits on it.
-    - *C, the generic conjunct* (`thm:pencil-d-generic`; `sec:pencil-d-nondegenerate`,
-      `sec:pencil-d-lift`, `sec:pencil-d-generic`): induction on `|V|` over simple
-      nondegeneracy-feasible multigraphs, lifting a general nondegenerate realization in dimension
-      three by `d − 3` further coordinates (`def:pencil-d-lift`; at `d = 3` the realization itself);
-      its cases as `sec:pencil-d-generic`'s lead lists them. Separate from B by `K_{2,3}` and, in
-      general, flatness (slice 2 adds the `\cref` to `rem:pencil-x0-flatness`); not one statement
-      with B, as `K₄` is not nondegeneracy-feasible and A still needs B's distinct conjunct there.
-    - *No induction on `d`*, as in *Verified at the open*; the lower dimension enters through the
-      embedding (`sec:pencil-d-stable`) and C's lift from dimension three.
-    - *The intuitions* (the PI, Q2): I1–I4 as restated in *Verified at the open*, a short paragraph
-      each, or folded into the part each belongs to.
-  - **Verify**, opening each node (statement, not docstring or prose about it): every `\cref`
-    target says what its sentence claims; the KT pages and section numbers against the PDF; the
-    dependency sentence (A→B, C→B, no other) against the `\uses` of
-    `thm:pencil-d-realization-theorem`, `thm:pencil-d-generic` and `cor:pencil-d-conditioned-pair`.
-  - **Gates.** `blueprint/lint.sh`, `blueprint/verify.sh` (checkdecls silent),
-    `python3 notes/check-phase-note.py`.
+- [x] **1. Slice 1 — the road map** (`pencil.tex`; Opus). `\subsection{Road map of the proof}`,
+  `sec:pencil-roadmap`, after the introduction, which gains one sentence naming it (its other route
+  sentences are slice 3's). KT pp. 649–650 cited once; the shape and the three parts (A with
+  `K₄ ⊃ C₄` and KT Theorem 4.9's role, D-d; B with the steps, the coverage, the base through
+  Jackson–Jordán, KT Cases I–III and Lemmas 4.5–4.6, D-e; C with `K_{2,3}` and `K₄`), the
+  dependencies (D-h), no induction on `d` (a choice), and I1–I4 as four short paragraphs, I3
+  without its panel sentence (slice 2). About 230 TeX lines, over the pinned ~200. KT's II/III split:
+  no step of `def:pencil-x0-reduces` (nor of the `d ≥ 4` ear steps) splits on zero or positive
+  deficiency; only the search for a core does, which the road map says.
 - [ ] **2. Slice 2 — the flatness remark** (`main-component.tex`; Opus).
   - **Where.** `\begin{remark}[…]`, `\label{rem:pencil-x0-flatness}`, after the two `K_{2,3}`
     paragraphs of `sec:main-component-statements` (after "…where the panels of $a$ and $b$ meet.")
-    and before "We turn to a graph without a planar-rigid set". The road map's C part and I3 gain
-    its `\cref`.
+    and before "We turn to a graph without a planar-rigid set". The road map's C part gains its
+    `\cref` ("C is separate from B because …": by `K_{2,3}` and, in general, flatness), and I3
+    ("A planar-rigid set acts as one body") gains the panel sentence with it: slice 1 left that
+    sentence out, as no landed node bears (F) beyond `W = V(G)`.
   - **The claim (d = 3).** `G` with the standing hypotheses, `W` planar-rigid, `q` a main picture,
     `z ∈ L(q)`: `z` agrees with one affine function on `W`, which is each body's affine function
     `h_v` at every body of `W`; so the points of `W` lie in one plane, the panel of each body of `W`.
@@ -211,8 +177,8 @@ to read; each slice re-reads every node its prose cites. Plan: `notes/Phase43-de
 
 ## Hand-off / next phase
 
-The next concrete commit is *Current state*'s: slice 1, whole, at the Opus rung (the PI: Opus
-throughout). Then slices 2–4 in order (slice 2 adds the road map's `\cref` to the remark), then the
+The next concrete commit is *Current state*'s: slice 2, whole, at the Opus rung (the PI: Opus
+throughout). Then slices 3–4 in order (slice 2 adds the road map's `\cref` to the remark), then the
 close, which closes Phase 43; ORIGAMI opens after it, with the PI.
 
 ## Decisions made during this phase
@@ -242,3 +208,11 @@ remark unpinned, open now) are design doc §1. The open settled EXPO's small ite
   restates the route across chapters goes for one pointer to `sec:pencil-roadmap`.
 - **D-g. The flatness remark sits in `main-component.tex`** after the `K_{2,3}` paragraphs (Q3's
   first place), labelled so the road map can point at it; `d = 3`, with one `d ≥ 4` sentence.
+- **D-h. The dependency sentence holds for the inductions, with one refinement** (slice 1, against
+  the `\uses` closure of the three nodes; measured, script not retained). A reaches B only through
+  `lem:pencil-d-distinct-statement`; C reaches B's conclusion only in `thm:pencil-d-generic`'s case
+  without a planar-rigid set, but also uses lemmas of B's chapter (Jackson–Jordán, the partition
+  estimates, five of `sec:main-component-statements`), which the road map says. Nothing in B or C
+  reaches `thm:pencil-reduction` or A's cases; B reaches nothing of C. Shared lemmas in A's
+  subsection: `lem:pencil-contraction-deficiency` (A's case (iv), B's contractions) and
+  `lem:pencil-cut-nondegeneracy` (A's cut case; C's cut-edge step cites its construction).

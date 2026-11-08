@@ -8,7 +8,7 @@ dimension, and the reduction's cases are proved once. **43c** NORMAL and SPRIME 
 (`notes/Phase43c.md`): the reduction on five structural cases, and Theorem S′ at `d = 3`, with
 the two unnecessary steps gone. **43d** EXPO, the last layer, is open (2026-11-08, at the PI's
 word, §1; `notes/Phase43d.md`): the road map of the proof, in four prose slices, and its close
-closes Phase 43. Next: 43d's slice 1, the road map.
+closes Phase 43. Slice 1, the road map, landed; next: 43d's slice 2, the flatness remark.
 
 This file is the phase's entry point: the target (§0), the PI's decisions (§1, verbatim), the
 layers by stable code (§2) and the open questions (§3). The recon record stays in
@@ -207,11 +207,12 @@ In order. A letter is minted when a layer opens.
     `lem:pencil-lifting-space-affine`, `lem:pencil-lifting-restrict`,
     `lem:pencil-condition-linear`); "main" rather than "general" needs
     `lem:pencil-polynomial-section`'s argument, by hand. No proof uses it: a remark with no pin.
-  - **Degeneracy.** The general configuration is degenerate when (in the probes, exactly when) a
-    planar-rigid set holds two members of one closed hub-neighbourhood. `K_{2,3}` is planar-rigid
-    (`def₂ = 0`), so `lem:pencil-x0-two-hubs-obstruction` is an instance; the doubled triangle
-    (three hubs, each pair joined by two paths through one body; 9 bodies) is one the lemma misses,
-    feasible and attaining. A planar-rigid set with no such pair is a triangle or a hub with pendant
+  - **Degeneracy.** The general configuration is degenerate when (in the probes, among
+    nondegeneracy-feasible graphs, exactly when) a planar-rigid set holds two members of one
+    closed hub-neighbourhood; the one degenerate graph with no such pair at `n ≤ 8` is
+    infeasible. `K_{2,3}` is planar-rigid (`def₂ = 0`), so `lem:pencil-x0-two-hubs-obstruction`
+    is an instance; the doubled triangle (three hubs, each pair joined by two paths through one
+    body; 9 bodies) is one the lemma misses, feasible and attaining. A planar-rigid set with no such pair is a triangle or a hub with pendant
     triangles (the probes); `lem:pencil-rigid-good-ear`'s two shapes match: a degree-two body
     between two hubs (degenerate, so removed and re-added off the main component) and a pendant
     triangle (harmless). So flatness says why the generic conjunct leaves the main component in

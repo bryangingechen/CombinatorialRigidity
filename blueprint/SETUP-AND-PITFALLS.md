@@ -108,7 +108,8 @@ pip install -r requirements.txt          # plastex, leanblueprint, invoke
   Use plain `\item`s and cite them as part~(1), part~(2) (`meet.tex`'s
   last `\item[(i)]`, PROSE round 5, task 6). `intro.tex`'s per-phase
   list gives each phase its own item instead (PROSE round 4, task
-  2.13).
+  2.13). An `itemize` loses the label too, and shows a bullet: name
+  the items in the text instead (`pencil.tex`'s road map, Phase 43d).
 - **`\lean{Name1, Name2}` with multiple names** is fine for the
   HTML build (each links separately) but produces only one link
   target in the PDF. Reserve multi-name `\lean{}` for closely-
