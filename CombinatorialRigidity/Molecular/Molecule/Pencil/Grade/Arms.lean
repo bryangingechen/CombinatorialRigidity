@@ -19,11 +19,9 @@ Each hinge they place is the hinge `C_B` of a two-dimensional subspace (`perpExt
 `Grade/TwoPencil.lean`): at a loop at `v`, of a `B ⊆ Π_v` through `b_v`; on two bodies, two
 independent ones through one normal; at a cut edge, of the span of `b_u` and `g b_v` once the
 second side has been moved by the `g` of `exists_reposition_planes`. The case at parallel edges
-contracts two of them and splices the rows. The theorem is `Grade/Reduction.lean`. At grade `2` they
-give `hasPencilRealization_of_isLoopAt`, `hasPencilRealization_of_ncard_le_two`,
-`hasPencilRealization_of_not_twoEdgeConnected` with its adjacent-distinct form
-(`Pencil/ArmsAssembly.lean`) and `hasPencilRealization_of_not_simple` (`Pencil/X0.lean`), in the
-point form.
+contracts two of them and splices the rows. The theorem is `Grade/Reduction.lean`. They serve
+every `d ≥ 3`, `d = 3` included (grade `2`, read through `hasGradedPencilRealization_two_iff` and
+`hasGradedDistinctPencilRealization_two_iff`, `lem:pencil-d-rank-agrees-three`).
 
 ## Main results
 

@@ -1188,16 +1188,10 @@ discharge point.
   and what forces every hub's normal into a common complement at `K₄` — the
   reason simplicity alone cannot condition the generic conjunct. Pointer:
   `notes/Phase39-design.md` (the W2 leaf; opening recon R3).
-- **`lem:pencil-cut-case` /
-  `hasPencilRealization_of_not_twoEdgeConnected_core`, with
-  `lem:pencil-cut-nondegeneracy`** — [done (node proofs)] **(a)** the
-  panel-only cut-edge case places two sides independently; the pencil version
-  must reposition one side by a projective automorphism (a contragredient
-  acting on the normals) so the crossing edge's cross-incidences hold.
-  **Stable insight:** an explicit frame automorphism over any field does it,
-  and its independence choice gives the adjacent-distinct clause at the
-  crossing edge for free, so the bare and adjacent-distinct forms share one
-  assembly. Pointer: `notes/Phase39-design.md` § *Kernel restatement*.
+- **`lem:pencil-cut-case`, with `lem:pencil-cut-nondegeneracy`** — [done (node proofs); the case
+  retired 2026-11-08 with its pins (Phase 43b slice 3): it is `lem:pencil-d-cut-case`, in every
+  dimension, whose move is `lem:pencil-d-cut-reposition`, `lem:pencil-cut-nondegeneracy` (kept)
+  with the normals and the points exchanged; git keeps the entry's text]
 - **`def:pencil-nondegenerate` + `def:pencil-conditioned-pair` +
   `def:pencil-distinct-motive`** — [done (the `sec:pencil-nondegenerate`
   prose around the three definitions; moved out of formalization notes at
@@ -1212,15 +1206,11 @@ discharge point.
   imposed only where parallel classes are excluded. Pointer:
   `notes/Phase39-design.md` § *W5 design pass*, § *R2 recon* (b);
   `notes/pencil/adjudications.md` (α).
-- **`lem:pencil-nonsimple-case` / `hasPencilRealization_of_not_simple`, with
-  `lem:extensor-pair-through-given-point`** — [done (node proof, L0b)]
-  **(b)** KT Lemma 6.2's parallel-edge contraction, run without minimality
-  and at the pencil condition. **Stable insight:** the contraction's
-  realization *prescribes* the concurrency point the two re-realized hinges
-  must pass through, so the base pair lemma is needed in prescribed-point
-  form; the rank arithmetic is the block-triangular splice (KT eq. (6.3))
-  plus the general upper bound, with the contraction preserving the
-  deficiency. Pointer: `notes/Phase39.md` item 0 (L0b).
+- **`lem:pencil-nonsimple-case`, with `lem:extensor-pair-through-given-point`** — [done (node
+  proof, L0b); both retired 2026-11-08 with their pins (Phase 43b slice 3): the case is
+  `lem:pencil-d-nonsimple-case`, in every dimension, whose proof carries the prescribed point (two
+  independent hinges through the contracted body's normal inside its subspace,
+  `lem:pencil-d-two-pencil-extension`) and KT's block-triangular count; git keeps the entry's text]
 - **`sec:pencil-girth-chain` (`lem:pencil-degree-two-chain`,
   `lem:pencil-chain-side-distance`)** — [done (subsection preamble + nodes); retired 2026-10-04]
   **(a)** the normal form of the kernel hypotheses' consumed shape was first

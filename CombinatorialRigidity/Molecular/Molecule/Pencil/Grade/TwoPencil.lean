@@ -22,9 +22,8 @@ their three-dimensional subspaces `Π_u`, `Π_v` is the hinge `C_B` of a two-dim
 realization to one of the same rank, the normals and subspaces by `g` and the hinges by the screw
 map of its inverse transpose (`lem:pencil-d-projective-transport`), and some `g` puts the normals
 `b_u` and `g b_v` of a cut edge, independent, in `Π_u ∩ gΠ_v` (`lem:pencil-d-cut-reposition`).
-At grade `2` these are `exists_extensor_two_pencils_iff` (`Pencil/Statement.lean`),
-`hasPencilPanelRealization_mapExtensor_screwEquivOfLinearEquiv` and
-`exists_reposition_cross_incidences` (`Pencil/Arms.lean`), in the point form.
+At grade `2` the first and the last are `exists_extensor_two_pencils_iff` (`Pencil/Statement.lean`)
+and `exists_reposition_cross_incidences` (`Pencil/Arms.lean`), in the point form.
 
 ## Main definitions
 
@@ -252,8 +251,7 @@ the subspaces `g Π_v`, whose rigidity rows span a space of the same dimension
 every independent pair of normals independent. The hinge of `p` goes to that of `h ∘ p`
 (`BodyHingeFramework.screwEquivOfLinearEquiv_mk_extensor`), orthogonal to `g b_v` as
 `h x ⬝ g b_v = x ⬝ b_v`, and with span containing `(g Π_v)^⊥ = h (Π_v^⊥)` (`dotPerp_map_eq`). At
-grade `2` this is `hasPencilPanelRealization_mapExtensor_screwEquivOfLinearEquiv`, with `g` and `h`
-exchanged, in the point form. -/
+grade `2`, where `Π_v = q_v^⊥`, the point `q_v` moves by `h`. -/
 theorem hasPencilPlaneRealization_mapExtensor_screwEquivOfLinearEquiv {k : ℕ} {G : Graph α β}
     {F : BodyHingeFramework K k α β} {normal : α → Fin (k + 2) → K}
     {plane : α → Submodule K (Fin (k + 2) → K)}

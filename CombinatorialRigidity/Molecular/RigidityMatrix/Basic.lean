@@ -496,8 +496,8 @@ theorem hingeRow_apply (u v : α) (r : Module.Dual K (ScrewSpace K k))
   rw [hingeRow, LinearMap.comp_apply, screwDiff_apply]
 
 /-- **The row of a loop is zero** (`def:rigidity-matrix`): `hingeRow a a r = 0`, as `S a − S a = 0`.
-So a loop adds only zero rows, which `hasPencilRealization_of_isLoopAt` and
-`span_rigidityRows_eq_of_eq_off_loops` use. -/
+So a loop adds only zero rows, which `span_rigidityRows_eq_of_eq_off_loops` and the loop case of
+the pencil reduction (`hasGradedPencilRealization_of_isLoopAt`) use. -/
 @[simp]
 theorem hingeRow_self (a : α) (r : Module.Dual K (ScrewSpace K k)) :
     hingeRow (k := k) (α := α) a a r = 0 := by

@@ -25,7 +25,7 @@ Discrete Comput. Geom. **45**, §6) and what follows from it, presented in
   (`lem:case-I-realization-h65`);
 * KT Lemma 6.1, the case of a graph that is not 2-edge-connected, for each form of the realization
   hypothesis (`lem:case-cut-edge-realization`, `lem:case-cut-edge-realization-gp`), with a rank
-  count that the cut case of the pencil realization shares (`lem:pencil-cut-case`);
+  count that the cut case of the pencil realization shares (`lem:pencil-d-cut-case`);
 * KT Lemmas 6.2 and 6.3 and Case I (`lem:case-I-realization-nonsimple`, `lem:case-I-realization`,
   `lem:case-I-dispatch`, `lem:case-I-all-k`);
 * the pullback of a framework along a relabelling of the edges (`lem:embed-edges-framework`), by
@@ -852,7 +852,7 @@ private theorem PanelHingeFramework.reaimSubLink_withGraph_infinitesimalMotions 
 /-! ## KT Lemma 6.1: a cut of at most one edge (`lem:case-cut-edge-realization`) -/
 
 /-- **An end of a link through an induced link lies in the induced set (the first end)** (a step of
-`lem:case-cut-edge-realization` and `lem:pencil-cut-case`): if `e` links `u` and `v` in `G`, and
+`lem:case-cut-edge-realization` and `lem:pencil-d-cut-case`): if `e` links `u` and `v` in `G`, and
 links `a` and `b` in `G.induce V₁`, then `u ∈ V₁`, as `u` is `a` or `b`
 (`eq_or_eq_of_isLink_of_isLink`). -/
 theorem mem_of_induce_isLink_left {α β : Type*} {G : Graph α β} {V₁ : Set α}
@@ -861,21 +861,22 @@ theorem mem_of_induce_isLink_left {α β : Type*} {G : Graph α β} {V₁ : Set 
   (G.eq_or_eq_of_isLink_of_isLink hl hl₁.1).elim (· ▸ hl₁.2.1) (· ▸ hl₁.2.2)
 
 /-- **An end of a link through an induced link lies in the induced set (the second end)** (a step of
-`lem:case-cut-edge-realization` and `lem:pencil-cut-case`): the form of `mem_of_induce_isLink_left`
-for `v`. -/
+`lem:case-cut-edge-realization` and `lem:pencil-d-cut-case`): the form of
+`mem_of_induce_isLink_left` for `v`. -/
 theorem mem_of_induce_isLink_right {α β : Type*} {G : Graph α β} {V₁ : Set α}
     {e : β} {u v a b : α} (hl : G.IsLink e u v) (hl₁ : (G.induce V₁).IsLink e a b) :
     v ∈ V₁ :=
   (G.eq_or_eq_of_isLink_of_isLink hl.symm hl₁.1).elim (· ▸ hl₁.2.1) (· ▸ hl₁.2.2)
 
 /-- **The rank at a cut of at most one edge** (a step of `lem:case-cut-edge-realization`,
-`lem:case-cut-edge-realization-gp` and `lem:pencil-cut-case`): let `F` be a body-hinge framework on
-`G` with a nonzero hinge at every link (`hFext`), let `def(G̃) = c` at `n` (`hc`), and let at most
-one edge cross from `V₁` to `V₂ = V(G) ∖ V₁` (`hcut_le`), with `c = c₁ + c₂ + D − (D − 1)|C|` for
-the set `C` of crossing edges (`hk_eq`). If the rows of `F` at the edges of `G[V₁]` and `G[V₂]` span
-`S₁` and `S₂` (`hF₁span`, `hF₂span`), of ranks at least `D(|Vᵢ| − 1) − cᵢ` (`hlb₁`, `hlb₂`), then
-the rows of `F` have rank `D(|V(G)| − 1) − c`. A minimal `c`-dof-graph has `def(G̃) = c`
-(`IsMinimalKDof.deficiency_eq`); the pencil's cut case takes `c := G.deficiency n`.
+`lem:case-cut-edge-realization-gp` and `lem:pencil-d-cut-case`): let `F` be a body-hinge framework
+on `G` with a nonzero hinge at every link (`hFext`), let `def(G̃) = c` at `n` (`hc`), and let at
+most one edge cross from `V₁` to `V₂ = V(G) ∖ V₁` (`hcut_le`), with
+`c = c₁ + c₂ + D − (D − 1)|C|` for the set `C` of crossing edges (`hk_eq`). If the rows of `F` at
+the edges of `G[V₁]` and `G[V₂]` span `S₁` and `S₂` (`hF₁span`, `hF₂span`), of ranks at least
+`D(|Vᵢ| − 1) − cᵢ` (`hlb₁`, `hlb₂`), then the rows of `F` have rank `D(|V(G)| − 1) − c`. A minimal
+`c`-dof-graph has `def(G̃) = c` (`IsMinimalKDof.deficiency_eq`); the pencil's cut case takes
+`c := G.deficiency n`.
 
 The lower bound is `le_finrank_span_rigidityRows_of_cut` (`lem:block-rank-cut`) with `hk_eq` and
 `|V(G)| = |V₁| + |V₂|`, and the upper bound is `finrank_span_rigidityRows_add_deficiency_le`
@@ -934,9 +935,9 @@ theorem finrank_span_rigidityRows_cutEdge_eq [Finite α] [Finite β] {n : ℕ}
   exact le_antisymm hB2' hlb
 
 /-- **Rows from the hinges at the links** (a step of `lem:case-cut-edge-realization`, of
-`lem:pencil-cut-case` and of lemmas of `sec:main-component`): if `sideExt` agrees with the hinges of
-`Fᵢ` at the links of `Gᵢ = Fᵢ.graph` (`hagree`), then the framework `⟨Gᵢ, sideExt⟩` has the rows of
-`Fᵢ`, as the rows of an edge are determined by its hinge; so the two spans of rows are equal. -/
+`lem:pencil-d-cut-case` and of lemmas of `sec:main-component`): if `sideExt` agrees with the hinges
+of `Fᵢ` at the links of `Gᵢ = Fᵢ.graph` (`hagree`), then the framework `⟨Gᵢ, sideExt⟩` has the rows
+of `Fᵢ`, as the rows of an edge are determined by its hinge; so the two spans of rows are equal. -/
 theorem span_rigidityRows_eq_of_supportExtensor_agree {Gᵢ : Graph α β}
     (sideExt : β → ScrewSpace K k) (Fᵢ : BodyHingeFramework K k α β) (hFᵢg : Fᵢ.graph = Gᵢ)
     (hagree : ∀ e u v, Gᵢ.IsLink e u v → sideExt e = Fᵢ.supportExtensor e) :

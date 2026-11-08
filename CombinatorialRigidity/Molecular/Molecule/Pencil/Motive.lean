@@ -21,17 +21,15 @@ asks of a multigraph a pencil realization at the deficiency rank, an adjacent-di
 is simple, and a nondegenerate one at the deficiency rank when it is also nondegeneracy-feasible
 (`def:pencil-generic-motive`, `def:pencil-conditioned-pair`).
 
-The file also proves that a graph with a loop is not nondegeneracy-feasible; that a nondegenerate
-realization restricts to a subgraph, except at a hub of the graph that is not one of the subgraph;
-that the point of a body is
-orthogonal to the normals of its closed neighbourhood, so that a feasible graph has at most three
-members in each closed hub-neighbourhood and no triangle with two hubs
-(`lem:pencil-feasible-hub-conditions`); and that two hubs with three common neighbours whose points
-are independent have no nondegenerate realization (`lem:pencil-x0-two-hubs-obstruction`). The last
-sections compare the degrees and neighbourhoods of a graph with those of the sides of a cut crossed
-by at most one edge, for the cut cases of the lift in every dimension (`lem:pencil-d-lift-small`,
-`lem:pencil-d-lift-cut-edge`): a side with the far end of the crossing edge, and a side that no
-edge leaves.
+The file also proves that a nondegenerate realization restricts to a subgraph, except at a hub of
+the graph that is not one of the subgraph; that the point of a body is orthogonal to the normals of
+its closed neighbourhood, so that a feasible graph has at most three members in each closed
+hub-neighbourhood and no triangle with two hubs (`lem:pencil-feasible-hub-conditions`); and that two
+hubs with three common neighbours whose points are independent have no nondegenerate realization
+(`lem:pencil-x0-two-hubs-obstruction`). The last sections compare the degrees and neighbourhoods
+of a graph with those of the sides of a cut crossed by at most one edge, for the cut cases of the
+lift in every dimension (`lem:pencil-d-lift-small`, `lem:pencil-d-lift-cut-edge`): a side with the
+far end of the crossing edge, and a side that no edge leaves.
 
 ## Main definitions
 
@@ -67,9 +65,8 @@ variable {α β : Type*}
 /-! ## Nondegenerate realizations and the conditioned pair
 
 The definitions of `def:pencil-nondegenerate`, `def:pencil-generic-motive` and
-`def:pencil-conditioned-pair`, the bound on closed neighbourhoods behind the standing hypotheses of
-`sec:main-component` (`def:pencil-x0-standing`), and the maps between the three kinds of realization
-at the deficiency rank. -/
+`def:pencil-conditioned-pair`, and the bound on closed neighbourhoods behind the standing hypotheses
+of `sec:main-component` (`def:pencil-x0-standing`). -/
 
 /-- **A pencil hub** (`def:pencil-nondegenerate`): a body of `G` of degree at least three. The
 pencil condition constrains the hinges at a body only at a hub: two nonzero hinges in one panel pass
@@ -149,10 +146,9 @@ realization (`IsNondegPencilRealization`) over `K`. With `G.Simple`, it is the c
 `PencilPair` asks for a generic realization, and neither condition can be dropped. `K₄` is simple
 and not feasible, as each of its closed hub-neighbourhoods has four members
 (`ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`). Two bodies joined by two edges are
-feasible (`exists_isNondegPencilRealization_parallel_pair`, `Pair.lean`) and not simple
-(`not_simple_of_parallel`), and no nondegenerate realization of them attains the deficiency rank:
-their points are independent, so both hinges are the line through them, and the rank is `5`, not
-`6`. -/
+feasible (`exists_isNondegPencilRealization_parallel_pair`, `Pair.lean`) and not simple, and no
+nondegenerate realization of them attains the deficiency rank: their points are independent, so both
+hinges are the line through them, and the rank is `5`, not `6`. -/
 def PencilNondegFeasible (K : Type*) [Field K] (G : Graph α β) : Prop :=
   ∃ (F : BodyHingeFramework K 2 α β) (normal point : α → Fin 4 → K),
     IsNondegPencilRealization G F normal point
@@ -184,35 +180,6 @@ def PencilPair (K : Type*) [Field K] (n : ℕ) (G : Graph α β) : Prop :=
   (G.Simple → PencilNondegFeasible K G → HasGenericPencilRealization K n G) ∧
     (G.Simple → HasDistinctPencilRealization K n G) ∧
     HasPencilRealization K n G
-
-/-- **Two edges with the same ends make a graph not simple** (a step of the conditioned pair on at
-most two bodies, `pencilPair_of_ncard_le_two`): distinct `e` and `f` that both link `x` and `y`
-contradict `Graph.Simple.eq_of_isLink`. So a simple graph on two bodies has at most one edge
-(`hasGenericPencilRealization_of_ncard_le_two`, `Pair.lean`). -/
-theorem not_simple_of_parallel {G : Graph α β} {e f : β} {x y : α}
-    (hef : e ≠ f) (hl_e : G.IsLink e x y) (hl_f : G.IsLink f x y) : ¬ G.Simple :=
-  fun hSimple => hef (hSimple.eq_of_isLink hl_e hl_f)
-
-/-- **A generic pencil realization is adjacent-distinct** (the remark after
-`def:pencil-distinct-motive`): keep the realization, the independence of the points at the two ends
-of every link and the rank, and forget the other two conditions of nondegeneracy. -/
-theorem hasDistinctPencilRealization_of_generic {n : ℕ} {G : Graph α β}
-    (h : HasGenericPencilRealization K n G) : HasDistinctPencilRealization K n G := by
-  obtain ⟨F, normal, point, ⟨hreal, hadj, _, _⟩, hrank⟩ := h
-  exact ⟨F, normal, point, hreal, hadj, hrank⟩
-
-/-- **A graph with a loop is not nondegeneracy-feasible** (a step of the conditioned pair at a
-loop, `pencilPair_of_isLoopAt`): a loop `e` at `v` is a link `G.IsLink e v v`, at which
-`IsNondegPencilRealization` asks that `![point v, point v]` be linearly independent, while
-`1 • point v + (-1) • point v = 0` (`LinearIndependent.pair_iff`). `pencilPair_of_isLoopAt`
-(`Pair.lean`) discharges with it the generic conjunct of `PencilPair` at a graph with a loop, which
-is also not simple. -/
-theorem not_pencilNondegFeasible_of_isLoopAt {G : Graph α β} {e : β} {v : α}
-    (hloop : G.IsLoopAt e v) : ¬ PencilNondegFeasible K G := by
-  rintro ⟨F, normal, point, _, hLI, _, _⟩
-  have h := (LinearIndependent.pair_iff).1 (hLI e v v hloop) 1 (-1)
-    (by rw [one_smul, neg_one_smul, add_neg_cancel])
-  exact one_ne_zero h.1
 
 /-! ## Restriction to a subgraph
 

@@ -3,33 +3,33 @@
 **Status:** in progress (opened 2026-11-08 with the PI), the second sub-phase of Phase 43
 (PENCIL-NATURAL): layer LIFT3, N1c whole as one sub-phase, at the PI's choice (design doc §1).
 Five commits, in order: slice 1 (N1a, landed), slice 2 (N1b's deletions, behind N1c's reroute,
-landed), slice 3 (N1c's), slice 4 (the old route as one remark, D1), slice 5 (the close). The next
-concrete commit is slice 3, checklist item 3: the rest of N1c, 16 declarations deleted.
+landed), slice 3 (N1c's, landed), slice 4 (the old route as one remark, D1), slice 5 (the close).
+The next concrete commit is slice 4, checklist item 4: the old route as one remark.
 
 ## Current state
 
-**Next concrete commit: slice 3, checklist item 3.** Mode: structural edit, no new chapter and no
+**Next concrete commit: slice 4, checklist item 4.** Mode: structural edit, no new chapter and no
 red target node; each slice reads and restates the nodes it reaches (`CombinatorialRigidity/CLAUDE.md`
 *Forward-mode slices*). Plan and inputs: `notes/Phase43-design.md` §2, LIFT3.
 
-**Slices 1–2 landed.** Slice 1 (N1a): `x0Gen` is `liftAttains_of_simple 0` read at `d = 3`; the
+**Slices 1–3 landed.** Slice 1 (N1a): `x0Gen` is `liftAttains_of_simple 0` read at `d = 3`; the
 `d = 3` generic route went (21 declarations, four nodes). Slice 2: `pencilPair_of_nonempty` is the
 `m = 1` case of `Graph.graded_pencil_conditioned_pair` through the four `d = 3` bridges, and
-`pencil_realization_theorem` is it at a spanning graph. N1b's 49 declarations (`Pair2.lean` whole)
-and `exists_smul_extensor_eq_of_mem_span_range` are gone; so are `lem:pencil-pair-loop-base-cut`,
-`thm:pencil-conditional-realization-pair` and `thm:pencil-conditional-realization-main-component`.
-`lem:pencil-generic-steer` is its old part (a), unlabelled; `thm:pencil-conditioned-pair-nonempty`
-follows `cor:pencil-d-conditioned-pair` (the reversed `:6755` edge), and
-`thm:pencil-realization-theorem` follows it alone. `x0Dist`, `x0Gen` have no Lean consumer. Main
-results' signatures byte-identical, the standard three axioms. The blueprint graph against the
-parent: 0 cycles; orphaned, the four `d = 3` A cases (`lem:pencil-loop-case`, `-base-case`,
-`-cut-case`, `lem:pencil-nonsimple-case`, planned, slice 3 deletes them) and
-`thm:pencil-x0-generic-attains` (*Blockers*).
+`pencil_realization_theorem` is it at a spanning graph; N1b's 49 declarations went, with three
+nodes. Slice 3: the spike's `n1Slice3` (16 declarations, `ArmsAssembly.lean` whole) and
+`exists_linearIndependent_extensor_pair_through_given_point` went, with seven nodes: the four `d = 3`
+cases, `lem:pencil-projective-transport`, `lem:extensor-pair-through-point` and
+`-given-point`, and `sec:pencil-base`, which had no other node. The reduction's cases are proved
+once, in `sec:pencil-d-reduction`; `sec:pencil-reduction` states the induction and keeps
+`lem:pencil-cut-nondegeneracy` and `lem:pencil-contraction-deficiency`. `X0.lean` holds `X0Dist`,
+`X0Gen` (importing `Motive`), `Pair.lean` only `exists_isNondegPencilRealization_parallel_pair`.
+Main results' signatures byte-identical, the standard three axioms; the graph against the parent:
+0 cycles, no node left without a user.
 
-**Inputs for slice 3.** The spike (`lake lean`) runs at HEAD with two errors, its (2) and R1 naming
-slice 2's deletions; its item 5 reports slice 3: no surviving user, no orphan, all 16 UNREACHED.
-`notes/pencil-natural/n1c_graph.py`, whose start is now the post-slice-2 tree: slice 3 leaves
-`lem:extensor-pair-through-given-point` with no user (*Blockers*).
+**Inputs for slice 4.** The text slices 1–3 deleted, for D1's remark, is at each slice's parent:
+`git show 0b919b78:blueprint/src/chapter/pencil.tex` has `sec:pencil-base` and the four case
+nodes. `thm:pencil-x0-generic-attains` has no user, and `x0Dist`, `x0Gen` no Lean consumer
+(*Blockers*).
 
 ## Architectural choices made up front
 
@@ -61,17 +61,11 @@ slice 2's deletions; its item 5 reports slice 3: no surviving user, no orphan, a
   `lem:pencil-d-lift-small`, `lem:pencil-d-lift-cut-edge`; `sec:pencil-reduction`'s case order,
   `main-component.tex`'s introduction, `intro.tex`, README, the home page, the ledger (two entries
   retired) and FRICTION (`extensor_pair_smul`'s status, the mirror's) updated.
-- [ ] **3. Slice 3 — the rest of N1c.** Delete `n1Slice3`, 16 declarations, 451 declaration
-  lines: `ArmsAssembly.lean` whole (4); `Pair.lean` `pencilPair_of_isLoopAt`,
-  `pencilPair_of_ncard_le_two`, `hasGenericPencilRealization_of_ncard_le_two` (it keeps
-  `exists_isNondegPencilRealization_parallel_pair`, and changes its import off `ArmsAssembly`);
-  `X0.lean` `hasPencilRealization_of_not_simple`; `Motive.lean` `not_simple_of_parallel`, `hasDistinctPencilRealization_of_generic`,
-  `not_pencilNondegFeasible_of_isLoopAt`; `Statement.lean` `hasPencilRealization_of_distinct`,
-  `exists_linearIndependent_extensor_pair_through_point`; `Arms.lean` the transport's three.
-  Blueprint: delete `lem:pencil-loop-case`, `lem:pencil-cut-case`, `lem:pencil-base-case`,
-  `lem:pencil-nonsimple-case` with its note, `lem:extensor-pair-through-point`,
-  `lem:pencil-projective-transport`; the seven `\cref`s in `sec:pencil-d-reduction` (:4468, :4533,
-  :4593, :4672, :4777, with :4300 and :4835 read against the result).
+- [x] **3. Slice 3 — the rest of N1c** (landed; *Current state*). Its pinned plan is in
+  `git show 0b919b78:notes/Phase43b.md`. Beyond the pins: the given-point lemma and its node
+  (*Decisions*); `sec:pencil-base`, left with no node; `X0.lean` and `Pair.lean` import `Motive`
+  alone; `Theorem55.lean`'s cut helpers, `Grade/Arms.lean`, `Grade/TwoPencil.lean` and
+  `RigidityMatrix/Basic.lean` repointed off deleted names; the ledger (two entries retired).
 - [ ] **4. Slice 4 — the old route as one remark (D1).** One short unlabelled remark, in
   `sec:main-component-statements` or `sec:pencil-d-generic`, naming the `d = 3` route (the
   generic conjunct inside the reduction's induction: no planar-rigid set, the triangle, a
@@ -85,8 +79,6 @@ slice 2's deletions; its item 5 reports slice 3: no surviving user, no orphan, a
 
 ## Blockers / open questions
 
-- **`lem:extensor-pair-through-given-point` loses its only user in slice 3**; its pin is already
-  unreached at HEAD. Keep (a proved result) or delete with its Lean: slice 3's call.
 - **`thm:pencil-x0-generic-attains` has had no user since slice 2**, and its pins `x0Dist`, `x0Gen`
   no Lean consumer: the theorem no longer routes through the main-component statements. It sums up
   `sec:main-component` (its first claim, `thm:pencil-x0-coverage`, serves `sec:pencil-d-stable`).
@@ -94,16 +86,17 @@ slice 2's deletions; its item 5 reports slice 3: no surviving user, no orphan, a
 - **Two nodes pin `pencilPair_of_nonempty`:** `thm:pencil-conditioned-pair-nonempty` (the `d = 3`
   case of `cor:pencil-d-conditioned-pair`, used only by the other) and
   `thm:pencil-realization-theorem`; whether the first folds into the second is slice 4's.
-- **`X0.lean` after slice 3** holds only `X0Dist` and `X0Gen`: whether they move into
-  `Statements.lean`: slice 3's call.
+- **Two helpers lost their last user in slice 3:** `exists_three_perp` (`PanelLayer.lean`) and
+  `linearIndependent_pair_extensor_of_li3` (`Extensor.lean`), the spike's walk with the given-point
+  lemma added to `n1Slice3`. Kept, their docstrings saying they have no project consumer; keep or
+  delete: the coordinator's call.
 
 ## Hand-off / next phase
 
-The next concrete commit is slice 3 (checklist item 3), whole: the spike's `n1Slice3`, 16
-declarations, and the six nodes, one commit. The spike's item 5 re-checks the set at HEAD first
-(its two errors, in (2) and R1, are expected). The `pencil-d.tex` crefs of item 3 have moved by a
-line at most; the four cases are also cited at `:4318`–`:4322` (the section's introduction, as
-slice 2 restated it) and `:4702`. Builder rung: the coordinator's. After it, slice 4.
+The next concrete commit is slice 4 (checklist item 4), whole: D1's one remark, the
+`sec:pencil-d-lift` introduction read end to end, the "At `d = 3` …" sentences left after slices
+1–3 collapsed, and the open questions of *Blockers* settled, one commit. Builder rung: the
+coordinator's. After it, the close (item 5).
 
 ## Decisions made during this phase
 
@@ -112,3 +105,6 @@ The decisions of the open are `notes/Phase43-design.md` §1 (the PI's one-sub-ph
 
 - **Slice 2's outside orphans** (coordinator, 2026-11-08): `Submodule.exists_mem_notMem_notMem`
   kept, an upstream candidate; `exists_smul_extensor_eq_of_mem_span_range` deleted.
+- **Slice 3's two calls** (coordinator, 2026-11-08): `lem:extensor-pair-through-given-point` deleted
+  with its Lean, as no user survived the slice; `X0.lean` keeps `X0Dist`, `X0Gen` in place, no move
+  into `Statements.lean` (import churn, no gain).

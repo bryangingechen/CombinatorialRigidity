@@ -4314,12 +4314,14 @@ $d$, and an adjacent-distinct one when the multigraph is simple
 (\cref{thm:pencil-d-realization-theorem}). At $d = 3$ these are the
 first two conjuncts of \cref{thm:pencil-realization-theorem}, whose proof
 is this one. It is the induction of \cref{thm:pencil-reduction}, with
-the cases at a loop, on at most two bodies and at a cut edge, at $d = 3$
-\cref{lem:pencil-loop-case}, \cref{lem:pencil-base-case} and
-\cref{lem:pencil-cut-case}. At a two-edge-connected multigraph it uses
-the distinct main-component statement in dimension $d$, or contracts two
-parallel edges, at $d = 3$ \cref{lem:pencil-x0-distinct-statement} and
-\cref{lem:pencil-nonsimple-case}.
+the cases at a loop, on at most two bodies and at a cut edge
+(\cref{lem:pencil-d-loop-case}, \cref{lem:pencil-d-base-case},
+\cref{lem:pencil-d-cut-case}). At a two-edge-connected multigraph it uses
+the distinct main-component statement in dimension $d$
+(\cref{lem:pencil-d-distinct-statement}), which at $d = 3$ is
+\cref{lem:pencil-x0-distinct-statement}, or contracts two parallel edges,
+as Katoh and Tanigawa do (\cref{lem:pencil-d-nonsimple-case}; KT
+Lemma~6.2).
 
 The cases at a loop, at a cut edge and at parallel edges each place a
 hinge that must lie in the panels of its two ends and pass through
@@ -4412,11 +4414,13 @@ $K^{d+1}$ chosen to meet it (\cref{lem:pencil-d-cut-reposition}).
   then passing through the point $q_v$, and $b_u \in \Pi_v$ is the
   cross-incidence $q_v \cdot b_u = 0$. Two three-dimensional subspaces
   of $K^4$ meet in dimension at least two, so (2) is
-  \cref{lem:two-pencil-extension-iff}. Part~(3) gives the two
-  independent hinges through a point of a panel of
-  \cref{lem:extensor-pair-through-given-point}. The dimension enters only
-  in (2). From $d = 4$ on, two three-dimensional subspaces of $K^{d+1}$
-  can meet in dimension less than two. When $b_u$ and $b_v$ are linearly
+  \cref{lem:two-pencil-extension-iff}. For a two-dimensional
+  $B \subseteq \Pi_v$ containing $b_v$, the subspace $B^{\perp}$ contains
+  $q_v$ and lies in $b_v^{\perp}$, so $C_B$ is a line through $q_v$ in the
+  panel of $b_v$, and by (3) two distinct such lines are linearly
+  independent hinges. The dimension enters only in (2). From $d = 4$ on,
+  two three-dimensional subspaces of $K^{d+1}$ can meet in dimension less
+  than two. When $b_u$ and $b_v$ are linearly
   independent, the condition of (2) is still the two incidences
   $b_u \in \Pi_v$ and $b_v \in \Pi_u$, and $B$ is the span of $b_u$ and
   $b_v$. When they are dependent, it asks also for a two-dimensional
@@ -4465,11 +4469,10 @@ $K^{d+1}$ chosen to meet it (\cref{lem:pencil-d-cut-reposition}).
   unchanged (\cref{lem:screw-map-rows}). As $g$ is invertible,
   independent normals stay independent.
 
-  At $d = 3$ this is \cref{lem:pencil-projective-transport}, with $g$
-  and $h$ exchanged. There $g$ moves the points and the hinges, and $h$
-  the normals. Here $g$ moves the normals and the subspaces, so the
-  point $q_v$ of $\Pi_v = q_v^{\perp}$ moves by $h$. The proof does not
-  use the dimension.
+  At $d = 3$, where $\Pi_v = q_v^{\perp}$, the map $h$ takes
+  $\Pi_v^{\perp}$ onto $(g\Pi_v)^{\perp}$, so the point $q_v$ moves by
+  $h$, as the hinges do, and the normals by $g$. The proof does not use
+  the dimension.
 \end{proof}
 
 \begin{lemma}[Moving one side of a cut edge, in every dimension]
@@ -4530,8 +4533,8 @@ $K^{d+1}$ chosen to meet it (\cref{lem:pencil-d-cut-reposition}).
   parts of a partition, so deleting it leaves the deficiency unchanged
   (\cref{def:D-deficiency}).
 
-  At $d = 3$ this is \cref{lem:pencil-loop-case}, whose hinge is a line
-  of the panel through the point of $v$. In dimension $d$ it is a
+  At $d = 3$ the hinge is a line of the panel through the point of $v$.
+  In dimension $d$ it is a
   $(d-2)$-flat of the panel that contains the $(d-3)$-flat
   $\Pi_v^{\perp}$. Such flats exist, as $\Pi_v$ has dimension three.
 \end{proof}
@@ -4590,11 +4593,10 @@ $K^{d+1}$ chosen to meet it (\cref{lem:pencil-d-cut-reposition}).
   $b_u$ and $b_v$ (\cref{lem:pencil-d-two-pencil-extension}). The rank
   is $D - 1$, as before.
 
-  At $d = 3$ its first form is \cref{lem:pencil-base-case}. There
-  the two independent hinges are two lines through the point of the
-  panel (\cref{lem:extensor-pair-through-point}). In dimension $d$ they
-  are the polars of two lines through $b$ inside $\Pi$, and the counts
-  read $D$ in place of $6$.
+  At $d = 3$, where $\Pi = q^{\perp}$ for a point $q$ of the panel of $b$,
+  the two independent hinges $C_1$ and $C_2$ are two lines through $q$ in
+  that panel. In dimension $d$ they are the polars of two lines through
+  $b$ inside $\Pi$, and the counts read $D$ in place of $6$.
 \end{proof}
 
 \begin{fmlnote}
@@ -4668,14 +4670,16 @@ $K^{d+1}$ chosen to meet it (\cref{lem:pencil-d-cut-reposition}).
   normals at every link, so does the moved realization of $G[V_2]$, and
   at $e$ the normals $b_u$ and $g b_v$ are independent.
 
-  At $d = 3$ this is \cref{lem:pencil-cut-case}. There the dimension
-  enters in two places. First, the crossing edge needs only the two
-  cross-incidences, which the move of \cref{lem:pencil-cut-nondegeneracy}
-  provides. In dimension $d$ it needs a two-dimensional subspace through
-  $b_u$ and $g b_v$ inside $\Pi_u \cap g\Pi_v$, and
+  The dimension enters in two places. First, at $d = 3$ the crossing edge
+  needs only the two cross-incidences
+  (\cref{lem:two-pencil-extension-iff}), which a move as in
+  \cref{lem:pencil-cut-nondegeneracy} provides. In dimension $d$ it needs
+  a two-dimensional subspace through $b_u$ and $g b_v$ inside
+  $\Pi_u \cap g\Pi_v$, and
   \cref{lem:pencil-d-cut-reposition} provides it with the incidences.
-  Second, the counts read $D = 6$. The rank addition at a cut edge and
-  the deficiency at a cut of at most one edge hold at every $D$.
+  Second, the counts read $D$, which is $6$ at $d = 3$. The rank addition
+  at a cut edge and the deficiency at a cut of at most one edge hold at
+  every $D$.
 \end{proof}
 
 \begin{lemma}[A multigraph with parallel edges, in every dimension; cf.\ KT Lemma~6.2]
@@ -4699,8 +4703,9 @@ $K^{d+1}$ chosen to meet it (\cref{lem:pencil-d-cut-reposition}).
         lem:extProj-preserves-rank-of-inter,
         lem:case-II-placement-old-rows-extract,
         lem:relative-deficiency-rank-bound, lem:isInfRigidOn-of-relative-count, lem:two-vertex-zero-dof}
-  We follow the proof of \cref{lem:pencil-nonsimple-case}, after KT
-  Lemma~6.2~\cite[p.~673]{katohTanigawa2011}. Let
+  We follow the proof of KT Lemma~6.2~\cite[p.~673]{katohTanigawa2011},
+  as in \cref{lem:case-I-realization-nonsimple}, for pencil realizations
+  and without minimality. Let
   $D = \binom{d+1}{2}$. As $G$ is loopless and not simple, two edges $e$
   and $f$ join two bodies $u$ and $w$.
 
@@ -4773,16 +4778,14 @@ $K^{d+1}$ chosen to meet it (\cref{lem:pencil-d-cut-reposition}).
   It is at most its target (\cref{lem:relative-deficiency-rank-bound}),
   as every hinge is nonzero.
 
-  At $d = 3$ this is \cref{lem:pencil-nonsimple-case}. There the
-  dimension enters in three places. First, $H$ is rigid because
-  $2(D - 1) \ge D$. In dimension $d$ this holds as $D \ge 2$.
-  Second, $e$ and $f$ get two independent lines through the point of the
-  contracted body in its panel
-  (\cref{lem:extensor-pair-through-given-point}). In dimension $d$ they
-  get the polars of two lines through $b'_u$ inside $\Pi'_u$. Third,
-  there the rows of $e$ and $f$ add $D = 6$ to the rank, by the
-  block-triangular count of KT eqs.~(6.3)--(6.5). That count holds at
-  every $D$, and here it adds $D$.
+  The dimension enters in three places. First, $H$ is rigid because
+  $2(D - 1) \ge D$, which holds as $D \ge 2$. Second, at $d = 3$, where
+  $\Pi'_u = q^{\perp}$ for the point $q$ of the contracted body, $e$ and
+  $f$ get two independent lines through $q$ in its panel. In dimension
+  $d$ they get the polars of two lines through $b'_u$ inside $\Pi'_u$.
+  Third, the rows of $e$ and $f$ add $D$ to the rank, $6$ at $d = 3$, by
+  the block-triangular count of KT eqs.~(6.3)--(6.5), which holds at
+  every $D$.
 \end{proof}
 
 \begin{theorem}[Pencil realizations at the deficiency rank, in every dimension]
@@ -4830,14 +4833,14 @@ $K^{d+1}$ chosen to meet it (\cref{lem:pencil-d-cut-reposition}).
 
   At $d = 3$ this gives the first two conjuncts of
   \cref{thm:pencil-realization-theorem}
-  (\cref{lem:pencil-d-rank-agrees-three}). There the dimension enters
-  through the cases and through the distinct main-component statement.
-  In dimension $d$ the cases at a loop, on at most two bodies, at a cut
-  edge and at parallel edges take their hinges from
-  \cref{lem:pencil-d-two-pencil-extension}. The distinct statement rests
-  on the coverage in dimension $d$ (\cref{thm:pencil-d-coverage}). The
-  induction of \cref{thm:pencil-reduction} is on the numbers of bodies
-  and edges, and the argument does not depend on the dimension.
+  (\cref{lem:pencil-d-rank-agrees-three}). The dimension enters only
+  through the cases and the distinct main-component statement. The cases
+  at a loop, on at most two bodies, at a cut edge and at parallel edges
+  take their hinges from \cref{lem:pencil-d-two-pencil-extension}, and
+  the distinct statement rests on the coverage in dimension $d$
+  (\cref{thm:pencil-d-coverage}). The induction of
+  \cref{thm:pencil-reduction} is on the numbers of bodies and edges, and
+  does not depend on the dimension.
 \end{proof}
 
 \subsection{Nondegenerate realizations in every dimension}

@@ -19,17 +19,15 @@ make up \cref{thm:pencil-realization-theorem}. Besides
 deficiency and rigid subgraphs of \cref{sec:molecular-deficiency}.
 
 \Cref{sec:pencil-through-point} and \cref{sec:pencil-realization} give
-the definitions. \Cref{sec:pencil-base} places the two independent hinges
-of Katoh and Tanigawa's base case (KT Lemma~5.3) through one point of
-their common panel. \Cref{sec:pencil-extension} gives an added edge a
+the definitions. \Cref{sec:pencil-extension} gives an added edge a
 hinge through the points of both its ends. Such a hinge exists only when
 the point of each end lies in the panel of the other
 (\cref{lem:two-pencil-extension-iff}). These conditions can fail at the
 edges that Katoh and Tanigawa add to a realization of a minimal spanning
 subgraph. So we induct over every multigraph, not only over the minimal
 ones (\cref{thm:pencil-reduction}). \Cref{sec:pencil-reduction}
-states this induction and proves its cases at a loop, on at most two
-bodies and at a cut edge. \Cref{sec:pencil-nondegenerate} adds the
+states this induction, whose cases are proved in every dimension
+(\cref{sec:pencil-d-reduction}). \Cref{sec:pencil-nondegenerate} adds the
 distinct points and the nondegenerate realizations to the statement, the
 conditioned pair. Katoh and Tanigawa's induction statement likewise asks
 for nonparallel realizations (KT Theorem~5.5).
@@ -214,79 +212,6 @@ We record this symmetry for its own sake: the proof of
 endpoints to coincide: requiring them to be projectively distinct would
 break the symmetry. \cref{sec:pencil-nondegenerate} gives a second
 reason, and imposes distinctness as a separate condition.
-
-\subsection{The coincident-panel pencil pair}
-\label{sec:pencil-base}
-
-This subsection supplies the pencil condition at the base case of
-\cref{thm:pencil-reduction}: every loopless multigraph on at most two
-vertices (\cref{lem:pencil-base-case}). Katoh--Tanigawa's two-vertex
-base realization of a parallel edge pair
-(\cref{lem:theorem-55-base-producer-parallel}, KT Lemma~5.3, p.~669)
-places both hinges in a single shared panel $n^{\perp}$ with two
-linearly independent supporting extensors
-(\cref{lem:extensor-pair-in-panel}), which fill the whole screw space
-$K^6$ and make the two bodies rigid. On the pencil condition the same
-construction supplies a common concurrency point at no extra cost: two
-lines of a flat pencil already share the point of the pencil.
-
-\begin{lemma}[Two independent extensors through a common point of a panel]
-  \label{lem:extensor-pair-through-point}
-  \lean{CombinatorialRigidity.Molecular.exists_linearIndependent_extensor_pair_through_point}
-  \leanok
-  \uses{def:extensor-through-point, def:genuine-hinge-realization}
-  For any normal $n \in K^4$ there is a nonzero point $q \in n^{\perp}$
-  and two screw elements $C, C' \in \bigwedge^{2} K^{4}$, each lying
-  in the panel with normal $n$ (\cref{def:genuine-hinge-realization})
-  and passing through $q$ (\cref{def:extensor-through-point}), whose
-  $2$-extensors are linearly independent.
-\end{lemma}
-\begin{proof}
-  \leanok
-  The panel $n^{\perp}$ has dimension at least $3$ in $K^4$, so it
-  contains three linearly independent vectors $q, a, b$. Take the two
-  pencil lines $q \vee a$ and $q \vee b$ through $q$: both lie in
-  $n^{\perp}$ and contain $q$ in their span, so each lies in the panel
-  and passes through $q$. Their extensors are linearly independent
-  because $\{q, a, b\}$ is --- the shared-vector case of the
-  independence of extensors on two distinct point subsets behind
-  \cref{lem:extensor-pair-in-panel}.
-\end{proof}
-
-\begin{lemma}[Two independent extensors through a prescribed point of a panel]
-  \label{lem:extensor-pair-through-given-point}
-  \lean{CombinatorialRigidity.Molecular.exists_linearIndependent_extensor_pair_through_given_point}
-  \leanok
-  \uses{def:extensor-through-point, def:genuine-hinge-realization}
-  For any normal $n \in K^4$ and any nonzero point $q \in n^{\perp}$, there
-  are two screw elements $C, C' \in \bigwedge^{2} K^{4}$, each lying in
-  the panel with normal $n$ (\cref{def:genuine-hinge-realization}) and
-  passing through $q$ (\cref{def:extensor-through-point}), whose
-  $2$-extensors are linearly independent.
-\end{lemma}
-\begin{proof}
-  \leanok
-  As for \cref{lem:extensor-pair-through-point}, with $q$ given in
-  advance. The panel $n^{\perp}$ has
-  dimension at least $3$ in $K^4$, so $q$ extends to a linearly
-  independent triple $q, y, z$ in $n^{\perp}$. The two pencil lines
-  $q \vee y$ and $q \vee z$ through $q$ both lie in $n^{\perp}$ and
-  contain $q$ in their span, so each lies in the panel and passes through
-  $q$; their extensors are linearly independent because $\{q, y, z\}$ is
-  --- the shared-vector case behind \cref{lem:extensor-pair-in-panel}.
-\end{proof}
-
-Katoh--Tanigawa realize the base of their induction directly, at one
-and two bodies (\cref{lem:theorem-55-base-producer}). Asking the hinges
-at a body to pass through one point has content only at degree three or
-more, so on two bodies it has content only when three or more edges
-join them. \cref{lem:pencil-base-case} handles such a class by placing
-both bodies on a single panel at a fixed normal, with two independent
-hinges through a common point of the panel
-(\cref{lem:extensor-pair-through-point}) making the two bodies rigid
-(\cref{lem:theorem-55-base}); each further edge reuses one of the two
-hinges. It assembles this with the edgeless and single-edge cases into
-the base case of \cref{thm:pencil-reduction}.
 
 \subsection{Pencil cycles: degree-two concurrency is automatic}
 \label{sec:pencil-cycle}
@@ -499,10 +424,10 @@ give all four vertices independent panel normals
 \subsection{Reduction on all spanning multigraphs}
 \label{sec:pencil-reduction}
 
-This subsection states the induction behind \cref{thm:pencil-realization-theorem}
-and proves three of its five cases. Katoh--Tanigawa's induction runs over
-minimal graphs, those from which no edge can be deleted without changing
-the deficiency (\cref{thm:minimal-kdof-reduction-all-k}). They reach any
+This subsection states the induction behind
+\cref{thm:pencil-realization-theorem}. Katoh--Tanigawa's induction runs
+over minimal graphs, those from which no edge can be deleted without
+changing the deficiency (\cref{thm:minimal-kdof-reduction-all-k}). They reach any
 other graph by realizing a minimal spanning subgraph with the same
 deficiency and adding the remaining edges, each with a hinge in the meet
 of its two panels (\cref{thm:theorem-55-6-multigraph}). The added edges
@@ -607,85 +532,27 @@ statement the induction proves is the following.
   two, \cref{lem:two-edge-connected-degree}).
 \end{proof}
 
-We take the five cases in the order of the lemmas below. The loop
-case~(i) is \cref{lem:pencil-loop-case}. The cut-edge case~(iii) is
-\cref{lem:pencil-cut-case}, after two lemmas on projective
-automorphisms. The base case~(ii) is \cref{lem:pencil-base-case}. The
-contraction and split cases, (iv) and~(v), are proved in every
-dimension, by one argument (\cref{thm:pencil-d-realization-theorem}):
-at a two-edge-connected multigraph it uses the distinct main-component
-statement in dimension $d$ (\cref{lem:pencil-d-distinct-statement}),
-which rests on the argument of \cref{sec:main-component}, or contracts two
-parallel edges (\cref{lem:pencil-d-nonsimple-case}). That argument and
+The cases are proved in every dimension (\cref{sec:pencil-d-reduction}):
+at a loop (\cref{lem:pencil-d-loop-case}), on at most two bodies
+(\cref{lem:pencil-d-base-case}) and at a cut edge
+(\cref{lem:pencil-d-cut-case}), each with hinges in two pencils
+(\cref{lem:pencil-d-two-pencil-extension}). The contraction and split
+cases, (iv) and~(v), are settled by one argument
+(\cref{thm:pencil-d-realization-theorem}): at a two-edge-connected
+multigraph it uses the distinct main-component statement in dimension $d$
+(\cref{lem:pencil-d-distinct-statement}), which rests on the argument of
+\cref{sec:main-component}, or contracts two parallel edges
+(\cref{lem:pencil-d-nonsimple-case}). That argument and
 \cref{sec:main-component} contract proper rigid subgraphs, using
 \cref{lem:pencil-contraction-deficiency}: contraction leaves the
 deficiency unchanged.
 
-\begin{lemma}[The loop case]
-  \label{lem:pencil-loop-case}
-  \lean{CombinatorialRigidity.Molecular.hasPencilRealization_of_isLoopAt}
-  \leanok
-  \uses{def:pencil-rank-hypothesis, lem:two-pencil-extension}
-  Let $e$ be a loop of $G$ at a vertex $v$. If $G - e$ has a pencil
-  realization at the deficiency rank (\cref{def:pencil-rank-hypothesis}),
-  then so does $G$.
-\end{lemma}
-\begin{proof}
-  \leanok
-  \uses{def:pencil-d-rank-hypothesis, lem:pencil-d-rank-agrees-three,
-        lem:pencil-d-loop-case}
-  Keep the realization of $G - e$, and give $e$ a nonzero hinge that lies
-  in the panel of $v$ and passes through the point of $v$. It exists by
-  \cref{lem:two-pencil-extension} with $u = v$, where both
-  cross-incidences become the incidence of the point of $v$ with its own
-  panel. The loop adds only zero rows, since both of its ends are $v$. A
-  loop crosses no partition of $V(G)$, so deleting it leaves the
-  deficiency unchanged, and the rank is still the deficiency rank.
-\end{proof}
-\begin{fmlnote}
-  The formalization proves this lemma as the case $d = 3$ of
-  \cref{lem:pencil-d-loop-case}, through
-  \cref{lem:pencil-d-rank-agrees-three}.
-\end{fmlnote}
-
-The cut-edge case moves one side of a realization by a projective
-automorphism. The next lemma shows that such a move keeps a pencil
-realization at the deficiency rank, and the one after it chooses the
-automorphism.
-
-\begin{lemma}[Projective transport of a pencil realization]
-  \label{lem:pencil-projective-transport}
-  \lean{CombinatorialRigidity.Molecular.hasPencilPanelRealization_mapExtensor_screwEquivOfLinearEquiv,
-        CombinatorialRigidity.Molecular.extensorInPanel_screwEquivOfLinearEquiv,
-        CombinatorialRigidity.Molecular.extensorThroughPoint_screwEquivOfLinearEquiv}
-  \leanok
-  \uses{def:pencil-panel-realization, def:induced-screw-map}
-  Let $g$ be a linear automorphism of $K^4$ and $h$ a contragredient of it,
-  meaning $\langle g x, h y\rangle = \langle x, y\rangle$ for the standard
-  pairing. Transporting a pencil panel realization $(F, n, q)$ by acting on
-  hinges through the induced automorphism of the screw space, on the
-  concurrency points $q$ by $g$, and on the panel normals $n$ by $h$, again
-  gives a pencil panel realization on the same multigraph. Its rigidity-row
-  span has the same dimension, so a pencil realization at the deficiency
-  rank transports to one.
-\end{lemma}
-\begin{proof}
-  \leanok
-  \uses{lem:screw-map-rows}
-  Panel containment and through-point incidence transport because the
-  induced screw automorphism sends the extensor of spanning points
-  $p_0, \dots$ to the extensor of $g p_0, \dots$; the contragredient
-  identity turns each incidence $\langle p_i, n\rangle = 0$ into $\langle g
-  p_i, h n\rangle = 0$, and $g$ sends the span containing $q$ to
-  the one containing $g q$. The panel--point incidence $\langle q,
-  n\rangle = 0$ is likewise preserved, and the automorphisms send nonzero
-  data to nonzero data. Rank invariance is the change-of-screw-coordinates
-  identity (\cref{lem:screw-map-rows}): this lemma is the collineation
-  companion of \cref{lem:pencil-self-dual}, whose polarity is instead a
-  correlation, exchanging the normal and point roles rather than
-  repositioning within them; both rest on the same field-general
-  screw-space automorphism mechanism (\cref{thm:projective-invariance}).
-\end{proof}
+At a cut crossed by one edge, the two sides are realized separately, and
+the two cross-incidences of the crossing edge need not hold
+(\cref{lem:two-pencil-extension-iff}). The next lemma gives, in dimension
+three, a projective automorphism after which they hold once one side is
+moved by it. Its form in every dimension, with the normals and the points
+exchanged, is \cref{lem:pencil-d-cut-reposition}.
 
 \begin{lemma}[Existence of a repositioning automorphism]
   \label{lem:pencil-cut-nondegeneracy}
@@ -718,82 +585,6 @@ automorphism.
   n_2(v)^\perp$. The distinctness clause is the independence of $\{a,
   pt_1(u)\}$ chosen at the start, read through $g\, pt_2(v) = a$.
 \end{proof}
-
-\begin{lemma}[The cut-edge case]
-  \label{lem:pencil-cut-case}
-  \lean{CombinatorialRigidity.Molecular.hasPencilRealization_of_not_twoEdgeConnected,
-        CombinatorialRigidity.Molecular.hasDistinctPencilRealization_of_not_twoEdgeConnected}
-  \leanok
-  \uses{def:pencil-rank-hypothesis, def:cut-edges-2ec,
-        def:pencil-distinct-motive, lem:pencil-projective-transport,
-        lem:pencil-cut-nondegeneracy}
-  Let $G$ be a multigraph that is not two-edge-connected, so that at most
-  one edge crosses some nonempty proper subset $V_1 \subsetneq V(G)$, and
-  let $V_2 = V(G) \setminus V_1$. If $G[V_1]$ and $G[V_2]$ each have a
-  pencil realization at the deficiency rank, then so does $G$. The same
-  holds for realizations at the deficiency rank in which the two points of
-  every link are projectively distinct.
-\end{lemma}
-\begin{proof}
-  \leanok
-  \uses{lem:pencil-projective-transport, lem:pencil-cut-nondegeneracy,
-        lem:cut-edge-decomposition, lem:two-pencil-extension,
-        lem:block-rank-cut, lem:relative-deficiency-rank-bound,
-        def:pencil-d-rank-hypothesis, def:pencil-d-distinct-motive,
-        lem:pencil-d-rank-agrees-three, lem:pencil-d-cut-case}
-  Realize the two sides separately. If no edge crosses, together they
-  realize $G$. Suppose one edge $uv$ crosses, with $u \in V_1$. The two
-  realizations were chosen independently, so the cross-incidences of $uv$
-  need not hold, and without them $uv$ has no hinge
-  (\cref{lem:two-pencil-extension-iff}). So we first move the side $V_2$ by
-  the projective automorphism of \cref{lem:pencil-cut-nondegeneracy}, after
-  which both cross-incidences hold. The moved side is still a pencil
-  realization at the deficiency rank
-  (\cref{lem:pencil-projective-transport}). Now
-  \cref{lem:two-pencil-extension} gives $uv$ a hinge. In both cases the
-  ranks of the parts add up to the deficiency rank of $G$, as in
-  Katoh--Tanigawa's cut-edge case (\cref{lem:case-cut-edge-realization}). For the
-  second form, the points along a link inside a side stay distinct under
-  the automorphism, and at $uv$ they are distinct by the last clause of
-  \cref{lem:pencil-cut-nondegeneracy}.
-\end{proof}
-\begin{fmlnote}
-  \label{fmlnote:pencil-cut-case}
-  The formalization proves each of the two forms as the case $d = 3$ of
-  the corresponding form of \cref{lem:pencil-d-cut-case}, the first
-  through the agreement of the deficiency-rank realizations at $d = 3$
-  and the second through the agreement of the adjacent-distinct ones, both
-  in \cref{lem:pencil-d-rank-agrees-three}.
-\end{fmlnote}
-
-\begin{lemma}[The base case, $|V(G)| \le 2$]
-  \label{lem:pencil-base-case}
-  \lean{CombinatorialRigidity.Molecular.hasPencilRealization_of_ncard_le_two}
-  \leanok
-  \uses{def:pencil-rank-hypothesis, lem:extensor-pair-through-point, lem:theorem-55-base}
-  Every loopless multigraph with at most two vertices has a pencil
-  realization at the deficiency rank (\cref{def:pencil-rank-hypothesis}).
-\end{lemma}
-\begin{proof}
-  \leanok
-  \uses{lem:case-II-placement-old-rows-extract,
-    lem:edge-rows-independent, lem:isInfRigidOn-of-relative-count,
-    lem:relative-deficiency-rank-bound, lem:two-vertex-zero-dof,
-    def:pencil-d-rank-hypothesis, lem:pencil-d-rank-agrees-three,
-    lem:pencil-d-base-case}
-  Give every body the same normal $n$ and the same point $q$ of its
-  panel. With no edge the deficiency rank is $0$. With one edge it is
-  $D - 1$, which one nonzero hinge in the panel through $q$ attains.
-  With a class of two or more parallel edges it is $D$. Two edges of the
-  class get the two independent hinges of
-  \cref{lem:extensor-pair-through-point}, which make the two bodies rigid
-  (\cref{lem:theorem-55-base}), and every further edge reuses the second hinge.
-\end{proof}
-\begin{fmlnote}
-  The formalization proves this lemma as the case $d = 3$ of
-  \cref{lem:pencil-d-base-case}, through
-  \cref{lem:pencil-d-rank-agrees-three}.
-\end{fmlnote}
 
 \begin{lemma}[Deficiency is unchanged by contracting a proper rigid subgraph]
   \label{lem:pencil-contraction-deficiency}
@@ -966,7 +757,8 @@ as the case $d = 3$ of the conditioned pair in every dimension
 (\cref{sec:pencil-d-reduction}) uses the first statement in dimension
 $d$ at a simple two-edge-connected multigraph. At a loopless
 two-edge-connected multigraph that is not simple, it contracts two
-parallel edges, as Katoh and Tanigawa do (KT Lemma~6.2).
+parallel edges (\cref{lem:pencil-d-nonsimple-case}), as Katoh and
+Tanigawa do (KT Lemma~6.2).
 
 The idea of \cref{sec:main-component} is to build pencil realizations
 by lifting planar pictures.
@@ -1019,70 +811,6 @@ dimension three.
   (\cref{def:pencil-nondegenerate}) has a generic pencil realization at
   $d = 3$ (\cref{def:pencil-generic-motive}).
 \end{definition}
-
-\begin{lemma}[A multigraph with parallel edges; cf.\ KT Lemma~6.2]
-  \label{lem:pencil-nonsimple-case}
-  \lean{CombinatorialRigidity.Molecular.hasPencilRealization_of_not_simple}
-  \leanok
-  \uses{def:pencil-rank-hypothesis, def:pencil-conditioned-pair,
-        def:rigid-subgraph}
-  Let $K$ be a field and $G$ a loopless multigraph on at least three
-  bodies that is not simple. If every multigraph on strictly fewer
-  bodies satisfies the conditioned pair at $d = 3$
-  (\cref{def:pencil-conditioned-pair}), then $G$ has a pencil realization
-  at the deficiency rank (\cref{def:pencil-rank-hypothesis}).
-\end{lemma}
-\begin{proof}
-  \leanok
-  \uses{lem:pencil-contraction-deficiency,
-        lem:rigidityRows-splice-rank-add,
-        lem:extensor-pair-through-given-point, lem:theorem-55-base,
-        lem:relative-deficiency-rank-bound,
-        lem:case-II-placement-old-rows-extract,
-        lem:extProj-preserves-rank-of-inter,
-        lem:isInfRigidOn-of-relative-count, lem:two-vertex-zero-dof,
-        def:pencil-d-rank-hypothesis, lem:pencil-d-rank-agrees-three,
-        lem:pencil-d-nonsimple-case}
-  We follow the proof of KT Lemma~6.2~\cite[p.~673]{katohTanigawa2011},
-  as in \cref{lem:case-I-realization-nonsimple}, for pencil realizations
-  and without minimality.
-
-  Let $e$ and $f$ be parallel edges joining bodies $a$ and $b$. Their
-  $(D-1)$-fold copies are $2(D-1) \ge D$ parallel edges on $\{a, b\}$,
-  hence $D$ edge-disjoint spanning trees, so $e$ and $f$ span a rigid
-  subgraph $H$ on $\{a, b\}$, as in KT Lemma~6.2 (p.~673). It is proper,
-  as $G$ has at least three bodies. Contracting $H$ removes one body
-  and leaves the deficiency unchanged
-  (\cref{lem:pencil-contraction-deficiency}). So by the induction
-  hypothesis the contraction $G/H$ has a pencil realization at the
-  deficiency rank. Give $a$ and $b$ the panel and the point of the
-  contracted body, and keep every other hinge. Then realize $e$ and $f$
-  by two linearly independent lines through that point, inside that
-  panel. The point is fixed by the realization of the contraction, and
-  two such lines exist through any point of a panel
-  (\cref{lem:extensor-pair-through-given-point}). Every hinge now lies in
-  the panels and passes through the points of both of its ends, so this
-  is a pencil realization of $G$.
-
-  It remains to compute the rank. The two independent hinges make
-  $\{a, b\}$ infinitesimally rigid (\cref{lem:theorem-55-base}). As in
-  Katoh and Tanigawa's proof (KT eqs.~(6.3)--(6.5), pp.~673--674), the
-  rigidity matrix is block triangular. So the rows of $e$ and $f$ add
-  $D = 6$ to the rank of the contraction's realization
-  (\cref{lem:rigidityRows-splice-rank-add}), and the rank is at least
-  \[
-    D(|V(G/H)| - 1) - \operatorname{def}(\tilde G) + D
-      \;=\; D(|V(G)| - 1) - \operatorname{def}(\tilde G).
-  \]
-  No pencil realization of $G$ has a larger rank
-  (\cref{lem:relative-deficiency-rank-bound}), so this is the deficiency
-  rank.
-\end{proof}
-\begin{fmlnote}
-  The formalization proves this lemma as the case $d = 3$ of
-  \cref{lem:pencil-d-nonsimple-case}, through
-  \cref{lem:pencil-d-rank-agrees-three}.
-\end{fmlnote}
 
 \begin{theorem}[The pencil realization theorem]
   \label{thm:pencil-realization-theorem}

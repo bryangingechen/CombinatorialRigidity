@@ -309,7 +309,8 @@ status:
     (CombinatorialRigidity.Molecular.x0Gen, the case d = 3 of
     CombinatorialRigidity.Molecular.liftAttains_of_simple), then the whole theorem as the case
     d = 3 of Graph.graded_pencil_conditioned_pair, deleting the three-dimensional arguments they
-    replace; the rest of the three-dimensional reduction is next.
+    replace, the three-dimensional cases of the reduction last, so that the reduction is proved
+    once, in every dimension; a note on the old three-dimensional route is next.
   sorry_count: 0
   sorry_in_definitions: 0
   axioms: ["propext", "Classical.choice", "Quot.sound"]          # only Lean/mathlib standard axioms; no project-specific axioms

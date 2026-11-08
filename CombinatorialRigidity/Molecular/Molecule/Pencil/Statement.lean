@@ -12,21 +12,20 @@ public import CombinatorialRigidity.Molecular.Molecule.Duality
 /-!
 # Pencil realizations
 
-The definitions of `sec:pencil`, and the results of its subsections on the polarity, the base case,
-cycles and the extension step. A pencil realization is a hinge-coplanar panel realization with a
-point in the panel of each body, through which every hinge at the body passes, so that the hinges at
-a body form a pencil of lines through a point in a plane.
+The definitions of `sec:pencil`, and the results of its subsections on the polarity, cycles and the
+extension step. A pencil realization is a hinge-coplanar panel realization with a point in the panel
+of each body, through which every hinge at the body passes, so that the hinges at a body form a
+pencil of lines through a point in a plane.
 
 The file defines a screw element through a point (`sec:pencil-through-point`), pencil realizations
 (`sec:pencil-realization`), those at the deficiency rank (`sec:pencil-reduction`) and those whose
 adjacent points are distinct (`sec:pencil-nondegenerate`). It proves that the polarity
 `screwComplementIso` exchanges lying in a panel with passing through a point, and so takes a pencil
-realization to one with the normals and the points exchanged (`sec:pencil-duality`); that a panel
-has two independent hinges through any point of it (`sec:pencil-base`); that two hinges in one panel
-pass through a common point of it, so that the cycles on three and four bodies have rigid pencil
-realizations (`sec:pencil-cycle`); and that two bodies have a common nonzero hinge in both panels
-and through both points exactly when the point of each lies in the panel of the other
-(`sec:pencil-extension`).
+realization to one with the normals and the points exchanged (`sec:pencil-duality`); that two
+hinges in one panel pass through a common point of it, so that the cycles on three and four bodies
+have rigid pencil realizations (`sec:pencil-cycle`); and that two bodies have a common nonzero hinge
+in both panels and through both points exactly when the point of each lies in the panel of the
+other (`sec:pencil-extension`).
 
 ## Main definitions
 
@@ -46,9 +45,6 @@ and through both points exactly when the point of each lies in the panel of the 
   (`lem:pencil-transport-through-to-in`, `lem:pencil-transport-in-to-through`).
 * `hasPencilPanelRealization_mapExtensor_screwComplementIso`: the self-duality of pencil
   realizations (`lem:pencil-self-dual`).
-* `exists_linearIndependent_extensor_pair_through_point` and
-  `exists_linearIndependent_extensor_pair_through_given_point`: two independent hinges in a panel,
-  through a point of it that is chosen or given.
 * `exists_concurrency_point_of_extensorInPanel_pair`: two nonzero hinges in one panel pass through a
   common point of it (`lem:coplanar-hinges-concurrent`).
 * `exists_pencilPanelRealization_cycle`: the cycles on three and four bodies have pencil
@@ -112,29 +108,23 @@ def HasPencilRealization (K : Type*) [Field K] (n : ℕ) (G : Graph α β) : Pro
 /-- **An adjacent-distinct pencil realization** (`def:pencil-distinct-motive`): a pencil realization
 at the deficiency rank (`HasPencilRealization`) whose points at the two ends of every link are
 linearly independent, which is the condition of `IsNondegPencilRealization` (`Motive.lean`) on links
-and no other. So `HasGenericPencilRealization → HasDistinctPencilRealization → HasPencilRealization`
-(`hasDistinctPencilRealization_of_generic`, `hasPencilRealization_of_distinct`).
+and no other. So a generic pencil realization (`HasGenericPencilRealization`) is adjacent-distinct,
+and an adjacent-distinct one is at the deficiency rank (the remark after
+`def:pencil-distinct-motive`).
 
 The condition is not one of `HasPencilPanelRealization`, for the two reasons the chapter gives after
 `def:pencil-generic-motive`. The polarity exchanges the normals and the points
 (`lem:pencil-self-dual`). And two bodies joined by two edges have no pencil realization at the
 deficiency rank with independent points: both hinges are then the line through the two points, and
-the rows span at most `screwDim 2 - 1` dimensions (`hasPencilRealization_of_ncard_le_two` puts both
-bodies at one point). `PencilPair` (`Motive.lean`) asks for an adjacent-distinct realization only of
-a simple multigraph. -/
+the rows span at most `screwDim 2 - 1` dimensions (the base case, `lem:pencil-d-base-case`, puts
+both bodies at one point). `PencilPair` (`Motive.lean`) asks for an adjacent-distinct realization
+only of a simple multigraph. -/
 def HasDistinctPencilRealization (K : Type*) [Field K] (n : ℕ) (G : Graph α β) : Prop :=
   ∃ (F : BodyHingeFramework K 2 α β) (normal point : α → Fin 4 → K),
     HasPencilPanelRealization G F normal point ∧
     (∀ e u v, G.IsLink e u v → LinearIndependent K ![point u, point v]) ∧
     (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
       = screwDim 2 * ((V(G).ncard : ℤ) - 1) - G.deficiency n
-
-/-- **An adjacent-distinct pencil realization is one at the deficiency rank** (the remark after
-`def:pencil-distinct-motive`): forget the independence of the points of a link. -/
-theorem hasPencilRealization_of_distinct {n : ℕ} {G : Graph α β}
-    (h : HasDistinctPencilRealization K n G) : HasPencilRealization K n G := by
-  obtain ⟨F, normal, point, hreal, -, hrank⟩ := h
-  exact ⟨F, normal, point, hreal, hrank⟩
 
 /-! ## The dot product and spans -/
 
@@ -301,128 +291,6 @@ theorem hasPencilPanelRealization_mapExtensor_screwComplementIso
     rw [BodyHingeFramework.mapExtensor_supportExtensor]
     exact ⟨extensorThroughPoint_screwComplementIso_of_extensorInPanel (hlink e u w hlk).1,
            extensorThroughPoint_screwComplementIso_of_extensorInPanel (hlink e u w hlk).2⟩
-
-/-! ## Two independent hinges through a point of a panel -/
-
-/-- **Two independent extensors through a common point of a panel**
-(`lem:extensor-pair-through-point`; for KT Lemma 5.3, KT p. 669, as
-`exists_linearIndependent_extensor_pair_perp` is): for every `n : Fin 4 → K` there are a nonzero
-`q₀` with `q₀ ⬝ᵥ n = 0` and two screw elements `Ce, Cf : ScrewSpace K 2`, each in the panel with
-normal `n` (`ExtensorInPanel`) and through `q₀` (`ExtensorThroughPoint`), with linearly independent
-extensors.
-
-The vectors orthogonal to `n` contain three linearly independent vectors `q₀, a, b`
-(`exists_three_perp`). The lines `q₀ ∨ a` and `q₀ ∨ b` lie in the panel and pass through `q₀`, and
-their extensors are independent because `q₀, a, b` are (`linearIndependent_pair_extensor_of_li3`).
-`exists_linearIndependent_extensor_pair_perp` (`lem:extensor-pair-in-panel`) gives two independent
-extensors in a panel without the common point; the base case of the pencil induction
-(`lem:pencil-base-case`) uses this form. -/
-theorem exists_linearIndependent_extensor_pair_through_point (n : Fin 4 → K) :
-    ∃ (q₀ : Fin 4 → K) (Ce Cf : ScrewSpace K 2),
-      q₀ ≠ 0 ∧ q₀ ⬝ᵥ n = 0 ∧
-      ExtensorInPanel Ce n ∧ ExtensorInPanel Cf n ∧
-      ExtensorThroughPoint Ce q₀ ∧ ExtensorThroughPoint Cf q₀ ∧
-      LinearIndependent K ![Ce, Cf] := by
-  obtain ⟨v, hvli, hvperp⟩ := exists_three_perp n
-  refine ⟨v 0,
-    ScrewSpace.mk (extensor ![v 0, v 1]) (extensor_mem_exteriorPower _),
-    ScrewSpace.mk (extensor ![v 0, v 2]) (extensor_mem_exteriorPower _),
-    hvli.ne_zero 0, hvperp 0, ?_, ?_, ?_, ?_, ?_⟩
-  · -- `Ce ∈ n^⊥`: its points `v 0, v 1` are perpendicular to `n`.
-    refine ⟨![v 0, v 1], ScrewSpace.val_mk _ _, ?_⟩
-    intro i; fin_cases i
-    · exact hvperp 0
-    · exact hvperp 1
-  · -- `Cf ∈ n^⊥`: its points `v 0, v 2` are perpendicular to `n`.
-    refine ⟨![v 0, v 2], ScrewSpace.val_mk _ _, ?_⟩
-    intro i; fin_cases i
-    · exact hvperp 0
-    · exact hvperp 2
-  · -- `Ce` passes through `q₀ = v 0` (its first spanning point).
-    exact ⟨![v 0, v 1], ScrewSpace.val_mk _ _, Submodule.subset_span ⟨0, rfl⟩⟩
-  · -- `Cf` passes through `q₀ = v 0` (its first spanning point).
-    exact ⟨![v 0, v 2], ScrewSpace.val_mk _ _, Submodule.subset_span ⟨0, rfl⟩⟩
-  · -- Linear independence of the two extensors, transported from `⋀²K⁴` to `ScrewSpace K 2`.
-    have hv3 : LinearIndependent K ![v 0, v 1, v 2] := by
-      rw [show (![v 0, v 1, v 2] : Fin 3 → Fin 4 → K) = v from by funext i; fin_cases i <;> rfl]
-      exact hvli
-    have hLI_ext : LinearIndependent K
-        ![extensor (![v 0, v 1] : Fin 2 → Fin 4 → K), extensor ![v 0, v 2]] :=
-      linearIndependent_pair_extensor_of_li3 hv3
-    rw [← LinearMap.linearIndependent_iff
-      ((⋀[K]^2 (Fin 4 → K)).subtype.comp (ScrewSpace.equivExteriorPower K 2).toLinearMap)
-      (by rw [LinearMap.ker_comp, Submodule.ker_subtype, Submodule.comap_bot, LinearEquiv.ker])]
-    have hfun : ((⋀[K]^2 (Fin 4 → K)).subtype.comp
-        (ScrewSpace.equivExteriorPower K 2).toLinearMap) ∘
-        ![ScrewSpace.mk (extensor (![v 0, v 1] : Fin 2 → Fin 4 → K)) (extensor_mem_exteriorPower _),
-          ScrewSpace.mk (extensor ![v 0, v 2]) (extensor_mem_exteriorPower _)]
-        = ![extensor (![v 0, v 1] : Fin 2 → Fin 4 → K), extensor ![v 0, v 2]] := by
-      funext i; fin_cases i <;> rfl
-    rw [hfun]; exact hLI_ext
-
-/-- **Two independent extensors through a given point of a panel**
-(`lem:extensor-pair-through-given-point`): for `n : Fin 4 → K` and a nonzero `q` with `q ⬝ᵥ n = 0`,
-there are two screw elements `Ce, Cf : ScrewSpace K 2`, each in the panel with normal `n`
-(`ExtensorInPanel`) and through `q` (`ExtensorThroughPoint`), with linearly independent extensors.
-It is `exists_linearIndependent_extensor_pair_through_point` with the point given in advance, as the
-case of a multigraph that is not simple needs (`lem:pencil-nonsimple-case`,
-`hasPencilRealization_of_not_simple`), where the realization of the contraction fixes the point.
-
-The panel `W = n^⊥` has dimension at least `3` (the three independent vectors of
-`exists_three_perp`), so `q` extends to an independent triple `q, y, z` in `W`. The lines `q ∨ y`
-and `q ∨ z` lie in `W` and pass through `q`, and their extensors are independent
-(`linearIndependent_pair_extensor_of_li3`). -/
-theorem exists_linearIndependent_extensor_pair_through_given_point {n q : Fin 4 → K}
-    (hq : q ≠ 0) (hqn : q ⬝ᵥ n = 0) :
-    ∃ Ce Cf : ScrewSpace K 2,
-      ExtensorInPanel Ce n ∧ ExtensorInPanel Cf n ∧
-      ExtensorThroughPoint Ce q ∧ ExtensorThroughPoint Cf q ∧
-      LinearIndependent K ![Ce, Cf] := by
-  -- The panel `W = n^⊥` as the kernel of `x ↦ x ⬝ᵥ n`.
-  set W : Submodule K (Fin 4 → K) := LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip n)
-    with hW
-  have hmemW : ∀ x : Fin 4 → K, x ∈ W ↔ x ⬝ᵥ n = 0 := by
-    intro x
-    simp only [hW, LinearMap.mem_ker, LinearMap.flip_apply, piBasisFun_toDual_eq_dotProduct]
-  -- `3 ≤ finrank W`: the three independent perps of `exists_three_perp` live in `W`.
-  have hW3 : 3 ≤ Module.finrank K W := by
-    obtain ⟨v, hvli, hvperp⟩ := exists_three_perp n
-    have hli : LinearIndependent K (fun i => (⟨v i, (hmemW _).2 (hvperp i)⟩ : W)) :=
-      LinearIndependent.of_comp W.subtype hvli
-    simpa using hli.fintype_card_le_finrank
-  -- Extend `q ∈ W` to an independent triple `q, y, z` in `W`.
-  set q' : W := ⟨q, (hmemW q).2 hqn⟩
-  have hq' : q' ≠ 0 := fun h => hq (congrArg Subtype.val h)
-  obtain ⟨y, hy⟩ := exists_linearIndependent_pair_of_one_lt_finrank (R := K) (by omega) hq'
-  obtain ⟨z, hz⟩ := exists_linearIndependent_snoc_of_lt_finrank hy (by omega)
-  have h3 : LinearIndependent K ![q, (y : Fin 4 → K), (z : Fin 4 → K)] := by
-    have := hz.map' W.subtype (Submodule.ker_subtype _)
-    have heq : (W.subtype ∘ Fin.snoc ![q', y] z : Fin 3 → Fin 4 → K) = ![q, y, z] := by
-      funext i; fin_cases i <;> rfl
-    rwa [heq] at this
-  have hyn : (y : Fin 4 → K) ⬝ᵥ n = 0 := (hmemW _).1 y.2
-  have hzn : (z : Fin 4 → K) ⬝ᵥ n = 0 := (hmemW _).1 z.2
-  refine ⟨ScrewSpace.mk (extensor ![q, (y : Fin 4 → K)]) (extensor_mem_exteriorPower _),
-    ScrewSpace.mk (extensor ![q, (z : Fin 4 → K)]) (extensor_mem_exteriorPower _),
-    ⟨_, ScrewSpace.val_mk _ _, fun i => by fin_cases i; exacts [hqn, hyn]⟩,
-    ⟨_, ScrewSpace.val_mk _ _, fun i => by fin_cases i; exacts [hqn, hzn]⟩,
-    ⟨_, ScrewSpace.val_mk _ _, Submodule.subset_span ⟨0, rfl⟩⟩,
-    ⟨_, ScrewSpace.val_mk _ _, Submodule.subset_span ⟨0, rfl⟩⟩, ?_⟩
-  have hLI_ext : LinearIndependent K
-      ![extensor (![q, (y : Fin 4 → K)] : Fin 2 → Fin 4 → K), extensor ![q, (z : Fin 4 → K)]] :=
-    linearIndependent_pair_extensor_of_li3 h3
-  rw [← LinearMap.linearIndependent_iff
-    ((⋀[K]^2 (Fin 4 → K)).subtype.comp (ScrewSpace.equivExteriorPower K 2).toLinearMap)
-    (by rw [LinearMap.ker_comp, Submodule.ker_subtype, Submodule.comap_bot, LinearEquiv.ker])]
-  have hfun : ((⋀[K]^2 (Fin 4 → K)).subtype.comp
-      (ScrewSpace.equivExteriorPower K 2).toLinearMap) ∘
-      ![ScrewSpace.mk (extensor (![q, (y : Fin 4 → K)] : Fin 2 → Fin 4 → K))
-          (extensor_mem_exteriorPower _),
-        ScrewSpace.mk (extensor ![q, (z : Fin 4 → K)]) (extensor_mem_exteriorPower _)]
-      = ![extensor (![q, (y : Fin 4 → K)] : Fin 2 → Fin 4 → K),
-          extensor ![q, (z : Fin 4 → K)]] := by
-    funext i; fin_cases i <;> rfl
-  rw [hfun]; exact hLI_ext
 
 /-! ## Two hinges in one panel pass through a common point -/
 

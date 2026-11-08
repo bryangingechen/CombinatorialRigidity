@@ -279,9 +279,9 @@ theorem extensor_ne_zero_iff_linearIndependent {d k : ℕ}
     rw [hid, Function.comp_id]
     exact hzero
 
-/-- **Three independent vectors give two independent `2`-extensors with a common vector** (a step of
-`lem:extensor-pair-through-point` and `lem:extensor-pair-through-given-point`): if `a, b, c` are
-linearly independent, then `a ∨ b` and `a ∨ c` are linearly independent in `⋀² K^(d+1)`.
+/-- **Three independent vectors give two independent `2`-extensors with a common vector**: if
+`a, b, c` are linearly independent, then `a ∨ b` and `a ∨ c` are linearly independent in
+`⋀² K^(d+1)`. It has no project consumer.
 
 Let `s • (a ∨ b) + t • (a ∨ c) = 0`. The join with `c` on the left kills the second term, which
 repeats `c`, and turns the first into `s • (c ∨ a ∨ b)`, which is nonzero as `c, a, b` are linearly
