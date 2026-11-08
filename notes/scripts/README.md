@@ -1513,10 +1513,14 @@ coverage helpers), so a change to `strata.py` obliges re-running `oneclass.py` t
 ### `natural/` — the PENCIL-NATURAL recon's coverage probe (2026-11-07)
 
 A driver directory on the base layer, banked in Phase 43a (`notes/Phase43a.md`, the PI's D4)
-from the recon's track T2. `shortrows.py` imports catalogued §1 primitives only
-(`nogood_subdiv.count_matroid_rank`, `kbare_common.exact_deficiency`); its per-mode prose is its
-module docstring, and its reading is `notes/PencilNatural.md` §3 (N3, N4). Exact integers; no
-randomness outside `--validate`'s fixed seed. Banked byte-identical to the recon's outputs but for
+from the recon's track T2 and two of 43a's fresh reads. `shortrows.py` imports catalogued §1
+primitives only (`nogood_subdiv.count_matroid_rank`, `kbare_common.exact_deficiency`), and
+`check_sprime.py` (S′'s read) imports `shortrows.py`. The flatness read's four drivers are
+stdlib-only and call `geng` by `subprocess`; `flatprobe.py` is their base, imported by the other
+three, and each invocation's seeded stream runs across its `n` values, so the rows below fix the
+grouping. Per-mode prose is in each module docstring; the readings are `notes/PencilNatural.md`
+§3 (N3, N4) and `notes/Phase43a.md`. Exact arithmetic throughout. `shortrows.py` was banked
+byte-identical to the recon's outputs but for
 one line format: a set of rows printed in hash order now prints in the table's order, so two
 lines of `--hub … --maxk 2` changed order, no figure. The recon's track T1 (N1) is Lean, a
 spike and its stdlib inventory scripts, outside this harness: `notes/pencil-natural/`.
@@ -1528,6 +1532,12 @@ spike and its stdlib inventory scripts, outside this harness: `notes/pencil-natu
 | `geng -C -t -d2 -q 13 13:17 \| PYTHONHASHSEED=0 python3 notes/scripts/natural/shortrows.py --g6 --show 4` (nauty's `geng`, external) | 155 s | ibid., the census at `n = 13`, 32,191 class members (42,501 with the row above; 0 stepless once open-ear-two and the split-off are dropped) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/natural/shortrows.py --hub theta3,theta4,theta5,K4,K4+,tri21,tri2,C4dbl,W4,K5-e,prism,K33 --maxk 2 --show 6 --gap` | 22 s | ibid., the first hub sweep (4,781 class members; not exhaustive), with the 14-body `K₄` family where two-orbit is the only step, and N4's per-step gap table |
 | `PYTHONHASHSEED=0 python3 notes/scripts/natural/shortrows.py --hub K4,theta3,theta4 --maxk 6 --show 2 --gap` | 7 s | ibid., the second hub sweep (5,964; not exhaustive) |
+| `(for n in $(seq 5 12); do geng -C -t -d2 -q $n $n:$(( (3*n-4)/2 )); done) \| PYTHONHASHSEED=0 python3 notes/scripts/natural/check_sprime.py`; `geng -C -t -d2 -q 13 13:17 \| PYTHONHASHSEED=0 python3 notes/scripts/natural/check_sprime.py` (nauty's `geng`, external) | 103 s; 209 s | `notes/Phase43a.md`, Theorem S′'s fresh read: S′ in its usable form, its P1 (a rigid `Z ∋ a, b` and a core avoiding `x₁`) and its `k = 2` adjacent-ends case at `def₃ = 0`, over the census's 10,310 and 32,191 class members; 0 failures. Imports `shortrows.py` (a sibling), so a change there obliges a re-run here |
+| `PYTHONHASHSEED=0 python3 notes/scripts/natural/check_sprime.py --hub theta3,theta4,theta5,K4,K4+,tri21,tri2,C4dbl,W4,K5-e,prism,K33 2 < /dev/null`; `… --hub K4,theta3,theta4 6 < /dev/null` | 24 s; 7 s | ibid., the two hub sweeps (4,781 and 5,964; not exhaustive); 0 failures |
+| `PYTHONHASHSEED=0 python3 notes/scripts/natural/dpcheck.py 3 4 5 6` | < 1 s | `notes/Phase43a.md`, the flatness read: `flatprobe`'s deficiency DP against brute-force partitions at `D = 3, 6` on every induced subgraph, 76 graphs (`geng -c -d2`, `n = 3..6`) and 4 witnesses, 0 mismatches; `def₂(K_{2,3}) = 0` |
+| `PYTHONHASHSEED=0 python3 notes/scripts/natural/flatprobe.py 3 4 5 6 7`; `… flatprobe.py 8` | 4 s; 85 s | ibid.: (F) flat, the panel classes and the count at all 8,025 graphs of `geng -c -d2`, `n = 3..8`, exhaustive; a bad pair degenerate at 7,970 of 7,970; of 55 with none, one degenerate, infeasible |
+| `PYTHONHASHSEED=0 python3 notes/scripts/natural/flatprobe.py witnesses` | 1 s | ibid.: `K_{2,3}`, the doubled triangle (its explicit nondegenerate realization), the bowtie, the triangle and `C₅` with a pendant triangle, with ranks against the target and the `d = 4` planes |
+| `PYTHONHASHSEED=0 python3 notes/scripts/natural/specialprobe.py 4 5 6 7`; `… specialpanel.py 4 5 6` | 156 s; 6 s | ibid.: flatness at main pictures of `G` not admissible for `G[W]`, 23,259 of 24,446 cases found, affine at all; one plane at every body at all 1,371 |
 
 Per-driver prose — *what* each mode asserts — stays in the four per-directory
 READMEs (`escape/README.md`, `kbare/README.md`, `w4/README.md`,
