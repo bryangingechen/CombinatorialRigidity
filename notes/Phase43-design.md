@@ -123,8 +123,10 @@ In order. A letter is minted when a layer opens.
   used by Phase 40's route, not needed. **S′ is stated at `d = 3` only** (the PI, 2026-11-08, §1):
   `thm:pencil-d-theorem-s` and `def:pencil-d-usable-chain` fold into the `d = 3` nodes, and "the
   move" below, written for the general form, is read at `n = 3` with `exists_additiveCoreAt`,
-  `ChainUsableAt` and `chainUsable_iff_chainUsableAt_three` deleted. The read's inputs for the
-  build:
+  `ChainUsableAt` and `chainUsable_iff_chainUsableAt_three` deleted. **Verdict at the pin
+  (2026-11-08):** S′ holds as Lean, the main results re-checked in the kernel (`SprimeSpike.lean`);
+  a walk cuts slices A, B, C, the sizes and §2's misses (`notes/Phase43c.md` items 3–5). The read's
+  inputs for the build:
   - **The move.** Not `exists_chain_or_core` at `ℓ = 1`: Theorem S itself,
     `Graph.IsX0Graph.exists_additiveCoreAt` (only consumer `exists_additiveCore`,
     `CoverageTheoremS.lean`), with its blocking hypothesis `¬ ChainUsableAt` losing the `k = 2`

@@ -1525,8 +1525,10 @@ one line format: a set of rows printed in hash order now prints in the table's o
 lines of `--hub … --maxk 2` changed order, no figure. The recon's track T1 (N1) is Lean, a
 spike and its stdlib inventory scripts, outside this harness: `notes/pencil-natural/`, where
 Phase 43b's open extended the spike (its item 5) and added `n1c_graph.py`, and Phase 43c's open
-added `NormalSpike.lean` (NORMAL's restated reduction and its caller), each with its invocation
-in its own docstring (`notes/Phase43b.md`, `notes/Phase43c.md`).
+added `NormalSpike.lean` (NORMAL's restated reduction and its caller), and SPRIME's pin
+`SprimeSpike.lean` (Theorem S′, a kernel transport of its consumers, the liveness walk) with
+`sprime_walk.py` (the walk's blueprint side and sweep, reading the spike's output), each with its
+invocation in its own docstring (`notes/Phase43b.md`, `notes/Phase43c.md`).
 
 | invocation | ~time | cited by |
 |---|---|---|
