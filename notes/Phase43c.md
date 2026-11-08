@@ -6,12 +6,15 @@
 caller, and the minimum-degree lemma in a new appendix of further results. SPRIME's pin landed:
 Theorem S′ holds as Lean at `d = 3` in the folded form, with the main results unchanged, and a
 liveness walk cuts SPRIME into slices A (two new lemmas), B (S′) and C (the deletions). Slice A
-landed (NEW-1 and NEW-2, additive). In order next: slices B and C, then the sub-phase's last
-commit. The next concrete commit is SPRIME slice B, item 4. One choice of the pin was taken in the PI's absence (*Decisions made*, first).
+landed (NEW-1 and NEW-2, additive). The PI then reviewed the pin's one choice taken in the PI's
+absence and reversed it: S′'s proof cites the maximal-rigid-core lemma, and the `d = 3` core bound
+goes (*Decisions made*, first). In order next: slices B and C, then the sub-phase's last commit.
+The next concrete commit is SPRIME slice B, item 4.
 
 ## Current state
 
-**Next concrete commit: SPRIME slice B, checklist item 4** (S′ at `d = 3` and the ten deletions,
+**Next concrete commit: SPRIME slice B, checklist item 4** (S′ at `d = 3`, the ten deletions and,
+at the PI's word, the `d = 3` core bound;
 Lean and blueprint; Opus, for the prose; the spike's `ChainUsable'`, `exists_additiveCore'` and
 `x0Reduces_of_chainUsable'` are its Lean). Slice A is in the tree: NEW-1
 `Graph.exists_deficiency_three_induce_eq_zero_of_deficiency_two_lt` (`SparseDeficiency.lean`) and
@@ -109,12 +112,35 @@ standard three).
     cited in the proofs of `thm:pencil-x0-coverage` and `thm:pencil-x0-reduction-attains`, which
     loses `thm:pencil-x0-open-ear-two` and `thm:pencil-x0-splitoff`); `lem:pencil-x0-chain-reduces`'
     proof (the ear clause only); the table less two rows, and the paragraph after it;
-    `thm:pencil-x0-theorem-s`' proof on S′'s route, `\uses` −`lem:deficiency-one-body-chain`,
-    −`def:pencil-d-usable-chain`, −`thm:pencil-d-theorem-s`, +`lem:pencil-d-chain-core`,
-    +`lem:pencil-d-core-positive-deficiency`, a new fmlnote (*Decisions made*, first); part (2) of
+    `thm:pencil-x0-theorem-s`' proof on S′'s route **as the Lean runs it** (the PI, *Decisions
+    made*, first): every core from `lem:pencil-d-maximal-rigid-core` at `d = 3`, directly or
+    through `lem:pencil-d-chain-core` and `lem:pencil-d-core-positive-deficiency`, with no
+    route-divergence fmlnote; `\uses` −`lem:deficiency-core-bound`, −`lem:deficiency-one-body-chain`,
+    −`def:pencil-d-usable-chain`, −`thm:pencil-d-theorem-s`, + those three, and minus whatever
+    else only the old core argument used (re-derive from the rewritten proof); part (2) of
     `lem:deficiency-one-body-chain` (pin, proof, two `\uses`, fmlnote) and of
-    `lem:deficiency-two-body-chain` (pin, `\uses` merge-rigid); `rem:pencil-x0-theta`'s second
-    paragraph ("a usable chain, or a core"); `sec:main-component-sparse`'s lead (:4016–4026).
+    `lem:deficiency-two-body-chain` (pin, `\uses` merge-rigid), and that node's fmlnote, which
+    slice A rewrote where item 3 said it goes and which part (2)'s removal makes false;
+    `rem:pencil-x0-theta`'s second paragraph ("a usable chain, or a core");
+    `sec:main-component-sparse`'s lead (:4016–4026).
+  - *The `d = 3` core bound (the PI, 2026-11-08; not in the pin's walk).* Delete
+    `lem:deficiency-core-bound` (`main-component.tex` :4165–4216, node, proof and fmlnote) and its
+    two pins, `Graph.deficiency_three_induce_eq_zero_of_le` and
+    `Graph.partitionDef_induce_id_le_of_maximal` (`SparseDeficiency.lean` :643–, :715–; no Lean
+    user, grepped at `9fb254e4`), with the module docstring's lines :40–41 and the section header
+    :601. Its proof is where the argument of part (2) is written: move that argument into part (2)
+    of `lem:deficiency-core-bound-d`'s proof (`pencil-d.tex` :992 now says "the proof of part (2)
+    of `lem:deficiency-core-bound` holds …"), read at `def_d` and `D − 1`. Reword
+    `lem:pencil-d-maximal-rigid-core`'s proof (:1131, "As in the proof of
+    `thm:pencil-x0-theorem-s`", circular once S′ cites it) and `sec:pencil-d-deficiency`'s lead
+    (:907). `notes/BlueprintExposition.md` :1555: the entry's exposition now lives in
+    `lem:deficiency-core-bound-d`'s proof; repoint it. **Keep:** `lem:deficiency-core-bound-d`,
+    `Graph.deficiency_induce_eq_zero_of_le`,
+    `Graph.partitionDef_induce_id_le_of_maximal_of_three_le_bodyBarDim`. Grep stems with care:
+    `lem:deficiency-core-bound` prefixes the kept `-d` label, and
+    `partitionDef_induce_id_le_of_maximal` the kept `…_of_three_le_bodyBarDim`. Add the two
+    declarations and the node to `sprime_walk.py`'s slice-B set, or record why the walk needs no
+    change.
   - *pencil-d.tex.* Deleted: `def:pencil-d-usable-chain`, `thm:pencil-d-theorem-s`,
     `lem:deficiency-one-body-chain-d`, `lem:deficiency-two-body-chain-d`. Reworded:
     `sec:pencil-d-deficiency`'s lead (:903–915), the core paragraph (:1079–1095, keeping "rigid"
@@ -148,7 +174,6 @@ standard three).
 
 ## Blockers / open questions
 
-- **For the PI's review:** the choice the pin took in the PI's absence (*Decisions made*, first).
 - **The KT Theorem 4.9 remark** itself is EXPO's (design doc §2, EXPO); slice 1 wrote only the glue
   sentence (`pencil.tex`, `sec:pencil-reduction`'s lead), as design doc §1 (a) asks.
 - **Where `thm:pencil-reduction` lives** (`pencil.tex`, its only user in `pencil-d.tex`) is EXPO's.
@@ -165,13 +190,14 @@ and `lem:deficiency-two-body-chain-d` go with them (item 4 lists the restatement
 The open's decisions are `notes/Phase43-design.md` §1 (the PI's answers of 2026-11-08) and the
 choices above.
 
-- **Taken in the PI's absence, for the PI's review (SPRIME's pin): S′'s proof keeps its `d = 3`
-  argument.** The Lean takes every core from `lem:pencil-d-maximal-rigid-core` at `d = 3`. The
-  TeX proof keeps its own argument through `lem:deficiency-core-bound` and cites at `d = 3` only
-  `lem:pencil-d-chain-core` (a `k = 2` chain with non-adjacent ends) and
-  `lem:pencil-d-core-positive-deficiency` (`def₃ > 0`, no two bodies of degree two adjacent); a
-  fmlnote names the Lean's route. The other option, citing the maximal-rigid-core lemma throughout,
-  leaves `lem:deficiency-core-bound` with no user (the walk), and deleting it is beyond §2's scope.
+- **S′'s proof cites the maximal-rigid-core lemma, and the `d = 3` core bound goes** (the PI,
+  2026-11-08, reviewing the pin's choice taken in the PI's absence, which kept S′'s own `d = 3`
+  argument through `lem:deficiency-core-bound`; the PI's words: design doc §1). The PI: "was there
+  an opportunity for extra simplification using the maximal-rigid-core lemma? If so, I'd go with
+  that." Then, of the `d = 3` node and its two Lean pins: "Would those results be independently
+  interesting? If so we could put them in an appendix like we have been for some others, but if
+  not then we can lose them." They are the case `d = 3` of the kept `lem:deficiency-core-bound-d`,
+  so they go (item 4).
 - **SPRIME's pin (item 2).** S′ holds as Lean at `d = 3` in the folded form, and every consumer
   re-checks in the kernel; §2's route held at every step. The walk confirms §2's deletions and adds
   four declarations and `lem:pencil-weighted-lifting-system-local`; the bounds die with S′ (B), not

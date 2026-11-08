@@ -1351,7 +1351,8 @@ and the minimum-degree lemma moved to an appendix, then Theorem S′, stated at 
 the two redundant short-chain cases removed. Slice 1 has landed: the reduction restated, the
 minimum-degree lemma in a new appendix of further results. SPRIME's pin has landed: Theorem S′
 holds as Lean, with the main results unchanged, and its deletions fall into three slices. The
-first (two new lemmas) has landed. Next: the second, Theorem S′ itself.
+first (two new lemmas) has landed. Next: the second, Theorem S′ itself, whose proof now cites the
+maximal-rigid-core lemma as the Lean does, its `d = 3` core bound deleted (the PI, 2026-11-08).
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 

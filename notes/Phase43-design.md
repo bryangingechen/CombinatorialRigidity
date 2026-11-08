@@ -89,6 +89,18 @@ lemma and the formalization note go (about 80 TeX lines beyond SPRIME's −450).
 chains section loses its 'this core exists in every dimension' contrast sentence. A little more
 Lean churn (specializing working code)." Not chosen: "Keep general in d".
 
+**PI, 2026-11-08, a third session (the 43c coordinator's), reviewing SPRIME's pin,** whose one
+choice taken in the PI's absence kept S′'s TeX proof on its own `d = 3` argument through
+`lem:deficiency-core-bound`, rather than citing `lem:pencil-d-maximal-rigid-core` throughout as
+the Lean does (which leaves `lem:deficiency-core-bound` with no user). The PI asked: "was there an
+opportunity for extra simplification using the maximal-rigid-core lemma? If so, I'd go with
+that." Told yes, and that the `d = 3` node and its two Lean pins (no Lean user) would then go, the
+PI asked: "Would those results be independently interesting? If so we could put them in an
+appendix like we have been for some others, but if not then we can lose them." Answered: no, they
+are exactly the case `d = 3` of `lem:deficiency-core-bound-d`, which stays (the maximal-rigid-core
+lemma uses it), so deleting them loses no result. So S′'s proof cites the maximal-rigid-core lemma,
+and `lem:deficiency-core-bound` and its two declarations are deleted (`notes/Phase43c.md` item 4).
+
 ## 2. The layers, by stable code
 
 In order. A letter is minted when a layer opens.
