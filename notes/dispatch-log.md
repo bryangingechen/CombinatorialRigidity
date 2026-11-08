@@ -295,6 +295,13 @@ reads prose), fixed in its own commit to "its hypothesis on the lifts".
 which does not depend on `d`. Slice 4's builder read the definition body and removed both. A
 coordinator fix to a mathematical sentence gets the derivation guard: read the definition body.
 
+**PENCIL-NATURAL 43c rows, 2026-11-08 (slice 1 to slice B): 1.** (1) The coordinator's re-pin of
+item 4 (`bd63d237`, after the PI reversed the pin's absent-PI choice) carried two unchecked route
+claims: that `lem:pencil-d-core-positive-deficiency` gets its core through the maximal-rigid-core
+lemma (its Lean takes a set of least singleton value), and that the moved core-bound argument
+reads at `D − 1` (its singleton values stay planar). Slice B's builder (opus) read the bodies and
+corrected both. As 43b (3): a pin's route claim is a hypothesis until the body is read (F19).
+
 ## Findings
 
 (Distill recurring lessons here — one entry per lesson, rows cite it.
