@@ -302,6 +302,13 @@ lemma (its Lean takes a set of least singleton value), and that the moved core-b
 reads at `D − 1` (its singleton values stay planar). Slice B's builder (opus) read the bodies and
 corrected both. As 43b (3): a pin's route claim is a hypothesis until the body is read (F19).
 
+**PENCIL-NATURAL 43d rows, 2026-11-08 (the open to slice 3): 1.** (1) The coordinator's PI question
+on the duplicate attaining theorem (after slice 2, `47116a52`) carried three unchecked claims in its
+recommended option: that the fold would land in "slice 5" (the pointer slice for `main-component.tex`
+had been renumbered to slice 4), that `pencil-d.tex` cites the theorem (it had none at HEAD), and
+"no Lean" (the fold edits one docstring). Slice 3's builder (opus) caught all three and recorded
+them beside the PI's entry. As F57: grep and re-read the plan before writing an option's details.
+
 ## Findings
 
 (Distill recurring lessons here — one entry per lesson, rows cite it.
