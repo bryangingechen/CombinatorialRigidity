@@ -10,8 +10,9 @@ the two unnecessary steps gone. **43d** EXPO, the last layer, is open (2026-11-0
 word, §1; `notes/Phase43d.md`): the road map of the proof, in five slices, and its close closes
 Phase 43. Slice 1, the road map, landed; slice 2, inserted at the PI's word (§1, the 43d
 coordinator's session), removed the two main-component statements; slice 3 wrote the flatness
-remark. Next: slice 4, the pointers in two chapters, now with the fold of
-`thm:pencil-x0-generic-attains` into the coverage (§1, the PI's later word).
+remark; slice 4 pointed two chapters at the road map and folded
+`thm:pencil-x0-generic-attains` into the coverage (§1, the PI's later word). Next: slice 5, the
+pointers in the every-dimension chapter.
 
 This file is the phase's entry point: the target (§0), the PI's decisions (§1, verbatim), the
 layers by stable code (§2) and the open questions (§3). The recon record stays in
@@ -239,7 +240,7 @@ In order. A letter is minted when a layer opens.
   as its record, naming what slices B and C deleted. The read's inputs for the build (the move,
   NEW-1 and NEW-2, the sizes) are `git show b9e9e2b2:notes/Phase43-design.md`, §2.
 - **EXPO** (43d, opened 2026-11-08 at the PI's word, §1; `notes/Phase43d.md`; its slice 2, the
-  removal of the main-component statements, at the PI's later word, §1; its slice 4 folds
+  removal of the main-component statements, at the PI's later word, §1; its slice 4 folded
   `thm:pencil-x0-generic-attains` into the coverage, at the PI's word again, §1). The road map
   (`notes/PencilNatural.md` §5), with the A/B/C structure as it stands after the layers above,
   I1–I4 as corrected, and the flatness reading, which its read confirmed once stated precisely
@@ -276,7 +277,8 @@ In order. A letter is minted when a layer opens.
   - **From LIFT3** (43b's close). `x0Dist` and `x0Gen` kept no Lean consumer; at the PI's word
     (§1, the 43d coordinator's session) 43d's slice 2 removed them, with `X0Dist`, `X0Gen` and
     their node, and restated `thm:pencil-x0-generic-attains` to its attaining claim, which stays
-    on the route through the embedding of dimension three. The old `d = 3` route's one
+    on the route through the embedding of dimension three (slice 4 folded that node into the
+    coverage, which carries the same claim and pin). The old `d = 3` route's one
     home is the remark after `thm:pencil-d-generic`'s proof. Each `d = 3` sentence of
     `sec:pencil-d-reduction` reads its case at `d = 3` with no deleted node behind it, and may be
     cut.

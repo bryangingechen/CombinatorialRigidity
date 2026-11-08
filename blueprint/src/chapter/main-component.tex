@@ -4,17 +4,11 @@
 This section proves, over every infinite field, that at every simple
 connected multigraph of minimum degree at least two the general
 configuration of the main component attains the deficiency rank
-(\cref{thm:pencil-x0-generic-attains}). \Cref{sec:pencil-d} runs the
-argument of this section in every dimension $d \ge 3$, where it gives the
-case of a simple two-edge-connected multigraph in the pencil reduction
-(\cref{sec:pencil-d-reduction}): an adjacent-distinct realization of the
-whole multigraph. The pencil realization theorem
-(\cref{thm:pencil-realization-theorem}) is the case $d = 3$.
-\Cref{sec:pencil-main-component-route}
-sketches the idea of this section: to lift planar pictures of the graph
-to configurations of points in $K^4$. It also explains, at $K_{2,3}$, why
-the generic conjunct needs a further argument. Besides \cref{sec:pencil},
-the reader needs the deficiency and the merged deficiency of
+(\cref{thm:pencil-x0-coverage}). The road map of the proof
+(\cref{sec:pencil-roadmap}) gives the idea of this section, to lift
+planar pictures of the graph to configurations of points in $K^4$, and
+its place in the proof of the pencil realization theorem. Besides
+\cref{sec:pencil}, the reader needs the deficiency and the merged deficiency of
 \cref{sec:molecular-deficiency}, the rank-addition lemmas of \cref{sec:molecular-rigidity-matrix-blocks},
 and two rank lemmas of Case~I of the algebraic induction
 (\cref{lem:block-rank-contract}, \cref{lem:rank-polynomial-proj-eval}).
@@ -145,9 +139,7 @@ realizations, for the generic conjunct in every dimension
 (\cref{thm:pencil-d-generic}). The general
 configuration need not be nondegenerate, as at $K_{2,3}$
 (\cref{lem:pencil-x0-two-hubs-obstruction}), so that conjunct is proved
-in \cref{sec:pencil-d} by an induction of its own. The subsection ends
-with the main theorem of this section
-(\cref{thm:pencil-x0-generic-attains}).
+in \cref{sec:pencil-d} by an induction of its own.
 
 \subsection{Planar pictures, the lifting space, and the main component}
 \label{sec:main-component-carrier}
@@ -4317,7 +4309,7 @@ no two of them are adjacent, a rigid set that avoids one of them.
   The rest is \cref{thm:pencil-x0-reduction-attains}.
 \end{proof}
 
-\subsection{Nondegeneracy, and the main theorem}
+\subsection{Nondegeneracy}
 \label{sec:main-component-statements}
 
 When the general configuration attains, one attaining configuration is
@@ -4862,25 +4854,4 @@ consequences of nondegeneracy-feasibility in
   two edges into $X$, $s(X) = s(W_0) + 1 \le 1$. Also $|X| \ge 3$:
   otherwise $X = \{a, b\}$, $s(X) \le 1$ needs the edge $ab$, and
   $\{y, a, b\}$ would be a triangle with two hubs.
-\end{proof}
-
-We close with the main theorem of this section. The coverage in every
-dimension uses it, through the embedding of dimension three
-(\cref{lem:pencil-d-x0-attains-of-le}), and so does the pencil
-realization theorem.
-
-\begin{theorem}[The general point of the main component attains]
-  \label{thm:pencil-x0-generic-attains}
-  \lean{Graph.IsX0Graph.x0Attains}
-  \leanok
-  \uses{def:pencil-x0-attains, def:D-deficiency}
-  Let $K$ be an infinite field. For every simple connected multigraph $G$
-  of minimum degree at least two, the general configuration of $G$ attains
-  the rank $6(|V(G)| - 1) - \operatorname{def}(\tilde G)$
-  (\cref{def:pencil-x0-attains}; \cref{def:D-deficiency}, at $d = 3$).
-\end{theorem}
-\begin{proof}
-  \leanok
-  \uses{thm:pencil-x0-coverage}
-  This is \cref{thm:pencil-x0-coverage}.
 \end{proof}

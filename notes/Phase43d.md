@@ -7,19 +7,19 @@ where the road map goes, how much intuition it carries and how flatness is treat
 slice 2 the removal of the two main-component statements (inserted at the PI's word, design doc
 §1; the one slice with Lean code), slice 3 the flatness remark (`main-component.tex`), slices 4
 and 5 point the chapters at the road map, slice 4 with the PI's fold of a duplicate theorem, then
-the close, which is Phase 43's close too. Slices 1–3 landed; the next concrete commit is slice 4,
+the close, which is Phase 43's close too. Slices 1–4 landed; the next concrete commit is slice 5,
 pinned below.
 
 ## Current state
 
-**Next concrete commit: slice 4, the road-map pointers in `pencil.tex` and `main-component.tex`,
-with the fold of `thm:pencil-x0-generic-attains` into `thm:pencil-x0-coverage`** (checklist
-item 4; the fold at the PI's word, design doc §1). Mode: a structural edit of existing chapters.
-Slices 4–5 add or restate no dep-graph node (a subsection and a remark are not nodes); slice 4
-deletes one, the duplicate, whose pin stays on the coverage, so the deletion and moved-pin gates
-apply there (`CombinatorialRigidity/CLAUDE.md` *Forward-mode slices*). Each slice re-reads every
-node its prose cites. Plan: `notes/Phase43-design.md` §2, EXPO (the 43a read's inputs),
-corrected by *Verified at the open* below.
+**Next concrete commit: slice 5, `pencil-d.tex` points at the road map, and its reduction's
+`d = 3` sentences are judged by D-b** (checklist item 5). Mode: a structural edit of an existing
+chapter; it adds, restates and deletes no dep-graph node. A `\uses` edge changes only as item 5
+pins (`lem:pencil-d-cut-case`), and then the deletion gate applies to that edge
+(`CombinatorialRigidity/CLAUDE.md` *Forward-mode slices*). Each slice re-reads every node its
+prose cites. Slice 4 did not touch `pencil-d.tex`, so item 5's line numbers still hold. Plan:
+`notes/Phase43-design.md` §2, EXPO (the 43a read's inputs), corrected by *Verified at the open*
+below.
 
 **Verified at the open (HEAD `172b5b9f`).**
 - **KT's pages**, read in `.refs/katoh-tanigawa-2011-molecular-conjecture.pdf`: §1.1 *Road Map of
@@ -80,7 +80,7 @@ corrected by *Verified at the open* below.
 ## Architectural choices made up front
 
 - **No main result changes; Lean code and node statements only in slice 2** (the PI's later
-  word). Slice 4's fold deletes one node and edits one Lean docstring, no code (the PI's word
+  word). Slice 4's fold deleted one node and edited one Lean docstring, no code (the PI's word
   again, design doc §1). Elsewhere two labels are added, `sec:pencil-roadmap` and
   `rem:pencil-x0-flatness` (both landed). A `\uses` edge changes only where a cut sentence was its
   node's only citation of it (slice 5), and then only after `scripts/blueprint-deps.py --label`
@@ -133,31 +133,19 @@ corrected by *Verified at the open* below.
   `a` and `b` coincide", with no claim about the closure `X₀`. The construction needs only
   pairwise independent hub normals and nonzero points on the lines; it is written with
   independent normals and distinct points, as `K_{2,3}`'s is.
-- [ ] **4. Slice 4 — `pencil.tex` and `main-component.tex` point at the road map** (Opus).
-  - `pencil.tex` introduction: the sentences restating the route across chapters (from "It is the
-    case $d = 3$ of the conditioned pair" to "…gives the third") go for the pointer (decision D-f).
-  - `sec:pencil-reduction`'s lead: the KT Lemmas 4.5–4.6 sentences and the KT Theorem 4.9 paragraph
-    become the PI's one glue sentence with a pointer, and one that the cases ask neither a proper
-    rigid subgraph nor a vertex of degree two; first confirm the road map carries what is cut.
-  - `sec:pencil-main-component-route`: keep the lifting idea; the route sentences the road map
-    carries go for a pointer.
-  - `main-component.tex` introduction: the first paragraph's route sentences (`\Cref{sec:pencil-d}`
-    runs the argument … needs a further argument) go for one pointer; the notation list and the
-    section guide stay.
-  - **The fold** (the PI, design doc §1, with the coordinator's slice-number correction beside
-    it). Delete `thm:pencil-x0-generic-attains` (its statement is the coverage's second claim, its
-    pin `Graph.IsX0Graph.x0Attains` already on `thm:pencil-x0-coverage`; no node `\uses` it) with
-    its lead ("We close with the main theorem …"), keeping anything there the road map lacks.
-    Repoint every citation of it tree-wide to `thm:pencil-x0-coverage`: at HEAD `47116a52`,
-    `main-component.tex`:7 and :150 (introduction and section guide), `pencil.tex`:1006
-    (`sec:pencil-main-component-route`), `intro.tex`:328, and the one Lean docstring,
-    `Graph.IsX0Graph.x0Attains`'s in `Pencil/MainComponent/CoverageTheoremS.lean` (comment only).
-    `pencil-d.tex`, named in the PI's option text, has none at HEAD; grep again at the slice.
-    Retitle `sec:main-component-statements` again, as "and the main theorem" no longer fits once
-    the theorem goes (D-i; label kept). Gates beyond slice 1's: the deletion gate (grep the label
-    tree-wide), the moved-pin gate (`scripts/check-docstring-labels.py` diffed against the
-    parent), and a foreground `lake build` for the docstring edit.
-  - **Gates** as slice 1.
+- [x] **4. Slice 4 — `pencil.tex` and `main-component.tex` point at the road map, and the fold**
+  (Opus; the fold at the PI's word, design doc §1). Each cut sentence checked against
+  `sec:pencil-roadmap` first; it carries all of them. `pencil.tex`: the introduction's route
+  sentences go (slice 1's pointer stays); `sec:pencil-reduction`'s KT 4.5–4.6 sentences and 4.9
+  paragraph become one glue sentence, the reduction plays only the role of KT 4.9's outer
+  induction, its two steps' counterparts in B (pointer), after the kept "None of them asks …";
+  `sec:pencil-main-component-route` keeps the lifting idea, its route sentences one pointer.
+  `main-component.tex`'s introduction: one pointer, keeping the idea's phrase. The fold:
+  `thm:pencil-x0-generic-attains` and its lead deleted (the lead's two facts are the road map's);
+  citations repointed to `thm:pencil-x0-coverage`, except the section guide's "ends with the main
+  theorem" sentence, which goes (the guide cites the coverage already), and `intro.tex`'s, merged
+  with its existing coverage citation; the docstring of `Graph.IsX0Graph.x0Attains` names the
+  coverage only. `sec:main-component-statements` retitled *Nondegeneracy* (label kept).
 - [ ] **5. Slice 5 — `pencil-d.tex`** (Opus).
   - The introduction gains the pointer; its section guide and the polar paragraph stay.
   - `sec:pencil-d-reduction`'s `d = 3` sentences per decision D-b; the commit message lists each
@@ -182,14 +170,13 @@ corrected by *Verified at the open* below.
 
 ## Blockers / open questions
 
-None. (The duplicate theorem slice 2 left is settled: the PI chose the fold, design doc §1; it is
-item 4's.)
+None.
 
 ## Hand-off / next phase
 
-The next concrete commit is *Current state*'s: slice 4, whole, with the fold, at the Opus rung (the
-PI: Opus throughout). Then slice 5, then the close, which closes Phase 43; ORIGAMI opens after it,
-with the PI.
+The next concrete commit is *Current state*'s: slice 5, `pencil-d.tex`, whole, at the Opus rung
+(the PI: Opus throughout). Then the close, which closes Phase 43; ORIGAMI opens after it, with the
+PI.
 
 ## Decisions made during this phase
 
@@ -206,7 +193,7 @@ remark unpinned, open now) are design doc §1. The open settled EXPO's small ite
 - **D-c. The main-component statements go** (the PI, design doc §1, the 43d coordinator's session;
   the open had kept them). Slice 2 removed them with their node and what only they used (item 2).
   `thm:pencil-x0-generic-attains` kept its attaining claim alone, the coverage's second claim
-  under the same pin; at the PI's later word (design doc §1) slice 4 folds it into
+  under the same pin; at the PI's later word (design doc §1) slice 4 folded it into
   `thm:pencil-x0-coverage`, as the every-dimension chapter has one node for that claim.
 - **D-d. The KT Theorem 4.9 correspondence goes in the road map,** with Cases I–III, since it spans
   A and B and only the road map covers both; `sec:pencil-reduction` keeps the PI's one glue
@@ -229,9 +216,10 @@ remark unpinned, open now) are design doc §1. The open settled EXPO's small ite
   reaches `thm:pencil-reduction` or A's cases; B reaches nothing of C. Shared lemmas in A's
   subsection: `lem:pencil-contraction-deficiency` (A's case (iv), B's contractions) and
   `lem:pencil-cut-nondegeneracy` (A's cut case; C's cut-edge step cites its construction).
-- **D-i. Slice 2's wording.** `sec:main-component-statements` is retitled *Nondegeneracy, and the
-  main theorem*, and `sec:pencil-main-component-route` *Lifting planar pictures, and the theorem*;
+- **D-i. Slices 2 and 4's wording.** `sec:main-component-statements` is retitled *Nondegeneracy*
+  (slice 4, after the fold), and `sec:pencil-main-component-route` *Lifting planar pictures, and
+  the theorem*;
   both labels kept, as renaming one would touch ten Lean module headers for an internal name.
   `lem:pencil-d-distinct-statement` keeps its label under a reworded title, and the prose calls its
   content an adjacent-distinct realization of the whole multigraph. `intro.tex` and the README keep
-  Phase 39's reduction as history, in words. The fold retitles the first subsection again (item 4).
+  Phase 39's reduction as history, in words.

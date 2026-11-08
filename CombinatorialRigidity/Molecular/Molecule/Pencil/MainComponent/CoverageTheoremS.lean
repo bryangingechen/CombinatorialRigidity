@@ -391,9 +391,9 @@ theorem _root_.Graph.IsX0Graph.x0Reduces {G : Graph α β} (hG : G.IsX0Graph) :
   push Not at hrig
   exact hG.x0Reduces_of_sparse h2c htec hcyc hrig
 
-/-- **The general configuration attains** (`thm:pencil-x0-coverage`, and
-`thm:pencil-x0-generic-attains`): over an infinite field, the general configuration of every graph
-satisfying the standing hypotheses (simple and connected, of minimum degree at least two) attains,
+/-- **The general configuration attains** (`thm:pencil-x0-coverage`, its second claim): over an
+infinite field, the general configuration of every graph satisfying the standing hypotheses
+(simple and connected, of minimum degree at least two) attains,
 by the induction on the number of bodies (`Graph.X0Attains.of_isX0Graph_of_x0Reduces`,
 `thm:pencil-x0-reduction-attains`) with the structural coverage as its hypothesis. -/
 theorem _root_.Graph.IsX0Graph.x0Attains [Infinite K] {G : Graph α β} (hG : G.IsX0Graph) :

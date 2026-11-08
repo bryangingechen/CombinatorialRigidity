@@ -35,14 +35,7 @@ conditioned pair. Katoh and Tanigawa's induction statement likewise asks
 for nonparallel realizations (KT Theorem~5.5).
 \Cref{sec:pencil-main-component-route} sketches how
 \cref{sec:main-component} builds pencil realizations by lifting pictures
-of $G$ in the plane, and proves the theorem. It is the case $d = 3$ of the
-conditioned pair in every dimension $d \ge 3$
-(\cref{cor:pencil-d-conditioned-pair}). There the reduction gives the
-first two conjuncts (\cref{sec:pencil-d-reduction}), and at a simple
-two-edge-connected multigraph it uses an adjacent-distinct realization of
-the whole multigraph in dimension $d$, from the lifted configurations
-(\cref{lem:pencil-d-distinct-statement}). A nondegenerate realization in
-dimension three, lifted, gives the third (\cref{thm:pencil-d-generic}).
+of $G$ in the plane, and proves the theorem.
 
 Two parts of the chapter are not used in the proof of
 \cref{thm:pencil-realization-theorem}. \Cref{sec:pencil-duality} shows that the
@@ -697,25 +690,12 @@ We therefore run the induction on every multigraph. Its cases are
 structural: a loop, at most two bodies, a cut edge, parallel edges, and
 a simple two-edge-connected multigraph (\cref{thm:pencil-reduction}).
 None of them asks for a proper rigid subgraph or a vertex of degree two.
-Katoh--Tanigawa need a vertex of degree two when there is no proper
-rigid subgraph, and they find one by an edge count that uses minimality
-(KT Lemmas~4.5 and~4.6, pp.~663--664). We settle a simple
-two-edge-connected multigraph by the main-component induction of
-\cref{sec:main-component}, applied to the whole graph. Its proof finds
-the bodies of degree two by a count of its own. In that proof a graph
-with no planar-rigid set is sparse, and a sparse graph has at least four
-bodies of degree two (\cref{lem:pencil-x0-sparse-count}). In dimension
-$d$ the edges along the chains of such bodies are counted as Katoh and
-Tanigawa count them in the proof of their Lemma~4.6
-(\cref{lem:pencil-d-chain-count}).
-
-The reduction therefore plays the role of the induction of KT
-Theorem~4.9 (pp.~666--667), but not of its two steps, contracting a
-proper rigid subgraph and splitting off at a vertex of degree two. These
-steps have their counterparts in the main-component induction:
-contraction at a proper rigid set, and the steps at chains of bodies of
-degree two (\cref{sec:main-component-coverage}). The statement the
-induction proves is the following.
+So the reduction plays the role only of the outer induction of KT
+Theorem~4.9 (pp.~666--667), whose two steps, contracting a proper rigid
+subgraph and splitting off at a vertex of degree two, have their
+counterparts in the main-component induction that settles the last case
+(\cref{sec:pencil-roadmap}). The statement the induction proves is the
+following.
 
 \begin{definition}[Pencil realization at the deficiency rank]
   \label{def:pencil-rank-hypothesis}
@@ -977,14 +957,8 @@ conditions.
 This subsection sketches the idea of \cref{sec:main-component}. It then
 proves the pencil realization theorem, as the case $d = 3$ of the
 conditioned pair in every dimension
-(\cref{cor:pencil-d-conditioned-pair}). Its reduction
-(\cref{sec:pencil-d-reduction}) uses, at a simple two-edge-connected
-multigraph, an adjacent-distinct realization of the whole multigraph in
-dimension $d$ from the lifted configurations
-(\cref{lem:pencil-d-distinct-statement}). At a loopless
-two-edge-connected multigraph that is not simple, it contracts two
-parallel edges (\cref{lem:pencil-d-nonsimple-case}), as Katoh and
-Tanigawa do (KT Lemma~6.2).
+(\cref{cor:pencil-d-conditioned-pair}). The road map
+(\cref{sec:pencil-roadmap}) shows where the idea enters that proof.
 
 The idea of \cref{sec:main-component} is to build pencil realizations
 by lifting planar pictures.
@@ -1009,17 +983,11 @@ of the configuration space (\cref{rem:pencil-x0-main-component}). In
 \cref{sec:main-component} we show that, at every simple connected
 multigraph whose bodies all have degree at least two, a general
 configuration of the main component has the deficiency rank
-(\cref{thm:pencil-x0-generic-attains}). The proof is a strong induction
+(\cref{thm:pencil-x0-coverage}). The proof is a strong induction
 on the number of bodies. A lifted configuration at the deficiency rank
 is an adjacent-distinct pencil realization, in every dimension
-(\cref{lem:pencil-d-config-realization}). This gives the reduction its
-case at a simple two-edge-connected multigraph. Nondegenerate
-realizations do not follow in this way. When two pencil hubs have three
-common neighbours, as in $K_{2,3}$, no configuration over a general
-picture is nondegenerate (\cref{lem:pencil-x0-two-hubs-obstruction}).
-The third conjunct of the theorem is instead the case $d = 3$ of the
-generic conjunct in every dimension (\cref{thm:pencil-d-generic}), which
-lifts a general realization in dimension three.
+(\cref{lem:pencil-d-config-realization}). Nondegenerate realizations do
+not follow in this way, as the road map explains at $K_{2,3}$.
 
 \begin{theorem}[The pencil realization theorem]
   \label{thm:pencil-realization-theorem}
