@@ -11,8 +11,9 @@ word, §1; `notes/Phase43d.md`): the road map of the proof, in five slices, and 
 Phase 43. Slice 1, the road map, landed; slice 2, inserted at the PI's word (§1, the 43d
 coordinator's session), removed the two main-component statements; slice 3 wrote the flatness
 remark; slice 4 pointed two chapters at the road map and folded
-`thm:pencil-x0-generic-attains` into the coverage (§1, the PI's later word). Next: slice 5, the
-pointers in the every-dimension chapter.
+`thm:pencil-x0-generic-attains` into the coverage (§1, the PI's later word); slice 5 pointed the
+every-dimension chapter at the road map and cut its reduction's `d = 3` proof comparisons.
+Next: the close.
 
 This file is the phase's entry point: the target (§0), the PI's decisions (§1, verbatim), the
 layers by stable code (§2) and the open questions (§3). The recon record stays in

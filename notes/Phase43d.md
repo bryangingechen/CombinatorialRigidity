@@ -7,19 +7,17 @@ where the road map goes, how much intuition it carries and how flatness is treat
 slice 2 the removal of the two main-component statements (inserted at the PI's word, design doc
 §1; the one slice with Lean code), slice 3 the flatness remark (`main-component.tex`), slices 4
 and 5 point the chapters at the road map, slice 4 with the PI's fold of a duplicate theorem, then
-the close, which is Phase 43's close too. Slices 1–4 landed; the next concrete commit is slice 5,
-pinned below.
+the close, which is Phase 43's close too. Slices 1–5 landed; the next concrete commit is the
+close (checklist item 6).
 
 ## Current state
 
-**Next concrete commit: slice 5, `pencil-d.tex` points at the road map, and its reduction's
-`d = 3` sentences are judged by D-b** (checklist item 5). Mode: a structural edit of an existing
-chapter; it adds, restates and deletes no dep-graph node. A `\uses` edge changes only as item 5
-pins (`lem:pencil-d-cut-case`), and then the deletion gate applies to that edge
-(`CombinatorialRigidity/CLAUDE.md` *Forward-mode slices*). Each slice re-reads every node its
-prose cites. Slice 4 did not touch `pencil-d.tex`, so item 5's line numbers still hold. Plan:
-`notes/Phase43-design.md` §2, EXPO (the 43a read's inputs), corrected by *Verified at the open*
-below.
+**Next concrete commit: the close of 43d, and with it of Phase 43** (checklist item 6), at the
+Opus rung: `PHASE-BOUNDARIES.md`'s full-phase close, on top of the per-commit checklists. The
+end-to-end re-read covers the prose that slices 1–5 touched in the three chapters. The dispatch
+log is the coordinator's to groom. If the close does not fit one commit, the re-read and the
+ledger's Phase-43 section are the first part. *Verified at the open* below stays the reference
+for that re-read (I1–I4, (F), the degeneracy in one direction).
 
 **Verified at the open (HEAD `172b5b9f`).**
 - **KT's pages**, read in `.refs/katoh-tanigawa-2011-molecular-conjecture.pdf`: §1.1 *Road Map of
@@ -84,7 +82,7 @@ below.
   again, design doc §1). Elsewhere two labels are added, `sec:pencil-roadmap` and
   `rem:pencil-x0-flatness` (both landed). A `\uses` edge changes only where a cut sentence was its
   node's only citation of it (slice 5), and then only after `scripts/blueprint-deps.py --label`
-  shows the Lean does not reach it.
+  shows the Lean does not reach it (slice 5: it does, so the one candidate edge stayed).
 - **One home for the route.** The road map carries the route across the three chapters and the KT
   correspondence; the chapters keep their section guides and point at it (the PI, Q1).
 - **Every claim cites a landed node or a KT page.** An intuition is written only as far as the nodes
@@ -94,70 +92,23 @@ below.
 
 ## Lemma checklist
 
-- [x] **1. Slice 1 — the road map** (`pencil.tex`; Opus). `\subsection{Road map of the proof}`,
-  `sec:pencil-roadmap`, after the introduction, which gains one sentence naming it (its other route
-  sentences are slice 4's). KT pp. 649–650 cited once; the shape and the three parts (A with
-  `K₄ ⊃ C₄` and KT Theorem 4.9's role, D-d; B with the steps, the coverage, the base through
-  Jackson–Jordán, KT Cases I–III and Lemmas 4.5–4.6, D-e; C with `K_{2,3}` and `K₄`), the
-  dependencies (D-h), no induction on `d` (a choice), and I1–I4 as four short paragraphs, I3
-  without its panel sentence (slice 3). About 230 TeX lines, over the pinned ~200. KT's II/III split:
-  no step of `def:pencil-x0-reduces` (nor of the `d ≥ 4` ear steps) splits on zero or positive
-  deficiency; only the search for a core does, which the road map says.
-- [x] **2. Slice 2 — the main-component statements go** (Lean and the four chapters; Opus; at the
-  PI's word, design doc §1, D-c). Deleted: `X0Dist`, `X0Gen` (`Pencil/X0.lean` whole), `x0Dist`,
-  `x0Gen`, and three `d = 3` lemmas orphaned with them, each with a kept every-dimension form:
-  `Graph.X0Attains.of_twoEdgeConnected`, `Graph.X0Attains.hasDistinctPencilRealization`,
-  `Graph.IsAdmissiblePicture.hasDistinctPencilRealization`. Nodes deleted:
-  `def:pencil-main-component-statements`, `lem:pencil-x0-distinct-statement`,
-  `lem:pencil-x0-attains-distinct`. Restated to their remaining pins: `thm:pencil-x0-generic-attains`
-  (the attaining claim), `thm:pencil-x0-coverage` (without its two-edge-connected corollary),
-  `thm:pencil-x0-main-component` (without the distinct realization) and
-  `lem:pencil-config-distinct-realization` (without its rank clause). The prose mentions reworded
-  (D-i); the main results' statements and axioms unchanged.
-- [x] **3. Slice 3 — the flatness remark** (`main-component.tex`; Opus).
-  `rem:pencil-x0-flatness`, *Planar-rigid sets over a main picture*, after the two `K_{2,3}`
-  paragraphs: (F) at `d = 3` with its proof, steps (1)–(4) as pinned, each checked against the
-  cited node's statement (the by-hand step runs on `lem:pencil-polynomial-section` at the
-  non-roots of `A·D·P_W`, `A` admissible for `G`, `P_W` the equality's polynomial for `G[W]`);
-  the degeneracy, one direction only, for every pencil realization with the configuration points
-  as concurrency points; the two-hubs lemma as its instance over a main picture; the doubled
-  triangle (singleton count by hubs in `Z`, feasibility construction checked by hand); C's ear
-  step and the pendant triangle; one `d ≥ 4` sentence. The road map's C part and I3 cite it.
-  Written otherwise than pinned, no pinned step failing: the pair is "two pencil hubs adjacent or
-  with a common neighbour" (the same condition, no new term in the road map); at `d ≥ 4` the
-  points of `W` *lie in* one three-dimensional subspace, not *span* it (spanning needs three
-  non-collinear picture points in `W`, which a main picture of `G` is not shown to give); the
-  `K_{2,3}` paragraph proves `def₂ = 0` for the five bodies by `lem:deficiency-singleton-bound`
-  (every nonempty set of them has nonnegative singleton value in `K_{2,3}`) rather than citing
-  `rem:pencil-x0-theta`, which only asserts it; C's step is "over a main picture the panels of
-  `a` and `b` coincide", with no claim about the closure `X₀`. The construction needs only
-  pairwise independent hub normals and nonzero points on the lines; it is written with
-  independent normals and distinct points, as `K_{2,3}`'s is.
-- [x] **4. Slice 4 — `pencil.tex` and `main-component.tex` point at the road map, and the fold**
-  (Opus; the fold at the PI's word, design doc §1). Each cut sentence checked against
-  `sec:pencil-roadmap` first; it carries all of them. `pencil.tex`: the introduction's route
-  sentences go (slice 1's pointer stays); `sec:pencil-reduction`'s KT 4.5–4.6 sentences and 4.9
-  paragraph become one glue sentence, the reduction plays only the role of KT 4.9's outer
-  induction, its two steps' counterparts in B (pointer), after the kept "None of them asks …";
-  `sec:pencil-main-component-route` keeps the lifting idea, its route sentences one pointer.
-  `main-component.tex`'s introduction: one pointer, keeping the idea's phrase. The fold:
-  `thm:pencil-x0-generic-attains` and its lead deleted (the lead's two facts are the road map's);
-  citations repointed to `thm:pencil-x0-coverage`, except the section guide's "ends with the main
-  theorem" sentence, which goes (the guide cites the coverage already), and `intro.tex`'s, merged
-  with its existing coverage citation; the docstring of `Graph.IsX0Graph.x0Attains` names the
-  coverage only. `sec:main-component-statements` retitled *Nondegeneracy* (label kept).
-- [ ] **5. Slice 5 — `pencil-d.tex`** (Opus).
-  - The introduction gains the pointer; its section guide and the polar paragraph stay.
-  - `sec:pencil-d-reduction`'s `d = 3` sentences per decision D-b; the commit message lists each
-    with its verdict. After slice 2: :4200–4202 and :4218–4228 (keep; slice 2 cut that paragraph's
-    other `d = 3` clause with its node); :4298–4304, :4358, :4385, :4422, :4482–4485, :4559–4566,
-    :4667–4674, :4725–4734 (judge by the rule). `lem:pencil-d-cut-case`'s
-    proof `\uses` `lem:pencil-cut-nondegeneracy` only for its comparison sentence: drop the edge
-    only if that sentence goes and `blueprint-deps.py --label lem:pencil-d-cut-case` shows no reach.
-  - Read against the road map, change only where they duplicate it: `sec:pencil-d-coverage`'s lead,
-    the remark after `thm:pencil-d-generic`'s proof (D1's; keep). The end of that proof now names
-    the third conjunct of `thm:pencil-realization-theorem` (slice 2).
-  - **Gates** as slice 1, plus `blueprint-deps.py` if a `\uses` changed.
+- [x] **1. Slice 1 — the road map** (`pencil.tex`, `sec:pencil-roadmap`; Opus): parts A, B and C,
+  KT pp. 649–650 with Cases I–III and Lemmas 4.5–4.6 (D-d, D-e), the dependencies (D-h), no
+  induction on `d` (a choice), I1–I4; about 230 TeX lines.
+- [x] **2. Slice 2 — the main-component statements go** (Lean and four chapters; Opus; the PI,
+  D-c): `X0Dist`, `X0Gen`, `x0Dist`, `x0Gen` and three `d = 3` lemmas orphaned with them; three
+  nodes deleted, four restated to their remaining pins (D-i); main results and axioms unchanged.
+- [x] **3. Slice 3 — the flatness remark** (`main-component.tex`, `rem:pencil-x0-flatness`; Opus):
+  (F) at `d = 3` with its proof, the degeneracy in one direction, the two-hubs lemma and the doubled
+  triangle, C's ear step, one `d ≥ 4` sentence; what it writes otherwise than pinned: `17692c54`.
+- [x] **4. Slice 4 — two chapters point at the road map, and the fold** (Opus; the PI, D-c):
+  `pencil.tex` and `main-component.tex`; `thm:pencil-x0-generic-attains` folded into
+  `thm:pencil-x0-coverage`; `sec:main-component-statements` retitled *Nondegeneracy* (D-i).
+- [x] **5. Slice 5 — `pencil-d.tex`** (Opus): the pointer; `sec:pencil-d-reduction` by D-b, each
+  sentence's verdict in its commit message (readings and "at `d = 3` this is …" kept, every "the
+  dimension enters" passage cut); the coverage lead's I4 sentence a pointer. The
+  `lem:pencil-cut-nondegeneracy` edge stays: the cut case's pin reaches it
+  (`exists_contragredient_linearEquiv`, by `blueprint-deps.py`).
 - [ ] **6. Close (43d, and with it Phase 43).** `PHASE-BOUNDARIES.md`'s full-phase close: ROADMAP
   row 43 to ✓ and §43 to one paragraph; README, `home_page/index.md` (row 43) and `intro.tex`
   re-summarized, the road map linked from `intro.tex`; `formalization.yaml`'s scope, and the
@@ -174,9 +125,8 @@ None.
 
 ## Hand-off / next phase
 
-The next concrete commit is *Current state*'s: slice 5, `pencil-d.tex`, whole, at the Opus rung
-(the PI: Opus throughout). Then the close, which closes Phase 43; ORIGAMI opens after it, with the
-PI.
+The next concrete commit is *Current state*'s: the close (item 6), at the Opus rung (the PI: Opus
+throughout). It closes Phase 43; ORIGAMI opens after it, with the PI.
 
 ## Decisions made during this phase
 
@@ -189,7 +139,7 @@ remark unpinned, open now) are design doc §1. The open settled EXPO's small ite
 - **D-b. `sec:pencil-d-reduction`'s `d = 3` sentences:** keep one that states a route fact (what the
   case `d = 3` gives, or which node it is) or reads a polar object at `d = 3` in one clause; cut one
   that compares a proof with a `d = 3` proof ("the dimension enters in … places"), since 43b left
-  no `d = 3` proof of these cases.
+  no `d = 3` proof of these cases. Slice 5 applied it (item 5).
 - **D-c. The main-component statements go** (the PI, design doc §1, the 43d coordinator's session;
   the open had kept them). Slice 2 removed them with their node and what only they used (item 2).
   `thm:pencil-x0-generic-attains` kept its attaining claim alone, the coverage's second claim
