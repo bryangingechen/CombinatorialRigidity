@@ -5,20 +5,26 @@
 2026-11-08). Slice 1 (NORMAL) landed: the reduction on five structural cases, beside its one
 caller, and the minimum-degree lemma in a new appendix of further results. SPRIME's pin landed,
 with a liveness walk that cuts SPRIME into slices A (two new lemmas), B (S′) and C (the
-deletions). Slices A and B landed: Theorem S′ at `d = 3`, its proof citing the maximal-rigid-core
-lemma as the PI asked, and the `d = 3` core bound deleted, with the main results unchanged. Next:
-slice C, then the sub-phase's last commit. The next concrete commit is SPRIME slice C, item 5.
+deletions). Slices A, B and C landed: Theorem S′ at `d = 3`, its proof citing the maximal-rigid-core
+lemma as the PI asked, the `d = 3` core bound deleted, and the two steps S′ no longer uses deleted
+with what only they used, with the main results unchanged. The next concrete commit is the
+sub-phase's last, item 6.
 
 ## Current state
 
-**Next concrete commit: SPRIME slice C, checklist item 5** (pure deletion: 13 declarations, three
-files, eight nodes and `sec:main-component-splitoff`; Lean, blueprint and docs). Slice B is in the
-tree: `Graph.ChainUsable` on S′'s three conditions, `Graph.X0Reduces` with eleven constructors, and
-`Graph.IsX0Graph.exists_additiveCore` on S′'s proof (`CoverageTheoremS.lean`); twelve declarations
-and five nodes went. Its orphans are slice C's: the 13 declarations (no Lean user; still compiled)
-and `thm:pencil-x0-open-ear-two` and `thm:pencil-x0-splitoff`, which no node uses. Mode:
-structural edit, no new chapter and no red target node; each slice reads and restates the nodes it
-reaches (`CombinatorialRigidity/CLAUDE.md` *Forward-mode slices*).
+**Next concrete commit: the sub-phase's last, item 6** (`PHASE-BOUNDARIES.md`'s sub-phase
+checklist; below). Slice C is in the tree: the open ear with two interior bodies and the split-off
+step are gone from the Lean (`MainComponent/SplitOff.lean` and the two mirror files whole, and
+the six declarations of the walk's slice-C set outside them), from the blueprint (eight nodes
+and `sec:main-component-splitoff`, 396 lines) and from the prose that named them. The coverage's
+steps are those of `def:pencil-x0-reduces`: equal deficiencies, cut vertex, chain of bridges,
+cycle, open ears (`k ≥ 5`, `3`, `4`, `2` at non-adjacent ends, `1`), two contractions.
+Mode: structural edit, no new chapter and no red target node.
+
+**Loose ends for item 6.** `ROADMAP.md`'s phase-40 paragraph still says "the cut, bridge, ear,
+split-off and contraction steps" (a record of what 40 built; item 6 reads it with the §43 detail).
+`notes/pencil-natural/sprime_walk.py` and `SprimeSpike.lean` are banked records and still name
+the deleted declarations; the walk can no longer sweep slice C.
 
 **After SPRIME's pin.** `notes/pencil-natural/SprimeSpike.lean` proves NEW-1, NEW-2 and S′ with no
 `sorry`, and re-checks every landed consumer in the kernel against S′ and the eleven-clause
@@ -148,7 +154,7 @@ standard three).
     and "core" in dimension `d`), `sec:pencil-d-chains`' lead (:2174–2180),
     `thm:pencil-d-chain-or-core`'s `d = 3` paragraph, and :4122–4125.
   - About −360 Lean declaration lines and +135 for S′'s proof; TeX −126 lines of nodes.
-- [ ] **5. SPRIME slice C — the two steps and what only they use** (pure deletion: 13
+- [x] **5. SPRIME slice C — the two steps and what only they use** (landed 2026-11-08; pure deletion: 13
   declarations, no surviving user after slice B, no orphan).
   - *Lean.* Delete the files `MainComponent/SplitOff.lean`, `Mathlib/Data/Matrix/Mul.lean` and
     `Mathlib/Algebra/MvPolynomial/Polynomial.lean`, and `Graph.X0Attains.of_openEar_two`
@@ -181,9 +187,8 @@ standard three).
 
 ## Hand-off / next phase
 
-The next concrete commit is *Current state*'s: SPRIME slice C, item 5 (deletions only, one
-commit; its lists are the walk's slice-C set, sweep and section (4)). Then item 6, the sub-phase's
-last commit, and EXPO's open at the PI's word.
+The next concrete commit is *Current state*'s: item 6, the sub-phase's last commit (its loose ends
+are listed there). Then EXPO's open, at the PI's word.
 
 ## Decisions made during this phase
 
@@ -206,6 +211,13 @@ choices above.
   the walk, its edits on deleted nodes skipped and its sweep empty, so slice B swept by a
   boundary-checked grep; the orphans also list NEW-1 and NEW-2, an artefact (the after-world reads
   S′ as the spike's primed form). `#sprime_mapped_same` now reports a deleted name.
+- **Slice C (item 5): `rem:pencil-x0-theta`'s `k = 2` step.** With the open ear with two interior
+  bodies gone, the only `k = 2` ear step is `thm:pencil-x0-open-ear-two-orbit`, which needs
+  non-adjacent ends and the merged-deficiency condition, so the remark says the induction along the
+  ear does not cover every `θ`-graph with `k = 2` and sends it to the coverage paragraph (a usable
+  chain, or a core, `θ(1,3,3)` at a core). The old `s ≤ 6` argument went with its step. Also reworded:
+  the short-ears section (now `k = 3, 4`), the two lead lists, and "in one step no two open
+  conditions need to meet" (the cycle alone). Slice C swept by boundary-checked grep after the walk.
 - **SPRIME's pin (item 2).** S′ holds as Lean at `d = 3` in the folded form, and every consumer
   re-checks in the kernel; §2's route held at every step. The walk confirms §2's deletions and adds
   four declarations and `lem:pencil-weighted-lifting-system-local`; the bounds die with S′ (B), not

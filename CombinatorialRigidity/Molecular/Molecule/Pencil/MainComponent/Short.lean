@@ -8,24 +8,18 @@ module
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.EarGen
 
 /-!
-# Open ears with two, three or four interior bodies
+# Open ears with three or four interior bodies
 
 The steps of the induction on the general configuration at an open ear `a − x 0 − ⋯ − x (k − 1) − b`
-on `V₁` with two, three or four interior bodies, whose ends may be adjacent
-(`thm:pencil-x0-open-ear-two`, `thm:pencil-x0-open-ear-three`, `thm:pencil-x0-open-ear-four`,
-`sec:main-component-short`). An ear is given as in `MainComponent/Ear.lean`. The steps follow the
-scheme of `sec:main-component-cut` (`MainComponent/Cut.lean`), with the ear rank formula
+on `V₁` with three or four interior bodies, whose ends may be adjacent
+(`thm:pencil-x0-open-ear-three`, `thm:pencil-x0-open-ear-four`, `sec:main-component-short`). An ear
+is given as in `MainComponent/Ear.lean`. The steps follow the scheme of `sec:main-component-cut`
+(`MainComponent/Cut.lean`), with the ear rank formula
 (`BodyHingeFramework.finrank_span_rigidityRows_ear_eq`, `lem:block-rank-ear`) for the count: a
 configuration over a main picture of `G`, at which `G[V₁]` has its target, has rank at least the
 target of `G` once `dim(ρ + Λ) ≥ k + 1 + def₃(G[V₁]) − def₃(G)`, the inequality `(⋆)` of the
 section, where `ρ` is the space of relative screws of `a` and `b` in `G[V₁]` and `Λ` the span of the
 joins of the ear.
-
-With two interior bodies, given `def₃(G[V₁]) ≤ def₃(G)`, three independent joins of the ear give
-`(⋆)`. They are independent at one flat configuration, three joins of the closed hexagon of
-`lem:pencil-chain-span-certificates`, whose picture need not be admissible, and the heights `0` lie
-in every `L_G(q)`: `Graph.X0Attains.of_openEar_of_cert` (`MainComponent/Ear.lean`) does the rest, as
-at five or more interior bodies.
 
 With three or four interior bodies no bound on the deficiencies is assumed. The step also uses
 `G″ = G.splitOff (x 1) (x 0) (x 2) (e 1)`, `G` with its second interior body suppressed and the
@@ -71,9 +65,6 @@ holds, unlike the rank bound (`exists_mvPolynomial_le_finrank_sup_span_pointJoin
 
 ## Main results
 
-* `Graph.X0Attains.of_openEar_two`: `thm:pencil-x0-open-ear-two`, if `G` satisfies the standing
-  hypotheses, with an open ear on `V₁` with two interior bodies, its ends possibly adjacent, and
-  `def₃(G[V₁]) ≤ def₃(G)`, the general configuration of `G` attains when that of `G[V₁]` does.
 * `Graph.X0Attains.of_openEar_four` and `Graph.X0Attains.of_openEar_three`:
   `thm:pencil-x0-open-ear-four` and `thm:pencil-x0-open-ear-three`, the same at four and at three
   interior bodies, with no bound on the deficiencies, when the general configurations of `G[V₁]` and
@@ -97,75 +88,6 @@ open scoped Graph
 namespace CombinatorialRigidity.Molecular
 
 variable {K : Type*} [Field K] {α β : Type*}
-
-/-! ## The open ear with two interior bodies (`thm:pencil-x0-open-ear-two`) -/
-
-/-- **An open ear with two interior bodies** (`thm:pencil-x0-open-ear-two`). Let `G` satisfy the
-standing hypotheses, with an open ear `a − x 0 − x 1 − b` on `V₁` whose ends may be adjacent, and
-let `def₃(G[V₁]) ≤ def₃(G)`; `Graph.deficiency_induce_le_of_ear_of_merge`
-(`lem:deficiency-ear-merge`) gives it when some partition of `V₁` attaining `def₃(G[V₁])` puts `a`
-and `b` in one part. If the general configuration of `G[V₁]` attains, so does that of `G`.
-
-Proof. `Graph.X0Attains.of_openEar_of_cert`, with the three joins of the ear. The heights `0` lie in
-every `L_G(q)`, and at them the joins are independent at one picture (`certPicture`), which puts the
-points of `a`, `x 0`, `x 1` and `b` at `Y₄`, `Y₅`, `Y₀` and `Y₁`, and every other body's at `Y₄`:
-three joins of the closed hexagon (`linearIndependent_pointJoin_certHexagon`). Independence is open
-in the picture, then in the heights, and the ear rank formula adds at least `5 · 3 + 3 − 6 = 12` to
-the rank, no less than the growth `12 − def₃(G) + def₃(G[V₁])` of the target. -/
-theorem _root_.Graph.X0Attains.of_openEar_two [Infinite K] [Finite α] [Finite β]
-    {G : Graph α β} (hG : G.IsX0Graph) {V₁ : Set α} {x : Fin 2 → α} {a b : α}
-    {e : Fin 3 → β} (hcover : V(G) = V₁ ∪ Set.range x) (hinj : Function.Injective x)
-    (hxV₁ : ∀ i, x i ∉ V₁) (ha : a ∈ V₁) (hb : b ∈ V₁) (hab : a ≠ b)
-    (hpath : ∀ i : Fin 3,
-      G.IsLink (e i) (pathVertex a x b i.castSucc) (pathVertex a x b i.succ))
-    (hsep : ∀ f u w, G.IsLink f u w → (∀ i, f ≠ e i) → u ∈ V₁ ∧ w ∈ V₁)
-    (h₁ : (G.induce V₁).X0Attains K)
-    (hdef : (G.induce V₁).deficiency 3 ≤ G.deficiency 3) : G.X0Attains K := by
-  classical
-  have hax : ∀ i, x i ≠ a := fun i h => hxV₁ i (h ▸ ha)
-  have hbx : ∀ i, x i ≠ b := fun i h => hxV₁ i (h ▸ hb)
-  have x01 : x 0 ≠ x 1 := fun h => absurd (hinj h) (by decide)
-  -- the three ear links `a x 0, x 0 x 1, x 1 b`
-  set u3 : Fin 3 → α := ![a, x 0, x 1]
-  set v3 : Fin 3 → α := ![x 0, x 1, b]
-  have hl3 : ∀ i, G.IsLink (e (id i)) (u3 i) (v3 i) := by
-    intro i
-    fin_cases i
-    · exact hpath 0
-    · exact hpath 1
-    · exact hpath 2
-  -- the flat certificate: `a, x 0, x 1, b` at `Y₄, Y₅, Y₀, Y₁`, at the heights `0`
-  set lab : α → Fin 6 := fun w => if w = x 0 then 5 else if w = x 1 then 0 else if w = b then 1
-    else 4 with hlabdef
-  set q₀ : α × Fin 2 → K := certPicture lab with hq₀def
-  have hpt : ∀ w, pencilConfigPoint q₀ 0 w = certPt (lab w) := fun w => by
-    rw [hq₀def]
-    exact pencilConfigPoint_certPicture lab 0 w (by simp only [hlabdef]; split_ifs <;> rfl)
-  have la : lab a = 4 := by simp [hlabdef, (hax _).symm, hab]
-  have l0 : lab (x 0) = 5 := by simp [hlabdef]
-  have l1 : lab (x 1) = 0 := by simp [hlabdef, x01.symm]
-  have lb : lab b = 1 := by simp [hlabdef, (hbx _).symm]
-  have hcert : LinearIndependent K
-      (fun i => pointJoin (pencilConfigPoint q₀ 0 (u3 i)) (pencilConfigPoint q₀ 0 (v3 i))) := by
-    have heq : (fun i =>
-        pointJoin (pencilConfigPoint q₀ 0 (u3 i)) (pencilConfigPoint q₀ 0 (v3 i)))
-        = (fun i : Fin 6 =>
-          pointJoin (![certPt 0, certPt 1, certPt 2, certPt 3, certPt 4, certPt 5] i : Fin 4 → K)
-            (![certPt 1, certPt 2, certPt 3, certPt 4, certPt 5, certPt 0] i)) ∘ ![4, 5, 0] := by
-      funext i
-      fin_cases i
-      · change pointJoin (pencilConfigPoint q₀ 0 a) (pencilConfigPoint q₀ 0 (x 0)) = _
-        rw [hpt, hpt, la, l0]; rfl
-      · change pointJoin (pencilConfigPoint q₀ 0 (x 0)) (pencilConfigPoint q₀ 0 (x 1)) = _
-        rw [hpt, hpt, l0, l1]; rfl
-      · change pointJoin (pencilConfigPoint q₀ 0 (x 1)) (pencilConfigPoint q₀ 0 b) = _
-        rw [hpt, hpt, l1, lb]; rfl
-    rw [heq]
-    exact linearIndependent_pointJoin_certHexagon.comp _ (by decide)
-  refine Graph.X0Attains.of_openEar_of_cert hG le_rfl hcover hinj hxV₁ ha hb hab hpath hsep h₁
-    u3 v3 id hl3 q₀ 0 hcert (fun _ _ => Submodule.zero_mem _) ?_
-  push_cast
-  linarith
 
 /-! ## Suppressing the second interior body -/
 

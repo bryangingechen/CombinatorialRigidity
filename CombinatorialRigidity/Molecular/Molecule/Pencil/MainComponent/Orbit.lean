@@ -72,9 +72,8 @@ second stage of `sec:main-component-short`.
   general configurations of `G[V₁]` and of `G₁` attain.
 * `Graph.exists_oneEar_base`: `lem:pencil-one-ear-base`, the base configuration of a one-body ear;
   `incidencePoly` and `eval_incidencePoly`, steps of it.
-* `Graph.splitOff_oneEar`: a step of `lem:pencil-one-ear-base` and of the split-off step
-  (`MainComponent/SplitOff.lean`), suppressing the body of a one-body ear leaves `G[V₁]` with the
-  edge `ab` added.
+* `Graph.splitOff_oneEar`: a step of `lem:pencil-one-ear-base`, suppressing the body of a one-body
+  ear leaves `G[V₁]` with the edge `ab` added.
 * `exists_incidence`: `lem:pencil-one-ear-incidence`, an incidence meets two open conditions;
   `exists_dotProduct_eq_zero_ne_zero`, a step of it.
 * `splitOff_ear_two` and `splitOff_ear_two_simple`: steps of `thm:pencil-x0-open-ear-two-orbit`,
@@ -91,8 +90,7 @@ variable {K : Type*} [Field K] {α β : Type*}
 
 /-! ## Suppressing the body of a one-body ear -/
 
-/-- **Suppressing the body of a one-body ear** (a step of `lem:pencil-one-ear-base`,
-`lem:pencil-splitoff-flexes` and `thm:pencil-x0-splitoff`): if
+/-- **Suppressing the body of a one-body ear** (a step of `lem:pencil-one-ear-base`): if
 `H` has the open ear `a − x 0 − b` on `V₁`, then suppressing `x 0` and relinking its label `e 0` to
 `a − b` leaves the bodies `V₁`, keeps every link of `H[V₁]`, and grows the closed neighbourhoods of
 `a` and `b` by each other only; and every link of `H` with the label `e 0` has `x 0` as an end. -/

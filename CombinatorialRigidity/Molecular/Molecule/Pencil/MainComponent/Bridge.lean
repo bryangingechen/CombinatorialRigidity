@@ -5,19 +5,17 @@ Authors: Bryan Gin-ge Chen
 -/
 module
 
-public import CombinatorialRigidity.Mathlib.Algebra.MvPolynomial.Polynomial
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Flat
 
 /-!
 # Jackson and Jordán's equality
 
-The lemmas of `sec:main-component-jj`, and the rank along a polynomial curve of normals
-(`lem:pencil-curve-limit`, `sec:main-component-splitoff`). Let `G` be simple, with at least three
+The lemmas of `sec:main-component-jj`. Let `G` be simple, with at least three
 members in every closed neighbourhood. Jackson and Jordán's equality (`thm:pencil-jj-equality`) says
 that at a general picture the bound `dim L(q) ≥ 3 + def₂(G)` of
 `lem:pencil-lifting-space-deficiency` is an equality; over the reals it is their theorem on
 pin-collinear body-and-pin frameworks, as the section explains. With the flat rank it settles the
-case of equal deficiencies (`cor:pencil-jj-flat`), and the contraction, ear and split-off steps use
+case of equal deficiencies (`cor:pencil-jj-flat`), and the contraction and ear steps use
 it at the smaller graphs they compare with `G`.
 
 The proof draws the equality from the planar case of KT Theorem 5.6 (`thm:theorem-55-6-rows` at
@@ -57,9 +55,6 @@ its other conditions on the picture.
   `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_smul`: `lem:pencil-jj-rescale`; the first
   two also give part (2) of `lem:panel-hinge-dual-molecular`. Rescaling every body's normal by a
   nonzero scalar rescales each hinge and leaves the motions and the rank unchanged.
-* `PanelHingeFramework.finite_setOf_finrank_lt_of_curve`: `lem:pencil-curve-limit`, along a
-  polynomial curve of normals whose hinges are nonzero at `t = 0`, the row rank drops below its
-  value at `t = 0` for only finitely many `t`.
 * `Graph.exists_mvPolynomial_le_finrank_span_rigidityRows_pencilPicturePoint`:
   `lem:pencil-jj-chart`.
 * `Graph.liftingSpace_embedEdges`, `Graph.isAdmissiblePicture_embedEdges_iff` and
@@ -135,38 +130,6 @@ theorem PanelHingeFramework.finrank_span_rigidityRows_ofNormals_smul [Finite α]
           (PanelHingeFramework.ofNormals G ends q).toBodyHinge.rigidityRows) := by
   rw [BodyHingeFramework.span_rigidityRows_eq_of_infinitesimalMotions_eq _ _
     (PanelHingeFramework.infinitesimalMotions_ofNormals_smul G ends q hc)]
-
-/-! ## The rank along a polynomial curve of normals (`lem:pencil-curve-limit`) -/
-
-/-- **The rank along a polynomial curve of normals** (`lem:pencil-curve-limit`): along a polynomial
-curve `t ↦ c(t)` of normals, the row rank of `ofNormals G ends (c t)` is at least its value at
-`t = 0` for all but finitely many `t`, provided every recorded hinge is nonzero at `t = 0`. The rank
-polynomial at `t = 0` (`PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking`,
-`lem:rank-polynomial-of-le-finrank`), composed with the curve, is a univariate polynomial
-(`MvPolynomial.polynomial_eval_aeval`), nonzero at `t = 0`, so its finitely many roots are the only
-`t` where the rank can drop. -/
-theorem PanelHingeFramework.finite_setOf_finrank_lt_of_curve [Finite α] [Finite β]
-    (G : Graph α β) (ends : β → α × α) (hends : Graph.RecordsLinks G ends)
-    (c : α × Fin (k + 2) → Polynomial K)
-    (hne : ∀ e, G.IsLink e (ends e).1 (ends e).2 →
-      (PanelHingeFramework.ofNormals G ends (fun p => (c p).eval 0)).toBodyHinge.supportExtensor e
-        ≠ 0)
-    {N : ℕ} (hN : N ≤ Module.finrank K (Submodule.span K
-      (PanelHingeFramework.ofNormals G ends (fun p => (c p).eval 0)).toBodyHinge.rigidityRows)) :
-    {t : K | Module.finrank K (Submodule.span K
-      (PanelHingeFramework.ofNormals G ends (fun p => (c p).eval t)).toBodyHinge.rigidityRows)
-        < N}.Finite := by
-  obtain ⟨Q, hQ₀, hQ⟩ :=
-    PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking G ends hends hne hN
-  set P : Polynomial K := MvPolynomial.aeval c Q with hP
-  have hPt : ∀ t, P.eval t = MvPolynomial.eval (fun p => (c p).eval t) Q :=
-    fun t => MvPolynomial.polynomial_eval_aeval c Q t
-  have hP0 : P ≠ 0 := fun h => hQ₀ (by rw [← hPt 0, h, Polynomial.eval_zero])
-  refine (Polynomial.finite_setOfPred_isRoot hP0).subset fun t ht => ?_
-  simp only [Set.mem_ofPred_eq] at ht
-  simp only [Set.mem_ofPred_eq, Polynomial.IsRoot.def]
-  by_contra h
-  exact absurd (hQ _ (by rwa [← hPt])) (not_le.mpr ht)
 
 /-! ## The planar case of KT Theorem 5.6 in the chart (`lem:pencil-jj-chart`) -/
 

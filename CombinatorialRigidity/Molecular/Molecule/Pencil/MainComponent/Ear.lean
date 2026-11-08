@@ -16,13 +16,11 @@ an ear use (`sec:main-component-chain`): the rank and the relative screws of a p
 along an open ear (`lem:block-rank-path`, `lem:relative-screws-path`, `lem:block-rank-ear`, of
 `sec:molecular-rigidity-matrix-blocks`), the deficiency along an ear (`lem:deficiency-ear`,
 `lem:deficiency-ear-merge`, of `sec:molecular-deficiency-rigid`), the heights of an ear
-(`lem:pencil-ear-fibre`, and `lem:pencil-splitoff-ear-extension` at one interior body), four closed
+(`lem:pencil-ear-fibre`), four closed
 polygons with independent joins (`lem:pencil-chain-span-certificates`) and the span of the hinges
-that independent joins give (`lem:pencil-ear-hinge-span`). Also the count of
-`lem:pencil-splitoff-special-rank` from the motions (`sec:main-component-splitoff`), and the part
-that the steps at an open ear with two and with at least five interior bodies share
-(`Graph.X0Attains.of_openEar_of_cert`). The steps themselves are in `MainComponent/Chain.lean`,
-`Short.lean`, `Orbit.lean` and `SplitOff.lean`.
+that independent joins give (`lem:pencil-ear-hinge-span`). Also the part that the steps at an open
+ear with at least five interior bodies share (`Graph.X0Attains.of_openEar_of_cert`). The steps
+themselves are in `MainComponent/Chain.lean`, `Short.lean` and `Orbit.lean`.
 
 An ear on `V₁` is a path `a − x 0 − ⋯ − x (k − 1) − b` with ends `a, b ∈ V₁` and interior bodies
 outside `V₁`, every other edge lying inside `V₁`; it is open when `a ≠ b` and closed when `a = b`
@@ -61,10 +59,6 @@ the target.
 * `BodyHingeFramework.finrank_span_rigidityRows_ear_eq`: `lem:block-rank-ear`, an open ear adds
   `(D − 1)(k + 1) + dim(ρ + Λ) − D` to the rank of `G[V₁]`, `ρ` the relative screws of `a, b` in
   `G[V₁]` and `Λ` the span of the ear's hinges, whether or not `a` and `b` are adjacent.
-* `BodyHingeFramework.finrank_span_rigidityRows_eq_add_of_motions`: the count of
-  `lem:pencil-splitoff-special-rank`. If the motions of `F` are the motions of `F'` with a relative
-  screw at `x, a` restricted to a fixed line, and `F'` realizes every relative screw at `x, a`, the
-  row rank of `F` is the row rank of `F'` plus `D − 1`.
 * `Graph.deficiency_induce_add_le_of_ear`: `lem:deficiency-ear`, `def(G[V₁]) + k + 1 − D ≤ def(G)`
   for an open or closed ear with `k ≥ 1`.
 * `Graph.deficiency_induce_le_of_ear_of_merge`: `lem:deficiency-ear-merge` (`k ≥ 0`, the interior
@@ -73,9 +67,6 @@ the target.
 * `Graph.mem_liftingSpace_of_ear` and `Graph.earExtend_mem_liftingSpace`: `lem:pencil-ear-fibre`, at
   an admissible picture membership in `L_G(q)` is decided on `V₁`, and every height of `G[V₁]`
   extends to `G`, freely at the middle bodies of an open ear.
-* `Graph.mem_liftingSpace_oneEar`: `lem:pencil-splitoff-ear-extension`, at one interior body, a
-  solution of the lifting system of `G[V₁]` whose affine functions at the two ends agree at the ear
-  body extends to a height of `G`.
 * `linearIndependent_pointJoin_certTriangle`, `linearIndependent_pointJoin_certSquare`,
   `linearIndependent_pointJoin_certPentagon` and `linearIndependent_pointJoin_certHexagon`:
   `lem:pencil-chain-span-certificates`, the closed polygons on the points `certPt` have independent
@@ -87,8 +78,8 @@ the target.
   the hinges at a family of links is the polar image of the span of the joins, so a bound on
   `dim(ρ + Λ)` is one on a span of joins (steps of `thm:pencil-x0-open-ear-three`,
   `thm:pencil-x0-open-ear-four` and `thm:pencil-x0-open-ear-two-orbit`).
-* `Graph.X0Attains.of_openEar_of_cert`: the part that the proofs of `thm:pencil-x0-open-ear` and
-  `thm:pencil-x0-open-ear-two` share. `n` edges of an open ear whose joins are independent at one
+* `Graph.X0Attains.of_openEar_of_cert`: the part of the proof of `thm:pencil-x0-open-ear`
+  that discharges the count. `n` edges of an open ear whose joins are independent at one
   configuration, with heights that are heights of `G` at every admissible picture, and the count
   `(⋆)` at `n` give the general configuration of `G` from that of `G[V₁]`.
 -/
@@ -361,61 +352,6 @@ theorem finrank_span_rigidityRows_ear_eq [Finite α] (F : BodyHingeFramework K d
   push_cast [Nat.cast_sub hD]
   ring
 
-/-! ## The rank from the motions (`lem:pencil-splitoff-special-rank`) -/
-
-/-- **The rank from the motions** (`lem:pencil-splitoff-special-rank`, the count of its proof): if
-the motions of `F` are exactly the motions of `F'` with a relative screw at `x, a` restricted to a
-fixed line `K ∙ C₀`, and every relative screw at `x, a` is realized by some motion of `F'`, then the
-row rank of `F` is the row rank of `F'` plus `D − 1`. Counted through the motion spaces' dual
-annihilators: the relative-screw map `S ↦ S x − S a` on the motions of `F'`, composed with the
-quotient by `K ∙ C₀`, is onto `ScrewSpace K k ⧸ (K ∙ C₀)` (`hfree`) with kernel exactly the motions
-of `F` (`hM`), so the motions of `F` have codimension `screwDim k − 1` in those of `F'`, and the
-ranks differ by as much. -/
-theorem finrank_span_rigidityRows_eq_add_of_motions {k : ℕ} [Finite α]
-    (F F' : BodyHingeFramework K k α β) {x a : α} {C₀ : ScrewSpace K k} (hC₀ : C₀ ≠ 0)
-    (hfree : ∀ T : ScrewSpace K k, ∃ S ∈ F'.infinitesimalMotions, S x - S a = T)
-    (hM : ∀ S, S ∈ F.infinitesimalMotions ↔
-      S ∈ F'.infinitesimalMotions ∧ S x - S a ∈ K ∙ C₀) :
-    Module.finrank K (Submodule.span K F.rigidityRows) =
-      Module.finrank K (Submodule.span K F'.rigidityRows) + (screwDim k - 1) := by
-  have : Fintype α := Fintype.ofFinite α
-  rw [span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions,
-    span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions]
-  set M := F.infinitesimalMotions
-  set M' := F'.infinitesimalMotions
-  have h1 := Subspace.finrank_add_finrank_dualAnnihilator_eq M
-  have h2 := Subspace.finrank_add_finrank_dualAnnihilator_eq M'
-  set ψ : M' →ₗ[K] (ScrewSpace K k ⧸ (K ∙ C₀)) :=
-    (K ∙ C₀).mkQ ∘ₗ (screwDiff x a) ∘ₗ M'.subtype with hψ
-  have hsurj : Function.Surjective ψ := by
-    intro y
-    obtain ⟨T, rfl⟩ := Submodule.mkQ_surjective _ y
-    obtain ⟨S, hS, hST⟩ := hfree T
-    exact ⟨⟨S, hS⟩, by simp [hψ, screwDiff_apply, hST]⟩
-  have hker : (LinearMap.ker ψ).map M'.subtype = M := by
-    ext S
-    constructor
-    · rintro ⟨⟨S, hS⟩, hk, rfl⟩
-      rw [hM]
-      refine ⟨hS, ?_⟩
-      rw [SetLike.mem_coe, LinearMap.mem_ker, hψ, LinearMap.comp_apply, LinearMap.comp_apply,
-        Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, screwDiff_apply] at hk
-      exact hk
-    · intro hS
-      obtain ⟨hS', hd⟩ := (hM S).mp hS
-      refine ⟨⟨S, hS'⟩, ?_, rfl⟩
-      rw [SetLike.mem_coe, LinearMap.mem_ker, hψ, LinearMap.comp_apply, LinearMap.comp_apply,
-        Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, screwDiff_apply]
-      exact hd
-  have h3 := LinearMap.finrank_range_add_finrank_ker ψ
-  rw [LinearMap.range_eq_top.mpr hsurj, finrank_top] at h3
-  have h4 := Submodule.finrank_quotient_add_finrank (K ∙ C₀)
-  rw [finrank_span_singleton hC₀, screwSpace_finrank] at h4
-  have h5 : Module.finrank K (LinearMap.ker ψ) = Module.finrank K M := by
-    rw [← hker]
-    exact (LinearEquiv.finrank_eq (Submodule.equivMapOfInjective _ M'.injective_subtype _))
-  omega
-
 end BodyHingeFramework
 
 /-! ## The deficiency along an ear (`lem:deficiency-ear`, `lem:deficiency-ear-merge`) -/
@@ -612,13 +548,11 @@ At an admissible picture a closed neighbourhood with at most three members impos
 (`Graph.IsAdmissiblePicture.exists_dotProduct_of_ncard_closedNbhd_le_three`,
 `lem:pencil-three-points`), so the interior bodies of an ear are free: membership in `L_G(q)` is
 decided on `V₁`, and the heights of `G[V₁]` extend to `G`, affinely at `x 0` and `x (k − 1)` and
-freely in the middle (`lem:pencil-ear-fibre`). With one interior body, a solution of the lifting
-system of `G[V₁]` extends when its affine functions at the two ends agree at the ear body
-(`lem:pencil-splitoff-ear-extension`). -/
+freely in the middle (`lem:pencil-ear-fibre`). -/
 
 /-- **The closed neighbourhood of an interior body of an ear lies in the body and its two neighbours
-on the path** (a step of `lem:pencil-ear-fibre`, whose proof states it, of
-`lem:pencil-splitoff-flexes` and of `thm:pencil-x0-open-ear-one`). -/
+on the path** (a step of `lem:pencil-ear-fibre`, whose proof states it, and of
+`thm:pencil-x0-open-ear-one`). -/
 theorem _root_.Graph.closedNbhd_ear_subset {G : Graph α β} {V₁ : Set α} {k : ℕ}
     {x : Fin k → α} {a b : α} {e : Fin (k + 1) → β} (hinj : Function.Injective x)
     (hxV₁ : ∀ i, x i ∉ V₁) (ha : a ∈ V₁) (hb : b ∈ V₁)
@@ -679,8 +613,8 @@ theorem _root_.Graph.mem_liftingSpace_of_ear [Finite α] {G : Graph α β} {V₁
   · exact hq.exists_dotProduct_of_ncard_closedNbhd_le_three (hcover ▸ Or.inr ⟨i, rfl⟩)
       (G.ncard_closedNbhd_ear_le_three hinj hxV₁ ha hb hpath hsep i) z
 
-/-- **The closed neighbourhood of a body of `V₁` along an ear** (a step of `lem:pencil-ear-fibre`
-and `lem:pencil-splitoff-ear-extension`, whose proofs state it, and of the ear and cycle steps) lies
+/-- **The closed neighbourhood of a body of `V₁` along an ear** (a step of `lem:pencil-ear-fibre`,
+whose proof states it, and of the ear and cycle steps) lies
 in its closed neighbourhood in `G[V₁]`, together with `x 0` at `a` and `x (k − 1)` at `b`. -/
 theorem _root_.Graph.mem_closedNbhd_induce_of_ear {G : Graph α β} {V₁ : Set α} {k : ℕ}
     {x : Fin k → α} {a b : α} {e : Fin (k + 1) → β} (hk : 1 ≤ k)
@@ -736,56 +670,6 @@ theorem _root_.Graph.mem_closedNbhd_induce_of_ear {G : Graph α β} {V₁ : Set 
         · simp at h0'; omega
         · exact h
   · exact absurd (hsep f v w hf (fun j h => hfe ⟨j, h⟩)).2 hwV
-
-open Classical in
-/-- **A solution for the ear body extends to a height** (`lem:pencil-splitoff-ear-extension`): let
-`a − x 0 − b` be an ear on `V₁` with one interior body, `q` a picture admissible for `G`, and `y` a
-solution of the lifting system of `G[V₁]` at `q` (a member of the kernel of its matrix), with
-heights `y (Sum.inl w)` and affine functions `h_v = y (Sum.inr (v, ·))`. If `h_a` and `h_b` agree at
-the picture point of `x 0` (`hinc`), then the height that is `y (Sum.inl w)` at every `w ≠ x 0` and
-the value of `h_a` at the picture point of `x 0` at `x 0` lies in `L_G(q)`. By
-`Graph.mem_liftingSpace_of_ear`, whose interior bodies are distinct as there is one, with
-`Graph.mem_closedNbhd_induce_of_ear` at `k = 1`. -/
-theorem _root_.Graph.mem_liftingSpace_oneEar [Fintype α] {G : Graph α β} {V₁ : Set α}
-    {x : Fin 1 → α} {a b : α} {e : Fin 2 → β} (hcover : V(G) = V₁ ∪ Set.range x)
-    (hxV₁ : ∀ i, x i ∉ V₁) (ha : a ∈ V₁) (hb : b ∈ V₁)
-    (hpath : ∀ i : Fin 2,
-      G.IsLink (e i) (pathVertex a x b i.castSucc) (pathVertex a x b i.succ))
-    (hsep : ∀ f u w, G.IsLink f u w → (∀ i, f ≠ e i) → u ∈ V₁ ∧ w ∈ V₁)
-    {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) {y : α ⊕ (α × Fin 3) → K}
-    (hy : y ∈ LinearMap.ker (((G.induce V₁).liftingMatrix K).map (MvPolynomial.eval q)).mulVecLin)
-    (hinc : planeDiff a b y ⬝ᵥ pencilPicturePoint q (x 0) = 0) :
-    (fun w => if w = x 0 then (fun i => y (Sum.inr (a, i))) ⬝ᵥ pencilPicturePoint q (x 0)
-      else y (Sum.inl w)) ∈ G.liftingSpace q := by
-  have hx0 : x 0 ∉ V₁ := hxV₁ 0
-  have hx0G : x 0 ∈ V(G) := hcover ▸ Or.inr ⟨0, rfl⟩
-  rw [LinearMap.mem_ker, Matrix.mulVecLin_apply, Graph.liftingMatrix_mulVec_eq_zero_iff] at hy
-  obtain ⟨g1, g2, -⟩ := hy
-  refine Graph.mem_liftingSpace_of_ear hcover (Function.injective_of_subsingleton x) hxV₁ ha hb
-    hpath hsep hq (fun w hw => ?_) (fun v hv => ⟨fun i => y (Sum.inr (v, i)), fun w hw => ?_⟩)
-  · have hw0 : w ≠ x 0 := fun h => hw (h ▸ hx0G)
-    simp only [hw0, ↓reduceIte]
-    exact g1 w (fun h => hw (hcover ▸ Or.inl h))
-  · rcases G.mem_closedNbhd_induce_of_ear (k := 1) le_rfl hxV₁ ha hb hpath hsep hv hw with
-      hw' | ⟨hva, hw'⟩ | ⟨hvb, hw'⟩
-    · have hwV : w ∈ V₁ := Graph.closedNbhd_subset_vertexSet hv hw'
-      have hw0 : w ≠ x 0 := fun h => hx0 (h ▸ hwV)
-      simp only [hw0, ↓reduceIte]
-      exact g2 v hv w hw'
-    · have : w = x 0 := hw'
-      subst this
-      rw [hva]
-      simp
-    · have : w = x 0 := hw'
-      subst this
-      rw [hvb]
-      simp only [↓reduceIte]
-      have hd : planeDiff a b y ⬝ᵥ pencilPicturePoint q (x 0) =
-          (fun i => y (Sum.inr (a, i))) ⬝ᵥ pencilPicturePoint q (x 0) -
-            (fun i => y (Sum.inr (b, i))) ⬝ᵥ pencilPicturePoint q (x 0) := by
-        rw [← sub_dotProduct]; rfl
-      rw [hd, sub_eq_zero] at hinc
-      exact hinc
 
 open Classical in
 /-- **The heights of an open ear extend** (`lem:pencil-ear-fibre`, its second claim): for an open
@@ -1081,8 +965,8 @@ theorem linearIndependent_flat_hexagon :
   exacts [hg0, hg1, hg2, hg3, hg4, hg5]
 
 /-- **The six points `Y₀, …, Y₅` of `lem:pencil-chain-span-certificates`**, with heights
-`0, 0, 1, 1, 0, 0`, at which the configurations of `thm:pencil-x0-cycle`, `thm:pencil-x0-open-ear`
-and `thm:pencil-x0-open-ear-two` put their bodies. -/
+`0, 0, 1, 1, 0, 0`, at which the configurations of `thm:pencil-x0-cycle` and
+`thm:pencil-x0-open-ear` put their bodies. -/
 def certPt : Fin 6 → Fin 4 → K :=
   ![![1, 0, 0, 1], ![0, -1, 0, 1], ![0, 0, 1, 1], ![-1, 0, 1, 1], ![0, 0, 0, 1], ![-1, -1, 0, 1]]
 
@@ -1134,13 +1018,11 @@ theorem linearIndependent_pointJoin_certHexagon :
 
 /-! ## Bodies at the points `Y₀, …, Y₅`
 
-The configurations of `thm:pencil-x0-cycle`, `thm:pencil-x0-open-ear` and
-`thm:pencil-x0-open-ear-two` put each body at one of the points `certPt`, by a labelling
-`lab : α → Fin 6`. -/
+The configurations of `thm:pencil-x0-cycle` and `thm:pencil-x0-open-ear` put each body at one of
+the points `certPt`, by a labelling `lab : α → Fin 6`. -/
 
-/-- **The picture of a labelling** `lab : α → Fin 6` (a step of `thm:pencil-x0-cycle`,
-`thm:pencil-x0-open-ear` and `thm:pencil-x0-open-ear-two`): body `w` is placed at the planar part of
-`Y (lab w)` (`certPt`). -/
+/-- **The picture of a labelling** `lab : α → Fin 6` (a step of `thm:pencil-x0-cycle`
+and `thm:pencil-x0-open-ear`): body `w` is placed at the planar part of `Y (lab w)` (`certPt`). -/
 def certPicture (lab : α → Fin 6) : α × Fin 2 → K :=
   fun p => certPt (lab p.1) ⟨p.2.val, (by omega)⟩
 
@@ -1148,8 +1030,8 @@ def certPicture (lab : α → Fin 6) : α × Fin 2 → K :=
 of `Y (lab w)` at `w`. -/
 def certHeights (lab : α → Fin 6) : α → K := fun w => certPt (lab w) 2
 
-/-- **At the picture of `lab`, body `w` sits at `Y (lab w)`** (a step of `thm:pencil-x0-cycle`,
-`thm:pencil-x0-open-ear` and `thm:pencil-x0-open-ear-two`), at any heights `z` whose value at `w` is
+/-- **At the picture of `lab`, body `w` sits at `Y (lab w)`** (a step of `thm:pencil-x0-cycle`
+and `thm:pencil-x0-open-ear`), at any heights `z` whose value at `w` is
 the height of `Y (lab w)`. The steps at an open ear give their heights by their own formulas, not as
 `certHeights lab`. -/
 theorem pencilConfigPoint_certPicture (lab : α → Fin 6) (z : α → K) (w : α)
@@ -1294,16 +1176,15 @@ theorem span_supportExtensor_eq_top_of_linearIndependent {G : Graph α β} {ends
 
 /-! ## An open ear from independent joins at one configuration -/
 
-/-- **An open ear from independent joins at one configuration** (a step of `thm:pencil-x0-open-ear`
-and `thm:pencil-x0-open-ear-two`): over an infinite field, let `G` satisfy the standing hypotheses,
-with an open ear `a − x 0 − ⋯ − x (k − 1) − b` on `V₁`, `k ≥ 2`, and let the general configuration
-of `G[V₁]` attain. If `n` edges `e (j i)` of the ear, linking `u i` and `v i`, have independent
+/-- **An open ear from independent joins at one configuration** (a step of
+`thm:pencil-x0-open-ear`): over an infinite field, let `G` satisfy the standing hypotheses, with an
+open ear `a − x 0 − ⋯ − x (k − 1) − b` on `V₁`, `k ≥ 2`, and let the general configuration of
+`G[V₁]` attain. If `n` edges `e (j i)` of the ear, linking `u i` and `v i`, have independent
 joins at one configuration `(q₀, zs)` (`hcert`), where `zs` is a height of `G` at every admissible
 picture (`hzs`), and the count `(⋆)` of `sec:main-component-short` holds with `n` in place of
-`dim(ρ + Λ)` (`hcount`), then the general configuration of `G` attains. The two theorems choose `n`,
-the edges and the configuration, and discharge `hzs` and `hcount`: `Graph.X0Attains.of_openEar`
-(`k ≥ 5`, six edges, `MainComponent/Chain.lean`) and `Graph.X0Attains.of_openEar_two` (`k = 2`,
-three edges, `MainComponent/Short.lean`).
+`dim(ρ + Λ)` (`hcount`), then the general configuration of `G` attains.
+`Graph.X0Attains.of_openEar` (`k ≥ 5`, six edges, `MainComponent/Chain.lean`) chooses `n`, the
+edges and the configuration, and discharges `hzs` and `hcount`.
 
 Proof. A picture `q` off the zero sets of the polynomial of the attainment at `G[V₁]`, of the
 main-picture polynomial of `G` and of a polynomial that keeps the joins independent at the heights

@@ -108,7 +108,6 @@ public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Line
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Orbit
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Short
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.SparseCount
-public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.SplitOff
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Statements
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Reseed
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Steer

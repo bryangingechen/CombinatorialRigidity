@@ -214,7 +214,7 @@ derived here from the plane case. The main component is the closure of
 these lifts over the pictures at which the lifting space is smallest. For
 every simple connected graph of minimum degree at least two, a general
 member of it attains the deficiency rank, by an induction through
-cut-vertex, bridge, cycle, ear, split-off and contraction steps; this gives
+cut-vertex, bridge, cycle, ear and contraction steps; this gives
 the first statement. The second does not follow this way; it is the
 three-dimensional case of the nondegenerate claim in every dimension,
 whose induction (below) needs no three-dimensional argument of its own.

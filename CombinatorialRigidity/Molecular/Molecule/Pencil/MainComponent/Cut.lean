@@ -68,7 +68,7 @@ admissible. It cuts once at the last bridge and adds up along the path; a single
   `eval_restrictPoly`: `lem:pencil-lifting-restrict`.
 * `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr`: `lem:pencil-rank-congr`, the row
   rank reads the normals only on `V(G)`, and the selector only up to the orientation of each link.
-  `span_supportExtensor_ofNormals_eq`, a step of it and of `lem:pencil-splitoff-special-rank`: the
+  `span_supportExtensor_ofNormals_eq`, a step of it: the
   hinge at a recorded link is the panel extensor of its two ends, in either orientation. A selector
   recording every link of `G` records every link of an induced subgraph
   (`Graph.RecordsLinks.induce`), so the steps read the rank of a side at the selector
@@ -130,9 +130,8 @@ theorem _root_.Graph.IsX0Graph.three_le_ncard_closedNbhd [Finite α] {G : Graph 
 /-! ## The rank reads only the bodies of the graph (`lem:pencil-rank-congr`) -/
 
 /-- **The hinge of an `ofNormals` framework at a recorded link spans the panel extensor of its two
-ends**, in either orientation (a step of `lem:pencil-rank-congr` and of
-`lem:pencil-splitoff-special-rank`): swapping the ends only negates the panel extensor, which does
-not change its span. -/
+ends**, in either orientation (a step of `lem:pencil-rank-congr`): swapping the
+ends only negates the panel extensor, which does not change its span. -/
 theorem span_supportExtensor_ofNormals_eq {k : ℕ} {H : Graph α β} {ends : β → α × α}
     (hends : Graph.RecordsLinks H ends)
     (n : α × Fin (k + 2) → K) {f : β} {u w : α} (hf : H.IsLink f u w) :

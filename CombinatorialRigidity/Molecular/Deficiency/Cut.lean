@@ -16,8 +16,8 @@ Discrete Comput. Geom. **45**, Lemma 3.1), the deficiency at a cut of at most on
 Lemma 3.6), the merged deficiency and the value of a partition at a vertex 2-cut, and the
 deficiency at a cut vertex. The blueprint presents the file in `sec:molecular-deficiency`, except
 `partitionDef_map` and `deficiencyMerged_le_deficiency` (`sec:main-component-sparse`), and
-`ne_of_deficiencyMerged_lt`, a step of the open-ear and split-off steps
-(`sec:main-component-orbit`, `sec:main-component-splitoff`).
+`ne_of_deficiencyMerged_lt`, a step of the open-ear steps
+(`sec:main-component-orbit`).
 
 ## Main definitions
 
@@ -1092,9 +1092,9 @@ theorem deficiencyMerged_le_deficiency [Finite α] (G : Graph α β) (n : ℕ) (
   exact ciSup_le fun w => G.partitionDef_le_deficiency n w.1
 
 /-- **A merged deficiency below the deficiency merges two distinct vertices** (a step of
-`lem:pencil-one-ear-base`, `thm:pencil-x0-open-ear-one`, `thm:pencil-x0-open-ear-two-orbit` and
-`thm:pencil-x0-splitoff`): if `def(G̃; u, v) < def(G̃)` then `u ≠ v`, as at `u = v` every labeling
-puts `u` and `v` in one part, so `def(G̃; u, u)` bounds the value of each. -/
+`lem:pencil-one-ear-base`, `thm:pencil-x0-open-ear-one` and `thm:pencil-x0-open-ear-two-orbit`): if
+`def(G̃; u, v) < def(G̃)` then `u ≠ v`, as at `u = v` every labeling puts `u` and `v` in one part,
+so `def(G̃; u, u)` bounds the value of each. -/
 theorem ne_of_deficiencyMerged_lt [Finite α] {G : Graph α β} {n : ℕ} {u v : α}
     (h : G.deficiencyMerged n u v < G.deficiency n) : u ≠ v := by
   rintro rfl

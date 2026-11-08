@@ -461,7 +461,7 @@ the `Multiset.mem_toFinset` / `Polynomial.mem_roots hp` unfold pair
 from the membership step — `Set.mem_ofPred_eq` (or nothing at all)
 is enough once the target is stated over `{x | p.IsRoot x}` instead of
 `↑p.roots.toFinset`. Two sites, same shape, in 40-cleanup B5
-(`MainComponent/Bridge.lean`, `MainComponent/SplitOff.lean`).
+(`MainComponent/Bridge.lean` and a file since deleted; Phase 43c deleted both sites).
 
 ---
 
@@ -1683,7 +1683,7 @@ value inside an opaque auto-generated field proof to abstract it uniformly. `cha
 both failure modes by asking the kernel for defeq directly, without either the
 coercion-syntax mismatch or the dependent-motive walk. Keep the `change`, reason **coe-defeq**;
 don't spend a second round trying another simp set. (Phase 40-cleanup B6b, `Flat.lean` 544,
-`SplitOff.lean` 330/548 — all three ScrewSpace/`LinearMap`-carrier terms.)
+and two sites in a since-deleted file — all three ScrewSpace/`LinearMap`-carrier terms.)
 
 **`simp only [F]` can over-reduce a piecewise `let`/`set` whose branches compare the bound
 argument to itself — use `dsimp only [F]` instead.** When the unfolded body is a nested

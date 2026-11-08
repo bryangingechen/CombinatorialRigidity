@@ -35,7 +35,7 @@ copy-paste. See `DESIGN.md` "Mirror directory".
   `Set.ncard_union_eq`, the disjointness of `s` and `range z`, `Set.ncard_range_of_injective`
   and `Nat.card_fin`. The combinatorial-rigidity project uses it to count the bodies of an ear
   or of a chain of bridges in `Molecular/Molecule/Pencil/MainComponent/` (`Cut.lean`,
-  `Ear.lean`, `Short.lean`, `Orbit.lean`, `SplitOff.lean`).
+  `Ear.lean`, `Short.lean`, `Orbit.lean`).
 * `Set.ncard_range_le` — `(range f).ncard ≤ Nat.card ι` for `[Finite ι]`. Fuses
   `Nat.card_coe_set_eq` and `Finite.card_range_le`.
 * `Set.ncard_eq_ncard_preimage_inl_add_ncard_preimage_inr` — a finite set of a sum type has

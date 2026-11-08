@@ -5,7 +5,7 @@ Authors: Bryan Gin-ge Chen
 -/
 module
 
-public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.SplitOff
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Orbit
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Chain
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Contract
 

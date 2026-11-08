@@ -78,7 +78,6 @@ a step can meet them with the non-roots of another polynomial on the same fibre 
 * `Graph.map_ker_liftingMatrix` and `Graph.finrank_ker_liftingMatrix`: the heights of the solutions
   of the lifting system form `L(q)`, and over an admissible picture the solutions form a space of
   dimension `dim L(q)`.
-* `Graph.ker_liftingMatrix_congr`: the solutions read the picture only at the bodies of the graph.
 * `Graph.two_le_finrank_map_planeDiff`: the incidence functionals at two bodies are independent
   (`lem:pencil-flag-genericity`).
 * `Graph.x0Attains_of_exists`: one attaining configuration over a main picture makes the general
@@ -138,7 +137,7 @@ theorem _root_.Graph.isAdmissiblePicture_congr {G : Graph α β} {q q' : α × F
     rw [this]
 
 /-- **An admissible picture puts three members in every closed neighbourhood** (a step of
-`thm:pencil-x0-splitoff` and `lem:pencil-one-ear-base`): at a body `v` of `G`, the closed
+`lem:pencil-one-ear-base`): at a body `v` of `G`, the closed
 neighbourhood has at least three members, as the three members with independent picture points that
 admissibility gives are pairwise distinct. -/
 theorem _root_.Graph.IsAdmissiblePicture.three_le_ncard_closedNbhd [Finite α] {G : Graph α β}
@@ -151,7 +150,7 @@ theorem _root_.Graph.IsAdmissiblePicture.three_le_ncard_closedNbhd [Finite α] {
   rwa [Set.ncard_range_of_injective htinj, Nat.card_eq_fintype_card, Fintype.card_fin] at this
 
 /-- **A closed neighbourhood inside three bodies has independent picture points** (a step of
-`lem:pencil-splitoff-flexes` and `thm:pencil-x0-open-ear-one`): at an admissible picture, if the
+`thm:pencil-x0-open-ear-one`): at an admissible picture, if the
 closed neighbourhood of a body `v` of `G` lies in `{u₀, u₁, u₂}`, the homogeneous picture points of
 `u₀`, `u₁` and `u₂` are linearly independent, as the three members that admissibility gives span
 `K³` and lie among them. -/
@@ -587,7 +586,7 @@ theorem _root_.Graph.liftingMatrix_mulVec_eq_zero_iff [Fintype α] {G : Graph α
       · rfl
       · exact h3 v hv i
 
-/-- **Membership in the kernel of the lifting system** (a step of `lem:pencil-splitoff-flexes`):
+/-- **Membership in the kernel of the lifting system**:
 `Graph.liftingMatrix_mulVec_eq_zero_iff`, stated for membership in the kernel of the linear map. -/
 theorem _root_.Graph.mem_ker_liftingMatrix_iff [Fintype α] {G : Graph α β}
     {q : α × Fin 2 → K} {x : α ⊕ (α × Fin 3) → K} :
@@ -642,40 +641,6 @@ theorem _root_.Graph.finrank_ker_liftingMatrix [Fintype α] {G : Graph α β} {q
         hli.eq_zero_of_forall_dotProduct_eq_zero fun j => by rw [← h2 v hv (t j) (ht j), hz]
       exact congr_fun h0 i
     · exact h3 v hv i
-
-/-! ## The kernel of the lifting system: locality and monotonicity -/
-
-/-- **The kernel of the lifting system reads the picture only on `V(H)`**
-(`lem:pencil-weighted-lifting-system-local`): a closed neighbourhood of a body of `H` lies in `V(H)`
-(`Graph.closedNbhd_subset_vertexSet`). -/
-theorem _root_.Graph.ker_liftingMatrix_congr [Fintype α] {H : Graph α β} {q q' : α × Fin 2 → K}
-    (hq : ∀ w ∈ V(H), ∀ i, q (w, i) = q' (w, i)) :
-    LinearMap.ker ((H.liftingMatrix K).map (MvPolynomial.eval q)).mulVecLin =
-      LinearMap.ker ((H.liftingMatrix K).map (MvPolynomial.eval q')).mulVecLin := by
-  have hpp : ∀ w ∈ V(H), pencilPicturePoint q w = pencilPicturePoint q' w := by
-    intro w hw; funext i; fin_cases i <;> simp [pencilPicturePoint, hq w hw]
-  ext y
-  simp only [LinearMap.mem_ker, Matrix.mulVecLin_apply, Graph.liftingMatrix_mulVec_eq_zero_iff]
-  refine and_congr_right fun _ => and_congr_left fun _ => forall₂_congr fun v hv =>
-    forall₂_congr fun w hw => ?_
-  rw [hpp w (Graph.closedNbhd_subset_vertexSet hv hw)]
-
-/-- **Adding links on the same bodies shrinks the kernel of the lifting system** (a step of
-`thm:pencil-x0-splitoff`): if `H ≤ H'` with `V(H) = V(H')`, the kernel for `H'` lies in that for
-`H`, as each closed neighbourhood in `H` lies in that in `H'`. -/
-theorem _root_.Graph.ker_liftingMatrix_le_of_le [Fintype α] {H H' : Graph α β} (hle : H ≤ H')
-    (hV : V(H) = V(H')) (q : α × Fin 2 → K) :
-    LinearMap.ker ((H'.liftingMatrix K).map (MvPolynomial.eval q)).mulVecLin ≤
-      LinearMap.ker ((H.liftingMatrix K).map (MvPolynomial.eval q)).mulVecLin := by
-  intro y hy
-  simp only [LinearMap.mem_ker, Matrix.mulVecLin_apply, Graph.liftingMatrix_mulVec_eq_zero_iff]
-    at hy ⊢
-  obtain ⟨h1, h2, h3⟩ := hy
-  refine ⟨fun w hw => h1 w (hV ▸ hw), fun v hv w hw => h2 v (hV ▸ hv) w ?_,
-    fun v hv i => h3 v (hV ▸ hv) i⟩
-  rcases hw with rfl | ⟨f, hf⟩
-  · exact Or.inl rfl
-  · exact Or.inr ⟨f, hf.of_le hle⟩
 
 /-! ## The incidence functionals at two bodies (`lem:pencil-flag-genericity`) -/
 

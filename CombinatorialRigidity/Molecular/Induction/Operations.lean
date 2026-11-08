@@ -854,8 +854,8 @@ lemma removeVertex_le_splitOff {G : Graph α β} {v a b : α} {e₀ : β} (he₀
 
 open Classical in
 /-- **A selector of `G`, relinked at the new edge, records the links of the split-off** (a step of
-`thm:pencil-x0-splitoff`, `lem:pencil-splitoff-special-rank`, `thm:pencil-x0-open-ear-two-orbit`,
-`thm:pencil-x0-open-ear-three` and `thm:pencil-x0-open-ear-four`): if `ends` records the links of
+`thm:pencil-x0-open-ear-two-orbit`, `thm:pencil-x0-open-ear-three` and
+`thm:pencil-x0-open-ear-four`): if `ends` records the links of
 `G` and `e₀` links `u` and `w` in `G.splitOff v u w e₀` (`hl₀`), then `ends` with `e₀` sent to
 `(u, w)` records the links of `G.splitOff v u w e₀`. Its other links are links of `G` that avoid
 `v`. -/
@@ -906,8 +906,8 @@ lemma splitOff_simple {G : Graph α β} {v a b : α} {e₀ : β}
 
 /-- **`H_v^{ab}` is simple when `a` and `b` are not adjacent**: if `H` is simple, `a ≠ b` and no
 edge of `H` joins `a` and `b`, then `H_v^{ab}` is simple (`splitOff_simple`), as no edge of `H` is
-parallel to the new edge. `exists_oneEar_base` and `X0Attains.of_splitOff`
-(`Molecule/Pencil/MainComponent/`) use it. -/
+parallel to the new edge. `exists_oneEar_base`
+(`Molecule/Pencil/MainComponent/`) uses it. -/
 lemma splitOff_simple_of_not_adj {H : Graph α β} (hS : H.Simple) {v a b : α}
     {e₀ : β} (hab : a ≠ b) (hnadj : ¬ H.Adj a b) : (H.splitOff v a b e₀).Simple := by
   refine splitOff_simple (fun f u w h => ?_) (fun f₁ f₂ u w h₁ h₂ => ?_)

@@ -745,7 +745,7 @@ to be re-derived by re-reading entries later.
 
 ### [idiom] A hypothesis that alone fixes a lemma's implicits cannot be `(by omega)`; and a new helper's proof can reach nodes its callers' nodes do not use
 - **Where it bit:** RECONCILE round 3, task 38.26 (`Graph.ne_of_deficiencyMerged_lt`,
-  `Deficiency.lean`, at four callers in `MainComponent/Orbit.lean` and `SplitOff.lean`).
+  `Deficiency.lean`, at four callers in `MainComponent/Orbit.lean` and `SplitOff.lean`, since deleted, Phase 43c slice C).
   (1) `Graph.ne_of_deficiencyMerged_lt (by omega)` against `a ≠ b`: `G` and `n` occur only in the
   hypothesis `G.deficiencyMerged n a b < G.deficiency n`, so `omega` ran on metavariable atoms and
   failed. (2) The first proof, through a tight partition (`Graph.exists_isTightPartition`), made
@@ -3577,7 +3577,7 @@ limitations. Worth a once-over so future agents don't re-litigate.
   7 lines) in `Graph.X0Attains.of_openEar_splitOff` (`MainComponent/Short.lean`),
   `Graph.X0Attains.of_openEar_of_cert` (`Ear.lean`), `Graph.X0Attains.of_openEar_one` and twice in
   `Graph.X0Attains.of_openEar_two_of_splitOff` (`Orbit.lean`), `Graph.X0Attains.of_splitOff`
-  (`SplitOff.lean`) and `Graph.X0Attains.of_bridgePath` (`Cut.lean`).
+  (`SplitOff.lean`, since deleted, Phase 43c slice C) and `Graph.X0Attains.of_bridgePath` (`Cut.lean`).
 - **Friction:** four rewrites (`Set.ncard_union_eq`, `Set.ncard_range_of_injective`,
   `Nat.card_eq_fintype_card`, `Fintype.card_fin`) and a three-line disjointness goal per site; no
   mathlib lemma has the union with a range (`lean_loogle` `Set.ncard (_ ∪ Set.range _)`: none).
@@ -3598,8 +3598,8 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Resolution:** mirrored over a field, for a family `v : m → m → K` of any finite index type, the
   four sites calling it. Three more copies (`F-328`): `eq_zero_of_dotProduct_pencilPicturePoint`
   (`ContractCurve.lean`), since deleted, its caller calling the mirror (task 38.25); the `horth` of
-  `Graph.planeDiff_eq_zero_of_splitOff` and `eq_zero_of_dotProduct_triple` (`GenericBase.lean`,
-  kept for its two calls with three separate facts) now call it (tasks 38.26, 38.27).
+  `Graph.planeDiff_eq_zero_of_splitOff` (since deleted, Phase 43c slice C) and
+  `eq_zero_of_dotProduct_triple` (`GenericBase.lean`, kept for its two calls with three separate facts) now call it (tasks 38.26, 38.27).
 - **Status:** mirrored.
 - **Mirror file:** `Mathlib/LinearAlgebra/Matrix/NonsingularInverse.lean`.
 
@@ -5694,7 +5694,7 @@ limitations. Worth a once-over so future agents don't re-litigate.
 
 ### [mirrored] `dotProduct_add_smul` / `dotProduct_smul_add_smul` — a dot product against a (scaled) vector sum
 - **Where it bit:** Phase 40-cleanup task 4 (B7, the recurring `rw` towers). Three sites in
-  `Pencil/MainComponent/SplitOff.lean` (the split-off curve's incidence facts) each unfolded
+  `Pencil/MainComponent/SplitOff.lean` (since deleted, Phase 43c slice C; the split-off curve's incidence facts) each unfolded
   `v ⬝ᵥ (u + c • w)` or `v ⬝ᵥ (c • pa + d • pb)` via `rw [dotProduct_add, dotProduct_smul, …,
   smul_eq_mul, …]`.
 - **Friction:** `dotProduct_add`, `dotProduct_smul` and `smul_eq_mul` are all separate, unfused
@@ -5703,7 +5703,8 @@ limitations. Worth a once-over so future agents don't re-litigate.
   v ⬝ᵥ u + c * (v ⬝ᵥ w)` and `dotProduct_smul_add_smul (v pa pb) (c d) : v ⬝ᵥ (c • pa + d • pb) =
   c * (v ⬝ᵥ pa) + d * (v ⬝ᵥ pb)`, each a one-line `rw`.
 - **Status:** mirrored.
-- **Mirror file:** `Mathlib/Data/Matrix/Mul.lean` (new mirror file).
+- **Mirror file:** `Mathlib/Data/Matrix/Mul.lean` (new mirror file; deleted in Phase 43c slice C
+  with its three consumers, so nothing is left to upstream).
 
 ### [mirrored] `isRefl_dotProductBilin` / `nondegenerate_dotProductBilin` — the dot product is a reflexive nondegenerate bilinear form
 - **Where it bit:** Phase 42b, `def:pencil-d-realization` (`Pencil/Grade/Realization.lean`): the
