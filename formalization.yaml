@@ -304,13 +304,14 @@ status:
     nondegenerate claim by lifting nondegenerate three-dimensional pencil realizations to dimension
     d (CombinatorialRigidity.Molecular.hasGradedGenericPencilRealization_of_simple). Phase 43 (in
     progress) looks for a simpler proof of the pencil realization theorem, with no main result's
-    statement to change; its first step takes the three-dimensional theorem from the argument in
-    every dimension: the nondegenerate claim from that lifting argument
+    statement to change. Its first step (closed 2026-11-08) took the three-dimensional theorem
+    from the argument in every dimension: the nondegenerate claim from that lifting argument
     (CombinatorialRigidity.Molecular.x0Gen, the case d = 3 of
     CombinatorialRigidity.Molecular.liftAttains_of_simple), then the whole theorem as the case
     d = 3 of Graph.graded_pencil_conditioned_pair, deleting the three-dimensional arguments they
-    replace, the three-dimensional cases of the reduction last, so that the reduction is proved
-    once, in every dimension; a note on the old three-dimensional route is next.
+    replace, so that the reduction is proved once, in every dimension; a remark keeps the old
+    three-dimensional route. The main results' statements and axioms are unchanged. Restating
+    the reduction on structural cases is next.
   sorry_count: 0
   sorry_in_definitions: 0
   axioms: ["propext", "Classical.choice", "Quot.sound"]          # only Lean/mathlib standard axioms; no project-specific axioms

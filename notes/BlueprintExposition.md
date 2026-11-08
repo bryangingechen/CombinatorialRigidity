@@ -327,6 +327,12 @@ entries a closing sentence on what round 2 did to their route differences. The e
 chapter's arguments, which stand; the first names `…_core`, which `273e824b` deleted, as a dated
 record. **Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
 
+**Phase-43b close (2026-11-08).** LIFT3 deleted the explicit `d = 3` route of the pencil
+realization theorem and reads the theorem off the theorem in every dimension, adding no argument,
+so no entry is added; the five entries whose nodes left are retirement notes. The verdict is the
+Phase-43b section below. **Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of
+51).
+
 ## Format
 
 One entry per node, grouped by destination blueprint chapter:
@@ -1948,6 +1954,33 @@ with a closing paragraph naming where the `d = 3` proof used its dimension. The 
 sub-phase closes (42b–42l) and this one re-read the chapter section by section and found no step
 that fails. CLEANUP-42 round 2 (2026-11-05) aligned the chapter to the Lean's routes for the cases' polynomials, (T2), the cut edge's glue, `g` and `E_L`, and for the rest of the rigid set (R-24, R-26, R-30, R-32 to R-34; `6c082081`, `36ab7f53`, `900338bd`) and its statements to the pins' for the pendant's neighbour, the ear's adjacency, the cut edge's sides, `-ear-extend`'s and `-lift-small` (2)'s simplicity (R-25, R-29, R-30, R-33, R-28), keeping the argument parts of R-27 to R-29 and R-31.
 **Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
+
+### Phase 43b (LIFT3: the `d = 3` theorem from the theorem in every dimension, structural edit — no new chapter)
+
+**No new entries — judged at the sub-phase close (2026-11-08).** The source is the project's own:
+the PENCIL-NATURAL recon's N1c (`notes/PencilNatural.md` §3) on Phase 42's chapter. The sub-phase
+added no argument. It read the generic conjunct at `d = 3` off the lift, and the whole theorem off
+`cor:pencil-d-conditioned-pair`, whose nodes keep the expositions judged in the `pencil-d.tex`
+sections above, and deleted the route they replace (15 nodes); no node decomposed or rerouted for
+difficulty. Five entries' nodes left, and each entry is now a one-line retirement note, naming
+its successor in every dimension where it has one: the Phase-39 entries `lem:pencil-cut-case`,
+`lem:pencil-nonsimple-case` (with `lem:extensor-pair-through-given-point`),
+`thm:pencil-conditional-realization-main-component` and the closed
+`thm:pencil-conditional-realization-pair`, and Phase 40n's `thm:pencil-x0-base-generic`; the 40p
+entry of `lem:pencil-rigid-good-ear` names the node's restated statement. The old route's
+account is one remark after `thm:pencil-d-generic`'s proof (D1). The close's end-to-end re-read of
+`pencil.tex`, `main-component.tex`, `pencil-d.tex` and `intro.tex`'s reader path read each
+"At `d = 3`" sentence the sub-phase wrote against the node it cites. The other such sentences cite
+nodes whose statements the sub-phase left unchanged, but for two (`lem:pencil-generic-steer`,
+`lem:pencil-rigid-good-ear`), which it read against every citation.
+It made two sentences exact: the closing of `lem:pencil-d-good-ear`'s proof said that the statement
+of `lem:pencil-rigid-good-ear` gives (ii), whose non-adjacency of `a` and `b` comes from the
+hypothesis on triangles; and `pencil.tex`'s account of the cut-edge move now also names its form in
+every dimension, `lem:pencil-d-cut-reposition`, which the cut-edge case uses. The account of the
+proof as a whole is EXPO's (`notes/Phase43-design.md` §2).
+**Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51); six done entries now
+name retired nodes (two since 2026-10-04, four since this sub-phase), and the closed one a deleted
+node.
 
 ## Retroactive coverage
 

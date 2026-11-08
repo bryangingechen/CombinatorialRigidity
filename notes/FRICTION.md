@@ -125,6 +125,11 @@ to be re-derived by re-reading entries later.
 - **2026-11-08, at 43b's open:** green again, `OK: selftest — 135 notes, 1 ACTIVE; --all green at
   baseline, --archive red on 51 closed note(s) as expected.` It turns red again at 43b's close,
   until NORMAL opens, so the fix stays open.
+- **2026-11-08, at 43b's close:** red, as predicted: `FAIL: check-phase-note selftest` — "no
+  ACTIVE note found, yet ROADMAP's Status table has 1 row(s) in progress (43. A simpler pencil
+  proof (post-program) — PENCIL-NATURAL); the active/closed split is broken". The default and
+  `--all` modes are green (`--all`: 135 notes, 51 closed listed, not gated). Red until NORMAL
+  opens; the fix still waits on the PI.
 - **Status:** open
 
 ### [idiom] A total-form selector hypothesis is load-bearing when a row family ranges over every label; mask the rows to `0` off `E(G)`

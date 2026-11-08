@@ -1,11 +1,11 @@
 # Phase 43 — PENCIL-NATURAL: design (cross-phase plan)
 
 **Status:** in progress (opened 2026-11-07 with the PI), sub-lettered: a simpler pencil proof,
-with no main result's statement to change. **43a** READS closed the same day (`notes/Phase43a.md`):
-the three fresh reads held, and each layer's inputs from them are in §2. **43b** LIFT3 opened on
-2026-11-08 as one sub-phase, at the PI's choice (§1); its work log and slice plan are
-`notes/Phase43b.md`. The later layers open one at a time, each at the PI's word (§1, D5). Next:
-43b's close (slices 1–4 landed).
+with no main result's statement to change. **43a** READS closed 2026-11-07 (`notes/Phase43a.md`):
+the three fresh reads held, and each layer's inputs from them are in §2. **43b** LIFT3 closed
+2026-11-08 (`notes/Phase43b.md`): the `d = 3` theorem is the case `d = 3` of the theorem in every
+dimension, and the reduction's cases are proved once. No sub-phase is open. The later layers open
+one at a time, each at the PI's word (§1, D5). Next: NORMAL's open, with the PI.
 
 This file is the phase's entry point: the target (§0), the PI's decisions (§1, verbatim), the
 layers by stable code (§2) and the open questions (§3). The recon record stays in
@@ -65,36 +65,21 @@ In order. A letter is minted when a layer opens.
   flatness reading, every planar-rigid set flat on the main component (D3). With them, the probes
   of `notes/PencilNatural.md` §4 banked (D4). Gates LIFT3 (the premise check: no cycle, 43a) and
   SPRIME (S′).
-- **LIFT3** (43b, opened 2026-11-08; N1c). `HasGenericPencilRealization K 3 G` by
-  `liftAttains_of_simple 0`, then the reduction proved once for every `d`, and
-  `pencilPair_of_nonempty` as the `m = 1` case of `Graph.graded_pencil_conditioned_pair`. The
-  explicit `d = 3` route collapses to a remark (D1). One sub-phase, N1a its first slice (§1); the
-  slice plan, with the liveness figures re-measured at the open, is `notes/Phase43b.md`. The
-  premise check (43a) found no cycle: C's 17 roots close over 458 nodes, all 348 of
-  `thm:pencil-generic-step`'s among them, only through two cross-reference edges; cut, 441, none a
-  `d = 3` generic node, and the Lean kernel closure has no `d = 3` generic declaration
-  (`notes/pencil-natural/premise_closure.py`, `PremiseClosure.lean`). Its inputs for the build:
-  - **Edges.** `pencil-d.tex:6673` (`thm:pencil-d-generic`'s proof) and `:6755`
-    (`cor:pencil-d-conditioned-pair`'s) to `thm:pencil-conditioned-pair-nonempty`: removed, then
-    reversed (N1a needs only `:6673`). At the open the reversal was placed on the nodes whose pins
-    carry the route: `:6673`'s on `thm:pencil-x0-generic-attains` (`x0Gen`, slice 1), `:6755`'s
-    on `thm:pencil-conditioned-pair-nonempty` (slice 2; folded into
-    `thm:pencil-realization-theorem` at slice 4). The `d = 3` nodes' own edges move with
-    their proofs.
-  - **Kept, restated.** `lem:pencil-generic-steer` (a) and its parametrization, and
-    `lem:pencil-rigid-good-ear` (3 of 5 pins), are C's premises; so are
-    `lem:pencil-feasible-hub-conditions`, `lem:pencil-x0-planes-separate`,
-    `def:pencil-two-ear-graph`, `lem:pencil-x0-conjunct-three` and `lem:pencil-condition-linear`.
-    `Arms.lean` keeps `exists_contragredient_linearEquiv` (`Grade/LiftCutEdge.lean`), and the two
-    unreached pins of `lem:pencil-cut-nondegeneracy`, also a premise of C (found at the open);
-    `Grade/LiftWitness.lean`'s unused `Pencil.Pair` import goes first.
-  - **Counts.** N1c deletes 13 nodes wholly and 3 in part (the recon: 15). Its prose falls at 12
-    labels of `sec:pencil-d-lift` and `sec:pencil-d-generic`, 8 of them under N1a, and at 7
-    `\cref`s in `sec:pencil-d-reduction` (the recon: about 17).
+- **LIFT3** (43b, opened and closed 2026-11-08; N1c; `notes/Phase43b.md`). **Verdict: done as
+  planned**, in four slices and the close. `HasGenericPencilRealization K 3 G` is
+  `liftAttains_of_simple 0` (`x0Gen`); `pencilPair_of_nonempty` is the `m = 1` case of
+  `Graph.graded_pencil_conditioned_pair`; the reduction's cases are proved once, in
+  `sec:pencil-d-reduction`; the explicit `d = 3` route is one remark after `thm:pencil-d-generic`'s
+  proof (D1). 91 declarations and 15 nodes went, none came, and no main result's statement
+  changed. The premise check (43a) found no cycle (`notes/pencil-natural/premise_closure.py`,
+  `PremiseClosure.lean`). The build's inputs (the edges, the kept premises, the counts) are in
+  `git show dc26fbfd:notes/Phase43-design.md`, §2.
 - **NORMAL** (N2). `thm:pencil-reduction` on five structural cases: a loop; at most two bodies; not
   2-edge-connected; non-simple; simple and 2-edge-connected. Cases (iv) and (v) merge;
   `lem:pencil-min-degree-rigid` leaves the route for an appendix (§1 (b)); KT Theorem 4.9 cited in a
-  remark (§1 (a)). After LIFT3, which leaves one caller.
+  remark (§1 (a)). Next to open. LIFT3 left `thm:pencil-reduction` one caller,
+  `Graph.graded_pencil_realization_theorem` (`Grade/Reduction.lean`,
+  `thm:pencil-d-realization-theorem`), which already hands cases (iii)–(v) to one argument.
 - **SPRIME** (N3). Theorem S′, which S′'s fresh read confirmed (43a): open-ear-two and the
   split-off leave the `d = 3` coverage. It revises the 42f record (`notes/Phase42-design.md` §1,
   "in `P³` both are load-bearing") to name the sense: used by Phase 40's route, not needed. The
@@ -149,6 +134,12 @@ In order. A letter is minted when a layer opens.
     height of `G` restricts to one of `G[W]`, so `W`'s points lie in one plane, each body's panel;
     two members of one closed hub-neighbourhood in `W` then have dependent normals. The `K_{2,3}`
     paragraph's "some set of at least two of them is planar-rigid" understates: all five are.
+  - **From LIFT3** (43b's close). `thm:pencil-x0-generic-attains` stays as `sec:main-component`'s
+    summary, off the realization theorem's route, its role prose a hypothesis to revisit, not a
+    settled exposition; `x0Dist` and `x0Gen` keep no Lean consumer. The old `d = 3` route's one
+    home is the remark after `thm:pencil-d-generic`'s proof. Each `d = 3` sentence of
+    `sec:pencil-d-reduction` reads its case at `d = 3` with no deleted node behind it, and may be
+    cut.
 
 ## 3. Open questions
 

@@ -1,110 +1,68 @@
 # Phase 43b — LIFT3: the `d = 3` generic conjunct by the lift, the reduction proved once (work log)
 
-**Status:** in progress (opened 2026-11-08 with the PI), the second sub-phase of Phase 43
-(PENCIL-NATURAL): layer LIFT3, N1c whole as one sub-phase, at the PI's choice (design doc §1).
-Five commits, in order: slice 1 (N1a, landed), slice 2 (N1b's deletions, behind N1c's reroute,
-landed), slice 3 (N1c's, landed), slice 4 (the old route as one remark, D1, landed), slice 5 (the
-close). The next concrete commit is the close, checklist item 5.
+**Status:** ✓ closed 2026-11-08 (opened the same day with the PI), the second sub-phase of
+Phase 43 (PENCIL-NATURAL), which stays in progress: layer LIFT3, N1c whole as one sub-phase, at the
+PI's choice (design doc §1). Five commits: four slices and the close. What comes next is
+*Hand-off*. Plan: `notes/Phase43-design.md`.
 
 ## Current state
 
-**Next concrete commit: the close, checklist item 5.** Mode: structural edit, no new chapter and no
-red target node; each slice reads and restates the nodes it reaches (`CombinatorialRigidity/CLAUDE.md`
-*Forward-mode slices*). Plan and inputs: `notes/Phase43-design.md` §2, LIFT3.
-
-**Slices 1–4 landed.** Slice 1 (N1a): `x0Gen` is `liftAttains_of_simple 0` read at `d = 3`; the
-`d = 3` generic route went (21 declarations, four nodes). Slice 2: `pencilPair_of_nonempty` is the
-`m = 1` case of `Graph.graded_pencil_conditioned_pair` through the four `d = 3` bridges, and
-`pencil_realization_theorem` is it at a spanning graph; N1b's 49 declarations went, with three
-nodes. Slice 3: the spike's `n1Slice3` (16 declarations, `ArmsAssembly.lean` whole) and
-`exists_linearIndependent_extensor_pair_through_given_point` went, with seven nodes: the four `d = 3`
-cases, `lem:pencil-projective-transport`, `lem:extensor-pair-through-point` and
-`-given-point`, and `sec:pencil-base`, which had no other node. The reduction's cases are proved
-once, in `sec:pencil-d-reduction`; `sec:pencil-reduction` states the induction and keeps
-`lem:pencil-cut-nondegeneracy` and `lem:pencil-contraction-deficiency`. `X0.lean` holds `X0Dist`,
-`X0Gen` (importing `Motive`), `Pair.lean` only `exists_isNondegPencilRealization_parallel_pair`.
-Main results' signatures byte-identical, the standard three axioms; the graph against the parent:
-0 cycles, no node left without a user. Slice 4 (D1): one unlabelled remark after
-`thm:pencil-d-generic`'s proof names the route at `d = 3` without lifts (inside the reduction's
-induction: no planar-rigid set, the triangle, a one-body ear, a pendant triangle) and why the lift
-replaces it; the per-lemma `d = 3` comparisons of `sec:pencil-d-lift` and `sec:pencil-d-generic`
-collapsed into it; *Blockers*' three questions settled (*Decisions*).
-
-**Inputs for the close.** Item 5's list. `thm:pencil-x0-generic-attains` stays unused on the
-realization theorem's route, by decision; `x0Dist`, `x0Gen` keep no Lean consumer.
+**Closed.** The `d = 3` theorem is the `d = 3` case of the theorem in every dimension, and the
+reduction's cases are proved once, for every `d`; one remark keeps the route without lifts. In
+Lean, `x0Gen` is `liftAttains_of_simple 0` read at `d = 3`, `pencilPair_of_nonempty` the `m = 1`
+case of `Graph.graded_pencil_conditioned_pair` through the four `d = 3` bridges, and
+`pencil_realization_theorem` that at a spanning graph. Measured against the open (`9c68719e`): 91
+declarations went and none came (37 files, +300 / −5,703 lines, `GenericEar.lean`,
+`GenericTriangle.lean`, `Pair2.lean` and `ArmsAssembly.lean` whole), and 15 dep-graph nodes,
+with `sec:pencil-base` and one formalization note. The three
+main results' signatures are byte-identical; at the close all 21 `formalization.yaml` main results
+print the standard three axioms, byte-identical to ARREARS task 19's run net of the harness path.
 
 ## Architectural choices made up front
 
-- **Statements byte-identical:** `pencil_realization_theorem`, `pencilPair_of_nonempty`,
-  `Graph.graded_pencil_conditioned_pair`, and `x0Dist`, `x0Gen` (their types, `X0Dist`, `X0Gen`,
-  stay). Each Lean slice diffs their signature lines and runs `#print axioms` on the three main
-  results in a scratch file (`lake lean`): the standard three.
-- **Slice boundaries from the bodies.** A slice deletes a set the spike's walk finds dead and
-  closed upward: nothing outside it uses it, at HEAD less the slice's restated proofs (item 5's
-  check). Figures from the walk are measured; the recon's are labelled so.
-- **N1b's deletions behind N1c's reroute.** The spike's R1′ keeps A by writing its step out
-  (`pencilPair_of_nonempty_R1'`, about 40 lines) that slice 3 would delete again. Slice 2 lands
-  R2's six lines instead and deletes R1′'s set; slice 3 deletes R2's remainder. The PI's order of
-  deletions holds; the literal R1′ stays available from the spike if the coordinator prefers it.
-- **The old route's prose.** Slices 1–3 cut or restate, about the lift at `d = 3`, each sentence
-  that names a node they delete. Slice 4 writes D1's one remark (the route and why the lift
-  replaces it; the deleted text is in `git show <slice sha>^`).
+- **Statements byte-identical** (held): the three main results, and `x0Dist`, `x0Gen` with their
+  types `X0Dist`, `X0Gen`. Each Lean slice diffed their signatures and ran `#print axioms`.
+- **Slice boundaries from the bodies** (held): each slice deleted a set the spike's walk found
+  dead and closed upward at HEAD less its restated proofs.
+- **N1b's deletions behind N1c's reroute** (held): slice 2 landed R2's six lines, not R1′'s.
+- **The old route's prose** (held): slices 1–3 cut or restated each sentence naming a node they
+  deleted; slice 4 wrote D1's one remark.
 
 ## Lemma checklist
 
-- [x] **1. Slice 1 — N1a: `x0Gen` from the lift** (landed; *Current state*). Its pinned plan is
-  in `git show 9c68719e:notes/Phase43b.md`.
-- [x] **2. Slice 2 — `pencilPair_of_nonempty` as the `m = 1` case; N1b's deletions** (landed;
-  *Current state*). Its pinned plan is in `git show c5d115ba:notes/Phase43b.md`. Beyond the pins:
-  `exists_smul_extensor_eq_of_mem_span_range` deleted (*Decisions*); `lem:pencil-generic-steer`'s
-  `(a)` label dropped with part (b), in its three `pencil-d.tex` crefs and the Lean docstrings, and
-  its proof's rank step with it; `thm:pencil-realization-theorem`'s proof drops
-  `thm:pencil-x0-generic-attains` too; `Motive.lean`'s cut-side helpers repointed to
-  `lem:pencil-d-lift-small`, `lem:pencil-d-lift-cut-edge`; `sec:pencil-reduction`'s case order,
-  `main-component.tex`'s introduction, `intro.tex`, README, the home page, the ledger (two entries
-  retired) and FRICTION (`extensor_pair_smul`'s status, the mirror's) updated.
-- [x] **3. Slice 3 — the rest of N1c** (landed; *Current state*). Its pinned plan is in
-  `git show 0b919b78:notes/Phase43b.md`. Beyond the pins: the given-point lemma and its node
-  (*Decisions*); `sec:pencil-base`, left with no node; `X0.lean` and `Pair.lean` import `Motive`
-  alone; `Theorem55.lean`'s cut helpers, `Grade/Arms.lean`, `Grade/TwoPencil.lean` and
-  `RigidityMatrix/Basic.lean` repointed off deleted names; the ledger (two entries retired).
-- [x] **4. Slice 4 — the old route as one remark (D1)** (landed; *Current state*). Its pinned
-  plan is in `git show a2772bfb:notes/Phase43b.md`. Beyond the pins: the sentence closing
-  `lem:pencil-d-ear-free` (c5d115ba's) and its twin in `lem:pencil-d-lift-ear` called the lift
-  hypothesis empty at `d = 3`, false (`EarLiftCondition` reads no `d`), and went with the collapse;
-  `sec:pencil-d`'s introduction no longer runs "the induction of `sec:main-component-statements`";
-  `sec:pencil-nondegenerate` names the theorem's statement, not "the induction"'s; TACTICS-GOLF
-  §18 repointed. `sec:pencil-d-reduction`'s `d = 3` sentences stay: each reads its case at
-  `d = 3`, with no deleted node behind it (EXPO may cut them).
-- [ ] **5. Close (43b).** The sub-phase close of `PHASE-BOUNDARIES.md`: the ROADMAP marker, §43's
-  43b detail compressed, the design doc's LIFT3 entry to a verdict, the ledger's 43b section, the
-  main results' axioms run, `formalization.yaml`'s route descriptions; then NORMAL's open, at the
-  PI's word.
+- [x] **1. Slice 1 — N1a: `x0Gen` from the lift** (`ae0d7c6a`; plan
+  `git show 9c68719e:notes/Phase43b.md`).
+- [x] **2. Slice 2 — `pencilPair_of_nonempty` as the `m = 1` case; N1b's deletions** (`0b919b78`;
+  plan `git show c5d115ba:notes/Phase43b.md`).
+- [x] **3. Slice 3 — the rest of N1c** (`a2772bfb`; plan `git show 0b919b78:notes/Phase43b.md`).
+- [x] **4. Slice 4 — the old route as one remark (D1)** (`f364a12d`; plan
+  `git show a2772bfb:notes/Phase43b.md`).
+- [x] **5. Close (43b).** The sub-phase close of `PHASE-BOUNDARIES.md` (this commit; *Decisions*).
 
 ## Blockers / open questions
 
-None: slice 4 settled the three of slice 3 (*Decisions*).
+None.
 
 ## Hand-off / next phase
 
-The next concrete commit is the close (checklist item 5), whole: the sub-phase close of
-`PHASE-BOUNDARIES.md`, one commit. Builder rung: the coordinator's. After it, NORMAL's open, at the
-PI's word.
+The next concrete task is Phase 43's, not this sub-phase's: NORMAL's open (the reduction on five
+structural cases), at the PI's word, minting its letter then (`notes/Phase43-design.md` §2,
+NORMAL). The EXPO-facing items 43b leaves are in that section's EXPO entry.
 
 ## Decisions made during this phase
 
-The decisions of the open are `notes/Phase43-design.md` §1 (the PI's one-sub-phase choice,
-2026-11-08) and the choices above.
+The open's decisions are `notes/Phase43-design.md` §1 (the PI's one-sub-phase choice, 2026-11-08).
 
-- **Slice 2's outside orphans** (coordinator, 2026-11-08): `Submodule.exists_mem_notMem_notMem`
-  kept, an upstream candidate; `exists_smul_extensor_eq_of_mem_span_range` deleted.
-- **Slice 3's two calls** (coordinator, 2026-11-08): `lem:extensor-pair-through-given-point` deleted
-  with its Lean, as no user survived the slice; `X0.lean` keeps `X0Dist`, `X0Gen` in place, no move
-  into `Statements.lean` (import churn, no gain).
-- **Slice 4's three calls** (coordinator, 2026-11-08): `thm:pencil-x0-generic-attains` kept as
-  `sec:main-component`'s summary, its role prose restated (its generic statement follows from
-  `thm:pencil-d-generic` at `d = 3`; the realization theorem rests on neither main-component
-  statement), a hypothesis for EXPO to revisit, not a settled exposition;
-  `thm:pencil-conditioned-pair-nonempty` folded into `thm:pencil-realization-theorem`, which pins
-  `pencilPair_of_nonempty`; `exists_three_perp`, `linearIndependent_pair_extensor_of_li3` deleted,
-  unused and each superseded by a general-grade form.
+- **Slice 2** (coordinator): `Submodule.exists_mem_notMem_notMem` kept, an upstream candidate;
+  `exists_smul_extensor_eq_of_mem_span_range` deleted.
+- **Slice 3** (coordinator): `lem:extensor-pair-through-given-point` deleted with its Lean (no
+  user left); `X0Dist`, `X0Gen` stay in `X0.lean`.
+- **Slice 4** (coordinator): `thm:pencil-conditioned-pair-nonempty` folded into
+  `thm:pencil-realization-theorem`; `exists_three_perp`, `linearIndependent_pair_extensor_of_li3`
+  deleted; `thm:pencil-x0-generic-attains` kept as `sec:main-component`'s summary (EXPO's to
+  revisit, design doc §2).
+- **Slice 1's prose fix was false** (`c5d115ba`): the lift hypothesis is not empty at `d = 3`
+  (`EarLiftCondition` reads no `d`); slice 4's collapse removed it.
+- **The close**: no exposition-ledger entry (`notes/BlueprintExposition.md`, Phase 43b); the
+  re-read made two sentences exact (`lem:pencil-d-good-ear`'s closing, `pencil.tex`'s cut-edge
+  move); `check-phase-note.py --selftest` red until NORMAL opens, as predicted (`notes/FRICTION.md`).

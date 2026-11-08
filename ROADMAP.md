@@ -187,7 +187,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (CLEANUP-42, round 4: the folds, the witnesses and the docstrings) | the `d = 3` Lean that repeats the every-dimension Lean, two non-vacuity witnesses and stale Lean docstrings (Lean; two blueprint pins, the folded nodes' edges and notes, no statement) | ✓ Complete — the `d = 3` Lean proved as the every-dimension Lean's `d = 3` case, two witnesses, no statement changed; CLEANUP-42 complete (see `notes/Phase42-fold.md`; plan `notes/Cleanup42.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (HOMES: Phase 42's deferred lemma homes and the friction log) | the friction log's docs and tooling fixes, then the lemmas Phase 42 left outside their home files and the mirror lemmas that now meet their bar (Lean and notes, no statement) | ✓ Complete — the lemmas in their home files, the friction log's actionable entries 62 to 18, no statement changed (see `notes/Phase42-homes.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (ARREARS: what HOMES left) | the blueprint's dependency-graph debt, the friction log's archive sweep, the splits of four molecular files past the size cap, and `RecordsLinks` moved to `Graph` with its link hypotheses restated (Lean, blueprint edges and notes; no main result's statement) | ✓ Complete — the blueprint's missing dependency edges 16 to 0, the four files split, the link hypotheses in `RecordsLinks` terms (three weakened at the PI's word), no main result's statement changed (see `notes/Phase42-arrears.md`; round manual: `CLEANUP.md`) |
-| 43. A simpler pencil proof (post-program) — PENCIL-NATURAL | the pencil proof's route in `Molecular/Molecule/Pencil/` and its three chapters, no main result's statement (sub-lettered, 43a–) | In progress — 43b, LIFT3: the `d = 3` generic conjunct by the lift, the reduction proved once (see `notes/Phase43b.md`; plan `notes/Phase43-design.md`) |
+| 43. A simpler pencil proof (post-program) — PENCIL-NATURAL | the pencil proof's route in `Molecular/Molecule/Pencil/` and its three chapters, no main result's statement (sub-lettered, 43a–) | In progress — 43b, LIFT3, closed: the `d = 3` theorem from the theorem in every dimension, the reduction proved once; NORMAL's open next, with the PI (see `notes/Phase43b.md`; plan `notes/Phase43-design.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1340,11 +1340,12 @@ on five structural cases), **SPRIME** (Theorem S′, the two redundant cases rem
 2026-11-07): the three fresh reads held. The lift has no premise in the `d = 3` generic proof;
 Theorem S′ holds, as Theorem S with a weaker hypothesis; and a planar-rigid set is flat at every
 main picture, which is why the generic conjunct leaves the main component. **43b** LIFT3 (opened
-2026-11-08 as one sub-phase, at the PI's choice): the `d = 3` generic conjunct from the lift, then
-the reduction proved once, in three Lean slices, then the old route as one remark, and the close
-(`notes/Phase43b.md`). Slices 1–4 landed (`x0Gen` from the lift; `pencilPair_of_nonempty` as the
-`m = 1` case of the every-dimension corollary; the `d = 3` reduction's cases deleted, the
-reduction proved once; the old route as one remark); next: the close.
+and closed 2026-11-08, one sub-phase at the PI's choice; `notes/Phase43b.md`): the `d = 3`
+theorem is now the case `d = 3` of the theorem in every dimension. The generic conjunct comes from
+the lift, the whole theorem from the every-dimension corollary, and the reduction's cases are
+proved once, for every `d`; one remark keeps the old `d = 3` route. 91 declarations and 15
+blueprint nodes went, none came, and the main results' statements and axioms are unchanged.
+Next: NORMAL's open, with the PI.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 
