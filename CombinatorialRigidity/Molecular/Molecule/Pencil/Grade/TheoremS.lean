@@ -35,9 +35,10 @@ graph with `def₃(G) > 0` and no two bodies of degree two adjacent is ONE-CLASS
   usable at `n`.
 * `Graph.IsX0Graph.exists_core_of_deficiency_three_pos`: `lem:pencil-d-core-positive-deficiency`, a
   core at every `n ≥ 3` when `def₃(G) > 0` and no two bodies of degree two are adjacent.
-* `Graph.IsOpenEar.exists_additiveCoreAt_of_partitionDef_nonpos`: `lem:pencil-d-chain-core`, a core
+* `Graph.IsOpenEar.exists_additiveCoreAt_of_deficiency_induce_eq_zero`,
+  `Graph.IsOpenEar.exists_additiveCoreAt_of_partitionDef_nonpos`: `lem:pencil-d-chain-core`, a core
   at `n` avoiding the first interior body of an open ear with two or more interior bodies whose side
-  `V₁` has `s_D(V₁) ≤ 0`.
+  `V₁` holds a set of two or more bodies rigid at `n` (1), or has `s_D(V₁) ≤ 0` (2).
 -/
 
 @[expose] public section
@@ -387,24 +388,23 @@ theorem _root_.Graph.IsX0Graph.exists_core_of_deficiency_three_pos {G : Graph α
 
 /-! ## A core at a long chain -/
 
-/-- **A core at an open ear of two or more interior bodies** (`lem:pencil-d-chain-core`): let
-`D ≥ 3`, let `G` satisfy the standing hypotheses and be sparse, and let
-`a − x 0 − ⋯ − x (k − 1) − b` be an open ear of `G` on `V₁` with `k ≥ 2` and `s_D(V₁) ≤ 0`. Then
-`G` has a core at `n` that avoids `x 0`.
+/-- **A core at an open ear of two or more interior bodies, from a rigid set in its side**
+(`lem:pencil-d-chain-core` (1)): let `D ≥ 3`, let `G` satisfy the standing hypotheses and be
+sparse, and let `a − x 0 − ⋯ − x (k − 1) − b` be an open ear of `G` on `V₁` with `k ≥ 2`. If a set
+`Y ⊆ V₁` of at least two bodies is rigid at `n` (`def(G̃[Y]) = 0`), then `G` has a core at `n` that
+avoids `x 0`.
 
-`V₁` contains a set rigid at `n`
-(`Graph.exists_deficiency_induce_eq_zero_of_partitionDef_id_nonpos`, `lem:deficiency-sparse`), which
-avoids `x 0`. The neighbours of `x 0` are `a` and `x 1`
-(`Graph.IsOpenEar.isLink_interior`), and `x 1` lies in no set rigid at `n` that avoids `x 0`: it
-would have two neighbours there (`Graph.two_le_degree_of_isKDof_zero`,
-`lem:deficiency-zero-connected`), but its other neighbour is `x 0`. So `x 0` has at most one
-neighbour in such a set, and `Graph.IsX0Graph.exists_additiveCore_of_rigidAt` with `X₀ = {x 0}`
-gives the core. -/
-theorem _root_.Graph.IsOpenEar.exists_additiveCoreAt_of_partitionDef_nonpos {G : Graph α β}
+The neighbours of `x 0` are `a` and `x 1` (`Graph.IsOpenEar.isLink_interior`), and `x 1` lies in no
+set rigid at `n` that avoids `x 0`: it would have two neighbours there
+(`Graph.two_le_degree_of_isKDof_zero`, `lem:deficiency-zero-connected`), but its other neighbour is
+`x 0`. So `x 0` has at most one neighbour in such a set, and
+`Graph.IsX0Graph.exists_additiveCore_of_rigidAt` with `X₀ = {x 0}` gives the core. -/
+theorem _root_.Graph.IsOpenEar.exists_additiveCoreAt_of_deficiency_induce_eq_zero {G : Graph α β}
     (hG : G.IsX0Graph) {n : ℕ} (hD : 3 ≤ Graph.bodyBarDim n)
     (hSv : ∀ X ⊆ V(G), 2 ≤ X.ncard → 1 ≤ (G.induce X).partitionDef 2 id)
     {V₁ : Set α} {k : ℕ} {x : Fin k → α} {a b : α} {e : Fin (k + 1) → β}
-    (hear : G.IsOpenEar V₁ x a b e) (hk : 2 ≤ k) (hs : (G.induce V₁).partitionDef n id ≤ 0) :
+    (hear : G.IsOpenEar V₁ x a b e) (hk : 2 ≤ k) {Y : Set α} (hYV₁ : Y ⊆ V₁)
+    (hY2 : 2 ≤ Y.ncard) (hYd : (G.induce Y).deficiency n = 0) :
     ∃ W r, x ⟨0, by omega⟩ ∉ W ∧ r ∈ W ∧ W ⊂ V(G) ∧ 2 ≤ W.ncard ∧
       (G.induce W).deficiency n = 0 ∧
       (G.induce W).deficiency 2 + (G.rigidContract (G.induce W) r).deficiency 2 ≤
@@ -415,11 +415,6 @@ theorem _root_.Graph.IsOpenEar.exists_additiveCoreAt_of_partitionDef_nonpos {G :
   set i₁ : Fin k := ⟨0, by omega⟩ with hi₁
   set i₂ : Fin k := ⟨1, by omega⟩ with hi₂
   have hV₁ : V₁ ⊆ V(G) := hear.cover ▸ Set.subset_union_left
-  have hV₁2 : 2 ≤ V₁.ncard := by
-    have := Set.ncard_le_ncard (Set.pair_subset hear.left_mem hear.right_mem) (Set.toFinite _)
-    rwa [Set.ncard_pair hear.ne] at this
-  obtain ⟨Y, hYV₁, hY2, hYd⟩ :=
-    Graph.exists_deficiency_induce_eq_zero_of_partitionDef_id_nonpos hV₁ hV₁2 hs
   -- the links at `x 0` go to `a` and `x 1`
   have hl₁ : G.IsLink (e 0) (x i₁) a := by
     have := hear.isLink_first
@@ -460,5 +455,31 @@ theorem _root_.Graph.IsOpenEar.exists_additiveCoreAt_of_partitionDef_nonpos {G :
   have ha : ∀ c ∈ W, G.Adj (x i₁) c → c = a := fun c hc hadj =>
     (hnbr c hadj).resolve_right fun h => hx₂W (h ▸ hc)
   rw [ha c₁ hc₁ h₁, ha c₂ hc₂ h₂]
+
+/-- **A core at an open ear of two or more interior bodies** (`lem:pencil-d-chain-core` (2)): let
+`D ≥ 3`, let `G` satisfy the standing hypotheses and be sparse, and let
+`a − x 0 − ⋯ − x (k − 1) − b` be an open ear of `G` on `V₁` with `k ≥ 2` and `s_D(V₁) ≤ 0`. Then
+`G` has a core at `n` that avoids `x 0`.
+
+`V₁` contains a set rigid at `n`
+(`Graph.exists_deficiency_induce_eq_zero_of_partitionDef_id_nonpos`, `lem:deficiency-sparse`), which
+avoids `x 0` and gives the core by
+`Graph.IsOpenEar.exists_additiveCoreAt_of_deficiency_induce_eq_zero`. -/
+theorem _root_.Graph.IsOpenEar.exists_additiveCoreAt_of_partitionDef_nonpos {G : Graph α β}
+    (hG : G.IsX0Graph) {n : ℕ} (hD : 3 ≤ Graph.bodyBarDim n)
+    (hSv : ∀ X ⊆ V(G), 2 ≤ X.ncard → 1 ≤ (G.induce X).partitionDef 2 id)
+    {V₁ : Set α} {k : ℕ} {x : Fin k → α} {a b : α} {e : Fin (k + 1) → β}
+    (hear : G.IsOpenEar V₁ x a b e) (hk : 2 ≤ k) (hs : (G.induce V₁).partitionDef n id ≤ 0) :
+    ∃ W r, x ⟨0, by omega⟩ ∉ W ∧ r ∈ W ∧ W ⊂ V(G) ∧ 2 ≤ W.ncard ∧
+      (G.induce W).deficiency n = 0 ∧
+      (G.induce W).deficiency 2 + (G.rigidContract (G.induce W) r).deficiency 2 ≤
+        G.deficiency 2 ∧
+      ∀ u ∉ W, ∀ c₁ ∈ W, ∀ c₂ ∈ W, G.Adj u c₁ → G.Adj u c₂ → c₁ = c₂ := by
+  have hV₁2 : 2 ≤ V₁.ncard := by
+    have := Set.ncard_le_ncard (Set.pair_subset hear.left_mem hear.right_mem) (Set.toFinite _)
+    rwa [Set.ncard_pair hear.ne] at this
+  obtain ⟨Y, hYV₁, hY2, hYd⟩ := Graph.exists_deficiency_induce_eq_zero_of_partitionDef_id_nonpos
+    (hear.cover ▸ Set.subset_union_left) hV₁2 hs
+  exact hear.exists_additiveCoreAt_of_deficiency_induce_eq_zero hG hD hSv hk hYV₁ hY2 hYd
 
 end CombinatorialRigidity.Molecular

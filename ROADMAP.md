@@ -1350,8 +1350,8 @@ blueprint nodes went, none came, and the main results' statements and axioms are
 and the minimum-degree lemma moved to an appendix, then Theorem S′, stated at `d = 3` only, with
 the two redundant short-chain cases removed. Slice 1 has landed: the reduction restated, the
 minimum-degree lemma in a new appendix of further results. SPRIME's pin has landed: Theorem S′
-holds as Lean, with the main results unchanged, and its deletions fall into three slices. Next:
-the first of them, two new lemmas.
+holds as Lean, with the main results unchanged, and its deletions fall into three slices. The
+first (two new lemmas) has landed. Next: the second, Theorem S′ itself.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 

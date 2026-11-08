@@ -4301,30 +4301,41 @@ empty or $X_0 = \{x\}$.
 
 \begin{lemma}[A non-adjacent pair outside every rigid set]
   \label{lem:deficiency-two-body-chain}
-  \lean{Graph.deficiencyMerged_two_add_two_le}
+  \lean{Graph.exists_deficiency_three_induce_eq_zero_of_deficiency_two_lt,
+        Graph.deficiencyMerged_two_add_two_le}
   \leanok
   \uses{def:D-deficiency, def:deficiency-merged}
   Let $G$ be sparse, and let $a \neq b$ be bodies of $G$ that are not
-  adjacent, with $\operatorname{def}_3(G; a, b) \neq
-  \operatorname{def}_3(G)$. Then $\operatorname{def}_2(G; a, b) + 2 \le
-  \operatorname{def}_2(G)$.
+  adjacent.
+  \begin{enumerate}
+    \item If $\operatorname{def}_2(G) < \operatorname{def}_2(G; a, b) +
+      2$, then $a$ and $b$ lie in a set $Z$ of at least three bodies
+      with $\operatorname{def}_3(G[Z]) = 0$.
+    \item If $\operatorname{def}_3(G; a, b) \neq
+      \operatorname{def}_3(G)$, then $\operatorname{def}_2(G; a, b) + 2
+      \le \operatorname{def}_2(G)$.
+  \end{enumerate}
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:deficiency-singleton-bound, lem:deficiency-add-body,
-        lem:deficiency-tight-rigid, lem:deficiency-merge-rigid,
-        lem:deficiency-two-body-chain-d}
-  Otherwise the part $Z$ of $a$ and $b$ in a partition attaining the
-  planar merged deficiency has $s(Z) \le 1$
+        lem:deficiency-tight-rigid, lem:deficiency-merge-rigid}
+  (1) The part $Z$ of $a$ and $b$ in a partition attaining the planar
+  merged deficiency has $s(Z) \le 1$
   (\cref{lem:deficiency-singleton-bound}). The pair $\{a, b\}$ has
   singleton value $3$, as $a$ and $b$ are not adjacent
   (\cref{lem:deficiency-add-body}), so $|Z| \ge 3$, and $Z$ is rigid
-  (\cref{lem:deficiency-tight-rigid}). Then $\operatorname{def}_3(G; a,
-  b) = \operatorname{def}_3(G)$ (\cref{lem:deficiency-merge-rigid}).
+  (\cref{lem:deficiency-tight-rigid}).
+
+  (2) Otherwise part~(1) gives a rigid set $Z \ni a, b$, and then
+  $\operatorname{def}_3(G; a, b) = \operatorname{def}_3(G)$
+  (\cref{lem:deficiency-merge-rigid}).
 \end{proof}
 \begin{fmlnote}
-  The formalization proves this lemma as the case $d = 3$ of
-  \cref{lem:deficiency-two-body-chain-d}.
+  The formalization proves part~(1) as
+  \texttt{exists\_deficiency\_three\_induce\_eq\_zero\_of\_deficiency\_two\_lt},
+  and part~(2) from it; the case $d = 3$ of
+  \cref{lem:deficiency-two-body-chain-d} comes from the same part~(1).
 \end{fmlnote}
 
 \subsection{The structural coverage}

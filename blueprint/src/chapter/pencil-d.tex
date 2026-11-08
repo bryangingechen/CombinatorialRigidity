@@ -1042,13 +1042,11 @@ of $P$.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:deficiency-singleton-bound, lem:deficiency-add-body,
-        lem:deficiency-tight-rigid, lem:deficiency-rigid-higher,
+  \uses{lem:deficiency-two-body-chain, lem:deficiency-rigid-higher,
         lem:deficiency-merge-rigid}
-  Otherwise, as in the proof of \cref{lem:deficiency-two-body-chain},
-  the part $Z$ of $a$ and $b$ in a partition attaining the planar merged
-  deficiency is a tight set, so $\operatorname{def}_3(G[Z]) = 0$
-  (\cref{lem:deficiency-tight-rigid}). As $d \ge 3$,
+  Otherwise, by part~(1) of \cref{lem:deficiency-two-body-chain}, $a$
+  and $b$ lie in a set $Z$ of at least three bodies with
+  $\operatorname{def}_3(G[Z]) = 0$. As $d \ge 3$,
   $\operatorname{def}_d(G[Z]) = 0$ (\cref{lem:deficiency-rigid-higher}).
   Then $\operatorname{def}_d(G; a, b) = \operatorname{def}_d(G)$
   (\cref{lem:deficiency-merge-rigid}).
@@ -1236,28 +1234,38 @@ bodies.
 
 \begin{lemma}[A core at an open ear of two or more interior bodies]
   \label{lem:pencil-d-chain-core}
-  \lean{Graph.IsOpenEar.exists_additiveCoreAt_of_partitionDef_nonpos}
+  \lean{Graph.IsOpenEar.exists_additiveCoreAt_of_deficiency_induce_eq_zero,
+        Graph.IsOpenEar.exists_additiveCoreAt_of_partitionDef_nonpos}
   \leanok
   \uses{def:open-ear, def:pencil-x0-standing, def:rigid-contraction}
   Let $d \ge 2$ and $D = \binom{d+1}{2}$, and let $G$ satisfy the
   standing hypotheses and be sparse. Let
   $a - x_1 - \cdots - x_k - b$ be an open ear of $G$ on $V_1$
-  (\cref{def:open-ear}) with $k \ge 2$ and $s_D(V_1) \le 0$. Then $G$
-  has a core in dimension $d$ that avoids $x_1$.
+  (\cref{def:open-ear}) with $k \ge 2$.
+  \begin{enumerate}
+    \item If $V_1$ contains a set of at least two bodies that is rigid in
+      dimension $d$, then $G$ has a core in dimension $d$ that avoids
+      $x_1$.
+    \item If $s_D(V_1) \le 0$, then $G$ has a core in dimension $d$ that
+      avoids $x_1$.
+  \end{enumerate}
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:deficiency-sparse, lem:deficiency-zero-connected,
         lem:pencil-d-maximal-rigid-core}
-  As $a \neq b$ lie in $V_1$ and $s_D(V_1) \le 0$, $V_1$ contains a set
-  $Y$ rigid in dimension $d$ (\cref{lem:deficiency-sparse}), which
-  avoids $x_1$. As $G$ is simple, the interior bodies have degree two,
-  and the neighbours of $x_1$ are $a$ and $x_2$. A set $W$ rigid in
+  (1) Let $Y \subseteq V_1$ be the rigid set, which avoids $x_1$, as
+  $x_1 \notin V_1$. As $G$ is simple, the interior bodies have degree
+  two, and the neighbours of $x_1$ are $a$ and $x_2$. A set $W$ rigid in
   dimension $d$ that avoids $x_1$ does not contain $x_2$, since $x_2$
   would have two neighbours in $W$ (\cref{lem:deficiency-zero-connected})
   and one of its two neighbours is $x_1$. So $x_1$ has at most one
   neighbour in $W$, and \cref{lem:pencil-d-maximal-rigid-core} with
   $X_0 = \{x_1\}$ gives the core.
+
+  (2) As $a \neq b$ lie in $V_1$ and $s_D(V_1) \le 0$, $V_1$ contains a
+  set of at least two bodies rigid in dimension $d$
+  (\cref{lem:deficiency-sparse}), and part~(1) applies.
 \end{proof}
 
 \subsection{The induction in every dimension}

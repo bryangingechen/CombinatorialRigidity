@@ -43,9 +43,11 @@ if `def₃(G[W]) = 0`, and `G` is *sparse* if `s(X) ≥ 1` for every `X ⊆ V(G)
 * `Graph.deficiency_induce_add_deficiency_rigidContract_le` (`lem:deficiency-additive-core`):
   `def₂(G[W]) + def₂(G / G[W]) ≤ def₂(G)` under that bound.
 * `Graph.not_adj_and_deficiencyMerged_two_add_two_le`, `Graph.deficiencyMerged_three_add_five_le`
-  (`lem:deficiency-one-body-chain`) and `Graph.deficiencyMerged_two_add_two_le`
-  (`lem:deficiency-two-body-chain`): the merged deficiencies at the ends of a chain of one or two
-  vertices.
+  (`lem:deficiency-one-body-chain`),
+  `Graph.exists_deficiency_three_induce_eq_zero_of_deficiency_two_lt` and
+  `Graph.deficiencyMerged_two_add_two_le` (`lem:deficiency-two-body-chain`): the merged
+  deficiencies at the ends of a chain of one or two vertices, and for two vertices the rigid set of
+  three or more bodies that holds the ends when the planar drop fails.
 
 The estimates at `n = 3` are the cases `D = 6` of estimates at every `n`
 (`sec:pencil-d-deficiency`), with *rigid at `n`* meaning `def(G̃[W]) = 0` at `n`:
@@ -913,24 +915,20 @@ theorem deficiencyMerged_three_add_five_le [Finite α] [Finite β] {G : Graph α
   simpa [bodyBarDim_three] using
     deficiencyMerged_add_bodyBarDim_sub_one_le (by decide) hV₁ hxV₁ ha hb hab h₀ h₁ hno
 
-/-- **A non-adjacent pair outside every rigid set, at every `n ≥ 3`**
-(`lem:deficiency-two-body-chain-d`): let `n ≥ 3`, let `G` be sparse, and let `a ≠ b` be
-non-adjacent vertices with `def_n(G; a, b) ≠ def_n(G)`. Then `def₂(G; a, b) + 2 ≤ def₂(G)`.
-Otherwise the part `Z` of `a` and `b` in a partition attaining the planar merged deficiency has
-`s(Z) ≤ 1`. As `s({a, b}) = 3`, `|Z| ≥ 3`, so `Z` is rigid
-(`deficiency_three_induce_eq_zero_of_tight`), hence of deficiency zero at `n`
-(`deficiency_eq_zero_of_deficiency_eq_zero_of_le`), and then `def_n(G; a, b) = def_n(G)`
-(`deficiencyMerged_eq_deficiency_of_mem`). -/
-theorem deficiencyMerged_two_add_two_le_of_three_le [Finite α] [Finite β] {G : Graph α β}
-    {n : ℕ} (hn : 3 ≤ n)
+/-- **A non-adjacent pair lies in a rigid set, or the planar merged deficiency drops**
+(`lem:deficiency-two-body-chain` (1)): let `G` be sparse, and let `a ≠ b` be non-adjacent vertices
+with `def₂(G) < def₂(G; a, b) + 2`. Then `a` and `b` lie in a set `Z` of at least three vertices
+that is rigid (`def₃(G[Z]) = 0`). The part `Z` of `a` and `b` in a partition attaining the planar
+merged deficiency has `s(Z) ≤ 1`. As `s({a, b}) = 3`, `|Z| ≥ 3`, so `Z` is rigid
+(`deficiency_three_induce_eq_zero_of_tight`). -/
+theorem exists_deficiency_three_induce_eq_zero_of_deficiency_two_lt [Finite α] [Finite β]
+    {G : Graph α β}
     (hSv : ∀ X ⊆ V(G), 2 ≤ X.ncard → 1 ≤ (G.induce X).partitionDef 2 id) {a b : α}
     (ha : a ∈ V(G)) (hb : b ∈ V(G)) (hab : a ≠ b) (hnadj : ¬ G.Adj a b)
-    (hδ : G.deficiencyMerged n a b ≠ G.deficiency n) :
-    G.deficiencyMerged 2 a b + 2 ≤ G.deficiency 2 := by
+    (hlt : G.deficiency 2 < G.deficiencyMerged 2 a b + 2) :
+    ∃ Z ⊆ V(G), a ∈ Z ∧ b ∈ Z ∧ 3 ≤ Z.ncard ∧ (G.induce Z).deficiency 3 = 0 := by
   have : Nonempty (α → α) := ⟨id⟩
   have hnn := partitionDef_induce_id_nonneg hSv
-  by_contra hlt
-  push Not at hlt
   have : Nonempty {f : α → α // f a = f b} := ⟨⟨fun _ => a, rfl⟩⟩
   obtain ⟨⟨f, hfab⟩, hf⟩ := exists_eq_ciSup_of_finite
     (f := fun f : {f : α → α // f a = f b} => G.partitionDef 2 f.1)
@@ -948,6 +946,7 @@ theorem deficiencyMerged_two_add_two_le_of_three_le [Finite α] [Finite β] {G :
     rwa [Set.ncard_pair hab] at this
   rcases Nat.lt_or_ge Z.ncard 3 with hZ3 | hZ3
   · -- `Z = {a, b}`, a pair with no edge, has `s = 3`
+    exfalso
     have hZab : Z = {a, b} := (Set.eq_of_subset_of_ncard_le (Set.pair_subset haZ hbZ)
       (by rw [Set.ncard_pair hab]; omega) (Set.toFinite _)).symm
     have hbna : b ∉ ({a} : Set α) := fun h' => hab (Set.mem_singleton_iff.mp h').symm
@@ -963,21 +962,46 @@ theorem deficiencyMerged_two_add_two_le_of_three_le [Finite α] [Finite β] {G :
     push_cast at hval
     rw [hZab, Set.pair_comm] at hZ1
     linarith
-  · have hZd := deficiency_eq_zero_of_deficiency_eq_zero_of_le (G := G.induce Z) (by decide) hn
-      ⟨a, haZ⟩ (deficiency_three_induce_eq_zero_of_tight (fun Y hY => hSv Y (hY.trans hZV)) hZ3 hZ1)
-    have hD : 1 ≤ bodyBarDim n :=
-      (by decide : 1 ≤ bodyBarDim 3).trans (bodyBarDim_mono hn)
-    exact hδ (deficiencyMerged_eq_deficiency_of_mem hD hZV hZd haZ hbZ)
+  · exact ⟨Z, hZV, haZ, hbZ, hZ3,
+      deficiency_three_induce_eq_zero_of_tight (fun Y hY => hSv Y (hY.trans hZV)) hZ3 hZ1⟩
 
-/-- **A non-adjacent pair outside every rigid set** (`lem:deficiency-two-body-chain`): let `G` be
-sparse, and let `a ≠ b` be non-adjacent vertices with `def₃(G; a, b) ≠ def₃(G)`. Then
-`def₂(G; a, b) + 2 ≤ def₂(G)`, the case `n = 3` of `deficiencyMerged_two_add_two_le_of_three_le`. -/
+/-- **A non-adjacent pair outside every rigid set, at every `n ≥ 3`**
+(`lem:deficiency-two-body-chain-d`): let `n ≥ 3`, let `G` be sparse, and let `a ≠ b` be
+non-adjacent vertices with `def_n(G; a, b) ≠ def_n(G)`. Then `def₂(G; a, b) + 2 ≤ def₂(G)`.
+Otherwise `a` and `b` lie in a rigid set `Z` of at least three vertices
+(`exists_deficiency_three_induce_eq_zero_of_deficiency_two_lt`), hence of deficiency zero at `n`
+(`deficiency_eq_zero_of_deficiency_eq_zero_of_le`), and then `def_n(G; a, b) = def_n(G)`
+(`deficiencyMerged_eq_deficiency_of_mem`). -/
+theorem deficiencyMerged_two_add_two_le_of_three_le [Finite α] [Finite β] {G : Graph α β}
+    {n : ℕ} (hn : 3 ≤ n)
+    (hSv : ∀ X ⊆ V(G), 2 ≤ X.ncard → 1 ≤ (G.induce X).partitionDef 2 id) {a b : α}
+    (ha : a ∈ V(G)) (hb : b ∈ V(G)) (hab : a ≠ b) (hnadj : ¬ G.Adj a b)
+    (hδ : G.deficiencyMerged n a b ≠ G.deficiency n) :
+    G.deficiencyMerged 2 a b + 2 ≤ G.deficiency 2 := by
+  by_contra hlt
+  obtain ⟨Z, hZV, haZ, hbZ, -, hZd⟩ :=
+    exists_deficiency_three_induce_eq_zero_of_deficiency_two_lt hSv ha hb hab hnadj
+      (not_le.mp hlt)
+  have hZd := deficiency_eq_zero_of_deficiency_eq_zero_of_le (G := G.induce Z) (by decide) hn
+    ⟨a, haZ⟩ hZd
+  have hD : 1 ≤ bodyBarDim n :=
+    (by decide : 1 ≤ bodyBarDim 3).trans (bodyBarDim_mono hn)
+  exact hδ (deficiencyMerged_eq_deficiency_of_mem hD hZV hZd haZ hbZ)
+
+/-- **A non-adjacent pair outside every rigid set** (`lem:deficiency-two-body-chain` (2)): let `G`
+be sparse, and let `a ≠ b` be non-adjacent vertices with `def₃(G; a, b) ≠ def₃(G)`. Then
+`def₂(G; a, b) + 2 ≤ def₂(G)`, by `exists_deficiency_three_induce_eq_zero_of_deficiency_two_lt` and
+`deficiencyMerged_eq_deficiency_of_mem`. -/
 theorem deficiencyMerged_two_add_two_le [Finite α] [Finite β] {G : Graph α β}
     (hSv : ∀ X ⊆ V(G), 2 ≤ X.ncard → 1 ≤ (G.induce X).partitionDef 2 id) {a b : α}
     (ha : a ∈ V(G)) (hb : b ∈ V(G)) (hab : a ≠ b) (hnadj : ¬ G.Adj a b)
     (hδ : G.deficiencyMerged 3 a b ≠ G.deficiency 3) :
-    G.deficiencyMerged 2 a b + 2 ≤ G.deficiency 2 :=
-  deficiencyMerged_two_add_two_le_of_three_le le_rfl hSv ha hb hab hnadj hδ
+    G.deficiencyMerged 2 a b + 2 ≤ G.deficiency 2 := by
+  by_contra hlt
+  obtain ⟨Z, hZV, haZ, hbZ, -, hZd⟩ :=
+    exists_deficiency_three_induce_eq_zero_of_deficiency_two_lt hSv ha hb hab hnadj
+      (not_le.mp hlt)
+  exact hδ (deficiencyMerged_eq_deficiency_of_mem (by decide) hZV hZd haZ hbZ)
 
 /-- **The planar merged deficiency at a vertex of degree two** (`lem:deficiency-one-body-chain`
 (1)): let `G` be sparse, let `V₁ ⊆ V(G)`, and let `x ∉ V₁` be joined by edges to `a ≠ b` in `V₁`.

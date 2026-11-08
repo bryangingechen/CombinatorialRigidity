@@ -5,14 +5,19 @@
 2026-11-08). Slice 1 (NORMAL) landed: the reduction on five structural cases, beside its one
 caller, and the minimum-degree lemma in a new appendix of further results. SPRIME's pin landed:
 Theorem S′ holds as Lean at `d = 3` in the folded form, with the main results unchanged, and a
-liveness walk cuts SPRIME into slices A (two new lemmas), B (S′) and C (the deletions). In order
-next: slices A, B and C, then the sub-phase's last commit. The next concrete commit is SPRIME
-slice A, item 3. One choice of the pin was taken in the PI's absence (*Decisions made*, first).
+liveness walk cuts SPRIME into slices A (two new lemmas), B (S′) and C (the deletions). Slice A
+landed (NEW-1 and NEW-2, additive). In order next: slices B and C, then the sub-phase's last
+commit. The next concrete commit is SPRIME slice B, item 4. One choice of the pin was taken in the PI's absence (*Decisions made*, first).
 
 ## Current state
 
-**Next concrete commit: SPRIME slice A, checklist item 3** (a build, Lean and blueprint; its Lean
-is the spike's NEW-1 and NEW-2, unprimed; Sonnet suggested, Opus for slice B's prose). Mode:
+**Next concrete commit: SPRIME slice B, checklist item 4** (S′ at `d = 3` and the ten deletions,
+Lean and blueprint; Opus, for the prose; the spike's `ChainUsable'`, `exists_additiveCore'` and
+`x0Reduces_of_chainUsable'` are its Lean). Slice A is in the tree: NEW-1
+`Graph.exists_deficiency_three_induce_eq_zero_of_deficiency_two_lt` (`SparseDeficiency.lean`) and
+NEW-2 `Graph.IsOpenEar.exists_additiveCoreAt_of_deficiency_induce_eq_zero` (`TheoremS.lean`), with
+`lem:deficiency-two-body-chain` and `lem:pencil-d-chain-core` each in two parts and
+`lem:deficiency-two-body-chain-d`'s proof via part (1). Mode:
 structural edit, no new chapter and no red target node; each slice reads and restates the nodes it
 reaches (`CombinatorialRigidity/CLAUDE.md` *Forward-mode slices*).
 
@@ -55,8 +60,8 @@ standard three).
   simple two-edge-connected case. The count that finds the bodies of degree two: *Decisions made*.
 - [x] **2. SPRIME's pin** (landed 2026-11-08, docs only): the spike and the walk, banked in
   `notes/pencil-natural/` (`SprimeSpike.lean`, `sprime_walk.py`). Verdict: *Decisions made*.
-- [ ] **3. SPRIME slice A — NEW-1 and NEW-2** (additive, green; statements of existing
-  declarations unchanged).
+- [x] **3. SPRIME slice A — NEW-1 and NEW-2** (landed 2026-11-08; additive, green; statements
+  of existing declarations unchanged, a spike transcription with no deviation).
   - *Lean, `Induction/SparseDeficiency.lean`* (section *The chains of one and two vertices*):
     add, before `deficiencyMerged_two_add_two_le_of_three_le`, NEW-1
     `Graph.exists_deficiency_three_induce_eq_zero_of_deficiency_two_lt [Finite α] [Finite β]
@@ -150,8 +155,10 @@ standard three).
 
 ## Hand-off / next phase
 
-The next concrete commit is *Current state*'s: SPRIME slice A, item 3 (a build from the spike).
-Then item 4 (S′, the larger prose), then item 5 (deletions only).
+The next concrete commit is *Current state*'s: SPRIME slice B, item 4 (S′, the larger prose).
+Then item 5 (deletions only). Slice B deletes `deficiencyMerged_two_add_two_le_of_three_le` and
+`deficiencyMerged_two_add_two_le`, now written from NEW-1; `lem:deficiency-two-body-chain` part (2)
+and `lem:deficiency-two-body-chain-d` go with them (item 4 lists the restatements).
 
 ## Decisions made during this phase
 
