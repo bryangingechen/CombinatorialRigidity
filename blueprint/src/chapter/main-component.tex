@@ -4412,11 +4412,15 @@ witnesses that the general configuration of $G$ attains
 (\cref{def:pencil-x0-attains}) is still a witness. At each non-root of
 the product, $q_x$, $q_y$ and $q_z$ are not collinear. So the attaining
 configurations over these general pictures are never nondegenerate. Such
-a graph $G$ has a planar-rigid set. The five bodies $a, b, x, y, z$ span
-at least six edges, so their singleton value is at most
-$3 \cdot 4 - 2 \cdot 6 = 0$. Hence some set of at least two of them is
-planar-rigid (\cref{lem:deficiency-sparse}). The obstruction therefore
-does not arise in the case without a planar-rigid set, treated below.
+a graph $G$ has a planar-rigid set, the five bodies $a, b, x, y, z$.
+Indeed, in $K_{2,3}$ these five bodies have singleton value
+$3 \cdot 4 - 2 \cdot 6 = 0$, and every nonempty set of them has
+nonnegative singleton value. So every partition of $K_{2,3}$ has value at
+most zero (\cref{lem:deficiency-singleton-bound}), and $K_{2,3}$ has
+planar deficiency zero. In $G$ the five bodies span the edges of
+$K_{2,3}$ and possibly further edges, which only lower the value of each
+partition. The obstruction therefore does not arise in the case without a
+planar-rigid set, treated below.
 
 At $K_{2,3}$, let $a$ and $b$ be the bodies of degree three, so that $x$,
 $y$ and $z$ are those of degree two. The generic conjunct asks for a
@@ -4445,6 +4449,135 @@ when a body of degree two, say $x$, is removed, across the ear $a x b$
 (\cref{lem:pencil-d-good-ear}, and \cref{lem:pencil-d-lift-ear} at
 $d = 3$). The point of $x$ lies on the line where the panels of $a$ and
 $b$ meet.
+
+\begin{remark}[Planar-rigid sets over a main picture]
+  \label{rem:pencil-x0-flatness}
+  The degeneracy at $K_{2,3}$ follows from a more general fact, which no
+  proof uses. Let $K$ be infinite, let $G$ satisfy the standing
+  hypotheses, and let $W$ be a planar-rigid set of bodies of $G$. Let $q$
+  be a main picture of $G$ and $z \in L(q)$. Then $z$ agrees on $W$ with
+  one affine function $f$ of the picture. At every body of $W$, $f$ is
+  also the affine function with which $z$ agrees on the closed
+  neighbourhood of that body. So the points of $(q, z)$ at the bodies of
+  $W$ lie in one plane, the graph $\zeta = f(\xi, \eta)$. By
+  \cref{lem:pencil-condition-linear}, this plane is the plane through the
+  points of the closed neighbourhood of each body of $W$, its panel.
+
+  We prove this first at a general picture, and then at every main
+  picture as in the proof of \cref{lem:pencil-x0-one-witness}. The graph
+  $G[W]$ satisfies the standing hypotheses
+  (\cref{lem:pencil-contract-standing-rigid}, at $d = 2$). Let $P_W$ be
+  the polynomial of Jackson and Jord\'an's equality for $G[W]$
+  (\cref{thm:pencil-jj-equality}). Let $s$ be a picture that is
+  admissible for $G$ with $P_W(s) \neq 0$, and let $(\bar z, \bar h)$
+  solve the lifting system $M(s)$ of $G$
+  (\cref{def:pencil-lifting-system}). Then $s$ is a main picture of
+  $G[W]$, so it is admissible for $G[W]$, and
+  $\dim L_{G[W]}(s) = 3 + \operatorname{def}_2(G[W]) = 3$. The globally
+  affine heights form a three-dimensional subspace of $L_{G[W]}(s)$
+  (\cref{lem:pencil-lifting-space-affine}), so they are all of it. The
+  restriction of $\bar z$ to $W$ lies in $L_{G[W]}(s)$ (part~(1) of
+  \cref{lem:pencil-lifting-restrict}). So $\bar z$ agrees on $W$ with one
+  affine function $g$. Let $v \in W$. As $s$ is admissible for $G[W]$,
+  three members of the closed neighbourhood of $v$ in $G[W]$ have
+  non-collinear picture points. At these three bodies $\bar z$ agrees
+  both with $g$ and with the affine function
+  $\bar h_v \cdot (\xi, \eta, 1)$, so these two functions are equal.
+  Hence $\bar h_v$ is the same vector at every body $v$ of $W$.
+
+  Now lift $z$ to a solution $(z, h)$ of $M(q)$. As $q$ is admissible,
+  $h_v \cdot (\xi, \eta, 1)$ is the affine function with which $z$ agrees
+  on the closed neighbourhood of $v$. Let $D$ and $X = (Z, H)$ be as in
+  \cref{lem:pencil-polynomial-section}, for the lifting system at $q$ and
+  $(z, h)$. Let $A$ be a polynomial in the picture coordinates, nonzero
+  at $q$, whose non-roots are admissible for $G$, as in the proof of
+  \cref{lem:pencil-x0-one-witness}. At a non-root $s$ of $AD$, the
+  solutions of $M(s)$ and of $M(q)$ form spaces of dimensions
+  $\dim L(s) \ge \dim L(q)$, as $q$ is a main picture. So $X(s)$ solves
+  $M(s)$. If moreover $P_W(s) \neq 0$, then $H_v(s) = H_w(s)$ for all
+  $v, w \in W$, by the general case. So each coordinate of $H_v - H_w$, a
+  polynomial in the picture coordinates, vanishes off the zero set of the
+  nonzero polynomial $A D P_W$. Its product with $A D P_W$ then vanishes
+  at every picture. As $K$ is infinite, that product is the zero
+  polynomial, and so is the coordinate. At $s = q$ this gives
+  $h_v = h_w$, as $X(q) = (z, h)$. Let $f(\xi, \eta) = h_v \cdot (\xi,
+  \eta, 1)$ for $v \in W$. Each body $u \in W$ lies in its own closed
+  neighbourhood, so $z_u = h_u \cdot (x_u, y_u, 1) = f(q_u)$.
+
+  Suppose now that $W$ contains two pencil hubs $u \neq w$ that are
+  adjacent or have a common neighbour, so that both lie in one closed
+  hub-neighbourhood (\cref{def:pencil-nondegenerate}). Then no pencil
+  realization of $G$ whose concurrency points are the points of $(q, z)$
+  is nondegenerate. Indeed, at a nondegenerate realization the point of a
+  body lies in the panel of each of its neighbours, as noted after
+  \cref{def:pencil-nondegenerate}. So the normals of $u$ and $w$ are
+  orthogonal to the points of their closed neighbourhoods. By
+  \cref{lem:pencil-condition-linear}, both are multiples of
+  $(\alpha, \beta, -1, \gamma)$, where
+  $f(\xi, \eta) = \alpha\xi + \beta\eta + \gamma$. So they are linearly
+  dependent, which nondegeneracy excludes. For short, we say that no
+  configuration over a main picture is nondegenerate.
+
+  Two pencil hubs with three common neighbours are such a pair, in the
+  planar-rigid set of five bodies found above. Over a main picture, the
+  remark thus gives the conclusion of
+  \cref{lem:pencil-x0-two-hubs-obstruction}. It also applies where that
+  lemma does not. Let $G$ have three pencil hubs $h_1$, $h_2$ and $h_3$,
+  and, for each pair $i < j$, two bodies of degree two adjacent to $h_i$
+  and $h_j$. This graph has nine bodies and twelve edges, and no two of
+  its hubs have three common neighbours. Its singleton value is
+  $s(V(G)) = 3 \cdot 8 - 2 \cdot 12 = 0$. Every other set $Z$ of at least
+  two bodies has $s(Z) \ge 1$. Indeed, let $Z$ contain $m$ bodies of
+  degree two. If $Z$ contains the three hubs, then $m \le 5$ and
+  $s(Z) = 3(m + 2) - 4m = 6 - m$. If $Z$ contains two hubs, let $m_2$ of
+  its bodies of degree two be adjacent to both. Every other body of
+  degree two is adjacent to one of them, so
+  $s(Z) = 3(m + 1) - 2(m + m_2) = 3 + m - 2m_2 \ge 3 - m_2 \ge 1$. If $Z$
+  contains one hub, it spans at most $m$ edges, and
+  $s(Z) \ge 3m - 2m = m \ge 1$. If $Z$ contains no hub, it spans no edge.
+  So every nonempty set of bodies has nonnegative singleton value. Hence
+  every partition of $V(G)$ has value at most $s(V(G)) = 0$
+  (\cref{lem:deficiency-singleton-bound}), and $V(G)$ is planar-rigid.
+  Each body of degree two has both of its neighbours in its closed
+  hub-neighbourhood. So no configuration over a main picture of $G$ is
+  nondegenerate.
+
+  Yet $G$ is nondegeneracy-feasible, so the generic conjunct asks for a
+  generic realization of $G$. We construct a nondegenerate realization as
+  for $K_{2,3}$ above. Take linearly independent normals $n_1$, $n_2$ and
+  $n_3$ for the hubs. Put the two bodies between $h_i$ and $h_j$ at two
+  distinct points of the line $n_i^{\perp} \cap n_j^{\perp}$. Put
+  $p_1 \in n_1^{\perp}$ off the lines $n_1^{\perp} \cap n_2^{\perp}$ and
+  $n_1^{\perp} \cap n_3^{\perp}$, so that $p_1 \cdot n_2 \neq 0$ and
+  $p_1 \cdot n_3 \neq 0$, and put $p_2$ and $p_3$ likewise. Let a body
+  $x$ lie between $h_i$ and $h_j$, and let
+  $\lambda p_x + \mu p_i + \nu p_j = 0$. The dot product with $n_j$ gives
+  $\mu = 0$, that with $n_i$ gives $\nu = 0$, and then $\lambda = 0$. So
+  the points of $x$, $h_i$ and $h_j$ are linearly independent. Give $x$
+  the plane through them, and give each edge the line through the points
+  of its ends. The panel of $h_i$ contains its point and the points of its
+  four neighbours, so each hinge lies in the panels of both ends of its
+  edge. The closed hub-neighbourhood of $x$ is $\{h_i, h_j\}$, whose
+  normals are independent, and that of a hub is the hub alone. So this is
+  a nondegenerate pencil realization.
+
+  In a graph with a planar-rigid set, \cref{lem:pencil-rigid-good-ear}
+  finds such a pair or a pendant triangle. The pair consists of the two
+  hub neighbours $a$ and $b$ of a body $x$ of degree two in a minimal
+  planar-rigid set. The proof of \cref{thm:pencil-d-generic} removes $x$
+  and puts it back on the line where the panels of $a$ and $b$ meet. At
+  the realizations that it builds these two panels differ
+  (\cref{lem:pencil-d-lift-ear}). Over a main picture they coincide. A
+  pendant triangle is a planar-rigid set with only one hub, so it contains
+  no such pair.
+
+  In dimension $d \ge 4$, a configuration $(q, z)$ has $d - 2$ heights
+  (\cref{def:pencil-d-configuration}). If $q$ is a main picture and each
+  height lies in $L(q)$, the claim applies to each height. So the points
+  of $W$ lie in one three-dimensional subspace of $K^{d+1}$, which is
+  $\Pi_v$ at every body $v$ of $W$
+  (\cref{lem:pencil-d-condition-linear}).
+\end{remark}
 
 We turn to a graph without a planar-rigid set, where the proof of
 \cref{thm:pencil-d-generic} uses the next lemmas

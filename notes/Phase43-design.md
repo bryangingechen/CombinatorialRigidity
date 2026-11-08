@@ -8,9 +8,10 @@ dimension, and the reduction's cases are proved once. **43c** NORMAL and SPRIME 
 (`notes/Phase43c.md`): the reduction on five structural cases, and Theorem S′ at `d = 3`, with
 the two unnecessary steps gone. **43d** EXPO, the last layer, is open (2026-11-08, at the PI's
 word, §1; `notes/Phase43d.md`): the road map of the proof, in five slices, and its close closes
-Phase 43. Slice 1, the road map, landed, and slice 2, inserted at the PI's word (§1, the 43d
-coordinator's session), removed the two main-component statements; next: slice 3, the flatness
-remark.
+Phase 43. Slice 1, the road map, landed; slice 2, inserted at the PI's word (§1, the 43d
+coordinator's session), removed the two main-component statements; slice 3 wrote the flatness
+remark. Next: slice 4, the pointers in two chapters, now with the fold of
+`thm:pencil-x0-generic-attains` into the coverage (§1, the PI's later word).
 
 This file is the phase's entry point: the target (§0), the PI's decisions (§1, verbatim), the
 layers by stable code (§2) and the open questions (§3). The recon record stays in
@@ -175,6 +176,27 @@ summary at d = 3, its role prose saying it is off the realization theorem's rout
 after Phase 43" (queue the removal as a cleanup round after 43d closes; EXPO's prose describes them
 as they stand now).
 
+**PI, 2026-11-08, this coordinator session (verbatim),** on the Blockers item slice 2 left.
+Question put: "After the removal, main-component.tex has two nodes with the same claim and the same
+Lean pin (Graph.IsX0Graph.x0Attains). One is thm:pencil-x0-coverage: every graph satisfying the
+standing hypotheses reduces, and so the general configuration attains. The other is
+thm:pencil-x0-generic-attains, 'The general point of the main component attains', which ends the
+chapter. In the every-dimension chapter, one node, thm:pencil-d-coverage, carries the attaining
+claim. What should happen to the duplicate?"
+Chosen: "Fold into the coverage (Recommended)" — offered as: "Delete thm:pencil-x0-generic-attains
+and repoint its citations (in intro.tex, pencil.tex, main-component.tex, pencil-d.tex) to
+thm:pencil-x0-coverage, matching the every-dimension chapter. Prose only, no Lean; done in slice 5
+(the main-component pointer slice)."
+Not chosen: "Split the claims" (thm:pencil-x0-coverage keeps only 'every graph reduces' (pinned to
+x0Reduces); thm:pencil-x0-generic-attains keeps 'the general configuration attains' (x0Attains) as
+the chapter's headline. Each node then has one claim, but every citation of the coverage for
+attaining has to be checked and some repointed); "Keep both" (leave the duplicate: the coverage as
+the induction's endpoint, generic-attains as the chapter's titled summary).
+
+*The coordinator's correction to that entry (not the PI's words):* the option text's "slice 5" was
+the coordinator's error. After slice 2's renumbering, the main-component pointer slice is slice 4,
+and the fold belongs there (`notes/Phase43d.md` item 4).
+
 ## 2. The layers, by stable code
 
 In order. A letter is minted when a layer opens.
@@ -217,7 +239,8 @@ In order. A letter is minted when a layer opens.
   as its record, naming what slices B and C deleted. The read's inputs for the build (the move,
   NEW-1 and NEW-2, the sizes) are `git show b9e9e2b2:notes/Phase43-design.md`, §2.
 - **EXPO** (43d, opened 2026-11-08 at the PI's word, §1; `notes/Phase43d.md`; its slice 2, the
-  removal of the main-component statements, at the PI's later word, §1). The road map
+  removal of the main-component statements, at the PI's later word, §1; its slice 4 folds
+  `thm:pencil-x0-generic-attains` into the coverage, at the PI's word again, §1). The road map
   (`notes/PencilNatural.md` §5), with the A/B/C structure as it stands after the layers above,
   I1–I4 as corrected, and the flatness reading, which its read confirmed once stated precisely
   (43a). Last. The read's inputs, re-derived against the chapters at the open (`notes/Phase43d.md`,
@@ -243,7 +266,8 @@ In order. A letter is minted when a layer opens.
     between two hubs (degenerate, so removed and re-added off the main component) and a pendant
     triangle (harmless). So flatness says why the generic conjunct leaves the main component in
     every dimension (C lifts nondegenerate `P³` realizations), and sharpens N6's NO-GO.
-  - **The draft remark** (the reader's, for after the `K_{2,3}` paragraph of
+  - **The draft remark** (written in slice 3 as `rem:pencil-x0-flatness`, after the `K_{2,3}`
+    paragraphs; this was the reader's draft, for after the `K_{2,3}` paragraph of
     `sec:main-component-statements` or the road map): `G[W]` meets the standing hypotheses; its
     lifting space at a general picture has dimension three, so is the affine heights; every
     height of `G` restricts to one of `G[W]`, so `W`'s points lie in one plane, each body's panel;
