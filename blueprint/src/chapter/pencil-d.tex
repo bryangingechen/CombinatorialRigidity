@@ -4316,12 +4316,12 @@ first two conjuncts of \cref{thm:pencil-realization-theorem}, whose proof
 is this one. It is the induction of \cref{thm:pencil-reduction}, with
 the cases at a loop, on at most two bodies and at a cut edge
 (\cref{lem:pencil-d-loop-case}, \cref{lem:pencil-d-base-case},
-\cref{lem:pencil-d-cut-case}). At a two-edge-connected multigraph it uses
-the distinct main-component statement in dimension $d$
+\cref{lem:pencil-d-cut-case}). At a simple two-edge-connected multigraph
+it uses the distinct main-component statement in dimension $d$
 (\cref{lem:pencil-d-distinct-statement}), which at $d = 3$ is
-\cref{lem:pencil-x0-distinct-statement}, or contracts two parallel edges,
-as Katoh and Tanigawa do (\cref{lem:pencil-d-nonsimple-case}; KT
-Lemma~6.2).
+\cref{lem:pencil-x0-distinct-statement}. At a two-edge-connected
+multigraph that is not simple, it contracts two parallel edges, as Katoh
+and Tanigawa do (\cref{lem:pencil-d-nonsimple-case}; KT Lemma~6.2).
 
 The cases at a loop, at a cut edge and at parallel edges each place a
 hinge that must lie in the panels of its two ends and pass through
@@ -4817,19 +4817,24 @@ $K^{d+1}$ chosen to meet it (\cref{lem:pencil-d-cut-reposition}).
   \emph{At most two bodies.} If $G$ is loopless with at most two bodies,
   \cref{lem:pencil-d-base-case} gives $\mathcal P$.
 
-  \emph{At least three bodies.} Let $G$ be loopless with at least three
-  bodies, and suppose that every multigraph with at least one body and
-  fewer bodies than $G$ has $\mathcal P$. If $G$ is not
-  two-edge-connected, \cref{lem:pencil-d-cut-case} gives $\mathcal P$, in
-  both of its forms. Its two sides have at least one body and fewer
-  bodies than $G$, and they are simple when $G$ is. If $G$ is
-  two-edge-connected and simple, \cref{lem:pencil-d-distinct-statement}
-  gives an adjacent-distinct realization, which is in particular one at
-  the deficiency rank. If $G$ is two-edge-connected and not simple,
+  \emph{A cut edge.} Let $G$ be loopless and not two-edge-connected, with
+  at least three bodies, and suppose that every multigraph with at least
+  one body and fewer bodies than $G$ has $\mathcal P$. Then
+  \cref{lem:pencil-d-cut-case} gives $\mathcal P$, in both of its forms.
+  Its two sides have at least one body and fewer bodies than $G$, and
+  they are simple when $G$ is.
+
+  \emph{Parallel edges.} Let $G$ be loopless, two-edge-connected and not
+  simple, with at least three bodies, and suppose that every multigraph
+  with at least one body and fewer bodies than $G$ has $\mathcal P$. Then
   \cref{lem:pencil-d-nonsimple-case} gives a realization at the
-  deficiency rank. This argument does not use the proper rigid subgraph
-  of the contraction case of \cref{thm:pencil-reduction}, nor the body of
-  degree two of its split case, so it settles both.
+  deficiency rank. As $G$ is not simple, this is $\mathcal P$.
+
+  \emph{A simple two-edge-connected multigraph.} Let $G$ be simple and
+  two-edge-connected, with at least three bodies. Then
+  \cref{lem:pencil-d-distinct-statement} gives an adjacent-distinct
+  realization, which is in particular one at the deficiency rank. This
+  case uses $\mathcal P$ at no smaller multigraph.
 
   At $d = 3$ this gives the first two conjuncts of
   \cref{thm:pencil-realization-theorem}
@@ -4840,7 +4845,7 @@ $K^{d+1}$ chosen to meet it (\cref{lem:pencil-d-cut-reposition}).
   the distinct statement rests on the coverage in dimension $d$
   (\cref{thm:pencil-d-coverage}). The induction of
   \cref{thm:pencil-reduction} is on the numbers of bodies and edges, and
-  does not depend on the dimension.
+  its statement does not depend on the dimension.
 \end{proof}
 
 \subsection{Nondegenerate realizations in every dimension}
@@ -6685,10 +6690,10 @@ So its subspace can be chosen after the points of $X$
 \end{proof}
 
 \begin{remark}[A route without lifts at $d = 3$]
-  At $d = 3$ the generic conjunct can also be proved inside the induction
-  of the reduction (\cref{thm:pencil-reduction}), at a simple
-  two-edge-connected graph $G$, from the conditioned pair at the graphs
-  with fewer bodies. Without a planar-rigid set, a general configuration
+  At $d = 3$ the generic conjunct can also be proved by an induction on
+  the number of bodies, at a simple two-edge-connected graph $G$, from
+  the conditioned pair at the graphs with fewer bodies. Without a
+  planar-rigid set, a general configuration
   of $G$ is a nondegenerate realization at the deficiency rank, as in the
   proof of \cref{lem:pencil-d-lift-no-rigid}. A triangle is realized directly.
   Otherwise $G$ has a pendant triangle, or a body $x$ of degree two with

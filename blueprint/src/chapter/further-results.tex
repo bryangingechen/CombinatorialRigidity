@@ -1,0 +1,33 @@
+\section{Further results}
+\label{sec:further-results}
+
+This appendix collects results that are proved and formalized but that
+no proof in the chapters uses.
+
+By its contrapositive, the next lemma finds a vertex of degree at most
+two in every loopless multigraph with at least three vertices and no
+proper rigid subgraph, once $D \ge 4$, as \cref{lem:low-degree-vertex}
+does in a minimal $k$-dof-graph (KT Lemmas~4.5 and~4.6).
+
+\begin{lemma}[Proper rigid subgraph from a minimum degree of three]
+  \label{lem:pencil-min-degree-rigid}
+  \lean{Graph.exists_isProperRigidSubgraph_of_three_le_degree}
+  \leanok
+  \uses{def:rigid-subgraph, def:matroid-MG}
+  Let $G$ be a loopless multigraph with $|V(G)| \ge 3$ and $D = \binom{d+1}{2}
+  \ge 4$. If every vertex of $G$ has degree at least three, $G$ has a proper
+  rigid subgraph.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:circuit-induces-rigid}
+  Let $v$ be a vertex of minimum degree $\delta \ge 3$. The handshake
+  identity gives $\delta\,|V(G)| \le 2\,|E(G)|$, so the edges avoiding $v$
+  number $|E(G)| - \delta \ge \delta(|V(G)|-2)/2$, and the $(D-1)$-fold
+  fiber of these edges in $M(\tilde G)$ has size $(D-1)(|E(G)| - \delta) >
+  D(|V(G)| - 2)$ once $D \ge 4$ --- strictly more than the $(D,D)$-sparsity
+  bound on any vertex set omitting $v$. The fiber is therefore dependent in
+  $M(\tilde G)$ and contains a circuit, whose induced subgraph is rigid
+  (\cref{lem:circuit-induces-rigid}), spans at least two vertices, and
+  omits $v$, hence is proper.
+\end{proof}

@@ -2,30 +2,25 @@
 
 **Status:** in progress (opened 2026-11-08 with the PI), the third sub-phase of Phase 43
 (PENCIL-NATURAL): layers NORMAL and SPRIME as one sub-phase, at the PI's choice (design doc §1,
-2026-11-08). No Lean has changed yet. In order: slice 1 (NORMAL), SPRIME's pin (a spike and a
-liveness walk, docs only), SPRIME's slices as the pin cuts them, and the sub-phase's last commit.
-The next concrete commit is slice 1, pinned below: the reduction on five structural cases, the
-minimum-degree lemma to a new appendix.
+2026-11-08). Slice 1 (NORMAL) landed: the reduction on five structural cases, beside its one
+caller, and the minimum-degree lemma in a new appendix of further results. In order next:
+SPRIME's pin (a spike and a liveness walk, docs only), SPRIME's slices as the pin cuts them, and
+the sub-phase's last commit. The next concrete commit is SPRIME's pin, item 2.
 
 ## Current state
 
-**Next concrete commit: slice 1 (NORMAL), checklist item 1.** Its new Lean is the spike's, compiled
-at the open; the rest is a move, docstrings and blueprint prose. Mode: structural edit. There is no
-new chapter and no red target node, so the red-node consistency gate has nothing to read: each
-slice reads and restates the nodes it reaches (`CombinatorialRigidity/CLAUDE.md` *Forward-mode
-slices*). Plan and inputs: `notes/Phase43-design.md` §2, NORMAL and SPRIME; the PI's answers of
-2026-11-08 are §1 there.
+**Next concrete commit: SPRIME's pin, checklist item 2** (a recon, docs only; Opus suggested). It
+pins item 3 to builder precision and cuts items 3–5 by a liveness walk. Mode: structural edit, no
+new chapter and no red target node; each slice reads and restates the nodes it reaches
+(`CombinatorialRigidity/CLAUDE.md` *Forward-mode slices*). Plan and inputs:
+`notes/Phase43-design.md` §2 SPRIME (its "the move" is read at `n = 3`, the PI's fold of §1).
 
-**Verified at the open (HEAD `7880d8f8`).**
-- `lake lean notes/pencil-natural/NormalSpike.lean` (banked; invocation in its docstring): exit 0,
-  no error or warning; `Graph.pencil_reduction'` and `Graph.graded_pencil_realization_theorem'` on
-  the standard three axioms; the second's type is the landed theorem's (an `example … := rfl`).
-  The restated reduction needs no `[Finite α] [Finite β]`, `n` or `hD`.
-- `Graph.pencil_reduction`'s one caller is `Graph.graded_pencil_realization_theorem`
-  (`Grade/Reduction.lean:81`), which passes one `hthree` to the cut, contraction and split arms;
-  `Graph.exists_isProperRigidSubgraph_of_three_le_degree` (`Induction/Operations.lean:420`) has
-  `pencil_reduction` as its only user. Neither name is on a status surface (`formalization.yaml`,
-  README, home page).
+**After slice 1.** `Graph.pencil_reduction` lives in `Pencil/Grade/Reduction.lean`, with no `n`,
+`hD` or finiteness, and its simple two-edge-connected case takes no induction hypothesis;
+`Graph.exists_isProperRigidSubgraph_of_three_le_degree` has no Lean user, its node
+`lem:pencil-min-degree-rigid` in `blueprint/src/chapter/further-results.tex`
+(`sec:further-results`). The four main results' signatures and axioms are unchanged (the
+standard three).
 
 ## Architectural choices made up front
 
@@ -44,67 +39,13 @@ slices*). Plan and inputs: `notes/Phase43-design.md` §2, NORMAL and SPRIME; the
 
 ## Lemma checklist
 
-- [ ] **1. Slice 1 — NORMAL: the reduction on five structural cases** (Lean, blueprint, one
-  commit). Line numbers at `7880d8f8`.
-  - **Lean, the reduction.** Move `Graph.pencil_reduction` from
-    `Induction/ForestSurgery/Reduction.lean` (its section `An induction over all multigraphs`,
-    :776–867) into `Pencil/Grade/Reduction.lean`, above its caller, under its own `/-! ## -/`
-    header, as the spike's `Graph.pencil_reduction'`, unprimed: hypotheses `hloop`, `hbase`
-    unchanged; `hcut` unchanged; `hparallel` (loopless, `3 ≤ |V|`, two-edge-connected,
-    `¬ G.Simple`, induction hypothesis at fewer bodies); `hsimple` (`G.Simple`, `3 ≤ |V|`,
-    two-edge-connected, **no** induction hypothesis: the main-component induction takes the graph
-    whole). No `n`, `hD`, `[Finite α] [Finite β]`. Docstring: the five cases, the lexicographic
-    measure (only the loop case keeps `|V(G)|`), no "cf. KT Theorem 4.9"; it plays the role of KT
-    Theorem 4.9's outer induction only (design doc §1, 2026-11-08, item 3). Drop the bullet's "and
-    an induction over all multigraphs (`thm:pencil-reduction`)" from `ForestSurgery/Reduction.lean`'s
-    module docstring (:27–28).
-  - **Lean, the caller.** `Graph.graded_pencil_realization_theorem` as the spike's primed form:
-    `hthree` dissolves into the cut, parallel and simple arms; the loop and base arms unchanged.
-    Docstring and the module docstring (:11–29) read the five cases.
-  - **Lean, docstrings.** `Induction/Operations.lean:24–25` and `:410–412`: the lemma has no Lean
-    user; it answers for every multigraph what KT Lemmas 4.5–4.6 answer for minimal ones, and its
-    node is the appendix's (below). `Pencil/Statement.lean:101` read against the restatement.
-    `TACTICS-GOLF.md:1119` (the loop arm holds `|V(G)|`) stays true; check.
-  - **Blueprint, `pencil.tex`.** Restate `thm:pencil-reduction` (:504–534) on the five cases, with
-    "Cases (i), (iii) and (iv) are handed …; case (v) is handed nothing"; title "Reduction on all
-    spanning multigraphs"; statement `\uses` loses `def:rigid-subgraph`,
-    `lem:pencil-min-degree-rigid`; the proof (a case split under strong induction) loses
-    `lem:two-edge-connected-degree`. Rewrite :454–462 ("Its case analysis still needs a vertex of
-    degree two …"): the cases are structural, and a simple two-edge-connected multigraph goes whole
-    to the main-component statements, whose own count finds its bodies of degree two. Name that
-    count after reading the nodes: `notes/PencilNatural.md` §5 calls `lem:pencil-d-chain-count` the
-    heir of KT Lemmas 4.5–4.6, and at `d = 3` `lem:pencil-x0-sparse-count` finds the bodies of
-    degree two; cite what the nodes support. One glue sentence there: the reduction plays only the
-    role of KT Theorem 4.9's outer induction; its contraction and degree-two steps have their
-    counterparts in the main-component induction (verified against
-    `sec:main-component-coverage`). Restate :536–549 ("The contraction and split cases, (iv) and
-    (v), are settled by one argument …"): case (iv) by `lem:pencil-d-nonsimple-case`, case (v) by
-    `lem:pencil-d-distinct-statement`; keep the `lem:pencil-contraction-deficiency` sentence only
-    as far as its users bear it out.
-  - **Blueprint, the appendix.** New chapter `blueprint/src/chapter/further-results.tex` (title
-    e.g. "Further results"), `\input` in `chapter/main.tex` after `\appendix` and **before**
-    `retrospective.tex`. A short lead: results proved and formalized that no proof in the
-    chapters uses. Move `lem:pencil-min-degree-rigid` (`pencil.tex:481–502`) there whole (label,
-    pin, `\leanok`, `\uses`, proof), with one sentence of context in mathematical terms (no route
-    history: `AUTHORING.md`). `intro.tex:400` and `:413` say "the appendix"; read them, and make
-    each name the one it means. `AUTHORING.md` *Structural placement* says "One appendix chapter":
-    add one line that the further-results chapter precedes it.
-  - **Blueprint, `pencil-d.tex`.** `thm:pencil-d-realization-theorem`'s proof (:4802–4844): the
-    five cases; drop "This argument does not use the proper rigid subgraph … so it settles both";
-    keep "does not depend on the dimension", now true of the statement. `sec:pencil-d-reduction`'s
-    lead (:4310–4322) read against it. The remark after `thm:pencil-d-generic`'s proof (:6687–):
-    "inside the induction of the reduction (\cref{thm:pencil-reduction}) … from the conditioned
-    pair at the graphs with fewer bodies" no longer matches case (v), which has no hypothesis; say
-    instead an induction on the number of bodies, at a simple two-edge-connected `G`.
-  - **Elsewhere.** `intro.tex:301–305` and `:368`, `pencil.tex:28`, `:234`, `:415` read against
-    the restatement (they name the induction, not its cases; expected unchanged).
-    `notes/BlueprintExposition.md:1167` (the `thm:pencil-reduction` entry): one line, restated in
-    43c, the lemma in the appendix.
-  - **Gates.** Whole `lake build`, warning-clean, 0 `failed to cache artifact`; `lake lint`;
-    `blueprint/lint.sh`; `blueprint/verify.sh` (checkdecls silent);
-    `python3 scripts/check-docstring-labels.py` diffed against the parent;
-    `python3 notes/check-phase-note.py`; the statement and axioms checks above; the moved name
-    grepped tree-wide (`pencil_reduction`, `ForestSurgery/Reduction`).
+- [x] **1. Slice 1 — NORMAL: the reduction on five structural cases** (landed 2026-11-08). The
+  spike's Lean, unprimed, moved beside its caller; `thm:pencil-reduction` restated, with the glue
+  sentence that it plays only the role of KT Theorem 4.9's induction (`pencil.tex`, after the
+  `K_4` paragraph); `lem:pencil-min-degree-rigid` moved whole to the new appendix;
+  `thm:pencil-d-realization-theorem`'s proof on the five cases. Beyond the list:
+  `main-component.tex`'s lead named "the contraction and split cases" of the reduction, now the
+  simple two-edge-connected case. The count that finds the bodies of degree two: *Decisions made*.
 - [ ] **2. SPRIME's pin** (recon, a docs-only design-pass commit; Opus suggested). A compiler-checked
   spike of S′ at `d = 3` (the fold: `exists_additiveCore`'s blocking hypothesis `¬ ChainUsable`
   without the `k = 2` merged-equality and `k = 1` split-off disjuncts; NEW-1, NEW-2; design doc §2
@@ -134,17 +75,23 @@ slices*). Plan and inputs: `notes/Phase43-design.md` §2, NORMAL and SPRIME; the
 
 ## Blockers / open questions
 
-- **The KT Theorem 4.9 remark** itself is EXPO's (design doc §2, EXPO); slice 1 writes only the
-  glue sentence, so the reference stands in the meantime (design doc §1 (a)).
+- **The KT Theorem 4.9 remark** itself is EXPO's (design doc §2, EXPO); slice 1 wrote only the glue
+  sentence (`pencil.tex`, `sec:pencil-reduction`'s lead), as design doc §1 (a) asks.
 - **Where `thm:pencil-reduction` lives** (`pencil.tex`, its only user in `pencil-d.tex`) is EXPO's.
 
 ## Hand-off / next phase
 
-The next concrete commit is *Current state*'s: slice 1, whole. Builder rung: the coordinator's
-(Sonnet plausible: the Lean is the spike's; Opus if the four chapters' prose argues for it). After
-it, item 2, SPRIME's pin.
+The next concrete commit is *Current state*'s: SPRIME's pin, item 2 (recon-opus, a docs-only
+design-pass commit). After it, item 3 as the pin cuts it.
 
 ## Decisions made during this phase
 
 The open's decisions are `notes/Phase43-design.md` §1 (the PI's answers of 2026-11-08) and the
 choices above.
+
+- **The count that finds the bodies of degree two** (slice 1, read from the nodes): part (1) of
+  `lem:pencil-x0-sparse-count` (no planar-rigid set, so sparse, so at least four bodies of degree
+  two; used by Theorem S and its every-`d` form). `lem:pencil-d-chain-count` starts from the
+  chains and counts the edges along them, the counterpart of KT Lemma 4.6's count of maximal
+  chains, not the count that finds the bodies; `pencil.tex` cites each in that role. The recon's
+  "heir of KT Lemmas 4.5–4.6" (`notes/PencilNatural.md` §5) is EXPO's to word.

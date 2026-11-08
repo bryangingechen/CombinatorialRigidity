@@ -417,7 +417,9 @@ implements it correctly, resetting the section counter and switching
 `\thesection` to `A`, `B`, …; no fallback was needed) in `chapter/main.tex`
 after the last math chapter, so it never sits in the proof's reading path.
 One `\subsection` per failure-mode class (the outline's (ii)–(vi)), episodes
-within a class as `\subsubsection`s.
+within a class as `\subsubsection`s. The further-results appendix
+(`chapter/further-results.tex`, results proved and formalized that no proof in
+the chapters uses, in the chapters' register) precedes it, after `\appendix`.
 
 **Register carve-out.** Otherwise the appendix follows the same flat,
 published-paper register as the rest of the blueprint (`AUTHORING.md`

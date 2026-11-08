@@ -452,15 +452,29 @@ point. In each case the hinges span at most three dimensions, so no
 pencil realization of the $4$-cycle at its deficiency rank admits the
 diagonals.
 
-We therefore run the induction on every multigraph. Its case analysis
-still needs a vertex of degree two when there is no proper rigid
-subgraph. Katoh--Tanigawa find one by an edge count that uses minimality
-(KT Lemmas~4.5 and~4.6, pp.~663--664). Here a counting fact takes its
-place: a loopless multigraph whose vertices all have degree at least
-three has a proper rigid subgraph (\cref{lem:pencil-min-degree-rigid}).
-So a graph without one has a vertex of degree at most two, and
-two-edge-connectivity forces that degree to be exactly two. The
-statement the induction proves is the following.
+We therefore run the induction on every multigraph. Its cases are
+structural: a loop, at most two bodies, a cut edge, parallel edges, and
+a simple two-edge-connected multigraph (\cref{thm:pencil-reduction}).
+None of them asks for a proper rigid subgraph or a vertex of degree two.
+Katoh--Tanigawa need a vertex of degree two when there is no proper
+rigid subgraph, and they find one by an edge count that uses minimality
+(KT Lemmas~4.5 and~4.6, pp.~663--664). We settle a simple
+two-edge-connected multigraph by the first main-component statement,
+applied to the whole graph (\cref{sec:main-component}). Its proof finds
+the bodies of degree two by a count of its own. In that proof a graph
+with no planar-rigid set is sparse, and a sparse graph has at least four
+bodies of degree two (\cref{lem:pencil-x0-sparse-count}). In dimension
+$d$ the edges along the chains of such bodies are counted as Katoh and
+Tanigawa count them in the proof of their Lemma~4.6
+(\cref{lem:pencil-d-chain-count}).
+
+The reduction therefore plays the role of the induction of KT
+Theorem~4.9 (pp.~666--667), but not of its two steps, contracting a
+proper rigid subgraph and splitting off at a vertex of degree two. These
+steps have their counterparts in the main-component induction:
+contraction at a proper rigid set, and the steps at chains of bodies of
+degree two (\cref{sec:main-component-coverage}). The statement the
+induction proves is the following.
 
 \begin{definition}[Pencil realization at the deficiency rank]
   \label{def:pencil-rank-hypothesis}
@@ -478,75 +492,46 @@ statement the induction proves is the following.
   condition.
 \end{definition}
 
-\begin{lemma}[Proper rigid subgraph from a minimum degree of three]
-  \label{lem:pencil-min-degree-rigid}
-  \lean{Graph.exists_isProperRigidSubgraph_of_three_le_degree}
-  \leanok
-  \uses{def:rigid-subgraph, def:matroid-MG}
-  Let $G$ be a loopless multigraph with $|V(G)| \ge 3$ and $D = \binom{d+1}{2}
-  \ge 4$. If every vertex of $G$ has degree at least three, $G$ has a proper
-  rigid subgraph.
-\end{lemma}
-\begin{proof}
-  \leanok
-  \uses{lem:circuit-induces-rigid}
-  Let $v$ be a vertex of minimum degree $\delta \ge 3$. The handshake
-  identity gives $\delta\,|V(G)| \le 2\,|E(G)|$, so the edges avoiding $v$
-  number $|E(G)| - \delta \ge \delta(|V(G)|-2)/2$, and the $(D-1)$-fold
-  fiber of these edges in $M(\tilde G)$ has size $(D-1)(|E(G)| - \delta) >
-  D(|V(G)| - 2)$ once $D \ge 4$ --- strictly more than the $(D,D)$-sparsity
-  bound on any vertex set omitting $v$. The fiber is therefore dependent in
-  $M(\tilde G)$ and contains a circuit, whose induced subgraph is rigid
-  (\cref{lem:circuit-induces-rigid}), spans at least two vertices, and
-  omits $v$, hence is proper.
-\end{proof}
-
-\begin{theorem}[Reduction on all spanning multigraphs; cf.\ KT Theorem 4.9]
+\begin{theorem}[Reduction on all spanning multigraphs]
   \label{thm:pencil-reduction}
   \lean{Graph.pencil_reduction}
   \leanok
-  \uses{def:cut-edges-2ec, def:rigid-subgraph, lem:pencil-min-degree-rigid}
+  \uses{def:cut-edges-2ec}
   A property $P$ of multigraphs that is closed under five cases holds of
   every nonempty multigraph. The five cases are: \textup{(i)} $G$ has a
   loop (delete it and reinsert it); \textup{(ii)} $G$ is loopless with
   $|V(G)| \le 2$ (base case); \textup{(iii)} $G$ is loopless, $|V(G)| \ge
   3$, and not two-edge-connected (cut-edge decomposition,
-  \cref{def:cut-edges-2ec}); \textup{(iv)} $G$ is loopless, $|V(G)| \ge 3$,
-  and has a proper rigid subgraph (\cref{def:rigid-subgraph}); \textup{(v)}
-  $G$ is loopless, two-edge-connected, $|V(G)| \ge 3$, has no proper rigid
-  subgraph, and (by \cref{lem:pencil-min-degree-rigid}) some vertex has
-  degree exactly two. Case (i) is handed the property at every nonempty
-  multigraph smaller than $G$ in the lexicographic order on
-  $(|V(G)|, |E(G)|)$. Cases (iii), (iv) and (v) are handed it at every
-  nonempty multigraph on fewer vertices than $G$.
+  \cref{def:cut-edges-2ec}); \textup{(iv)} $G$ is loopless,
+  two-edge-connected and not simple, and $|V(G)| \ge 3$; \textup{(v)}
+  $G$ is simple and two-edge-connected, and $|V(G)| \ge 3$. Case (i) is
+  handed the property at every nonempty multigraph smaller than $G$ in
+  the lexicographic order on $(|V(G)|, |E(G)|)$. Cases (iii) and (iv)
+  are handed it at every nonempty multigraph on fewer vertices than $G$;
+  case (v) is handed nothing.
 \end{theorem}
 \begin{proof}
   \leanok
-  \uses{lem:two-edge-connected-degree}
   Strong induction on $(|V(G)|, |E(G)|)$, lexicographically. Its
   hypothesis at $G$ gives the property at every smaller nonempty
   multigraph, in particular at every one on fewer vertices. Deleting a
   loop keeps $|V(G)|$ and lowers $|E(G)|$, so it gives a smaller
-  multigraph. Case (v)'s degree-two vertex follows from
-  \cref{lem:pencil-min-degree-rigid} (no proper rigid subgraph forces a
-  vertex of degree at most two) and two-edge-connectivity (degree at least
-  two, \cref{lem:two-edge-connected-degree}).
+  multigraph. A loopless multigraph with at least three vertices falls
+  under exactly one of cases (iii), (iv) and~(v).
 \end{proof}
 
 The cases are proved in every dimension (\cref{sec:pencil-d-reduction}):
 at a loop (\cref{lem:pencil-d-loop-case}), on at most two bodies
 (\cref{lem:pencil-d-base-case}) and at a cut edge
 (\cref{lem:pencil-d-cut-case}), each with hinges in two pencils
-(\cref{lem:pencil-d-two-pencil-extension}). The contraction and split
-cases, (iv) and~(v), are settled by one argument
-(\cref{thm:pencil-d-realization-theorem}): at a two-edge-connected
-multigraph it uses the distinct main-component statement in dimension $d$
+(\cref{lem:pencil-d-two-pencil-extension}). Case~(iv) contracts two
+parallel edges, as Katoh and Tanigawa do
+(\cref{lem:pencil-d-nonsimple-case}; KT Lemma~6.2). Case~(v) is settled
+by the distinct main-component statement in dimension $d$
 (\cref{lem:pencil-d-distinct-statement}), which rests on the argument of
-\cref{sec:main-component}, or contracts two parallel edges
-(\cref{lem:pencil-d-nonsimple-case}). That argument and
-\cref{sec:main-component} contract proper rigid subgraphs, using
-\cref{lem:pencil-contraction-deficiency}: contraction leaves the
-deficiency unchanged.
+\cref{sec:main-component}. Both arguments contract proper rigid
+subgraphs, and contraction leaves the deficiency unchanged
+(\cref{lem:pencil-contraction-deficiency}).
 
 At a cut crossed by one edge, the two sides are realized separately, and
 the two cross-incidences of the crossing edge need not hold

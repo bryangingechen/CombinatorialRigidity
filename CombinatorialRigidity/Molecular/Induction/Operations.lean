@@ -22,7 +22,7 @@ from `Molecular/Deficiency.lean`, it proves:
   `lem:circuit-induces-rigid`), and a consequence for a loopless `G` with no proper rigid
   subgraph, from the proof of KT Lemma 4.5(i); `sec:molecular-induction-inherited`;
 * a proper rigid subgraph when every degree is at least three (`lem:pencil-min-degree-rigid`,
-  `sec:pencil-reduction`);
+  `sec:further-results`), a result with no Lean user;
 * the independent sets of `M(G̃)` as unions of `D` forests (`lem:forest-packing-decomp`), and
   KT Lemma 4.1 failing at the empty set (`ex:kt-41-overquantified`);
   `sec:molecular-induction-forest`;
@@ -408,8 +408,11 @@ proof uses `circuit_induces_isRigidSubgraph`. -/
 
 /-- **A proper rigid subgraph when every degree is at least three**
 (`lem:pencil-min-degree-rigid`): for `D ≥ 4`, a loopless multigraph `G` with at least three
-vertices, each of degree at least three, has a proper rigid subgraph. No minimality is assumed:
-`pencil_reduction` (`thm:pencil-reduction`) applies it to find a vertex of degree two.
+vertices, each of degree at least three, has a proper rigid subgraph. No minimality is assumed, and
+no proof in the project uses the lemma: it answers for every multigraph what KT Lemmas 4.5–4.6
+answer for minimal ones (`exists_degree_le_two`, `lem:low-degree-vertex`), that a loopless one
+with at least three vertices and no proper rigid subgraph has a vertex of degree at most two. Its
+node is in the appendix of further results (`sec:further-results`).
 
 Let `v` be a vertex of least degree `δ ≥ 3`. As `δ·|V(G)| ≤ 2|E(G)|`, the edges of `G` not at `v`
 number `|E(G)| − δ ≥ δ(|V(G)| − 2)/2`, and their `(D − 1)(|E(G)| − δ)` copies in `G̃` are more

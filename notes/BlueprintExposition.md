@@ -1168,7 +1168,9 @@ discharge point.
   `lem:pencil-min-degree-rigid`** — [done (`pencil.tex`, the
   `sec:pencil-reduction` preamble + the two nodes); restated in round 4 of the post-Phase-40
   cleanup (`c2`, 2026-10-04) to its pin's strength: cases (iii)–(v) get the property only at
-  graphs with fewer vertices] **(b)** KT's induction
+  graphs with fewer vertices; restated in 43c on five structural cases, the simple
+  two-edge-connected one given no hypothesis, and `lem:pencil-min-degree-rigid` moved to the
+  further-results appendix (`sec:further-results`), off the route] **(b)** KT's induction
   runs over minimal graphs and reaches the others by adding
   deficiency-neutral edges in panel meets (KT Theorem 5.6, p. 670), which
   need no rank. A pencil edge added back needs its two cross-incidences, and

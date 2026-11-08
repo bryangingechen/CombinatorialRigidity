@@ -23,9 +23,8 @@ Results of the combinatorial induction (`sec:molecular-induction`) after Katoh a
   (`lem:reduction-step`); a step is KT eq. (4.10), that every circuit of `M(G̃_v^{ab})` meets `ẽ₀`;
 * the induction principle from which KT Theorem 4.9 (pp. 666–667) follows
   (`thm:minimal-kdof-reduction`), with the two edges at a vertex of degree two of a `0`-dof-graph;
-  the induction over all deficiencies of Katoh and Tanigawa's proof of their Theorem 5.5 (p. 671;
-  `thm:minimal-kdof-reduction-all-k`); and an induction over all multigraphs
-  (`thm:pencil-reduction`);
+  and the induction over all deficiencies of Katoh and Tanigawa's proof of their Theorem 5.5
+  (p. 671; `thm:minimal-kdof-reduction-all-k`);
 * a vertex of degree two in a minimal `0`-dof-graph with no proper rigid subgraph, which Case III
   takes, and, when `d ≥ 3`, a chain `b v a c` (`lem:chain-data-of-noRigid`);
 * the surgery of KT Lemma 4.1 (p. 660) on a base of `M(G̃)`: a partition of the base into `D`
@@ -772,98 +771,6 @@ theorem minimal_kdof_reduction_all_k [DecidableEq β] [Finite α] {n : ℕ}
         · exact hsplitZero G (hk ▸ hG) hV3 htec hrig IH'
         · exact hsplitPos k G hG (lt_of_le_of_ne hk0 (Ne.symm hk)) hV3 htec hrig IH'
     · exact hcut k G hG hV3 htec IH'
-
-/-! ## An induction over all multigraphs (`sec:pencil-reduction`)
-
-The pencil chapter's induction runs over all multigraphs, not only over minimal `k`-dof-graphs.
-Without minimality its cases still cover every multigraph: when `D ≥ 4`, a loopless multigraph with
-at least three vertices, each of degree at least three, has a proper rigid subgraph
-(`exists_isProperRigidSubgraph_of_three_le_degree`, `lem:pencil-min-degree-rigid`). So if it has
-none, some vertex has degree less than three, and exactly two when the multigraph is
-`2`-edge-connected (`two_le_degree_of_twoEdgeConnected`). -/
-
-/-- **Reduction on all multigraphs** (`thm:pencil-reduction`; cf. KT Theorem 4.9, without
-minimality): let `D ≥ 6`, and let a property `P` of multigraphs hold of a nonempty multigraph `G` in
-each of five cases:
-
-* `hloop`: `G` has a loop, and `P` holds of every nonempty `G'` smaller in the lexicographic order
-  of `(|V(G')|, |E(G')|)`; deleting the loop keeps `|V(G)|` and lowers `|E(G)|`, and this is the
-  only case in which the number of vertices stays;
-* `hbase`: `G` is loopless with at most two vertices;
-* `hcut`: `G` is loopless with at least three vertices and not `2`-edge-connected;
-* `hcontract`: `G` is loopless with at least three vertices and has a proper rigid subgraph;
-* `hsplit`: `G` is loopless and `2`-edge-connected, with at least three vertices, no proper rigid
-  subgraph and a vertex of degree two;
-
-the last three given that `P` holds of every nonempty multigraph with fewer vertices than `G`,
-minimal or not. Then `P` holds of every nonempty multigraph. The proof is an induction on `|V(G)|`
-and, for a fixed number of vertices, on `|E(G)|`. In the last case the vertex of degree two exists:
-`exists_isProperRigidSubgraph_of_three_le_degree`, whose bound `4 ≤ D` the proof takes from `hD`,
-gives a vertex of degree less than three, and `two_le_degree_of_twoEdgeConnected` gives every vertex
-degree at least two. -/
-theorem pencil_reduction [Finite α] [Finite β] {n : ℕ}
-    (hD : 6 ≤ bodyBarDim n) {P : Graph α β → Prop}
-    (hloop : ∀ G : Graph α β, (∃ e x, G.IsLoopAt e x) →
-      (∀ G' : Graph α β, V(G').Nonempty →
-        V(G').ncard < V(G).ncard ∨
-          (V(G').ncard = V(G).ncard ∧ E(G').ncard < E(G).ncard) → P G') → P G)
-    (hbase : ∀ G : Graph α β, G.Loopless → V(G).Nonempty → V(G).ncard ≤ 2 → P G)
-    (hcut : ∀ G : Graph α β, G.Loopless → 3 ≤ V(G).ncard → ¬ G.TwoEdgeConnected →
-      (∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard → P G') → P G)
-    (hcontract : ∀ G : Graph α β, G.Loopless → 3 ≤ V(G).ncard →
-      (∃ H : Graph α β, H.IsProperRigidSubgraph G n) →
-      (∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard → P G') → P G)
-    (hsplit : ∀ G : Graph α β, G.Loopless → 3 ≤ V(G).ncard → G.TwoEdgeConnected →
-      (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) →
-      (∃ v ∈ V(G), G.degree v = 2) →
-      (∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard → P G') → P G) :
-    ∀ G : Graph α β, V(G).Nonempty → P G := by
-  classical
-  -- Strong induction on the lexicographic measure `(|V(G)|, |E(G)|)`: outer on `|V(G)|`,
-  -- inner on `|E(G)|` within each fixed vertex count.
-  suffices key : ∀ N : ℕ, ∀ M : ℕ, ∀ G : Graph α β, V(G).ncard = N → E(G).ncard = M →
-      V(G).Nonempty → P G by
-    intro G hne
-    exact key _ _ G rfl rfl hne
-  intro N
-  induction N using Nat.strong_induction_on with
-  | _ N IHV =>
-  intro M
-  induction M using Nat.strong_induction_on with
-  | _ M IHE =>
-  intro G hVG hEG hne
-  -- The lex-smaller IH, in the shape `hloop` wants, plus its `|V|`-only specialization.
-  have IHlt : ∀ G' : Graph α β, V(G').Nonempty →
-      V(G').ncard < V(G).ncard ∨ (V(G').ncard = V(G).ncard ∧ E(G').ncard < E(G).ncard) →
-      P G' := by
-    rw [hVG, hEG]
-    rintro G' hne' (hlt | ⟨heq, hlt⟩)
-    · exact IHV _ hlt _ G' rfl rfl hne'
-    · exact IHE _ hlt G' heq rfl hne'
-  have IHV' : ∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard → P G' :=
-    fun G' hne' hlt => IHlt G' hne' (Or.inl hlt)
-  by_cases hloopEx : ∃ e x, G.IsLoopAt e x
-  · exact hloop G hloopEx IHlt
-  · push Not at hloopEx
-    have hlp : G.Loopless := (Graph.loopless_iff G).mpr hloopEx
-    by_cases hV2 : V(G).ncard ≤ 2
-    · exact hbase G hlp hne hV2
-    · push Not at hV2
-      have hV3 : 3 ≤ V(G).ncard := hV2
-      by_cases htec : G.TwoEdgeConnected
-      · by_cases hrig : ∃ H : Graph α β, H.IsProperRigidSubgraph G n
-        · exact hcontract G hlp hV3 hrig IHV'
-        · push Not at hrig
-          -- No proper rigid subgraph ⟹ some vertex has degree `< 3`; 2EC ⟹ degree `≥ 2`.
-          have hdeg4 : 4 ≤ bodyBarDim n := by omega
-          have hnotall : ¬ ∀ v ∈ V(G), 3 ≤ G.degree v := fun hall => by
-            obtain ⟨H, hH⟩ := exists_isProperRigidSubgraph_of_three_le_degree hdeg4 hV3 hlp hall
-            exact hrig H hH
-          push Not at hnotall
-          obtain ⟨v, hvV, hvlt⟩ := hnotall
-          have hv2 : 2 ≤ G.degree v := two_le_degree_of_twoEdgeConnected htec hvV (by omega)
-          exact hsplit G hlp hV3 htec hrig ⟨v, hvV, by omega⟩ IHV'
-      · exact hcut G hlp hV3 htec IHV'
 
 /-! ## A base of `M(G̃)` has a balanced partition into forests (`lem:balanced-forest-packing`)
 

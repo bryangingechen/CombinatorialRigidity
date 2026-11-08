@@ -1348,7 +1348,8 @@ blueprint nodes went, none came, and the main results' statements and axioms are
 **43c** NORMAL and SPRIME (opened 2026-11-08, one sub-phase at the PI's word;
 `notes/Phase43c.md`): the reduction on five structural cases, with no dimension in its statement
 and the minimum-degree lemma moved to an appendix, then Theorem S′, stated at `d = 3` only, with
-the two redundant short-chain cases removed. Next: slice 1, the reduction restated.
+the two redundant short-chain cases removed. Slice 1 has landed: the reduction restated, the
+minimum-degree lemma in a new appendix of further results. Next: SPRIME's pin.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 
