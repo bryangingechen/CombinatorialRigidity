@@ -54,8 +54,8 @@ In order. A letter is minted when a layer opens.
 - **READS** (43a, open). Three read-only fresh reads, in parallel: Theorem S′ (N3, D2); the premise
   check, that `sec:pencil-d-generic` uses no `d = 3` generic node as a premise (N1, D3); and N6's
   flatness reading, every planar-rigid set flat on the main component (D3). With them, the probes
-  of `notes/PencilNatural.md` §4 banked in `notes/scripts/` (D4). Gates LIFT3 (the premise check)
-  and SPRIME (S′).
+  of `notes/PencilNatural.md` §4 banked (D4). Gates LIFT3 (the premise check: no cycle, 43a) and
+  SPRIME (S′).
 - **LIFT3** (N1c). `HasGenericPencilRealization K 3 G` by `liftAttains_of_simple 0`, then the
   reduction proved once for every `d`, and `pencilPair_of_nonempty` as the `m = 1` case of
   `Graph.graded_pencil_conditioned_pair`. The explicit `d = 3` route collapses to a remark (D1).
@@ -75,7 +75,7 @@ In order. A letter is minted when a layer opens.
 
 ## 3. Open questions
 
-- Whether LIFT3 lands as one sub-phase or two (N1a first): settled at its open, from the premise
-  check's verdict.
+- Whether LIFT3 lands as one sub-phase or two (N1a first): the PI's, at its open. The premise
+  check unblocks both; its constraints on LIFT3 are at its item in `notes/Phase43a.md`.
 - SPRIME's sizing (`notes/PencilNatural.md` §3: TeX net about −500, Lean about −1,000 and +150–200)
   is the recon's estimate; S′'s read may change it.

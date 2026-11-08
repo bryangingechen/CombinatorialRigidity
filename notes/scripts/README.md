@@ -2,8 +2,11 @@
 
 Exact-ℚ (`fractions.Fraction`; **no floating point anywhere**) stdlib-only
 Python — plus, since 2026-08-05, **one Macaulay2 symbolic layer** (`m2/`, the
-single stated exception to "stdlib-only Python"; read `m2/README.md` before
-touching it) — backing the Phase-39 PENCIL research arcs. It is an *audit
+first stated exception to "stdlib-only Python"; read `m2/README.md` before
+touching it), and, stated 2026-11-07 (the PI's D4, `notes/Phase43-design.md` §1),
+**nauty's `geng`** as the second: an external graph generator whose graph6 output
+a driver reads on stdin, never an import (`w4/coverstruct.py`, `strata/oneclass.py`
+and `natural/shortrows.py`) — backing the Phase-39 PENCIL research arcs. It is an *audit
 trail*: every numeric figure quoted in the two PENCIL workbooks
 (`notes/pencil/workbook/`, `notes/pencil/workbook/W4.md`) and in
 `notes/Phase39-design.md` is produced by a driver here, and the workbooks'
@@ -1506,6 +1509,25 @@ coverage helpers), so a change to `strata.py` obliges re-running `oneclass.py` t
 | `python3 notes/scripts/strata/strata.py --orbit --seed N`, `N ∈ {1, 2, 3}` | 60 s | `notes/Strata.md` *Evidence* (Result 25: Phase 42a's T4, second half, the orbit ears); `orbit_search`, `orbit_meet` and `orbit_cell` are direction-local |
 | `python3 notes/scripts/strata/strata.py --coverage --seed N`, `N ∈ {1, 2, 3}` | 110 s | `notes/Strata.md` *Evidence* (Result 26: Phase 42a's T5, the coverage read at `D`); `core_def` (exact `def_D` of a subdivision, a DP over its core), `cov_cell` and `cov_core` are direction-local |
 | `python3 notes/scripts/strata/oneclass.py --cores --necklaces`; `(for n in 4 5 6 7 8; do geng -C -d3 -q $n 0:12; done) \| python3 notes/scripts/strata/oneclass.py --g6 -` (nauty's `geng`, external) | 20 s; 50 s | `notes/Strata.md` *Evidence* (Result 27: Phase 42a's ONE-CLASS, a core at every `D ≥ 6` when `def_6 > 0` and no two bodies of degree two are adjacent); `least_rigid`, `necklace` and `BLOBS` are direction-local |
+
+### `natural/` — the PENCIL-NATURAL recon's coverage probe (2026-11-07)
+
+A driver directory on the base layer, banked in Phase 43a (`notes/Phase43a.md`, the PI's D4)
+from the recon's track T2. `shortrows.py` imports catalogued §1 primitives only
+(`nogood_subdiv.count_matroid_rank`, `kbare_common.exact_deficiency`); its per-mode prose is its
+module docstring, and its reading is `notes/PencilNatural.md` §3 (N3, N4). Exact integers; no
+randomness outside `--validate`'s fixed seed. Banked byte-identical to the recon's outputs but for
+one line format: a set of rows printed in hash order now prints in the table's order, so two
+lines of `--hub … --maxk 2` changed order, no figure. The recon's track T1 (N1) is Lean, a
+spike and its stdlib inventory scripts, outside this harness: `notes/pencil-natural/`.
+
+| invocation | ~time | cited by |
+|---|---|---|
+| `PYTHONHASHSEED=0 python3 notes/scripts/natural/shortrows.py --validate` | 2 s | the deficiency oracles: pebble-game `def_D` and merged `def_D` against brute-force partition maxima at `D = 3, 6, 10`, and `def_6` against `kbare_common.exact_deficiency`, 286 random graphs |
+| `(for n in $(seq 5 12); do geng -C -t -d2 -q $n $n:$(( (3*n-4)/2 )); done) \| PYTHONHASHSEED=0 python3 notes/scripts/natural/shortrows.py --g6 --show 6` (nauty's `geng`, external) | 41 s | `notes/PencilNatural.md` §3 N3: the census at `n ≤ 12`, 10,310 class members |
+| `geng -C -t -d2 -q 13 13:17 \| PYTHONHASHSEED=0 python3 notes/scripts/natural/shortrows.py --g6 --show 4` (nauty's `geng`, external) | 155 s | ibid., the census at `n = 13`, 32,191 class members (42,501 with the row above; 0 stepless once open-ear-two and the split-off are dropped) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/natural/shortrows.py --hub theta3,theta4,theta5,K4,K4+,tri21,tri2,C4dbl,W4,K5-e,prism,K33 --maxk 2 --show 6 --gap` | 22 s | ibid., the first hub sweep (4,781 class members; not exhaustive), with the 14-body `K₄` family where two-orbit is the only step, and N4's per-step gap table |
+| `PYTHONHASHSEED=0 python3 notes/scripts/natural/shortrows.py --hub K4,theta3,theta4 --maxk 6 --show 2 --gap` | 7 s | ibid., the second hub sweep (5,964; not exhaustive) |
 
 Per-driver prose — *what* each mode asserts — stays in the four per-directory
 READMEs (`escape/README.md`, `kbare/README.md`, `w4/README.md`,

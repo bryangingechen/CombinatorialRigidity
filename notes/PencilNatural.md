@@ -52,9 +52,9 @@ contraction moves every height along its curve (`notes/Phase42-design.md` §2.2)
 
 ## 3. Candidates and the recon's verdicts (2026-11-07)
 
-These are the recon's verdicts, read-only (§4). The probes behind the figures are uncommitted. They
-sit in the gitignored `scratch/pencil-natural/`, so each figure is tagged "measured, script not
-retained" until D4 (`notes/Phase43-design.md` §1) banks them.
+These are the recon's verdicts, read-only (§4). The probes behind the figures were banked in Phase
+43a (D4): N1's spike `notes/pencil-natural/N1Spike.lean` with its inventory scripts beside it, and
+the T2 probe `notes/scripts/natural/shortrows.py` (invocations: `notes/scripts/README.md` §3).
 
 - **N1. The `d = 3` generic conjunct by C: GO.** `liftAttains_of_simple 0`, then
   `LiftAttains.hasGradedGenericPencilRealization`, then `hasGradedGenericPencilRealization_two_iff`
@@ -62,7 +62,7 @@ retained" until D4 (`notes/Phase43-design.md` §1) banks them.
   The Lean spike `lake lean`s with 0 errors and 0 `sorry`, on the standard axioms. A kernel walk of
   its closure finds no `d = 3` main-component statement, nor its generic machinery: no `x0Gen`,
   `pencilPair_of_*`, `hasGenericPencilRealization_of_IH` or reduction. A control on the landed
-  `x0Gen` finds them all (measured, script not retained). Three restructures, each keeping every
+  `x0Gen` finds them all (`N1Spike.lean`). Three restructures, each keeping every
   main statement byte-identical, are listed after this list.
 - **N2. A as a normal form: GO for the restatement; the strict normal form waits on N1.**
   `thm:pencil-reduction`'s cases (iv) and (v) are dead: all three callers pass one function to both
@@ -87,7 +87,7 @@ retained" until D4 (`notes/Phase43-design.md` §1) banks them.
   `geng -C -t -d2`, `n ≤ 13`, `m ≤ (3n−4)/2`, is exhaustive for the class rows 1–5 leave (42,501
   members). Two hub sweeps (not exhaustive) cover 4,781 and 5,964 more. 0 graphs are stepless
   once the two rows are dropped. Under the census's cap no graph has two-orbit as its only step;
-  the first found is the 14-body `K₄` family (measured, script not retained).
+  the first found is the 14-body `K₄` family (the hub sweeps).
 - **N4. The gap `def₂ − def₃` as the measure: NO-GO; an exposition line only.** It is not monotone:
   open-ear-one raises it by 1, and three rows keep it. Its per-row table rests on an identity whose
   `≤` half is not landed (derived by hand, about 30 TeX lines). Every step of the `d ≥ 4` table is
@@ -103,7 +103,8 @@ retained" until D4 (`notes/Phase43-design.md` §1) banks them.
   every planar-rigid set is flat on the main component (one panel). This "flatness reading" is an
   exposition candidate that needs a fresh read. No proof needs it as a Lean node (~100–200 lines).
 
-The three restructures of N1 (sizes from a kernel liveness walk; measured, script not retained):
+The three restructures of N1 (sizes from `N1Spike.lean`'s kernel liveness walk, its R1, R1' and R2;
+nodes by `notes/pencil-natural/n1_pins_r1_r2.py` and `n1_pins.py`):
 
 - **N1a**, the minimal one. `x0Gen` comes from C, so A no longer hosts `thm:pencil-generic-step`.
   Lean about −1.9k lines (`GenericEar.lean`, `GenericTriangle.lean` whole); 6 blueprint nodes.
@@ -135,10 +136,8 @@ parallel tracks:
 - T2: N3, N4, I1, I2 and I4;
 - T3: N2, N5, N6, the obstructions and I3.
 
-The returns are recorded in §3 and §5. The T1 spike and the T2 probe are kept, uncommitted, in
-`scratch/pencil-natural/`, which is gitignored and local to the machine that ran them. The T2
-probe needs nauty's `geng`. If they are lost, N1's spike is rebuilt from §3's three-line core,
-and the T2 figures stay tagged.
+The returns are recorded in §3 and §5. The T1 spike and the T2 probe were banked in Phase 43a
+(§3's first paragraph); the T2 probe needs nauty's `geng`.
 
 ## 5. After the recon: the exposition
 
