@@ -246,9 +246,11 @@ one, as its three-dimensional case.
 Phase 43, in progress, looks for a simpler proof of the pencil realization
 theorem, with no change to what it proves. A first check found that the
 three-dimensional case can follow from the argument for every dimension
-instead of having an argument of its own, and that two of its cases may be
-unnecessary; independent reads of both come first. A road map of the
-proof, in the manner of Katoh and Tanigawa's, comes last.
+instead of having an argument of its own, and that two of its cases are
+unnecessary; independent reads confirmed both. The first change is under
+way: the three-dimensional nondegenerate claim is to come from the argument
+for every dimension, and its own three-dimensional argument to go. A road
+map of the proof, in the manner of Katoh and Tanigawa's, comes last.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries

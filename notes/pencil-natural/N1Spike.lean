@@ -11,7 +11,9 @@ import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.Stable
 Read-only recon spike (`notes/PencilNatural.md` §3 N1, §4). Not for landing as is. Banked
 2026-11-07 in Phase 43a (READS, `notes/Phase43a.md`; the PI's D4), byte-identical but for
 this paragraph. Run from the repo root: `lake lean notes/pencil-natural/N1Spike.lean`.
-Restructures R1, R1' and R2 below are the planning note's N1a, N1b and N1c.
+Restructures R1, R1' and R2 below are the planning note's N1a, N1b and N1c. Extended at Phase
+43b's open (2026-11-08) by the last section, item 5 (`notes/Phase43b.md`); the output before it is
+unchanged.
 
 1. The `d = 3` generic conjunct from the `d ≥ 4` machinery at its bottom rung
    (`liftAttains_of_simple 0`), with the `lem:pencil-d-nondegenerate-three` bridges.
@@ -23,6 +25,8 @@ Restructures R1, R1' and R2 below are the planning note's N1a, N1b and N1c.
 4. A kernel-level closure walk over `ConstantInfo` values (`getUsedConstantsAsSet`),
    restricted to constants of `CombinatorialRigidity.*` modules (a mathlib or `Matroid`
    constant cannot name a project constant, so the pruning loses nothing).
+5. Phase 43b's slice plan: every constant of the `d = 3` modules tagged by the first restructure
+   that kills it, and the three slices' deletion sets checked for surviving users and orphans.
 -/
 
 open scoped Graph
@@ -433,3 +437,219 @@ elab "#spike_same " a:ident b:ident : command => do
   CombinatorialRigidity.Molecular.Molecule.Pencil.Pair
   CombinatorialRigidity.Molecular.Molecule.Pencil.Pair2
   CombinatorialRigidity.Molecular.Molecule.Pencil.X0
+
+/-! ## The slice plan of Phase 43b (LIFT3), added at its open (2026-11-08)
+
+`notes/Phase43b.md` slices N1c into three Lean commits: N1a (`x0Gen` from C), then N1b's deletions
+with `pencilPair_of_nonempty` rerouted to R2's form, then the rest of N1c's. Two reports, appended
+here so that the earlier output above is unchanged.
+
+* `#n1_liveness`: every public constant of `D` (as above), tagged by the first restructure under
+  which it is dead (`R1`, then `R1'`, then `R2`), `UNREACHED` if no root reaches it even at HEAD,
+  or `LIVE` if R2 still uses it; per module, the counts and the non-`LIVE` constants with their
+  lines.
+* `#n1_slices`: the slices' deletion sets (`n1Slice1` … `n1Slice3`, cumulative). For each, (a)
+  the surviving constants that use a deleted one (a slice must restate those, or delete them),
+  and (b) its orphans, project constants of any module whose every user is deleted, to a fixpoint
+  (auxiliary declarations followed but not reported). Read against the environment at HEAD: a
+  slice's new proofs are not in it, so an orphan the slice's own new proof uses (R2's form uses
+  the three `d = 3` bridges) is reported and is not one. -/
+
+/-- The first restructure under which each constant of `D` is dead. -/
+def n1LiveAfter (env : Environment) (after : List Name) : NameSet :=
+  let outside := env.constants.fold (init := #[]) fun acc n _ =>
+    if (spikeModuleOf env n).isSome && spikeIsProj env n && !spikeInD env n then acc.push n
+    else acc
+  spikeReach env (outside ++ spikeLandedMain.toArray) (spikeLandedMain.tail.zip after)
+
+elab "#n1_liveness" : command => do
+  let env ← getEnv
+  let landed : List Name := [`CombinatorialRigidity.Molecular.x0Gen,
+    `CombinatorialRigidity.Molecular.pencilPair_of_nonempty,
+    `CombinatorialRigidity.Molecular.pencil_realization_theorem]
+  let r1 : List Name := [`CombinatorialRigidity.Molecular.PencilNaturalSpike.x0Gen,
+    `CombinatorialRigidity.Molecular.PencilNaturalSpike.pencilPair_of_nonempty_R1,
+    `CombinatorialRigidity.Molecular.PencilNaturalSpike.pencil_realization_theorem]
+  let r1p : List Name := [`CombinatorialRigidity.Molecular.PencilNaturalSpike.x0Gen,
+    `CombinatorialRigidity.Molecular.PencilNaturalSpike.pencilPair_of_nonempty_R1',
+    `CombinatorialRigidity.Molecular.PencilNaturalSpike.pencil_realization_theorem_R1']
+  let r2 : List Name := [`CombinatorialRigidity.Molecular.PencilNaturalSpike.x0Gen_R2,
+    `CombinatorialRigidity.Molecular.PencilNaturalSpike.pencilPair_of_nonempty_R2,
+    `CombinatorialRigidity.Molecular.PencilNaturalSpike.pencil_realization_theorem_R2]
+  let before := n1LiveAfter env landed
+  let a1 := n1LiveAfter env r1
+  let a1p := n1LiveAfter env r1p
+  let a2 := n1LiveAfter env r2
+  let mut byMod : Std.HashMap Name (Array String) := {}
+  for (n, _) in env.constants.toList do
+    unless spikeInD env n do continue
+    if n.isInternalDetail then continue
+    let some rng ← liftCoreM (findDeclarationRanges? n) | continue
+    let some m := spikeModuleOf env n | continue
+    let tag :=
+      if !before.contains n then "UNREACHED"
+      else if !a1.contains n then "R1"
+      else if !a1p.contains n then "R1'"
+      else if !a2.contains n then "R2"
+      else "LIVE"
+    byMod := byMod.insert m ((byMod.getD m #[]).push s!"{tag} {rng.range.pos.line} {n}")
+  let mods := byMod.toList.toArray.qsort (fun a b => a.1.toString < b.1.toString)
+  for (m, a) in mods do
+    let cnt (t : String) := (a.filter fun s => s.startsWith (t ++ " ")).size
+    let shown := (a.filter fun s => !s.startsWith "LIVE ").qsort (· < ·)
+    logInfo m!"MODULE {m}: {a.size} constants; UNREACHED {cnt "UNREACHED"}, R1 {cnt "R1"}, \
+      R1' {cnt "R1'"}, R2 {cnt "R2"}, LIVE {cnt "LIVE"}\n{"\n".intercalate shown.toList}"
+
+#n1_liveness
+
+set_option linter.style.longLine false in
+/-- Slice 1 (N1a): `R1`'s twenty. -/
+def n1Slice1 : List Name :=
+  [`CombinatorialRigidity.Molecular.cross₃_smul_thd,
+   `Graph.exists_closedEar_two_of_triangle, `Graph.IsX0Graph.exists_oneEar_or_pendantTriangle,
+   `Graph.IsX0Graph.hasGenericPencilRealization_of_forall_deficiency_two_ne_zero,
+   `CombinatorialRigidity.Molecular.pointJoin_ne_zero,
+   `CombinatorialRigidity.Molecular.extensorThroughPoint_pointJoin,
+   `CombinatorialRigidity.Molecular.extensorInPanel_pointJoin,
+   `CombinatorialRigidity.Molecular.pencilPair_of_IH,
+   `CombinatorialRigidity.Molecular.hasGenericPencilRealization_of_IH,
+   `CombinatorialRigidity.Molecular.exists_mem_perp_pair_linearIndependent,
+   `Graph.IsOpenEar.hasGenericPencilRealization_of_isNondegPencilRealization,
+   `Graph.IsOpenEar.hasGenericPencilRealization_of_one,
+   `CombinatorialRigidity.Molecular.exists_cross₃_eq_of_ne_zero_of_dotProduct_eq_zero,
+   `CombinatorialRigidity.Molecular.hasPencilRealization_of_generic,
+   `CombinatorialRigidity.Molecular.hasGenericPencilRealization_of_closedEar_two,
+   `CombinatorialRigidity.Molecular.pencilPair_of_simple_ncard_eq_three,
+   `CombinatorialRigidity.Molecular.not_pencilHub_of_closedEar_two,
+   `CombinatorialRigidity.Molecular.isLink_cases_of_closedEar_two,
+   `CombinatorialRigidity.Molecular.linearIndependent_pointJoin_triangle,
+   `CombinatorialRigidity.Molecular.hasGenericPencilRealization_of_closedEar_two_of_isNondegPencilRealization]
+
+set_option linter.style.longLine false in
+/-- Slice 2: `R1'`'s fifty-two less the three of `lem:pencil-projective-transport`. -/
+def n1Slice2 : List Name :=
+  [`CombinatorialRigidity.Molecular.HasPencilPanelRealization.restrict,
+   `CombinatorialRigidity.Molecular.IsFin3SelectorOf.isSome_of_ncard_eq_three,
+   `CombinatorialRigidity.Molecular.IsNondegPencilRealization.mapExtensor_screwEquivOfLinearEquiv,
+   `CombinatorialRigidity.Molecular.exists_common_seed_pencilRow_and_polynomials,
+   `CombinatorialRigidity.Molecular.exists_hasPencilPanelRealization_glue,
+   `CombinatorialRigidity.Molecular.exists_independent_pencilRow_subfamily_at_toCoord_of_reseed,
+   `CombinatorialRigidity.Molecular.exists_isNondegPencilRealization_steer,
+   `CombinatorialRigidity.Molecular.exists_polynomial_ne_zero_of_linearIndependent_pencilChartNormal,
+   `CombinatorialRigidity.Molecular.exists_polynomial_ne_zero_of_linearIndependent_pencilRow,
+   `CombinatorialRigidity.Molecular.exists_reposition_cross_incidences_avoiding,
+   `CombinatorialRigidity.Molecular.exists_smul_eq_extensor_of_extensorThroughPoint_pair,
+   `CombinatorialRigidity.Molecular.exists_smul_supportExtensor_eq_pencilChartFramework_of_reseed,
+   `CombinatorialRigidity.Molecular.exists_subset_pair_of_ncard_le_two,
+   `CombinatorialRigidity.Molecular.extensor_pair_smul,
+   `CombinatorialRigidity.Molecular.finrank_span_pair_le,
+   `CombinatorialRigidity.Molecular.finrank_span_rigidityRows_pencilChartFramework_eq_of_independent_pencilRow,
+   `CombinatorialRigidity.Molecular.finrank_span_triple_le,
+   `CombinatorialRigidity.Molecular.hasGenericPencilRealization_of_cutEdges_eq_empty,
+   `CombinatorialRigidity.Molecular.hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant_of_hubLI,
+   `CombinatorialRigidity.Molecular.hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_singleton,
+   `CombinatorialRigidity.Molecular.hasGenericPencilRealization_pendant_of_IH,
+   `CombinatorialRigidity.Molecular.hlb_induce_of_isNondegPencilRealization_induce_union_singleton,
+   `CombinatorialRigidity.Molecular.le_finrank_toDualPerp_inf,
+   `CombinatorialRigidity.Molecular.linearIndepOn_pencilChartNormal_congr,
+   `CombinatorialRigidity.Molecular.nbrSlotPointPoly,
+   `CombinatorialRigidity.Molecular.nbrSlotPointPoly_eval,
+   `CombinatorialRigidity.Molecular.nbrSlotPointPoly_eval_funext,
+   `CombinatorialRigidity.Molecular.ncard_closedNbhd_eq_three_of_demoted,
+   `CombinatorialRigidity.Molecular.pencilAnnihRowPoly,
+   `CombinatorialRigidity.Molecular.pencilAnnihRowPoly_eval,
+   `CombinatorialRigidity.Molecular.pencilChartFramework_congr,
+   `CombinatorialRigidity.Molecular.pencilChartNormalPoly,
+   `CombinatorialRigidity.Molecular.pencilChartNormalPoly_eval,
+   `CombinatorialRigidity.Molecular.pencilChartNormal_congr,
+   `CombinatorialRigidity.Molecular.pencilDotPoly,
+   `CombinatorialRigidity.Molecular.pencilDotPoly_eval,
+   `CombinatorialRigidity.Molecular.pencilPair_loop_base_cut,
+   `CombinatorialRigidity.Molecular.pencilPair_of_X0,
+   `CombinatorialRigidity.Molecular.pencilPair_of_arms,
+   `CombinatorialRigidity.Molecular.pencilPair_of_not_twoEdgeConnected,
+   `CombinatorialRigidity.Molecular.pencilPointJoinPoly,
+   `CombinatorialRigidity.Molecular.pencilPointJoinPoly_eval,
+   `CombinatorialRigidity.Molecular.pencilRow,
+   `CombinatorialRigidity.Molecular.pencilRow_eq_panelRow_pencilChartFramework,
+   `CombinatorialRigidity.Molecular.pencilRow_mem_rigidityRows_of_mem_edgeSet,
+   `CombinatorialRigidity.Molecular.pencil_realization_theorem_of_X0,
+   `CombinatorialRigidity.Molecular.span_rigidityRows_pencilChartFramework_eq_of_reseed,
+   `Graph.degree_eq_degree_induce_succ,
+   `Graph.degree_induce_eq_of_ne]
+
+set_option linter.style.longLine false in
+/-- Slice 3: `R2`'s thirteen and the three of `lem:pencil-projective-transport`. -/
+def n1Slice3 : List Name :=
+  [`CombinatorialRigidity.Molecular.exists_linearIndependent_extensor_pair_through_point,
+   `CombinatorialRigidity.Molecular.hasDistinctPencilRealization_of_generic,
+   `CombinatorialRigidity.Molecular.hasDistinctPencilRealization_of_not_twoEdgeConnected,
+   `CombinatorialRigidity.Molecular.hasGenericPencilRealization_of_ncard_le_two,
+   `CombinatorialRigidity.Molecular.hasPencilRealization_of_distinct,
+   `CombinatorialRigidity.Molecular.hasPencilRealization_of_isLoopAt,
+   `CombinatorialRigidity.Molecular.hasPencilRealization_of_ncard_le_two,
+   `CombinatorialRigidity.Molecular.hasPencilRealization_of_not_simple,
+   `CombinatorialRigidity.Molecular.hasPencilRealization_of_not_twoEdgeConnected,
+   `CombinatorialRigidity.Molecular.not_pencilNondegFeasible_of_isLoopAt,
+   `CombinatorialRigidity.Molecular.not_simple_of_parallel,
+   `CombinatorialRigidity.Molecular.pencilPair_of_isLoopAt,
+   `CombinatorialRigidity.Molecular.pencilPair_of_ncard_le_two,
+   `CombinatorialRigidity.Molecular.extensorInPanel_screwEquivOfLinearEquiv,
+   `CombinatorialRigidity.Molecular.extensorThroughPoint_screwEquivOfLinearEquiv,
+   `CombinatorialRigidity.Molecular.hasPencilPanelRealization_mapExtensor_screwEquivOfLinearEquiv]
+
+/-- The declaration a constant belongs to: a private name read as its user name. -/
+def n1Base (n : Name) : Name := (privateToUserName? n).getD n
+
+/-- `u` is in `D` or one of its auxiliary declarations (a prefix of `u`'s base name is in `D`). -/
+partial def n1Covered (D : NameSet) (u : Name) : Bool :=
+  let rec go (x : Name) : Bool :=
+    D.contains x || match x with
+      | .str p _ => go p
+      | .num p _ => go p
+      | .anonymous => false
+  D.contains u || go (n1Base u)
+
+/-- An auxiliary declaration (a proof, a `simp` lemma, a match or an equation lemma). -/
+def n1IsAux (n : Name) : Bool :=
+  match n with
+  | .str _ s => s.startsWith "_" || s.startsWith "match_" || s.startsWith "proof_" ||
+      s.startsWith "eq_"
+  | _ => true
+
+elab "#n1_slices" : command => do
+  let env ← getEnv
+  let proj := env.constants.fold (init := #[]) fun acc n _ =>
+    if (spikeModuleOf env n).isSome && spikeIsProj env n then acc.push n else acc
+  let mut users : Std.HashMap Name (Array Name) := {}
+  for n in proj do
+    if let some ci := env.find? n then
+      for m in ci.getUsedConstantsAsSet do
+        if m != n then users := users.insert m ((users.getD m #[]).push n)
+  let mut cum : NameSet := {}
+  let mut k : Nat := 0
+  for sl in [n1Slice1, n1Slice2, n1Slice3] do
+    k := k + 1
+    cum := sl.foldl (·.insert ·) cum
+    let mut viol : Array MessageData := #[]
+    for d in sl do
+      for u in users.getD d #[] do
+        if !n1Covered cum u then viol := viol.push m!"{d} <- {u}"
+    let mut dead := cum
+    let mut orph : Array Name := #[]
+    let mut changed := true
+    while changed do
+      changed := false
+      for d in dead.toList do
+        let some ci := env.find? d | continue
+        for m in ci.getUsedConstantsAsSet do
+          if dead.contains m || !spikeIsProj env m || (spikeModuleOf env m).isNone then continue
+          let us := (users.getD m #[]).filter fun u => !n1Covered dead u && !(m.isPrefixOf u)
+          if us.isEmpty then
+            dead := dead.insert m; changed := true
+            if !n1IsAux m then orph := orph.push m
+    logInfo m!"SLICE {k}: {sl.length} deleted, {cum.size} in all; surviving users of a deleted \
+      constant: {viol.size}\n{MessageData.joinSep viol.toList "\n"}\nORPHANS ({orph.size}): \
+      {orph.toList}"
+
+#n1_slices

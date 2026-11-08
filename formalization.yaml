@@ -304,7 +304,8 @@ status:
     nondegenerate claim by lifting nondegenerate three-dimensional pencil realizations to dimension
     d (CombinatorialRigidity.Molecular.hasGradedGenericPencilRealization_of_simple). Phase 43 (in
     progress) looks for a simpler proof of the pencil realization theorem, with no main result's
-    statement to change; it has no Lean yet.
+    statement to change; its first step, under way, takes the three-dimensional nondegenerate claim
+    from that lifting argument. It has no Lean yet.
   sorry_count: 0
   sorry_in_definitions: 0
   axioms: ["propext", "Classical.choice", "Quot.sound"]          # only Lean/mathlib standard axioms; no project-specific axioms

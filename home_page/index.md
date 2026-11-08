@@ -183,9 +183,11 @@ closed witness that its hypotheses can all be met, and each claim the
 chapters made without a Lean declaration was given one. Phase 42
 (closed 2026-11-05) proved the pencil realization theorem in every
 dimension $d \ge 3$, stated above. Phase 43, in progress, looks for a
-simpler proof of it, with no change to what it proves: a first check
-found that the three-dimensional case can follow from the argument for
-every dimension, and that two of its cases may be unnecessary.
+simpler proof of it, with no change to what it proves: a first check,
+confirmed by independent reads, found that the three-dimensional case can
+follow from the argument for every dimension, and that two of its cases
+are unnecessary. The first change, the three-dimensional case taken from
+the argument for every dimension, is under way.
 
 ### How the pencil realization theorem is proved
 

@@ -2,8 +2,9 @@
 
 **Status:** opened as **Phase 43** on 2026-11-07, with the PI, after the recon of §4 (verdicts §3).
 The plan, the PI's decisions (D1–D5 included) and the layers are `notes/Phase43-design.md`; the
-active work log is `notes/Phase43a.md`. This note stays the recon record, cited by section: §2–§5
-are kept as they were at the open, net of the probes' tags once D4 banks them.
+active work log is `notes/Phase43b.md` (LIFT3; 43a, closed: `notes/Phase43a.md`). This note stays
+the recon record, cited by section: §2–§5 are kept as they were at the open, net of the probes'
+tags once D4 banks them.
 
 ## 1. The PI's words (verbatim)
 

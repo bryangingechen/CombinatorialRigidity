@@ -122,6 +122,9 @@ to be re-derived by re-reading entries later.
 - **Proposed fix:** in `roadmap_in_progress`, exempt an in-progress row whose phase's
   `notes/PhaseN-design.md` **Status:** header says no sub-phase is open. Needs the PI's word as a
   gate-policy change.
+- **2026-11-08, at 43b's open:** green again, `OK: selftest — 135 notes, 1 ACTIVE; --all green at
+  baseline, --archive red on 51 closed note(s) as expected.` It turns red again at 43b's close,
+  until NORMAL opens, so the fix stays open.
 - **Status:** open
 
 ### [idiom] A total-form selector hypothesis is load-bearing when a row family ranges over every label; mask the rows to `0` off `E(G)`

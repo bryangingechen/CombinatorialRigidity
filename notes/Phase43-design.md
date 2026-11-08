@@ -2,9 +2,10 @@
 
 **Status:** in progress (opened 2026-11-07 with the PI), sub-lettered: a simpler pencil proof,
 with no main result's statement to change. **43a** READS closed the same day (`notes/Phase43a.md`):
-the three fresh reads held, and each layer's inputs from them are in §2. No sub-phase is open.
-The later layers open one at a time, each at the PI's word (§1, D5). Next: LIFT3's open, with the
-PI's choice of N1a first or N1c whole (§3).
+the three fresh reads held, and each layer's inputs from them are in §2. **43b** LIFT3 opened on
+2026-11-08 as one sub-phase, at the PI's choice (§1); its work log and slice plan are
+`notes/Phase43b.md`. The later layers open one at a time, each at the PI's word (§1, D5). Next:
+43b's slice 1 (N1a).
 
 This file is the phase's entry point: the target (§0), the PI's decisions (§1, verbatim), the
 layers by stable code (§2) and the open questions (§3). The recon record stays in
@@ -48,6 +49,13 @@ offered as:
 - **D5:** "Open as Phase 43 (Recommended)": in this session, sub-lettered, each sub-phase opened
   at the PI's word.
 
+**PI, 2026-11-08, at LIFT3's open,** answering design doc §3's first open question ("Whether
+LIFT3 lands as one sub-phase or two (N1a first)"). Question put: "Phase 43 design doc §3 leaves
+LIFT3's shape to you at its open: N1a first as its own sub-phase, or N1c whole as one sub-phase
+(43b)?" Chosen: "N1c whole as 43b (Recommended)" — offered as: "One sub-phase: N1a first slice,
+then N1b and N1c. About −4.6k Lean lines, 17 files, 15 nodes; the d=3 route collapses to a remark
+(D1)." Not chosen: "N1a alone as 43b".
+
 ## 2. The layers, by stable code
 
 In order. A letter is minted when a layer opens.
@@ -57,22 +65,27 @@ In order. A letter is minted when a layer opens.
   flatness reading, every planar-rigid set flat on the main component (D3). With them, the probes
   of `notes/PencilNatural.md` §4 banked (D4). Gates LIFT3 (the premise check: no cycle, 43a) and
   SPRIME (S′).
-- **LIFT3** (N1c). `HasGenericPencilRealization K 3 G` by `liftAttains_of_simple 0`, then the
-  reduction proved once for every `d`, and `pencilPair_of_nonempty` as the `m = 1` case of
-  `Graph.graded_pencil_conditioned_pair`. The explicit `d = 3` route collapses to a remark (D1).
-  N1a, its first slice, may land alone. The premise check (43a) found no cycle: C's 17 roots
-  close over 458 nodes, all 348 of `thm:pencil-generic-step`'s among them, only through two
-  cross-reference edges; cut, 441, none a `d = 3` generic node, and the Lean kernel closure has
-  no `d = 3` generic declaration (`notes/pencil-natural/premise_closure.py`,
-  `PremiseClosure.lean`). Its inputs for the build:
+- **LIFT3** (43b, opened 2026-11-08; N1c). `HasGenericPencilRealization K 3 G` by
+  `liftAttains_of_simple 0`, then the reduction proved once for every `d`, and
+  `pencilPair_of_nonempty` as the `m = 1` case of `Graph.graded_pencil_conditioned_pair`. The
+  explicit `d = 3` route collapses to a remark (D1). One sub-phase, N1a its first slice (§1); the
+  slice plan, with the liveness figures re-measured at the open, is `notes/Phase43b.md`. The
+  premise check (43a) found no cycle: C's 17 roots close over 458 nodes, all 348 of
+  `thm:pencil-generic-step`'s among them, only through two cross-reference edges; cut, 441, none a
+  `d = 3` generic node, and the Lean kernel closure has no `d = 3` generic declaration
+  (`notes/pencil-natural/premise_closure.py`, `PremiseClosure.lean`). Its inputs for the build:
   - **Edges.** `pencil-d.tex:6673` (`thm:pencil-d-generic`'s proof) and `:6755`
     (`cor:pencil-d-conditioned-pair`'s) to `thm:pencil-conditioned-pair-nonempty`: removed, then
-    reversed (N1a needs only `:6673`). No other edge changes.
+    reversed (N1a needs only `:6673`). At the open the reversal was placed on the nodes whose pins
+    carry the route: `:6673`'s on `thm:pencil-x0-generic-attains` (`x0Gen`, slice 1), `:6755`'s
+    on `thm:pencil-conditioned-pair-nonempty` (slice 2). The `d = 3` nodes' own edges move with
+    their proofs.
   - **Kept, restated.** `lem:pencil-generic-steer` (a) and its parametrization, and
     `lem:pencil-rigid-good-ear` (3 of 5 pins), are C's premises; so are
     `lem:pencil-feasible-hub-conditions`, `lem:pencil-x0-planes-separate`,
     `def:pencil-two-ear-graph`, `lem:pencil-x0-conjunct-three` and `lem:pencil-condition-linear`.
-    `Arms.lean` keeps `exists_contragredient_linearEquiv` (`Grade/LiftCutEdge.lean`);
+    `Arms.lean` keeps `exists_contragredient_linearEquiv` (`Grade/LiftCutEdge.lean`), and the two
+    unreached pins of `lem:pencil-cut-nondegeneracy`, also a premise of C (found at the open);
     `Grade/LiftWitness.lean`'s unused `Pencil.Pair` import goes first.
   - **Counts.** N1c deletes 13 nodes wholly and 3 in part (the recon: 15). Its prose falls at 12
     labels of `sec:pencil-d-lift` and `sec:pencil-d-generic`, 8 of them under N1a, and at 7
@@ -138,8 +151,8 @@ In order. A letter is minted when a layer opens.
 
 ## 3. Open questions
 
-- Whether LIFT3 lands as one sub-phase or two (N1a first): the PI's, at its open. The premise
-  check unblocks both; its constraints on LIFT3 are at its item in `notes/Phase43a.md`.
+- *Closed 2026-11-08:* whether LIFT3 lands as one sub-phase or two (N1a first). One, 43b, with
+  N1a its first slice: the PI's entry of that date, §1.
 - Whether SPRIME keeps Theorem S′ general in `n`, as `thm:pencil-d-theorem-s` is (it holds at
   every `n ≥ 3`, but is used only at `d = 3`), or folds it and `def:pencil-d-usable-chain` into a
   `d = 3` S′: decided at SPRIME's open.

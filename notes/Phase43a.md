@@ -1,9 +1,10 @@
 # Phase 43a — READS: three fresh reads and the probes banked (work log)
 
 **Status:** ✓ closed 2026-11-07 (opened the same day with the PI), the first sub-phase of
-Phase 43 (PENCIL-NATURAL), which stays in progress with no sub-phase open. All three reads held:
+Phase 43 (PENCIL-NATURAL), which stays in progress. All three reads held:
 no cycle (LIFT3 unblocked), S′ holds (SPRIME), the flatness reading once stated precisely (EXPO).
-The probes are banked. Next: LIFT3's open goes to the PI. Plan: `notes/Phase43-design.md`.
+The probes are banked. LIFT3 opened as 43b on 2026-11-08 (`notes/Phase43b.md`). Plan:
+`notes/Phase43-design.md`.
 
 ## Current state
 
@@ -35,15 +36,14 @@ the design doc's §2. The recon's probes and the readers' are banked and reprodu
 
 ## Blockers / open questions
 
-- `check-phase-note.py --selftest` is red while Phase 43 has no sub-phase open (`notes/FRICTION.md`,
-  its `[open]` entry); it turns green when LIFT3 opens, or with the gate fix there, at the PI's word.
+- `check-phase-note.py --selftest` was red while Phase 43 had no sub-phase open, and is green
+  again since 43b's open (`notes/FRICTION.md`, its `[open]` entry).
 - The census needs nauty's `geng` (version 2.9301 on the recon's machine).
 
 ## Hand-off / next phase
 
-Phase 43 stays in progress with no sub-phase open. The next commit is LIFT3's open as 43b, at the
-PI's word, with the PI's choice of N1a first or N1c whole (design doc §3); its inputs are the
-design doc's LIFT3 entry.
+Phase 43 continues in 43b (LIFT3), opened on 2026-11-08 at the PI's word as one sub-phase (design
+doc §1): its hand-off is `notes/Phase43b.md`.
 
 ## Decisions made during this phase
 
