@@ -279,6 +279,17 @@ left its checklist line uncut, which task 19 fixed. Task 19's landing,
 resumed from the recon (F43, 345k tokens), amended a ROADMAP summary
 phrase beyond its brief; accurate, kept.
 
+**PENCIL-NATURAL 43b rows, 2026-11-08 (LIFT3, open and slice 1): 2.**
+Two opus dispatches (the open as a recon design-pass, slice 1 a build),
+none BLOCKED. (1) The open's recon joined two docs gates with `&&` inside
+the commit's `if`, against the prompt's F55 line; both had passed run
+singly, and the coordinator re-ran them green. Later prompts say one gate
+per `if`, nested. (2) Slice 1 rewrote an "At `d = 3`" remark in
+`lem:pencil-d-ear-free`'s proof to say `lem:pencil-d-lift-ear`'s
+hypothesis holds at every degree-two hub-flanked body, dropping the
+lemma's deficiency clause; the coordinator's prose read caught it (no gate
+reads prose), fixed in its own commit to "its hypothesis on the lifts".
+
 ## Findings
 
 (Distill recurring lessons here — one entry per lesson, rows cite it.
