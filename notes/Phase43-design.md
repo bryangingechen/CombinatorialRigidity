@@ -1,19 +1,14 @@
 # Phase 43 — PENCIL-NATURAL: design (cross-phase plan)
 
-**Status:** in progress (opened 2026-11-07 with the PI), sub-lettered: a simpler pencil proof,
-with no main result's statement to change. **43a** READS closed 2026-11-07 (`notes/Phase43a.md`):
-the three fresh reads held, and each layer's inputs from them are in §2. **43b** LIFT3 closed
-2026-11-08 (`notes/Phase43b.md`): the `d = 3` theorem is the case `d = 3` of the theorem in every
-dimension, and the reduction's cases are proved once. **43c** NORMAL and SPRIME closed 2026-11-08
-(`notes/Phase43c.md`): the reduction on five structural cases, and Theorem S′ at `d = 3`, with
-the two unnecessary steps gone. **43d** EXPO, the last layer, is open (2026-11-08, at the PI's
-word, §1; `notes/Phase43d.md`): the road map of the proof, in five slices, and its close closes
-Phase 43. Slice 1, the road map, landed; slice 2, inserted at the PI's word (§1, the 43d
-coordinator's session), removed the two main-component statements; slice 3 wrote the flatness
-remark; slice 4 pointed two chapters at the road map and folded
-`thm:pencil-x0-generic-attains` into the coverage (§1, the PI's later word); slice 5 pointed the
-every-dimension chapter at the road map and cut its reduction's `d = 3` proof comparisons.
-Next: the close.
+**Status:** ✓ closed 2026-11-08 (opened 2026-11-07 with the PI), sub-lettered 43a–43d: a simpler
+pencil proof, with no main result's statement changed. **43a** READS (`notes/Phase43a.md`): the
+three fresh reads held. **43b** LIFT3 (`notes/Phase43b.md`): the `d = 3` theorem is the case
+`d = 3` of the theorem in every dimension, and the reduction's cases are proved once. **43c** NORMAL
+and SPRIME (`notes/Phase43c.md`): the reduction on five structural cases, and Theorem S′ at `d = 3`,
+with the two unnecessary steps gone. **43d** EXPO (`notes/Phase43d.md`): the road map of the proof
+and the flatness remark, with the two main-component statements removed and a duplicate theorem
+folded, at the PI's word. Summary: ROADMAP §43. No sub-phase is open, and the next step is
+ORIGAMI's open, with the PI.
 
 This file is the phase's entry point: the target (§0), the PI's decisions (§1, verbatim), the
 layers by stable code (§2) and the open questions (§3). The recon record stays in
@@ -240,62 +235,24 @@ In order. A letter is minted when a layer opens.
   The pin's spike and walk stay banked (`notes/pencil-natural/SprimeSpike.lean`, `sprime_walk.py`)
   as its record, naming what slices B and C deleted. The read's inputs for the build (the move,
   NEW-1 and NEW-2, the sizes) are `git show b9e9e2b2:notes/Phase43-design.md`, §2.
-- **EXPO** (43d, opened 2026-11-08 at the PI's word, §1; `notes/Phase43d.md`; its slice 2, the
-  removal of the main-component statements, at the PI's later word, §1; its slice 4 folded
-  `thm:pencil-x0-generic-attains` into the coverage, at the PI's word again, §1). The road map
-  (`notes/PencilNatural.md` §5), with the A/B/C structure as it stands after the layers above,
-  I1–I4 as corrected, and the flatness reading, which its read confirmed once stated precisely
-  (43a). Last. The read's inputs, re-derived against the chapters at the open (`notes/Phase43d.md`,
-  *Verified at the open*, where I1–I4 are restated; the small items below are its decisions D-a
-  to D-g): (F) holds, its panel clause carried by the
-  lifting system's coefficient vectors; the degeneracy below is proved in one direction only,
-  the converse probe evidence:
-  - **(F).** At every main picture of `G`, every height is one affine function on a planar-rigid
-    set `W`, so the points of `W` lie in one plane, the panel of each body of `W` (`d = 3`; in
-    the polar form, one concurrency point). At `d ≥ 4` each of the `d − 2` heights is affine on
-    `W`: the bodies share the plane `Π_v`, not one panel. It composes five landed lemmas
-    (`lem:pencil-contract-standing-rigid`, `thm:pencil-jj-equality`,
-    `lem:pencil-lifting-space-affine`, `lem:pencil-lifting-restrict`,
-    `lem:pencil-condition-linear`); "main" rather than "general" needs
-    `lem:pencil-polynomial-section`'s argument, by hand. No proof uses it: a remark with no pin.
-  - **Degeneracy.** The general configuration is degenerate when (in the probes, among
-    nondegeneracy-feasible graphs, exactly when) a planar-rigid set holds two members of one
-    closed hub-neighbourhood; the one degenerate graph with no such pair at `n ≤ 8` is
-    infeasible. `K_{2,3}` is planar-rigid (`def₂ = 0`), so `lem:pencil-x0-two-hubs-obstruction`
-    is an instance; the doubled triangle (three hubs, each pair joined by two paths through one
-    body; 9 bodies) is one the lemma misses, feasible and attaining. A planar-rigid set with no such pair is a triangle or a hub with pendant
-    triangles (the probes); `lem:pencil-rigid-good-ear`'s two shapes match: a degree-two body
-    between two hubs (degenerate, so removed and re-added off the main component) and a pendant
-    triangle (harmless). So flatness says why the generic conjunct leaves the main component in
-    every dimension (C lifts nondegenerate `P³` realizations), and sharpens N6's NO-GO.
-  - **The draft remark** (written in slice 3 as `rem:pencil-x0-flatness`, after the `K_{2,3}`
-    paragraphs; this was the reader's draft, for after the `K_{2,3}` paragraph of
-    `sec:main-component-statements` or the road map): `G[W]` meets the standing hypotheses; its
-    lifting space at a general picture has dimension three, so is the affine heights; every
-    height of `G` restricts to one of `G[W]`, so `W`'s points lie in one plane, each body's panel;
-    two members of one closed hub-neighbourhood in `W` then have dependent normals. The `K_{2,3}`
-    paragraph's "some set of at least two of them is planar-rigid" understates: all five are.
-  - **From LIFT3** (43b's close). `x0Dist` and `x0Gen` kept no Lean consumer; at the PI's word
-    (§1, the 43d coordinator's session) 43d's slice 2 removed them, with `X0Dist`, `X0Gen` and
-    their node, and restated `thm:pencil-x0-generic-attains` to its attaining claim, which stays
-    on the route through the embedding of dimension three (slice 4 folded that node into the
-    coverage, which carries the same claim and pin). The old `d = 3` route's one
-    home is the remark after `thm:pencil-d-generic`'s proof. Each `d = 3` sentence of
-    `sec:pencil-d-reduction` reads its case at `d = 3` with no deleted node behind it, and may be
-    cut.
-  - **From NORMAL** (43c's open). The KT Theorem 4.9 remark, where its content is: the
-    main-component induction's contraction and degree-two steps, in the coverage or in the road
-    map (§1, 2026-11-08 item 3); the reduction keeps one glue paragraph (`pencil.tex`,
-    `sec:pencil-reduction`'s lead). Which chapter `thm:pencil-reduction` lives in (`pencil.tex`;
-    its only user is in `pencil-d.tex`). The recon's "heir of KT Lemmas 4.5–4.6"
-    (`notes/PencilNatural.md` §5) for the count that finds the bodies of degree two: that count is
-    part (1) of `lem:pencil-x0-sparse-count`, and `lem:pencil-d-chain-count` is KT Lemma 4.6's
-    count of the edges along the chains.
-  - **From SPRIME** (43c's close). The `d = 3` coverage's steps are now
-    `def:pencil-x0-reduces`' list (equal deficiencies, cut vertex, chain of bridges, cycle, open
-    ears with `k ≥ 5`, `3`, `4`, `2` at non-adjacent ends and `1`, two contractions); the road map
-    names these, not Phase 40's (ROADMAP §40 keeps the split-off as the record of what Phase 40
-    built). `rem:pencil-x0-theta` reaches `θ(1,3,3)` at a core.
+- **EXPO** (43d, opened and closed 2026-11-08 at the PI's word, §1; `notes/Phase43d.md`).
+  **Verdict: done, with two items the PI added.** The road map (`sec:pencil-roadmap`, opening
+  `pencil.tex`; §1 Q1, Q2) gives the three parts in every dimension, KT's Cases (I)–(III) and
+  Lemmas 4.5–4.6 against them (KT pp. 649–650, 663–667), why each split is forced (`K₄ ⊃ C₄`,
+  parallel edges, `K_{2,3}`; no induction on `d` is a choice, not forced), how the parts depend on
+  one another, and I1–I4 (`notes/PencilNatural.md` §5) as restated against the chapters. The
+  flatness reading (F) is the unpinned `rem:pencil-x0-flatness` (§1 Q3), after the `K_{2,3}`
+  paragraphs of `main-component.tex`: over a main picture every height agrees on a planar-rigid set
+  with one affine function, so its points lie in one plane, the panel clause coming from the lifting
+  system's coefficient vectors. The degeneracy is written in one direction only (two pencil hubs of
+  one planar-rigid set, adjacent or with a common neighbour, make every configuration over a main
+  picture degenerate); the converse stays probe evidence (`flatprobe.py`), and the doubled triangle
+  is the remark's example that `lem:pencil-x0-two-hubs-obstruction` misses. At the PI's word (§1)
+  slice 2 removed the two main-component statements (`X0Dist`, `X0Gen`, `x0Dist`, `x0Gen`, three
+  lemmas only they used, `Pencil/X0.lean`, three nodes), and slice 4 folded
+  `thm:pencil-x0-generic-attains` into `thm:pencil-x0-coverage`. The small items are
+  `notes/Phase43d.md` D-a to D-i. The read's inputs as pinned at the open (the draft remark, and what
+  LIFT3, NORMAL and SPRIME left EXPO) are `git show 0f7dad8a:notes/Phase43-design.md`, §2.
 
 ## 3. Open questions
 

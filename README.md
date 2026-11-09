@@ -244,21 +244,24 @@ the formal proof there, or gives both routes. It also re-proved the parts
 of the three-dimensional formal proof that duplicated the every-dimension
 one, as its three-dimensional case.
 
-Phase 43, in progress, looks for a simpler proof of the pencil realization
-theorem, with no change to what it proves. A first check found that the
-three-dimensional case can follow from the argument for every dimension
-instead of having an argument of its own, and that two of its cases are
-unnecessary; independent reads confirmed both. Both changes are made. The
-three-dimensional nondegenerate claim, and then the whole three-dimensional
-theorem, now come from the argument for every dimension, and the separate
-three-dimensional argument is gone, its cases proved once for every
-dimension, with a short note on the old route. The reduction is restated on
-structural cases (a loop, at most two bodies, a cut edge, parallel edges,
-and a simple two-edge-connected multigraph), and the two unnecessary cases
-are gone: where no other step applies, the proof contracts a rigid set
-instead. A road map of the proof, in the manner of Katoh and Tanigawa's,
-comes last; with it, the two statements of Phase 39 go, as special cases of
-the theorem's claims that no proof uses any more.
+Phase 43 (closed 2026-11-08) made the proof of the pencil realization
+theorem simpler, with no change to what it proves. A first check found
+that the three-dimensional case can follow from the argument for every
+dimension instead of having an argument of its own, and that two of its
+cases are unnecessary; independent reads confirmed both, and the phase
+made both changes. The three-dimensional theorem is now the three-dimensional case
+of the theorem in every dimension, the cases of the reduction are proved
+once for every dimension, and a short note keeps the old route. The
+reduction runs on structural cases (a loop, at most two bodies, a cut
+edge, parallel edges, and a simple two-edge-connected multigraph), and
+where no other step applies the proof contracts a rigid set instead of
+using the two unnecessary cases. The two statements of Phase 39 went too,
+as special cases of the theorem's claims that no proof used any more. The
+blueprint's pencil chapter now opens with a road map of the proof, in the
+manner of Katoh and Tanigawa's. A remark explains why the nondegenerate
+claim is not proved through the main component: over a general picture,
+the points of a set of bodies that is rigid in the plane all lie in one
+plane.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries

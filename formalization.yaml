@@ -301,24 +301,25 @@ status:
     Graph.hasGradedDistinctPencilRealization_of_deficiency_two_le_three), phase 39's reduction in
     every dimension (Graph.graded_pencil_realization_theorem, the first two claims), and the
     nondegenerate claim by lifting nondegenerate three-dimensional pencil realizations to dimension
-    d (CombinatorialRigidity.Molecular.hasGradedGenericPencilRealization_of_simple). Phase 43 (in
-    progress) looks for a simpler proof of the pencil realization theorem, with no main result's
-    statement to change. Its first step (closed 2026-11-08) took the three-dimensional theorem
-    from the argument in every dimension: the nondegenerate claim from that lifting argument
-    (the case d = 3 of CombinatorialRigidity.Molecular.liftAttains_of_simple), then the whole
-    theorem as the case d = 3 of Graph.graded_pencil_conditioned_pair, deleting the three-dimensional arguments they
+    d (CombinatorialRigidity.Molecular.hasGradedGenericPencilRealization_of_simple). Phase 43 (closed
+    2026-11-08) made the proof of the pencil realization theorem simpler, with no main result's
+    statement changed. It took the three-dimensional theorem from the argument in every dimension:
+    the nondegenerate claim from that lifting argument (the case d = 3 of
+    CombinatorialRigidity.Molecular.liftAttains_of_simple), then the whole theorem as the case
+    d = 3 of Graph.graded_pencil_conditioned_pair, deleting the three-dimensional arguments they
     replace, so that the reduction is proved once, in every dimension; a remark keeps the old
-    three-dimensional route. Its second step (closed 2026-11-08) restated the reduction on five
-    structural cases (Graph.pencil_reduction: a loop, at most two bodies, a cut edge, parallel
-    edges, and a simple two-edge-connected multigraph, which takes no induction hypothesis) and
-    removed the two three-dimensional steps found unnecessary, an open ear with two interior
-    bodies whose ends may be adjacent and the splitting-off of a body of degree two: where no
-    chain of bodies of degree two is usable, the graph has a rigid core to contract
-    (Graph.IsX0Graph.exists_additiveCore). The main results' statements and axioms are
-    unchanged. The last step writes a road map of the proof, and removes the two
-    three-dimensional statements on simple two-edge-connected multigraphs that phase 39 had
-    reduced the theorem to, each a special case of a conjunct of the theorem and used by no proof
-    since the first step.
+    three-dimensional route. It restated the reduction on five structural cases
+    (Graph.pencil_reduction: a loop, at most two bodies, a cut edge, parallel edges, and a simple
+    two-edge-connected multigraph, which takes no induction hypothesis) and removed the two
+    three-dimensional steps found unnecessary, an open ear with two interior bodies whose ends may
+    be adjacent and the splitting-off of a body of degree two: where no chain of bodies of degree
+    two is usable, the graph has a rigid core to contract (Graph.IsX0Graph.exists_additiveCore).
+    It removed the two three-dimensional statements on simple two-edge-connected multigraphs that
+    phase 39 had reduced the theorem to, each a special case of a conjunct of the theorem and used
+    by no proof once the theorem came from every dimension. Last, it wrote a road map of the proof
+    in the blueprint, in the manner of Katoh-Tanigawa's own (KT section 1.1), with a remark, not
+    formalized, on why the nondegenerate claim is not proved through the main component. The main
+    results' statements and axioms are unchanged.
   sorry_count: 0
   sorry_in_definitions: 0
   axioms: ["propext", "Classical.choice", "Quot.sound"]          # only Lean/mathlib standard axioms; no project-specific axioms

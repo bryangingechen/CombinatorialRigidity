@@ -10,7 +10,8 @@ Phase 6. The program then ran through the body-bar and body-hinge
 Tay–Whiteley theorems to Katoh–Tanigawa's proof of the **molecular
 conjecture** (Phases 17–26), and on to the **pencil realization theorem**
 (Phases 39–40), a strengthening of the molecular conjecture that this
-project posed and proved, and then proved in every dimension (Phase 42).
+project posed and proved, and then proved in every dimension (Phase 42), with a simpler
+proof (Phase 43).
 The *Status* table and *Queued post-program phases* below give the
 current state.
 
@@ -72,7 +73,7 @@ plan, and engineering conventions. Read it after `CLAUDE.md`.
 │       └── Examples.lean    Phase 10 (planning) — `#eval` examples on `Fin n` graphs
 │   ├── Matroid/         Phase 12 — local mirror of `apnelson1/Matroid` submodular + union (ported, Apache-2.0)
 │   ├── BodyBar/         Phase 13 (✓, `TreePacking.lean`) — Graph-native sparsity + Tutte–Nash-Williams; Phase 14 (✓, `KFrame.lean`) — k-frame matroid; Phase 15 (✓, `{Framework,TayTheorem}.lean`) — body-bar frameworks + Tay; Phase 16 (✓, `BodyHinge.lean`) — body-hinge Tay–Whiteley
-│   └── Molecular/       Phases 17–26 — the molecular-conjecture program: extensor algebra + meet, `R(G,p)` (`RigidityMatrix/`), deficiency matroid, combinatorial induction (`Induction/`), algebraic induction → Thm 5.5/5.6 + `molecular_conjecture` (`AlgebraicInduction/`); later continuations: the molecule application (`Molecule/`, Phases 25–26), the generic lift (`GenericLift/`, Phase 34) and the pencil realizations (`Molecule/Pencil/`, Phases 39–42, every dimension in `Grade/`)
+│   └── Molecular/       Phases 17–26 — the molecular-conjecture program: extensor algebra + meet, `R(G,p)` (`RigidityMatrix/`), deficiency matroid, combinatorial induction (`Induction/`), algebraic induction → Thm 5.5/5.6 + `molecular_conjecture` (`AlgebraicInduction/`); later continuations: the molecule application (`Molecule/`, Phases 25–26), the generic lift (`GenericLift/`, Phase 34) and the pencil realizations (`Molecule/Pencil/`, Phases 39–43, every dimension in `Grade/`)
 ├── Main.lean            Phase 10 (planning) — `lake exe pebble-game` CLI entry point
 ├── lakefile.toml        Lake build config; depends on mathlib4
 ├── lean-toolchain       pinned Lean version (matches mathlib4)
@@ -187,7 +188,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (CLEANUP-42, round 4: the folds, the witnesses and the docstrings) | the `d = 3` Lean that repeats the every-dimension Lean, two non-vacuity witnesses and stale Lean docstrings (Lean; two blueprint pins, the folded nodes' edges and notes, no statement) | ✓ Complete — the `d = 3` Lean proved as the every-dimension Lean's `d = 3` case, two witnesses, no statement changed; CLEANUP-42 complete (see `notes/Phase42-fold.md`; plan `notes/Cleanup42.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (HOMES: Phase 42's deferred lemma homes and the friction log) | the friction log's docs and tooling fixes, then the lemmas Phase 42 left outside their home files and the mirror lemmas that now meet their bar (Lean and notes, no statement) | ✓ Complete — the lemmas in their home files, the friction log's actionable entries 62 to 18, no statement changed (see `notes/Phase42-homes.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (ARREARS: what HOMES left) | the blueprint's dependency-graph debt, the friction log's archive sweep, the splits of four molecular files past the size cap, and `RecordsLinks` moved to `Graph` with its link hypotheses restated (Lean, blueprint edges and notes; no main result's statement) | ✓ Complete — the blueprint's missing dependency edges 16 to 0, the four files split, the link hypotheses in `RecordsLinks` terms (three weakened at the PI's word), no main result's statement changed (see `notes/Phase42-arrears.md`; round manual: `CLEANUP.md`) |
-| 43. A simpler pencil proof (post-program) — PENCIL-NATURAL | the pencil proof's route in `Molecular/Molecule/Pencil/` and its three chapters, no main result's statement (sub-lettered, 43a–) | In progress — 43d, EXPO: the road map of the proof and the flatness remark are written, the two off-route three-dimensional statements are gone, and the three chapters point at the road map, a duplicate theorem folded (slices 1–5 of 5); next, the close, which closes Phase 43 (see `notes/Phase43d.md`; plan `notes/Phase43-design.md`) |
+| 43. A simpler pencil proof (post-program) — PENCIL-NATURAL | the pencil proof's route in `Molecular/Molecule/Pencil/` and its three chapters, no main result's statement (sub-lettered, 43a–43d) | ✓ Complete — one shape of proof in every dimension, the reduction on structural cases and a road map of the proof, no main result's statement changed (see `notes/Phase43d.md`; plan `notes/Phase43-design.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1317,49 +1318,47 @@ closed; round 4, the folds, the witnesses and the docstrings (`notes/Phase42-fol
 same day, and CLEANUP-42 with it; then HOMES, a cleanup round of Phase 42's deferred lemma homes
 and the friction log (`notes/Phase42-homes.md`), closed the same day; then ARREARS, a cleanup round
 of what HOMES left (`notes/Phase42-arrears.md`), closed 2026-11-06; then PENCIL-NATURAL, a
-simpler pencil proof, opened with the PI on 2026-11-07 as Phase 43 (§43); then ORIGAMI, with the
+simpler pencil proof, opened with the PI on 2026-11-07 as Phase 43 and closed 2026-11-08 (§43); then
+ORIGAMI, with the
 PI (*Queued post-program phases*). Detail →
 `notes/Phase42a.md` to `notes/Phase42m.md` + `notes/Phase42-design.md`.
 
-### Phase 43 — A simpler pencil proof (PENCIL-NATURAL, post-program; sub-lettered)
+### Phase 43 — A simpler pencil proof (PENCIL-NATURAL, post-program; sub-lettered 43a–43d) — ✓ Complete
 
-**In progress** (opened 2026-11-07 with the PI; plan, the PI's decisions and the layers
+**✓ Complete** (opened 2026-11-07 with the PI, closed 2026-11-08; four sub-phases, work logs
+`notes/Phase43{a..d}.md`; plan, the PI's decisions (§1, verbatim) and the layers
 `notes/Phase43-design.md`; recon record `notes/PencilNatural.md`). The pencil realization theorem's
-proof has two or three inductions, depending on the dimension, and 13 cases at `d = 3`; the PI
-asked whether it can be made simpler or its cases more natural, before its intuition goes into the
-blueprint. A read-only recon (2026-11-07, three parallel tracks) found that the `d = 3` generic
-conjunct follows from the every-dimension lift, so the proof can take one shape in every dimension
-(the reduction, the main-component induction, the lift), and that two of the four short-chain
-cases at `d = 3` are redundant; it ruled out a single gluing lemma, a monotone measure and merging
-the main-component induction with the lift. No main result's statement changes. The layers, by
-stable code: **READS** (43a: fresh reads of Theorem S′, of the lift's premises and of the flatness
-reading, and the recon's probes banked), **LIFT3** (the `d = 3` generic conjunct by the lift, the
-reduction proved once, the explicit `d = 3` route collapsed to a remark), **NORMAL** (the reduction
-on five structural cases), **SPRIME** (Theorem S′, the two redundant cases removed) and **EXPO**
-(a road map of the proof in the manner of KT §1.1), each opened at the PI's word. **43a** (closed
-2026-11-07): the three fresh reads held. The lift has no premise in the `d = 3` generic proof;
-Theorem S′ holds, as Theorem S with a weaker hypothesis; and a planar-rigid set is flat at every
-main picture, which is why the generic conjunct leaves the main component. **43b** LIFT3 (opened
-and closed 2026-11-08, one sub-phase at the PI's choice; `notes/Phase43b.md`): the `d = 3`
-theorem is now the case `d = 3` of the theorem in every dimension. The generic conjunct comes from
-the lift, the whole theorem from the every-dimension corollary, and the reduction's cases are
-proved once, for every `d`; one remark keeps the old `d = 3` route. 91 declarations and 15
-blueprint nodes went, none came, and the main results' statements and axioms are unchanged.
-**43c** NORMAL and SPRIME (opened and closed 2026-11-08, one sub-phase at the PI's word;
-`notes/Phase43c.md`): the reduction is on five structural cases, with no dimension in its statement
-and no induction hypothesis in its last case, and the minimum-degree lemma is in a new appendix of
-further results. Theorem S′, Theorem S with fewer usable chains, is stated at `d = 3` only, and its
-proof cites the maximal-rigid-core lemma as the Lean does (the PI); so the open ear with two
-interior bodies and the split-off step left the `d = 3` coverage, and the `d = 3` core bound with
-them. 23 declarations and 13 blueprint nodes went (three Lean files whole) and 2 declarations came;
-the main results' statements and axioms are unchanged. **43d** EXPO (opened 2026-11-08 at the PI's
-word; `notes/Phase43d.md`), the last layer: a road map of the proof in the manner of KT §1.1, at
-the opening of the pencil chapter, with the structure, why each split is forced and the recon's
-intuitions as corrected; at the PI's word, the removal of the two `d = 3` main-component
-statements, off every route since 43b (7 declarations and `Pencil/X0.lean`, 3 blueprint nodes); a
-remark, with no Lean, that a planar-rigid set is flat on the main component; and the three
-chapters' introductions pointing at the road map, with the duplicate `d = 3` attaining theorem
-folded into the coverage (the PI). Five slices; its close closes Phase 43.
+proof had two or three inductions, depending on the dimension, and 13 cases at `d = 3`; the PI asked
+whether it could be made simpler or its cases more natural before its intuition went into the
+blueprint. A read-only recon (three parallel tracks) found that the `d = 3` generic conjunct follows
+from the every-dimension lift, so that the proof can take one shape in every dimension (A the
+reduction, B the main-component induction, C the lift), and that two of the four short-chain cases
+at `d = 3` are redundant; it ruled out a single gluing lemma, a monotone measure and merging B with
+C. By stable code, each layer opened at the PI's word: **READS** (43a) confirmed both findings and
+the flatness reading by three fresh reads, and banked the recon's probes. **LIFT3** (43b) made the
+`d = 3` theorem the case `d = 3` of the theorem in every dimension
+(`Graph.graded_pencil_conditioned_pair`): the generic conjunct by the lift, the reduction's cases
+proved once, for every `d`, and one remark keeping the old `d = 3` route. **NORMAL** and **SPRIME**
+(43c, one sub-phase at the PI's word) restated the reduction on five structural cases
+(`Graph.pencil_reduction`: a loop, at most two bodies, a cut edge, parallel edges, and a simple
+two-edge-connected multigraph, which takes no induction hypothesis), moved the minimum-degree lemma
+to a new appendix of further results, and stated Theorem S′ at `d = 3`
+(`Graph.IsX0Graph.exists_additiveCore`, its proof citing the maximal-rigid-core lemma, at the PI's
+word), so that the open ear with two interior bodies whose ends may be adjacent and the split-off
+step left the `d = 3` coverage. **EXPO** (43d) wrote the road map of the proof in the manner of KT
+§1.1 (`sec:pencil-roadmap`, opening `pencil.tex`: the three parts, KT's Cases I–III and Lemmas
+4.5–4.6 against them, why each split is forced, and the recon's intuitions as corrected) and an
+unpinned remark that a planar-rigid set lies in one plane over a main picture
+(`rem:pencil-x0-flatness`), which says why the generic conjunct leaves the main component; at the
+PI's word it removed the two `d = 3` main-component statements, off every route since LIFT3
+(`X0Dist`, `X0Gen`, `x0Dist`, `x0Gen`, `Pencil/X0.lean`), and folded the duplicate attaining theorem
+into the coverage; the three chapters' introductions point at the road map. Across the phase 121
+declarations went and 2 came (59 Lean files, +728 / −7,657 lines, eight files whole), and 32
+dep-graph nodes went (15, 13 and 4 by sub-phase) and none came. No main result's statement changed:
+the 21 `formalization.yaml` main results' statements read as at the open, and their axioms are the
+standard three, byte-identical to 43c's close run. Next: ORIGAMI's open, with the PI (*Queued
+post-program phases*). Detail → `notes/Phase43a.md` to `notes/Phase43d.md` +
+`notes/Phase43-design.md`.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 
@@ -1390,7 +1389,7 @@ for a cleanup after Phase 42, **CLEANUP-42**, and opened it on 2026-11-05, ahead
 closed the same day. The same day the PI opened **HOMES** ahead of ORIGAMI, a cleanup round of the
 lemmas Phase 42 left outside their home files and of the friction log; it closed the same day, and
 the PI opened **ARREARS**, a cleanup round of what HOMES left; it closed 2026-11-06. On 2026-11-07
-the PI queued **PENCIL-NATURAL** ahead of ORIGAMI, and opened it the same day as Phase 43, §43
+the PI queued **PENCIL-NATURAL** ahead of ORIGAMI, and opened it the same day as Phase 43, closed 2026-11-08, §43
 above.)
 A longer **unqueued**
 idea backlog from the same survey (KT-template subvariety questions,
@@ -1453,7 +1452,7 @@ research note of its own, `notes/Strata.md`, which holds PENCIL-D's evidence.
   opened next, as Phase 42, and closed 2026-11-05; **CLEANUP-42** opened next, at the PI's word
   (2026-11-05), and closed the same day; **HOMES** opened next and closed the same day (below);
   **ARREARS** opened next and closed 2026-11-06 (below); **PENCIL-NATURAL** opened next, as
-  Phase 43; **ORIGAMI** follows, with the PI.
+  Phase 43, and closed 2026-11-08; **ORIGAMI** follows, with the PI.
 - **PENCIL-D** — the pencil realization theorem in every dimension: opened 2026-10-29 with the PI
   as Phase 42 and closed 2026-11-05, proving it in every dimension `d ≥ 3` (§42 above; plan
   `notes/Phase42-design.md`).
@@ -1472,7 +1471,7 @@ research note of its own, `notes/Strata.md`, which holds PENCIL-D's evidence.
   at `K₂` and `K_{2,3}`, fixed the stale Lean docstrings, and gave the folded `d = 3` nodes their
   dependency edges and formalization notes, with no statement changed. Plan, the PI's words and
   the ledger: `notes/Cleanup42.md`. HOMES followed (below). **Next:** PENCIL-NATURAL, opened
-  as Phase 43, then ORIGAMI's open, with the PI.
+  as Phase 43 and closed 2026-11-08, then ORIGAMI's open, with the PI.
 - **HOMES** — a cleanup round after CLEANUP-42, opened 2026-11-05 at the PI's word after a review
   of the open friction entries, and closed the same day: the friction log's docs and tooling fixes
   and an archive sweep, then the lemmas Phase 42 left outside their home files (deferred because a
@@ -1493,10 +1492,12 @@ research note of its own, `notes/Strata.md`, which holds PENCIL-D's evidence.
   edge) were weakened to `RecordsLinks` plus a new hypothesis that the rows they take are at edges,
   and one blueprint node was repinned. Four lemmas left without a caller were deleted, one by the
   open's scope and three at the PI's word. No main result's statement changed. **Next:**
-  PENCIL-NATURAL, opened as Phase 43 (below), then ORIGAMI's open, with the PI.
+  PENCIL-NATURAL, opened as Phase 43 and closed 2026-11-08 (below), then ORIGAMI's open, with the
+  PI.
 - **PENCIL-NATURAL** — a simpler or more natural pencil proof: queued by the PI on 2026-11-07,
-  ahead of ORIGAMI, and opened with the PI the same day as Phase 43, after a read-only recon
-  (§43 above; plan `notes/Phase43-design.md`, recon record `notes/PencilNatural.md`).
+  ahead of ORIGAMI, opened with the PI the same day as Phase 43, after a read-only recon, and
+  closed 2026-11-08 (§43 above; plan `notes/Phase43-design.md`, recon record
+  `notes/PencilNatural.md`). **Next:** ORIGAMI's open, with the PI.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

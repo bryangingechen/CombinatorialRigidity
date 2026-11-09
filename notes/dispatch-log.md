@@ -279,35 +279,21 @@ left its checklist line uncut, which task 19 fixed. Task 19's landing,
 resumed from the recon (F43, 345k tokens), amended a ROADMAP summary
 phrase beyond its brief; accurate, kept.
 
-**PENCIL-NATURAL 43b rows, 2026-11-08 (LIFT3, the open and slices 1–4): 3.**
-Five opus dispatches (the open as a recon design-pass, slices 1–4 builds),
-none BLOCKED. (1) The open's recon joined two docs gates with `&&` inside
-the commit's `if`, against the prompt's F55 line; both had passed run
-singly, and the coordinator re-ran them green. Later prompts say one gate
-per `if`, nested. (2) Slice 1 rewrote an "At `d = 3`" remark in
-`lem:pencil-d-ear-free`'s proof to say `lem:pencil-d-lift-ear`'s
-hypothesis holds at every degree-two hub-flanked body, dropping the
-lemma's deficiency clause; the coordinator's prose read caught it (no gate
-reads prose), fixed in its own commit to "its hypothesis on the lifts".
-(3) That fix was false too, as was slice 1's same claim in `lem:pencil-d-lift-ear`
-("the hypothesis on the lifts is empty" at `d = 3`): the coordinator reasoned from the prose
-(`m = d − 3` heights), but `EarLiftCondition` quantifies over the whole lift space of `G − x`,
-which does not depend on `d`. Slice 4's builder read the definition body and removed both. A
-coordinator fix to a mathematical sentence gets the derivation guard: read the definition body.
-
-**PENCIL-NATURAL 43c rows, 2026-11-08 (slice 1 to slice B): 1.** (1) The coordinator's re-pin of
-item 4 (`bd63d237`, after the PI reversed the pin's absent-PI choice) carried two unchecked route
-claims: that `lem:pencil-d-core-positive-deficiency` gets its core through the maximal-rigid-core
-lemma (its Lean takes a set of least singleton value), and that the moved core-bound argument
-reads at `D − 1` (its singleton values stay planar). Slice B's builder (opus) read the bodies and
-corrected both. As 43b (3): a pin's route claim is a hypothesis until the body is read (F19).
-
-**PENCIL-NATURAL 43d rows, 2026-11-08 (the open to slice 3): 1.** (1) The coordinator's PI question
-on the duplicate attaining theorem (after slice 2, `47116a52`) carried three unchecked claims in its
-recommended option: that the fold would land in "slice 5" (the pointer slice for `main-component.tex`
-had been renumbered to slice 4), that `pencil-d.tex` cites the theorem (it had none at HEAD), and
-"no Lean" (the fold edits one docstring). Slice 3's builder (opus) caught all three and recorded
-them beside the PI's entry. As F57: grep and re-read the plan before writing an option's details.
+**PENCIL-NATURAL (Phase 43) rows, 2026-11-08 (43b, 43c and 43d): 5 pruned at the phase close
+(2026-11-08); the full rows are in git history at `0f7dad8a`.** Every dispatch ran at Opus (the
+PI's word), none BLOCKED, escalated or killed; 43a wrote no row. The lessons, all promoted: (1) a
+docs commit (43b's open, a recon design pass) joined two gates with `&&` inside its `if`; both
+were green run singly, and later prompts say one gate per `if`, nested (F55). (2) A prose defect no
+gate reads (F44): 43b slice 1 dropped `lem:pencil-d-lift-ear`'s deficiency clause from a remark;
+the coordinator's prose read caught it, and the coordinator's own fix, reasoned from the prose
+(`m = d − 3` heights), was false too, as `EarLiftCondition` quantifies over the whole lift space of
+`G − x`; slice 4's builder read the definition body and removed both. A coordinator fix to a
+mathematical sentence is a coordinator artifact: read the definition body (F19, *Docstrings are not
+evidence*). (3) A re-pin's two route claims (43c item 4, `bd63d237`), corrected from the bodies by
+slice B's builder: a pin's route claim is a hypothesis until the body is read (F19). (4) A PI option
+text (43d, after slice 2) with three unchecked details (a slice number, a `pencil-d.tex` citation
+that did not exist, "no Lean"), caught by slice 3's builder and recorded beside the PI's entry
+(F57).
 
 ## Findings
 
@@ -368,6 +354,12 @@ questions and option texts it puts to the PI), with F59's gap named at the
 it reads closed with CLEANUP-42), and F59, open (a tool item). The other
 rows are F14, F17, F41, F44, F45, F51 and the F6 family again, all
 promoted. F56 stays open.
+
+**Phase-43 close grooming (2026-11-08, at Phase 43's close).** Its 5 rows (43b 3, 43c 1, 43d 1)
+are pruned to git history (profile under *Log*). No new finding: the rows are F19, F44, F55 and
+F57 again, all promoted. The one lesson in another register, that a coordinator's fix to a
+mathematical sentence reads the definition body, is F19's tier for the coordinator's own artifacts
+with root `CLAUDE.md` *Docstrings are not evidence*; nothing is promoted.
 
 - **F1 — re-derive inventories at build time.** Promoted to
   `notes/CLAUDE.md` *One canonical home* (count again in the compressing

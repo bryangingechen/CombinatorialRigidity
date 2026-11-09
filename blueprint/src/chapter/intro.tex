@@ -81,7 +81,8 @@ appears to be new, the pencil realization theorem, which this project
 posed and proved. Its realizations ask in addition that the hinges at each
 body pass through a common point of the body's panel. The last chapter
 (\cref{sec:pencil-d}) proves it in every dimension $d \ge 3$, the case
-$d = 3$ included.
+$d = 3$ included. A road map of the proof, across the three chapters,
+opens the first of them (\cref{sec:pencil-roadmap}).
 
 \subsection*{Organization of the blueprint}
 
@@ -383,20 +384,20 @@ result the chapters state as a node is formalized.
 Phase~41 ended a review of the chapters against the Lean, which corrected
 the statements that claimed more or less than their Lean declarations
 and gave a Lean declaration to each claim the chapters made without one.
-Phase~43, in progress, looks for a simpler proof of the pencil realization
-theorem. Its first step took the theorem in dimension three from the
-argument in every dimension: the nondegenerate claim
-(\cref{thm:pencil-d-generic}), and then the whole theorem, the case
-$d = 3$ of \cref{cor:pencil-d-conditioned-pair}, with the cases of the
-reduction proved once, in every dimension (\cref{sec:pencil-d-reduction}).
-A remark after \cref{thm:pencil-d-generic} notes the earlier route in
-dimension three. Its second step restated the reduction on structural
-cases (\cref{thm:pencil-reduction}) and removed the two cases of the
-three-dimensional case analysis that the proof does not need: where no
-other step applies, \cref{thm:pencil-x0-theorem-s} finds a rigid set to
-contract. A road map of the proof comes last. With it the two statements
-of phase~39 go, special cases of the theorem's claims that no proof uses
-any more.
+Phase~43 made the proof of the pencil realization theorem simpler,
+without changing what it proves. The theorem in dimension three is the
+case $d = 3$ of the theorem in every dimension
+(\cref{cor:pencil-d-conditioned-pair}), with the cases of the reduction
+proved once, in every dimension (\cref{sec:pencil-d-reduction}); a remark
+after \cref{thm:pencil-d-generic} notes the earlier route in dimension
+three. The reduction runs on structural cases (\cref{thm:pencil-reduction}),
+and the two cases of the three-dimensional case analysis that the proof
+does not need are gone: where no other step applies,
+\cref{thm:pencil-x0-theorem-s} finds a rigid set to contract. A road map of the proof opens
+\cref{sec:pencil} (\cref{sec:pencil-roadmap}), and a remark shows why the
+nondegenerate claim is not proved through the main component
+(\cref{rem:pencil-x0-flatness}). The two statements of phase~39 are gone,
+as special cases of the theorem's claims that no proof used.
 From phase~6 on, the graph is written forward: a chapter's nodes and
 their edges come first, and the statement and proof sketch of a node not
 yet formalized are the plan for its Lean declaration. So the graph is

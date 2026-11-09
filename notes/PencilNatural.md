@@ -1,12 +1,12 @@
 # PENCIL-NATURAL — a simpler or more natural pencil proof (planning note and recon record)
 
-**Status:** opened as **Phase 43** on 2026-11-07, with the PI, after the recon of §4 (verdicts §3).
-The plan, the PI's decisions (D1–D5 included) and the layers are `notes/Phase43-design.md`; 43a,
-43b and 43c, NORMAL and SPRIME, closed (`notes/Phase43a.md`, `notes/Phase43b.md`,
-`notes/Phase43c.md`), and EXPO, the road map of §5, opened as 43d on 2026-11-08 at the PI's word
-(`notes/Phase43d.md`, which restates §5's intuitions against the chapters as they now stand).
+**Status:** opened as **Phase 43** on 2026-11-07, with the PI, after the recon of §4 (verdicts §3),
+and closed 2026-11-08 (summary: ROADMAP §43). The plan, the PI's decisions (D1–D5 included) and the
+layers are `notes/Phase43-design.md`; the work logs are `notes/Phase43a.md` to `notes/Phase43d.md`.
+EXPO (43d) wrote the road map of §5 into the blueprint (`sec:pencil-roadmap`), with §5's intuitions
+as restated against the chapters (`git show 0f7dad8a:notes/Phase43d.md`, *Verified at the open*).
 This note stays the recon record, cited by section: §2–§5 are kept as they were at the open, net
-of the probes' tags once D4 banks them.
+of the probes' tags once D4 banked them.
 
 ## 1. The PI's words (verbatim)
 

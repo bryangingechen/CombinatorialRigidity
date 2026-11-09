@@ -2007,6 +2007,36 @@ as a whole is EXPO's (`notes/Phase43-design.md` §2).
 name retired nodes (two since 2026-10-04, four since 43b, one since this sub-phase), one more a
 retired part and pin, and the closed one a deleted node.
 
+### Phase 43d (EXPO: a road map of the pencil proof, structural edit — no new chapter), and Phase 43
+
+**No new entries — judged at the close of 43d and Phase 43 (2026-11-08).** The source is the
+project's own: the PENCIL-NATURAL recon's road map and intuitions (`notes/PencilNatural.md` §5), as
+re-derived against the chapters at the open, in the form of KT's own road map (KT §1.1,
+pp. 649–650). The sub-phase wrote two pieces of exposition, neither a node that rerouted or
+decomposed: the road map `sec:pencil-roadmap`, which is this account of the proof as a whole
+(the 43b and 43c sections above left it to EXPO), and the unpinned remark `rem:pencil-x0-flatness`,
+whose argument (five landed lemmas and one step by hand, `lem:pencil-polynomial-section`'s, the
+doubled triangle counted out) is written in full in its body. Its slice 2 deleted three nodes at
+the PI's word and annotated the one entry naming them, the Phase-39 entry of
+`thm:pencil-conditional-realization-main-component`; the fold of `thm:pencil-x0-generic-attains`
+into `thm:pencil-x0-coverage` named no entry (the 40b section above mentions it as it stood then).
+The close's end-to-end re-read of the prose slices 1–5 wrote (the road map; `pencil.tex`'s
+introduction, reduction lead and main-component route; `main-component.tex`'s introduction, its
+*Nondegeneracy* lead and the remark; `pencil-d.tex`'s introduction, reduction section and coverage
+lead) checked each road-map claim against the node it cites (the open ears' conditions against
+`def:pencil-x0-reduces`, the coverage's order against its proof, the remark's pair against
+`def:pencil-nondegenerate`'s hubs, its doubled-triangle count) and each cut in
+`sec:pencil-d-reduction` against the argument left (the parallel-edge contraction still proves its
+core rigid in place), and found nothing to change and no formalization aside.
+**Phase 43 as a whole** (43a–43d): no node earned an entry. It added no argument that a paper
+compresses: LIFT3 and SPRIME read the `d = 3` theorem and its coverage off lemmas the chapters
+already prove in every dimension, NORMAL restated a statement, and EXPO wrote exposition; 32 nodes
+went and none came. The entries whose nodes went were annotated as they went (43b, 43c and 43d's
+slice 2).
+**Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51); seven done entries
+name retired nodes, as at 43c (the Phase-39 entry retired at 43b now names its definition node
+retired too), one more a retired part and pin, and the closed one a deleted node.
+
 ## Retroactive coverage
 
 - **Molecular program (Phases 17–22a): scanned 2026-06-04** — candidates folded

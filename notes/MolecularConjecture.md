@@ -813,14 +813,15 @@ opened the same day at the PI's word, ahead of ORIGAMI, and closed then. **ARREA
 round of what HOMES left (the dependency-graph debt, four file splits, `RecordsLinks` moved to
 `Graph` with its link hypotheses restated; `notes/Phase42-arrears.md`), opened the same day at the
 PI's word and closed 2026-11-06. **Phase 43** (PENCIL-NATURAL, `notes/Phase43-design.md`) opened
-2026-11-07 with the PI, after a read-only recon: a simpler pencil proof, no main result's
-statement changed. Its three fresh reads (43a, READS) closed 2026-11-07, and LIFT3 (43b, the
-`d = 3` theorem from the theorem in every dimension) on 2026-11-08; NORMAL and SPRIME (43c, the
-reduction on structural cases, then Theorem S′) opened and closed the same day as one sub-phase;
-EXPO (43d, the road map of the proof, `notes/Phase43d.md`) opened the same day at the PI's word,
-and its close closes Phase 43. Summary: ROADMAP §43. Still
+2026-11-07 with the PI, after a read-only recon, and closed 2026-11-08, in four sub-phases: a simpler
+pencil proof, no main result's statement changed. READS (43a) confirmed the recon by three fresh
+reads; LIFT3 (43b) made the `d = 3` theorem the case `d = 3` of the theorem in every dimension, the
+reduction's cases proved once; NORMAL and SPRIME (43c) put the reduction on structural cases and
+removed two unnecessary `d = 3` steps by Theorem S′; EXPO (43d, `notes/Phase43d.md`) wrote the road
+map of the proof and the flatness remark, and at the PI's word removed the two `d = 3`
+main-component statements and folded a duplicate theorem. Summary: ROADMAP §43. Still
 queued, codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
-conjecture, `notes/Origami.md`, the next phase to open after PENCIL-NATURAL, with the PI), **PIN** (a second,
+conjecture, `notes/Origami.md`, the next phase to open, with the PI), **PIN** (a second,
 independent proof of the 2-d molecular conjecture by Jackson–Jordán 2008's
 pin-collinear route, re-scoped at 40a's close; unplanned), **UPSTREAM** (mathlib upstreaming) and
 **VERSO** (the paused verso-blueprint port).
