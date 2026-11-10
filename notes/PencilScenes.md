@@ -69,19 +69,24 @@ numbers are the printed ones. Bib keys are given where `blueprint/src/bibliograp
   incidence structure. **Remark 8.3.2** (pdf p. 45) is the polarity about the paraboloid, taking
   liftings on S to parallel scenes on the dual S\*: not the pencil polarity (§3). Theorem 5.1.3:
   Maxwell's theorem for planar graphs. Theorem A.1.4: the rank formula of a count matroid.
-- **Jackson–Jordán 2008** (`jacksonJordan2008pin`; `.refs/` holds the 2006 EGRES report, whose
-  numbering is used here; the published numbering is unchecked). **Theorem 7.1** (p. 21): the
-  rod-and-pin rank 3|V| − 3 − def(G) for a graph without isolated vertices, proved at pin-collinear
-  realizations with generic lines; P_q is their rod-and-pin framework (§5, p. 12). Theorem 7.2(b):
-  the multigraph body-and-pin version. Theorem 7.4 re-derives Whiteley 1989 Theorem 5.4. They never
-  mention scenes, liftings or L(q).
-- **Not in `.refs/`** (references verified in `notes/pencil-scenes/lineage.md`, which has free
-  copies): Crapo–Whiteley 1993 and 1994 (Maxwell with cycle conditions; liftings ≅ stresses for
-  spherical polyhedra); Sugihara 1984 and his 1986 book (the scene equations; cite the book by
-  section); Tay–Whiteley 1984 (`tayWhiteley1984`, now obtainable); Maxwell's "On reciprocal figures
-  and diagrams of forces" (1864), which needs a new key, since `maxwell1864` is his stiffness paper.
+- **Jackson–Jordán 2008** (`jacksonJordan2008pin`; numbering of the 2006 EGRES report, used here).
+  The published *DCG* version (in `.refs/` since 2026-11-10) is renumbered, §§1–6, and its text
+  has no rod-and-pin framework, so Theorem 7.1 has no counterpart there; its Theorem 5.13 (p. 276)
+  is the body-and-pin rank at a pin-collinear realization (not compared with 7.2(b) line by line).
+  **Theorem 7.1** (p. 21): the rod-and-pin rank 3|V| − 3 − def(G) for a graph without isolated
+  vertices, proved at pin-collinear realizations with generic lines; P_q is their rod-and-pin
+  framework (§5, p. 12). Theorem 7.2(b): the multigraph body-and-pin version. Theorem 7.4 re-derives
+  Whiteley 1989 Theorem 5.4. They never mention scenes, liftings or L(q).
+- **Added to `.refs/` by the PI, 2026-11-10** (unread by the recon; rows in `REFS.md`):
+  Crapo–Whiteley 1994 (liftings ≅ stresses for spherical polyhedra); Sugihara 1983, 1984 and his
+  1986 book (the scene equations; cite the book by section); Maxwell's "On reciprocal figures and
+  diagrams of forces" (1864), which needs a new key, since `maxwell1864` is his stiffness paper, and
+  his 1870 paper; Crapo 1984, 1989, 1991; Rigidity and polarity I, II; Huffman 1977; Mackworth
+  1973; Lundqvist–Stokes–Öhman 2025; Rybnikov 1999. **Still not in `.refs/`** (free copies in
+  `notes/pencil-scenes/lineage.md`): Crapo–Whiteley 1993 (Maxwell with cycle conditions) and
+  Tay–Whiteley 1984 (`tayWhiteley1984`).
 - **Crapo–Ryan 1986**, "Spatial realizations of linear scenes" (*Structural Topology* 13, 33–68;
-  free; not in `.refs/`). §8 (pp. 52–53), for an image of any rank and a family E of "nodes": the
+  in `.refs/`). §8 (pp. 52–53), for an image of any rank and a family E of "nodes": the
   E-locally linear functions L(E), and the **E-lift**, which adds all of them as coordinates, "that
   preimage of P under projection which is of highest possible rank, given the restriction that no
   node is increased in rank", with a natural projection back to P. Its rank is dim L(E), and
@@ -195,7 +200,8 @@ Four read-only agents, dispatched at the PI's word (§1). Their reports are bank
 - **Open leads:** the merging lemma's provenance (JJ's rod-and-pin section, W96 Appendix A and
   Crapo–Ryan 1986, whose "central objective" is computing dim L(E), first), before any chapter calls
   it new; Crapo's two later papers beside Crapo–Ryan in W96 (LNCS 391, 1989; *J. Symbolic Comput.*
-  11, 1991), unread; Crapo–Whiteley 1993's pages, 55–78 by W96's bibliography, against 55–79.
+  11, 1991), unread but now in `.refs/`; Crapo–Whiteley 1993's pages, 55–78 by W96's
+  bibliography, against 55–79.
 
 ## 6. Scope at the open (the PI's call)
 
@@ -211,5 +217,5 @@ Four read-only agents, dispatched at the PI's word (§1). Their reports are bank
   Lean already proves the equality through KT). This may touch the Lean.
 - **(c) The observations.** Whether O1–O7 and the worked examples go into the chapters; the road
   map's "Four observations" paragraph is the natural home for O1, O5 and O7.
-- **(d) `.refs/`.** Which of Q4's free copies to add (TW84, CW93, CW94, Crapo–Ryan, Sugihara's
-  book).
+- **(d) `.refs/`.** Mostly settled: the PI added CW94, Crapo–Ryan, Sugihara's book and Q4's
+  optional items on 2026-11-10 (§2). Left: TW84 and CW93, both free.

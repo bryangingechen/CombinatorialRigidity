@@ -424,8 +424,9 @@ under `PYTHONHASHSEED` 0 and 7.
    harness's polynomial oracles are `D = 6` only. The cells that matter are those outside the
    stable range (Result 19), so sparse graphs with large `def_3`.
 3. **Literature left:** Hunt 1967 (screw axes, 6R mobility, the linear complex); Lovász 1977
-   (not in `.refs/`; cited here through Tanigawa and Lovász 1989); White–Whiteley 1987 itself
-   (whether the pure condition has a body-hinge form); a search for Results 12–19.
+   (cited here through Tanigawa and Lovász 1989); both in `.refs/` since 2026-11-10, unread;
+   White–Whiteley 1987 itself (whether the pure condition has a body-hinge form); a search for
+   Results 12–19.
 4. **Beyond the flag poset** (not PENCIL-D's): per-body conditions whose closure avoids every
    pencil configuration, such as per-body reguli in `P³`, if their incidence variety does not
    degenerate to pencils. Also conditions coupling hinges around cycles rather than at bodies,
