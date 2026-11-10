@@ -80,6 +80,13 @@ numbers are the printed ones. Bib keys are given where `blueprint/src/bibliograp
   spherical polyhedra); Sugihara 1984 and his 1986 book (the scene equations; cite the book by
   section); Tay–Whiteley 1984 (`tayWhiteley1984`, now obtainable); Maxwell's "On reciprocal figures
   and diagrams of forces" (1864), which needs a new key, since `maxwell1864` is his stiffness paper.
+- **Crapo–Ryan 1986**, "Spatial realizations of linear scenes" (*Structural Topology* 13, 33–68;
+  free; not in `.refs/`). §8 (pp. 52–53), for an image of any rank and a family E of "nodes": the
+  E-locally linear functions L(E), and the **E-lift**, which adds all of them as coordinates, "that
+  preimage of P under projection which is of highest possible rank, given the restriction that no
+  node is increased in rank", with a natural projection back to P. Its rank is dim L(E), and
+  computing it is the paper's "central objective". With E the closed neighbourhoods of a plane
+  picture, L(E) = L(q) and the E-lift is O2's universal lift. No hinges, no rigidity.
 
 ## 3. The pencil proof's pieces against them
 
@@ -100,16 +107,16 @@ new); in `pencil-d.tex`, 23 (1, 5, 15 and 2; 14 owe a citation). The main rows:
 | `lem:pencil-d-rank-collineation`, `lem:pencil-d-rank-scale-shift` | CW82 §3.6, p. 68 | not in this chapter |
 | `sec:pencil-duality`, `lem:pencil-self-dual` | The point–plane polarity: KT p. 650, W99 pp. 29–30, CW82 §3.6; TW84 p. 33 names panel and molecular as duals. The self-duality of the pencil class: no source | partly cited, through `lem:polarity-join` |
 | "pencil" (`sec:pencil`, `def:pencil-panel-realization`) | CW82 p. 67, "flat pencil"; p. 56, rank 2 | uncited |
-| `def:pencil-d-configuration` (d − 2 heights) | No source; contrast W84 §7.2's Remark | unsaid |
+| `def:pencil-d-configuration` (d − 2 heights) | Crapo–Ryan 1986 §8: the E-lift lifts by all heights at once, and d − 2 heights project it (O2); contrast W84 §7.2's Remark | unsaid |
 | `def:pencil-d-lift` (Part C) | W84 Def. 7.2 at K = 3; a trivial lift is a flat scene | presented as new |
 | `sec:pencil-roadmap`, the three introductions | All of the above | no lineage |
 
 New, as far as the recon found (Q3): the pencil stratum itself (no source asks for hinges coplanar
 *and* concurrent; ROADMAP §39's 2026-07-23 verdict stands), the pencil realization theorem, the
 reduction (A), the main-component induction's steps and coverage (B), C's induction, the
-self-duality of the pencil class, and the d − 2 heights over one plane picture. Classical: the
-carrier (the scenes over a picture of S_G, both descriptions, both framework readings) and C's lift
-space.
+self-duality of the pencil class, and reading the lifts by several heights as hinge frameworks
+with a rank. Classical: the carrier (the scenes over a picture of S_G, both descriptions, both
+framework readings), the lift by all heights at once (Crapo–Ryan's E-lift) and C's lift space.
 
 ## 4. Observations, and the worked examples
 
@@ -118,9 +125,10 @@ The agents' own derivations, checked as marked; check an unmarked one before it 
 - **O1** (holds, `ledger-d.md`). By `lem:pencil-d-rank-scale-shift`, the rank of a configuration
   depends only on the picture q and W, the span of the heights' classes in L(q)/Aff(q), where
   dim W ≤ min(d − 2, def₂) at a main picture.
-- **O2.** The universal lift v ↦ ev_v ∈ L(q)* is a configuration in P^{2+def₂} (at a main picture)
-  whose closed neighbourhoods each span a plane, and every configuration over q is a linear
-  projection of it. If d − 2 ≥ def₂, all general configurations over a fixed main picture are
+- **O2** (the lift itself is Crapo–Ryan 1986 §8's E-lift, with the closed neighbourhoods as nodes;
+  the projection claim is the agents' reading). The universal lift v ↦ ev_v ∈ L(q)* is a
+  configuration in P^{2+def₂} (at a main picture) whose closed neighbourhoods each span a plane,
+  and every configuration over q is a linear projection of it. If d − 2 ≥ def₂, all general configurations over a fixed main picture are
   projectively equivalent.
 - **O3** (the bar condition and the count checked at θ(2,2,3)). Writing h_v(ξ) = g_v·ξ + c_v, the face gradients satisfy
   (g_u − g_v)·(q_u − q_v) = 0: an infinitesimal motion of the bar framework (G, q), where
@@ -167,22 +175,27 @@ Four read-only agents, dispatched at the PI's word (§1). Their reports are bank
 - **Q2** (`ledger-d.md`): yes, one lift at a time. Part C's lift space is W84 Def. 7.2's scenes in
   4-space over a picture in 3-space, with S_G's faces. W84 fixes a face's hyperplane, which over a
   plane of base points has a one-parameter slack; the chapter keeps its restriction to that plane.
-  The spaces of heights agree. No source names d − 2 heights over one plane picture.
+  The spaces of heights agree. For several heights over one plane picture, the nearest source is
+  Crapo–Ryan 1986's E-lift (Q4), which lifts by all of them at once.
 - **Q3** (`lineage.md`): no prior work on the pencil stratum. Nearest: CW82's flat pencil; TW84 and
   Tay 1989 name the coplanar and concurrent classes separately; W99 p. 25 (three coplanar concurrent
   hinges are dependent) and Example 24 (a flat molecule, the zero-height member); the plane analogue
   (W89 Thm 5.4, JJ, Lundqvist–Stokes–Öhman 2025). No source builds a 3-space realization by lifting.
-- **Q4** (`lineage.md`, *Summary*): add Crapo–Whiteley 1993 and 1994, Sugihara 1984 and 1986,
-  Maxwell's reciprocal-figures paper (a new key) and TW84's pages; optional history (Huffman 1977,
-  Mackworth 1973) and Lundqvist–Stokes–Öhman 2025. "Lashed and woven rods" is probably Rigidity
-  and polarity II (inferred); low priority.
+- **Q4** (`lineage.md`, *Summary* and §6): add Crapo–Whiteley 1993 and 1994, Sugihara 1984 and
+  1986, Crapo–Ryan 1986 (at O2 and the several-heights configuration), Maxwell's reciprocal-figures
+  paper (a new key) and TW84's pages; optional history (Huffman 1977, Mackworth 1973) and
+  Lundqvist–Stokes–Öhman 2025. W96's [CrW4], Crapo–Whiteley on 3-stresses and projections of
+  4-polytopes, is an unpublished 1994 preprint, one height at a time: not citable. "Lashed and
+  woven rods" is probably Rigidity and polarity II (inferred); low priority.
 - **Checked by the coordinator:** W96 Remark 8.3.2 and JJ Theorems 7.1 and 7.2 in the PDFs; W84
   Def. 7.2 against `def:pencil-d-lift`; the merging lemma's proof, step by step; both Q1 scripts
-  rerun from `notes/scripts/scenes/`, `q1_count.py` byte-identical. The reports' other page numbers,
-  and Q1's field generality, are the agents' readings.
-- **Open leads:** the merging lemma's provenance (JJ's rod-and-pin section and W96 Appendix A
-  first), before any chapter calls it new; Crapo–Whiteley [CrW4] and Crapo–Ryan [CRy], cited by W96
-  near higher-dimensional scenes, unresolved; Crapo–Whiteley 1993's page range (55–78 or 55–79).
+  rerun from `notes/scripts/scenes/`, `q1_count.py` byte-identical; Crapo–Ryan's E-lift sentence
+  (p. 53), in the agent's text of the scan. The reports' other page numbers, and Q1's field
+  generality, are the agents' readings.
+- **Open leads:** the merging lemma's provenance (JJ's rod-and-pin section, W96 Appendix A and
+  Crapo–Ryan 1986, whose "central objective" is computing dim L(E), first), before any chapter calls
+  it new; Crapo's two later papers beside Crapo–Ryan in W96 (LNCS 391, 1989; *J. Symbolic Comput.*
+  11, 1991), unread; Crapo–Whiteley 1993's pages, 55–78 by W96's bibliography, against 55–79.
 
 ## 6. Scope at the open (the PI's call)
 
@@ -198,4 +211,5 @@ Four read-only agents, dispatched at the PI's word (§1). Their reports are bank
   Lean already proves the equality through KT). This may touch the Lean.
 - **(c) The observations.** Whether O1–O7 and the worked examples go into the chapters; the road
   map's "Four observations" paragraph is the natural home for O1, O5 and O7.
-- **(d) `.refs/`.** Which of Q4's free copies to add (TW84, CW93, CW94, Sugihara's book).
+- **(d) `.refs/`.** Which of Q4's free copies to add (TW84, CW93, CW94, Crapo–Ryan, Sugihara's
+  book).
