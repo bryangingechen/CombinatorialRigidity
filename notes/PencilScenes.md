@@ -82,9 +82,9 @@ numbers are the printed ones. Bib keys are given where `blueprint/src/bibliograp
   1986 book (the scene equations; cite the book by section); Maxwell's "On reciprocal figures and
   diagrams of forces" (1864), which needs a new key, since `maxwell1864` is his stiffness paper, and
   his 1870 paper; Crapo 1984, 1989, 1991; Rigidity and polarity I, II; Huffman 1977; Mackworth
-  1973; Lundqvist–Stokes–Öhman 2025; Rybnikov 1999. **Still not in `.refs/`** (free copies in
-  `notes/pencil-scenes/lineage.md`): Crapo–Whiteley 1993 (Maxwell with cycle conditions) and
-  Tay–Whiteley 1984 (`tayWhiteley1984`).
+  1973; Lundqvist–Stokes–Öhman 2025; Rybnikov 1999; and, last to arrive, Crapo–Whiteley 1993
+  (Maxwell with cycle conditions) and Tay–Whiteley 1984 (`tayWhiteley1984`), so every source the
+  recon asked for is now held.
 - **Crapo–Ryan 1986**, "Spatial realizations of linear scenes" (*Structural Topology* 13, 33–68;
   in `.refs/`). §8 (pp. 52–53), for an image of any rank and a family E of "nodes": the
   E-locally linear functions L(E), and the **E-lift**, which adds all of them as coordinates, "that

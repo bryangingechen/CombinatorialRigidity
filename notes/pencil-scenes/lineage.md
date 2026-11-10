@@ -86,8 +86,8 @@ of identified structures in n-space. A chapter citing this should name TW84 Conj
 - **Free:** UPCommons (Universitat Politècnica de Catalunya), which hosts the full run of *Structural Topology* as open access.
   Record https://hdl.handle.net/2099/1017; PDF
   https://upcommons.upc.edu/server/api/core/bitstreams/fa6301ea-dc67-4622-8a71-13150fec6a26/content
-  (`st9-06-a3.pdf`, a scan with no text layer). Under the `.refs/` convention it would be
-  `tay-whiteley-1984-recent-advances-generic-rigidity.pdf`.
+  (`st9-06-a3.pdf`, a scan with no text layer). Since 2026-11-10 it is in `.refs/` as
+  `tay-whiteley-1984-recent-advances-generic-rigidity.pdf`, and so is Crapo–Whiteley 1993 (Q4 §1(a)).
 - **Contents:** a survey of the August 1983 Bielefeld workshop on applied matroid theory. Theorem 1 (Tay, body-bar).
   Theorem 2 (Tay and Whiteley, body-hinge). The remarks quoted above (p. 33). Conjecture 1: "A multi-graph is
   generically rigid for hinged structures in n-space iff it is generically rigid for hinged structures in n-space with
