@@ -14,7 +14,7 @@ duplicate it.
 **References.**
 - A. Lee, I. Streinu, *Pebble game algorithms and sparse graphs*,
   Discrete Math. **308** (2008) 1425–1437. PDF in
-  `../.refs/lee-streinu-2008.pdf`. Phase 9 formalises the *basic*
+  `../.refs/lee-streinu-2008-pebble-game-k-l-sparse.pdf`. Phase 9 formalises the *basic*
   $(k, \ell)$-pebble game of §3–§4 and its correctness theorem
   (Theorem 8).
 - D.J. Jacobs, B. Hendrickson, *An algorithm for two-dimensional
@@ -24,7 +24,7 @@ duplicate it.
   background survey, `../.refs/jordan-2016-msj-memoirs.pdf`.
 - A. Lee, I. Streinu, L. Theran, *Finding and maintaining rigid
   components*, CCCG '05 (2005). PDF in
-  `../.refs/lee-streinu-theran-finding-and-maintaining.pdf`.
+  `../.refs/lee-streinu-theran-2005-finding-maintaining-rigid.pdf`.
   Introduces the *union pair-find* data structure for the $O(n^2)$
   *component pebble game*. **Out of scope for Phase 9** (basic
   pebble game only); pointer for any future component-pebble-game

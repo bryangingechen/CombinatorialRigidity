@@ -4956,7 +4956,7 @@ priorities and stays exactly as strong as it is.
 **Provenance and status caveat.** D. Zheng, *Stress Degeneracy of Direction
 Complexes of (2,2)-Sparse Graphs and Three-Dimensional Body–Pin Rigidity*,
 preprint dated August 2026, read in full from
-`.refs/zheng-2026-body_pin_partition_collinearity_flag_en_20260816.pdf`. It
+`.refs/zheng-2026-stress-degeneracy-direction-complexes.pdf`. It
 claims the Király–Tanigawa body–pin partition conjecture (their Conjecture 5;
 Jackson–Jordán–Villányi Conjecture 7.6) in `ℝ³`. **It is unrefereed**, its own
 acknowledgment credits an AI assistant with *"the refinement of proof details,

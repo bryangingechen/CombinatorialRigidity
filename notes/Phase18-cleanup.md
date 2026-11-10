@@ -70,7 +70,7 @@ destale + `Phase18.md` compression + two instruction tweaks), plus a
   *Status* block (L237–249) already notes the deferral + green state —
   re-read, fine, left as is.
 - [x] **A5 (citation accuracy)** — done. Verified against `.refs/`
-  jackson-jordan-2009-generic-rank-of-body-bar.pdf: the paper has **no
+  jackson-jordan-2010-generic-rank-of-body-bar.pdf: the paper has **no
   Proposition 2.3** (and no Propositions at all — §2 holds only Lemmas
   2.1–2.5, the screw-center lemmas; the rank↔deficiency bridge is
   **Theorem 6.1** `r(G,q)=D(|V|−1)−def_D(G_H)` + **Corollary 6.2** rigid
