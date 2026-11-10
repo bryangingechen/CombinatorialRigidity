@@ -53,8 +53,9 @@ None.
 
 ## Hand-off / next phase
 
-Phase 43 is closed, and no phase is open. The next concrete step is ORIGAMI's open, with the PI
-(ROADMAP *Queued post-program phases*; planning note `notes/Origami.md`).
+Phase 43 is closed, and no phase is open. The next concrete step is PENCIL-SCENES' read-only
+recon, then its open with the PI (queued 2026-11-09 ahead of ORIGAMI; ROADMAP *Queued
+post-program phases*; planning note `notes/PencilScenes.md`). ORIGAMI follows.
 
 ## Decisions made during this phase
 

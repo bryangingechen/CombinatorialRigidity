@@ -175,6 +175,16 @@ note = "notes/Phase43-design.md"
 attended = true
 done = true
 
+# Attended: a read-only recon (an attribution ledger over the three pencil chapters against
+# Whiteley's scene-analysis correspondence), then the open with the PI, who settles the scope.
+# Queued by the PI on 2026-11-09, ahead of ORIGAMI; planning note notes/PencilScenes.md.
+[[item]]
+id = "PENCIL-SCENES"
+title = "PENCIL-SCENES: the pencil proof against its sources (recon first)"
+note = "notes/PencilScenes.md"
+attended = true
+done = false
+
 # Attended, so the driver stops before it. ORIGAMI opens with the PI, and takes its phase number
 # then; afterwards the PI may replace this row with the opened phase's id and set attended = false.
 [[item]]

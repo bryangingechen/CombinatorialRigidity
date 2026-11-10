@@ -8,7 +8,7 @@ and SPRIME (`notes/Phase43c.md`): the reduction on five structural cases, and Th
 with the two unnecessary steps gone. **43d** EXPO (`notes/Phase43d.md`): the road map of the proof
 and the flatness remark, with the two main-component statements removed and a duplicate theorem
 folded, at the PI's word. Summary: ROADMAP §43. No sub-phase is open, and the next step is
-ORIGAMI's open, with the PI.
+PENCIL-SCENES (queued 2026-11-09 ahead of ORIGAMI, `notes/PencilScenes.md`), with the PI.
 
 This file is the phase's entry point: the target (§0), the PI's decisions (§1, verbatim), the
 layers by stable code (§2) and the open questions (§3). The recon record stays in

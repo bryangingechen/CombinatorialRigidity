@@ -820,8 +820,10 @@ reduction's cases proved once; NORMAL and SPRIME (43c) put the reduction on stru
 removed two unnecessary `d = 3` steps by Theorem S′; EXPO (43d, `notes/Phase43d.md`) wrote the road
 map of the proof and the flatness remark, and at the PI's word removed the two `d = 3`
 main-component statements and folded a duplicate theorem. Summary: ROADMAP §43. Still
-queued, codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
-conjecture, `notes/Origami.md`, the next phase to open, with the PI), **PIN** (a second,
+queued, codenamed: **PENCIL-SCENES** (the pencil proof explained against Whiteley's
+correspondence between scenes and motions of frameworks, `notes/PencilScenes.md`, queued
+2026-11-09 and the next to open, with the PI), **ORIGAMI** (the planar-blocks / molecular-origami
+conjecture, `notes/Origami.md`), **PIN** (a second,
 independent proof of the 2-d molecular conjecture by Jackson–Jordán 2008's
 pin-collinear route, re-scoped at 40a's close; unplanned), **UPSTREAM** (mathlib upstreaming) and
 **VERSO** (the paused verso-blueprint port).

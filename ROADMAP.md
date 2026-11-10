@@ -1319,8 +1319,7 @@ same day, and CLEANUP-42 with it; then HOMES, a cleanup round of Phase 42's defe
 and the friction log (`notes/Phase42-homes.md`), closed the same day; then ARREARS, a cleanup round
 of what HOMES left (`notes/Phase42-arrears.md`), closed 2026-11-06; then PENCIL-NATURAL, a
 simpler pencil proof, opened with the PI on 2026-11-07 as Phase 43 and closed 2026-11-08 (§43); then
-ORIGAMI, with the
-PI (*Queued post-program phases*). Detail →
+PENCIL-SCENES, queued 2026-11-09, and ORIGAMI, with the PI (*Queued post-program phases*). Detail →
 `notes/Phase42a.md` to `notes/Phase42m.md` + `notes/Phase42-design.md`.
 
 ### Phase 43 — A simpler pencil proof (PENCIL-NATURAL, post-program; sub-lettered 43a–43d) — ✓ Complete
@@ -1356,8 +1355,8 @@ into the coverage; the three chapters' introductions point at the road map. Acro
 declarations went and 2 came (59 Lean files, +728 / −7,657 lines, eight files whole), and 32
 dep-graph nodes went (15, 13 and 4 by sub-phase) and none came. No main result's statement changed:
 the 21 `formalization.yaml` main results' statements read as at the open, and their axioms are the
-standard three, byte-identical to 43c's close run. Next: ORIGAMI's open, with the PI (*Queued
-post-program phases*). Detail → `notes/Phase43a.md` to `notes/Phase43d.md` +
+standard three, byte-identical to 43c's close run. Next: PENCIL-SCENES, queued 2026-11-09 ahead of
+ORIGAMI: its recon, then its open with the PI (*Queued post-program phases*). Detail → `notes/Phase43a.md` to `notes/Phase43d.md` +
 `notes/Phase43-design.md`.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
@@ -1390,7 +1389,7 @@ closed the same day. The same day the PI opened **HOMES** ahead of ORIGAMI, a cl
 lemmas Phase 42 left outside their home files and of the friction log; it closed the same day, and
 the PI opened **ARREARS**, a cleanup round of what HOMES left; it closed 2026-11-06. On 2026-11-07
 the PI queued **PENCIL-NATURAL** ahead of ORIGAMI, and opened it the same day as Phase 43, closed 2026-11-08, §43
-above.)
+above. On 2026-11-09 the PI queued **PENCIL-SCENES** ahead of ORIGAMI.)
 A longer **unqueued**
 idea backlog from the same survey (KT-template subvariety questions,
 e.g. Tanigawa's identified-panel-hinge Problem 1, plus known-math
@@ -1471,7 +1470,7 @@ research note of its own, `notes/Strata.md`, which holds PENCIL-D's evidence.
   at `K₂` and `K_{2,3}`, fixed the stale Lean docstrings, and gave the folded `d = 3` nodes their
   dependency edges and formalization notes, with no statement changed. Plan, the PI's words and
   the ledger: `notes/Cleanup42.md`. HOMES followed (below). **Next:** PENCIL-NATURAL, opened
-  as Phase 43 and closed 2026-11-08, then ORIGAMI's open, with the PI.
+  as Phase 43 and closed 2026-11-08, then PENCIL-SCENES and ORIGAMI, with the PI.
 - **HOMES** — a cleanup round after CLEANUP-42, opened 2026-11-05 at the PI's word after a review
   of the open friction entries, and closed the same day: the friction log's docs and tooling fixes
   and an archive sweep, then the lemmas Phase 42 left outside their home files (deferred because a
@@ -1492,12 +1491,21 @@ research note of its own, `notes/Strata.md`, which holds PENCIL-D's evidence.
   edge) were weakened to `RecordsLinks` plus a new hypothesis that the rows they take are at edges,
   and one blueprint node was repinned. Four lemmas left without a caller were deleted, one by the
   open's scope and three at the PI's word. No main result's statement changed. **Next:**
-  PENCIL-NATURAL, opened as Phase 43 and closed 2026-11-08 (below), then ORIGAMI's open, with the
-  PI.
+  PENCIL-NATURAL, opened as Phase 43 and closed 2026-11-08 (below), then PENCIL-SCENES and
+  ORIGAMI, with the PI.
 - **PENCIL-NATURAL** — a simpler or more natural pencil proof: queued by the PI on 2026-11-07,
   ahead of ORIGAMI, opened with the PI the same day as Phase 43, after a read-only recon, and
   closed 2026-11-08 (§43 above; plan `notes/Phase43-design.md`, recon record
-  `notes/PencilNatural.md`). **Next:** ORIGAMI's open, with the PI.
+  `notes/PencilNatural.md`). **Next:** PENCIL-SCENES (below).
+- **PENCIL-SCENES** — the pencil proof explained against its sources: queued by the PI on
+  2026-11-09, ahead of ORIGAMI; unopened. The lifting space is Whiteley's space of scenes over a
+  plane picture (scene analysis), and the flat rank and Jackson–Jordán's plane framework are
+  Whiteley's correspondence between scenes and motions of frameworks (1982, 1984). The chapters
+  cite these sources only in part. First a read-only recon (an attribution ledger over
+  `pencil.tex`, `main-component.tex` and `pencil-d.tex`, and four questions), then the open with
+  the PI, who settles the scope: the exposition only, or the proof restated through the general
+  correspondence. Planning note `notes/PencilScenes.md`. **Next:** the recon, then the open, with
+  the PI.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid
