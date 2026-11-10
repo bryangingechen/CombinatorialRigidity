@@ -2,9 +2,8 @@
 
 **Status:** queued by the PI on 2026-11-09, ahead of ORIGAMI; unopened, and its number is minted
 on open. Same editing discipline as phase notes (≤ 8-line entries, lift cross-cutting lessons).
-**Next concrete step:** the read-only recon of §5 (an attribution ledger over the three pencil
-chapters, and Q1–Q4), then the open with the PI, who settles the scope (§6). Nothing is
-dispatched yet.
+The read-only recon of §5 is done (2026-11-09; four reports in `notes/pencil-scenes/`).
+**Next concrete step:** the open with the PI, who settles the scope (§6) with the recon in hand.
 
 ## 1. The PI's words (verbatim)
 
@@ -23,132 +22,180 @@ the PI added Whiteley 1982, 1984 and 1989 to `.refs/` (§2), then said:
 
 Asked where to queue it and what to call it, the PI chose "Ahead of ORIGAMI" and "PENCIL-SCENES".
 
+A second session the same day opened with:
+
+> "Let's work on the PENCIL-SCENES notes. I think you can probably dispatch some subagents to do the
+> literature review for the existing proof while we discuss intuitions a bit more. Let's maybe work
+> through a concrete example."
+
 ## 2. What the sources say
 
-Read on 2026-11-09 against the PDFs in `.refs/` (filenames in `REFS.md` *Catalogue of `.refs/`*).
-Page numbers are the printed ones. Bib keys are given where `blueprint/src/bibliography.bib` has one.
+Read against the PDFs in `.refs/` (filenames in `REFS.md` *Catalogue of `.refs/`*), first by the
+agent of the first session, then by the recon of §5, whose corrections are folded in here. Page
+numbers are the printed ones. Bib keys are given where `blueprint/src/bibliography.bib` has one.
 
 - **Crapo–Whiteley 1982** (*Structural Topology* 6, 43–82; `crapoWhiteley1982`). §4, Proposition
-  4.1 (p. 70) and Corollary 4.2 (p. 71): the motions of a panel polyhedron (panels on faces, hinges on
-  edges) match the stresses of its bar skeleton that satisfy a condition round every closed path on
-  the surface, automatic for a spherical polyhedron. Example 4.4 (pp. 72–73): for a flat
-  tetrahedron, the panel motions are the polyhedra over it, the normal velocity read as height;
-  "true in great generality, as we shall see in the sequel". No general statement in this paper.
+  4.1 (p. 70) and Corollary 4.2 (p. 71): panel motions of a polyhedron ↔ stresses of its skeleton.
+  Example 4.4 (pp. 72–73): the flat tetrahedron's panel motions are the polyhedra over it. §3.5,
+  p. 67, and the caption on p. 56: a **flat pencil** of lines (coplanar and copunctual) spans rank 2.
+  §3.6 (p. 68): the rank is projectively invariant; p. 75 asserts it in every dimension, unproved.
+  The "sequel" of Example 4.4 is, in their bibliography, "Motions of Trusses and Bipartite
+  Frameworks" (`notes/pencil-scenes/ledger-main.md`), so Whiteley 1982 is not to be cited as it.
 - **Whiteley 1982**, "Motions and stresses of projected polyhedra" (*Structural Topology* 7,
-  13–38; no bib entry). The kinematic proof of Maxwell's theorem. P. 14: "the process of lifting a
-  plane picture up to the polyhedral scene in space is an infinitesimal motion of the panel
-  structure, composed of panels on the faces and hinges along the edges of the flat projection".
-  Proofs of Theorems 3.1 (pp. 18–19) and 3.3 (pp. 20–21) give both directions: each panel rotates
-  about the line where its face plane meets the projection plane, and adjacent panels agree along
-  their hinge. Stated for abstract oriented polyhedra. §3.4 (p. 23): the path condition is
-  automatic for spherical polyhedra, and a 2-connected planar graph has one (Corollary 3.5). §4.4
-  (pp. 32–33): K₃,₃ made planar by inserting a crossing as a joint (Bow; Proposition 4.4), not
-  possible in general. P. 15 announces the correspondence with plane frameworks (next entry).
+  13–38; no bib entry). The kinematic proof of Maxwell's theorem. P. 14: lifting a plane picture to
+  a polyhedral scene "is an infinitesimal motion of the panel structure". Theorems 3.1 and 3.3
+  (pp. 18–21), for abstract **oriented polyhedra** only. That class does not contain S_G (§3), so
+  cite it as the origin of the correspondence, not as its general statement. §3.4 (p. 23): the path
+  condition. Bow's Proposition 4.4 is on p. 30 (§4.3); K₃,₃ with a crossing as a joint is Example 4.3.
 - **Whiteley 1984**, "A correspondence between scene analysis and motions of frameworks" (*Discrete
-  Appl. Math.* 9, 269–295; no bib entry). Any incidence structure S = (V, F; R) and plane picture
-  (Definitions 2.1–2.4: scenes; flat, foldable, sharp; degree of freedom = dim scenes − 3). §4.1
-  (p. 282): row-reducing the scene matrix to remove the heights leaves the rigidity matrix of a
-  plane plate-and-bar framework L(S(p)), a plate per face and, for each vertex w, a fan of bars on
-  the line with coordinates (x_w, y_w, 1) joining the plates of the faces at w. Proposition 4.1
-  (pp. 282–283): scenes ≅ motions, the plane of a face = the centre of its plate; Corollary 4.2:
-  flat/rigid, foldable/shaky, sharp/completely shaky, equal degrees of freedom. Theorems 4.1
-  (p. 285) and 4.9 (p. 287): an inverse map, for pictures and for abstract incidence structures.
-- **Whiteley 1984, continued.** §5 (pp. 287–289), how the correspondence was found: the joined
-  plate structure (plates in a plane, joints at points) has vertical motions that are affine
-  velocity functions agreeing at the joints; adding the joint velocities as heights gives the scene
-  equations (§5.3), and a polarity of the plane takes it to the plate-and-bar framework (§5.2).
-  §7.2, Remark (p. 292): plane pictures of 4-dimensional scenes with hyperplane faces give
-  non-linear equations.
+  Appl. Math.* 9, 269–295; no bib entry). Definitions 2.1–2.4: scenes over a picture of any
+  incidence structure S = (V, F; R). Proposition 4.1 (pp. 282–283): eliminating the heights leaves
+  the plane plate-and-bar framework L(S(p)); scenes ≅ its motions; Corollary 4.2 compares degrees of
+  freedom. Theorems 4.1 (p. 285) and 4.9 (p. 287): inverse maps. §5.1–5.3 (pp. 287–289): the joined
+  plate structure and the polarity, how the correspondence was found. **§7.2, Definition 7.2
+  (p. 292):** scenes in (K+1)-space over a picture in K-space, one hyperplane per face; flat, folded,
+  sharp; "we have not seen this discussed elsewhere". Its Remark: plane pictures of 4-dimensional
+  scenes with hyperplane faces give quadratic equations.
 - **Whiteley 1989**, "A matroid on hypergraphs, with applications in scene analysis and geometry"
-  (*Discrete Comput. Geom.* 4, 75–95; no bib entry). Theorem 3.1 (p. 83): for any incidence
-  structure, incidences are independent in the scene matrix of a generic picture iff
-  i′ ≤ v′ + 3f′ − 3 on every nonempty subset; Corollaries 3.2–3.3 (pp. 84–85): Sugihara's
-  conjecture, and the dimension of the space of scenes. §5.1 (p. 87): the polar reading (Crapo's
-  concurrence geometries, parallel redrawing). Theorem 5.4 (p. 92): a plane identified body-and-joint
-  framework has an independent (isostatic) realization iff one with each body's joints collinear,
-  iff a count. P. 93: the spatial analogue as a conjecture (each body's hinges in one plane); "the
-  methods used here do not extend".
-- **Whiteley 1996** §8.3 (`whiteley1996`, the author's preprint pages): liftings of a picture of
-  any incidence structure; Remark 8.3.2, polarity about the paraboloid takes liftings on S to
-  parallel scenes on the dual structure S* (points and faces swapped). Theorem 5.1.3: Maxwell's
-  theorem, for planar graphs.
-- **Jackson–Jordán 2008** (`jacksonJordan2008pin`; `.refs/` holds the 2006 EGRES report). Theorem
-  7.2(b): a pin-collinear body-and-pin realization of rank 3|V| − 3 − def. Their Theorem 7.4
-  re-derives Whiteley 1989 Theorem 5.4, the independent case. A keyword search of the report finds
-  no mention of scenes or liftings beyond the titles of their references.
+  (*Discrete Comput. Geom.* 4, 75–95; no bib entry). P. 78: the scene conditions are linear in the
+  heights. Theorem 3.1 (p. 83): at a generic picture of any incidence structure, incidences are
+  independent iff i′ ≤ v′ + 3f′ − 3 on every nonempty subset (Sugihara's conjecture, Sugihara 1984).
+  Corollary 3.3 gives the scene dimension in the **independent** case only. §5.1 (p. 87): the polar,
+  cutting-plane reading (Crapo's concurrence geometries). Theorem 5.4 (p. 92): plane identified
+  body-and-joint frameworks, the independent case. P. 93: the spatial analogue, a conjecture about
+  **identified** body-hinge structures with each body's hinges coplanar; p. 94: "the methods used
+  here do not extend". Its "[11, Conjecture 2]" (p. 91) is Tay–Whiteley 1984's Conjecture 1.
+- **Whiteley 1996** (`whiteley1996`, the author's preprint pages). §8.3: liftings of a picture of any
+  incidence structure. **Remark 8.3.2** (pdf p. 45) is the polarity about the paraboloid, taking
+  liftings on S to parallel scenes on the dual S\*: not the pencil polarity (§3). Theorem 5.1.3:
+  Maxwell's theorem for planar graphs. Theorem A.1.4: the rank formula of a count matroid.
+- **Jackson–Jordán 2008** (`jacksonJordan2008pin`; `.refs/` holds the 2006 EGRES report, whose
+  numbering is used here; the published numbering is unchecked). **Theorem 7.1** (p. 21): the
+  rod-and-pin rank 3|V| − 3 − def(G) for a graph without isolated vertices, proved at pin-collinear
+  realizations with generic lines; P_q is their rod-and-pin framework (§5, p. 12). Theorem 7.2(b):
+  the multigraph body-and-pin version. Theorem 7.4 re-derives Whiteley 1989 Theorem 5.4. They never
+  mention scenes, liftings or L(q).
+- **Not in `.refs/`** (references verified in `notes/pencil-scenes/lineage.md`, which has free
+  copies): Crapo–Whiteley 1993 and 1994 (Maxwell with cycle conditions; liftings ≅ stresses for
+  spherical polyhedra); Sugihara 1984 and his 1986 book (the scene equations; cite the book by
+  section); Tay–Whiteley 1984 (`tayWhiteley1984`, now obtainable); Maxwell's "On reciprocal figures
+  and diagrams of forces" (1864), which needs a new key, since `maxwell1864` is his stiffness paper.
 
 ## 3. The pencil proof's pieces against them
 
 The incidence structure throughout is **S_G**: the points are the bodies, the faces are the closed
-neighbourhoods N[v], and w lies on face v iff w ∈ N[v]. The incidence is symmetric, so S_G is its
-own dual in Whiteley 1996's Remark 8.3.2; the pencil polarity (`sec:pencil-duality`) is this.
+neighbourhoods N[v], and w lies on face v iff w ∈ N[v]. The recon's ledgers
+(`notes/pencil-scenes/ledger-main.md`, `ledger-d.md`) count the passages that use this material:
+in `pencil.tex` and `main-component.tex`, 35 (1 cited, 9 partly cited, 23 uncited, 2 presented as
+new); in `pencil-d.tex`, 23 (1, 5, 15 and 2; 14 owe a citation). The main rows:
 
-| Node or passage | Classical source (§2) | What the chapter says now |
+| Node or passage | Classical source | What the chapter says now |
 |---|---|---|
-| `sec:main-component-carrier` intro, `def:pencil-lifting-space` | Scenes over a picture: Whiteley 1984 Defs 2.1–2.4 | "as in scene analysis"; cites Whiteley 1996 §8.3 |
-| `lem:pencil-lifting-planes-dim` (F(q) ≅ L(q)) | Planes fix heights, and heights fix planes: Whiteley 1984 Prop. 4.1's proof; Whiteley 1989 Thm 3.1's proof, (a)⟺(c) | uncited |
-| `sec:main-component-flat` intro, `lem:pencil-flat-split`, `thm:pencil-flat-rank` | Flat panel motions = liftings: Whiteley 1982 pp. 14, 18–21; Whiteley 1984 §5.3 | cites Crapo–Whiteley Ex. 4.4 (the tetrahedron) only |
-| `lem:pencil-lifting-planes-motions` (liftings = motions of P_q) | Whiteley 1984 Prop. 4.1, each vertex's fan the star from its own plate: adjacent plates get two bars, one pin; P_q is pin-collinear | uncited |
-| `sec:main-component-jj`, `thm:pencil-jj-equality` | JJ 2008 Thm 7.2(b); the generic scene dimension of S_G, which Whiteley 1989 Thm 3.1 counts (Q1); Whiteley 1989 Thm 5.4 is the independent case | cites JJ 2008; the scene reading and Whiteley 1989 unsaid |
-| `def:pencil-d-configuration` (d − 2 heights) | d − 2 independent scenes over one picture; contrast Whiteley 1984 §7.2's hyperplane faces | unsaid |
-| `def:pencil-d-lift` (Part C) | the same construction over a base in P³? (Q2) | unsaid |
-| `sec:pencil-roadmap`, the three chapter introductions | the whole of the above | no lineage given |
+| `sec:main-component-carrier`, `def:pencil-lifting-space` | Scenes: W84 Defs 2.1–2.4; Sugihara 1986 §5.1 | "as in scene analysis"; cites W96 §8.3 only |
+| `lem:pencil-lifting-planes-dim` (F(q) ≅ L(q)) | W84 Prop. 4.1's elimination of the heights | uncited |
+| `lem:pencil-flat-split`, `thm:pencil-flat-rank`, `thm:pencil-d-flat-rank` | W84 Prop. 4.1, §5.1–5.3; W82 as the origin; the 3 in-plane dimensions are in no source | cites CW82 Ex. 4.4 only |
+| `lem:pencil-lifting-planes-motions` (P_q) | W84 Prop. 4.1, Cor. 4.2; JJ's rod-and-pin framework (TR §5) | uncited |
+| `sec:main-component-jj`, `thm:pencil-jj-equality` | JJ TR Thm 7.1 over ℝ; W89 Thm 3.1 with the merging lemma (§5, Q1); W89 Thm 5.4, the independent case | cites JJ, no item; calls it JJ's equality "for dim L(q)", which JJ never state |
+| `lem:pencil-d-condition-linear` | W89 p. 78 | uncited |
+| `lem:pencil-d-rank-collineation`, `lem:pencil-d-rank-scale-shift` | CW82 §3.6, p. 68 | not in this chapter |
+| `sec:pencil-duality`, `lem:pencil-self-dual` | The point–plane polarity: KT p. 650, W99 pp. 29–30, CW82 §3.6; TW84 p. 33 names panel and molecular as duals. The self-duality of the pencil class: no source | partly cited, through `lem:polarity-join` |
+| "pencil" (`sec:pencil`, `def:pencil-panel-realization`) | CW82 p. 67, "flat pencil"; p. 56, rank 2 | uncited |
+| `def:pencil-d-configuration` (d − 2 heights) | No source; contrast W84 §7.2's Remark | unsaid |
+| `def:pencil-d-lift` (Part C) | W84 Def. 7.2 at K = 3; a trivial lift is a flat scene | presented as new |
+| `sec:pencil-roadmap`, the three introductions | All of the above | no lineage |
 
-New, as far as the 2026-07-23 search found (ROADMAP §39): the pencil realization theorem itself,
-the reduction (A), the main-component induction's steps and coverage (B), and the lift (C). The
-classical part is the carrier: the space of scenes over a picture of S_G, its two descriptions, and
-its two framework readings (the flat panel structure, and P_q).
+New, as far as the recon found (Q3): the pencil stratum itself (no source asks for hinges coplanar
+*and* concurrent; ROADMAP §39's 2026-07-23 verdict stands), the pencil realization theorem, the
+reduction (A), the main-component induction's steps and coverage (B), C's induction, the
+self-duality of the pencil class, and the d − 2 heights over one plane picture. Classical: the
+carrier (the scenes over a picture of S_G, both descriptions, both framework readings) and C's lift
+space.
 
-## 4. Observations from the session, not checked against a source
+## 4. Observations, and the worked examples
 
-The agent's own derivations on 2026-11-09. Check each before it goes into a chapter.
+The agents' own derivations, checked as marked; check an unmarked one before it goes into a chapter.
 
-- **O1.** By `lem:pencil-d-rank-scale-shift`, the rank of a configuration depends only on the
-  picture q and W, the span of the heights' classes in L(q)/Aff(q), with dim W ≤ d − 2.
+- **O1** (holds, `ledger-d.md`). By `lem:pencil-d-rank-scale-shift`, the rank of a configuration
+  depends only on the picture q and W, the span of the heights' classes in L(q)/Aff(q), where
+  dim W ≤ min(d − 2, def₂) at a main picture.
 - **O2.** The universal lift v ↦ ev_v ∈ L(q)* is a configuration in P^{2+def₂} (at a main picture)
   whose closed neighbourhoods each span a plane, and every configuration over q is a linear
   projection of it. If d − 2 ≥ def₂, all general configurations over a fixed main picture are
   projectively equivalent.
-- **O3.** Writing h_v(ξ) = g_v·ξ + c_v, the face gradients satisfy (g_u − g_v)·(q_u − q_v) = 0:
-  g is an infinitesimal motion of the bar framework (G, q), the trace of Maxwell's reciprocal
-  figure. Not onto: the rotation fails, by twice each cycle's signed area. Compare Whiteley 1984
-  §5.4.
-- **O4.** The hinges are affine in the heights only at d = 3 (`notes/pencil/workbook/K-main.md`,
-  MC-3); for d ≥ 4 two heights give quadratic Plücker coordinates.
-- **O5.** Why planarity never enters: the face-adjacency graph of S_G is G itself, so a scene is
-  a potential on G, that is, a motion of a framework on G. Classical Maxwell turns potentials on
-  G* into stresses on G by planar duality, which is where Whiteley 1982's path condition comes in.
+- **O3** (the bar condition and the count checked at θ(2,2,3)). Writing h_v(ξ) = g_v·ξ + c_v, the face gradients satisfy
+  (g_u − g_v)·(q_u − q_v) = 0: an infinitesimal motion of the bar framework (G, q), where
+  Maxwell–Cremona has a stress. Not onto: the rotation fails, by twice each cycle's signed area.
+  At θ(2,2,3) the bar framework has 5 motions and the scenes modulo constants 3; the cycle rank is 2.
+- **O4** (holds, `ledger-d.md`). Each hinge is affine in each height separately, in every dimension,
+  and quadratic in two heights jointly (`notes/pencil/workbook/K-main.md`, MC-3). This is why d − 2
+  heights over a plane picture stay linear, where W84 §7.2's hyperplane faces do not.
+- **O5** (corrected). The faces of S_G meeting in a line are not just those of adjacent bodies: at
+  θ(2,2,3) the faces of the non-adjacent hubs a, b share bodies 1 and 2, and meet along a crease.
+  What holds: the edges of G generate the conditions on the face planes (F(q)'s definition), so a
+  scene is a function on G's vertices, not on a dual graph, and planarity never enters.
+- **O6** (W89 §5.1, re-derived). Read with the points as panel normals, each body's panel meets
+  z = 0 in the line with normal (x_v, y_v, 1), the body line of P_q, whatever the heights: every
+  configuration over q has P_q as its section by z = 0. The heights tilt the panels about it.
+- **O7.** The panel of body v in a configuration is the plane ζ = h_v, and h_v is body v's normal
+  velocity in the flex of the flat structure that the heights define (`lem:pencil-flat-split`). So a
+  configuration is the flat structure sheared along its own flex, adjacent panels still meeting on
+  their hinges; every nonzero multiple of the heights has the same rank.
 
-## 5. The recon (proposed, not dispatched)
+**The worked example: θ(2,2,3)**, hubs a, b and the paths a–1–b, a–2–b, a–3–4–b (6 bodies, 7 edges;
+def₂ = 1, def₃ = def₄ = 0; dim L(q) = 4). At q_a = (−2,0), q_b = (2,1), q_1 = (0,1), q_2 = (0,−1),
+q_3 = (−1,2), q_4 = (1,3), the one non-trivial scene is a fold: face a is z = 0, face b is z = x,
+creased along x = 0 through q_1 and q_2. Ranks against the deficiency rank: P_q (d = 2) 14 of 14;
+flat 29 of 30; an affine height 29; the fold 30 of 30; the fold with a zero second height at d = 4,
+50 of 50. A second height first matters at **C₇** (def₂, def₃, def₄ = 4, 1, 0; the smallest graph
+under the standing hypotheses with def₃ > def₄): at d = 4, flat 56, one height 59, two 60 of 60.
+Both: `python3 notes/scripts/scenes/example.py theta` and `… cycle7` (seed 2).
 
-Read-only. Deliverable: an **attribution ledger** with one row for each node or prose passage of
-`pencil.tex`, `main-component.tex` and `pencil-d.tex` that states or uses the material of §3 (the
-scene space, its two descriptions, the flat motions, P_q, JJ's equality, the polarity, the d − 2
-heights). Each row gives the label, what it claims, the source and page that has it (checked
-against `.refs/`, not this note), and its status now: cited, partly cited, uncited, or presented as
-new. It also answers:
+## 5. The recon (done 2026-11-09)
 
-- **Q1.** Does Whiteley 1989 Theorem 3.1's count, evaluated on S_G, give dim L(q) = 3 + def₂(G)
-  at a generic picture, a second derivation of JJ's equality? Over every infinite field? Whiteley's
-  generic is algebraically independent over ℚ; the project derives the equality from KT Theorem 5.6
-  at d = 2.
-- **Q2.** Is Part C's lift a space of scenes in Whiteley's sense, over a base in P³ whose faces are
-  planes? Whiteley 1984 §7 treats K-space pictures with hyperplane faces only.
-- **Q3.** The pencil stratum's own lineage. Re-run 2026-07-23's search (no result found) with the
-  new leads: Whiteley 1989's p. 93 conjecture, Tay–Whiteley 1984 (`tayWhiteley1984`), and Whiteley
-  1999 and 2005 (in `.refs/`).
-- **Q4.** Sources cited by these papers but not in `.refs/`: Crapo–Whiteley's preprints on plane
-  stresses and projected polyhedra, Sugihara (1980s papers and book), Huffman 1977, and Whiteley's
-  "Lashed and woven rods". Which would a chapter cite?
+Four read-only agents, dispatched at the PI's word (§1). Their reports are banked as delivered in
+`notes/pencil-scenes/`; this section is their reading, with the coordinator's checks.
+
+- **The ledger** (`ledger-main.md`, `ledger-d.md`): §3's counts and table. Whiteley 1982, 1984 and
+  1989 are cited nowhere and are not in the bibliography; the only scene-analysis citation is W96.
+- **Q1** (`q1-count.md`): yes. Whiteley 1989's count matroid on S_G has rank 4|V| − 3 − def₂(G) for
+  every finite simple G, so W89 Thm 3.1 gives dim L(q) = 3 + def₂(G): a second derivation, without
+  KT or JJ. It needs the rank formula of a count matroid (Edmonds–Rota; W96 Thm A.1.4) and a
+  **merging lemma** no source read states: parts sharing a face or three points merge without
+  raising the sum, after which no body has two neighbours in another part. Equivalently, def₂ equals
+  the deficiency counting each part's boundary bodies. Over every infinite field (the agent's
+  reading of W89's proof). Evidence: `notes/scripts/scenes/q1_count.py`, `q1_sweep.py`.
+- **Q2** (`ledger-d.md`): yes, one lift at a time. Part C's lift space is W84 Def. 7.2's scenes in
+  4-space over a picture in 3-space, with S_G's faces. W84 fixes a face's hyperplane, which over a
+  plane of base points has a one-parameter slack; the chapter keeps its restriction to that plane.
+  The spaces of heights agree. No source names d − 2 heights over one plane picture.
+- **Q3** (`lineage.md`): no prior work on the pencil stratum. Nearest: CW82's flat pencil; TW84 and
+  Tay 1989 name the coplanar and concurrent classes separately; W99 p. 25 (three coplanar concurrent
+  hinges are dependent) and Example 24 (a flat molecule, the zero-height member); the plane analogue
+  (W89 Thm 5.4, JJ, Lundqvist–Stokes–Öhman 2025). No source builds a 3-space realization by lifting.
+- **Q4** (`lineage.md`, *Summary*): add Crapo–Whiteley 1993 and 1994, Sugihara 1984 and 1986,
+  Maxwell's reciprocal-figures paper (a new key) and TW84's pages; optional history (Huffman 1977,
+  Mackworth 1973) and Lundqvist–Stokes–Öhman 2025. "Lashed and woven rods" is probably Rigidity
+  and polarity II (inferred); low priority.
+- **Checked by the coordinator:** W96 Remark 8.3.2 and JJ Theorems 7.1 and 7.2 in the PDFs; W84
+  Def. 7.2 against `def:pencil-d-lift`; the merging lemma's proof, step by step; both Q1 scripts
+  rerun from `notes/scripts/scenes/`, `q1_count.py` byte-identical. The reports' other page numbers,
+  and Q1's field generality, are the agents' readings.
+- **Open leads:** the merging lemma's provenance (JJ's rod-and-pin section and W96 Appendix A
+  first), before any chapter calls it new; Crapo–Whiteley [CrW4] and Crapo–Ryan [CRy], cited by W96
+  near higher-dimensional scenes, unresolved; Crapo–Whiteley 1993's page range (55–78 or 55–79).
 
 ## 6. Scope at the open (the PI's call)
 
 - **(a) Exposition.** Chapter prose and citations only: the road map and the three introductions
-  say what is classical (§2) and what is new; each node of §3 cites its source; no statement or
-  Lean change. A citation-only first slice is ready: Whiteley 1982 and 1984 into the bibliography,
-  cited at `sec:main-component-flat` and at `lem:pencil-lifting-planes-motions`.
+  say what is classical (§3) and what is new; each row of §3 cites its source; no statement or Lean
+  change. A first slice: Whiteley 1982, 1984 and 1989 into the bibliography, cited at the flat rank
+  and at `lem:pencil-lifting-planes-motions`; then the rest of §3, Q4's references, and the fixes to
+  "JJ's equality for dim L(q)" and to the polarity's attribution.
 - **(b) The proof.** State the classical part in its general form (scenes over a picture of any
-  incidence structure ≅ motions of the reduced plate framework, Whiteley 1984 Proposition 4.1) and
-  derive the chapter's lemmas as its case S_G. This may touch the Lean.
-- **(c) The observations.** Whether O1–O5 go into the chapters; the road map's "Four observations"
-  paragraph is the natural home for O1 and O5.
+  incidence structure ≅ motions of the reduced plate framework, W84 Prop. 4.1) and derive the
+  chapters' lemmas as its case S_G. Q1 adds an option: present the equality as also following from
+  W89 Thm 3.1 and the merging lemma, as a remark, or formalized (W89 §§2–3 and the rank formula; the
+  Lean already proves the equality through KT). This may touch the Lean.
+- **(c) The observations.** Whether O1–O7 and the worked examples go into the chapters; the road
+  map's "Four observations" paragraph is the natural home for O1, O5 and O7.
+- **(d) `.refs/`.** Which of Q4's free copies to add (TW84, CW93, CW94, Sugihara's book).

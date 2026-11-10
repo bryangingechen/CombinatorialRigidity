@@ -1356,7 +1356,7 @@ declarations went and 2 came (59 Lean files, +728 / −7,657 lines, eight files 
 dep-graph nodes went (15, 13 and 4 by sub-phase) and none came. No main result's statement changed:
 the 21 `formalization.yaml` main results' statements read as at the open, and their axioms are the
 standard three, byte-identical to 43c's close run. Next: PENCIL-SCENES, queued 2026-11-09 ahead of
-ORIGAMI: its recon, then its open with the PI (*Queued post-program phases*). Detail → `notes/Phase43a.md` to `notes/Phase43d.md` +
+ORIGAMI, its recon done: its open with the PI (*Queued post-program phases*). Detail → `notes/Phase43a.md` to `notes/Phase43d.md` +
 `notes/Phase43-design.md`.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
@@ -1501,11 +1501,12 @@ research note of its own, `notes/Strata.md`, which holds PENCIL-D's evidence.
   2026-11-09, ahead of ORIGAMI; unopened. The lifting space is Whiteley's space of scenes over a
   plane picture (scene analysis), and the flat rank and Jackson–Jordán's plane framework are
   Whiteley's correspondence between scenes and motions of frameworks (1982, 1984). The chapters
-  cite these sources only in part. First a read-only recon (an attribution ledger over
-  `pencil.tex`, `main-component.tex` and `pencil-d.tex`, and four questions), then the open with
-  the PI, who settles the scope: the exposition only, or the proof restated through the general
-  correspondence. Planning note `notes/PencilScenes.md`. **Next:** the recon, then the open, with
-  the PI.
+  cite these sources only in part. The read-only recon (2026-11-09; reports in
+  `notes/pencil-scenes/`) found Whiteley 1982, 1984 and 1989 cited nowhere, Part C's lift space to
+  be Whiteley 1984's scenes in 4-space, Jackson–Jordán's equality to follow also from Whiteley
+  1989's count, and no prior work on the pencil stratum itself. At the open the PI settles the
+  scope: the exposition only, or the proof restated through the general correspondence. Planning
+  note `notes/PencilScenes.md`. **Next:** the open, with the PI.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

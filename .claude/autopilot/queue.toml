@@ -175,12 +175,12 @@ note = "notes/Phase43-design.md"
 attended = true
 done = true
 
-# Attended: a read-only recon (an attribution ledger over the three pencil chapters against
-# Whiteley's scene-analysis correspondence), then the open with the PI, who settles the scope.
+# Attended: the open with the PI, who settles the scope. The read-only recon (an attribution
+# ledger over the three pencil chapters against Whiteley's scene-analysis correspondence) is done.
 # Queued by the PI on 2026-11-09, ahead of ORIGAMI; planning note notes/PencilScenes.md.
 [[item]]
 id = "PENCIL-SCENES"
-title = "PENCIL-SCENES: the pencil proof against its sources (recon first)"
+title = "PENCIL-SCENES: the pencil proof against its sources (recon done; open with the PI)"
 note = "notes/PencilScenes.md"
 attended = true
 done = false

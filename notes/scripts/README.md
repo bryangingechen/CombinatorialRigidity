@@ -1544,6 +1544,22 @@ invocation in its own docstring (`notes/Phase43b.md`, `notes/Phase43c.md`).
 | `PYTHONHASHSEED=0 python3 notes/scripts/natural/flatprobe.py witnesses` | 1 s | ibid.: `K_{2,3}`, the doubled triangle (its explicit nondegenerate realization), the bowtie, the triangle and `C₅` with a pendant triangle, with ranks against the target and the `d = 4` planes |
 | `PYTHONHASHSEED=0 python3 notes/scripts/natural/specialprobe.py 4 5 6 7`; `… specialpanel.py 4 5 6` | 156 s; 6 s | ibid.: flatness at main pictures of `G` not admissible for `G[W]`, 23,259 of 24,446 cases found, affine at all; one plane at every body at all 1,371 |
 
+### `scenes/` — the PENCIL-SCENES recon and its worked examples (2026-11-09)
+
+A driver directory, stdlib-only like `natural/`'s flatness drivers, banked with the recon of the
+queued phase PENCIL-SCENES (`notes/PencilScenes.md` §4–§5). `q1_count.py` and `q1_sweep.py` were
+written by the recon's Q1 agent and banked byte-identical (`q1_count.py`'s output reproduced
+byte-identical); `q1_sweep.py` imports `q1_count.py`. `example.py` is the planning session's worked
+examples. Exact ℚ throughout; `q1_count.py` also computes dim L(q) over GF(1000003) and GF(2¹⁶)
+beside its exact-ℚ computation, as a cross-check of field generality, never in place of it.
+
+| invocation | ~time | cited by |
+|---|---|---|
+| `PYTHONHASHSEED=0 python3 notes/scripts/scenes/q1_count.py` | 2 s | `notes/pencil-scenes/q1-count.md` §4: on 30 named and random graphs, def₂ = the vertex-boundary deficiency = 4n − 3 − rank of Whiteley 1989's count matroid, and dim L(q) = 3 + def₂ over ℚ, GF(1000003) and GF(2¹⁶); seed 20261109 |
+| `PYTHONHASHSEED=0 python3 notes/scripts/scenes/q1_sweep.py` | 46 s | ibid., the sweep: 34,188 graphs (every labelled simple graph on n ≤ 6, 320 random on 7–10, one hand-made), no mismatch; dim L(q) at a picture on 81 of them; 126 random graphs needing the merge; seed 1109 |
+| `PYTHONHASHSEED=0 python3 notes/scripts/scenes/example.py theta` | < 1 s | `notes/PencilScenes.md` §4: θ(2,2,3) at a fixed picture, its deficiencies, dim L(q), the ranks of P_q and of the flat, affine and fold configurations at d = 3 and 4, the fold's face planes and O3's bar condition; the admissibility guard's adversarial witness and negative control |
+| `PYTHONHASHSEED=0 python3 notes/scripts/scenes/example.py cycle7` | < 1 s | ibid.: C₇ at seed 2, the ranks with zero, one and two heights at d = 3 and 4 (seed 1 draws an inadmissible picture, which the guard rejects) |
+
 Per-driver prose — *what* each mode asserts — stays in the four per-directory
 READMEs (`escape/README.md`, `kbare/README.md`, `w4/README.md`,
 `m2/README.md`). This table is the canonical **invocation** list; those are the
