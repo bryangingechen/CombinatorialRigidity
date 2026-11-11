@@ -4,9 +4,10 @@
 on open. Same editing discipline as phase notes (≤ 8-line entries, lift cross-cutting lessons).
 The read-only recon of §5 is done (2026-11-09; four reports in `notes/pencil-scenes/`), and on
 2026-11-11 the PI settled the scope as (a), exposition only (§6), after §5a's comparison.
-Three more recon reports were banked the same day (§5b).
-**Next concrete step:** the open with the PI, as an exposition phase; before it, the PI's calls
-in §5b's last entry (three papers to fetch, the self-duality's wording).
+Three more recon reports were banked the same day (§5b), and the three papers they asked for
+arrived and were read (§5c): the scope stands, the merging lemma's attribution changes.
+**Next concrete step:** the open with the PI, as an exposition phase; before it, the PI's two
+remaining calls (the self-duality's wording, §5b; whether the second derivation is written, §6).
 
 ## 1. The PI's words (verbatim)
 
@@ -150,7 +151,7 @@ The agents' own derivations, checked as marked; check an unmarked one before it 
   θ(2,2,3) the faces of the non-adjacent hubs a, b share bodies 1 and 2, and meet along a crease.
   What holds: the edges of G generate the conditions on the face planes (F(q)'s definition), so a
   scene is a function on G's vertices, not on a dual graph, and planarity never enters.
-- **O6** (classical: Crapo 1984 §7 with W89 §5.1, §5b; re-derived). Read with the points as panel normals, each body's panel meets
+- **O6** (classical: Whiteley 1991 Def. 5.5, §5c; Crapo 1984 §7 with W89 §5.1, §5b; re-derived). Read with the points as panel normals, each body's panel meets
   z = 0 in the line with normal (x_v, y_v, 1), the body line of P_q, whatever the heights: every
   configuration over q has P_q as its section by z = 0. The heights tilt the panels about it.
 - **O7.** The panel of body v in a configuration is the plane ζ = h_v, and h_v is body v's normal
@@ -241,7 +242,8 @@ Three read-only agents, their reports banked as delivered in `notes/pencil-scene
 references of 2026-11-10. Each report ends with a table of citation changes per row of §3; those
 tables are the exposition phase's worklist. This section is their reading.
 
-- **The merging lemma** is in no source read, and no stated result specializes to it. Its identity
+- **The merging lemma** is in no source this recon read (its face merge is in Berg–Jordán 2003,
+  §5c), and no stated result specializes to it. Its identity
   follows from JJ TR Thm 7.1 through W84 Prop. 4.1, W89 Thm 3.1 and the Edmonds–Rota formula, a
   chain no source assembles (the agent's inference). So: the identity "follows from" JJ and is
   "not found stated"; the merging argument is ours, by the union defect of a count (Lovász–Yemini;
@@ -279,11 +281,51 @@ tables are the exposition phase's worklist. This section is their reading.
   (the margin digit and the bibliography); W89 pp. 82–83 for the two counts; W84 §7 (pp. 291–293)
   against `def:pencil-d-lift`, where only Def. 7.2 transfers, since the base of a Part C lift is
   a special-position picture; `o3_check.py` rerun. The rest are the agents' readings.
-- **Open, the PI's calls.** Fetch, or not: Berg–Jordán (ESA 2003) and Imai 1985, which could hold
-  the merging lemma; Whiteley 1991, "Weavings, sections and projections of spherical polyhedra",
-  the likeliest further source for O6 (bibliographic details in the reports, unverified). The
-  wording for the self-duality. Untested: whether Crapo 1989's Euler characteristic gives
-  3 + def₂ on S_G, a third route to dim L(q), which needs a committed script.
+- **Open, the PI's calls.** The wording for the self-duality. Untested: whether Crapo 1989's
+  Euler characteristic gives 3 + def₂ on S_G, a third route to dim L(q), which needs a committed
+  script. (The three papers this entry asked for are held and read, §5c.)
+
+## 5c. The three fetched papers (2026-11-11)
+
+The PI added Berg–Jordán 2003, Imai 1985 and Whiteley 1991 to `.refs/` (rows in `REFS.md`; also
+Jordán 2023, ORIGAMI's single-block rank formula). The session agent read all three whole, in the
+text layers, and Whiteley 1991 pp. 291–293 on the page images. No second reader. M1–M3 are the
+merging lemma's three parts, as `merging-lemma-provenance.md` §0 names them.
+
+- **Berg–Jordán 2003 holds the face merge.** §4 (p. 85): the count |E′| ≤ d|A(E′)| + |B(E′)| − d
+  on a bipartite graph, which at d = 3, with A the faces and B the points, is W89's. Theorem 3
+  (p. 85, credited to W89): the partition criterion for full rank, "by calculating the rank
+  function". The Claim in Theorem 4's proof (pp. 85–86) displays the union identity (M1) and
+  merges classes that share a vertex of A: "we can assume that A(E_i) ∩ A(E_j) = ∅" (M2).
+  Inequality (6) is then M2's deficiency, counted on the points lying in two or more classes.
+- **Not in it:** the three-point merge (M3; their identity gives it at once, but they use only a
+  shared vertex of A), S_G or any family of closed neighbourhoods, and def₂. So §5b's verdict
+  changes for M1 and M2 alone, from "same technique for a different statement" to "stated for
+  this count, inside a proof". "No source states the identity" stands.
+- **The attribution sentence** (provenance report §9) keeps its first half: the identity follows
+  from JJ and is not found stated. Its second half changes: the face merge is Berg and Jordán's
+  (their Claim, proving that 2d-connected bipartite graphs are d-tight by Lovász–Yemini's
+  approach); ours are the three-point merge on S_G and the value 4|V| − 3 − def₂(G).
+- **Imai 1985 holds neither.** Its count is Sugihara's, with −4, and §3 (p. 81, Fig. 1) shows it
+  defines no matroid. Eq. (5.1) (pp. 86–87) is the rank formula of a count matroid, from Welsh's
+  *Matroid Theory* §8.1; Theorem 5.1 (p. 88): the same min–max fails for the −4 count. So the
+  second derivation has to stay with W89's −3 count, as `q1-count.md` does. Nearest item:
+  Theorem 4.1 (p. 83), for a plane drawing, c-regular implies the face graph is independent in
+  the 2|F| − 3 count. A different statement.
+- **Whiteley 1991 is O6's setting, for any incidence structure.** Definition 5.5 (pp. 291–292):
+  a section diagram assigns a plane line to each face, and a scene lifts it if each face plane
+  meets the x–y plane in its line. P. 292: "If we polarize the pictures and the scenes, we obtain
+  the polar theorem for generic section diagrams" (Corollary 5.7). O6 is this polarization at
+  S_G: cite it first, then Crapo 1984 §7 and W89 §5.1. Theorems 3.5 and 3.7 (pp. 283–284),
+  sections and self-stresses of the grillage, need a spherical polyhedron (Remark 3.8): not S_G.
+- **Bibliographic.** Whiteley 1991 is volume 32 (printed on p. 275): CW94's [14] is right, CW93's
+  [29] wrong. It prints the counts of Theorem 5.6 and Corollary 5.7 interchanged (3|V| + |F| − 4
+  for pictures), against its own p. 292 and W89 Cor. 3.2: cite W89 for the count.
+- **Unchecked.** Whether (q, P_q) is a section-projection figure in Whiteley 1991's sense
+  (Def. 5.2, p. 288). There one scene is both sectioned and projected; O6 sections the polar of
+  the scene over q. Check it before a chapter says so.
+- **What changes in the plan.** Nothing in §6's scope. §5b's fetch calls are closed; the
+  worklist gains these citations; the second derivation, if written, credits Berg–Jordán.
 
 ## 6. Scope at the open
 
@@ -298,9 +340,10 @@ this area?", and to the answer recorded below, "OK, let's go with your recommend
   general incidence structure, with its genericity lemmas, is a candidate first layer of ORIGAMI,
   decided at ORIGAMI's opening recon (`notes/Origami.md`). The picture matroid (W89 Thms 2.3 and
   3.1) is a backlog entry (`notes/IdeaBacklog.md`, Tier B), IDENT-PANEL's prerequisite at d = 2.
-- **(c) and the equality's second derivation** (a remark, or nothing) are still open. §5b gives
-  the attribution each would carry: O3 and O6 are classical, and the merging argument is ours,
-  its identity a consequence of published theorems.
+- **(c) and the equality's second derivation** (a remark, or nothing) are still open. §5b and
+  §5c give the attribution each would carry: O3 and O6 are classical; of the merging argument,
+  the face merge is Berg–Jordán's and the three-point merge on S_G is ours, its identity a
+  consequence of published theorems.
 
 The options as they stood before the decision:
 
