@@ -22,8 +22,9 @@ Phase 39); IDENT-PANEL is the strongest challenger (see its entry).
   is there a rigid **panel**-hinge realization — i.e. KT's theorem with
   the two-bodies-per-hinge restriction dropped? Explicitly open in the
   literature, citing KT as the solved 2-body case; unsolved even at
-  `d = 2` (Whiteley's hypergraph-matroid paper, SIAM JDM **4** (1989),
-  75–95, has a partial 2-d result per Tanigawa §5). Closest of all
+  `d = 2` (Whiteley's hypergraph-matroid paper, Discrete Comput. Geom.
+  **4** (1989), 75–95, has a partial 2-d result per Tanigawa §5: its
+  Theorem 5.4, the independent case; see *Picture matroid* in Tier B). Closest of all
   entries to the formalized surface (Phase 35's coplanar panel model +
   a bipartite carrier), but "open since Tay 1989 even at d = 2"
   signals real hardness — hence behind PENCIL, whose recon is cheaper.
@@ -61,6 +62,18 @@ Phase 39); IDENT-PANEL is the strongest challenger (see its entry).
   Combin. **5** (1989), 245–273). Would extend `Matroid/` with
   Dilworth truncation (independent mathlib value) and is the ambient
   theory IDENT-PANEL sits over — a natural prerequisite phase for it.
+- **Picture matroid** — Whiteley, *A matroid on hypergraphs, with
+  applications in scene analysis and geometry*, Discrete Comput. Geom.
+  **4** (1989), 75–95, Theorems 2.3 and 3.1: at a generic picture of an
+  incidence structure the incidences are independent iff
+  `i′ ≤ v′ + 3f′ − 3` on every nonempty subset (Sugihara's conjecture).
+  The tool behind its Theorem 5.4, so IDENT-PANEL's prerequisite at
+  `d = 2`; with a merging lemma it also gives the pencil proof's
+  `dim L(q) = 3 + def₂(G)` without Katoh–Tanigawa
+  (`notes/pencil-scenes/q1-count.md`). Needs hypergraph count matroids
+  and their rank formula. Recorded 2026-11-11 from PENCIL-SCENES
+  (`notes/PencilScenes.md` §6); moves up if IDENT-PANEL opens before
+  ORIGAMI.
 - **Body-bar-and-hinge** — Jackson–Jordán, Eur. J. Combin. **31**
   (2009), 574–588: mixed bars + hinges; the natural completion of the
   Phases 13–16 layer.

@@ -87,6 +87,21 @@ In-tree assets: Phase 24's dimension-general generic bar-joint
 rigidity matroid (read at `d = 3`), Phase 17 extensors (route 2),
 Phase 25's general-position/genericity infrastructure.
 
+**A candidate first layer, for the opening recon to decide**
+(recorded 2026-11-11 from PENCIL-SCENES, `notes/PencilScenes.md` §6;
+the session agent's reading, unchecked against CCK's gadgets). Project
+`X` to a plane: a placement with each block's boundary coplanar is a
+picture with a *scene* over it, for the incidence structure whose faces
+are the blocks (Whiteley, Discrete Appl. Math. **9** (1984), 269–295,
+Definitions 2.1–2.4). The pencil proof's carrier is the case where the
+faces are the closed neighbourhoods of a graph, and its genericity
+lemmas (main pictures, one witness suffices, the polynomial section;
+`main-component.tex`, `sec:main-component-carrier`) are proved only
+there. If the recon confirms this reading of `X`, state them for any
+family of faces as an additive layer beside `Graph.liftingSpace`, not a
+refactor of it. Whiteley's picture matroid (`notes/IdeaBacklog.md`,
+Tier B) then gives the dimension of the scene space.
+
 Suggested opening move when the phase opens: a recon that pins the
 formal statement of `X` and the gadget convention, then a
 prerequisite-ladder plan (the combinatorial layer first — it is

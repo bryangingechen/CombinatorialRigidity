@@ -2,8 +2,10 @@
 
 **Status:** queued by the PI on 2026-11-09, ahead of ORIGAMI; unopened, and its number is minted
 on open. Same editing discipline as phase notes (≤ 8-line entries, lift cross-cutting lessons).
-The read-only recon of §5 is done (2026-11-09; four reports in `notes/pencil-scenes/`).
-**Next concrete step:** the open with the PI, who settles the scope (§6) with the recon in hand.
+The read-only recon of §5 is done (2026-11-09; four reports in `notes/pencil-scenes/`), and on
+2026-11-11 the PI settled the scope as (a), exposition only (§6), after §5a's comparison.
+**Next concrete step:** bank the three 2026-11-11 recon reports (§5a) into §§2–3 when they return,
+then the open with the PI, as an exposition phase.
 
 ## 1. The PI's words (verbatim)
 
@@ -203,7 +205,56 @@ Four read-only agents, dispatched at the PI's word (§1). Their reports are bank
   11, 1991), unread but now in `.refs/`; Crapo–Whiteley 1993's pages, 55–78 by W96's
   bibliography, against 55–79.
 
-## 6. Scope at the open (the PI's call)
+## 5a. The proof against Whiteley 1984 and 1989 (2026-11-11)
+
+The session agent's reading of W84 §§2–5 and W89 §§2–3 in the PDFs beside `main-component.tex`'s
+carrier, flat-rank and equality sections; F(q) checked against the definition's body. It sharpens
+§3's rows. Three read-only agents were dispatched the same day and had not returned when this was
+written: the merging lemma's provenance (`merging-lemma-provenance.md`) and the references of
+2026-11-10 in two clusters (`refs-liftings.md`, `refs-polarity.md`), all to `notes/pencil-scenes/`.
+
+- **Two eliminations of one system.** The scene equations have unknowns (heights, face planes).
+  L(q) keeps the heights: W89 §2 (p. 78) and the derived 4-hypergraph H(S) of Thm 3.1. F(q) keeps
+  the planes: W84 Prop. 4.1's reduced plate framework L(S(p)). `lem:pencil-lifting-planes-dim` is
+  W84 Prop. 4.1 composed with W89 p. 84, step (a) ⇔ (c), whose assumption (three non-collinear
+  points on each face) is admissibility. §3 credits W84 alone, and no row names W89 for L(q).
+- **F(q) is L(S_G(q)) for one row reduction.** W84 reduces at each vertex w to a fan of bars on
+  the line (x_w, y_w, 1) joining the faces through w (p. 282); any fan gives a line-equivalent
+  framework (p. 283). The star from face N[w] to each N[u], u adjacent to w, gives
+  h_u(q_w) = h_w(q_w), which over all w is F(q)'s condition. A bar is a line, and its equation is
+  d · (M_j − M_k) = 0 (p. 277).
+- **L(S_G(q)) is pin-collinear.** Each edge uv gets two bars between plates u and v, on the lines
+  (x_u, y_u, 1) and (x_v, y_v, 1): a pin at their meet, with all of plate v's pins on its own
+  line. So W84's reduction of S_G lands in Jackson–Jordán's class; this is the link between
+  scenes and P_q that `sec:main-component-jj` asserts without a source.
+- **The flat split is W84 §5.1 and three more dimensions.** The joined plate structure (p. 288):
+  plates in z = 0 with vertical velocities ux + vy + w that agree at joints, the W_Π part of
+  `lem:pencil-flat-split`. The three in-plane dimensions are the chapter's. §5.3 (pp. 288–289):
+  the heights of the scene are the joints' velocities (O7).
+- **W84 names the gap the equality fills.** Remark 2 (p. 287): the generic theorem for frameworks
+  "assumes that any two bars can, generically, be in different directions", so it does not cover
+  identified frameworks such as L(S_G). W89 Thm 3.1 is the independent case, Jackson–Jordán the
+  rank. `thm:pencil-jj-equality` is better titled as the dimension of the scene space of S_G.
+- **Field** (the agent's reading of W89 pp. 80–81, unchecked by a second reader): Thm 2.3's proof
+  specializes a matrix of indeterminates, so it holds over every infinite field.
+
+## 6. Scope at the open
+
+**PI, 2026-11-11:** asked "How much value would scope (b) have for formalizing future results in
+this area?", and to the answer recorded below, "OK, let's go with your recommendation."
+
+- **The scope is (a), exposition only**, written in the general language (the incidence structure
+  S_G, scenes, the picture matroid), so that a later generalization changes no exposition. No
+  statement or Lean change. §5a's corrections join (a)'s list.
+- **(b) is not done here.** Of its three pieces: scenes ≅ motions of the reduced plate framework
+  in general form has no future consumer, so it is cited, not formalized. The scene space over a
+  general incidence structure, with its genericity lemmas, is a candidate first layer of ORIGAMI,
+  decided at ORIGAMI's opening recon (`notes/Origami.md`). The picture matroid (W89 Thms 2.3 and
+  3.1) is a backlog entry (`notes/IdeaBacklog.md`, Tier B), IDENT-PANEL's prerequisite at d = 2.
+- **(c) and the equality's second derivation** (a remark, or nothing) are still open, the latter
+  until the merging lemma's provenance is known.
+
+The options as they stood before the decision:
 
 - **(a) Exposition.** Chapter prose and citations only: the road map and the three introductions
   say what is classical (§3) and what is new; each row of §3 cites its source; no statement or Lean
