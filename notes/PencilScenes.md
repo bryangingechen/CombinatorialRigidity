@@ -8,8 +8,9 @@ Three more recon reports were banked the same day (§5b), and the three papers t
 arrived and were read (§5c): the scope stands, the merging lemma's attribution changes.
 On 2026-11-11 the PI also settled the plan at the open (§7): the nine calls, a rename in the
 Lean, and one more read-only recon, for simplifications of the route, which no recon had asked.
-**Next concrete step:** that recon (§7, *The simplification recon*), which the PI runs in a
-fresh session; then the open with the PI, with §7's calls revisited against what it finds.
+The simplification recon ran the same day (§7a): no to (i), and to (ii) one definition, not one
+theorem. The route and the Lean stand; the exposition gains two paragraphs.
+**Next concrete step:** the open with the PI, with §7a's open calls and §7's nine calls.
 
 ## 1. The PI's words (verbatim)
 
@@ -433,20 +434,58 @@ ORIGAMI's general scene space is the moment), `affineLifts`, `IsTrivialLift`. No
 whether docstring citations change in this phase (the session agent would, with call 5), and
 the `x0` in names and labels, a leftover working name, uncounted (a cleanup round's).
 
-**The simplification recon** (read-only, before the open). No recon so far asked whether a
-source shortens the route, and Phase 43's pass ran before W84, W89 and Crapo were read. Two
-questions. The leads are the session agent's, checked against no proof.
-
-- **(i)** A Part C lift is a scene one dimension up over a realization in 3-space; Whiteley's
-  correspondence makes such scenes motions of the panel structure below (CW82 Prop. 4.1, W84
-  Prop. 4.1 a dimension down). Does it hold at Part C's base, which is in special position, so
-  that it would be proved, not cited (§5b)? Would "every lift of r⁰|_Y is trivial" in
-  `lem:pencil-d-ear-free` then follow from a rigidity statement the chapter has, replacing its
-  bound on dim L̃_Y (ten `\uses`, the equality and a steering argument among them)?
-- **(ii)** Do the flat split (`Flat.lean`) and the lift space (`Grade/Lift.lean`) share one
-  statement, scenes over a realization in dimension k as the normal motions of its flat
-  structure, that both files could use?
-
-A yes to (i) is a small Lean change that could join this phase. (ii) is input to ORIGAMI's
-opening recon. Two weaker leads are backlog lines: the universal lift at d − 2 ≥ def₂ for the
+**The simplification recon** (read-only, before the open): done, §7a. It asked (i) whether a
+Part C lift is a motion of the panel structure below, so that `lem:pencil-d-ear-free` follows
+from a rigidity statement, and (ii) whether the flat split and the lift space share one
+statement. Two weaker leads stay backlog lines: the universal lift at d − 2 ≥ def₂ for the
 every-dimension coverage's large cases, and O7's shear as a first-order argument for the gap.
+
+## 7a. The simplification recon (2026-11-11)
+
+Two read-only agents, one per question, both at Claude Mythos 5.2 through the unpinned `recon`
+definition, which inherits the session's model (there is no Mythos-pinned definition; adding one
+is `/harness-review`'s). Reports banked as delivered: `notes/pencil-scenes/simplify-i.md` and
+`simplify-ii.md`. This section is their reading, with the coordinator's checks.
+
+- **(i): no.** A Part C lift is not a motion of the panel structure in 3-space, and "every lift
+  is trivial" neither gives nor follows from rigidity there. A lift has 3 unknowns per body and
+  2 conditions per edge, the plane count; W84 §7.3 (p. 293) says the reduction to a framework
+  "is undefined for K = 3". At general points, C₅ and C₆ are rigid with non-trivial lifts and K₂
+  flexes with none (`notes/scripts/scenes/lift_cycles.py`). `lem:pencil-d-ear-free` keeps its
+  proof, every `\uses` included, and no Lean change comes from (i).
+- **What (i) gives the exposition.** The correspondence that holds is in the Lean already
+  (`exists_pencilConfigPoint_of_dotProduct`, `mem_liftMaps_pencilConfigPoint_iff`): the lifts of
+  r⁰ are the scenes over its plane projection q′, so motions of P_q′ by W84 Prop. 4.1. Trivial
+  lifts are Aff(q′) ⊕ K·z′, and "every lift is trivial" says dim L(q′) = 4: P_q′ has exactly one
+  non-trivial motion, the base's own height.
+- **(ii): one definition, not one theorem.** L(q) and the lift space are the scenes of S_G over
+  points of K³ and of K⁴ (W84 Def. 7.2 at K = 2 and 3; `liftSpaceTilde` is the K⁴ case
+  literally). The flat split, scenes as normal motions, is special to plane pictures: a face
+  form has n coordinates and a screw C(n+1, 2), equal only at n = 3. At a general configuration
+  of C₇ the base has 3 non-trivial lifts and its flat lift to d = 4 one non-trivial motion.
+- **(ii) in the Lean:** no declaration of `Grade/Lift.lean` or `Grade/Flat.lean` would become an
+  application of a shared motion statement. A shared scene-space definition over `Fin n` and a
+  face family is the agent's estimate of 200–300 lines of net growth; nothing for this phase.
+  For ORIGAMI's opening recon: two independent axes, the face family (ORIGAMI's, at n = 3) and
+  the ambient dimension (Part C's only); see `simplify-ii.md`, Step 3(b).
+- **One lead that would touch the Lean** (the agent's, partly checked): the every-dimension flat
+  rank is proved by padding and never uses the flat split, and the d = 3 flat rank is its case
+  m = 1, so the flat motion count (about 120 lines of `MainComponent/Flat.lean`) could retire,
+  if the import order is turned. It would delete the Lean of `lem:pencil-flat-split`, the one
+  place the chapters formalize W84 §5.1. The coordinator would keep it, and have the chapter
+  say that the every-dimension flat rank does not go through it. Six further duplications
+  between `MainComponent/` and `Grade/` are in `simplify-ii.md`, unverified: a cleanup round's.
+- **Checked by the coordinator:** the bodies of `liftSpace`, `IsTrivialLift`, `liftSpaceTilde`,
+  the statements of `mem_liftMaps_iff` and `finrank_infinitesimalMotions_map_injective`; W84
+  p. 293's two sentences, in the text layer; `lift_cycles.py` and `example.py cycle7` rerun,
+  figures as reported (on a cycle every ζ is a lift, which gives the first column by hand); the
+  every-dimension flat rank's proof; no use of the flat motion count or `linkConstants` outside
+  `MainComponent/Flat.lean`, while `flatPi` and `planarProj` serve the joins and `Lines.lean`.
+- **Not checked:** the agents' derivations (the normal-velocity obstruction, the splitting in
+  4-space, the lift by 0 as `F.map screwEmbed`, C₇'s configuration as a legitimate Part C base);
+  the line-count estimates; the other leads at the end of each report.
+- **Open, the PI's calls at the open.** Whether `pencil-d.tex` takes (i)'s two sentences (at
+  `def:pencil-d-lift` and `lem:pencil-d-ear-free`) and (ii)'s drafted paragraph ("one
+  construction at two dimensions"; `simplify-ii.md`, Step 3(a)), and where; whether the flat
+  motion count stays. On §7's nine calls: none is outdated, since the route does not change.
+  The phase's Lean scope is the rename alone.

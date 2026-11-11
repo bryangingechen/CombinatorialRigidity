@@ -1511,8 +1511,11 @@ research note of its own, `notes/Strata.md`, which holds PENCIL-D's evidence.
   for were then read, and one step of that derivation is Berg and Jordán's (2003). The same day the
   PI settled the plan at the open: the exposition's nine open calls, one rename in the Lean
   (Part C's `liftSpace`, too close to `liftingSpace`), and a last read-only recon, since none had
-  asked whether the sources shorten the route. Planning note `notes/PencilScenes.md` (§7).
-  **Next:** that recon, in a fresh session; then the open, with the PI.
+  asked whether the sources shorten the route. That recon ran the same day (two agents; reports
+  in `notes/pencil-scenes/`): they do not. A lift of Part C is not a motion of the structure
+  below it, and the lift space and the lifting space are one definition at two dimensions, not
+  one theorem; the route and the Lean stand, and the exposition gains two paragraphs. Planning
+  note `notes/PencilScenes.md` (§7, §7a). **Next:** the open, with the PI.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid
