@@ -6,8 +6,10 @@ The read-only recon of §5 is done (2026-11-09; four reports in `notes/pencil-sc
 2026-11-11 the PI settled the scope as (a), exposition only (§6), after §5a's comparison.
 Three more recon reports were banked the same day (§5b), and the three papers they asked for
 arrived and were read (§5c): the scope stands, the merging lemma's attribution changes.
-**Next concrete step:** the open with the PI, as an exposition phase; before it, the PI's two
-remaining calls (the self-duality's wording, §5b; whether the second derivation is written, §6).
+On 2026-11-11 the PI also settled the plan at the open (§7): the nine calls, a rename in the
+Lean, and one more read-only recon, for simplifications of the route, which no recon had asked.
+**Next concrete step:** that recon (§7, *The simplification recon*), which the PI runs in a
+fresh session; then the open with the PI, with §7's calls revisited against what it finds.
 
 ## 1. The PI's words (verbatim)
 
@@ -340,10 +342,12 @@ this area?", and to the answer recorded below, "OK, let's go with your recommend
   general incidence structure, with its genericity lemmas, is a candidate first layer of ORIGAMI,
   decided at ORIGAMI's opening recon (`notes/Origami.md`). The picture matroid (W89 Thms 2.3 and
   3.1) is a backlog entry (`notes/IdeaBacklog.md`, Tier B), IDENT-PANEL's prerequisite at d = 2.
-- **(c) and the equality's second derivation** (a remark, or nothing) are still open. §5b and
-  §5c give the attribution each would carry: O3 and O6 are classical; of the merging argument,
-  the face merge is Berg–Jordán's and the three-point merge on S_G is ours, its identity a
-  consequence of published theorems.
+- **(c) and the equality's second derivation** are settled in §7 (calls 2 and 3). §5b and §5c
+  give the attribution each carries: O3 and O6 are classical; of the merging argument, the face
+  merge is Berg–Jordán's and the three-point merge on S_G is ours, its identity a consequence of
+  published theorems.
+- **The scope widened on 2026-11-11 (§7):** one rename in the Lean, and whatever the
+  simplification recon's first question returns. No statement changes.
 
 The options as they stood before the decision:
 
@@ -361,3 +365,88 @@ The options as they stood before the decision:
   map's "Four observations" paragraph is the natural home for O1, O5 and O7.
 - **(d) `.refs/`.** Mostly settled: the PI added CW94, Crapo–Ryan, Sugihara's book and Q4's
   optional items on 2026-11-10 (§2). Left: TW84 and CW93, both free.
+
+## 7. The plan at the open (2026-11-11)
+
+From an attended session. The session agent sketched the exposition and nine recommendations; the
+PI asked whether the Lean had the right definitions and which names should change, then:
+
+> "Let's include the rename in this phase."
+
+> "we've done a few recons in this phase but I don't remember if we've been keeping an eye out
+> for any simplifications / improvements we could make to the current route. Do you think
+> there's any potential for that?"
+
+> "Let's add this to the plan for the phase. I think I'll run it in the next fresh session. I
+> went over your recommendations in your earlier message and they look good. Let's keep those,
+> but I guess some of them might become outdated depending on how much we end up adjusting the
+> route."
+
+**The exposition.** The carrier section of `main-component.tex` names S_G and says L(q) is its
+scene space (W84, Sugihara 1984); `lem:pencil-lifting-planes-dim` compares the two eliminations
+(§5a); P_q is W84's reduced plate framework of S_G, pin-collinear; the flat rank credits W84
+§5.1; the equality is attributed as in §5a. `pencil-d.tex`: the sources of §3's rows, with
+`def:pencil-d-lift` no longer presented as new. `pencil.tex`: "pencil" and the polarity. The
+road map and the three introductions get a lineage paragraph and what is classical and new.
+
+**Slices,** one commit each: the open; the carrier section with its bibliography entries; the
+flat rank and the equality; `pencil-d.tex`; `pencil.tex`; the road map and introductions (last,
+and attended, as it sets the framing); the additions of calls 2 and 3; the rename; the close.
+Slices between the open and the road map can run under `/coordinate-phase`. A bibliography
+entry lands with the slice that cites it (`lint.sh` check 2).
+
+**The verification rule.** Each slice re-reads every page it cites in the PDF. Four derivations
+are unchecked and go into a chapter only once checked in their slice, or weakened: the
+self-duality from Rigidity and polarity I; O2's projection claim; Crapo 1984 p. 295 as the
+polar form of `def:pencil-d-configuration`; (q, P_q) as a section-projection figure (§5c).
+
+**The nine calls** (the session agent's recommendations, kept by the PI; revisit each against
+the simplification recon's result):
+
+1. The self-duality: "a consequence of Whiteley's Theorem 4.1 (Rigidity and polarity I) and the
+   self-duality of S_G; we have not found it stated", for nondegenerate realizations, if the
+   derivation checks.
+2. The second derivation: a short remark, no proof in the chapter. The equality is W89's count
+   on S_G; the identity follows from published theorems and is not found stated. The merging
+   argument stays in `notes/pencil-scenes/q1-count.md`.
+3. The observations: O7 and O1 join the road map's observations; O3 and O5 make one remark on
+   Maxwell–Cremona (a motion of the bar framework on G, not a stress, as the diagram lives on G
+   and not on a dual graph); O4 is a sentence at the configuration definition; O2 and O6 only
+   if their unchecked parts check; θ(2,2,3) is one worked example in the carrier section, C₇ a
+   sentence.
+4. "Lifting space L(q)" stays the chapters' term, introduced once as the scene space of S_G.
+5. "Jackson and Jordán's equality" (17 uses in the three chapters, prose in 7 Lean files) is
+   renamed in prose to the dimension of the lifting space, Jackson–Jordán credited in the body.
+6. A second bibliography entry for Jackson–Jordán's 2006 EGRES report, where Theorem 7.1 is.
+7. History cited: Maxwell 1864 and 1870, Sugihara, Whiteley, Crapo, Crapo–Ryan; Huffman and
+   Mackworth only with the O3 remark; Falk 1972 and Duda–Hart 1973 (unread) not cited; Rybnikov,
+   Lundqvist–Stokes–Öhman and Crapo 1989, 1991 only where a sentence needs them.
+8. The third route (Crapo 1989's Euler characteristic) is a backlog line (`notes/IdeaBacklog.md`).
+9. The run: `/coordinate-phase` for the middle slices, the road map slice attended.
+
+**The Lean.** The definitions are the classical ones at S_G (`Graph.liftingSpace` keeps the
+heights, `Graph.liftingPlanes` the face planes, `Graph.affineLifts` the trivial scenes;
+`liftSpace` and `IsTrivialLift` are W84 Def. 7.2's scenes and flat scenes), so none changes. The
+rename: Part C's `liftSpace` (39 uses in 6 files), one syllable from `liftingSpace`, a
+different object. Its new name is chosen at the open. Not renamed: `liftingSpace` (W96's word;
+ORIGAMI's general scene space is the moment), `affineLifts`, `IsTrivialLift`. Not settled:
+whether docstring citations change in this phase (the session agent would, with call 5), and
+the `x0` in names and labels, a leftover working name, uncounted (a cleanup round's).
+
+**The simplification recon** (read-only, before the open). No recon so far asked whether a
+source shortens the route, and Phase 43's pass ran before W84, W89 and Crapo were read. Two
+questions. The leads are the session agent's, checked against no proof.
+
+- **(i)** A Part C lift is a scene one dimension up over a realization in 3-space; Whiteley's
+  correspondence makes such scenes motions of the panel structure below (CW82 Prop. 4.1, W84
+  Prop. 4.1 a dimension down). Does it hold at Part C's base, which is in special position, so
+  that it would be proved, not cited (§5b)? Would "every lift of r⁰|_Y is trivial" in
+  `lem:pencil-d-ear-free` then follow from a rigidity statement the chapter has, replacing its
+  bound on dim L̃_Y (ten `\uses`, the equality and a steering argument among them)?
+- **(ii)** Do the flat split (`Flat.lean`) and the lift space (`Grade/Lift.lean`) share one
+  statement, scenes over a realization in dimension k as the normal motions of its flat
+  structure, that both files could use?
+
+A yes to (i) is a small Lean change that could join this phase. (ii) is input to ORIGAMI's
+opening recon. Two weaker leads are backlog lines: the universal lift at d − 2 ≥ def₂ for the
+every-dimension coverage's large cases, and O7's shear as a first-order argument for the gap.

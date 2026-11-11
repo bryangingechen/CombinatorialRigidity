@@ -1508,8 +1508,11 @@ research note of its own, `notes/Strata.md`, which holds PENCIL-D's evidence.
   scope: the exposition only, with no statement or Lean change; a general scene space is left to
   ORIGAMI's opening recon. A second recon the same day read the references of 2026-11-10 and looked
   for the equality's second derivation in the sources (not found stated); the three papers it asked
-  for were then read, and one step of that derivation is Berg and Jordán's (2003). Planning note
-  `notes/PencilScenes.md`. **Next:** the open, with the PI.
+  for were then read, and one step of that derivation is Berg and Jordán's (2003). The same day the
+  PI settled the plan at the open: the exposition's nine open calls, one rename in the Lean
+  (Part C's `liftSpace`, too close to `liftingSpace`), and a last read-only recon, since none had
+  asked whether the sources shorten the route. Planning note `notes/PencilScenes.md` (§7).
+  **Next:** that recon, in a fresh session; then the open, with the PI.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

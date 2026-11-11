@@ -75,6 +75,16 @@ Phase 39); IDENT-PANEL is the strongest challenger (see its entry).
   and their rank formula. Recorded 2026-11-11 from PENCIL-SCENES
   (`notes/PencilScenes.md` §6); moves up if IDENT-PANEL opens before
   ORIGAMI.
+- **Three leads on the pencil proof**, recorded 2026-11-11 from
+  PENCIL-SCENES (`notes/PencilScenes.md` §7 and §5b), all unchecked.
+  Crapo 1989's Euler characteristic (LNCS **391**, 213–224) may give
+  `3 + def₂(G)` on the closed neighbourhoods, a third route to
+  `dim L(q)`; needs a committed script. When `d − 2 ≥ def₂(G)` every
+  general configuration over a main picture projects one universal
+  lift (Crapo–Ryan 1986 §8), which might replace the every-dimension
+  coverage's large-`d` cases. A configuration is the flat structure
+  sheared along its own flex, which suggests a first-order argument
+  for the gap `def₂ − def_d`.
 - **Body-bar-and-hinge** — Jackson–Jordán, Eur. J. Combin. **31**
   (2009), 574–588: mixed bars + hinges; the natural completion of the
   Phases 13–16 layer.
