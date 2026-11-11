@@ -4,8 +4,9 @@
 on open. Same editing discipline as phase notes (≤ 8-line entries, lift cross-cutting lessons).
 The read-only recon of §5 is done (2026-11-09; four reports in `notes/pencil-scenes/`), and on
 2026-11-11 the PI settled the scope as (a), exposition only (§6), after §5a's comparison.
-**Next concrete step:** bank the three 2026-11-11 recon reports (§5a) into §§2–3 when they return,
-then the open with the PI, as an exposition phase.
+Three more recon reports were banked the same day (§5b).
+**Next concrete step:** the open with the PI, as an exposition phase; before it, the PI's calls
+in §5b's last entry (three papers to fetch, the self-duality's wording).
 
 ## 1. The PI's words (verbatim)
 
@@ -61,7 +62,8 @@ numbers are the printed ones. Bib keys are given where `blueprint/src/bibliograp
 - **Whiteley 1989**, "A matroid on hypergraphs, with applications in scene analysis and geometry"
   (*Discrete Comput. Geom.* 4, 75–95; no bib entry). P. 78: the scene conditions are linear in the
   heights. Theorem 3.1 (p. 83): at a generic picture of any incidence structure, incidences are
-  independent iff i′ ≤ v′ + 3f′ − 3 on every nonempty subset (Sugihara's conjecture, Sugihara 1984).
+  independent iff i′ ≤ v′ + 3f′ − 3 on every nonempty subset (W89's own count, p. 76).
+  Corollary 3.2, the count with −4 for sharp pictures, is Sugihara's conjecture (1984, p. 92).
   Corollary 3.3 gives the scene dimension in the **independent** case only. §5.1 (p. 87): the polar,
   cutting-plane reading (Crapo's concurrence geometries). Theorem 5.4 (p. 92): plane identified
   body-and-joint frameworks, the independent case. P. 93: the spatial analogue, a conjecture about
@@ -79,7 +81,7 @@ numbers are the printed ones. Bib keys are given where `blueprint/src/bibliograp
   vertices, proved at pin-collinear realizations with generic lines; P_q is their rod-and-pin
   framework (§5, p. 12). Theorem 7.2(b): the multigraph body-and-pin version. Theorem 7.4 re-derives
   Whiteley 1989 Theorem 5.4. They never mention scenes, liftings or L(q).
-- **Added to `.refs/` by the PI, 2026-11-10** (unread by the recon; rows in `REFS.md`):
+- **Added to `.refs/` by the PI, 2026-11-10** (read on 2026-11-11, §5b; rows in `REFS.md`):
   Crapo–Whiteley 1994 (liftings ≅ stresses for spherical polyhedra); Sugihara 1983, 1984 and his
   1986 book (the scene equations; cite the book by section); Maxwell's "On reciprocal figures and
   diagrams of forces" (1864), which needs a new key, since `maxwell1864` is his stiffness paper, and
@@ -137,7 +139,7 @@ The agents' own derivations, checked as marked; check an unmarked one before it 
   configuration in P^{2+def₂} (at a main picture) whose closed neighbourhoods each span a plane,
   and every configuration over q is a linear projection of it. If d − 2 ≥ def₂, all general configurations over a fixed main picture are
   projectively equivalent.
-- **O3** (the bar condition and the count checked at θ(2,2,3)). Writing h_v(ξ) = g_v·ξ + c_v, the face gradients satisfy
+- **O3** (checked at θ(2,2,3), `scenes/o3_check.py`; classical in mechanism, §5b). Writing h_v(ξ) = g_v·ξ + c_v, the face gradients satisfy
   (g_u − g_v)·(q_u − q_v) = 0: an infinitesimal motion of the bar framework (G, q), where
   Maxwell–Cremona has a stress. Not onto: the rotation fails, by twice each cycle's signed area.
   At θ(2,2,3) the bar framework has 5 motions and the scenes modulo constants 3; the cycle rank is 2.
@@ -148,7 +150,7 @@ The agents' own derivations, checked as marked; check an unmarked one before it 
   θ(2,2,3) the faces of the non-adjacent hubs a, b share bodies 1 and 2, and meet along a crease.
   What holds: the edges of G generate the conditions on the face planes (F(q)'s definition), so a
   scene is a function on G's vertices, not on a dual graph, and planarity never enters.
-- **O6** (W89 §5.1, re-derived). Read with the points as panel normals, each body's panel meets
+- **O6** (classical: Crapo 1984 §7 with W89 §5.1, §5b; re-derived). Read with the points as panel normals, each body's panel meets
   z = 0 in the line with normal (x_v, y_v, 1), the body line of P_q, whatever the heights: every
   configuration over q has P_q as its section by z = 0. The heights tilt the panels about it.
 - **O7.** The panel of body v in a configuration is the plane ζ = h_v, and h_v is body v's normal
@@ -199,19 +201,13 @@ Four read-only agents, dispatched at the PI's word (§1). Their reports are bank
   rerun from `notes/scripts/scenes/`, `q1_count.py` byte-identical; Crapo–Ryan's E-lift sentence
   (p. 53), in the agent's text of the scan. The reports' other page numbers, and Q1's field
   generality, are the agents' readings.
-- **Open leads:** the merging lemma's provenance (JJ's rod-and-pin section, W96 Appendix A and
-  Crapo–Ryan 1986, whose "central objective" is computing dim L(E), first), before any chapter calls
-  it new; Crapo's two later papers beside Crapo–Ryan in W96 (LNCS 391, 1989; *J. Symbolic Comput.*
-  11, 1991), unread but now in `.refs/`; Crapo–Whiteley 1993's pages, 55–78 by W96's
-  bibliography, against 55–79.
+- **Open leads:** followed up on 2026-11-11 (§5b).
 
 ## 5a. The proof against Whiteley 1984 and 1989 (2026-11-11)
 
 The session agent's reading of W84 §§2–5 and W89 §§2–3 in the PDFs beside `main-component.tex`'s
 carrier, flat-rank and equality sections; F(q) checked against the definition's body. It sharpens
-§3's rows. Three read-only agents were dispatched the same day and had not returned when this was
-written: the merging lemma's provenance (`merging-lemma-provenance.md`) and the references of
-2026-11-10 in two clusters (`refs-liftings.md`, `refs-polarity.md`), all to `notes/pencil-scenes/`.
+§3's rows.
 
 - **Two eliminations of one system.** The scene equations have unknowns (heights, face planes).
   L(q) keeps the heights: W89 §2 (p. 78) and the derived 4-hypergraph H(S) of Thm 3.1. F(q) keeps
@@ -238,6 +234,57 @@ written: the merging lemma's provenance (`merging-lemma-provenance.md`) and the 
 - **Field** (the agent's reading of W89 pp. 80–81, unchecked by a second reader): Thm 2.3's proof
   specializes a matrix of indeterminates, so it holds over every infinite field.
 
+## 5b. The second recon (2026-11-11)
+
+Three read-only agents, their reports banked as delivered in `notes/pencil-scenes/`:
+`merging-lemma-provenance.md`, `refs-liftings.md` and `refs-polarity.md`, the last two on the
+references of 2026-11-10. Each report ends with a table of citation changes per row of §3; those
+tables are the exposition phase's worklist. This section is their reading.
+
+- **The merging lemma** is in no source read, and no stated result specializes to it. Its identity
+  follows from JJ TR Thm 7.1 through W84 Prop. 4.1, W89 Thm 3.1 and the Edmonds–Rota formula, a
+  chain no source assembles (the agent's inference). So: the identity "follows from" JJ and is
+  "not found stated"; the merging argument is ours, by the union defect of a count (Lovász–Yemini;
+  Jordán 2016 Lemma 2.1.2, Thm 2.3.2) and |P ∪ N(P)| = |P| + d(P) (JJ's molecular paper,
+  Thm 3.4). JJ say twice that a direct proof exists and write none (TR pp. 9, 22).
+- **W89 Thm 3.1 over every infinite field:** confirmed by the agent on the page images, and by
+  the session agent's reading (§5a).
+- **O6 is classical.** Crapo, "Concurrence geometries" (*Adv. Math.* 54 (1984) 278–301), §7,
+  Theorem 4 (pp. 293–294): hyperplanes with given sections on a fixed hyperplane, one scalar each,
+  concurrence linear in the scalars; W89 §5.1 (p. 87) identifies them with scenes. Reading the
+  panels as a body-hinge framework with a rank stays new.
+- **Several heights are named before Crapo–Ryan.** Crapo 1984 p. 295: a fixed flat of corank p,
+  "We shall not deal further with this generalization". At p = d − 2 it is the polar form of
+  `def:pencil-d-configuration` (the agent's algebra, unchecked). No source of the liftings cluster
+  lifts by more than one height.
+- **O3 is classical in mechanism.** The perpendicularity is the gradient-space rule (Maxwell 1870
+  pp. 7–8; Mackworth 1973 p. 125; Huffman 1977 p. 479; CW93 Thm 4.5(a); CW94 Prop. 4.1); the face
+  diagram as a motion is CW94 Remarks 2.8 and 3.2. Specific to S_G: the diagram lives on G, not
+  on a dual graph, which is why it is a motion where Maxwell–Cremona, through planar duality, has
+  a stress (CW94 Thm 3.1).
+- **Sugihara 1984 co-originates the carrier** (§§2.2, 3.1: the scene equations of any incidence
+  structure and their dimension; p. 84, the equal dimensions of `lem:pencil-lifting-planes-dim`;
+  eq. (10), p. 85, the scale-and-shift map at d = 3). Cite it beside W84.
+- **The self-duality of the pencil class** is stated nowhere, and follows from Rigidity and
+  polarity I §4 (Thm 4.1, p. 345: a point–plane incidence class and its polars have identical
+  static properties) with S_G self-dual (the agent's derivation, exact for nondegenerate
+  realizations). The agent would say "an immediate consequence, not stated in the sources".
+- **Smaller answers.** Lundqvist–Stokes–Öhman's Theorem 4.1 is rigidity of rod configurations, no
+  rank formula: an extension of W89 Thm 5.4, not the plane rank statement. "Lashed and woven
+  rods" is very likely Rigidity and polarity II (by content). TW84 p. 34: "Only in 3-space does
+  projective duality convert a hinge structure to a new hinge structure". CW93 runs pp. 55–78.
+  The pencil stratum stays new; nothing contradicts O1–O7. Corrections to `lineage.md`: TW84's
+  bibliography has 12 entries, and the two polarity papers' subtitles (`refs-polarity.md` §11).
+- **Checked by the coordinator:** JJ TR pp. 9 and 22; Crapo 1984 pp. 294–295; CW93's last page
+  (the margin digit and the bibliography); W89 pp. 82–83 for the two counts; W84 §7 (pp. 291–293)
+  against `def:pencil-d-lift`, where only Def. 7.2 transfers, since the base of a Part C lift is
+  a special-position picture; `o3_check.py` rerun. The rest are the agents' readings.
+- **Open, the PI's calls.** Fetch, or not: Berg–Jordán (ESA 2003) and Imai 1985, which could hold
+  the merging lemma; Whiteley 1991, "Weavings, sections and projections of spherical polyhedra",
+  the likeliest further source for O6 (bibliographic details in the reports, unverified). The
+  wording for the self-duality. Untested: whether Crapo 1989's Euler characteristic gives
+  3 + def₂ on S_G, a third route to dim L(q), which needs a committed script.
+
 ## 6. Scope at the open
 
 **PI, 2026-11-11:** asked "How much value would scope (b) have for formalizing future results in
@@ -251,8 +298,9 @@ this area?", and to the answer recorded below, "OK, let's go with your recommend
   general incidence structure, with its genericity lemmas, is a candidate first layer of ORIGAMI,
   decided at ORIGAMI's opening recon (`notes/Origami.md`). The picture matroid (W89 Thms 2.3 and
   3.1) is a backlog entry (`notes/IdeaBacklog.md`, Tier B), IDENT-PANEL's prerequisite at d = 2.
-- **(c) and the equality's second derivation** (a remark, or nothing) are still open, the latter
-  until the merging lemma's provenance is known.
+- **(c) and the equality's second derivation** (a remark, or nothing) are still open. §5b gives
+  the attribution each would carry: O3 and O6 are classical, and the merging argument is ours,
+  its identity a consequence of published theorems.
 
 The options as they stood before the decision:
 

@@ -66,7 +66,8 @@ Phase 39); IDENT-PANEL is the strongest challenger (see its entry).
   applications in scene analysis and geometry*, Discrete Comput. Geom.
   **4** (1989), 75–95, Theorems 2.3 and 3.1: at a generic picture of an
   incidence structure the incidences are independent iff
-  `i′ ≤ v′ + 3f′ − 3` on every nonempty subset (Sugihara's conjecture).
+  `i′ ≤ v′ + 3f′ − 3` on every nonempty subset; its Corollary 3.2, the
+  count with −4 for sharp pictures, is Sugihara's conjecture.
   The tool behind its Theorem 5.4, so IDENT-PANEL's prerequisite at
   `d = 2`; with a merging lemma it also gives the pencil proof's
   `dim L(q) = 3 + def₂(G)` without Katoh–Tanigawa

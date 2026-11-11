@@ -1506,8 +1506,9 @@ research note of its own, `notes/Strata.md`, which holds PENCIL-D's evidence.
   be Whiteley 1984's scenes in 4-space, Jackson–Jordán's equality to follow also from Whiteley
   1989's count, and no prior work on the pencil stratum itself. On 2026-11-11 the PI settled the
   scope: the exposition only, with no statement or Lean change; a general scene space is left to
-  ORIGAMI's opening recon. Planning note `notes/PencilScenes.md`. **Next:** bank the three recon
-  reports of 2026-11-11, then the open, with the PI.
+  ORIGAMI's opening recon. A second recon the same day read the references of 2026-11-10 and looked
+  for the equality's second derivation in the sources (not found stated). Planning note
+  `notes/PencilScenes.md`. **Next:** the open, with the PI.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

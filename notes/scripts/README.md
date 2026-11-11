@@ -1559,6 +1559,7 @@ beside its exact-ℚ computation, as a cross-check of field generality, never in
 | `PYTHONHASHSEED=0 python3 notes/scripts/scenes/q1_sweep.py` | 46 s | ibid., the sweep: 34,188 graphs (every labelled simple graph on n ≤ 6, 320 random on 7–10, one hand-made), no mismatch; dim L(q) at a picture on 81 of them; 126 random graphs needing the merge; seed 1109 |
 | `PYTHONHASHSEED=0 python3 notes/scripts/scenes/example.py theta` | < 1 s | `notes/PencilScenes.md` §4: θ(2,2,3) at a fixed picture, its deficiencies, dim L(q), the ranks of P_q and of the flat, affine and fold configurations at d = 3 and 4, the fold's face planes and O3's bar condition; the admissibility guard's adversarial witness and negative control |
 | `PYTHONHASHSEED=0 python3 notes/scripts/scenes/example.py cycle7` | < 1 s | ibid.: C₇ at seed 2, the ranks with zero, one and two heights at d = 3 and 4 (seed 1 draws an inadmissible picture, which the guard rejects) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/scenes/o3_check.py` | < 1 s | `notes/pencil-scenes/refs-liftings.md`, appendix, and `notes/PencilScenes.md` §4 O3: at θ(2,2,3) the face gradients of the scenes are motions of the bar framework (G, q); image of rank 3 in a 5-dimensional motion space, containing the translations and not the rotation. Written by the 2026-11-11 recon agent, banked with a docstring added |
 
 Per-driver prose — *what* each mode asserts — stays in the four per-directory
 READMEs (`escape/README.md`, `kbare/README.md`, `w4/README.md`,
