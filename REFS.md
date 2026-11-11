@@ -91,6 +91,20 @@ p.N* often corresponds to *pdf page (N − offset)*. Check page 1 to
 calibrate. (Jordán's printed pages start at 33, so *Jordán p.N* =
 *pdf page (N − 32)*.)
 
+## Wanted references: `.refs/WANTED.md`
+
+Sources the notes cite or need and `.refs/` does not hold are listed in
+`.refs/WANTED.md`. Like the PDFs it is gitignored and local to the main
+checkout, so it is absent from a fresh clone and from a git worktree; an
+agent in a worktree reports a wanted source to the coordinator instead.
+Add a row when a recon or a chapter names a source that should be read
+and is not held: the full citation (marked **Unverified** unless checked
+to the bar above), why it is wanted and for which phase, the note that
+cites it, whether a free copy is known, and the filename it should get
+under the naming convention below. Whether to fetch is the PI's call.
+When a PDF arrives, rename it to the convention, add its row to the
+catalogue below, and delete its row from `WANTED.md`.
+
 ## Catalogue of `.refs/`
 
 `.refs/` is gitignored, so a fresh clone has none of these PDFs; this table lists what the main checkout holds, one row per file. New PDFs follow the naming convention `<surnames>-<year>-<short-title-slug>.pdf` (lowercase ASCII, hyphens, first-author surname or up to three surnames, the publication year, 3–6 title words, a `-tr` suffix for a technical-report version). A PostScript download is converted to PDF (`ps2pdf`); an OCR-text-only archive keeps its extension, with an `-ocr` suffix. A whole volume held for one chapter is named after the chapter, and its row gives the chapter's pdf pages. "Bib key" is the entry in `blueprint/src/bibliography.bib`, if any.
