@@ -434,7 +434,10 @@ to be re-derived by re-reading entries later.
   `pencilConfigPointGrade_eq_pencilPicturePoint`, reproved in 9 lines, as `Grade/ZeroHeights.lean`
   is outside `GluedEnds.lean`'s import closure. With all heights zero the case split closes at once
   (`gradeEmbed_apply_eq_zero` then `simp` at a height). A seventh duplication between the two
-  layers, beside `notes/pencil-scenes/simplify-ii.md`'s six; slice 3b's layout may let one go.
+  layers, beside `notes/pencil-scenes/simplify-ii.md`'s six. Since slice 3b,
+  `Grade/ZeroHeights.lean` is in `GluedEnds.lean`'s closure, but only through `Bridge` and
+  `MainComponent/FlatRank.lean`; the lemma stays, as reproving it from
+  `pencilConfigPointGrade_padHeights` saves a few lines.
 - **Status:** idiom.
 ### [idiom] `module` does not see `normalsJoin`'s antisymmetry: orient the joins first
 - **Where it bit:** Phase 44 slice 3a, `gradePiSection_crossProduct` (`Pencil/Grade/GluedEnds.lean`,

@@ -101,6 +101,7 @@ public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Cove
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.CoverageCut
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.CoverageTheoremS
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Flat
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.FlatRank
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GenericBase
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GenericSteer
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GoodEar

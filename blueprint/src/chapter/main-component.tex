@@ -892,7 +892,9 @@ plates in the plane joined at points~\cite[\S 5.1]{whiteley1984}.
 Evaluating each $h_v$ at $q_v$
 identifies them with the lifting space $L(q)$
 (\cref{lem:pencil-lifting-planes-dim}), and rank--nullity gives the flat
-rank.
+rank. The proof of \cref{thm:pencil-flat-rank} takes the same count from
+the flat rank in every dimension (\cref{thm:pencil-d-flat-rank}), which
+reads it off a framework in the plane.
 
 Over the reals, $h_v$ gives the velocities normal to the plane $z = 0$ of
 the points of that plane moving with the body $v$. The planes
@@ -989,9 +991,10 @@ polyhedra~\cite[p.~84]{sugihara1984}.
   The families of lifting planes range over the whole ambient set of
   bodies and are unconstrained off $V(G)$, as the infinitesimal motions
   of every framework are. Each body off $V(G)$ adds three to
-  $\dim F(q)$ and six to the dimension of the motions of a framework in
-  dimension three, as in the proof of \cref{thm:pencil-flat-rank}. These
-  terms cancel in every rank.
+  $\dim F(q)$ and to the dimension of the motions of the plane framework
+  of \cref{lem:pencil-lifting-planes-motions}, and six to that of the
+  motions of a framework in dimension three. These terms cancel in every
+  rank.
 \end{fmlnote}
 
 \begin{lemma}[The lifting planes are the motions of a plane framework]
@@ -1072,9 +1075,7 @@ frameworks whose rank \cref{sec:main-component-jj} uses.
   \label{thm:pencil-flat-rank}
   \lean{Graph.finrank_span_rigidityRows_ofNormals_flat,
         Graph.finrank_span_rigidityRows_ofNormals_flat_le,
-        Graph.finrank_span_rigidityRows_ofNormals_flat_eq_iff,
-        Graph.finrank_linkConstants,
-        Graph.finrank_infinitesimalMotions_pointJoinFramework_flat}
+        Graph.finrank_span_rigidityRows_ofNormals_flat_eq_iff}
   \leanok
   \uses{def:pencil-x0-attains, def:pencil-lifting-space, def:D-deficiency}
   Let $G$ be connected and let $q$ be admissible. Then the rank
@@ -1086,24 +1087,26 @@ frameworks whose rank \cref{sec:main-component-jj} uses.
 \end{theorem}
 \begin{proof}
   \leanok
-  \uses{lem:pencil-flat-split, lem:pencil-join-flat,
-        lem:pencil-lifting-planes-dim, lem:pencil-config-point-join-rank,
-        lem:pencil-lifting-space-deficiency, def:hinge-constraint}
-  The rank of $(q, 0)$ is that of the body-hinge framework $F_{(q,0)}$
-  whose hinge at each edge $uv$ is the line $p_u \vee p_v$ of the flat
-  configuration $p = (q, 0)$ (\cref{lem:pencil-config-point-join-rank}).
-  Its motions are the assignments of screws $m_v \in \bigwedge^2 K^4$ with
-  $m_u - m_v \in \operatorname{span}(p_u \vee p_v)$ at every edge $uv$
-  (\cref{def:hinge-constraint}): the motions of the flat split
-  (\cref{lem:pencil-flat-split}) at $d = 3$ and zero heights. By the flat
-  split they map onto $F(q)$, and the kernel is the constant assignments
-  with value in the kernel of $\bigwedge^2 \pi$. This kernel is the span
-  $W'$ of \cref{lem:pencil-join-flat}, of dimension three. So the motions
-  have dimension $3 + \dim F(q) = 3 + \dim L(q)$
-  (\cref{lem:pencil-lifting-planes-dim}). By rank--nullity in the
-  $6|V(G)|$-dimensional space of screw assignments, the rank is
-  $6|V(G)| - 3 - \dim L(q)$. The bound and its equality case follow from
+  \uses{thm:pencil-d-flat-rank, def:pencil-d-configuration,
+        lem:pencil-lifting-space-deficiency}
+  This is the flat rank in every dimension (\cref{thm:pencil-d-flat-rank})
+  at $d = 3$, with one height and $D = 6$. A configuration in dimension
+  three with one height is the configuration of
+  \cref{def:pencil-configuration}, with the same rank
+  (\cref{def:pencil-d-configuration}), and
+  $6(|V(G)| - 1) + 3 - \dim L(q) = 6|V(G)| - 3 - \dim L(q)$. That theorem
+  reads the rank off the plane framework $P_q$ of
+  \cref{lem:pencil-lifting-planes-motions}: the flat configuration is the
+  configuration of the picture in dimension two with a zero height
+  appended. The bound and its equality case follow from
   \cref{lem:pencil-lifting-space-deficiency}.
+
+  The flat split (\cref{lem:pencil-flat-split}) adds a reading of the
+  count: its motions at $(q, 0)$ map onto the lifting planes $F(q)$, of
+  dimension $\dim L(q)$ (\cref{lem:pencil-lifting-planes-dim}), with
+  kernel the constant assignments with value in the kernel of
+  $\bigwedge^2 \pi$, the three-dimensional span $W'$ of
+  \cref{lem:pencil-join-flat}, so they have dimension $3 + \dim L(q)$.
 \end{proof}
 
 \begin{corollary}[When the flat configuration has the deficiency rank]

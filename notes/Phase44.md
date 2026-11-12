@@ -2,17 +2,17 @@
 
 **Status:** in progress, opened 2026-11-12 with the PI. Exposition of the three pencil chapters
 against their classical sources; in the Lean, one rename, docstrings and the flat split in every
-dimension. No main result's statement changes. Slices 1, 2 and 3a of 10 done: the spike says
-yes; the carrier section cites its sources; the flat split holds in every dimension, its node in
-`pencil-d.tex`. Next: slice 3b, the `d = 3` motion count retired. Plan, the PI's words and the
-recon record: `notes/PencilScenes.md`.
+dimension. No main result's statement changes. Slices 1–3 of 10 done: the spike says yes; the
+carrier section cites its sources; the flat split holds in every dimension, and the `d = 3`
+motion count is retired. Next: slice 4, the flat rank and the equality attributed. Plan, the PI's
+words and the recon record: `notes/PencilScenes.md`.
 
 ## Current state
 
-**Next concrete step: slice 3b, the retirement and the layout** (item 3, *Two commits*): the
-`d = 3` motion count goes, and `thm:pencil-flat-rank`'s proof refers forward (the PI,
-*Decisions*). Then slice 4. Slices 5–8 wait on nothing. Slices 1, 2 and 3a have landed: the
-flat split in every dimension is in `Grade/GluedEnds.lean`, and every dep-graph node is green.
+**Next concrete step: slice 4, the flat rank and the equality** (item 4, `main-component.tex`).
+Slices 5–8 wait on nothing. Slices 1–3 have landed: the flat split in every dimension is in
+`Grade/GluedEnds.lean`, the `d = 3` flat rank (`MainComponent/FlatRank.lean`) follows from the
+every-dimension one and its proof refers forward, and every dep-graph node is green.
 
 ## Architectural choices made up front
 
@@ -36,28 +36,11 @@ follows all of 2–8.
 
 - [x] **1. The flat-split spike** (2026-11-12, read-only recon): **yes to both.** The three
   spike files are banked in `notes/pencil-scenes/` (`flat-split-spike.lean`,
-  `flat-rank-spike.lean`, `flat-deps-spike.lean`); the coordinator re-ran the first two with
-  `lake lean`: no error, no warning, no `sorry`, the standard three axioms. They import as
-  non-`module` files, so slice 3 builds them in place.
+  `flat-rank-spike.lean`, `flat-deps-spike.lean`), re-run by the coordinator with `lake lean`.
   (a) Onto is by an explicit section of `gradePi`, with no dimension count and no use of
   connectedness; the kernel is the assignments constant **on `V(G)`** and killed by `⋀²π`, at
-  every heights `z`, not only the flat ones. The statements slice 3 lands, from the spike:
-  `exists_mem_joinMotions_gradePi_eq` (at `z = 0`, from `hq : G.IsAdmissiblePicture q` and
-  `h ∈ G.liftingPlanes q`, some `S ∈ joinMotions G (pencilConfigPointGrade q 0)` has
-  `gradePi (S v) = h v` for all `v`) and `mem_joinMotions_iff_of_gradePi_eq_zero` (for
-  connected `G` and `gradePi (S v) = 0` for all `v`: `S` is a motion iff it is constant on
-  `V(G)`), with the packaged `joinMotionsPlanes`, `joinMotionsPlanes_surjective` and
-  `mem_ker_joinMotionsPlanes_iff`. About 110 lines, for `Grade/GluedEnds.lean` beside `gradePi`.
-  No `finrank` corollary: it has no consumer.
-  (b) No cycle: the every-dimension flat rank and what it rests on use none of the `d = 3`
-  chain (the dependency closures, `flat-deps-spike.lean`; the recon's run, not re-run). The
-  `d = 3` statement `Graph.finrank_span_rigidityRows_ofNormals_flat` follows verbatim from
-  `Graph.finrank_span_rigidityRows_ofNormals_flat_grade` at `m = 1` in 8 lines; its corollaries
-  keep statements and proofs. Retired: `mem_span_extensor_flat_iff`, `Graph.linkConstants`,
-  `Graph.finrank_linkConstants`, `Graph.finrank_infinitesimalMotions_pointJoinFramework_flat`
-  (`MainComponent/Flat.lean` 478–600), each used only there. Kept: `flatScrewEquiv`,
-  `flatSigma`, `flatRebuild`, `flatStdBiv`, `flatPi`, `planarProj` (the joins and
-  `MainComponent/Lines.lean` use them).
+  every heights `z`. (b) No cycle: the every-dimension flat rank uses none of the `d = 3` chain,
+  and the `d = 3` flat rank follows from it at `m = 1`. Both landed in slice 3.
 - [x] **2. The carrier section** (`main-component.tex`, `sec:main-component-carrier`, with its
   bibliography entries): `S_G` named, `L(q)` introduced once as its scene space (Whiteley 1984,
   Sugihara 1984; call 4); `lem:pencil-lifting-planes-dim` as two eliminations of one system
@@ -67,42 +50,20 @@ follows all of 2–8.
   `lem:pencil-lifting-planes-dim` and one after `lem:pencil-lifting-planes-motions`; no node's
   statement or proof route changed. Ledger rows M3–M9, M11, M14, M15 and M17 done; M2, the
   notation list, points at the new introduction; M10 is O6's, slice 8; M12 joins slice 5.)
-- [ ] **3. The flat split in every dimension** (Lean and `lem:pencil-flat-split`; only if slice 1
-  says yes to both). The new lemma; the node restated and re-pinned, its `\uses` and the two
-  nodes that cite its proof (`main-component.tex` near line 2237, `pencil-d.tex` near line 3135)
-  re-read; the `d = 3` motion count retired (`Graph.linkConstants`,
-  `Graph.finrank_infinitesimalMotions_pointJoinFramework_flat` and what only they use).
-  **The layout** (the coordinator's call, not built in place): `Grade/Flat.lean` drops its
-  `MainComponent/Bridge` import, its last theorem `Graph.x0AttainsGrade_of_deficiency_two_eq`
-  moving to `Grade/ContractAdditive.lean`, a user of it; the `d = 3` rank block
-  (`MainComponent/Flat.lean` 602–713) moves to a new file that imports `Grade/Flat.lean` and
-  that `MainComponent/Bridge.lean` imports, Bridge's line 391 being the block's one use outside
-  `MainComponent/Flat.lean`. If that meets a cycle, the fallback: `MainComponent/Flat.lean`
-  imports `Grade/ZeroHeights.lean` and the every-dimension flat rank moves there.
-  **The chapter**, beyond the node: the `flatScrewEquiv` pin and the `W'`, `W_Π` splitting text
-  move to `lem:pencil-join-flat`, which uses them; the paragraph near `main-component.tex` 842
-  and `fmlnote:pencil-lifting-planes` are reworded; `thm:pencil-d-flat-rank`'s second paragraph
-  (`pencil-d.tex` near 1373) points at the restated node; `lem:pencil-d-glued-ends` is not
-  contradicted.
-  **Two commits.** **3a:** the spike's lemmas into `Grade/GluedEnds.lean`; `lem:pencil-flat-split`
-  keeps its label, moves to `sec:pencil-d-flat` of `pencil-d.tex`, restated (onto `F(q)`, kernel
-  constant on `V(G)` and killed by `⋀²π`) and pinned to them, crediting Whiteley 1984 §5.1 only
-  as far as the page re-read supports; `main-component.tex` keeps a sentence pointing at it;
-  the `flatScrewEquiv` pin and the splitting text go to `lem:pencil-join-flat`. The two count
-  pins (`Graph.finrank_linkConstants`, `Graph.finrank_infinitesimalMotions_pointJoinFramework_flat`)
-  need a home until 3b: `thm:pencil-flat-rank`, whose Lean still uses them. **3b:** the
-  retirement and the layout above; `thm:pencil-flat-rank`'s proof becomes the every-dimension
-  flat rank at one height, referring forward to `thm:pencil-d-flat-rank`, with a sentence on
-  what the flat split adds; the deletion grep, tree-wide (the retired names also stand in
-  `notes/pencil-scenes/simplify-ii.md`, a banked report, which stays, and in
-  `notes/FRICTION-archive.md` and `notes/Prose-findings.md`, archives).
-  **3a done** (2026-11-12): the five pins of the restated node, the `flatScrewEquiv` pin and the
-  splitting text in `lem:pencil-join-flat`, the count pins at `thm:pencil-flat-rank`, and the
-  chapter beyond the node (the paragraph, now near `main-component.tex` 877, the fmlnote,
-  `thm:pencil-d-flat-rank`'s aside, glued-ends' pointer). For 3b: the count pins leave
-  `thm:pencil-flat-rank` with their declarations; its proof's `\uses` of `lem:pencil-join-flat`
-  and `def:hinge-constraint` go if the new proof drops them; the `MainComponent/Flat.lean` module
-  docstring names the retired four; `fmlnote:pencil-lifting-planes` cites the proof that changes.
+- [x] **3. The flat split in every dimension** (2026-11-12, two commits). **3a:** the spike's
+  lemmas in `Grade/GluedEnds.lean`; `lem:pencil-flat-split` restated in every dimension and moved
+  to `sec:pencil-d-flat`, crediting Whiteley 1984 §5.1 for the image half at `d = 3` only; the
+  `flatScrewEquiv` pin and the `W'`, `W_Π` splitting text in `lem:pencil-join-flat`. **3b:**
+  `mem_span_extensor_flat_iff`, `Graph.linkConstants`, `Graph.finrank_linkConstants` and
+  `Graph.finrank_infinitesimalMotions_pointJoinFramework_flat` deleted; the `d = 3` rank block in
+  the new `MainComponent/FlatRank.lean` (it imports `Grade/Flat.lean`, and
+  `MainComponent/Bridge.lean` imports it), `Graph.finrank_span_rigidityRows_ofNormals_flat` now
+  the every-dimension rank at `m = 1`; `Grade/Flat.lean` imports `MainComponent/Flat.lean` in
+  place of `Bridge`, and `Graph.x0AttainsGrade_of_deficiency_two_eq` moved to
+  `Grade/ContractAdditive.lean`.
+  `thm:pencil-flat-rank` keeps three pins, and its proof refers forward with one sentence on the
+  flat split (the PI); `thm:pencil-d-flat-rank`'s `d = 3` sentence, no longer circular;
+  `fmlnote:pencil-lifting-planes` counts the plane framework's motions.
 - [ ] **4. The flat rank and the equality** (`main-component.tex`): the flat split credits
   Whiteley 1984 §5.1, the three in-plane dimensions ours; `sec:main-component-jj` and
   `thm:pencil-jj-equality` attributed as in §5a, "Jackson and Jordán's equality" renamed in
@@ -135,7 +96,7 @@ follows all of 2–8.
 
 ## Blockers / open questions
 
-Nothing blocks slice 3b: the PI's two calls are under *Decisions*.
+Nothing blocks slice 4.
 
 Unchecked derivations, each to be checked in the slice named or weakened:
 
@@ -150,11 +111,13 @@ duplications between `MainComponent/` and `Grade/` of `notes/pencil-scenes/simpl
 
 ## Hand-off / next phase
 
-The next commit is slice 3b (item 3, *Two commits*, and its *3a done* line): retire
-`mem_span_extensor_flat_iff`, `Graph.linkConstants`, `Graph.finrank_linkConstants` and
-`Graph.finrank_infinitesimalMotions_pointJoinFramework_flat`, lay out the files as item 3 says,
-and rewrite `thm:pencil-flat-rank`'s proof as a forward reference; the deletion grep tree-wide.
-Then slice 4; slices 5 and 6 may go in any order with them.
+The next commit is slice 4 (item 4), in `main-component.tex`: the flat split's credit to
+Whiteley 1984 §5.1, the three in-plane dimensions ours; `sec:main-component-jj` and
+`thm:pencil-jj-equality` attributed as in the planning note §5a; "Jackson and Jordán's equality"
+renamed in prose to the dimension of the lifting space (call 5); the second bibliography entry,
+for the 2006 EGRES report (call 6). `sec:main-component-flat`'s introduction now ends on the
+forward route of `thm:pencil-flat-rank`'s proof (slice 3b); the rewording keeps it. Slices 5 and
+6 may go in any order with it.
 After the phase: ORIGAMI's open, with the PI
 (`notes/Origami.md`).
 
@@ -188,3 +151,10 @@ After the phase: ORIGAMI's open, with the PI
   chose "Move to pencil-d.tex (Recommended)": the node keeps its label and moves to
   `sec:pencil-d-flat`; `main-component.tex` keeps a sentence crediting Whiteley 1984 §5.1 and
   pointing at it, and the `d = 3` splitting text moves into `lem:pencil-join-flat`.
+- **Slice 3b (2026-11-12).** Item 3's layout built in place, with no fallback: `Grade/ZeroHeights`
+  and `MainComponent/Flat` reach neither `Bridge` nor `GluedEnds`. `Bridge` now sees
+  `Grade/ZeroHeights` through `FlatRank`, and so does every file after it;
+  `pencilConfigPointGrade_flat` stays (FRICTION, the `gradeEmbed` idiom). The forward `\uses`
+  from `thm:pencil-flat-rank` to `thm:pencil-d-flat-rank` makes no cycle: the latter's `\uses`
+  closure (36 nodes) does not reach the former. The proof's `\uses` are what its Lean uses:
+  `thm:pencil-d-flat-rank`, `def:pencil-d-configuration`, `lem:pencil-lifting-space-deficiency`.

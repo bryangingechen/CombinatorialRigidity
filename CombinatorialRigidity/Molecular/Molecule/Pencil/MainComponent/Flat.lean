@@ -9,43 +9,33 @@ public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Conf
 public import CombinatorialRigidity.Molecular.AlgebraicInduction.DeficiencyBound
 
 /-!
-# The flat rank
+# The lifting planes and the flat coordinates
 
-The lemmas of `sec:main-component-flat`, and the joins of two points in flat coordinates that the
-ear, cycle and open-ear steps use (`lem:pencil-join-flat`, `lem:pencil-join-independence-open`,
-`sec:main-component-chain`). A configuration `(q, 0)`, with all heights zero, is flat: every hinge
-`p_u ∧ p_v` of its point-join framework is a line of the plane `z = 0`. The flat coordinates
-(`flatScrewEquiv`) are a linear isomorphism `S ↦ (σ S, π S)` of the screw space of `K⁴` onto
-`K³ × K³`, which reads the components of `S` in the splitting `Λ²K⁴ = W′ ⊕ W_Π`, where `W_Π` is
-spanned by the lines of the plane `z = 0`. At a flat hinge the hinge condition says that the `W′`
-parts of the two bodies agree, so that on a connected graph they are one vector of `K³`, and that
-the `W_Π` parts, read as affine functions on `K²`, differ by a function that vanishes at the picture
-points of both ends (`mem_span_extensor_flat_iff`). The families of affine functions with this
-property are the lifting planes `F(q)` (`Graph.liftingPlanes`), and evaluating `h_w` at `q_w` maps
-them onto the lifting space `L(q)` (`lem:pencil-lifting-planes-dim`). So, when `G` has every body,
-the flat motions have dimension `3 + dim L(q)` (the case `d = 3` of `lem:pencil-flat-split`, which
-`Grade/GluedEnds.lean` proves in every dimension), and the flat rank is `6|V(G)| − 3 − dim L(q)`
-(`thm:pencil-flat-rank`).
+The lemmas of `sec:main-component-flat` on the lifting planes, and the joins of two points in flat
+coordinates that the ear, cycle and open-ear steps use (`lem:pencil-join-flat`,
+`lem:pencil-join-independence-open`, `sec:main-component-chain`). The lifting planes `F(q)`
+(`Graph.liftingPlanes`) are the families of affine functions `h_v` on `K²` such that across every
+link `h_u − h_v` vanishes at the picture points of both ends, and evaluating `h_w` at `q_w` maps
+them onto the lifting space `L(q)` (`lem:pencil-lifting-planes-dim`). `F(q)` is also the motion
+space of the panel-hinge framework in the plane with normals `(x_v, y_v, 1)`
+(`lem:pencil-lifting-planes-motions`), whose rank is therefore `3|V(G)| − dim L(q)`, and whose
+partition bound gives `dim L(q) ≥ 3 + def₂(G)` (`lem:pencil-lifting-space-deficiency`).
 
-`F(q)` is also the motion space of the panel-hinge framework in the plane with normals
-`(x_v, y_v, 1)` (`lem:pencil-lifting-planes-motions`), whose partition bound gives
-`dim L(q) ≥ 3 + def₂(G)` (`lem:pencil-lifting-space-deficiency`). As `def₃(G) ≤ def₂(G)` on a
-connected graph (`Graph.Connected.deficiency_three_le_deficiency_two`), an admissible picture with
-`dim L(q) ≤ 3 + def₃(G)` is a main picture whose flat configuration has rank at least
-`6(|V(G)| − 1) − def₃(G)`, and the general configuration of `G` attains (`cor:pencil-flat-attains`,
-`cor:pencil-flat-x0`).
+The flat rank reads the rank of a flat configuration `(q, 0)`, with all heights zero, off this
+plane framework: in every dimension in `Grade/Flat.lean` (`thm:pencil-d-flat-rank`), and in
+dimension three, with its corollaries, in `MainComponent/FlatRank.lean` (`thm:pencil-flat-rank`).
+The flat split (`lem:pencil-flat-split`, `Grade/GluedEnds.lean`) reads the motions of a flat
+configuration as lifting planes. Families range over all of `α`, unconstrained off `V(G)`: each
+body off `V(G)` adds `3` to `dim F(q)` and to the dimension of the motions of the plane framework,
+and these terms cancel in its rank (`fmlnote:pencil-lifting-planes`).
 
-The flat rank is computed on the point-join framework, whose rank the polarity gives to the
-framework `ofNormals` at the configuration points, the rank that `Graph.X0Attains` reads
-(`ofNormals_toBodyHinge_eq_mapExtensor_pointJoinFramework`,
-`BodyHingeFramework.finrank_span_rigidityRows_mapExtensor`). The coordinates `σ` and `π` are
-alternating forms on `K⁴`, lifted to the screw space along `exteriorPower.alternatingMapLinearEquiv`
-as in `Molecule/ScrewVelocity.lean`, over every field, so no basis of the screw space is chosen;
-`flatScrewEquiv` is surjective by an explicit right inverse, and both sides have dimension `6`. The
-motion spaces are compared by linear equivalences, so the flat rank is an identity, not a pair of
-inequalities. Families and screw assignments range over all of `α`, unconstrained off `V(G)`: each
-body off `V(G)` adds `3` to `dim F(q)` and `6` to the dimension of the flat motions, and these terms
-cancel in every rank (`fmlnote:pencil-lifting-planes`).
+The flat coordinates (`flatScrewEquiv`) are a linear isomorphism `S ↦ (σ S, π S)` of the screw
+space of `K⁴` onto `K³ × K³`, which reads the components of `S` in the splitting
+`Λ²K⁴ = W′ ⊕ W_Π`, where `W_Π` is spanned by the lines of the plane `z = 0`
+(`lem:pencil-join-flat`). The coordinates `σ` and `π` are alternating forms on `K⁴`, lifted to the
+screw space along `exteriorPower.alternatingMapLinearEquiv` as in `Molecule/ScrewVelocity.lean`,
+over every field, so no basis of the screw space is chosen; `flatScrewEquiv` is surjective by an
+explicit right inverse, and both sides have dimension `6`.
 
 The second part of the file writes the join `p ∧ p'` of two points of `K⁴` in flat coordinates, as
 `(p_z p̄′ − p′_z p̄, p̄ × p̄′)` with `p̄ = (p_x, p_y, p_w)` (`lem:pencil-join-flat`), gives the
@@ -63,7 +53,6 @@ nonzero, it lies in every panel that holds both points, and it passes through bo
 * `screwOneEquiv`: the screw space of the plane, `ScrewSpace K 1 ≃ K³`.
 * `flatSigma`, `flatPi` and `flatScrewEquiv`: the coordinates `σ` and `π`, and the flat
   coordinates `ScrewSpace K 2 ≃ K³ × K³`, `S ↦ (σ S, π S)`.
-* `Graph.linkConstants`: the families `α → K³` equal across every link.
 * `pointJoin`: the join `p ∧ p'` of two points of `K⁴`, as a screw.
 * `flatCoords`, `joinPicturePoly` and `joinHeightPoly`: the flat coordinates as one vector on
   `Fin 3 ⊕ Fin 3`, and the flat coordinates of a join as polynomials in the picture and in the
@@ -77,15 +66,6 @@ nonzero, it lies in every panel that holds both points, and it passes through bo
   `Graph.finrank_span_rigidityRows_ofNormals_pencilPicturePoint`:
   `lem:pencil-lifting-planes-motions`.
 * `Graph.three_add_deficiency_le_finrank_liftingSpace`: `lem:pencil-lifting-space-deficiency`.
-* `Graph.finrank_linkConstants` and `Graph.finrank_infinitesimalMotions_pointJoinFramework_flat`:
-  steps of `thm:pencil-flat-rank`, with the bodies off `V(G)`: the flat motions have dimension
-  `3(|V(G)ᶜ| + 1) + dim F(q)` on a connected graph.
-* `Graph.finrank_span_rigidityRows_ofNormals_flat`,
-  `Graph.finrank_span_rigidityRows_ofNormals_flat_le` and
-  `Graph.finrank_span_rigidityRows_ofNormals_flat_eq_iff`: `thm:pencil-flat-rank`.
-* `Graph.finrank_liftingSpace_eq_three_add_deficiency_three_iff` and
-  `Graph.x0Attains_of_finrank_liftingSpace_le`: `cor:pencil-flat-attains`.
-* `Graph.x0Attains_of_finrank_liftingSpace_eq_three`: `cor:pencil-flat-x0`.
 * `flatScrewEquiv`, `pointJoin`, `flatScrewEquiv_pointJoin` and
   `linearIndependent_pointJoin_of_flat`: `lem:pencil-join-flat`.
 * `pointJoin_swap`, `pointJoin_self`, `pointJoin_add_smul_left`, `pointJoin_zero_left`,
@@ -474,244 +454,6 @@ noncomputable def flatScrewEquiv : ScrewSpace K 2 ≃ₗ[K] (Fin 3 → K) × (Fi
 
 @[simp] theorem flatScrewEquiv_apply (S : ScrewSpace K 2) :
     flatScrewEquiv S = (flatSigma S, flatPi S) := rfl
-
-/-- **The hinge condition at a flat hinge, in split coordinates** (a step of
-`thm:pencil-flat-rank`): for points `a, b` in the plane `z = 0` with independent projections, a
-screw lies on the span of `a ∧ b` exactly when its `W′` coordinate vanishes and its `W_Π` coordinate
-is orthogonal to both projections, as `σ(a ∧ b) = 0` and `π(a ∧ b) = â ×₃ b̂`
-(`mem_span_crossProduct_iff`). -/
-theorem mem_span_extensor_flat_iff {a b : Fin 4 → K} (ha : a 2 = 0) (hb : b 2 = 0)
-    (hab : LinearIndependent K ![planarProj a, planarProj b]) (D : ScrewSpace K 2) :
-    D ∈ Submodule.span K {ScrewSpace.mk (extensor ![a, b]) (extensor_mem_exteriorPower _)} ↔
-      flatSigma D = 0 ∧ flatPi D ⬝ᵥ planarProj a = 0 ∧ flatPi D ⬝ᵥ planarProj b = 0 := by
-  rw [← mem_span_crossProduct_iff hab]
-  set C := ScrewSpace.mk (extensor ![a, b]) (extensor_mem_exteriorPower _) with hC
-  have hσ : flatSigma C = 0 := by rw [hC, flatSigma_mk_extensor, ha, hb]; simp
-  have hπ : flatPi C = crossProduct (planarProj a) (planarProj b) := by
-    rw [hC, flatPi_mk_extensor]
-  constructor
-  · intro hD
-    obtain ⟨t, rfl⟩ := Submodule.mem_span_singleton.mp hD
-    rw [map_smul, map_smul, hσ, hπ, smul_zero]
-    exact ⟨rfl, Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _)⟩
-  · rintro ⟨h0, hD⟩
-    obtain ⟨t, ht⟩ := Submodule.mem_span_singleton.mp hD
-    refine Submodule.mem_span_singleton.mpr ⟨t, flatScrewEquiv.injective ?_⟩
-    rw [map_smul, flatScrewEquiv_apply, flatScrewEquiv_apply, hσ, hπ, h0, ← ht, Prod.smul_mk,
-      smul_zero]
-
-/-- **The families equal across every link** (a step of `thm:pencil-flat-rank`, where they are the
-`W′` parts of the flat motions): the families `s : α → K³` with `s u = s v` at every link. -/
-def _root_.Graph.linkConstants (G : Graph α β) : Submodule K (α → Fin 3 → K) where
-  carrier := {s | ∀ e u v, G.IsLink e u v → s u = s v}
-  zero_mem' := fun _ _ _ _ => rfl
-  add_mem' := by rintro s t hs ht e u v he; simp [hs e u v he, ht e u v he]
-  smul_mem' := by rintro c s hs e u v he; simp [hs e u v he]
-
-/-- **On a connected graph, the families equal across every link have dimension `3(|V(G)ᶜ| + 1)`**
-(a step of `thm:pencil-flat-rank`, the three dimensions of the `W′` parts, and three more for each
-body off `V(G)`): such a family is constant on `V(G)` (`Graph.Preconnected.eq_of_forall_isLink`)
-and free off it. -/
-theorem _root_.Graph.finrank_linkConstants [Finite α] {G : Graph α β} (hG : G.Connected) :
-    Module.finrank K (G.linkConstants (K := K)) = 3 * (V(G)ᶜ.ncard + 1) := by
-  classical
-  have : Fintype α := Fintype.ofFinite α
-  obtain ⟨v₀, hv₀⟩ := hG.nonempty
-  let Φ : G.linkConstants (K := K) →ₗ[K] (Fin 3 → K) × (↥(V(G)ᶜ) → Fin 3 → K) :=
-    { toFun := fun s => (s.1 v₀, fun w => s.1 w)
-      map_add' := fun s t => rfl
-      map_smul' := fun c s => rfl }
-  have hbij : Function.Bijective Φ := by
-    refine ⟨fun s t hst => Subtype.ext (funext fun w => ?_), fun p => ?_⟩
-    · by_cases hw : w ∈ V(G)
-      · have h1 : s.1 v₀ = t.1 v₀ := congr_arg Prod.fst hst
-        rw [hG.pre.eq_of_forall_isLink s.2 hw hv₀, h1, hG.pre.eq_of_forall_isLink t.2 hv₀ hw]
-      · exact congr_fun (congr_arg Prod.snd hst) ⟨w, hw⟩
-    · refine ⟨⟨fun w => if hw : w ∈ V(G) then p.1 else p.2 ⟨w, hw⟩, fun e u v he => ?_⟩,
-        Prod.ext ?_ ?_⟩
-      · simp [he.left_mem, he.right_mem]
-      · simp [Φ, hv₀]
-      · funext ⟨w, hw⟩
-        simp [Φ, show w ∉ V(G) from hw]
-  rw [(LinearEquiv.ofBijective Φ hbij).finrank_eq, Module.finrank_prod, Module.finrank_fin_fun,
-    Module.finrank_pi_fintype]
-  have hc : Fintype.card ↥(V(G)ᶜ) = V(G)ᶜ.ncard := Set.fintypeCard_eq_ncard _
-  simp only [Finset.sum_const, Finset.card_univ, smul_eq_mul, Module.finrank_fin_fun, hc]
-  ring
-
-/-- **The motions of the flat configuration** (a step of `thm:pencil-flat-rank`, the count that
-`lem:pencil-flat-split` gives at `d = 3`): on a connected graph over an admissible picture, the
-motion space of the point-join framework of the flat configuration `(q, 0)` has dimension
-`3(|V(G)ᶜ| + 1) + dim F(q)` (`fmlnote:pencil-lifting-planes` for the bodies off `V(G)`).
-`flatScrewEquiv` at every body is a linear equivalence from it onto the product of the
-families equal across every link and `F(q)`, as at each link the hinge condition reads
-`σ S_u = σ S_v` with `π S_u − π S_v` orthogonal to the picture points of both ends
-(`mem_span_extensor_flat_iff`). -/
-theorem _root_.Graph.finrank_infinitesimalMotions_pointJoinFramework_flat [Finite α]
-    {G : Graph α β} (hG : G.Connected) {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q)
-    {ends : β → α × α} (hends : Graph.RecordsLinks G ends) :
-    Module.finrank K (pointJoinFramework G ends (pencilConfigPoint q 0)).infinitesimalMotions
-      = 3 * (V(G)ᶜ.ncard + 1) + Module.finrank K (G.liftingPlanes q) := by
-  set F := pointJoinFramework G ends (pencilConfigPoint q 0)
-  have h2 : ∀ w, pencilConfigPoint q (0 : α → K) w 2 = 0 := fun w => rfl
-  have hlink : ∀ (S : α → ScrewSpace K 2) e u v, G.IsLink e u v →
-      (S u - S v ∈ Submodule.span K {F.supportExtensor e} ↔
-        flatSigma (S u) = flatSigma (S v) ∧
-        (flatPi (S u) - flatPi (S v)) ⬝ᵥ pencilPicturePoint q u = 0 ∧
-        (flatPi (S u) - flatPi (S v)) ⬝ᵥ pencilPicturePoint q v = 0) := by
-    intro S e u v he
-    change S u - S v ∈ Submodule.span K {ScrewSpace.mk (extensor ![pencilConfigPoint q 0
-      (ends e).1, pencilConfigPoint q 0 (ends e).2]) (extensor_mem_exteriorPower _)} ↔ _
-    have hli : ∀ {a b : α}, G.IsLink e a b →
-        LinearIndependent K ![planarProj (pencilConfigPoint q 0 a),
-          planarProj (pencilConfigPoint q 0 b)] := fun hab => by
-      rw [planarProj_pencilConfigPoint, planarProj_pencilConfigPoint]
-      exact linearIndependent_pencilPicturePoint_pair (hq.1 e _ _ hab)
-    rcases hends.eq_or_swap he with ⟨h1, h2'⟩ | ⟨h1, h2'⟩
-    · rw [h1, h2', mem_span_extensor_flat_iff (h2 u) (h2 v) (hli he),
-        planarProj_pencilConfigPoint, planarProj_pencilConfigPoint, map_sub, map_sub, sub_eq_zero]
-    · rw [h1, h2', mem_span_extensor_flat_iff (h2 v) (h2 u) (hli he.symm),
-        planarProj_pencilConfigPoint, planarProj_pencilConfigPoint, map_sub, map_sub, sub_eq_zero]
-      exact and_congr Iff.rfl and_comm
-  let Φ : F.infinitesimalMotions →ₗ[K] (G.linkConstants (K := K)) × (G.liftingPlanes q) :=
-    { toFun := fun S => (⟨fun w => flatSigma (S.1 w), fun e u v he =>
-          ((hlink S.1 e u v he).mp (S.2 e u v he)).1⟩,
-        ⟨fun w => flatPi (S.1 w), fun e u v he =>
-          ((hlink S.1 e u v he).mp (S.2 e u v he)).2⟩)
-      map_add' := fun S T => by ext w i <;> simp
-      map_smul' := fun c S => by ext w i <;> simp }
-  -- the pointwise inverse of `flatScrewEquiv`
-  have hσ : ∀ p : (G.linkConstants (K := K)) × (G.liftingPlanes q), ∀ w,
-      flatSigma (flatScrewEquiv.symm (p.1.1 w, p.2.1 w)) = p.1.1 w := fun p w =>
-    congr_arg Prod.fst (flatScrewEquiv.apply_symm_apply (p.1.1 w, p.2.1 w))
-  have hπ : ∀ p : (G.linkConstants (K := K)) × (G.liftingPlanes q), ∀ w,
-      flatPi (flatScrewEquiv.symm (p.1.1 w, p.2.1 w)) = p.2.1 w := fun p w =>
-    congr_arg Prod.snd (flatScrewEquiv.apply_symm_apply (p.1.1 w, p.2.1 w))
-  have hbij : Function.Bijective Φ := by
-    refine ⟨fun S T hST => Subtype.ext (funext fun w => flatScrewEquiv.injective ?_),
-      fun p => ⟨⟨fun w => flatScrewEquiv.symm (p.1.1 w, p.2.1 w), fun e u v he =>
-        (hlink (fun w => flatScrewEquiv.symm (p.1.1 w, p.2.1 w)) e u v he).mpr ?_⟩, ?_⟩⟩
-    · rw [flatScrewEquiv_apply, flatScrewEquiv_apply]
-      exact Prod.ext (congr_arg (fun x : _ × _ => x.1.1 w) hST)
-        (congr_arg (fun x : _ × _ => x.2.1 w) hST)
-    · simp only [hσ, hπ]
-      exact ⟨p.1.2 e u v he, p.2.2 e u v he⟩
-    · ext w i <;> simp [Φ, hσ, hπ]
-  rw [(LinearEquiv.ofBijective Φ hbij).finrank_eq, Module.finrank_prod,
-    Graph.finrank_linkConstants hG]
-
-/-- **The flat rank is `6|V(G)| − 3 − dim L(q)`** (`thm:pencil-flat-rank`), at the rank
-`Graph.X0Attains` reads, on a connected graph over an admissible picture. By the polarity, it is the
-rank of the point-join framework (`ofNormals_toBodyHinge_eq_mapExtensor_pointJoinFramework`,
-`BodyHingeFramework.finrank_span_rigidityRows_mapExtensor`), whose motions have dimension
-`3(|V(G)ᶜ| + 1) + 3|V(G)ᶜ| + dim L(q)`
-(`Graph.finrank_infinitesimalMotions_pointJoinFramework_flat`, `Graph.finrank_liftingPlanes`) inside
-the `6|α|`-dimensional space of screw assignments. -/
-theorem _root_.Graph.finrank_span_rigidityRows_ofNormals_flat [Finite α] {G : Graph α β}
-    (hG : G.Connected) {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) {ends : β → α × α}
-    (hends : Graph.RecordsLinks G ends) :
-    (Module.finrank K (Submodule.span K
-        (PanelHingeFramework.ofNormals (k := 2) G ends
-          (fun p => pencilConfigPoint q 0 p.1 p.2)).toBodyHinge.rigidityRows) : ℤ)
-      = screwDim 2 * (V(G).ncard : ℤ) - 3 - Module.finrank K (G.liftingSpace q) := by
-  rw [ofNormals_toBodyHinge_eq_mapExtensor_pointJoinFramework G ends (pencilConfigPoint q 0),
-    BodyHingeFramework.finrank_span_rigidityRows_mapExtensor]
-  have hc := (pointJoinFramework G ends
-    (pencilConfigPoint q 0)).finrank_span_rigidityRows_add_finrank_infinitesimalMotions
-  rw [Graph.finrank_infinitesimalMotions_pointJoinFramework_flat hG hq hends,
-    Graph.finrank_liftingPlanes hq, screwDim_two,
-    ← Set.ncard_add_ncard_compl V(G) (Set.toFinite _) (Set.toFinite _)] at hc
-  rw [screwDim_two]
-  push_cast
-  omega
-
-/-! ## The flat bound, and the general configuration attains at a flat configuration -/
-
-/-- **The flat rank is at most `6(|V(G)| − 1) − def₂(G)`** (`thm:pencil-flat-rank`, its bound): the
-exact flat rank (`Graph.finrank_span_rigidityRows_ofNormals_flat`) with `3 + def₂(G) ≤ dim L(q)`
-(`Graph.three_add_deficiency_le_finrank_liftingSpace`). -/
-theorem _root_.Graph.finrank_span_rigidityRows_ofNormals_flat_le [Finite α] [Finite β]
-    {G : Graph α β} (hG : G.Connected) {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q)
-    {ends : β → α × α} (hends : Graph.RecordsLinks G ends) :
-    (Module.finrank K (Submodule.span K
-        (PanelHingeFramework.ofNormals (k := 2) G ends
-          (fun p => pencilConfigPoint q 0 p.1 p.2)).toBodyHinge.rigidityRows) : ℤ)
-      ≤ screwDim 2 * ((V(G).ncard : ℤ) - 1) - G.deficiency 2 := by
-  rw [Graph.finrank_span_rigidityRows_ofNormals_flat hG hq hends, screwDim_two]
-  have := Graph.three_add_deficiency_le_finrank_liftingSpace hq hG.nonempty
-  push_cast; linarith
-
-/-- **The flat rank is `6(|V(G)| − 1) − def_n(G)` exactly when `dim L(q) = 3 + def_n(G)`**
-(`thm:pencil-flat-rank`, its equality case at `n = 2`; at `n = 3`, the first equivalence of
-`cor:pencil-flat-attains`), for every `n`, from the exact flat rank
-(`Graph.finrank_span_rigidityRows_ofNormals_flat`). -/
-theorem _root_.Graph.finrank_span_rigidityRows_ofNormals_flat_eq_iff [Finite α] {G : Graph α β}
-    (hG : G.Connected) {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q)
-    {ends : β → α × α} (hends : Graph.RecordsLinks G ends)
-    (n : ℕ) :
-    (Module.finrank K (Submodule.span K
-        (PanelHingeFramework.ofNormals (k := 2) G ends
-          (fun p => pencilConfigPoint q 0 p.1 p.2)).toBodyHinge.rigidityRows) : ℤ)
-      = screwDim 2 * ((V(G).ncard : ℤ) - 1) - G.deficiency n ↔
-    (Module.finrank K (G.liftingSpace q) : ℤ) = 3 + G.deficiency n := by
-  rw [Graph.finrank_span_rigidityRows_ofNormals_flat hG hq hends, screwDim_two]
-  push_cast
-  constructor <;> intro h <;> linarith
-
-/-- **`dim L(q) = 3 + def₃(G)` exactly when `dim L(q) = 3 + def₂(G)` and `def₂(G) = def₃(G)`**
-(`cor:pencil-flat-attains`, its second equivalence): on a connected graph over an admissible
-picture, from `3 + def₂(G) ≤ dim L(q)` (`Graph.three_add_deficiency_le_finrank_liftingSpace`) and
-`def₃(G) ≤ def₂(G)` (`Graph.Connected.deficiency_three_le_deficiency_two`). -/
-theorem _root_.Graph.finrank_liftingSpace_eq_three_add_deficiency_three_iff [Finite α] [Finite β]
-    {G : Graph α β} (hG : G.Connected) {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) :
-    (Module.finrank K (G.liftingSpace q) : ℤ) = 3 + G.deficiency 3 ↔
-      (Module.finrank K (G.liftingSpace q) : ℤ) = 3 + G.deficiency 2 ∧
-        G.deficiency 2 = G.deficiency 3 := by
-  have hb := Graph.three_add_deficiency_le_finrank_liftingSpace hq hG.nonempty
-  have hi := hG.deficiency_three_le_deficiency_two
-  exact ⟨fun h => ⟨by linarith, by linarith⟩, fun ⟨h1, h2⟩ => by linarith⟩
-
-/-- **The general configuration attains when an admissible picture has `dim L(q) ≤ 3 + def₃(G)`**
-(`cor:pencil-flat-attains`, its last claim), on a connected graph. The picture is a main picture, as
-every admissible picture `q'` has `dim L(q') ≥ 3 + def₂(G) ≥ 3 + def₃(G)`
-(`Graph.three_add_deficiency_le_finrank_liftingSpace`,
-`Graph.Connected.deficiency_three_le_deficiency_two`), and its flat configuration has rank at least
-`6(|V(G)| − 1) − def₃(G)` (`Graph.finrank_span_rigidityRows_ofNormals_flat`), so
-`Graph.x0Attains_of_exists` (`lem:pencil-x0-one-witness`) applies at the height `0 ∈ L(q)`. -/
-theorem _root_.Graph.x0Attains_of_finrank_liftingSpace_le [Finite α] [Finite β] {G : Graph α β}
-    (hG : G.Connected) {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q)
-    (hL : (Module.finrank K (G.liftingSpace q) : ℤ) ≤ 3 + G.deficiency 3) : G.X0Attains K := by
-  have hV := hG.nonempty
-  have : Inhabited α := ⟨hV.some⟩
-  have hends : Graph.RecordsLinks G G.endsOf := Graph.recordsLinks_endsOf G
-  have hdef := hG.deficiency_three_le_deficiency_two
-  have hmain : G.IsMainPicture q := by
-    refine ⟨hq, fun q' hq' => ?_⟩
-    have := Graph.three_add_deficiency_le_finrank_liftingSpace hq' hV
-    have : (Module.finrank K (G.liftingSpace q) : ℤ) ≤ Module.finrank K (G.liftingSpace q') := by
-      linarith
-    exact_mod_cast this
-  refine Graph.x0Attains_of_exists hV G.endsOf hends hmain (G.liftingSpace q).zero_mem ?_
-  rw [Graph.finrank_span_rigidityRows_ofNormals_flat hG hq hends, screwDim_two]
-  push_cast; linarith
-
-/-- **The general configuration attains when the lifting space has dimension three**
-(`cor:pencil-flat-x0`): on a connected graph, if `dim L(q) = 3` at an admissible picture `q` (so
-that `ℓ₀ = 3`), then `def₂(G) = def₃(G) = 0` and the general configuration of `G` attains. By
-`Graph.three_add_deficiency_le_finrank_liftingSpace`, `def₂(G) ≤ 0`, and `0 ≤ def₃(G) ≤ def₂(G)`
-(`Graph.deficiency_nonneg`, `Graph.Connected.deficiency_three_le_deficiency_two`); then
-`Graph.x0Attains_of_finrank_liftingSpace_le` applies. -/
-theorem _root_.Graph.x0Attains_of_finrank_liftingSpace_eq_three [Finite α] [Finite β]
-    {G : Graph α β} (hG : G.Connected) {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q)
-    (h3 : Module.finrank K (G.liftingSpace q) = 3) :
-    G.deficiency 2 = 0 ∧ G.deficiency 3 = 0 ∧ G.X0Attains K := by
-  have hb := Graph.three_add_deficiency_le_finrank_liftingSpace hq hG.nonempty
-  have hi := hG.deficiency_three_le_deficiency_two
-  have h0 := G.deficiency_nonneg 3 hG.nonempty
-  rw [h3] at hb
-  push_cast at hb
-  refine ⟨by linarith, by linarith, Graph.x0Attains_of_finrank_liftingSpace_le hG hq ?_⟩
-  rw [h3]; push_cast; linarith
 
 /-! ## Joins of two points in flat coordinates
 

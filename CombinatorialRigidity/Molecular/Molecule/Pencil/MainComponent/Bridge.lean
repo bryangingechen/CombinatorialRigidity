@@ -5,7 +5,7 @@ Authors: Bryan Gin-ge Chen
 -/
 module
 
-public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Flat
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.FlatRank
 
 /-!
 # Jackson and Jordán's equality

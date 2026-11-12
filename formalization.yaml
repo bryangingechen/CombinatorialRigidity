@@ -321,7 +321,9 @@ status:
     formalized, on why the nondegenerate claim is not proved through the main component. The main
     results' statements and axioms are unchanged. Phase 44 (in progress) rewrites the blueprint's
     exposition of the pencil proof against its sources in scene analysis (Whiteley 1982, 1984 and
-    1989; Sugihara 1984), with no main result's statement to change; it has no Lean yet.
+    1989; Sugihara 1984), with no main result's statement to change; in the Lean so far, the flat
+    split is proved in every dimension and the three-dimensional flat rank follows from the
+    every-dimension one.
   sorry_count: 0
   sorry_in_definitions: 0
   axioms: ["propext", "Classical.choice", "Quot.sound"]          # only Lean/mathlib standard axioms; no project-specific axioms

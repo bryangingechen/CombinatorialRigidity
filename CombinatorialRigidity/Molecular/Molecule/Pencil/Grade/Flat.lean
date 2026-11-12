@@ -6,14 +6,13 @@ Authors: Bryan Gin-ge Chen
 module
 
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.Grade.ZeroHeights
-public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Bridge
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Flat
 
 /-!
 # The flat rank in every dimension
 
 `sec:pencil-d-flat` (`blueprint/src/chapter/pencil-d.tex`): the rank of a flat configuration
-`(q, 0)`, all of whose `m` heights are zero, in dimension `m + 2`, and the graphs whose two
-deficiencies agree.
+`(q, 0)`, all of whose `m` heights are zero, in dimension `m + 2`, and when it attains.
 
 The flat configuration with `m` heights is the configuration with no height, `m` zero heights
 appended (`padHeights`), and with no height the point of a body is its homogeneous picture point
@@ -25,7 +24,13 @@ is `D(|V(G)| − 1) + 3 − dim L(q)` (`thm:pencil-d-flat-rank`). With `dim L(q)
 (`Graph.three_add_deficiency_le_finrank_liftingSpace`), `def_(m+2)(G) ≤ def₂(G)`
 (`Graph.Connected.deficiency_le_deficiency_of_le`) and the one-witness lemma
 (`Graph.x0AttainsGrade_of_exists`), the corollaries are those of dimension three
-(`MainComponent/Flat.lean`, `MainComponent/Bridge.lean`) with `def_(m+2)` in place of `def₃`.
+(`MainComponent/FlatRank.lean`) with `def_(m+2)` in place of `def₃`.
+
+The file sits before `MainComponent/Bridge.lean`: the flat rank at `d = 3`
+(`MainComponent/FlatRank.lean`, `thm:pencil-flat-rank`) is this one at one height, and `Bridge`
+uses it. The corollary that needs `Bridge`, Jackson and Jordán's equality
+(`cor:pencil-d-jj-flat`, `Graph.x0AttainsGrade_of_deficiency_two_eq`), is in
+`Grade/ContractAdditive.lean`, its first user.
 
 ## Main results
 
@@ -33,7 +38,6 @@ is `D(|V(G)| − 1) + 3 − dim L(q)` (`thm:pencil-d-flat-rank`). With `dim L(q)
   `_flat_eq_iff_grade`: `thm:pencil-d-flat-rank`.
 * `Graph.finrank_liftingSpace_eq_three_add_deficiency_iff` and
   `Graph.x0AttainsGrade_of_finrank_liftingSpace_le`: `cor:pencil-d-flat-attains`.
-* `Graph.x0AttainsGrade_of_deficiency_two_eq`: `cor:pencil-d-jj-flat`.
 -/
 
 @[expose] public section
@@ -154,20 +158,5 @@ theorem _root_.Graph.x0AttainsGrade_of_finrank_liftingSpace_le [Finite α] [Fini
     (G.liftingSpaceGrade q m).zero_mem ?_
   rw [Graph.finrank_span_rigidityRows_ofNormals_flat_grade hG hq hends]
   linarith
-
-/-! ## The two deficiencies agree (`cor:pencil-d-jj-flat`) -/
-
-/-- **The general configuration attains in dimension `m + 2` when `def₂(G) = def_(m+2)(G)`**
-(`cor:pencil-d-jj-flat`): over an infinite field, if `G` is connected and simple, with at least
-three members in every closed neighbourhood. Jackson and Jordán's equality gives a main picture with
-`dim L(q) = 3 + def₂(G) = 3 + def_(m+2)(G)` (`Graph.exists_isMainPicture_finrank_liftingSpace_eq`),
-and `Graph.x0AttainsGrade_of_finrank_liftingSpace_le` (`cor:pencil-d-flat-attains`) applies. -/
-theorem _root_.Graph.x0AttainsGrade_of_deficiency_two_eq [Infinite K] [Finite α] [Finite β]
-    {G : Graph α β} (hG : G.Connected) (hSimple : G.Simple)
-    (h3 : ∀ v ∈ V(G), 3 ≤ (G.closedNbhd v).ncard)
-    (hdef : G.deficiency 2 = G.deficiency (m + 2)) : G.X0AttainsGrade K m := by
-  obtain ⟨q, hq, hdim⟩ := Graph.exists_isMainPicture_finrank_liftingSpace_eq (K := K) hSimple
-    hG.nonempty h3
-  exact Graph.x0AttainsGrade_of_finrank_liftingSpace_le hG hq.1 (by rw [hdim, hdef])
 
 end CombinatorialRigidity.Molecular
