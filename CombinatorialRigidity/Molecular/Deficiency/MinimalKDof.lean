@@ -394,8 +394,8 @@ graph on `V(G)` with an edge `ι e` linking `x` and `y` for every link `e` of `G
 vertices, adjacencies and closed neighbourhoods as `G`, so the deficiencies
 (`lem:embed-edges-simple-deficiency`), the lifting space and admissibility
 (`lem:pencil-jj-embed-edges`) are unchanged; only the label type grows, which is what
-lets Jackson and Jordán's equality be drawn from the planar case of KT Theorem 5.6 with no supply of
-spare labels assumed (`fmlnote:pencil-jj-embed-edges`). -/
+lets the dimension of the lifting space be drawn from the planar case of KT Theorem 5.6 with no
+supply of spare labels assumed (`fmlnote:pencil-jj-embed-edges`). -/
 def embedEdges {β' : Type*} (G : Graph α β) (ι : β ↪ β') : Graph α β' where
   vertexSet := V(G)
   IsLink e x y := ∃ e₀, ι e₀ = e ∧ G.IsLink e₀ x y

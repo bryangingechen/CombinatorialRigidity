@@ -390,6 +390,19 @@ is nonzero whenever $q_u \neq q_v$
 hinge would be zero wherever two adjacent planes coincide, and a zero
 hinge allows its two bodies no relative motion.
 
+Read as planes, the points of a configuration give Whiteley's polar
+reading of scenes~\cite[\S 5.1, p.~87]{whiteley1989}, an instance of
+Crapo's concurrence geometries~\cite[\S 7]{crapo1984}. The points of a
+closed neighbourhood lie in a plane exactly when the planes
+$p_w^{\perp}$ of its members pass through one point, the polar of that
+plane. The plane $p_v^{\perp}$ meets the plane $\zeta = 0$ in the line
+with normal $(x_v, y_v, 1)$ there, whatever the height $z_v$, and the
+heights turn these planes about these fixed lines. So the section by
+$\zeta = 0$ of the framework that defines the rank of $(q, z)$ is the
+plane framework $P_q$ of \cref{lem:pencil-lifting-planes-motions}. Its
+panels are these lines, and its hinges are the points where the hinges
+of the configuration meet $\zeta = 0$.
+
 Over an infinite field a nonzero polynomial has a non-root, so the
 pictures $q$ with $P(q) \neq 0$ form a nonempty Zariski-open set. Over a
 finite field a nonzero polynomial can vanish at every point, and the
@@ -866,6 +879,102 @@ Later subsections cite the lemmas themselves.
   also a pin of the lemma that the proof cites for that claim.
 \end{fmlnote}
 
+We end the subsection with an example, which uses the flat rank of the
+next subsection.
+
+\begin{example}[The theta graph with paths of lengths two, two and three]
+  \label{ex:pencil-theta}
+  Let $G$ consist of two bodies $a$ and $b$ joined by the paths
+  $a\,1\,b$, $a\,2\,b$ and $a\,3\,4\,b$, so that it has six bodies and
+  seven edges and satisfies the standing hypotheses. At $d = 2$ the
+  partition into singletons has value $3 \cdot 5 - 2 \cdot 7 = 1$. At
+  $d = 3$ a partition $P$ into at least two parts has
+  $d_G(P) \ge |P|$, as $G$ is two-edge-connected, and so has value
+  $6(|P| - 1) - 5 d_G(P) \le |P| - 6 \le 0$. Hence
+  $\operatorname{def}_3(G) = 0$. Over $K = \Q$, take the picture
+  \[
+    q_a = (-2, 0),\quad q_b = (2, 1),\quad q_1 = (0, 1),\quad
+    q_2 = (0, -1),\quad q_3 = (-1, 2),\quad q_4 = (1, 3),
+  \]
+  which is admissible. The closed neighbourhoods of $1$, $2$, $3$ and
+  $4$ have three members each, and impose no condition on the heights
+  (\cref{lem:pencil-three-points}). Those of $a$ and $b$ have four. Each
+  imposes one condition, the first with a nonzero coefficient at $z_3$
+  and the second at $z_4$, as $q_a$, $q_1$, $q_2$ and $q_b$, $q_1$,
+  $q_2$ are not collinear. So $\dim L(q) = 4$. As
+  $\dim L(q) \ge 3 + \operatorname{def}_2(G) \ge 4$ at every admissible
+  picture (\cref{lem:pencil-lifting-space-deficiency}),
+  $\operatorname{def}_2(G) = 1$ and $q$ is a main picture.
+
+  Modulo $\mathrm{Aff}(q)$, the lifting space is spanned by the height
+  with $z_b = 2$, $z_4 = 1$ and $z = 0$ at the other bodies. Its scene
+  is a fold. The face of $a$ lies in the plane $\zeta = 0$ and that of
+  $b$ in the plane $\zeta = \xi$. These faces share the bodies $1$ and
+  $2$, and meet along the line $\xi = 0$ through $q_1$ and $q_2$,
+  although $a$ and $b$ are not adjacent.
+
+  The flat configuration $(q, 0)$ has rank $6 \cdot 6 - 3 - 4 = 29$
+  (\cref{thm:pencil-flat-rank}), one less than the deficiency rank
+  $6 \cdot 5 - \operatorname{def}_3(G) = 30$. So does every configuration
+  whose height is globally affine (\cref{lem:pencil-rank-scale-shift}).
+  Every other height in $L(q)$ is a nonzero multiple of the fold plus a
+  globally affine height, and so has the rank of the fold, by the same
+  lemma. A direct computation, in exact arithmetic, gives the fold the
+  rank $30$. So every configuration over $q$ with a height in $L(q)$
+  outside $\mathrm{Aff}(q)$ is attaining.
+
+  In dimension $d$ a configuration has $d - 2$ heights
+  (\cref{def:pencil-d-configuration}), and one height can fall short of
+  the deficiency rank where two attain. Let $K$ be any infinite field
+  again. At the cycle $C_7$,
+  $\operatorname{def}_3 = 1$ and $\operatorname{def}_4 = 0$. Appending a
+  zero height to a configuration in dimension three adds $4 \cdot 6 = 24$
+  to its rank
+  (\cref{lem:pencil-d-embed-config-rank}). Over an admissible picture
+  that rank is at most $6 \cdot 6 - 1 = 35$
+  (\cref{lem:relative-deficiency-rank-bound}). So in dimension four a
+  configuration of $C_7$ whose second height is zero has rank at most
+  $59$, while the general configuration has the deficiency rank
+  $10 \cdot 6 = 60$ (\cref{thm:pencil-d-cycle}).
+\end{example}
+
+\begin{remark}[Scenes of the closed neighbourhoods and the Maxwell--Cremona correspondence]
+  \label{rem:pencil-maxwell-cremona}
+  Write the plane of the face of a body $v$ in a scene of $S_G$ over $q$
+  as $\zeta = g_v \cdot (\xi, \eta) + c_v$, with gradient $g_v \in K^2$.
+  At an edge $uv$ the faces of $u$ and $v$ both contain the points over
+  $q_u$ and $q_v$. So their planes agree at $q_u$ and at $q_v$, and
+  $(g_u - g_v) \cdot (q_u - q_v) = 0$. That the gradients of two faces
+  through a line differ by a vector orthogonal to the picture of the line
+  is the rule of the gradient space of scene
+  analysis~\cite[p.~479]{huffman1977}, \cite[p.~125]{mackworth1973}.
+
+  In the Maxwell--Cremona correspondence for a plane framework on the
+  graph of a spherical polyhedron, the faces of a lifting are the faces
+  of the polyhedron. By the same rule, their gradients form a drawing of
+  the dual graph whose edges are orthogonal to those of the framework.
+  Such reciprocal drawings correspond to the self-stresses of the
+  framework~\cite[Proposition~4.1, Theorem~4.3]{crapoWhiteley1994}. The
+  faces of $S_G$ are instead indexed by the bodies of $G$ itself. By the
+  first paragraph, the gradients of a scene of $S_G$ then form an
+  infinitesimal motion of the bar-and-joint framework $(G, q)$ in the
+  plane, a drawing of $G$ and not of a dual graph. So they give a motion,
+  not a self-stress, and the planarity of $G$ plays no role.
+
+  Not every motion arises. Given the gradients, the agreement of the
+  planes at $q_u$ fixes $c_u - c_v = -(g_u - g_v) \cdot q_u$ at each
+  edge $uv$, and around a cycle of $G$ these differences sum to zero. At
+  the infinitesimal rotation $g_v = (-y_v, x_v)$, the sum of
+  $(g_u - g_v) \cdot q_u$ around a cycle is twice the signed area of the
+  cycle in the picture. So the rotation arises only if every cycle of
+  $G$ has signed area zero.
+
+  The faces of $S_G$ that meet along a line are not only those of
+  adjacent bodies. In \cref{ex:pencil-theta} the bodies $a$ and $b$ are
+  not adjacent, and their faces meet along the line through $q_1$ and
+  $q_2$.
+\end{remark}
+
 \subsection{The flat rank}
 \label{sec:main-component-flat}
 
@@ -1085,6 +1194,15 @@ frameworks whose rank \cref{sec:main-component-jj} uses.
   least $3 + \operatorname{def}_2(G)$. This is the relative deficiency
   bound at $D = 3$ (\cref{lem:relative-deficiency-rank-bound}).
 \end{proof}
+
+The partition into singletons gives Whiteley's lower bound on the
+degree of freedom of a picture~\cite[p.~273]{whiteley1984}. For an
+incidence structure with point set $V$, face set $F$ and incidence set
+$R$, the scenes over a picture form a space of dimension at least
+$|V| + 3|F| - |R|$. For $S_G$ this reads $\dim L(q) \ge 3|V(G)| - 2|E(G)|$.
+Jackson and Jord\'an bound the rank of their bar-and-joint model of a
+body-and-pin framework in the plane by the same deficiency, from a
+partition that attains it~\cite[Lemma~4.1]{jacksonJordan2006pin}.
 
 \begin{theorem}[The flat rank]
   \label{thm:pencil-flat-rank}
@@ -1397,6 +1515,38 @@ $\dim L(q) \le 3 + \operatorname{def}_2(G)$.
   $\ell_0 = \dim L(q) = 3 + \operatorname{def}_2(G)$
   (\cref{def:pencil-main-picture}).
 \end{proof}
+
+\begin{remark}[A second derivation over the reals, by Whiteley's count]
+  \label{rem:pencil-jj-count}
+  Over the reals, \cref{thm:pencil-jj-equality} also follows from a
+  count. Call the pairs
+  $(w, v)$ of bodies with $w$ in the closed neighbourhood of $v$ the
+  incidences of $S_G$. A set $X$ of incidences meets $v(X)$ points and
+  $f(X)$ faces of $S_G$. By Whiteley's picture theorem, at a generic
+  picture the scene equations of a set of incidences are linearly
+  independent exactly when every nonempty subset $X$ of it has
+  $|X| \le v(X) + 3f(X) - 3$~\cite[Theorem~3.1]{whiteley1989}. So the
+  scenes over a generic picture form a space of dimension $4|V(G)|$ less
+  the rank of the matroid on the incidences that this count defines. The
+  rank formula for the matroid of such a count goes back to Edmonds and
+  Rota, and we take it from Whiteley's
+  survey~\cite[Theorem~A.1.4]{whiteley1996}. As a single incidence has
+  count $1$, it makes that rank the least value of
+  $\sum_X (v(X) + 3f(X) - 3)$ over the partitions of the incidences into
+  nonempty parts $X$. On $S_G$ this least value is
+  $4|V(G)| - 3 - \operatorname{def}_2(G)$. So
+  $\dim L(q) = 3 + \operatorname{def}_2(G)$ at a generic picture, which
+  is admissible, so that the scenes over it form a space of dimension
+  $\dim L(q)$ (\cref{def:pencil-lifting-system}).
+
+  This value of the least sum follows from published theorems: from
+  Jackson and Jord\'an's theorem through Whiteley's correspondence, as
+  above, together with the picture theorem and the rank formula. We have
+  not found it stated. A direct proof merges two parts of a least
+  partition when they share a face, as Berg and Jord\'an do for this
+  count~\cite[proof of Theorem~4]{bergJordan2003}, or when they share
+  three points.
+\end{remark}
 
 \begin{corollary}[The general configuration attains when the two deficiencies agree]
   \label{cor:pencil-jj-flat}
@@ -2301,6 +2451,10 @@ We begin with the heights.
   its members, and any three values at them are taken by exactly one
   affine function.
 \end{proof}
+
+In Whiteley's derived hypergraph of an incidence structure, a face with
+fewer than four points likewise gives no edge, and so no condition on the
+heights~\cite[Definition~3.2]{whiteley1989}.
 
 \begin{lemma}[The heights of an open ear]
   \label{lem:pencil-ear-fibre}
@@ -4549,7 +4703,9 @@ $y$ and $z$. So $L(q)$ consists of the globally affine heights, and has
 dimension three (\cref{lem:pencil-lifting-space-affine}). Where they are
 collinear, the heights of $x$, $y$ and $z$ need only agree with an affine
 function along their line, and the heights of $a$ and $b$ are then free,
-so $\dim L(q) = 4$. The proof of \cref{thm:pencil-d-generic} obtains a
+so $\dim L(q) = 4$. As Whiteley notes, a picture in special position can
+have more scenes than a general one~\cite[pp.~273--274]{whiteley1984}.
+The proof of \cref{thm:pencil-d-generic} obtains a
 generic realization of $K_{2,3}$ instead from one of the $4$-cycle left
 when a body of degree two, say $x$, is removed, across the ear $a x b$
 (\cref{lem:pencil-d-good-ear}, and \cref{lem:pencil-d-lift-ear} at
@@ -4569,8 +4725,15 @@ $b$ meet.
   \cref{lem:pencil-condition-linear}, this plane is the plane through the
   points of the closed neighbourhood of each body of $W$, its panel.
 
-  We prove this first at a general picture, and then at every main
-  picture as in the proof of \cref{lem:pencil-x0-one-witness}. The graph
+  Over the reals, at a generic picture, this is Whiteley's correspondence
+  for the incidence structure $S_{G[W]}$. Its reduced plate framework is
+  the plane framework $P_q$ of $G[W]$
+  (\cref{lem:pencil-lifting-planes-motions}), which is infinitesimally
+  rigid there, and a picture is flat exactly when that framework is
+  infinitesimally rigid~\cite[Corollary~4.2(i)]{whiteley1984}. We prove
+  the claim over every infinite field, first at a general picture, and
+  then at every main picture as in the proof of
+  \cref{lem:pencil-x0-one-witness}. The graph
   $G[W]$ satisfies the standing hypotheses
   (\cref{lem:pencil-contract-standing-rigid}, at $d = 2$). Let $P_W$ be
   the polynomial of \cref{thm:pencil-jj-equality} for $G[W]$. Let $s$ be
