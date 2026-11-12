@@ -2,14 +2,16 @@
 
 **Status:** in progress, opened 2026-11-12 with the PI. Exposition of the three pencil chapters
 against their classical sources; in the Lean, one rename, docstrings and the flat split in every
-dimension. No main result's statement changes. Next: slice 1, the flat-split spike. Plan, the
+dimension. No main result's statement changes. Slice 1 of 10 done: the spike says yes to both
+questions. Next: slice 2, the carrier section; slice 3 waits on two calls of the PI's. Plan, the
 PI's words and the recon record: `notes/PencilScenes.md`.
 
 ## Current state
 
-**Next concrete step: slice 1, the read-only spike on the flat split in every dimension.**
-Nothing but the open has landed: no chapter, bibliography or Lean file has changed, and every
-dep-graph node is green.
+**Next concrete step: slice 2, the carrier section** (item 2). Slice 3 follows once the PI has
+answered the two calls under *Blockers*; slices 2 and 4–8 do not wait on it, except slice 4's
+flat-split sentences. Slice 1's verdict has landed (item 1); no chapter, bibliography or Lean
+file has changed, and every dep-graph node is green.
 
 The phase has one work log and no sub-phases. Its inputs are all in `notes/PencilScenes.md`:
 what each source says (§2), each node against its source (§3's table), the observations O1–O7 and
@@ -38,18 +40,30 @@ with the two ledgers (`ledger-main.md`, `ledger-d.md`): the worklist of slices 2
 One commit each, in this order. The chapter's order of slices 4–6 is free; 3 follows 1, and 9
 follows all of 2–8.
 
-- [ ] **1. The flat-split spike** (read-only recon, no commit but its verdict here). Two
-  questions. (a) Does this hold, and how long is its Lean: at the flat configuration with any
-  number of zero heights, on a connected graph over an admissible picture, the map of
-  `gradePi_comp_mem_liftingPlanes` (`Grade/GluedEnds.lean`) from the motions to `F(q)` is onto,
-  and its kernel is the constant assignments killed by `⋀²π`? The coordinator's sketch, unchecked:
-  the kernel by `eq_of_gradePi_eq_of_mem_span` and connectedness, then onto by the count of
-  `Graph.finrank_span_rigidityRows_ofNormals_flat_grade`. (b) Can the `d = 3` flat rank and its
-  corollaries (`MainComponent/Flat.lean`, from `Graph.finrank_span_rigidityRows_ofNormals_flat`
-  on), used at `MainComponent/Bridge.lean:391`, come from the padding proof, given that
-  `Grade/Flat.lean` imports `MainComponent/Bridge.lean`? Deliverable: yes or no to each, the
-  statement to land, the files that move, and a line estimate. A `lake lean` witness of (a) is
-  welcome and is banked under `notes/pencil-scenes/` if written.
+- [x] **1. The flat-split spike** (2026-11-12, read-only recon): **yes to both.** The three
+  spike files are banked in `notes/pencil-scenes/` (`flat-split-spike.lean`,
+  `flat-rank-spike.lean`, `flat-deps-spike.lean`); the coordinator re-ran the first two with
+  `lake lean`: no error, no warning, no `sorry`, the standard three axioms. They import as
+  non-`module` files, so slice 3 builds them in place.
+  (a) Onto is by an explicit section of `gradePi`, with no dimension count and no use of
+  connectedness; the kernel is the assignments constant **on `V(G)`** and killed by `⋀²π`, at
+  every heights `z`, not only the flat ones. The statements slice 3 lands, from the spike:
+  `exists_mem_joinMotions_gradePi_eq` (at `z = 0`, from `hq : G.IsAdmissiblePicture q` and
+  `h ∈ G.liftingPlanes q`, some `S ∈ joinMotions G (pencilConfigPointGrade q 0)` has
+  `gradePi (S v) = h v` for all `v`) and `mem_joinMotions_iff_of_gradePi_eq_zero` (for
+  connected `G` and `gradePi (S v) = 0` for all `v`: `S` is a motion iff it is constant on
+  `V(G)`), with the packaged `joinMotionsPlanes`, `joinMotionsPlanes_surjective` and
+  `mem_ker_joinMotionsPlanes_iff`. About 110 lines, for `Grade/GluedEnds.lean` beside `gradePi`.
+  No `finrank` corollary: it has no consumer.
+  (b) No cycle: the every-dimension flat rank and what it rests on use none of the `d = 3`
+  chain (the dependency closures, `flat-deps-spike.lean`; the recon's run, not re-run). The
+  `d = 3` statement `Graph.finrank_span_rigidityRows_ofNormals_flat` follows verbatim from
+  `Graph.finrank_span_rigidityRows_ofNormals_flat_grade` at `m = 1` in 8 lines; its corollaries
+  keep statements and proofs. Retired: `mem_span_extensor_flat_iff`, `Graph.linkConstants`,
+  `Graph.finrank_linkConstants`, `Graph.finrank_infinitesimalMotions_pointJoinFramework_flat`
+  (`MainComponent/Flat.lean` 478–600), each used only there. Kept: `flatScrewEquiv`,
+  `flatSigma`, `flatRebuild`, `flatStdBiv`, `flatPi`, `planarProj` (the joins and
+  `MainComponent/Lines.lean` use them).
 - [ ] **2. The carrier section** (`main-component.tex`, `sec:main-component-carrier`, with its
   bibliography entries): `S_G` named, `L(q)` introduced once as its scene space (Whiteley 1984,
   Sugihara 1984; call 4); `lem:pencil-lifting-planes-dim` as two eliminations of one system
@@ -60,8 +74,20 @@ follows all of 2–8.
   nodes that cite its proof (`main-component.tex` near line 2237, `pencil-d.tex` near line 3135)
   re-read; the `d = 3` motion count retired (`Graph.linkConstants`,
   `Graph.finrank_infinitesimalMotions_pointJoinFramework_flat` and what only they use).
-  **If slice 1 says no to either:** the count stays, this slice is a sentence in slice 4 that the
-  every-dimension flat rank does not go through the flat split, and the PI is told.
+  **The layout** (the coordinator's call, not built in place): `Grade/Flat.lean` drops its
+  `MainComponent/Bridge` import, its last theorem `Graph.x0AttainsGrade_of_deficiency_two_eq`
+  moving to `Grade/ContractAdditive.lean`, a user of it; the `d = 3` rank block
+  (`MainComponent/Flat.lean` 602–713) moves to a new file that imports `Grade/Flat.lean` and
+  that `MainComponent/Bridge.lean` imports, Bridge's line 391 being the block's one use outside
+  `MainComponent/Flat.lean`. If that meets a cycle, the fallback: `MainComponent/Flat.lean`
+  imports `Grade/ZeroHeights.lean` and the every-dimension flat rank moves there.
+  **The chapter**, beyond the node: the `flatScrewEquiv` pin and the `W'`, `W_Π` splitting text
+  move to `lem:pencil-join-flat`, which uses them; the paragraph near `main-component.tex` 842
+  and `fmlnote:pencil-lifting-planes` are reworded; `thm:pencil-d-flat-rank`'s second paragraph
+  (`pencil-d.tex` near 1373) points at the restated node; `lem:pencil-d-glued-ends` is not
+  contradicted. Two commits if one is too large: the new lemmas with the node, then the
+  retirement with the deletion grep (the retired names also stand in
+  `notes/pencil-scenes/simplify-ii.md`, a banked report, which stays).
 - [ ] **4. The flat rank and the equality** (`main-component.tex`): the flat split credits
   Whiteley 1984 §5.1, the three in-plane dimensions ours; `sec:main-component-jj` and
   `thm:pencil-jj-equality` attributed as in §5a, "Jackson and Jordán's equality" renamed in
@@ -92,9 +118,17 @@ follows all of 2–8.
 
 ## Blockers / open questions
 
-None blocks slice 1. Unchecked derivations, each to be checked in the slice named or weakened:
+Slice 3 waits on two calls of the PI's, put to the PI on 2026-11-12; nothing else waits.
 
-- The every-dimension flat split (the coordinator's sketch): slice 1.
+- **How `thm:pencil-flat-rank`'s proof reads.** Its Lean will go through the padding proof,
+  whose nodes are in `pencil-d.tex`, a later chapter; its prose proof now counts motions through
+  `lem:pencil-flat-split`. Either the proof refers forward, or it keeps a count the Lean no
+  longer follows.
+- **Where the restated `lem:pencil-flat-split` lives.** Its statement is in `joinMotions` and
+  `gradePi`, objects of `pencil-d.tex`; the node is in `main-component.tex`.
+
+Unchecked derivations, each to be checked in the slice named or weakened:
+
 - Recon (i)'s and (ii)'s derivations (planning note §7a, *Not checked*): slice 5.
 - Crapo 1984 p. 295 as the polar form of `def:pencil-d-configuration`: slice 5, if cited.
 - The self-duality from Rigidity and polarity I, Theorem 4.1: slice 6.
@@ -106,10 +140,11 @@ duplications between `MainComponent/` and `Grade/` of `notes/pencil-scenes/simpl
 
 ## Hand-off / next phase
 
-The next commit is slice 1's verdict: dispatch one read-only recon with the two questions of
-item 1, check its answer against the Lean, and record yes or no to each at item 1, with the
-statement slice 3 lands. It changes no chapter and no Lean. Whether slice 3 is one session's
-work is not known until the spike sizes it. After the phase: ORIGAMI's open, with the PI
+The next commit is slice 2, the carrier section of `main-component.tex` with its bibliography
+entries (item 2; its worklist is the planning note's §5a and the citation tables named under
+*Current state*). Slice 3 is one or two commits, its Lean already written in the spike; it is
+dispatched once the PI's two calls under *Blockers* are recorded here.
+After the phase: ORIGAMI's open, with the PI
 (`notes/Origami.md`).
 
 ## Decisions made during this phase
@@ -118,3 +153,7 @@ work is not known until the spike sizes it. After the phase: ORIGAMI's open, wit
   the name `baseLiftSpace`; both of the simplification recon's additions to `pencil-d.tex`; the
   flat motion count retired for the flat split in every dimension, a spike first; docstrings
   change with the rename. The nine calls of §7 stand.
+- **Slice 1 (2026-11-12).** The spike says yes to both questions (item 1), with three
+  corrections to the question as posed: constant on `V(G)` only, onto without connectedness,
+  the kernel at every heights. The coordinator chose the layout that keeps `MainComponent/`
+  from importing the every-dimension rank into its own flat file (item 3).

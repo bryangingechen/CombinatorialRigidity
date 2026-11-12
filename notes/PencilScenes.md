@@ -12,7 +12,7 @@ On 2026-11-11 the PI also settled the plan at the open (§7): the nine calls, a 
 Lean, and one more read-only recon, for simplifications of the route, which no recon had asked.
 The simplification recon ran the same day (§7a): no to (i), and to (ii) one definition, not one
 theorem. The route and the Lean stand; the exposition gains two paragraphs.
-**Next concrete step:** `notes/Phase44.md` *Hand-off* (slice 1, the flat-split spike).
+**Next concrete step:** `notes/Phase44.md` *Hand-off* (slice 2, the carrier section; slice 1, the flat-split spike, said yes).
 
 ## 1. The PI's words (verbatim)
 
