@@ -170,15 +170,37 @@ closed neighbourhood is therefore coplanar exactly when the heights on it
 agree with an affine function of the picture
 (\cref{lem:pencil-condition-linear}). This condition is linear in the
 heights. The heights that satisfy it at every body form the lifting space
-$L(q)$. In the language of scene analysis, $L(q)$ is the space of heights
-of the liftings of $q$, for the incidence structure whose faces are the
-closed neighbourhoods. The heights of one affine function at every body
-are the trivial liftings, which put all the faces in one plane (see
-Whiteley~\cite{whiteley1996}, \S 8.3).
+$L(q)$.
+
+This is the setting of scene analysis, for one incidence structure. Let
+$S_G$ be the incidence structure whose points are the bodies of $G$ and
+whose faces are its closed neighbourhoods, a body $w$ lying on the face
+of $v$ when $w$ is in the closed neighbourhood of $v$. A \emph{scene} of
+an incidence structure over a planar picture of its points lifts each
+point to a point of space over its picture point, and gives each face a
+plane, not vertical, that contains the points on the face. The heights
+and the coefficients of the planes are the unknowns of the standard
+linear equations of scene analysis, one for each point on each face.
+Whiteley~\cite[\S\S 2.1--2.2]{whiteley1984} and
+Sugihara~\cite[\S\S 2.2, 3.1]{sugihara1984} set them up for an arbitrary
+incidence structure, not only for the vertices and faces of a
+polyhedron, and Sugihara studies the dimension of their solutions. They
+work over the reals; the equations are linear, and we take them over
+every field. For $S_G$ they are the equations of the lifting system
+(\cref{def:pencil-lifting-system}), whose solutions have the heights
+$L(q)$. So $L(q)$ is the space of heights of the scenes of $S_G$ over
+$q$, and over an admissible picture the heights determine the scene. We
+keep the name lifting space, after the liftings of a picture in
+Whiteley's survey~\cite[\S 8.3]{whiteley1996}. The scenes with all faces
+in one plane are the trivial, or flat,
+scenes~\cite[Definition~2.3]{whiteley1984}. Their heights are the
+globally affine heights, which form a three-dimensional subspace
+$\mathrm{Aff}(q)$ of $L(q)$ (\cref{lem:pencil-lifting-space-affine}), as
+Whiteley notes~\cite[p.~78]{whiteley1989}.
 
 The rest of the subsection shows that one configuration can stand for
 the general one. A configuration over an admissible picture with
-$z \in L(q)$ gives a pencil realization
+$z \in L(q)$, a scene of $S_G$, gives a pencil realization
 (\cref{lem:pencil-config-distinct-realization}). The general
 configuration of $G$ attains when, at a general picture and a general
 height in $L(q)$, this realization has the deficiency rank
@@ -547,7 +569,11 @@ shrinks a core along the contraction curve
 To move heights from one picture to another, we describe $L(q)$ by a
 linear system whose coefficients are polynomials in the picture. Besides
 the heights, its unknowns are the coefficients of an affine function at
-each body.
+each body. Its equations are the scene equations of $S_G$: Whiteley's
+equations~(1)~\cite[p.~272]{whiteley1984} and Sugihara's fundamental
+equations~(2)~\cite[p.~80]{sugihara1984}. They write the plane of a
+face as $a\xi + b\eta + \zeta + c = 0$, where we write
+$\zeta = h_v \cdot (\xi, \eta, 1)$, so that $h_v = -(a, b, c)$.
 
 \begin{definition}[The lifting system]
   \label{def:pencil-lifting-system}
@@ -570,7 +596,8 @@ each body.
   neighbourhood (\cref{def:pencil-lifting-space}). Over an admissible
   picture the heights of a solution determine each $h_v$, as three
   members of the closed neighbourhood of $v$ have non-collinear picture
-  points. So there the solutions form a space of dimension $\dim L(q)$.
+  points, as in Whiteley's proof of~\cite[Theorem~3.1]{whiteley1989}
+  (p.~84). So there the solutions form a space of dimension $\dim L(q)$.
 \end{proof}
 \begin{fmlnote}
   The three pins are the system, as a matrix of polynomials in the
@@ -630,6 +657,14 @@ holds when $\dim L(q_0)$ is least.
   picture $q$ with $\dim L(q) = \ell_0$, and $U$ denotes the set of main
   pictures.
 \end{definition}
+
+Over the reals, $\ell_0 - 3$ is the generic degree of freedom of $S_G$
+in the sense of Whiteley~\cite[Definition~2.4]{whiteley1984}: the least
+dimension of the space of scenes over a picture, less three. That least
+dimension is attained on a nonempty Zariski-open set of pictures, which
+meets the admissible ones, and over an admissible picture the scenes
+form a space of dimension $\dim L(q)$
+(\cref{def:pencil-lifting-system}).
 
 \begin{remark}[The geometry of the main component]
   \label{rem:pencil-x0-main-component}
@@ -892,6 +927,33 @@ $\dim L(q) = 3$.
   $(h_u - h_v)(q_u) = (h_u - h_v)(q_v) = 0$ for every edge $uv$.
 \end{definition}
 
+The lifting planes are the planes of the scenes of $S_G$
+(\cref{sec:main-component-carrier}). A solution $(z, h)$ of the lifting
+system $M(q)$ (\cref{def:pencil-lifting-system}) has $h \in F(q)$: both
+ends of an edge $uv$ lie in the closed neighbourhoods of $u$ and of $v$,
+so $h_u$ and $h_v$ both take the value $z_u$ at $q_u$ and the value
+$z_v$ at $q_v$. Conversely, a family $h \in F(q)$ is the family of
+planes of exactly one solution, whose height at each body $w$ is
+$h_w(q_w)$, as $w$ lies in its own closed neighbourhood. So $L(q)$ and
+$F(q)$ are the two eliminations of one system: $L(q)$ keeps the heights
+of its solutions, and $F(q)$ their planes. The next lemma says that over
+an admissible picture they have the same dimension. Its map $\Phi$
+takes the planes of a solution to its heights.
+
+Both eliminations are Whiteley's, for general incidence structures. He
+eliminates the heights by a row reduction, which leaves a plate
+framework on the planes (\cite[\S 4.1]{whiteley1984}; see
+\cref{lem:pencil-lifting-planes-motions}). His proof of
+Proposition~4.1 there uses that the planes of a scene determine its
+heights, as every point lies on a face (p.~282).
+In~\cite[\S\S 2--3]{whiteley1989} he records the scenes by their heights
+alone, as the scenes of a derived hypergraph (Definition~3.2), and his
+proof of Theorem~3.1 uses that the heights determine the planes when
+every face has three non-collinear points (p.~84). Here admissibility
+gives these points. Sugihara states that the two
+dimensions agree for correct pictures of
+polyhedra~\cite[p.~84]{sugihara1984}.
+
 \begin{lemma}[The lifting planes and the lifting space]
   \label{lem:pencil-lifting-planes-dim}
   \lean{Graph.finrank_liftingPlanes}
@@ -992,6 +1054,28 @@ $\dim L(q) = 3$.
   normals, which is the condition defining $F(q)$. The rank follows by
   rank--nullity and \cref{lem:pencil-lifting-planes-dim}.
 \end{proof}
+
+The framework $P_q$ is Whiteley's reduced plate framework of
+$S_G$~\cite[\S 4.1]{whiteley1984}, read with pins. Whiteley row-reduces
+the scene equations point by point. Order the faces through each body
+$w$ with its own face first. The reduction then turns the equations at
+$w$ into one bar along the line with normal $(x_w, y_w, 1)$ from the
+plate of $w$ to the plate of each neighbour $u$ (p.~282). So an edge
+$uv$ gets two bars between the plates of $u$ and $v$, along the lines
+with normals $(x_u, y_u, 1)$ and $(x_v, y_v, 1)$. A bar puts the
+relative centre of motion of its two plates on its line (p.~277), so the
+two bars put it at the meet of the two lines, the hinge of $P_q$ at
+$uv$: together they act as one pin there. Another order of the faces
+gives a line-equivalent framework (p.~283), with the same
+motions~\cite[Proposition~3.3]{whiteley1984}. By Whiteley's
+Proposition~4.1, the motions of this framework are the families of
+planes of the scenes over $q$, the centre of each plate being the plane
+of its face. Up to the sign of the plane coefficients these families
+form $F(q)$, and the lemma's isomorphism is this proposition for $S_G$.
+Like every panel-hinge framework in the plane, $P_q$ is pin-collinear in
+the sense of Jackson and Jord\'an~\cite[p.~259]{jacksonJordan2008pin}:
+the pins of each body lie on one line, its panel. This is the class of
+frameworks whose rank \cref{sec:main-component-jj} uses.
 
 \begin{lemma}[The flat lower bound on the lifting space]
   \label{lem:pencil-lifting-space-deficiency}

@@ -12,7 +12,7 @@ On 2026-11-11 the PI also settled the plan at the open (§7): the nine calls, a 
 Lean, and one more read-only recon, for simplifications of the route, which no recon had asked.
 The simplification recon ran the same day (§7a): no to (i), and to (ii) one definition, not one
 theorem. The route and the Lean stand; the exposition gains two paragraphs.
-**Next concrete step:** `notes/Phase44.md` *Hand-off* (slice 2, the carrier section; slice 1, the flat-split spike, said yes).
+**Next concrete step:** `notes/Phase44.md` *Hand-off* (slice 5 or 6; slices 1 and 2 have landed).
 
 ## 1. The PI's words (verbatim)
 
@@ -57,7 +57,7 @@ numbers are the printed ones. Bib keys are given where `blueprint/src/bibliograp
   cite it as the origin of the correspondence, not as its general statement. §3.4 (p. 23): the path
   condition. Bow's Proposition 4.4 is on p. 30 (§4.3); K₃,₃ with a crossing as a joint is Example 4.3.
 - **Whiteley 1984**, "A correspondence between scene analysis and motions of frameworks" (*Discrete
-  Appl. Math.* 9, 269–295; no bib entry). Definitions 2.1–2.4: scenes over a picture of any
+  Appl. Math.* 9, 269–295; `whiteley1984`). Definitions 2.1–2.4: scenes over a picture of any
   incidence structure S = (V, F; R). Proposition 4.1 (pp. 282–283): eliminating the heights leaves
   the plane plate-and-bar framework L(S(p)); scenes ≅ its motions; Corollary 4.2 compares degrees of
   freedom. Theorems 4.1 (p. 285) and 4.9 (p. 287): inverse maps. §5.1–5.3 (pp. 287–289): the joined
@@ -66,7 +66,7 @@ numbers are the printed ones. Bib keys are given where `blueprint/src/bibliograp
   sharp; "we have not seen this discussed elsewhere". Its Remark: plane pictures of 4-dimensional
   scenes with hyperplane faces give quadratic equations.
 - **Whiteley 1989**, "A matroid on hypergraphs, with applications in scene analysis and geometry"
-  (*Discrete Comput. Geom.* 4, 75–95; no bib entry). P. 78: the scene conditions are linear in the
+  (*Discrete Comput. Geom.* 4, 75–95; `whiteley1989`). P. 78: the scene conditions are linear in the
   heights. Theorem 3.1 (p. 83): at a generic picture of any incidence structure, incidences are
   independent iff i′ ≤ v′ + 3f′ − 3 on every nonempty subset (W89's own count, p. 76).
   Corollary 3.2, the count with −4 for sharp pictures, is Sugihara's conjecture (1984, p. 92).

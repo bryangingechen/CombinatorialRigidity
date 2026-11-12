@@ -2,16 +2,18 @@
 
 **Status:** in progress, opened 2026-11-12 with the PI. Exposition of the three pencil chapters
 against their classical sources; in the Lean, one rename, docstrings and the flat split in every
-dimension. No main result's statement changes. Slice 1 of 10 done: the spike says yes to both
-questions. Next: slice 2, the carrier section; slice 3 waits on two calls of the PI's. Plan, the
-PI's words and the recon record: `notes/PencilScenes.md`.
+dimension. No main result's statement changes. Slices 1 and 2 of 10 done: the spike says yes;
+the carrier section names `S_G` and cites its sources. Next: slice 5 or 6; slice 3 waits on two
+calls of the PI's, and slice 4 on slice 3. Plan, the PI's words and the recon record:
+`notes/PencilScenes.md`.
 
 ## Current state
 
-**Next concrete step: slice 2, the carrier section** (item 2). Slice 3 follows once the PI has
-answered the two calls under *Blockers*; slices 2 and 4–8 do not wait on it, except slice 4's
-flat-split sentences. Slice 1's verdict has landed (item 1); no chapter, bibliography or Lean
-file has changed, and every dep-graph node is green.
+**Next concrete step: slice 5, `pencil-d.tex`, or slice 6, `pencil.tex`** (items 5 and 6, either
+order). Slice 3 waits on the PI's two calls under *Blockers*, and slice 4 on slice 3, whose node
+its flat-split sentences credit; slices 5–8 do not wait. Slice 2 has landed (item 2): the
+carrier section of `main-component.tex` and three new bibliography entries (`whiteley1984`,
+`whiteley1989`, `sugihara1984`). No Lean file has changed, and every dep-graph node is green.
 
 The phase has one work log and no sub-phases. Its inputs are all in `notes/PencilScenes.md`:
 what each source says (§2), each node against its source (§3's table), the observations O1–O7 and
@@ -64,11 +66,15 @@ follows all of 2–8.
   (`MainComponent/Flat.lean` 478–600), each used only there. Kept: `flatScrewEquiv`,
   `flatSigma`, `flatRebuild`, `flatStdBiv`, `flatPi`, `planarProj` (the joins and
   `MainComponent/Lines.lean` use them).
-- [ ] **2. The carrier section** (`main-component.tex`, `sec:main-component-carrier`, with its
+- [x] **2. The carrier section** (`main-component.tex`, `sec:main-component-carrier`, with its
   bibliography entries): `S_G` named, `L(q)` introduced once as its scene space (Whiteley 1984,
   Sugihara 1984; call 4); `lem:pencil-lifting-planes-dim` as two eliminations of one system
   (§5a); `lem:pencil-lifting-planes-motions` as Whiteley 1984's reduced plate framework of
-  `S_G`, which is pin-collinear.
+  `S_G`, which is pin-collinear. (2026-11-12: the carrier's introduction, a sentence each at
+  `def:pencil-lifting-system` and `def:pencil-main-picture` (W84 Def. 2.4), a paragraph before
+  `lem:pencil-lifting-planes-dim` and one after `lem:pencil-lifting-planes-motions`; no node's
+  statement or proof route changed. Ledger rows M3–M9, M11, M14, M15 and M17 done; M2, the
+  notation list, points at the new introduction; M10 is O6's, slice 8; M12 joins slice 5.)
 - [ ] **3. The flat split in every dimension** (Lean and `lem:pencil-flat-split`; only if slice 1
   says yes to both). The new lemma; the node restated and re-pinned, its `\uses` and the two
   nodes that cite its proof (`main-component.tex` near line 2237, `pencil-d.tex` near line 3135)
@@ -96,7 +102,9 @@ follows all of 2–8.
 - [ ] **5. `pencil-d.tex`**: the sources of §3's rows; `def:pencil-d-lift` no longer presented
   as new; recon (i)'s two sentences at `def:pencil-d-lift` and `lem:pencil-d-ear-free`, and
   recon (ii)'s paragraph in Part C's introduction (the PI, §8), each derivation checked first;
-  O4 as a sentence at `def:pencil-d-configuration`; call 5's prose.
+  O4 as a sentence at `def:pencil-d-configuration`; call 5's prose. With the scale-shift row,
+  Sugihara 1984 eq. (10) (p. 85) at `main-component.tex`'s `lem:pencil-rank-scale-shift` too
+  (`ledger-main.md` M12), if it is cited at the `d` twin.
 - [ ] **6. `pencil.tex`**: "pencil" (Crapo–Whiteley 1982's flat pencil) and the polarity's
   attribution; the self-duality of the pencil class in call 1's wording, if its derivation
   checks; call 5's prose.
@@ -140,10 +148,11 @@ duplications between `MainComponent/` and `Grade/` of `notes/pencil-scenes/simpl
 
 ## Hand-off / next phase
 
-The next commit is slice 2, the carrier section of `main-component.tex` with its bibliography
-entries (item 2; its worklist is the planning note's §5a and the citation tables named under
-*Current state*). Slice 3 is one or two commits, its Lean already written in the spike; it is
-dispatched once the PI's two calls under *Blockers* are recorded here.
+The next commit is slice 5, `pencil-d.tex` (item 5), or slice 6, `pencil.tex` (item 6); their
+worklist is §3's rows and the citation tables named under *Current state*, and the bibliography
+now holds `whiteley1984`, `whiteley1989` and `sugihara1984`. Slice 3 is one or two commits, its
+Lean already written in the spike; it is dispatched once the PI's two calls under *Blockers* are
+recorded here, and slice 4 follows it.
 After the phase: ORIGAMI's open, with the PI
 (`notes/Origami.md`).
 
@@ -157,3 +166,9 @@ After the phase: ORIGAMI's open, with the PI
   corrections to the question as posed: constant on `V(G)` only, onto without connectedness,
   the kernel at every heights. The coordinator chose the layout that keeps `MainComponent/`
   from importing the every-dimension rank into its own flat file (item 3).
+- **Slice 2 (2026-11-12).** The carrier is cited, not restated: the nodes keep their statements
+  and proofs, and the classical reading sits in prose beside them. `P_q` is W84's reduced plate
+  framework with each body's own face first in the reduction (its two bars per edge act as one
+  pin); every page cited was re-read in the PDF, and the three new entries checked against
+  Crossref. `\cite` keys: `whiteley1989` is the hypergraph paper; Rigidity and polarity II,
+  if cited, takes a suffix.
