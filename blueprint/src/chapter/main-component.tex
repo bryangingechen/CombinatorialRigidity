@@ -876,7 +876,7 @@ and $D = 6$).
 
 The idea is that at zero heights every hinge $p_u \vee p_v$ is a line
 of the plane $z = 0$. We split the screw space into the screws of the
-lines of this plane and a complement (\cref{lem:pencil-flat-split}). At a
+lines of this plane and a complement (\cref{lem:pencil-join-flat}). At a
 hinge, the screws of the two bodies may differ only by a multiple of the
 hinge. So the hinges glue the complementary parts of the bodies' screws
 together, and on a connected graph these parts are all equal. They give
@@ -885,7 +885,11 @@ correspond to the affine functions on $K^2$, a line to the functions
 vanishing on it. So the rest of a motion is a family $(h_v)$ of affine
 functions such that $h_u - h_v$ vanishes at $q_u$ and at $q_v$ for every
 edge $uv$. These families are the lifting planes
-(\cref{def:pencil-lifting-planes}). Evaluating each $h_v$ at $q_v$
+(\cref{def:pencil-lifting-planes}). This is the flat split, which
+\cref{lem:pencil-flat-split} proves in every dimension. Its description of
+the motions normal to the plane by affine functions is Whiteley's, for
+plates in the plane joined at points~\cite[\S 5.1]{whiteley1984}.
+Evaluating each $h_v$ at $q_v$
 identifies them with the lifting space $L(q)$
 (\cref{lem:pencil-lifting-planes-dim}), and rank--nullity gives the flat
 rank.
@@ -980,54 +984,14 @@ polyhedra~\cite[p.~84]{sugihara1984}.
   isomorphism.
 \end{proof}
 
-\begin{lemma}[The motions of a flat configuration]
-  \label{lem:pencil-flat-split}
-  \lean{CombinatorialRigidity.Molecular.flatScrewEquiv,
-        Graph.finrank_linkConstants,
-        Graph.finrank_infinitesimalMotions_pointJoinFramework_flat}
-  \leanok
-  \uses{def:pencil-lifting-planes, lem:pencil-config-point-join-rank}
-  Let $G$ be connected, let $q$ be admissible, and let $F_{(q,0)}$ be the
-  body-hinge framework whose hinge at each edge $uv$ is the line
-  $p_u \vee p_v$ of the flat configuration $p = (q, 0)$
-  (\cref{lem:pencil-config-point-join-rank}). Then its infinitesimal
-  motions form a space of dimension $3 + \dim F(q)$.
-\end{lemma}
-\begin{proof}
-  \leanok
-  \uses{def:extensor, def:hinge-constraint}
-  Let $e_0, \dots, e_3$ be the standard basis of $K^4$, with $e_2$ the
-  height direction, and write $e_{ij} = e_i \vee e_j$. The plane
-  $z = 0$ is spanned by $e_0$, $e_1$ and $e_3$. So at $z = 0$ every hinge
-  $p_u \vee p_v$ lies in
-  $W_\Pi = \operatorname{span}(e_{01}, e_{03}, e_{13})$, the span of the
-  lines of that plane. Split $\bigwedge^2 K^4 = W' \oplus W_\Pi$ with
-  $W' = \operatorname{span}(e_{02}, e_{12}, e_{23})$, and write a screw
-  as $m_v = (m'_v, m^\Pi_v)$. The hinge condition
-  $m_u - m_v \in \operatorname{span}(p_u \vee p_v)$
-  (\cref{def:hinge-constraint}) splits into $m'_u = m'_v$ and
-  $m^\Pi_u - m^\Pi_v \in \operatorname{span}(p_u \vee p_v)$. As $G$ is
-  connected, the first condition makes $m'$ constant, which gives three
-  dimensions.
-
-  For the second, identify $W_\Pi = \bigwedge^2 \hat\Pi$, where
-  $\hat\Pi = \operatorname{span}(e_0, e_1, e_3)$, with the affine
-  functions on $K^2$ by $a \vee b \mapsto \det(a, b, \cdot)$, evaluated
-  at $(x, y, 1)$. The line $p_u \vee p_v$ becomes a nonzero affine
-  function vanishing at $q_u$ and $q_v$. As $q_u \ne q_v$, its multiples
-  are all the affine functions vanishing at these two points. So the
-  second condition says that $h_u - h_v$ vanishes at $q_u$ and $q_v$,
-  where $h_v$ is the affine function of $m^\Pi_v$. Its solutions are
-  $F(q)$.
-\end{proof}
-
 \begin{fmlnote}
   \label{fmlnote:pencil-lifting-planes}
   The families of lifting planes range over the whole ambient set of
   bodies and are unconstrained off $V(G)$, as the infinitesimal motions
   of every framework are. Each body off $V(G)$ adds three to
-  $\dim F(q)$ and six to the dimension of the motions in
-  \cref{lem:pencil-flat-split}. These terms cancel in every rank.
+  $\dim F(q)$ and six to the dimension of the motions of a framework in
+  dimension three, as in the proof of \cref{thm:pencil-flat-rank}. These
+  terms cancel in every rank.
 \end{fmlnote}
 
 \begin{lemma}[The lifting planes are the motions of a plane framework]
@@ -1108,7 +1072,9 @@ frameworks whose rank \cref{sec:main-component-jj} uses.
   \label{thm:pencil-flat-rank}
   \lean{Graph.finrank_span_rigidityRows_ofNormals_flat,
         Graph.finrank_span_rigidityRows_ofNormals_flat_le,
-        Graph.finrank_span_rigidityRows_ofNormals_flat_eq_iff}
+        Graph.finrank_span_rigidityRows_ofNormals_flat_eq_iff,
+        Graph.finrank_linkConstants,
+        Graph.finrank_infinitesimalMotions_pointJoinFramework_flat}
   \leanok
   \uses{def:pencil-x0-attains, def:pencil-lifting-space, def:D-deficiency}
   Let $G$ be connected and let $q$ be admissible. Then the rank
@@ -1120,13 +1086,21 @@ frameworks whose rank \cref{sec:main-component-jj} uses.
 \end{theorem}
 \begin{proof}
   \leanok
-  \uses{lem:pencil-flat-split, lem:pencil-lifting-planes-dim,
-        lem:pencil-config-point-join-rank,
-        lem:pencil-lifting-space-deficiency}
-  The rank of $(q, 0)$ is that of $F_{(q,0)}$
-  (\cref{lem:pencil-config-point-join-rank}). Its motions have dimension
-  $3 + \dim F(q) = 3 + \dim L(q)$ (\cref{lem:pencil-flat-split},
-  \cref{lem:pencil-lifting-planes-dim}). By rank--nullity in the
+  \uses{lem:pencil-flat-split, lem:pencil-join-flat,
+        lem:pencil-lifting-planes-dim, lem:pencil-config-point-join-rank,
+        lem:pencil-lifting-space-deficiency, def:hinge-constraint}
+  The rank of $(q, 0)$ is that of the body-hinge framework $F_{(q,0)}$
+  whose hinge at each edge $uv$ is the line $p_u \vee p_v$ of the flat
+  configuration $p = (q, 0)$ (\cref{lem:pencil-config-point-join-rank}).
+  Its motions are the assignments of screws $m_v \in \bigwedge^2 K^4$ with
+  $m_u - m_v \in \operatorname{span}(p_u \vee p_v)$ at every edge $uv$
+  (\cref{def:hinge-constraint}): the motions of the flat split
+  (\cref{lem:pencil-flat-split}) at $d = 3$ and zero heights. By the flat
+  split they map onto $F(q)$, and the kernel is the constant assignments
+  with value in the kernel of $\bigwedge^2 \pi$. This kernel is the span
+  $W'$ of \cref{lem:pencil-join-flat}, of dimension three. So the motions
+  have dimension $3 + \dim F(q) = 3 + \dim L(q)$
+  (\cref{lem:pencil-lifting-planes-dim}). By rank--nullity in the
   $6|V(G)|$-dimensional space of screw assignments, the rank is
   $6|V(G)| - 3 - \dim L(q)$. The bound and its equality case follow from
   \cref{lem:pencil-lifting-space-deficiency}.
@@ -2314,15 +2288,21 @@ the coordinates of a join.
 
 \begin{lemma}[Joins in flat coordinates]
   \label{lem:pencil-join-flat}
-  \lean{CombinatorialRigidity.Molecular.pointJoin,
+  \lean{CombinatorialRigidity.Molecular.flatScrewEquiv,
+    CombinatorialRigidity.Molecular.pointJoin,
     CombinatorialRigidity.Molecular.flatScrewEquiv_pointJoin,
     CombinatorialRigidity.Molecular.linearIndependent_pointJoin_of_flat}
   \leanok
-  \uses{lem:pencil-flat-split, def:extensor}
-  For $p = (p_x, p_y, p_z, p_w) \in K^4$ write
+  \uses{def:extensor}
+  Let $e_0, \dots, e_3$ be the standard basis of $K^4$, with $e_2$ the
+  height direction, and write $e_{ij} = e_i \vee e_j$. Split
+  $\bigwedge^2 K^4 = W' \oplus W_\Pi$ with
+  $W' = \operatorname{span}(e_{02}, e_{12}, e_{23})$ and
+  $W_\Pi = \operatorname{span}(e_{01}, e_{03}, e_{13})$, the span of the
+  lines of the plane $z = 0$. For $p = (p_x, p_y, p_z, p_w) \in K^4$ write
   $\bar p = (p_x, p_y, p_w) \in K^3$. There is a linear isomorphism of
-  the screw space $\bigwedge^2 K^4$ onto $K^3 \times K^3$, adapted to the
-  splitting of \cref{lem:pencil-flat-split}, that sends the join
+  the screw space $\bigwedge^2 K^4$ onto $K^3 \times K^3$, taking $W'$ onto
+  the first factor and $W_\Pi$ onto the second, that sends the join
   $p \vee p'$ of $p, p' \in K^4$ to
   $\bigl(p_z\,\bar p' - p'_z\,\bar p,\ \bar p \times \bar p'\bigr)$. In
   particular, a family of joins is linearly independent as soon as the
@@ -2330,8 +2310,7 @@ the coordinates of a join.
 \end{lemma}
 \begin{proof}
   \leanok
-  Expand $p \vee p'$ in the basis of $W'$ and $W_\Pi$ used in the
-  proof of \cref{lem:pencil-flat-split}: the coefficients on $W_\Pi$
+  Expand $p \vee p'$ in the basis $e_{ij}$: the coefficients on $W_\Pi$
   are the $2 \times 2$ minors of $\bar p$ and $\bar p'$, and those on
   $W'$ pair the heights with the planar parts.
 \end{proof}

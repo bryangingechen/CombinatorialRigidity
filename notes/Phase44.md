@@ -2,18 +2,17 @@
 
 **Status:** in progress, opened 2026-11-12 with the PI. Exposition of the three pencil chapters
 against their classical sources; in the Lean, one rename, docstrings and the flat split in every
-dimension. No main result's statement changes. Slices 1 and 2 of 10 done: the spike says yes;
-the carrier section names `S_G` and cites its sources. Next: slice 3, in two commits, the PI's
-two calls on it answered. Plan, the PI's words and the recon record:
-`notes/PencilScenes.md`.
+dimension. No main result's statement changes. Slices 1, 2 and 3a of 10 done: the spike says
+yes; the carrier section cites its sources; the flat split holds in every dimension, its node in
+`pencil-d.tex`. Next: slice 3b, the `d = 3` motion count retired. Plan, the PI's words and the
+recon record: `notes/PencilScenes.md`.
 
 ## Current state
 
-**Next concrete step: slice 3a, the every-dimension flat split and its node** (item 3). The PI
-answered the two calls on 2026-11-12 (*Decisions*): the node moves to `pencil-d.tex`, and
-`thm:pencil-flat-rank`'s proof refers forward. Slice 3b, the retirement, follows; then slice 4.
-Slices 5–8 wait on nothing. Slices 1 and 2 have landed; no Lean file has changed, and every
-dep-graph node is green.
+**Next concrete step: slice 3b, the retirement and the layout** (item 3, *Two commits*): the
+`d = 3` motion count goes, and `thm:pencil-flat-rank`'s proof refers forward (the PI,
+*Decisions*). Then slice 4. Slices 5–8 wait on nothing. Slices 1, 2 and 3a have landed: the
+flat split in every dimension is in `Grade/GluedEnds.lean`, and every dep-graph node is green.
 
 ## Architectural choices made up front
 
@@ -97,6 +96,13 @@ follows all of 2–8.
   what the flat split adds; the deletion grep, tree-wide (the retired names also stand in
   `notes/pencil-scenes/simplify-ii.md`, a banked report, which stays, and in
   `notes/FRICTION-archive.md` and `notes/Prose-findings.md`, archives).
+  **3a done** (2026-11-12): the five pins of the restated node, the `flatScrewEquiv` pin and the
+  splitting text in `lem:pencil-join-flat`, the count pins at `thm:pencil-flat-rank`, and the
+  chapter beyond the node (the paragraph, now near `main-component.tex` 877, the fmlnote,
+  `thm:pencil-d-flat-rank`'s aside, glued-ends' pointer). For 3b: the count pins leave
+  `thm:pencil-flat-rank` with their declarations; its proof's `\uses` of `lem:pencil-join-flat`
+  and `def:hinge-constraint` go if the new proof drops them; the `MainComponent/Flat.lean` module
+  docstring names the retired four; `fmlnote:pencil-lifting-planes` cites the proof that changes.
 - [ ] **4. The flat rank and the equality** (`main-component.tex`): the flat split credits
   Whiteley 1984 §5.1, the three in-plane dimensions ours; `sec:main-component-jj` and
   `thm:pencil-jj-equality` attributed as in §5a, "Jackson and Jordán's equality" renamed in
@@ -129,7 +135,7 @@ follows all of 2–8.
 
 ## Blockers / open questions
 
-Nothing blocks slice 3: the PI's two calls are under *Decisions*.
+Nothing blocks slice 3b: the PI's two calls are under *Decisions*.
 
 Unchecked derivations, each to be checked in the slice named or weakened:
 
@@ -144,10 +150,11 @@ duplications between `MainComponent/` and `Grade/` of `notes/pencil-scenes/simpl
 
 ## Hand-off / next phase
 
-The next commit is slice 3a (item 3, *Two commits*): the spike's lemmas
-(`notes/pencil-scenes/flat-split-spike.lean`) into `Grade/GluedEnds.lean`, and the node moved
-to `pencil-d.tex` and restated. Then 3b, then slice 4; slices 5 and 6 may go in any order with
-them.
+The next commit is slice 3b (item 3, *Two commits*, and its *3a done* line): retire
+`mem_span_extensor_flat_iff`, `Graph.linkConstants`, `Graph.finrank_linkConstants` and
+`Graph.finrank_infinitesimalMotions_pointJoinFramework_flat`, lay out the files as item 3 says,
+and rewrite `thm:pencil-flat-rank`'s proof as a forward reference; the deletion grep tree-wide.
+Then slice 4; slices 5 and 6 may go in any order with them.
 After the phase: ORIGAMI's open, with the PI
 (`notes/Origami.md`).
 
@@ -167,6 +174,12 @@ After the phase: ORIGAMI's open, with the PI
   pin); every page cited was re-read in the PDF, and the three new entries checked against
   Crossref. `\cite` keys: `whiteley1989` is the hypergraph paper; Rigidity and polarity II,
   if cited, takes a suffix.
+- **Slice 3a (2026-11-12).** The spike's lemmas landed with one shortening: `gradeEmbed` (`ι`,
+  `def:pencil-d-embedding`) in place of the spike's `gradePlanarIncl`, so no new definition
+  duplicates it, and the spike's kernel lemma folded into its iff. Whiteley 1984 §5.1 (pp. 287–288,
+  re-read) is credited with the image half at `d = 3` only: plates in a plane, each rotating about
+  a line, `(u, v, w)` an affine velocity, a joint equating two of them. The kernel and `d > 3` are
+  not in W84. The node's statement is in `⋀²` (`joinMotions`), as `lem:pencil-d-glued-ends` is.
 - **PI, 2026-11-12:** asked how the prose proof of `thm:pencil-flat-rank` should read once its
   Lean goes through the padding proof, the PI chose "Forward reference (Recommended)": the
   proof says the rank is the every-dimension flat rank at one height and points forward to

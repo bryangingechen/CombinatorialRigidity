@@ -189,7 +189,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (HOMES: Phase 42's deferred lemma homes and the friction log) | the friction log's docs and tooling fixes, then the lemmas Phase 42 left outside their home files and the mirror lemmas that now meet their bar (Lean and notes, no statement) | ✓ Complete — the lemmas in their home files, the friction log's actionable entries 62 to 18, no statement changed (see `notes/Phase42-homes.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (ARREARS: what HOMES left) | the blueprint's dependency-graph debt, the friction log's archive sweep, the splits of four molecular files past the size cap, and `RecordsLinks` moved to `Graph` with its link hypotheses restated (Lean, blueprint edges and notes; no main result's statement) | ✓ Complete — the blueprint's missing dependency edges 16 to 0, the four files split, the link hypotheses in `RecordsLinks` terms (three weakened at the PI's word), no main result's statement changed (see `notes/Phase42-arrears.md`; round manual: `CLEANUP.md`) |
 | 43. A simpler pencil proof (post-program) — PENCIL-NATURAL | the pencil proof's route in `Molecular/Molecule/Pencil/` and its three chapters, no main result's statement (sub-lettered, 43a–43d) | ✓ Complete — one shape of proof in every dimension, the reduction on structural cases and a road map of the proof, no main result's statement changed (see `notes/Phase43d.md`; plan `notes/Phase43-design.md`) |
-| 44. The pencil proof against its sources (post-program) — PENCIL-SCENES | the exposition and citations of the three pencil chapters; in `Molecular/Molecule/Pencil/`, one rename, docstrings and the flat split in every dimension; no main result's statement | In progress — opened 2026-11-12; the flat-split spike says yes, and the carrier section cites its sources; the flat split in every dimension is next, in two commits (see `notes/Phase44.md`; plan `notes/PencilScenes.md`) |
+| 44. The pencil proof against its sources (post-program) — PENCIL-SCENES | the exposition and citations of the three pencil chapters; in `Molecular/Molecule/Pencil/`, one rename, docstrings and the flat split in every dimension; no main result's statement | In progress — opened 2026-11-12; the carrier section cites its sources, and the flat split is proved in every dimension; retiring the old three-dimensional count is next (see `notes/Phase44.md`; plan `notes/PencilScenes.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1384,8 +1384,10 @@ slices, the road map attended and last before the close. The spike (2026-11-12) 
 split is proved in every dimension and the `d = 3` flat rank follows from the every-dimension one.
 The carrier section now names the incidence structure and cites Whiteley 1984, 1989 and Sugihara
 1984 (2026-11-12). The PI's two calls on the flat split (2026-11-12): its node moves to the
-every-dimension chapter, and the `d = 3` flat rank's proof refers forward. Next: the flat split,
-in two commits.
+every-dimension chapter, and the `d = 3` flat rank's proof refers forward. The flat split is now
+proved in every dimension, and its node states it there, crediting Whiteley 1984 §5.1 for the
+motions normal to the plane at `d = 3` (2026-11-12). Next: the `d = 3` motion count retired, and
+the `d = 3` flat rank's proof referring forward.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 

@@ -32,6 +32,15 @@ parts fill `Z⁰(q)`, `G[X]` joins `a` to `b` (a split of `X` would give `r ≥ 
 (`gradePi`, the affine reading of `lem:pencil-flat-split`) maps `ρ` injectively into the
 differences. The departures from the chapter's text (no merged deficiency; the refinement in two
 pieces, counted by `lem:pencil-lifting-space-deficiency`) are `notes/Cleanup42.md` R-16.
+
+The file also proves the flat split in every dimension (`lem:pencil-flat-split`,
+`sec:pencil-d-flat`): `⋀²π` maps the motions `joinMotions` at the configuration `(q, z)` to the
+lifting planes `F(q)` (`joinMotionsPlanes`), onto at the flat configuration `z = 0`
+(`exists_mem_joinMotions_gradePi_eq`, `joinMotionsPlanes_surjective`), and on a connected graph
+its kernel is the assignments constant on `V(G)` with values killed by `⋀²π`, at every heights
+(`mem_joinMotions_iff_of_gradePi_eq_zero`, `mem_ker_joinMotionsPlanes_iff`). Onto is by a section
+`gradePiSection` of `⋀²π`, through the embedding `ι` of the plane of zero heights
+(`gradeEmbed`), with no dimension count and no use of connectedness.
 -/
 
 @[expose] public section
@@ -101,6 +110,135 @@ theorem eq_of_gradePi_eq_of_mem_span {q : α × Fin 2 → K} {z : α × Fin m �
       map_sub, hπ, sub_self]
   have ht0 : t = 0 := (smul_eq_zero.mp h0).resolve_right hc
   rw [← sub_eq_zero, ← ht, ht0, zero_smul]
+
+/-! ## The flat split (`lem:pencil-flat-split`) -/
+
+/-- `π` undoes the embedding `ι` of the plane of zero heights (`gradeEmbed`, at the grades
+`1 ≤ m + 1`): `ι` keeps the first, the second and the last coordinate. -/
+theorem gradePlanarProj_gradeEmbed (x : Fin 3 → K) :
+    gradePlanarProj (m := m) (gradeEmbed (Nat.le_add_left 1 m) x) = x := by
+  funext i
+  fin_cases i
+  · exact gradeEmbed_apply_castLE (k' := 1) _ x 0
+  · exact gradeEmbed_apply_castLE (k' := 1) _ x 1
+  · exact gradeEmbed_apply_last (k' := 1) _ x
+
+/-- At zero heights the configuration point is the embedded picture point, `b_w = ι p_w`. -/
+theorem pencilConfigPointGrade_flat (q : α × Fin 2 → K) (w : α) :
+    pencilConfigPointGrade q (0 : α × Fin m → K) w =
+      gradeEmbed (Nat.le_add_left 1 m) (pencilPicturePoint q w) := by
+  funext j
+  refine Fin.cases ?_ (fun j => Fin.cases ?_ (fun j => Fin.lastCases ?_ (fun i => ?_) j) j) j
+  · exact (gradeEmbed_apply_castLE (k' := 1) _ (pencilPicturePoint q w) 0).symm
+  · exact (gradeEmbed_apply_castLE (k' := 1) _ (pencilPicturePoint q w) 1).symm
+  · rw [Fin.succ_last, Fin.succ_last, pencilConfigPointGrade_apply_last, gradeEmbed_apply_last]
+    rfl
+  · rw [pencilConfigPointGrade_apply_height, gradeEmbed_apply_eq_zero] <;> simp
+
+/-- **The section of `⋀²π`** (a step of `lem:pencil-flat-split`): the affine function `x` as an
+element of `⋀²` of the plane of zero heights,
+`x₀ (ι e₁ ∨ ι e₂) + x₁ (ι e₂ ∨ ι e₀) + x₂ (ι e₀ ∨ ι e₁)`. It sends `u ×₃ w` to `ι u ∨ ι w`
+(`gradePiSection_crossProduct`), and `⋀²π` undoes it (`gradePi_gradePiSection`). -/
+noncomputable def gradePiSection : (Fin 3 → K) →ₗ[K] ⋀[K]^2 (Fin (m + 1 + 2) → K) where
+  toFun x :=
+    x 0 • normalsJoin (gradeEmbed (Nat.le_add_left 1 m) (Pi.single 1 1))
+        (gradeEmbed (Nat.le_add_left 1 m) (Pi.single 2 1))
+    + x 1 • normalsJoin (gradeEmbed (Nat.le_add_left 1 m) (Pi.single 2 1))
+        (gradeEmbed (Nat.le_add_left 1 m) (Pi.single 0 1))
+    + x 2 • normalsJoin (gradeEmbed (Nat.le_add_left 1 m) (Pi.single 0 1))
+        (gradeEmbed (Nat.le_add_left 1 m) (Pi.single 1 1))
+  map_add' x y := by simp only [Pi.add_apply]; module
+  map_smul' c x := by simp only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply]; module
+
+/-- `⋀²π ∘ σ = id`: `σ` is a section of `⋀²π`. -/
+theorem gradePi_gradePiSection (x : Fin 3 → K) : gradePi (m := m) (gradePiSection x) = x := by
+  simp only [gradePiSection, LinearMap.coe_mk, AddHom.coe_mk, map_add, map_smul,
+    gradePi_normalsJoin, gradePlanarProj_gradeEmbed]
+  funext i
+  fin_cases i <;> simp [cross_apply]
+
+/-- `σ (u ×₃ w) = ι u ∨ ι w`, by bilinearity on the standard basis. -/
+theorem gradePiSection_crossProduct (a b : Fin 3 → K) :
+    gradePiSection (m := m) (crossProduct a b) =
+      normalsJoin (gradeEmbed (Nat.le_add_left 1 m) a) (gradeEmbed (Nat.le_add_left 1 m) b) := by
+  have ha : a = a 0 • Pi.single 0 1 + a 1 • Pi.single 1 1 + a 2 • Pi.single 2 1 := by
+    funext i; fin_cases i <;> simp
+  have hb : b = b 0 • Pi.single 0 1 + b 1 • Pi.single 1 1 + b 2 • Pi.single 2 1 := by
+    funext i; fin_cases i <;> simp
+  conv_rhs => rw [ha, hb]
+  simp only [map_add, map_smul, normalsJoin_add_left, normalsJoin_add_right,
+    normalsJoin_smul_left, normalsJoin_smul_right, normalsJoin_self, gradePiSection,
+    LinearMap.coe_mk, AddHom.coe_mk, cross_apply]
+  rw [normalsJoin_swap (gradeEmbed _ (Pi.single 1 1)) (gradeEmbed _ (Pi.single 0 1)),
+    normalsJoin_swap (gradeEmbed _ (Pi.single 2 1)) (gradeEmbed _ (Pi.single 1 1)),
+    normalsJoin_swap (gradeEmbed _ (Pi.single 0 1)) (gradeEmbed _ (Pi.single 2 1))]
+  simp
+  module
+
+/-- **Every family of lifting planes is read off a motion of the flat configuration**
+(`lem:pencil-flat-split`, onto): over an admissible picture, for `h ∈ F(q)` the assignment
+`v ↦ σ h_v` is a motion at `(q, 0)` with `⋀²π (S v) = h v`. At a link `u w`, `h_u − h_w = t (p_u ×₃
+p_w)` (`mem_span_crossProduct_iff`), and `σ (p_u ×₃ p_w) = ι p_u ∨ ι p_w = b_u ∨ b_w`. Neither
+connectedness nor a dimension count is used. -/
+theorem exists_mem_joinMotions_gradePi_eq {G : Graph α β} {q : α × Fin 2 → K}
+    (hq : G.IsAdmissiblePicture q) {h : α → Fin 3 → K} (hh : h ∈ G.liftingPlanes q) :
+    ∃ S ∈ joinMotions G (pencilConfigPointGrade q (0 : α × Fin m → K)),
+      ∀ v, gradePi (S v) = h v := by
+  refine ⟨fun v => gradePiSection (h v), mem_joinMotions.mpr fun e u w he => ?_,
+    fun v => gradePi_gradePiSection _⟩
+  obtain ⟨t, ht⟩ := Submodule.mem_span_singleton.mp ((mem_span_crossProduct_iff
+    (linearIndependent_pencilPicturePoint_pair (hq.1 e u w he))).mpr (hh e u w he))
+  refine Submodule.mem_span_singleton.mpr ⟨t, ?_⟩
+  rw [pencilConfigPointGrade_flat, pencilConfigPointGrade_flat, ← gradePiSection_crossProduct,
+    ← map_smul, ht, map_sub]
+
+/-- **The motions killed by `⋀²π` are the assignments constant on `V(G)`** (`lem:pencil-flat-split`,
+the kernel): on a connected graph over an admissible picture, at every heights `z`, an assignment
+whose values are all killed by `⋀²π` is a motion exactly when it is constant on `V(G)` (it is free
+off `V(G)`). At a link the difference is `t (b_u ∨ b_w)` with the same `⋀²π` at both ends, so
+`t = 0` (`eq_of_gradePi_eq_of_mem_span`). -/
+theorem mem_joinMotions_iff_of_gradePi_eq_zero {G : Graph α β} (hG : G.Connected)
+    {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) {z : α × Fin m → K}
+    {S : α → ⋀[K]^2 (Fin (m + 1 + 2) → K)} (h0 : ∀ v, gradePi (S v) = 0) :
+    S ∈ joinMotions G (pencilConfigPointGrade q z) ↔ ∀ u ∈ V(G), ∀ v ∈ V(G), S u = S v := by
+  refine ⟨fun hS u hu v hv => hG.pre.eq_of_forall_isLink (fun e x y he =>
+    eq_of_gradePi_eq_of_mem_span (mem_joinMotions.mp hS e x y he) (hq.1 e x y he)
+      ((h0 x).trans (h0 y).symm)) hu hv, fun hc => mem_joinMotions.mpr fun e u w he => ?_⟩
+  rw [hc u he.left_mem w he.right_mem, sub_self]
+  exact Submodule.zero_mem _
+
+/-- **The flat split as a linear map** (`lem:pencil-flat-split`): `S ↦ ⋀²π ∘ S`, from the motions
+at the configuration `(q, z)` to the lifting planes `F(q)` (`gradePi_comp_mem_liftingPlanes`). -/
+noncomputable def joinMotionsPlanes (G : Graph α β) (q : α × Fin 2 → K) (z : α × Fin m → K) :
+    joinMotions G (pencilConfigPointGrade q z) →ₗ[K] G.liftingPlanes q where
+  toFun S := ⟨fun v => gradePi (S.1 v), gradePi_comp_mem_liftingPlanes S.2⟩
+  map_add' S T := by ext v i; simp
+  map_smul' c S := by ext v i; simp
+
+/-- **The flat split is onto at the flat configuration** (`lem:pencil-flat-split`): over an
+admissible picture, `joinMotionsPlanes` at `z = 0` is surjective
+(`exists_mem_joinMotions_gradePi_eq`). -/
+theorem joinMotionsPlanes_surjective {G : Graph α β} {q : α × Fin 2 → K}
+    (hq : G.IsAdmissiblePicture q) :
+    Function.Surjective (joinMotionsPlanes G q (0 : α × Fin m → K)) := by
+  rintro ⟨h, hh⟩
+  obtain ⟨S, hS, hSh⟩ := exists_mem_joinMotions_gradePi_eq (m := m) hq hh
+  exact ⟨⟨S, hS⟩, Subtype.ext (funext hSh)⟩
+
+/-- **The kernel of the flat split** (`lem:pencil-flat-split`): on a connected graph over an
+admissible picture, at every heights, a motion is in the kernel of `joinMotionsPlanes` exactly when
+its values are killed by `⋀²π` and it is constant on `V(G)`
+(`mem_joinMotions_iff_of_gradePi_eq_zero`). -/
+theorem mem_ker_joinMotionsPlanes_iff {G : Graph α β} (hG : G.Connected) {q : α × Fin 2 → K}
+    (hq : G.IsAdmissiblePicture q) {z : α × Fin m → K}
+    (S : joinMotions G (pencilConfigPointGrade q z)) :
+    S ∈ LinearMap.ker (joinMotionsPlanes G q z) ↔
+      (∀ v, gradePi (S.1 v) = 0) ∧ ∀ u ∈ V(G), ∀ v ∈ V(G), S.1 u = S.1 v := by
+  have h1 : S ∈ LinearMap.ker (joinMotionsPlanes G q z) ↔ ∀ v, gradePi (S.1 v) = 0 := by
+    rw [LinearMap.mem_ker, Subtype.ext_iff]
+    exact funext_iff
+  rw [h1]
+  exact ⟨fun h0 => ⟨h0, (mem_joinMotions_iff_of_gradePi_eq_zero hG hq h0).mp S.2⟩, fun h => h.1⟩
 
 /-! ## The lifting planes equal at the two ends -/
 

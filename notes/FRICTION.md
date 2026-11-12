@@ -429,6 +429,22 @@ to be re-derived by re-reading entries later.
   `fun w => 0` left by `simp [padHeights, hi]` closes with `← Pi.zero_def` in the simp set.
 - **Proposed fix:** none for one consumer; a value-bound `gradeEmbed_apply_of_lt`
   (`gradeEmbed h x j = x ⟨j, _⟩` for `↑j < k' + 1`) would shorten a second.
+- **Recurred:** Phase 44 slice 3a, `pencilConfigPointGrade_flat` (`Pencil/Grade/GluedEnds.lean`):
+  the case `m' = 0` of `pencilConfigPointGrade_padHeights` with
+  `pencilConfigPointGrade_eq_pencilPicturePoint`, reproved in 9 lines, as `Grade/ZeroHeights.lean`
+  is outside `GluedEnds.lean`'s import closure. With all heights zero the case split closes at once
+  (`gradeEmbed_apply_eq_zero` then `simp` at a height). A seventh duplication between the two
+  layers, beside `notes/pencil-scenes/simplify-ii.md`'s six; slice 3b's layout may let one go.
+- **Status:** idiom.
+### [idiom] `module` does not see `normalsJoin`'s antisymmetry: orient the joins first
+- **Where it bit:** Phase 44 slice 3a, `gradePiSection_crossProduct` (`Pencil/Grade/GluedEnds.lean`,
+  `lem:pencil-flat-split`): `σ (a ×₃ b) = ι a ∨ ι b`, expanded on the standard basis.
+- **Friction:** after `normalsJoin_add_left`/`_right`, `_smul_left`/`_right` and `normalsJoin_self`
+  the two sides hold `normalsJoin (ι e₁) (ι e₀)` and `normalsJoin (ι e₀) (ι e₁)` as distinct atoms,
+  so `module` fails. Three `rw` with instantiated `normalsJoin_swap` turn each pair one way, then
+  `simp; module` closes (the slice-1 spike's proof, transcribed).
+- **Proposed fix:** none for one consumer; a `normalsJoin` normal form (a `simp` set ordering the
+  two arguments) would serve a second.
 - **Status:** idiom.
 
 ### [idiom] `C ≠ 0 → C.val ≠ 0` for a screw is `ScrewSpace.val_injective.ne hC`

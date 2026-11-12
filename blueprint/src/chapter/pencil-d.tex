@@ -1312,8 +1312,9 @@ for each of the $d - 2$ heights.
 \subsection{The flat rank in every dimension}
 \label{sec:pencil-d-flat}
 
-This section computes the rank of a flat configuration $(q, 0)$ in
-dimension $d$ (\cref{thm:pencil-d-flat-rank}). As at $d = 3$
+This section reads the motions of a flat configuration $(q, 0)$ in
+dimension $d$ as lifting planes (\cref{lem:pencil-flat-split}), and
+computes its rank (\cref{thm:pencil-d-flat-rank}). As at $d = 3$
 (\cref{sec:main-component-flat}), with Jackson and Jord\'an's equality
 it settles the graphs whose two deficiencies agree
 (\cref{cor:pencil-d-jj-flat}). The points of a flat configuration have
@@ -1331,6 +1332,86 @@ $D(|V(G)| - 1) - \operatorname{def}_2(G)$, which is the target exactly
 when $\operatorname{def}_2(G) = \operatorname{def}_d(G)$. The later steps
 use the equality at the graphs that they compare with $G$, through
 $\dim L(q)$ alone.
+
+The flat split describes the motions of a configuration through the lines
+of the plane of the picture. Let $\pi \colon K^{d+1} \to K^3$ keep the
+first, the second and the last coordinate, so that
+$\pi(b_v) = (q_v, 1)$ at the points $b$ of every configuration $(q, z)$.
+Identify $\bigwedge^2 K^3$ with the affine functions on $K^2$ by sending
+$u \vee w$ to the function $(x, y) \mapsto \det(u, w, (x, y, 1))$. This is
+a linear isomorphism, and it sends $(q_u, 1) \vee (q_v, 1)$ to a nonzero
+affine function vanishing at $q_u$ and $q_v$ when $q_u \neq q_v$. Through
+it, $\bigwedge^2 \pi$ reads each element of $\bigwedge^2 K^{d+1}$ as an
+affine function on $K^2$.
+
+\begin{lemma}[The flat split]
+  \label{lem:pencil-flat-split}
+  \lean{CombinatorialRigidity.Molecular.joinMotionsPlanes,
+        CombinatorialRigidity.Molecular.joinMotionsPlanes_surjective,
+        CombinatorialRigidity.Molecular.mem_ker_joinMotionsPlanes_iff,
+        CombinatorialRigidity.Molecular.exists_mem_joinMotions_gradePi_eq,
+        CombinatorialRigidity.Molecular.mem_joinMotions_iff_of_gradePi_eq_zero}
+  \leanok
+  \uses{def:pencil-lifting-planes, def:pencil-d-configuration, def:join}
+  Let $d \ge 3$, let $q$ be an admissible picture of $G$, let $z$ be any
+  $d - 2$ heights, and let $b$ be the points of the configuration
+  $(q, z)$ (\cref{def:pencil-d-configuration}). Call an assignment $S$ of
+  elements of $\bigwedge^2 K^{d+1}$ to the bodies a \emph{motion} if
+  $S(u) - S(v) \in K\,(b_u \vee b_v)$ at every edge $uv$
+  (\cref{def:join}), and let $h_v$ be the affine function of
+  $\bigwedge^2 \pi\,(S(v))$. Then $S \mapsto h$ is a linear map from the
+  motions to the lifting planes $F(q)$
+  (\cref{def:pencil-lifting-planes}), and:
+  \begin{enumerate}
+    \item at the flat configuration, with $z = 0$, it is onto $F(q)$;
+    \item if $G$ is connected, its kernel consists of the constant
+      assignments whose value lies in the kernel of $\bigwedge^2 \pi$.
+  \end{enumerate}
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{def:pencil-d-embedding}
+  At an edge $uv$ of a motion, $S(u) - S(v) = t\,(b_u \vee b_v)$ for some
+  $t \in K$. As $\pi(b_u) = (q_u, 1)$ and $\pi(b_v) = (q_v, 1)$, the
+  difference $h_u - h_v$ is $t$ times the affine function of
+  $(q_u, 1) \vee (q_v, 1)$, and it vanishes at $q_u$ and $q_v$. So
+  $h \in F(q)$, and the map is linear, as $\bigwedge^2 \pi$ is.
+
+  For (1), let $z = 0$. Then $b_v = \iota(q_v, 1)$, where $\iota$ is the
+  embedding of $K^3$ into $K^{d+1}$ (\cref{def:pencil-d-embedding}, with
+  $d' = 2$), and $\pi \circ \iota$ is the identity. So the inverse of the
+  identification followed by $\bigwedge^2 \iota$ is a section $\sigma$ of
+  $\bigwedge^2 \pi$, which takes the affine function of $u \vee w$ to
+  $\iota u \vee \iota w$. Let $h \in F(q)$ and set $S(v) = \sigma(h_v)$.
+  At an edge $uv$, $q_u \neq q_v$ as $q$ is admissible. So the affine
+  functions vanishing at $q_u$ and $q_v$ are the multiples of the function
+  of $(q_u, 1) \vee (q_v, 1)$, and $h_u - h_v$ is $t$ times it for some
+  $t \in K$. Then
+  $S(u) - S(v) = t\,(\iota(q_u, 1) \vee \iota(q_v, 1)) = t\,(b_u \vee b_v)$.
+  So $S$ is a motion, and it maps to $h$. Neither connectedness nor a
+  count of dimensions enters.
+
+  For (2), a constant assignment is a motion, and it maps to zero if its
+  value lies in the kernel of $\bigwedge^2 \pi$. Conversely, let $S$ be a
+  motion that maps to zero. At an edge $uv$,
+  $S(u) - S(v) = t\,(b_u \vee b_v)$, so $0 = h_u - h_v$ is $t$ times a
+  nonzero affine function, and $t = 0$. So $S(u) = S(v)$ at every edge,
+  and $S$ is constant, as $G$ is connected. This holds whatever the
+  heights $z$.
+\end{proof}
+
+At $d = 3$ and $z = 0$, the image half of the flat split is Whiteley's
+description of a structure of plates in a plane, joined at points, moving
+normal to its plane~\cite[\S 5.1]{whiteley1984}. Each plate rotates about
+a line of the plane, recorded by coordinates $(u, v, w)$, so that its
+point $(x, y, 1)$ moves normal to the plane with velocity $ux + vy + w$.
+A joint $(x, y, 1)$ on two plates gives the equation
+$(u_1 - u_2, v_1 - v_2, w_1 - w_2) \cdot (x, y, 1) = 0$ (p.~288). Here the
+plates are the bodies, $h_v$ takes the place of the coordinates of the
+plate of $v$, and the hinge at an edge $uv$ joins the plates of $u$ and
+$v$ at the two joints $q_u$ and $q_v$. Whiteley keeps only the motions
+normal to the plane: the kernel, and the split in higher dimension, are
+not in the source.
 
 \begin{theorem}[The flat rank, in every dimension]
   \label{thm:pencil-d-flat-rank}
@@ -1374,18 +1455,15 @@ $\dim L(q)$ alone.
   same count in every dimension. In dimension $d$ the hinge at an edge
   $uv$ is the image of the join $b_u \vee b_v$ under the complement
   isomorphism (\cref{def:panel-support-extensor}). Its inverse takes the
-  motions to the assignments of elements of $\bigwedge^2 K^{d+1}$ to the
-  bodies whose difference along each edge $uv$ is a multiple of
-  $b_u \vee b_v$. Let $\hat H \subseteq K^{d+1}$ be the
-  three-dimensional subspace of vectors with zero heights. The joins of
-  the points of $(q, 0)$ lie in $\bigwedge^2 \hat H$. As at $d = 3$, the
-  component of such an assignment in a complement of
-  $\bigwedge^2 \hat H$ is constant, as $G$ is connected, and its
-  component in $\bigwedge^2 \hat H$ is a family of lifting planes
-  (\cref{def:pencil-lifting-planes}). The complement has dimension
-  $D - 3$, where it has dimension $3$ at $d = 3$. So the motions have
-  dimension $D - 3 + \dim L(q)$, and rank--nullity in the
-  $D|V(G)|$-dimensional space of screw assignments gives the same rank.
+  motions to the motions of the flat split (\cref{lem:pencil-flat-split})
+  at $z = 0$. These map onto $F(q)$, and, as $G$ is connected, the kernel
+  is the constant assignments with value in the kernel of
+  $\bigwedge^2 \pi$. The section $\sigma$ of its proof makes
+  $\bigwedge^2 \pi$ onto, so this kernel has dimension $D - 3$, where it
+  has dimension $3$ at $d = 3$. So the motions have dimension
+  $D - 3 + \dim L(q)$ (\cref{lem:pencil-lifting-planes-dim}), and
+  rank--nullity in the $D|V(G)|$-dimensional space of screw assignments
+  gives the same rank.
 \end{proof}
 
 \begin{corollary}[When the flat configuration has the target, in every dimension]
@@ -3194,8 +3272,8 @@ $(\xi, \eta, \omega) \mapsto (\xi, \eta, h_a \cdot (\xi, \eta, \omega),
   first, the second and the last coordinate, so that
   $\pi(b_v) = (q_v, 1)$. Identify $\bigwedge^2 K^3$ with the affine
   functions on $K^2$ by sending $u \vee w$ to the function
-  $(x, y) \mapsto \det(u, w, (x, y, 1))$, as in the proof of
-  \cref{lem:pencil-flat-split}. This is a linear isomorphism, and it
+  $(x, y) \mapsto \det(u, w, (x, y, 1))$, as for the flat split
+  (\cref{lem:pencil-flat-split}). This is a linear isomorphism, and it
   sends $(q_u, 1) \vee (q_v, 1)$ to a nonzero affine function vanishing
   at $q_u$ and $q_v$, as $q_u \neq q_v$. For an assignment $S$ as in the
   statement, let $h_v$ be the affine function of

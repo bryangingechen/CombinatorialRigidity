@@ -14,7 +14,7 @@ The geometry of lines that the steps at an open ear with three and four interior
 (`thm:pencil-x0-open-ear-three`, `thm:pencil-x0-open-ear-four`), collected in
 `sec:main-component-short`, and the insertion of the step at an open ear with two interior bodies at
 non-adjacent ends (`lem:pencil-insertion-two`, `sec:main-component-orbit`). Everything is read in
-the screw space `ScrewSpace K 2 = Λ²K⁴`, in the flat coordinates `(σ S, π S)` of the flat split
+the screw space `ScrewSpace K 2 = Λ²K⁴`, in the flat coordinates `(σ S, π S)` of
 `flatScrewEquiv` (`MainComponent/Flat.lean`, `lem:pencil-join-flat`; the chapter writes `τ` for
 `π`). The join of two points `p, p' ∈ K⁴` is the screw `p ∧ p'` (`pointJoin`); a point is affine
 when its last coordinate is `1`, and at infinity when it is `0`.
