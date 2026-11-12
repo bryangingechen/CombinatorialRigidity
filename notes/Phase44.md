@@ -2,20 +2,20 @@
 
 **Status:** in progress, opened 2026-11-12 with the PI. Exposition of the three pencil chapters
 against their classical sources; in the Lean, one rename, docstrings and the flat split in every
-dimension. No main result's statement changes. Slices 1–4 of 10 done: the spike says yes; the
+dimension. No main result's statement changes. Slices 1–5 of 10 done: the spike says yes; the
 carrier section cites its sources; the flat split holds in every dimension, and the `d = 3`
-motion count is retired; the flat rank and the equality are credited. Next: slice 5,
-`pencil-d.tex` (or slice 6 first). Plan, the PI's words and the recon record:
-`notes/PencilScenes.md`.
+motion count is retired; the flat rank and the equality are credited; the every-dimension
+chapter cites its sources. Next: slice 6, `pencil.tex`. Plan, the PI's words and the recon
+record: `notes/PencilScenes.md`.
 
 ## Current state
 
-**Next concrete step: slice 5, `pencil-d.tex`** (item 5); slice 6 (`pencil.tex`) may go first.
-Slices 5–8 wait on nothing. Slices 1–4 have landed: the flat split in every dimension is in
-`Grade/GluedEnds.lean`, the `d = 3` flat rank (`MainComponent/FlatRank.lean`) follows from the
-every-dimension one, `main-component.tex` credits the flat rank and the equality to their
-sources and calls the equality the dimension of the lifting space, and every dep-graph node is
-green.
+**Next concrete step: slice 6, `pencil.tex`** (item 6). Slices 6–8 wait on nothing. Slices
+1–5 have landed: the flat split in every dimension is in `Grade/GluedEnds.lean`, the `d = 3`
+flat rank (`MainComponent/FlatRank.lean`) follows from the every-dimension one,
+`main-component.tex` credits the flat rank and the equality (now the dimension of the lifting
+space), `pencil-d.tex` cites the sources of its rows and reads Part C's lifts as Whiteley's
+scenes, and every dep-graph node is green.
 
 ## Architectural choices made up front
 
@@ -41,20 +41,16 @@ follows all of 2–8.
   are banked in `notes/pencil-scenes/` (`flat-*-spike.lean`) and landed in slice 3.
 - [x] **2. The carrier section** (2026-11-12, `sec:main-component-carrier`): `S_G` and its
   scenes (call 4), the two eliminations, `P_q` as W84's reduced plate framework, pin-collinear.
-  Ledger rows M3–M9, M11, M14, M15, M17 done; M2 points at it; M10 is slice 8's, M12 slice 5's.
-- [x] **3. The flat split in every dimension** (2026-11-12, two commits): `lem:pencil-flat-split`
-  in every dimension (`Grade/GluedEnds.lean`, node in `sec:pencil-d-flat`); the `d = 3` motion
-  count deleted, the `d = 3` flat rank (`MainComponent/FlatRank.lean`) the every-dimension one at
-  `m = 1`, its proof referring forward.
+  Ledger rows M3–M9, M11, M14, M15, M17 done; M2 points at it; M10 is slice 8's.
+- [x] **3. The flat split in every dimension** (2026-11-12, two commits): node in
+  `sec:pencil-d-flat`; the `d = 3` motion count deleted, its flat rank the case `m = 1`.
 - [x] **4. The flat rank and the equality** (2026-11-12, `main-component.tex`): the credits, the
   equality renamed in prose (call 5), the EGRES report's entry (call 6). Ledger rows M1, M13, M16
   and M19–M21 done.
-- [ ] **5. `pencil-d.tex`**: the sources of §3's rows; `def:pencil-d-lift` no longer presented
-  as new; recon (i)'s two sentences at `def:pencil-d-lift` and `lem:pencil-d-ear-free`, and
-  recon (ii)'s paragraph in Part C's introduction (the PI, §8), each derivation checked first;
-  O4 as a sentence at `def:pencil-d-configuration`; call 5's prose. With the scale-shift row,
-  Sugihara 1984 eq. (10) (p. 85) at `main-component.tex`'s `lem:pencil-rank-scale-shift` too
-  (`ledger-main.md` M12), if it is cited at the `d` twin.
+- [x] **5. `pencil-d.tex`** (2026-11-12): §3's rows cited (W84 Def. 7.2, Prop. 4.1, p. 271;
+  W89 p. 78; Sugihara 1984 eqs. (1), (10); CW82 §3.6; Crapo–Ryan §8, new key `crapoRyan1986`);
+  Part C's lifts read as scenes; recon (i)'s sentences and (ii)'s paragraph, checked and
+  weakened; O4; call 5's prose; Sugihara's (10) at `lem:pencil-rank-scale-shift` too (M12).
 - [ ] **6. `pencil.tex`**: "pencil" (Crapo–Whiteley 1982's flat pencil) and the polarity's
   attribution; the self-duality of the pencil class in call 1's wording, if its derivation
   checks; call 5's prose.
@@ -68,7 +64,8 @@ follows all of 2–8.
   equality is Whiteley 1989's count on `S_G`; the face merge is Berg and Jordán's; the identity
   follows from published theorems and is not found stated); one remark on Maxwell–Cremona (O3
   and O5); `θ(2,2,3)` as a worked example in the carrier section and `C₇` as a sentence; O2 and
-  O6 only if their unchecked parts check.
+  O6 only if their unchecked parts check. Also `ledger-main.md` rows M18 and M22–M24, minor
+  citations in `main-component.tex` (the coordinator's assignment, 2026-11-12).
 - [ ] **9. The road map and the three introductions** (attended): a lineage paragraph and what
   is classical and what is new (planning note §3, last paragraph); O7 and O1 among the road
   map's observations (call 3); the history of call 7.
@@ -76,16 +73,10 @@ follows all of 2–8.
 
 ## Blockers / open questions
 
-Nothing blocks slices 5 and 6.
-
-Unassigned: `ledger-main.md` rows M18 (JJ TR Lemma 4.1 beside the partition bound) and M22–M24
-(W84 Cor. 4.2(i), pp. 273–274, W89 Def. 3.2), minor citations in `main-component.tex` that no
-item names. The coordinator gives them a slice or drops them.
+Nothing blocks slices 6–8.
 
 Unchecked derivations, each to be checked in the slice named or weakened:
 
-- Recon (i)'s and (ii)'s derivations (planning note §7a, *Not checked*): slice 5.
-- Crapo 1984 p. 295 as the polar form of `def:pencil-d-configuration`: slice 5, if cited.
 - The self-duality from Rigidity and polarity I, Theorem 4.1: slice 6.
 - O2's projection claim, and `(q, P_q)` as a section-projection figure in Whiteley 1991's sense
   (O6): slice 8.
@@ -95,12 +86,11 @@ duplications between `MainComponent/` and `Grade/` of `notes/pencil-scenes/simpl
 
 ## Hand-off / next phase
 
-The next commit is slice 5 (item 5), in `pencil-d.tex`: the sources of §3's rows,
-`def:pencil-d-lift` no longer presented as new, recon (i)'s and (ii)'s text each checked first,
-O4 at `def:pencil-d-configuration`, and call 5's prose. Its six "Jackson and Jordán's equality"
-now point at a theorem titled "The dimension of the lifting space", the prose slice 4 settled in
-`main-component.tex` (cite JJ TR Thm 7.1 as `jacksonJordan2006pin`). Slice 6 (`pencil.tex`, two
-uses) may go first. After the phase: ORIGAMI's open, with the PI (`notes/Origami.md`).
+The next commit is slice 6 (item 6), in `pencil.tex`: "pencil" as Crapo–Whiteley 1982's flat
+pencil (§3.5, p. 67; rank 2, p. 56), the polarity's attribution, the self-duality in call 1's
+wording only if its derivation checks, and call 5's prose. Its two "Jackson and Jordán's
+equality" (`sec:pencil-roadmap`) take the wording of slices 4 and 5 (JJ TR Thm 7.1 cited as
+`jacksonJordan2006pin`). After the phase: ORIGAMI's open, with the PI (`notes/Origami.md`).
 
 ## Decisions made during this phase
 
@@ -132,3 +122,11 @@ uses) may go first. After the phase: ORIGAMI's open, with the PI (`notes/Origami
   (p. 287) for the gap; W89 Thms 3.1 and 5.4 for the independent cases. "The three in-plane
   dimensions ours" is written as "not in his account" (W84 p. 288), what was checked; W84 §5.3
   beside CW82's tetrahedron. Every cited page re-read in the PDF.
+- **Slice 5 (2026-11-12).** Every cited page re-read; Sugihara's (10) on the page image. Weakened:
+  recon (ii)'s "special to plane pictures" (W84's reduction exists when K + 1 = n(n+1)/2, K = 5
+  included, p. 293), now "undefined at K = 3"; recon (i)'s "the lifts are the scenes over a plane
+  projection", now at configuration bases only (`L(b⁰) = L(q)`). O4 is its own sentence: the
+  conditions are linear because faces are graphs (`σ`), not by O4. Dropped: Crapo 1984 p. 295
+  (its corank-p setting fits a configuration's polar data, but its conditions are concurrences,
+  undeveloped). Crapo–Ryan §8 cited without O2's projection (slice 8's). Sugihara's `γ > 0`
+  is said.

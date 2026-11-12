@@ -384,6 +384,31 @@ so it is injective. If each height $z^i$ of a configuration $(q, z)$
 agrees with $a^i x + c^i y + e^i$ at a body $w$, the point of $(q, z)$
 at $w$ is $\sigma(x_w, y_w, 1)$.
 
+With every height in $L(q)$, a configuration is a family of $d - 2$
+scenes of $S_G$ over one plane picture
+(\cref{sec:main-component-carrier}). Its face at a body is the image of
+the map $\sigma$ of the affine heights there, the graph of $d - 2$
+affine functions of the picture. So the conditions on the heights are
+linear, one height at a time (\cref{lem:pencil-d-condition-linear}).
+Whiteley extends scene analysis to higher dimensions differently, with
+a picture in $k$-space and a hyperplane of $(k + 1)$-space at each
+face~\cite[Definition~7.2]{whiteley1984}. As he remarks, a plane
+picture of a scene in $4$-space with hyperplane faces leads to
+non-linear equations (p.~292). Crapo and Ryan lift a picture by all of
+its locally linear functions at once~\cite[\S 8, pp.~52--53]{crapoRyan1986}.
+With the closed neighbourhoods as their nodes, these functions are the
+heights in $L(q)$, and their lift takes a basis of $L(q)$ as
+coordinates: it is the preimage of the picture of highest rank in which
+no closed neighbourhood rises in rank. A configuration takes $d - 2$
+heights in $L(q)$ instead.
+
+The hinges, unlike these conditions, are not linear in the heights when
+$d \ge 4$. The coordinates of the join $b_u \vee b_v$ are the
+$2 \times 2$ minors of the two points (the proof of
+\cref{lem:pencil-d-join-independence-open}). Each is of degree at most
+one in each height, and a minor on the coordinates of two heights is of
+degree two in the two together.
+
 \begin{lemma}[A configuration over an admissible picture is a pencil realization]
   \label{lem:pencil-d-config-realization}
   \lean{Graph.IsAdmissiblePicture.hasPencilPlaneRealization_ofNormals_pencilConfigPointGrade,
@@ -481,6 +506,12 @@ at $w$ is $\sigma(x_w, y_w, 1)$.
   (\cref{lem:screw-map-rows}).
 \end{proof}
 
+Over the reals and at $d = 3$, this is Crapo and Whiteley's projective
+invariance of the motions of panel
+structures~\cite[\S 3.6]{crapoWhiteley1982}, for the collineation given
+by the inverse transpose of $g$. They state that it holds in every
+dimension (p.~75).
+
 \begin{lemma}[Linear changes and affine shifts of the heights preserve the rank]
   \label{lem:pencil-d-rank-scale-shift}
   \lean{Graph.finrank_span_rigidityRows_ofNormals_heights_linearEquiv_add_affineLifts}
@@ -503,6 +534,12 @@ at $w$ is $\sigma(x_w, y_w, 1)$.
   the point of $(q, Tz + a)$ there. So
   \cref{lem:pencil-d-rank-collineation} applies.
 \end{proof}
+
+At $d = 3$ the map of the heights, $z \mapsto tz + a$ with $t \ne 0$, is
+Sugihara's transformation~(10) of a scene, there with $t > 0$: it keeps
+the picture and takes the polyhedra over it to
+polyhedra~\cite[p.~85]{sugihara1984}. In dimension $d$ the matrix $T$
+also mixes the heights.
 
 \begin{lemma}[One attaining configuration forces the general one, in every dimension]
   \label{lem:pencil-d-x0-one-witness}
@@ -1166,8 +1203,13 @@ The planar objects of \cref{sec:main-component-carrier} serve in every
 dimension unchanged: the pictures and their admissibility, the lifting
 space $L(q)$ and its lifting system, and the main pictures
 (\cref{def:pencil-main-picture}, \cref{lem:pencil-x0-main-picture-open}).
-So does Jackson and Jord\'an's equality (\cref{thm:pencil-jj-equality}),
-which concerns $L(q)$ alone. A configuration in dimension $d$ takes each
+So does the dimension of the lifting space at a general picture,
+$3 + \operatorname{def}_2(G)$ (\cref{thm:pencil-jj-equality}), which
+concerns $L(q)$ alone. Over the reals it follows from a theorem of
+Jackson and Jord\'an~\cite[Theorem~7.1]{jacksonJordan2006pin}, through
+Whiteley's correspondence between scenes and the motions of
+frameworks~\cite{whiteley1984} (\cref{sec:main-component-jj}).
+A configuration in dimension $d$ takes each
 of its $d - 2$ heights from $L(q)$. The objects that read the points of
 a configuration are restated in \cref{sec:pencil-d-carrier}. This
 section fixes the notation, and shows that over an admissible picture
@@ -1232,8 +1274,13 @@ $D = \binom{d+1}{2}$. At $d = 3$ they are those of
 
 At $d = 3$ the points of a closed neighbourhood are coplanar exactly
 when the height agrees with an affine function of the picture there
-(\cref{lem:pencil-condition-linear}). In dimension $d$ the same holds
-for each of the $d - 2$ heights.
+(\cref{lem:pencil-condition-linear}). This is the linearity of the
+equations of scene analysis in the heights. Over a fixed picture, four
+lifted points are coplanar under one linear condition on their
+heights~\cite[p.~78]{whiteley1989}, and each incidence of a point on a
+face gives one equation, linear in the height and in the coefficients
+of the plane~\cite[eq.~(1), p.~80]{sugihara1984}. In dimension $d$ the
+same holds for each of the $d - 2$ heights.
 
 \begin{lemma}[Coplanarity is linear in the heights, in every dimension]
   \label{lem:pencil-d-condition-linear}
@@ -1306,7 +1353,9 @@ for each of the $d - 2$ heights.
   dimension $d$ the span $S$ has codimension $d - 2$, and no single
   normal vector. The projection $\pi$ takes the place of the normal:
   that $\pi$ is injective on $S$ says that $S$ is not vertical, and the
-  inverse of $\pi$ on $S$ gives all $d - 2$ heights at once.
+  inverse of $\pi$ on $S$ gives all $d - 2$ heights at once. Scene
+  analysis assumes that no face is vertical~\cite[p.~271]{whiteley1984};
+  here admissibility gives it.
 \end{proof}
 
 \subsection{The flat rank in every dimension}
@@ -1315,18 +1364,21 @@ for each of the $d - 2$ heights.
 This section reads the motions of a flat configuration $(q, 0)$ in
 dimension $d$ as lifting planes (\cref{lem:pencil-flat-split}), and
 computes its rank (\cref{thm:pencil-d-flat-rank}). As at $d = 3$
-(\cref{sec:main-component-flat}), with Jackson and Jord\'an's equality
-it settles the graphs whose two deficiencies agree
-(\cref{cor:pencil-d-jj-flat}). The points of a flat configuration have
-zero heights, and they are the homogeneous picture points with $d - 2$
-zero coordinates inserted before the last. So the flat configuration in
-dimension $d$ is the configuration of the picture in dimension two,
-embedded by $\iota$ (\cref{def:pencil-d-embedding}), and its rank is
-read off the plane framework of \cref{lem:pencil-lifting-planes-motions}.
+(\cref{sec:main-component-flat}), with the dimension of the lifting
+space at a general picture it settles the graphs whose two deficiencies
+agree (\cref{cor:pencil-d-jj-flat}). The points of a flat configuration
+have zero heights, and they are the homogeneous picture points with
+$d - 2$ zero coordinates inserted before the last. So the flat
+configuration in dimension $d$ is the configuration of the picture in
+dimension two, embedded by $\iota$ (\cref{def:pencil-d-embedding}), and
+its rank is read off the plane framework of
+\cref{lem:pencil-lifting-planes-motions}, whose motions are the scenes
+of $S_G$ over $q$ by Whiteley's
+correspondence~\cite[Proposition~4.1]{whiteley1984}.
 
-Over an infinite field and under the standing hypotheses, Jackson and
-Jord\'an's equality gives $\dim L(q) = 3 + \operatorname{def}_2(G)$ at a
-general picture (\cref{thm:pencil-jj-equality}). The flat configuration
+Over an infinite field and under the standing hypotheses,
+$\dim L(q) = 3 + \operatorname{def}_2(G)$ at a general picture
+(\cref{thm:pencil-jj-equality}). The flat configuration
 over such a picture then has rank
 $D(|V(G)| - 1) - \operatorname{def}_2(G)$, which is the target exactly
 when $\operatorname{def}_2(G) = \operatorname{def}_d(G)$. The later steps
@@ -1533,8 +1585,8 @@ not in the source.
 \begin{proof}
   \leanok
   \uses{thm:pencil-jj-equality, cor:pencil-d-flat-attains}
-  As $G$ is connected, it has a body. By Jackson and Jord\'an's equality
-  (\cref{thm:pencil-jj-equality}), some main picture $q$ of $G$ has
+  As $G$ is connected, it has a body. By \cref{thm:pencil-jj-equality},
+  some main picture $q$ of $G$ has
   \[
     \dim L(q) = 3 + \operatorname{def}_2(G) = 3 + \operatorname{def}_d(G).
   \]
@@ -1969,7 +2021,7 @@ as in \cref{lem:pencil-contract-additive-kernel}.
   $H$ is $\operatorname{tgt}_d(H) = D(|W| - 1)$.
 
   \emph{The picture.} As $H$ and $G/H$ satisfy the standing hypotheses,
-  Jackson and Jord\'an's equality applies to both
+  the theorem on the dimension of the lifting space holds for both
   (\cref{thm:pencil-jj-equality}). Take a picture $q$ off the zero sets of
   five nonzero polynomials: those of the attainment in dimension $d$ and
   of the equality at $H$ and at $G/H$, and the main-picture polynomial of
@@ -3185,8 +3237,8 @@ $(\xi, \eta, \omega) \mapsto (\xi, \eta, h_a \cdot (\xi, \eta, \omega),
 \end{fmlnote}
 
 % Source: SHORT-CORE workbook, S28 (the gluing), S29 (the dichotomy) and S30 (Case 1);
-% S14 and S15 are the model at r = 0, and S25 gives the use of Jackson and Jordan's
-% equality made here.
+% S14 and S15 are the model at r = 0, and S25 gives the use of the dimension of the
+% lifting space (thm:pencil-jj-equality) made here.
 \begin{lemma}[Glued ends in the plane bound the relative screws]
   \label{lem:pencil-d-glued-ends}
   \lean{Graph.exists_mvPolynomial_gluedEnds}
@@ -3238,8 +3290,8 @@ $(\xi, \eta, \omega) \mapsto (\xi, \eta, h_a \cdot (\xi, \eta, \omega),
   closed neighbourhood of $G'$ has at least three members. The partitions
   of $V(G')$ are those of $V(G)$ with $a$ and $b$ in one part, with the
   same edges between parts, so $\operatorname{def}_2(G') = m$. By
-  Jackson and Jord\'an's equality (\cref{thm:pencil-jj-equality}), some
-  admissible picture $q'$ of $G'$ has $\dim L_{G'}(q') = 3 + m$, so the
+  \cref{thm:pencil-jj-equality}, some admissible picture $q'$ of $G'$
+  has $\dim L_{G'}(q') = 3 + m$, so the
   lifting planes of $G'$ at $q'$ form a space of dimension $3 + m$
   (\cref{lem:pencil-lifting-planes-dim}).
 
@@ -5100,6 +5152,38 @@ suffices (\cref{lem:pencil-d-lift-one-witness}). The steps of the
 induction pass from a smaller graph to $G$ by restricting the lifts of
 $G$ to the smaller graph (\cref{lem:pencil-d-lift-transfer}).
 
+The lifts are scenes, in Whiteley's scene analysis in higher
+dimensions~\cite[\S 7.2]{whiteley1984}. There a picture in $k$-space
+places the points of an incidence structure, and a scene over it lifts
+each point by a height and gives each face a hyperplane of
+$(k + 1)$-space, not vertical, through the lifted points on the face
+(Definition~7.2). At $k = 2$ these are the scenes of
+\cref{sec:main-component-carrier}, and for $S_G$ their heights form the
+lifting space $L(q)$. At $k = 3$, in homogeneous coordinates, the scenes
+of $S_G$ over the points $b^0$ are the pairs $(\zeta, \psi)$ of
+\cref{lem:pencil-d-lift-one-witness}, the face of a body $v$ being the
+hyperplane $\zeta = \psi_v(p)$. Their heights are the maps of the lifts
+(\cref{lem:pencil-d-lift-realization}). So $L(q)$ and the space of the
+maps of the lifts are one construction at two dimensions. A lift keeps
+of $\psi_v$ only its restriction $\varphi_v$ to $\Pi^0_v$, which
+contains the points on the face. A linear form on $\Pi^0_v$ extends to
+$K^4$ in a one-parameter family, so a lift forgets one parameter at each
+face. The trivial lifts are the restrictions of Whiteley's flat scenes,
+which give all faces one hyperplane (p.~292).
+
+The correspondence between scenes and frameworks does not extend to the
+lifts. Over a plane picture the scenes are the motions of a plate
+framework~\cite[Proposition~4.1]{whiteley1984}, for $S_G$ the plane
+framework $P_q$ (\cref{lem:pencil-lifting-planes-motions}). In every
+dimension the flat split maps the motions of every configuration over
+$q$ to the planes of these scenes, onto at the flat configuration
+(\cref{lem:pencil-flat-split}). Whiteley's reduction gives each face of
+a picture in $k$-space $k + 1$ coordinates, and a framework of bodies in
+$n$-space only when $k + 1 = n(n + 1)/2$, so it is undefined at $k = 3$
+(p.~293). We read no motions off the lifts. Their rank is read at the
+panel-hinge framework with their normals, as the rank of a configuration
+is.
+
 For $y_1, y_2, y_3 \in K^4$ we write $y_1 \times y_2 \times y_3$ for the
 vector with $(y_1 \times y_2 \times y_3) \cdot t = \det[y_1, y_2, y_3, t]$
 for every $t \in K^4$, as in the proof of \cref{lem:pencil-generic-steer}.
@@ -5290,6 +5374,17 @@ $\lambda = 0$ is the embedding of $(b^0, \Pi^0)$, and a lift of a
 configuration is a configuration (\cref{lem:pencil-d-lift-no-rigid}). At
 $d = 3$ there are no new coordinates, and the only lift is
 $(b^0, \Pi^0)$ itself.
+
+At a configuration the lifts come back to the plane. Let the base be the
+configuration $(q, z^1)$ in dimension three of an admissible picture
+$q$, with $z^1 \in L(q)$ and with the planes through the points of its
+closed neighbourhoods. Then $L(b^0) = L(q)$ (the proof of
+\cref{lem:pencil-d-lift-no-rigid}): the maps of the lifts are the
+heights of the scenes of $S_G$ over the plane picture $q$, which
+correspond to the motions of $P_q$ (\cref{lem:pencil-lifting-planes-dim},
+\cref{lem:pencil-lifting-planes-motions}). The maps of the trivial lifts
+are the heights $\psi(x, y, z^1, 1)$, which form
+$\mathrm{Aff}(q) + K z^1$.
 
 % Source: NONDEG workbook, S18 (ii) (its claim), with the first paragraph of S18 (v) for
 % part (2), and S25's change of coordinates for part (3).
@@ -5987,7 +6082,7 @@ the conditioned pair in every dimension
 % coordinates of def:pencil-d-lift inserted before the last one, they are the chapter's.
 % The least lift space follows the formalization (finrank_liftSpaceTilde_pencilConfigPoint,
 % exists_pencilConfigPoint_of_dotProduct): only the minimality of a main picture, and dim L~
-% through the lifting system; S25 reads dim L(q) from Jackson and Jordan's equality and moves
+% through the lifting system; S25 reads dim L(q) from thm:pencil-jj-equality and moves
 % a realization to a configuration by a general change of coordinates of K^4.
 \begin{lemma}[Without a planar-rigid set]
   \label{lem:pencil-d-lift-no-rigid}
@@ -6321,10 +6416,18 @@ of every closed neighbourhood of $Y$ span its subspace and the lifts of
 $Y$ are trivial, given by one linear form $\psi$ on $K^4$, then
 $\varphi_a$ and $\varphi_b$ are both restrictions of $\psi$, and agree at
 $b^0_x$. We show that the lifts of $Y$ are trivial at a general
-nondegenerate realization of $G$. At a configuration of $Y$ over a
-general picture, the maps of its lifts are the heights in $L(q)$, of
-dimension $3 + \operatorname{def}_2(Y) = 4$ (\cref{thm:pencil-jj-equality}),
-and so the lifts are trivial. That the lifts of $Y$ are trivial is an open
+nondegenerate realization of $G$. At a configuration $(q, z)$ of $Y$
+over a general picture, the maps of its lifts are the heights in
+$L(q)$, of dimension $3 + \operatorname{def}_2(Y) = 4$
+(\cref{thm:pencil-jj-equality}). The maps of the trivial lifts form
+$\mathrm{Aff}(q) + Kz$ (the remarks after \cref{def:pencil-d-lift}),
+also of dimension four when the height $z$ of the base is not globally
+affine, and so the lifts are trivial. In Whiteley's terms the scenes of
+$S_Y$ over $q$ have one degree of
+freedom~\cite[Definition~2.4]{whiteley1984}, and so does the plane
+framework $P_q$~\cite[Corollary~4.2(iv)]{whiteley1984}: its motions
+modulo the trivial ones are spanned by the motion that the height $z$
+of the base gives. That the lifts of $Y$ are trivial is an open
 condition on the points of $X$, and it remains to carry it to the points
 of $X$ in a general nondegenerate realization of $G$. A hub outside
 $W_0$ asks only that its subspace contain the points of its neighbours
