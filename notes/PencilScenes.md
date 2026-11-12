@@ -1,7 +1,9 @@
 # PENCIL-SCENES — the pencil proof against its sources (planning note)
 
-**Status:** queued by the PI on 2026-11-09, ahead of ORIGAMI; unopened, and its number is minted
-on open. Same editing discipline as phase notes (≤ 8-line entries, lift cross-cutting lessons).
+**Status:** opened on 2026-11-12 as **Phase 44**, with the PI (§8); the work log is
+`notes/Phase44.md`, and this note is the phase's plan and recon record. It was queued by the
+PI on 2026-11-09, ahead of ORIGAMI. Same editing discipline as phase notes (≤ 8-line entries,
+lift cross-cutting lessons).
 The read-only recon of §5 is done (2026-11-09; four reports in `notes/pencil-scenes/`), and on
 2026-11-11 the PI settled the scope as (a), exposition only (§6), after §5a's comparison.
 Three more recon reports were banked the same day (§5b), and the three papers they asked for
@@ -10,7 +12,7 @@ On 2026-11-11 the PI also settled the plan at the open (§7): the nine calls, a 
 Lean, and one more read-only recon, for simplifications of the route, which no recon had asked.
 The simplification recon ran the same day (§7a): no to (i), and to (ii) one definition, not one
 theorem. The route and the Lean stand; the exposition gains two paragraphs.
-**Next concrete step:** the open with the PI, with §7a's open calls and §7's nine calls.
+**Next concrete step:** `notes/Phase44.md` *Hand-off* (slice 1, the flat-split spike).
 
 ## 1. The PI's words (verbatim)
 
@@ -348,7 +350,8 @@ this area?", and to the answer recorded below, "OK, let's go with your recommend
   merge is Berg–Jordán's and the three-point merge on S_G is ours, its identity a consequence of
   published theorems.
 - **The scope widened on 2026-11-11 (§7):** one rename in the Lean, and whatever the
-  simplification recon's first question returns. No statement changes.
+  simplification recon's first question returns. No statement changes. It widened again at the
+  open (§8): docstrings, and the flat split in every dimension, which restates one node.
 
 The options as they stood before the decision:
 
@@ -429,10 +432,10 @@ the simplification recon's result):
 heights, `Graph.liftingPlanes` the face planes, `Graph.affineLifts` the trivial scenes;
 `liftSpace` and `IsTrivialLift` are W84 Def. 7.2's scenes and flat scenes), so none changes. The
 rename: Part C's `liftSpace` (39 uses in 6 files), one syllable from `liftingSpace`, a
-different object. Its new name is chosen at the open. Not renamed: `liftingSpace` (W96's word;
-ORIGAMI's general scene space is the moment), `affineLifts`, `IsTrivialLift`. Not settled:
-whether docstring citations change in this phase (the session agent would, with call 5), and
-the `x0` in names and labels, a leftover working name, uncounted (a cleanup round's).
+different object. Its new name is `baseLiftSpace` (§8). Not renamed: `liftingSpace` (W96's word;
+ORIGAMI's general scene space is the moment), `affineLifts`, `IsTrivialLift`. Docstring citations
+change in this phase, with call 5 (§8). The `x0` in names and labels, a leftover working name,
+is uncounted and a cleanup round's.
 
 **The simplification recon** (read-only, before the open): done, §7a. It asked (i) whether a
 Part C lift is a motion of the panel structure below, so that `lem:pencil-d-ear-free` follows
@@ -484,8 +487,43 @@ is `/harness-review`'s). Reports banked as delivered: `notes/pencil-scenes/simpl
 - **Not checked:** the agents' derivations (the normal-velocity obstruction, the splitting in
   4-space, the lift by 0 as `F.map screwEmbed`, C₇'s configuration as a legitimate Part C base);
   the line-count estimates; the other leads at the end of each report.
-- **Open, the PI's calls at the open.** Whether `pencil-d.tex` takes (i)'s two sentences (at
+- **The PI's calls at the open** (settled, §8): `pencil-d.tex` takes (i)'s two sentences (at
   `def:pencil-d-lift` and `lem:pencil-d-ear-free`) and (ii)'s drafted paragraph ("one
-  construction at two dimensions"; `simplify-ii.md`, Step 3(a)), and where; whether the flat
-  motion count stays. On §7's nine calls: none is outdated, since the route does not change.
-  The phase's Lean scope is the rename alone.
+  construction at two dimensions"; `simplify-ii.md`, Step 3(a)); the flat motion count goes, for
+  the flat split in every dimension. On §7's nine calls: none is outdated, since the route does
+  not change.
+
+## 8. The open (2026-11-12)
+
+From an attended session, which the PI began with "Let's open phase 44 following
+@notes/PencilScenes.md." The session agent put four calls to the PI, each with a recommendation.
+
+- **The rename.** The PI chose "baseLiftSpace (Recommended)": the lifts of the base realization
+  r⁰. It keeps the chapter's word, so `IsTrivialLift`, `liftMaps` and "lift space" stay, and it
+  leaves `sceneSpace` to ORIGAMI's general definition. Companions: `baseLiftSpaceTilde`,
+  `mem_baseLiftSpace`, and the lemma names that contain them.
+- **The two additions to `pencil-d.tex`** (§7a). The PI chose "Both, in the pencil-d slice
+  (Recommended)": the two sentences at `def:pencil-d-lift` and `lem:pencil-d-ear-free`, the
+  paragraph in Part C's introduction, each after its derivation is checked in the slice.
+- **Docstrings.** The PI chose "Yes, in the rename slice (Recommended)": one Lean slice does the
+  rename and the docstring edits, comments only.
+- **The flat motion count.** The recommendation was to keep it. The PI asked:
+
+  > "Would it make sense for us to retire it and mention that a generalization of Whiteley 1984
+  > 5.1 is formalized, with a pointer to that? "
+
+- **The session agent's answer, from the Lean.** Half of such a generalization is formalized:
+  every motion of every configuration over q, at any number of heights, projects to lifting
+  planes (`gradePi_comp_mem_liftingPlanes`), and the every-dimension flat rank is a count, proved
+  through P_q and padding, not through §5.1. The isomorphism (motions of the flat structure are
+  constants ⊕ F(q)) is formalized at d = 3 only. So the sentence would overstate unless one
+  lemma is added: at the flat configuration with any number of zero heights, the map to F(q) is
+  onto, with kernel the constant screws killed by ⋀²π (the agent's sketch, unchecked).
+- **The PI's call.** Offered that lemma, keeping the count, or retiring it with a pointer only,
+  the PI chose "Retire, add the every-dimension split (Recommended)": `lem:pencil-flat-split`
+  is restated in every dimension and re-pinned, and the d = 3 count (about 120 lines) goes, with
+  its use in `MainComponent/Bridge.lean` turned to the padding proof. A read-only spike comes
+  first; if the lemma or the import order fails, the count stays.
+- **Settled without a question:** one work log, `notes/Phase44.md`, no sub-phases; the slices
+  and their order are its checklist. §7's order changes in one place: the spike and the flat
+  split come before the flat-rank prose, and the road map stays last before the close.
