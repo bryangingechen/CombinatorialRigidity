@@ -28,7 +28,7 @@ is `D(|V(G)| − 1) + 3 − dim L(q)` (`thm:pencil-d-flat-rank`). With `dim L(q)
 
 The file sits before `MainComponent/Bridge.lean`: the flat rank at `d = 3`
 (`MainComponent/FlatRank.lean`, `thm:pencil-flat-rank`) is this one at one height, and `Bridge`
-uses it. The corollary that needs `Bridge`, Jackson and Jordán's equality
+uses it. The corollary that needs `Bridge`, the theorem on the dimension of the lifting space
 (`cor:pencil-d-jj-flat`, `Graph.x0AttainsGrade_of_deficiency_two_eq`), is in
 `Grade/ContractAdditive.lean`, its first user.
 

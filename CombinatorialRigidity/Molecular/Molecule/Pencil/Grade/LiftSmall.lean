@@ -487,12 +487,12 @@ theorem liftAttains_of_cutEdges_eq_empty [Finite α] [Finite β] (r : ℕ)
     · intro v hv w hw h
       by_cases hv₁ : v ∈ V₁
       · have hw₁ := hnb₁ v hv₁ w hw
-        have := (mem_liftSpace.1 (hlam₁ i)) v hv₁ w
+        have := (mem_baseLiftSpace.1 (hlam₁ i)) v hv₁ w
           (by rwa [Graph.closedNbhd_induce_of_forall_isLink_mem hAdj₁ hv₁]) h
         simpa [lam, hv₁, hw₁] using this
       · have hv₂ : v ∈ V₂ := ⟨hv, hv₁⟩
         have hw₂ := hnb₂ v hv₂ w hw
-        have := (mem_liftSpace.1 (hlam₂ i)) v hv₂ w
+        have := (mem_baseLiftSpace.1 (hlam₂ i)) v hv₂ w
           (by rwa [Graph.closedNbhd_induce_of_forall_isLink_mem hAdj₂ hv₂]) h
         simpa [lam, hv₁, hw₂.2] using this
     · set qf : α × Fin (r + 1 + 1 + 2) → K :=

@@ -16,10 +16,10 @@ public import CombinatorialRigidity.Molecular.AlgebraicInduction.DeficiencyBound
 The two nodes of `blueprint/src/chapter/pencil-d.tex` that follow `def:pencil-d-lift-attains`:
 
 * `lem:pencil-d-lift-one-witness`: `LiftAttains` is homogeneous in each body (`bodyWeight`); one
-  lift of least `dim L̃` (`liftSpaceTilde`) of the target rank gives the general lift attaining
+  lift of least `dim L̃` (`baseLiftSpaceTilde`) of the target rank gives the general lift attaining
   (`liftAttains_of_least`); the least value is taken generally
-  (`exists_holdsGenerally_finrank_liftSpaceTilde_le`), so a general realization with one suffices
-  (`liftAttains_of_holdsGenerally`).
+  (`exists_holdsGenerally_finrank_baseLiftSpaceTilde_le`), so a general realization with one
+  suffices (`liftAttains_of_holdsGenerally`).
 * `lem:pencil-d-lift-transfer`: the lifts of a subgraph that attain form a nonempty Zariski-open
   set of the maps (`lift_transfer`).
 -/
@@ -118,7 +118,7 @@ theorem exists_weightedHomogeneousComponent_of_eval_ne_zero [Infinite K] [Finite
 /-- **The space `L̃(b⁰)`** (`lem:pencil-d-lift-one-witness`): pairs `(ζ, ψ)` of a map on the
 bodies (at `Sum.inl`) and linear forms `ψ_v` on `K⁴` (their coordinates, at `Sum.inr (v, i)`),
 with `ζ_w = ψ_v(b⁰_w)` for every body `v` and `w` in its closed neighbourhood. -/
-def liftSpaceTilde (G : Graph α β) (b0 : α → Fin 4 → K) : Submodule K (α ⊕ α × Fin 4 → K) where
+def baseLiftSpaceTilde (G : Graph α β) (b0 : α → Fin 4 → K) : Submodule K (α ⊕ α × Fin 4 → K) where
   carrier := {z | ∀ v ∈ V(G), ∀ w ∈ G.closedNbhd v, z (.inl w) = ∑ i, z (.inr (v, i)) * b0 w i}
   add_mem' {x y} hx hy v hv w hw := by
     simp [hx v hv w hw, hy v hv w hw, Finset.sum_add_distrib, add_mul]
@@ -137,8 +137,8 @@ noncomputable def liftMatrixPoly (G : Graph α β) :
   else 0
 
 /-- `L̃(b⁰)` is the kernel of `A(b⁰)` (`lem:pencil-d-lift-one-witness`). -/
-theorem liftSpaceTilde_eq_ker [Fintype α] (G : Graph α β) (b0 : α → Fin 4 → K) :
-    liftSpaceTilde G b0 = LinearMap.ker ((liftMatrixPoly (K := K) G).map
+theorem baseLiftSpaceTilde_eq_ker [Fintype α] (G : Graph α β) (b0 : α → Fin 4 → K) :
+    baseLiftSpaceTilde G b0 = LinearMap.ker ((liftMatrixPoly (K := K) G).map
       (MvPolynomial.eval fun p => b0 p.1 p.2)).mulVecLin := by
   classical
   ext z
@@ -169,10 +169,10 @@ theorem liftSpaceTilde_eq_ker [Fintype α] (G : Graph α β) (b0 : α → Fin 4 
     exact sub_eq_zero.1 this
 
 /-- A lift gives a member of `L̃`: its forms extend to `K⁴` (`LinearMap.exists_extend`). -/
-theorem exists_mem_liftSpaceTilde_of_mem_liftSpace {G : Graph α β} {b0 : α → Fin 4 → K}
+theorem exists_mem_baseLiftSpaceTilde_of_mem_baseLiftSpace {G : Graph α β} {b0 : α → Fin 4 → K}
     {P0 : α → Submodule K (Fin 4 → K)} (hP0 : ∀ v ∈ V(G), ∀ w ∈ G.closedNbhd v, b0 w ∈ P0 v)
-    {lam : (α → K) × ((v : α) → Module.Dual K (P0 v))} (hlam : lam ∈ liftSpace G b0 P0) :
-    ∃ z ∈ liftSpaceTilde G b0, ∀ w, z (.inl w) = lam.1 w := by
+    {lam : (α → K) × ((v : α) → Module.Dual K (P0 v))} (hlam : lam ∈ baseLiftSpace G b0 P0) :
+    ∃ z ∈ baseLiftSpaceTilde G b0, ∀ w, z (.inl w) = lam.1 w := by
   choose ψ hψ using fun v => LinearMap.exists_extend (lam.2 v)
   refine ⟨Sum.elim lam.1 fun q => ψ q.1 (Pi.single q.2 1), fun v hv w hw => ?_, fun w => rfl⟩
   simp only [Sum.elim_inl, Sum.elim_inr]
@@ -181,9 +181,9 @@ theorem exists_mem_liftSpaceTilde_of_mem_liftSpace {G : Graph α β} {b0 : α �
   simp only [smul_eq_mul, mul_comm]
 
 /-- A member of `L̃` gives a lift: the forms restricted to `Π⁰_v`. -/
-theorem exists_mem_liftSpace_of_mem_liftSpaceTilde {G : Graph α β} {b0 : α → Fin 4 → K}
-    (P0 : α → Submodule K (Fin 4 → K)) {z : α ⊕ α × Fin 4 → K} (hz : z ∈ liftSpaceTilde G b0) :
-    ∃ lam ∈ liftSpace G b0 P0, lam.1 = fun w => z (.inl w) := by
+theorem exists_mem_baseLiftSpace_of_mem_baseLiftSpaceTilde {G : Graph α β} {b0 : α → Fin 4 → K}
+    (P0 : α → Submodule K (Fin 4 → K)) {z : α ⊕ α × Fin 4 → K} (hz : z ∈ baseLiftSpaceTilde G b0) :
+    ∃ lam ∈ baseLiftSpace G b0 P0, lam.1 = fun w => z (.inl w) := by
   let ψ : α → Module.Dual K (Fin 4 → K) := fun v =>
     { toFun := fun x => ∑ i, z (.inr (v, i)) * x i
       map_add' := fun x y => by simp [mul_add, Finset.sum_add_distrib]
@@ -238,11 +238,11 @@ theorem linearIndependent_liftNormal {r : ℕ} {b0 : α → Fin 4 → K} (ζ : F
   funext i; fin_cases i <;> exact liftProj_liftVec _ _
 
 /-- The lift space only reads the normals on `V(G)`. -/
-theorem liftSpace_congr {G : Graph α β} {b0 b0' : α → Fin 4 → K}
+theorem baseLiftSpace_congr {G : Graph α β} {b0 b0' : α → Fin 4 → K}
     {P0 : α → Submodule K (Fin 4 → K)} (h : ∀ v ∈ V(G), b0' v = b0 v) :
-    liftSpace G b0' P0 = liftSpace G b0 P0 := by
+    baseLiftSpace G b0' P0 = baseLiftSpace G b0 P0 := by
   ext lam
-  simp only [mem_liftSpace]
+  simp only [mem_baseLiftSpace]
   refine forall₂_congr fun v hv => forall₂_congr fun w hw => ?_
   have hw' := h w (Graph.closedNbhd_subset_vertexSet hv hw)
   constructor
@@ -338,9 +338,9 @@ theorem liftAttains_of_least [Infinite K] [Finite α] [Finite β] {r : ℕ} {G :
     (hnd : IsNondegPencilPlaneRealization G F b P)
     (hleast : ∀ (F' : BodyHingeFramework K 2 α β) (b' : α → Fin 4 → K)
       (P' : α → Submodule K (Fin 4 → K)), IsNondegPencilPlaneRealization G F' b' P' →
-      Module.finrank K (liftSpaceTilde G b) ≤ Module.finrank K (liftSpaceTilde G b'))
+      Module.finrank K (baseLiftSpaceTilde G b) ≤ Module.finrank K (baseLiftSpaceTilde G b'))
     {lam : Fin r → (α → K) × ((v : α) → Module.Dual K (P v))}
-    (hlam : ∀ i, lam i ∈ liftSpace G b P) {ends : β → α × α}
+    (hlam : ∀ i, lam i ∈ baseLiftSpace G b P) {ends : β → α × α}
     (hlinks : Graph.RecordsLinks G ends)
     (hrank : (Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := r + 1 + 1) G
         ends (fun p => liftNormal b (fun i => (lam i).1) p.1 p.2)).toBodyHinge.rigidityRows) : ℤ)
@@ -350,11 +350,11 @@ theorem liftAttains_of_least [Infinite K] [Finite α] [Finite β] {r : ℕ} {G :
   have := Fintype.ofFinite α
   have hP : ∀ v ∈ V(G), ∀ w ∈ G.closedNbhd v, b w ∈ P v := fun v hv w hw =>
     hnd.1.normal_mem_plane_of_mem_closedNbhd hv hw
-  choose z hz hzl using fun i => exists_mem_liftSpaceTilde_of_mem_liftSpace hP (hlam i)
+  choose z hz hzl using fun i => exists_mem_baseLiftSpaceTilde_of_mem_baseLiftSpace hP (hlam i)
   set q₀ : α × Fin 4 → K := fun p => b p.1 p.2 with hq₀
   have hz₀ : ∀ i, (liftMatrixPoly (K := K) G).map (MvPolynomial.eval q₀) *ᵥ z i = 0 := fun i => by
     have := hz i
-    rw [liftSpaceTilde_eq_ker] at this
+    rw [baseLiftSpaceTilde_eq_ker] at this
     exact this
   choose D Z hD₀ hZ₀ _ hZker using fun i =>
     Matrix.exists_mvPolynomial_section_mulVec_eq_zero (liftMatrixPoly (K := K) G) (hz₀ i)
@@ -448,13 +448,13 @@ theorem liftAttains_of_least [Infinite K] [Finite α] [Finite β] {r : ℕ} {G :
     have hge : Module.finrank K (LinearMap.ker ((liftMatrixPoly (K := K) G).map
         (MvPolynomial.eval q₀)).mulVecLin) ≤ Module.finrank K (LinearMap.ker
         ((liftMatrixPoly (K := K) G).map (MvPolynomial.eval fun p => bt p.1 p.2)).mulVecLin) := by
-      rw [← liftSpaceTilde_eq_ker, ← liftSpaceTilde_eq_ker]
+      rw [← baseLiftSpaceTilde_eq_ker, ← baseLiftSpaceTilde_eq_ker]
       exact hleast _ _ _ hndt
     have hZt : ∀ i, (fun c => MvPolynomial.eval (fun p => bt p.1 p.2) (Z i c)) ∈
-        liftSpaceTilde G bt := fun i => by
-      rw [liftSpaceTilde_eq_ker]
+        baseLiftSpaceTilde G bt := fun i => by
+      rw [baseLiftSpaceTilde_eq_ker]
       exact hZker i _ hge (hDt i)
-    choose lt hlt hlt1 using fun i => exists_mem_liftSpace_of_mem_liftSpaceTilde P0 (hZt i)
+    choose lt hlt hlt1 using fun i => exists_mem_baseLiftSpace_of_mem_baseLiftSpaceTilde P0 (hZt i)
     -- the rank at `b̃`
     have hnrmt : nrm (fun p => bt p.1 p.2) = fun p => liftNormal bt (fun i => (lt i).1) p.1 p.2 :=
       hnrm (fun p => bt p.1 p.2) (fun i => (lt i).1) fun i v => by rw [hlt1 i]
@@ -469,11 +469,11 @@ theorem liftAttains_of_least [Infinite K] [Finite α] [Finite β] {r : ℕ} {G :
         exact_mod_cast hPr _ hPct
     -- back to `b⁰`: patch, then unscale
     refine ⟨fun i => liftSmul (fun v => (c v)⁻¹) (lt i), fun i => ?_, ?_⟩
-    · have h1 : lt i ∈ liftSpace G (fun v => c v • b0 v) P0 := by
-        rw [← liftSpace_congr hbtV]; exact hlt i
-      have h2 := (liftSmul_mem_liftSpace_iff (fun v _ => inv_ne_zero (hc v))
+    · have h1 : lt i ∈ baseLiftSpace G (fun v => c v • b0 v) P0 := by
+        rw [← baseLiftSpace_congr hbtV]; exact hlt i
+      have h2 := (liftSmul_mem_baseLiftSpace_iff (fun v _ => inv_ne_zero (hc v))
         (b0 := fun v => c v • b0 v)).2 h1
-      rwa [liftSpace_congr (b0 := b0) fun v _ => by
+      rwa [baseLiftSpace_congr (b0 := b0) fun v _ => by
         rw [smul_smul, inv_mul_cancel₀ (hc v), one_smul]] at h2
     · have e1 : ∀ v, liftNormal (fun v => c v • b0 v) (fun i => (lt i).1) v =
           c v • liftNormal b0 (fun i => (liftSmul (fun v => (c v)⁻¹) (lt i)).1) v := by
@@ -495,9 +495,9 @@ theorem liftAttains_of_least [Infinite K] [Finite α] [Finite β] {r : ℕ} {G :
       rw [← hrkt, h1, h2, h3]
 
 /-- Rescaling the normals on `V(G)` keeps `dim L̃`. -/
-theorem finrank_liftSpaceTilde_smul {G : Graph α β} {b b' : α → Fin 4 → K} {c : α → K}
+theorem finrank_baseLiftSpaceTilde_smul {G : Graph α β} {b b' : α → Fin 4 → K} {c : α → K}
     (hc : ∀ v ∈ V(G), c v ≠ 0) (hb' : ∀ v ∈ V(G), b' v = c v • b v) :
-    Module.finrank K (liftSpaceTilde G b') = Module.finrank K (liftSpaceTilde G b) := by
+    Module.finrank K (baseLiftSpaceTilde G b') = Module.finrank K (baseLiftSpaceTilde G b) := by
   classical
   let scale : α ⊕ α × Fin 4 → K := Sum.elim (fun w => if w ∈ V(G) then c w else 1) fun _ => 1
   have hscale : ∀ x, scale x ≠ 0 := by
@@ -507,10 +507,11 @@ theorem finrank_liftSpaceTilde_smul {G : Graph α β} {b b' : α → Fin 4 → K
   let E : (α ⊕ α × Fin 4 → K) ≃ₗ[K] (α ⊕ α × Fin 4 → K) :=
     LinearEquiv.piCongrRight fun x => LinearEquiv.smulOfNeZero K K (scale x) (hscale x)
   have hE : ∀ z x, E z x = scale x * z x := fun z x => rfl
-  have key : liftSpaceTilde G b' = (liftSpaceTilde G b).map (E : (α ⊕ α × Fin 4 → K) →ₗ[K] _) := by
+  have key : baseLiftSpaceTilde G b' =
+      (baseLiftSpaceTilde G b).map (E : (α ⊕ α × Fin 4 → K) →ₗ[K] _) := by
     ext y
     rw [Submodule.mem_map_equiv]
-    simp only [liftSpaceTilde, Submodule.mem_mk, AddSubmonoid.mem_mk, AddSubsemigroup.mem_mk,
+    simp only [baseLiftSpaceTilde, Submodule.mem_mk, AddSubmonoid.mem_mk, AddSubsemigroup.mem_mk,
       Set.mem_ofPred_eq]
     refine forall₂_congr fun v hv => forall₂_congr fun w hw => ?_
     have hwV := Graph.closedNbhd_subset_vertexSet hv hw
@@ -548,30 +549,30 @@ theorem HoldsGenerally.of_isZariskiOpen {G : Graph α β} {hubSel nbrSel : α �
 (`lem:pencil-d-lift-one-witness`, a step of part (2)): some `N` bounds `dim L̃` below at every
 nondegenerate realization in dimension three, and is attained generally. `N` is the least value on
 `U(G)`, least among all nondegenerate realizations as each is `r(s)` up to scalars
-(`exists_mem_steerSet_of_isNondeg`, `finrank_liftSpaceTilde_smul`); `dim L̃` is at most `N` off
+(`exists_mem_steerSet_of_isNondeg`, `finrank_baseLiftSpaceTilde_smul`); `dim L̃` is at most `N` off
 the zero set of the polynomial of the section at a point where it is least
 (`Matrix.exists_mvPolynomial_section_mulVec_eq_zero` at `z₀ = 0`). -/
-theorem exists_holdsGenerally_finrank_liftSpaceTilde_le [Finite α] {G : Graph α β}
+theorem exists_holdsGenerally_finrank_baseLiftSpaceTilde_le [Finite α] {G : Graph α β}
     {hubSel nbrSel : α → Fin 3 → Option α}
     (hHubSel : ∀ v, IsFin3SelectorOf (G.closedHubNbhd v) (hubSel v))
     (hNbrSel : ∀ v, ¬ G.PencilHub v → IsFin3SelectorOf (G.closedNbhd v) (nbrSel v))
     (hfeas : PencilNondegFeasible K G) :
     ∃ N : ℕ, (∀ (F' : BodyHingeFramework K 2 α β) (b' : α → Fin 4 → K)
       (P' : α → Submodule K (Fin 4 → K)), IsNondegPencilPlaneRealization G F' b' P' →
-        N ≤ Module.finrank K (liftSpaceTilde G b')) ∧
+        N ≤ Module.finrank K (baseLiftSpaceTilde G b')) ∧
       HoldsGenerally (K := K) G hubSel nbrSel fun b0 _ =>
-        Module.finrank K (liftSpaceTilde G b0) ≤ N := by
+        Module.finrank K (baseLiftSpaceTilde G b0) ≤ N := by
   classical
   have := Fintype.ofFinite α
   obtain ⟨s₀, hs₀⟩ := (steerSet_nonempty_iff (K := K) hHubSel hNbrSel).2 hfeas
   set S : Set ℕ := {n | ∃ s ∈ steerSet (K := K) G hubSel nbrSel,
-    Module.finrank K (liftSpaceTilde G (steerPoint hubSel s)) = n} with hS
+    Module.finrank K (baseLiftSpaceTilde G (steerPoint hubSel s)) = n} with hS
   have hSne : S.Nonempty := ⟨_, s₀, hs₀, rfl⟩
   obtain ⟨s₁, hs₁, hs₁min⟩ := Nat.sInf_mem hSne
   refine ⟨sInf S, fun F' b' P' hnd' => ?_, ?_⟩
   · obtain ⟨s, hs, hpt, -⟩ := exists_mem_steerSet_of_isNondeg hHubSel hNbrSel hnd'
     choose! c hc hceq using hpt
-    rw [← finrank_liftSpaceTilde_smul hc hceq]
+    rw [← finrank_baseLiftSpaceTilde_smul hc hceq]
     exact Nat.sInf_le ⟨s, hs, rfl⟩
   set q₁ : α × Fin 4 → K := fun p => steerPoint hubSel s₁ p.1 p.2
   obtain ⟨D, -, hD₀, -, hDle, -⟩ := Matrix.exists_mvPolynomial_section_mulVec_eq_zero
@@ -580,14 +581,14 @@ theorem exists_holdsGenerally_finrank_liftSpaceTilde_le [Finite α] {G : Graph �
     steerPoint hubSel s p.1 p.2) fun p => isPolyFun_steerPoint hubSel p.1 p.2
   refine ⟨R₂, ⟨s₁, hs₁, by rw [← hR₂]; exact hD₀⟩, fun s _ hsR => ?_⟩
   have hle := hDle (fun p => steerPoint hubSel s p.1 p.2) (by rw [← hR₂] at hsR; exact hsR)
-  rw [← liftSpaceTilde_eq_ker, ← liftSpaceTilde_eq_ker] at hle
+  rw [← baseLiftSpaceTilde_eq_ker, ← baseLiftSpaceTilde_eq_ker] at hle
   rw [← hs₁min]
   exact hle
 
 /-- **One lift suffices, at a general realization** (`lem:pencil-d-lift-one-witness`, part (2)):
 if a general nondegenerate realization in dimension three has a lift of rank `tgt_d(G)`, the
 general lift attains. `dim L̃` takes its least value generally
-(`exists_holdsGenerally_finrank_liftSpaceTilde_le`), and two nonempty Zariski-open subsets of
+(`exists_holdsGenerally_finrank_baseLiftSpaceTilde_le`), and two nonempty Zariski-open subsets of
 `U(G)` meet. -/
 theorem liftAttains_of_holdsGenerally [Infinite K] [Finite α] [Finite β] {r : ℕ} {G : Graph α β}
     {hubSel nbrSel : α → Fin 3 → Option α}
@@ -596,13 +597,13 @@ theorem liftAttains_of_holdsGenerally [Infinite K] [Finite α] [Finite β] {r : 
     {ends : β → α × α} (hlinks : Graph.RecordsLinks G ends)
     (h : HoldsGenerally G hubSel nbrSel fun b0 P0 =>
       ∃ lam : Fin r → (α → K) × ((v : α) → Module.Dual K (P0 v)),
-        (∀ i, lam i ∈ liftSpace G b0 P0) ∧
+        (∀ i, lam i ∈ baseLiftSpace G b0 P0) ∧
         (Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := r + 1 + 1) G ends
           (fun p => liftNormal b0 (fun i => (lam i).1) p.1 p.2)).toBodyHinge.rigidityRows) : ℤ)
           = screwDim (r + 1 + 1) * ((V(G).ncard : ℤ) - 1) - G.deficiency (r + 1 + 2)) :
     LiftAttains K r G := by
   obtain ⟨R₁, ⟨s₀, hs₀, hR₁s₀⟩, hR₁⟩ := h
-  obtain ⟨N, hN, R₂, ⟨s₂, hs₂, hR₂s₂⟩, hR₂⟩ := exists_holdsGenerally_finrank_liftSpaceTilde_le
+  obtain ⟨N, hN, R₂, ⟨s₂, hs₂, hR₂s₂⟩, hR₂⟩ := exists_holdsGenerally_finrank_baseLiftSpaceTilde_le
     hHubSel hNbrSel ((steerSet_nonempty_iff (K := K) hHubSel hNbrSel).1 ⟨s₀, hs₀⟩)
   obtain ⟨s, ⟨hsU, hsR₁⟩, hsR₂⟩ := IsZariskiOpen.exists_mem_inter
     ((isZariskiOpen_steerSet hHubSel hNbrSel).inter (isZariskiOpen_eval_ne_zero R₁))
@@ -796,14 +797,14 @@ theorem lift_transfer [Infinite K] [Finite α] [Finite β] {r : ℕ} {G : Graph 
     HoldsGenerally (K := K) G hubSel nbrSel fun b0 P0 =>
       (∃ F : BodyHingeFramework K 2 α β, IsNondegPencilPlaneRealization (G.induce V') F b0 P0) ∧
       (∃ lam : Fin r → (α → K) × ((v : α) → Module.Dual K (P0 v)),
-        (∀ i, lam i ∈ liftSpace G b0 P0) ∧
+        (∀ i, lam i ∈ baseLiftSpace G b0 P0) ∧
         (Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := r + 1 + 1)
           (G.induce V') ends
             (fun p => liftNormal b0 (fun i => (lam i).1) p.1 p.2)).toBodyHinge.rigidityRows) : ℤ)
           = screwDim (r + 1 + 1) * ((V(G.induce V').ncard : ℤ) - 1) -
             (G.induce V').deficiency (r + 1 + 2)) ∧
       ∀ lam : Fin r → (α → K) × ((v : α) → Module.Dual K (P0 v)),
-        (∀ i, lam i ∈ liftSpace G b0 P0) →
+        (∀ i, lam i ∈ baseLiftSpace G b0 P0) →
         (Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := r + 1 + 1)
           (G.induce V') ends
             (fun p => liftNormal b0 (fun i => (lam i).1) p.1 p.2)).toBodyHinge.rigidityRows) : ℤ)
@@ -811,7 +812,7 @@ theorem lift_transfer [Infinite K] [Finite α] [Finite β] {r : ℕ} {G : Graph 
             (G.induce V').deficiency (r + 1 + 2) →
         ∃ R : MvPolynomial (Fin r × α) K, MvPolynomial.eval (fun p => (lam p.1).1 p.2) R ≠ 0 ∧
           ∀ lam' : Fin r → (α → K) × ((v : α) → Module.Dual K (P0 v)),
-            (∀ i, lam' i ∈ liftSpace G b0 P0) →
+            (∀ i, lam' i ∈ baseLiftSpace G b0 P0) →
             MvPolynomial.eval (fun p => (lam' p.1).1 p.2) R ≠ 0 →
             (Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := r + 1 + 1)
               (G.induce V') ends

@@ -2,20 +2,18 @@
 
 **Status:** in progress, opened 2026-11-12 with the PI. Exposition of the three pencil chapters
 against their classical sources; in the Lean, one rename, docstrings and the flat split in every
-dimension. No main result's statement changes. Slices 1–6 of 10 done: the flat split holds in
-every dimension, the `d = 3` motion count retired; the three chapters cite the sources of their
-classical pieces, the road map's lineage left to slice 9. Next: slice 7, the rename and the
-docstrings. Plan, the PI's words and the recon record: `notes/PencilScenes.md`.
+dimension. No main result's statement changes. Slices 1–7 of 10 done: the flat split holds in
+every dimension, the three chapters cite their classical pieces, `liftSpace` is `baseLiftSpace` and
+the docstrings cite. Next: slice 8, the additions of calls 2 and 3. Plan, the PI's words and the
+recon record: `notes/PencilScenes.md`.
 
 ## Current state
 
-**Next concrete step: slice 7, the rename and the docstrings** (item 7, Lean). Slices 7–8 wait
-on nothing. Slices 1–6 have landed: the flat split in every dimension is in
-`Grade/GluedEnds.lean`, the `d = 3` flat rank (`MainComponent/FlatRank.lean`) follows from the
-every-dimension one, `main-component.tex` credits the flat rank and the equality (now the
-dimension of the lifting space), `pencil-d.tex` cites its rows' sources and reads Part C's lifts
-as Whiteley's scenes, `pencil.tex` cites the flat pencil and the polarity and sets the
-self-duality beside Whiteley's sheetworks, and every dep-graph node is green.
+**Next concrete step: slice 8, the additions of calls 2 and 3** (item 8). It waits on nothing.
+Slices 1–7 have landed: the flat split in every dimension is in `Grade/GluedEnds.lean`, the
+`d = 3` flat rank follows from it, the three chapters cite their sources, every dep-graph node is
+green, and the Lean's `liftSpace` is `baseLiftSpace` (the Lean docstrings cite Whiteley in the
+chapters' wording and say "the dimension of the lifting space").
 
 ## Architectural choices made up front
 
@@ -44,7 +42,7 @@ follows all of 2–8.
 - [x] **5. `pencil-d.tex`** (2026-11-12): §3's rows; Part C's lifts as scenes; O4; call 5; M12.
 - [x] **6. `pencil.tex`** (2026-11-12): the flat pencil, the polarity, call 5; P8–P11; call 1
   weakened (*Decisions*).
-- [ ] **7. The rename and the docstrings** (Lean, with the blueprint pins): `liftSpace` to
+- [x] **7. The rename and the docstrings** (2026-11-12; Lean, with the blueprint pins): `liftSpace` to
   `baseLiftSpace`, with `mem_liftSpace`, `liftSpaceTilde` and the lemma names that contain them
   (39 uses of `liftSpace` in 6 files at the open; count again in the slice); the docstrings of
   `liftingSpace`, `liftingPlanes`, `affineLifts`, the renamed space and `IsTrivialLift` cite
@@ -63,7 +61,7 @@ follows all of 2–8.
 
 ## Blockers / open questions
 
-Nothing blocks slices 7–8.
+Nothing blocks slice 8.
 
 Unchecked derivations, each to be checked in the slice named or weakened:
 
@@ -75,13 +73,11 @@ duplications between `MainComponent/` and `Grade/` of `notes/pencil-scenes/simpl
 
 ## Hand-off / next phase
 
-The next commit is slice 7 (item 7), Lean comments and names only: `liftSpace` to
-`baseLiftSpace`, with `mem_liftSpace`, `liftSpaceTilde` and the lemma names that contain them
-(count the uses again; 39 in 6 files at the open), and the blueprint pins that name them; the
-docstrings of `liftingSpace`, `liftingPlanes`, `affineLifts`, the renamed space and
-`IsTrivialLift` cite their sources; call 5's prose in the Lean docstrings, in the chapters'
-wording ("the dimension of the lifting space"). No statement or proof changes. After the phase:
-ORIGAMI's open, with the PI (`notes/Origami.md`).
+The next commit is slice 8 (item 8): the second derivation as a short remark, one remark on
+Maxwell–Cremona (O3 and O5), `θ(2,2,3)` as a worked example and `C₇` as a sentence, O2 and O6 only
+if their unchecked parts check, and `ledger-main.md` rows M10, M18 and M22–M24 with minor citations
+in `main-component.tex`; the items are in the checklist. After the phase: ORIGAMI's open, with the
+PI (`notes/Origami.md`).
 
 ## Decisions made during this phase
 
@@ -89,10 +85,12 @@ ORIGAMI's open, with the PI (`notes/Origami.md`).
   the name `baseLiftSpace`; both of the simplification recon's additions to `pencil-d.tex`; the
   flat motion count retired for the flat split in every dimension, a spike first; docstrings
   change with the rename. The nine calls of §7 stand.
+- **Slice 7.** Renamed outright, no shim; banked survivors of `liftSpace` stay (`notes/pencil-scenes/*`,
+  `notes/scripts/scenes/`, `notes/PencilScenes.md`, closed notes, archives).
 - **Slice 1.** Yes, with three corrections: constant on `V(G)` only, onto without
   connectedness, the kernel at every heights.
-- **Slice 2.** The carrier is cited, not restated. Keys: `whiteley1989` is the hypergraph paper;
-  Rigidity and polarity II, if cited, takes a suffix (I is `whiteley1987`, slice 6).
+- **Slice 2.** The carrier is cited, not restated; `whiteley1989` is the hypergraph paper, II takes
+  a suffix (I is `whiteley1987`).
 - **Slice 3a.** `gradeEmbed` (`ι`); W84 §5.1 credited with the image half at `d = 3` only.
 - **PI, 2026-11-12:** asked how the prose proof of `thm:pencil-flat-rank` should read once its
   Lean goes through the padding proof, the PI chose "Forward reference (Recommended)": the
@@ -102,17 +100,11 @@ ORIGAMI's open, with the PI (`notes/Origami.md`).
   chose "Move to pencil-d.tex (Recommended)": the node keeps its label and moves to
   `sec:pencil-d-flat`; `main-component.tex` keeps a sentence crediting Whiteley 1984 §5.1 and
   pointing at it, and the `d = 3` splitting text moves into `lem:pencil-join-flat`.
-- **Slice 3b.** `pencilConfigPointGrade_flat` stays (FRICTION, the `gradeEmbed` idiom).
-- **Slice 4.** The equality is "the dimension of the lifting space" in titles and prose, labels
-  kept: JJ TR Thm 7.1 (`jacksonJordan2006pin`) over the reals, W84 Remark 2 (p. 287) for the
-  gap, W89 Thms 3.1 and 5.4 for the independent cases; "not in his account" (W84 p. 288).
-- **Slice 5.** Weakened: recon (ii)'s "special to plane pictures" to "undefined at K = 3" (W84
-  p. 293); recon (i)'s lifts as scenes, at configuration bases only. O4 its own sentence.
-  Dropped: Crapo 1984 p. 295 (concurrences, undeveloped). Crapo–Ryan §8 without O2's projection.
-- **Slice 6 (2026-11-12).** Pages re-read: CW82 pp. 56, 67, 68; TW84 pp. 33–34 and RP-I
-  pp. 344–345 on the images; JJ TR p. 21. Call 1 **weakened**: RP-I Thm 4.1 is the statics of
-  jointed sheetworks (sheets braced in their planes, Def. 4.4), not of body-hinge frameworks, so
-  the self-duality is not its consequence. Written: "not found stated"; RP-I §4's self-polar
-  class as the pattern, the polar sheetwork on the closed neighbourhoods being the polar
-  realization's (any pencil realization); the rank by CW82 §3.6. New key `whiteley1987`
-  (Springer's citation record; Crossref has no pages). P8 points at the carrier section.
+- **Slice 3b.** `pencilConfigPointGrade_flat` stays (FRICTION).
+- **Slice 4.** The equality is "the dimension of the lifting space", labels kept; JJ TR Thm 7.1
+  over the reals, W84 Remark 2 for the gap, W89 Thms 3.1 and 5.4 for the independent cases.
+- **Slice 5.** Weakened: recon (ii) to "undefined at K = 3" (W84 p. 293); recon (i)'s lifts as
+  scenes at configuration bases only. Dropped: Crapo 1984 p. 295. O4 its own sentence.
+- **Slice 6.** Call 1 **weakened**: RP-I Thm 4.1 is the statics of jointed sheetworks, not of
+  body-hinge frameworks, so self-duality is not its consequence; written "not found stated". New
+  key `whiteley1987`. Pages re-read: CW82 pp. 56, 67, 68; TW84 pp. 33–34; RP-I pp. 344–345.

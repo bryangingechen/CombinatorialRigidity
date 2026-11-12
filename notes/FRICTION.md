@@ -178,12 +178,12 @@ to be re-derived by re-reading entries later.
 
 ### [idiom] 42m build 6b: a `pair_iff` applied to a `![…]` lemma inline times out, and four small traps
 - **Where it bit:** Phase 42m, `Pencil/Grade/EarFree.lean` (`span_pencilConfigPoint_eq_top`,
-  `isTrivialLift_of_finrank_liftSpaceTilde_le`, `holdsGenerally_earFree`).
+  `isTrivialLift_of_finrank_baseLiftSpaceTilde_le`, `holdsGenerally_earFree`).
 - **Friction:** (1) `(LinearIndependent.pair_iff.1 (planeNormal_pair hne)) c₁ (-c₂) (by …)` hit
   *"(deterministic) timeout at `whnf`"* at the argument, as build 3's pair-flip did: bind
   `have hLI := planeNormal_pair hne`, `rw [LinearIndependent.pair_iff] at hLI`, and prove the
   combination as its own `have` first. (2) `rw [← hrange] at hz` where `hrange : range Ψ = L` and
-  `L` is a `set` of `liftSpaceTilde G b0` found no `L` in `hz` (the hypothesis keeps the unfolded
+  `L` is a `set` of `baseLiftSpaceTilde G b0` found no `L` in `hz` (the hypothesis keeps the unfolded
   spelling): `obtain ⟨⟨c, e⟩, rfl⟩ : z ∈ LinearMap.range Ψ := hrange ▸ hz`. (3) In a `have`,
   `isZariskiOpen_earFreeCond (isPolyFun_steerPoint hubSel) …` left `K` undetermined (*"typeclass
   instance problem is stuck: Field ?m"*): `isPolyFun_steerPoint (K := K) hubSel`. (4) The

@@ -24,7 +24,7 @@ affine function that agrees with the heights on its closed neighbourhood
 (`lem:pencil-condition-linear`). So over a picture in general position the conditions of
 nondegeneracy on the normals reduce to conditions that certain planes differ
 (`isNondeg_pencilConfig_of_planeDiff`, `lem:pencil-x0-conjunct-three`). The planes of two bodies `u`
-and `w` differ at a general configuration by Jackson and Jordán's equality
+and `w` differ at a general configuration by the theorem on the dimension of the lifting space
 (`thm:pencil-jj-equality`), applied to `G` and to the graph `G_{uw} = G.addTwoEar u w`, `G` with a
 new body joined to `u` and to `w` (`def:pencil-two-ear-graph`). Without a planar-rigid set,
 `def₂(G_{uw}) + 1 ≤ def₂(G)` (`addTwoEar_deficiency`), so at a general picture the lifting space of
@@ -457,13 +457,14 @@ nonzero polynomial `P` in the picture coordinates such that over every picture `
 some solution `x` of the lifting system of `G` has different planes at `u` and `w`,
 `planeDiff u w x ≠ 0`.
 
-Proof. Jackson and Jordán's equality (`Graph.exists_mvPolynomial_finrank_liftingSpace_eq`,
-`thm:pencil-jj-equality`) gives a nonzero polynomial off whose zero set `dim L_G(q) = 3 + def₂(G)`,
-and one for `G_{uw}`, which is simple with at least three members in every closed neighbourhood
-(`addTwoEar_simple`, `addTwoEar_three_le`). The second involves the picture point of the new body;
-fixing that point at one non-root turns it into a nonzero polynomial in the picture coordinates of
-`G`, and `P` is its product with the first. Over a non-root `q` of `P`, the solutions for `G` have
-the dimension of `L_G(q)` (`Graph.finrank_ker_liftingMatrix`), and those for `G_{uw}` the dimension
+Proof. The theorem on the dimension of the lifting space
+(`Graph.exists_mvPolynomial_finrank_liftingSpace_eq`, `thm:pencil-jj-equality`) gives a nonzero
+polynomial off whose zero set `dim L_G(q) = 3 + def₂(G)`, and one for `G_{uw}`, which is simple with
+at least three members in every closed neighbourhood (`addTwoEar_simple`, `addTwoEar_three_le`). The
+second involves the picture point of the new body; fixing that point at one non-root turns it into a
+nonzero polynomial in the picture coordinates of `G`, and `P` is its product with the first. Over a
+non-root `q` of `P`, the solutions for `G` have the dimension of `L_G(q)`
+(`Graph.finrank_ker_liftingMatrix`), and those for `G_{uw}` the dimension
 `3 + def₂(G_{uw}) ≤ 2 + def₂(G)` (`addTwoEar_deficiency`). The solutions for `G` with equal planes
 at `u` and `w` have at most that dimension (`finrank_ker_inf_planeDiff_le`), so they are not all of
 them. -/

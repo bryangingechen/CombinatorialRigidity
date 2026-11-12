@@ -35,10 +35,10 @@ nonzero polynomial `E_L`, nonzero multiples of the points `b⁰_v(s)` of some `s
 `lem:pencil-d-ear-free` (`holdsGenerally_earFree`): at a general nondegenerate realization of `G`
 in dimension three, every lift of `Y = G[X]` is trivial, so the ear's condition holds. Four steps:
 
-* The algebra at one realization (`earFree_of_finrank_liftSpaceTilde_le`): (a) closed
+* The algebra at one realization (`earFree_of_finrank_baseLiftSpaceTilde_le`): (a) closed
   neighbourhoods of rank three, (b) the points of `X` spanning and (c) `dim L̃ ≤ 4 +` the free
   coordinates make the trivial lifts and the free coordinates all of `L̃`
-  (`liftTildeOfTrivial`, `isTrivialLift_of_finrank_liftSpaceTilde_le`), and a lift of `G − x`
+  (`liftTildeOfTrivial`, `isTrivialLift_of_finrank_baseLiftSpaceTilde_le`), and a lift of `G − x`
   restricts to one of `Y` (`earLift_of_isTrivialLift`).
 * A configuration of `Y` (`exists_earFree_config`) over a main picture with distinct planes, where
   (a), (b) (`span_pencilConfigPoint_eq_top`) and (c) hold; the good ear gives its hypotheses
@@ -47,8 +47,8 @@ in dimension three, every lift of `Y = G[X]` is trivial, so the ear's condition 
   on each `H_L[v]` (`linearIndepOn_planeNormal_of_subset`), completed by auxiliary vectors
   (`exists_steerPoint_eq_smul`).
 * Into `G`: (a), (b), (c) are open (`isZariskiOpen_earFreeCond`,
-  `isZariskiOpen_finrank_liftSpaceTilde_le`) and unchanged by rescaling (`earFreeCond_of_smul`), so
-  they pass from `t₀ ∈ Γ_L` through `E_L` to `Γ(G)` and meet `U(G)`.
+  `isZariskiOpen_finrank_baseLiftSpaceTilde_le`) and unchanged by rescaling (`earFreeCond_of_smul`),
+  so they pass from `t₀ ∈ Γ_L` through `E_L` to `Γ(G)` and meet `U(G)`.
 -/
 
 @[expose] public section
@@ -493,7 +493,7 @@ neighbourhood of `v`. -/
 theorem liftTildeOfTrivial_mem {G : Graph α β} {b0 n : α → Fin 4 → K}
     (hn : ∀ v ∈ V(G), ∀ w ∈ G.closedNbhd v, n v ⬝ᵥ b0 w = 0) (c : Fin 4 → K)
     {e : α ⊕ α × Fin 4 → K} (he : e ∈ liftFreeCoords (K := K) G) :
-    liftTildeOfTrivial G b0 n (c, e) ∈ liftSpaceTilde G b0 := by
+    liftTildeOfTrivial G b0 n (c, e) ∈ baseLiftSpaceTilde G b0 := by
   intro v hv w hw
   have hwV := Graph.closedNbhd_subset_vertexSet hv hw
   have key := hn v hv w hw
@@ -551,18 +551,18 @@ trivial.
 Proof. By (a) each subspace is the span of the points of its closed neighbourhood, which have a
 nonzero normal `n_v`. By (b) the trivial lifts and the free coordinates, moved along the `n_v`,
 embed in `L̃` (`liftTildeOfTrivial`), in dimension `4 +` the free coordinates, so by (c) they are
-all of `L̃`. A lift extends to a member of `L̃` (`exists_mem_liftSpaceTilde_of_mem_liftSpace`),
-whose maps are then `w ↦ c · b⁰_w`; its form at `v` agrees with `c` on the points of the closed
-neighbourhood, which span the subspace. -/
-theorem isTrivialLift_of_finrank_liftSpaceTilde_le [Finite α] {G : Graph α β}
+all of `L̃`. A lift extends to a member of `L̃`
+(`exists_mem_baseLiftSpaceTilde_of_mem_baseLiftSpace`), whose maps are then `w ↦ c · b⁰_w`; its form
+at `v` agrees with `c` on the points of the closed neighbourhood, which span the subspace. -/
+theorem isTrivialLift_of_finrank_baseLiftSpaceTilde_le [Finite α] {G : Graph α β}
     {b0 : α → Fin 4 → K} {P0 : α → Submodule K (Fin 4 → K)}
     (hP0 : ∀ v ∈ V(G), ∀ w ∈ G.closedNbhd v, b0 w ∈ P0 v)
     (hP3 : ∀ v ∈ V(G), Module.finrank K (P0 v) ≤ 3)
     (h3 : ∀ v ∈ V(G), 3 ≤ Module.finrank K (Submodule.span K (b0 '' G.closedNbhd v)))
     (hspan : Submodule.span K (b0 '' V(G)) = ⊤)
-    (hdim : Module.finrank K (liftSpaceTilde G b0) ≤
+    (hdim : Module.finrank K (baseLiftSpaceTilde G b0) ≤
       4 + Module.finrank K (liftFreeCoords (K := K) G)) :
-    ∀ lam ∈ liftSpace G b0 P0, IsTrivialLift G b0 P0 lam := by
+    ∀ lam ∈ baseLiftSpace G b0 P0, IsTrivialLift G b0 P0 lam := by
   classical
   have := Fintype.ofFinite α
   -- the points of each closed neighbourhood span its subspace
@@ -584,7 +584,7 @@ theorem isTrivialLift_of_finrank_liftSpaceTilde_le [Finite α] {G : Graph α β}
     · exact ⟨0, fun h => absurd h hv⟩
   choose n hn using hn
   set F := liftFreeCoords (K := K) G
-  set L := liftSpaceTilde G b0
+  set L := baseLiftSpaceTilde G b0
   set Ψ : (Fin 4 → K) × F →ₗ[K] (α ⊕ α × Fin 4 → K) :=
     (liftTildeOfTrivial G b0 n).comp (LinearMap.id.prodMap F.subtype) with hΨ
   have hΨinj : Function.Injective Ψ := by
@@ -600,7 +600,7 @@ theorem isTrivialLift_of_finrank_liftSpaceTilde_le [Finite α] {G : Graph α β}
     rw [LinearMap.finrank_range_of_inj hΨinj, Module.finrank_prod, Module.finrank_fin_fun]
     exact hdim
   intro lam hlam
-  obtain ⟨z, hzL, hz⟩ := exists_mem_liftSpaceTilde_of_mem_liftSpace hP0 hlam
+  obtain ⟨z, hzL, hz⟩ := exists_mem_baseLiftSpaceTilde_of_mem_baseLiftSpace hP0 hlam
   obtain ⟨⟨c, e⟩, rfl⟩ : z ∈ LinearMap.range Ψ := hrange ▸ hzL
   have h1 : ∀ w ∈ V(G), lam.1 w = c ⬝ᵥ b0 w := fun w hw => by
     rw [← hz w]
@@ -637,8 +637,8 @@ lift of `G − x`, a lift of `G[X]` too, has forms at `a` and `b` that are restr
 `ψ`, so they agree at `b⁰_x`. -/
 theorem earLift_of_isTrivialLift {G : Graph α β} {X : Set α} {b0 : α → Fin 4 → K}
     {P0 : α → Submodule K (Fin 4 → K)} {x a b : α} (hX : X ⊆ V(G) \ {x}) (ha : a ∈ X) (hb : b ∈ X)
-    (htriv : ∀ lam ∈ liftSpace (G.induce X) b0 P0, IsTrivialLift (G.induce X) b0 P0 lam) :
-    ∀ lam ∈ liftSpace (G.induce (V(G) \ {x})) b0 P0, ∀ (ha : b0 x ∈ P0 a) (hb : b0 x ∈ P0 b),
+    (htriv : ∀ lam ∈ baseLiftSpace (G.induce X) b0 P0, IsTrivialLift (G.induce X) b0 P0 lam) :
+    ∀ lam ∈ baseLiftSpace (G.induce (V(G) \ {x})) b0 P0, ∀ (ha : b0 x ∈ P0 a) (hb : b0 x ∈ P0 b),
       lam.2 a ⟨b0 x, ha⟩ = lam.2 b ⟨b0 x, hb⟩ := by
   intro lam hlam hxa hxb
   have hle := G.induce_mono_right hX
@@ -652,10 +652,10 @@ sub-lemma (1)): at a good ear, with `X = W₀ \ {x}` and `Y = G[X]`, let the poi
 neighbourhood of `G` lie in its subspace, of dimension at most three (as at a realization in
 `U(G)`), and let the points satisfy (a), (b) and (c) for `Y`. Then the predicate of
 `holdsGenerally_earFree` holds there: the closed neighbourhoods of `Y` have rank exactly three, the
-points of `X` span, every lift of `Y` is trivial (`isTrivialLift_of_finrank_liftSpaceTilde_le`),
+points of `X` span, every lift of `Y` is trivial (`isTrivialLift_of_finrank_baseLiftSpaceTilde_le`),
 and the ear's condition holds (`earLift_of_isTrivialLift`; `a, b ∈ X` as `x` is not linked to
 itself). -/
-theorem earFree_of_finrank_liftSpaceTilde_le [Finite α] {G : Graph α β} (hS : G.Simple)
+theorem earFree_of_finrank_baseLiftSpaceTilde_le [Finite α] {G : Graph α β} (hS : G.Simple)
     {W₀ : Set α} {x a b : α} (hW : G.IsPencilGoodEar W₀ x a b) {b0 : α → Fin 4 → K}
     {P0 : α → Submodule K (Fin 4 → K)}
     (hP0 : ∀ v ∈ V(G), ∀ w ∈ G.closedNbhd v, b0 w ∈ P0 v)
@@ -663,14 +663,14 @@ theorem earFree_of_finrank_liftSpaceTilde_le [Finite α] {G : Graph α β} (hS :
     (h3 : ∀ v ∈ W₀ \ {x},
       3 ≤ Module.finrank K (Submodule.span K (b0 '' (G.induce (W₀ \ {x})).closedNbhd v)))
     (hspan : Submodule.span K (b0 '' (W₀ \ {x})) = ⊤)
-    (hdim : Module.finrank K (liftSpaceTilde (G.induce (W₀ \ {x})) b0) ≤
+    (hdim : Module.finrank K (baseLiftSpaceTilde (G.induce (W₀ \ {x})) b0) ≤
       4 + Module.finrank K (liftFreeCoords (K := K) (G.induce (W₀ \ {x})))) :
     ((∀ v ∈ W₀ \ {x},
         Module.finrank K (Submodule.span K (b0 '' (G.induce (W₀ \ {x})).closedNbhd v)) = 3) ∧
       Submodule.span K (b0 '' (W₀ \ {x})) = ⊤ ∧
-      (∀ lam ∈ liftSpace (G.induce (W₀ \ {x})) b0 P0,
+      (∀ lam ∈ baseLiftSpace (G.induce (W₀ \ {x})) b0 P0,
         IsTrivialLift (G.induce (W₀ \ {x})) b0 P0 lam)) ∧
-    ∀ lam ∈ liftSpace (G.induce (V(G) \ {x})) b0 P0, ∀ (ha : b0 x ∈ P0 a) (hb : b0 x ∈ P0 b),
+    ∀ lam ∈ baseLiftSpace (G.induce (V(G) \ {x})) b0 P0, ∀ (ha : b0 x ∈ P0 a) (hb : b0 x ∈ P0 b),
       lam.2 a ⟨b0 x, ha⟩ = lam.2 b ⟨b0 x, hb⟩ := by
   have := hS.toLoopless
   set X := W₀ \ {x} with hX
@@ -683,7 +683,7 @@ theorem earFree_of_finrank_liftSpaceTilde_le [Finite α] {G : Graph α β} (hS :
     (Submodule.finrank_mono (Submodule.span_le.2 (by
       rintro _ ⟨w, hw, rfl⟩; exact hP0Y v (by simpa using hv) w hw))).trans
       (hP3 v (hXV hv).1)
-  have htriv := isTrivialLift_of_finrank_liftSpaceTilde_le (G := G.induce X) hP0Y
+  have htriv := isTrivialLift_of_finrank_baseLiftSpaceTilde_le (G := G.induce X) hP0Y
     (fun v hv => hP3 v (Graph.vertexSet_mono hYle hv)) (fun v hv => h3 v (by simpa using hv))
     (by simpa using hspan) hdim
   refine ⟨⟨fun v hv => le_antisymm (hle3 v hv) (h3 v hv), hspan, htriv⟩,
@@ -739,8 +739,8 @@ span `K⁴` and `dim L̃ = 4 +` the free coordinates.
 Proof. `q` is off the main-picture polynomial (`Graph.exists_mvPolynomial_isMainPicture`), the
 planes polynomial of `exists_planeDiff_ne_zero_poly` (which gives the solution) and the
 determinants (`exists_det_poly`). The points span by `span_pencilConfigPoint_eq_top` at a body and
-a neighbour; `dim L̃ = dim L(q) +` the free coordinates (`finrank_liftSpaceTilde_pencilConfigPoint`)
-and `dim L(q) = 3 + def₂(Y) = 4` at a main picture
+a neighbour; `dim L̃ = dim L(q) +` the free coordinates
+(`finrank_baseLiftSpaceTilde_pencilConfigPoint`) and `dim L(q) = 3 + def₂(Y) = 4` at a main picture
 (`Graph.IsMainPicture.finrank_liftingSpace_eq`). -/
 theorem exists_earFree_config [Infinite K] [Fintype α] [Finite β] {Y : Graph α β}
     (hSimple : Y.Simple) (h3 : ∀ v ∈ V(Y), 3 ≤ (Y.closedNbhd v).ncard)
@@ -753,7 +753,7 @@ theorem exists_earFree_config [Infinite K] [Fintype α] [Finite β] {Y : Graph �
         ![pencilPicturePoint q u, pencilPicturePoint q v, pencilPicturePoint q w]) ∧
       (∀ u ∈ V(Y), ∀ w ∈ V(Y), u ≠ w → planeDiff u w x ≠ 0) ∧
       Submodule.span K (pencilConfigPoint q (fun a => x (Sum.inl a)) '' V(Y)) = ⊤ ∧
-      Module.finrank K (liftSpaceTilde Y (pencilConfigPoint q (fun a => x (Sum.inl a)))) =
+      Module.finrank K (baseLiftSpaceTilde Y (pencilConfigPoint q (fun a => x (Sum.inl a)))) =
         4 + Module.finrank K (liftFreeCoords (K := K) Y) := by
   classical
   obtain ⟨Pm, hPm0, hPm⟩ := Y.exists_mvPolynomial_isMainPicture (K := K) hSimple.toLoopless h3
@@ -788,7 +788,7 @@ theorem exists_earFree_config [Infinite K] [Fintype α] [Finite β] {Y : Graph �
   refine ⟨q, x, hx, hmain.1, fun u v w h1 h2 h3 => hDgp (u, v, w) h1 h2 h3 q
     (hqgp _ (Finset.mem_univ _)), hpd, span_pencilConfigPoint_eq_top hmain.1 hx hwV hv
       (hpd w hwV v hv hwv), ?_⟩
-  rw [finrank_liftSpaceTilde_pencilConfigPoint hmain.1 hz]
+  rw [finrank_baseLiftSpaceTilde_pencilConfigPoint hmain.1 hz]
   have := Graph.IsMainPicture.finrank_liftingSpace_eq (K := K) hSimple ⟨v, hv⟩ h3 hmain
   rw [hdef] at this
   omega
@@ -996,10 +996,10 @@ theorem finrank_span_image_of_linearIndepOn {V : Type*} [AddCommGroup V] [Module
 `lem:pencil-d-ear-free`, (c)): at each point where it holds, the polynomial of the section
 (`Matrix.exists_mvPolynomial_section_mulVec_eq_zero` on `liftMatrixPoly`, at `z₀ = 0`), composed
 with the points, bounds `dim L̃` by its value there, as in
-`exists_holdsGenerally_finrank_liftSpaceTilde_le`. -/
-theorem isZariskiOpen_finrank_liftSpaceTilde_le [Finite α] {σ : Type*}
+`exists_holdsGenerally_finrank_baseLiftSpaceTilde_le`. -/
+theorem isZariskiOpen_finrank_baseLiftSpaceTilde_le [Finite α] {σ : Type*}
     {P : (σ → K) → α → Fin 4 → K} (hP : ∀ v i, IsPolyFun fun s => P s v i) (G : Graph α β)
-    (N : ℕ) : IsZariskiOpen {s | Module.finrank K (liftSpaceTilde G (P s)) ≤ N} := by
+    (N : ℕ) : IsZariskiOpen {s | Module.finrank K (baseLiftSpaceTilde G (P s)) ≤ N} := by
   classical
   have := Fintype.ofFinite α
   intro s₀ hs₀
@@ -1008,34 +1008,34 @@ theorem isZariskiOpen_finrank_liftSpaceTilde_le [Finite α] {σ : Type*}
   obtain ⟨R, hR⟩ := IsPolyFun.comp D (f := fun s p => P s p.1 p.2) fun p => hP p.1 p.2
   refine ⟨R, by rw [← hR]; exact hD₀, fun s hs => ?_⟩
   have hle := hDle (fun p => P s p.1 p.2) (by rw [← hR] at hs; exact hs)
-  rw [← liftSpaceTilde_eq_ker, ← liftSpaceTilde_eq_ker] at hle
+  rw [← baseLiftSpaceTilde_eq_ker, ← baseLiftSpaceTilde_eq_ker] at hle
   exact hle.trans hs₀
 
 /-- **The three conditions are Zariski-open** (a step of `lem:pencil-d-ear-free`): (a) as the
 independence of a fixed triple `sel v` at every body, (b) as the independence of the points on a
-fixed set `r`, and (c) (`isZariskiOpen_finrank_liftSpaceTilde_le`). -/
+fixed set `r`, and (c) (`isZariskiOpen_finrank_baseLiftSpaceTilde_le`). -/
 theorem isZariskiOpen_earFreeCond [Finite α] {σ : Type*} {P : (σ → K) → α → Fin 4 → K}
     (hP : ∀ v i, IsPolyFun fun s => P s v i) (G : Graph α β) (sel : α → Fin 3 → α) (r : Set α)
     (N : ℕ) :
     IsZariskiOpen {s | (∀ v ∈ V(G), LinearIndependent K fun i => P s (sel v i)) ∧
-      LinearIndepOn K (P s) r ∧ Module.finrank K (liftSpaceTilde G (P s)) ≤ N} :=
+      LinearIndepOn K (P s) r ∧ Module.finrank K (baseLiftSpaceTilde G (P s)) ≤ N} :=
   (isZariskiOpen_forall fun v => isZariskiOpen_imp _ (isZariskiOpen_linearIndependent_univ
     (fun s i => P s (sel v i)) fun _ _ => hP _ _)).and
     ((isZariskiOpen_linearIndependent P (fun _ _ => hP _ _) r).and
-      (isZariskiOpen_finrank_liftSpaceTilde_le hP G N))
+      (isZariskiOpen_finrank_baseLiftSpaceTilde_le hP G N))
 
 /-- **The three conditions do not change when the points are rescaled** on `V(G)` by nonzero
-scalars (a step of `lem:pencil-d-ear-free`; `finrank_liftSpaceTilde_smul` for (c)). -/
+scalars (a step of `lem:pencil-d-ear-free`; `finrank_baseLiftSpaceTilde_smul` for (c)). -/
 theorem earFreeCond_of_smul {G : Graph α β} {sel : α → Fin 3 → α} {r : Set α} {N : ℕ}
     {B B' : α → Fin 4 → K} (hsel : ∀ v ∈ V(G), ∀ i, sel v i ∈ V(G)) (hr : r ⊆ V(G))
     (hc : ∀ v ∈ V(G), ∃ c : K, c ≠ 0 ∧ B' v = c • B v)
     (h : (∀ v ∈ V(G), LinearIndependent K fun i => B (sel v i)) ∧ LinearIndepOn K B r ∧
-      Module.finrank K (liftSpaceTilde G B) ≤ N) :
+      Module.finrank K (baseLiftSpaceTilde G B) ≤ N) :
     (∀ v ∈ V(G), LinearIndependent K fun i => B' (sel v i)) ∧ LinearIndepOn K B' r ∧
-      Module.finrank K (liftSpaceTilde G B') ≤ N := by
+      Module.finrank K (baseLiftSpaceTilde G B') ≤ N := by
   choose! c hc0 hceq using hc
   refine ⟨fun v hv => ?_, linearIndepOn_of_forall_smul (fun w hw => ⟨c w, hc0 w (hr hw),
-    hceq w (hr hw)⟩) h.2.1, by rw [finrank_liftSpaceTilde_smul hc0 hceq]; exact h.2.2⟩
+    hceq w (hr hw)⟩) h.2.1, by rw [finrank_baseLiftSpaceTilde_smul hc0 hceq]; exact h.2.2⟩
   have := (h.1 v hv).units_smul fun i => Units.mk0 (c (sel v i)) (hc0 _ (hsel v hv i))
   convert this using 1
   funext i
@@ -1058,7 +1058,7 @@ set of a polynomial on `Γ_L` nonzero at `t₀`. A non-root `t₁` of it and of 
 Zariski-open set meeting `U(G)` (`steerSet_nonempty_iff`, `IsZariskiOpen.exists_mem_inter`), that
 is generally (`HoldsGenerally.of_isZariskiOpen`). At a realization in `U(G)` the points of each
 closed neighbourhood lie in its subspace, of dimension three, and
-`earFree_of_finrank_liftSpaceTilde_le` concludes. -/
+`earFree_of_finrank_baseLiftSpaceTilde_le` concludes. -/
 theorem holdsGenerally_earFree [Infinite K] [Finite α] [Finite β] {G : Graph α β}
     (hS : G.Simple) (hfeas : PencilNondegFeasible K G) {W₀ : Set α} {x a b : α}
     (hW : G.IsPencilGoodEar W₀ x a b) {hubSel nbrSel : α → Fin 3 → Option α}
@@ -1068,7 +1068,7 @@ theorem holdsGenerally_earFree [Infinite K] [Finite α] [Finite β] {G : Graph �
       (∀ v ∈ W₀ \ {x},
         Module.finrank K (Submodule.span K (b0 '' (G.induce (W₀ \ {x})).closedNbhd v)) = 3) ∧
       Submodule.span K (b0 '' (W₀ \ {x})) = ⊤ ∧
-      (∀ lam ∈ liftSpace (G.induce (W₀ \ {x})) b0 P0,
+      (∀ lam ∈ baseLiftSpace (G.induce (W₀ \ {x})) b0 P0,
         IsTrivialLift (G.induce (W₀ \ {x})) b0 P0 lam)) ∧
     EarLiftCondition (K := K) G hubSel nbrSel x a b := by
   classical
@@ -1096,7 +1096,7 @@ theorem holdsGenerally_earFree [Infinite K] [Finite α] [Finite β] {G : Graph �
     rw [htop, finrank_top, Module.finrank_fin_fun] at h; omega
   set N := 4 + Module.finrank K (liftFreeCoords (K := K) Y) with hN
   have hcond : (∀ v ∈ V(Y), LinearIndependent K fun i => bc (sel v i)) ∧ LinearIndepOn K bc r ∧
-      Module.finrank K (liftSpaceTilde Y bc) ≤ N :=
+      Module.finrank K (baseLiftSpaceTilde Y bc) ≤ N :=
     ⟨fun v hv => linearIndependent_pencilConfigPoint_of_linearIndependent_pencilPicturePoint _
       (hsel v hv).2, hrLI, hdim.le⟩
   -- the configuration in `Γ_L`
@@ -1130,11 +1130,11 @@ theorem holdsGenerally_earFree [Infinite K] [Finite α] [Finite β] {G : Graph �
     (p := fun b0 P0 => ((∀ v ∈ X,
         Module.finrank K (Submodule.span K (b0 '' Y.closedNbhd v)) = 3) ∧
       Submodule.span K (b0 '' X) = ⊤ ∧
-      (∀ lam ∈ liftSpace Y b0 P0, IsTrivialLift Y b0 P0 lam)) ∧
-      ∀ lam ∈ liftSpace (G.induce (V(G) \ {x})) b0 P0, ∀ (ha : b0 x ∈ P0 a) (hb : b0 x ∈ P0 b),
+      (∀ lam ∈ baseLiftSpace Y b0 P0, IsTrivialLift Y b0 P0 lam)) ∧
+      ∀ lam ∈ baseLiftSpace (G.induce (V(G) \ {x})) b0 P0, ∀ (ha : b0 x ∈ P0 a) (hb : b0 x ∈ P0 b),
         lam.2 a ⟨b0 x, ha⟩ = lam.2 b ⟨b0 x, hb⟩) hopen hs₂U hs₂C fun s hsU hsC => by
     obtain ⟨hC1, hC2, hC3⟩ := hsC
-    refine earFree_of_finrank_liftSpaceTilde_le hS hW (fun v _ w hw =>
+    refine earFree_of_finrank_baseLiftSpaceTilde_le hS hW (fun v _ w hw =>
       mem_dotPerp_span_singleton.2 (steerPoint_dotProduct_steerNormal hHubSel hNbrSel s hw))
       (fun v hv => (finrank_dotPerp_span_singleton_of_ne_zero (hsU.1 v hv).2).le)
       (fun v hv => ?_) ?_ hC3

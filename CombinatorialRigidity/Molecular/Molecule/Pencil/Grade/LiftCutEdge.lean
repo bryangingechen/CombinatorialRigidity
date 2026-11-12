@@ -706,10 +706,10 @@ theorem liftAttains_of_cutEdge [Infinite K] [Finite α] [Finite β] (r : ℕ) {G
       map_add' := fun _ _ => rfl
       map_smul' := fun _ _ => rfl }
   obtain ⟨z, ⟨lam, hlam, rfl⟩, hz₁, hz₂⟩ := MvPolynomial.exists_mem_eval_ne_zero₂
-    (L := (Submodule.pi Set.univ fun _ : Fin r => liftSpace G (steerPoint hubSel s)
+    (L := (Submodule.pi Set.univ fun _ : Fin r => baseLiftSpace G (steerPoint hubSel s)
       fun y => dotPerp (K ∙ steerNormal hubSel nbrSel G s y)).map Φ)
     ⟨_, ⟨lam₁, fun i _ => hlam₁ i, rfl⟩, hR₁⟩ ⟨_, ⟨lam₂, fun i _ => hlam₂ i, rfl⟩, hR₂⟩
-  have hlam' : ∀ i, lam i ∈ liftSpace G (steerPoint hubSel s)
+  have hlam' : ∀ i, lam i ∈ baseLiftSpace G (steerPoint hubSel s)
       (fun y => dotPerp (K ∙ steerNormal hubSel nbrSel G s y)) := fun i => hlam i (Set.mem_univ i)
   refine ⟨lam, hlam', cutEdge_rank he hu hv hV₁ hcut hends (fun e x y he' => ?_) _
     (hR₁' lam hlam' hz₁) (hR₂' lam hlam' hz₂)⟩

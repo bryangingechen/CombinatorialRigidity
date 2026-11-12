@@ -5330,7 +5330,7 @@ subset.
 \begin{definition}[Lifts of a realization in dimension three]
   \label{def:pencil-d-lift}
   \lean{CombinatorialRigidity.Molecular.liftVec,
-        CombinatorialRigidity.Molecular.liftSpace,
+        CombinatorialRigidity.Molecular.baseLiftSpace,
         CombinatorialRigidity.Molecular.IsTrivialLift,
         CombinatorialRigidity.Molecular.liftMaps,
         CombinatorialRigidity.Molecular.liftNormal,
@@ -5392,8 +5392,8 @@ $\mathrm{Aff}(q) + K z^1$.
   \label{lem:pencil-d-lift-realization}
   \lean{CombinatorialRigidity.Molecular.IsNondegPencilPlaneRealization.lift,
         CombinatorialRigidity.Molecular.mem_liftMaps_iff,
-        CombinatorialRigidity.Molecular.liftSmul_mem_liftSpace_iff,
-        CombinatorialRigidity.Molecular.liftTransport_mem_liftSpace_iff,
+        CombinatorialRigidity.Molecular.liftSmul_mem_baseLiftSpace_iff,
+        CombinatorialRigidity.Molecular.liftTransport_mem_baseLiftSpace_iff,
         CombinatorialRigidity.Molecular.finrank_span_rigidityRows_ofNormals_smul,
         CombinatorialRigidity.Molecular.finrank_liftNormal_transport}
   \leanok
@@ -5491,9 +5491,9 @@ one (\cref{lem:pencil-d-lift-realization}).
   \label{lem:pencil-d-lift-one-witness}
   \lean{CombinatorialRigidity.Molecular.liftAttains_of_least,
         CombinatorialRigidity.Molecular.liftAttains_of_holdsGenerally,
-        CombinatorialRigidity.Molecular.exists_holdsGenerally_finrank_liftSpaceTilde_le,
+        CombinatorialRigidity.Molecular.exists_holdsGenerally_finrank_baseLiftSpaceTilde_le,
         CombinatorialRigidity.Molecular.exists_weightedHomogeneousComponent_of_eval_ne_zero,
-        CombinatorialRigidity.Molecular.liftSpaceTilde_eq_ker}
+        CombinatorialRigidity.Molecular.baseLiftSpaceTilde_eq_ker}
   \leanok
   \uses{def:pencil-d-lift-attains, lem:pencil-d-steer}
   Let $K$ be infinite, $d \ge 3$, and let $G$ be nondegeneracy-feasible.
@@ -6080,7 +6080,7 @@ the conditioned pair in every dimension
 % Source: NONDEG workbook, S25 (with S13 and S14's corollary). The fresh read of the
 % coverage notes that S25's points are a coordinate permutation of the chapter's; with the
 % coordinates of def:pencil-d-lift inserted before the last one, they are the chapter's.
-% The least lift space follows the formalization (finrank_liftSpaceTilde_pencilConfigPoint,
+% The least lift space follows the formalization (finrank_baseLiftSpaceTilde_pencilConfigPoint,
 % exists_pencilConfigPoint_of_dotProduct): only the minimality of a main picture, and dim L~
 % through the lifting system; S25 reads dim L(q) from thm:pencil-jj-equality and moves
 % a realization to a configuration by a general change of coordinates of K^4.
@@ -6090,8 +6090,8 @@ the conditioned pair in every dimension
         CombinatorialRigidity.Molecular.exists_planeDiff_ne_zero_poly,
         CombinatorialRigidity.Molecular.mem_liftMaps_pencilConfigPoint_iff,
         CombinatorialRigidity.Molecular.liftNormal_pencilConfigPoint,
-        CombinatorialRigidity.Molecular.finrank_liftSpaceTilde_pencilConfigPoint_ker,
-        CombinatorialRigidity.Molecular.finrank_liftSpaceTilde_pencilConfigPoint,
+        CombinatorialRigidity.Molecular.finrank_baseLiftSpaceTilde_pencilConfigPoint_ker,
+        CombinatorialRigidity.Molecular.finrank_baseLiftSpaceTilde_pencilConfigPoint,
         CombinatorialRigidity.Molecular.exists_pencilConfigPoint_of_dotProduct}
   \leanok
   \uses{def:pencil-d-lift-attains, def:pencil-d-x0-attains,
@@ -6532,13 +6532,13 @@ So its subspace can be chosen after the points of $X$
 % witness lies in S_L(Y), so S35 (b)'s good set and the preimage of C_W meet in S_L(Y);
 % S34's count and S35 (c) are not used), with S29 (2)-(3) for the last claim. S36 counts
 % dim L~ = dim L + |X| where every closed neighbourhood has rank three; the step at a
-% realization follows the formalization (isTrivialLift_of_finrank_liftSpaceTilde_le,
+% realization follows the formalization (isTrivialLift_of_finrank_baseLiftSpaceTilde_le,
 % liftTildeOfTrivial): the trivial lifts with one free coordinate per body fill L~ by (c), and
 % rank at most three is read only at a realization.
 \begin{lemma}[The rest of the rigid set lifts only trivially]
   \label{lem:pencil-d-ear-free}
   \lean{CombinatorialRigidity.Molecular.holdsGenerally_earFree,
-        CombinatorialRigidity.Molecular.earFree_of_finrank_liftSpaceTilde_le,
+        CombinatorialRigidity.Molecular.earFree_of_finrank_baseLiftSpaceTilde_le,
         CombinatorialRigidity.Molecular.exists_earFree_config,
         CombinatorialRigidity.Molecular.exists_earFree_gammaL}
   \leanok

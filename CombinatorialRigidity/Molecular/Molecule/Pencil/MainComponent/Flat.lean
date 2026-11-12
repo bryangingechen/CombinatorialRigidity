@@ -116,7 +116,10 @@ theorem mem_span_crossProduct_iff {a b x : Fin 3 → K} (hab : LinearIndependent
 `h_v` read as the affine function `(x, y) ↦ h_v ⬝ (x, y, 1)` on `K²`, such that across every link
 the difference `h_u − h_v` vanishes at the picture points of both ends. The families are
 unconstrained off `V(G)`, like every motion space, so each body off `V(G)` adds `3` to the dimension
-(`Graph.finrank_liftingPlanes`, `fmlnote:pencil-lifting-planes`). -/
+(`Graph.finrank_liftingPlanes`, `fmlnote:pencil-lifting-planes`). Up to the sign of the plane
+coefficients `F(q)` is the space of the planes of the scenes of `S_G` over `q`, the motions of the
+plane framework `P_q`, Whiteley's reduced plate framework of `S_G` (Whiteley 1984, §4.1 and
+Proposition 4.1; `lem:pencil-lifting-planes-motions`). -/
 def _root_.Graph.liftingPlanes (G : Graph α β) (q : α × Fin 2 → K) :
     Submodule K (α → Fin 3 → K) where
   carrier := {h | ∀ e u v, G.IsLink e u v →

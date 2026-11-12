@@ -23,13 +23,13 @@ three (`isNondeg_pencilConfig_of_planeDiff`, `MainComponent/GenericBase.lean`): 
 other heights of an attaining `z` are a lift of it
 (`mem_liftMaps_pencilConfigPoint_iff`, `liftNormal_pencilConfigPoint`). `dim L̃` is least at `r*`
 (`liftAttains_of_least`): at a configuration it is `dim L(q)` plus a count of free coordinates
-(`finrank_liftSpaceTilde_pencilConfigPoint`, `liftFreeCoords`), at a general realization the
+(`finrank_baseLiftSpaceTilde_pencilConfigPoint`, `liftFreeCoords`), at a general realization the
 points rescale to a configuration over an admissible picture
 (`exists_pencilConfigPoint_of_dotProduct`), and `q` is a main picture.
 
 Two steps are stated for any graph with no planar-rigid set, for `lem:pencil-d-ear-free`: the
 distinct planes (`exists_planeDiff_ne_zero_poly`) and `dim L̃` at a configuration
-(`finrank_liftSpaceTilde_pencilConfigPoint`).
+(`finrank_baseLiftSpaceTilde_pencilConfigPoint`).
 -/
 
 @[expose] public section
@@ -110,7 +110,7 @@ noncomputable def liftTildeOfLk (G : Graph α β) (h : α → Fin 3 → K) :
 theorem liftTildeToLk_mem [Fintype α] {G : Graph α β} {q : α × Fin 2 → K} {z : α → K}
     {h : α → Fin 3 → K}
     (hh : ∀ v ∈ V(G), ∀ w ∈ G.closedNbhd v, z w = h v ⬝ᵥ pencilPicturePoint q w)
-    {y : α ⊕ α × Fin 4 → K} (hy : y ∈ liftSpaceTilde G (pencilConfigPoint q z)) :
+    {y : α ⊕ α × Fin 4 → K} (hy : y ∈ baseLiftSpaceTilde G (pencilConfigPoint q z)) :
     liftTildeToLk G h y ∈
       LinearMap.ker ((G.liftingMatrix K).map (MvPolynomial.eval q)).mulVecLin := by
   rw [Graph.mem_ker_liftingMatrix_iff]
@@ -161,7 +161,7 @@ theorem liftTildeOfLk_mem [Fintype α] {G : Graph α β} {q : α × Fin 2 → K}
     {x : α ⊕ α × Fin 3 → K}
     (hx : x ∈ LinearMap.ker ((G.liftingMatrix K).map (MvPolynomial.eval q)).mulVecLin)
     {e : α ⊕ α × Fin 4 → K} (he : e ∈ liftFreeCoords (K := K) G) :
-    liftTildeOfLk G h (x, e) ∈ liftSpaceTilde G (pencilConfigPoint q z) := by
+    liftTildeOfLk G h (x, e) ∈ baseLiftSpaceTilde G (pencilConfigPoint q z) := by
   rw [Graph.mem_ker_liftingMatrix_iff] at hx
   intro v hv w hw
   have hwV := Graph.closedNbhd_subset_vertexSet hv hw
@@ -221,15 +221,15 @@ the points of a configuration `(q, z)` with `z ∈ L(q)`, `L̃` has the dimensio
 the lifting system at `q` plus that of the free coordinates (`liftFreeCoords`), which does not
 depend on `(q, z)`. A form at a body `v` of `G` is the form of its affine coefficients along the
 plane `h_v` of `z`, moved by its third coordinate along the normal of that plane. -/
-theorem finrank_liftSpaceTilde_pencilConfigPoint_ker [Fintype α] {G : Graph α β}
+theorem finrank_baseLiftSpaceTilde_pencilConfigPoint_ker [Fintype α] {G : Graph α β}
     {q : α × Fin 2 → K} {z : α → K} (hz : z ∈ G.liftingSpace q) :
-    Module.finrank K (liftSpaceTilde G (pencilConfigPoint q z)) =
+    Module.finrank K (baseLiftSpaceTilde G (pencilConfigPoint q z)) =
       Module.finrank K (LinearMap.ker ((G.liftingMatrix K).map (MvPolynomial.eval q)).mulVecLin) +
         Module.finrank K (liftFreeCoords (K := K) G) := by
   obtain ⟨-, hz2⟩ := hz
   choose! h hh using hz2
   set Lk := LinearMap.ker ((G.liftingMatrix K).map (MvPolynomial.eval q)).mulVecLin
-  set L := liftSpaceTilde G (pencilConfigPoint q z)
+  set L := baseLiftSpaceTilde G (pencilConfigPoint q z)
   set E := liftFreeCoords (K := K) G
   rw [← Module.finrank_prod]
   refine le_antisymm ?_ ?_
@@ -253,12 +253,12 @@ theorem finrank_liftSpaceTilde_pencilConfigPoint_ker [Fintype α] {G : Graph α 
 
 /-- **`dim L̃` at a configuration over an admissible picture**: `dim L(q)` plus the free
 coordinates. -/
-theorem finrank_liftSpaceTilde_pencilConfigPoint [Finite α] {G : Graph α β}
+theorem finrank_baseLiftSpaceTilde_pencilConfigPoint [Finite α] {G : Graph α β}
     {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) {z : α → K} (hz : z ∈ G.liftingSpace q) :
-    Module.finrank K (liftSpaceTilde G (pencilConfigPoint q z)) =
+    Module.finrank K (baseLiftSpaceTilde G (pencilConfigPoint q z)) =
       Module.finrank K (G.liftingSpace q) + Module.finrank K (liftFreeCoords (K := K) G) := by
   have := Fintype.ofFinite α
-  rw [finrank_liftSpaceTilde_pencilConfigPoint_ker hz, Graph.finrank_ker_liftingMatrix hq]
+  rw [finrank_baseLiftSpaceTilde_pencilConfigPoint_ker hz, Graph.finrank_ker_liftingMatrix hq]
 
 /-- **`L(b⁰) = L(q)` at a configuration** (`lem:pencil-d-lift-no-rigid`): at the points of a
 configuration `(q, z)` with `z ∈ L(q)`, a map `ζ` is the map of a lift exactly when it agrees on
@@ -389,7 +389,7 @@ neighbourhood, `b_v` of nonzero last coordinate and `n_v` of nonzero third coord
 the points of adjacent bodies independent, and at every body three members of its closed
 neighbourhood with independent points. Rescaled to last coordinate `1`, the points are those of a
 configuration `(q', z')` over an admissible picture with `z' ∈ L(q')`, and `dim L̃` is unchanged
-(`finrank_liftSpaceTilde_smul`). The Lean asks for the two nonzero coordinates, which hold at a
+(`finrank_baseLiftSpaceTilde_smul`). The Lean asks for the two nonzero coordinates, which hold at a
 general realization. -/
 theorem exists_pencilConfigPoint_of_dotProduct {G : Graph α β} {b n : α → Fin 4 → K}
     (hbn : ∀ v ∈ V(G), ∀ w ∈ G.closedNbhd v, b w ⬝ᵥ n v = 0)
@@ -398,8 +398,8 @@ theorem exists_pencilConfigPoint_of_dotProduct {G : Graph α β} {b n : α → F
     {sel : α → Fin 3 → α} (hsel : ∀ v ∈ V(G), (∀ i, sel v i ∈ G.closedNbhd v) ∧
       LinearIndependent K (fun i => b (sel v i))) :
     ∃ q' : α × Fin 2 → K, ∃ z' : α → K, G.IsAdmissiblePicture q' ∧ z' ∈ G.liftingSpace q' ∧
-      Module.finrank K (liftSpaceTilde G (pencilConfigPoint q' z')) =
-        Module.finrank K (liftSpaceTilde G b) := by
+      Module.finrank K (baseLiftSpaceTilde G (pencilConfigPoint q' z')) =
+        Module.finrank K (baseLiftSpaceTilde G b) := by
   classical
   set q' : α × Fin 2 → K := fun p => (b p.1 3)⁻¹ * b p.1 (![0, 1] p.2) with hq'
   set z' : α → K := fun w => if w ∈ V(G) then (b w 3)⁻¹ * b w 2 else 0 with hz'
@@ -450,7 +450,7 @@ theorem exists_pencilConfigPoint_of_dotProduct {G : Graph α β} {b n : α → F
     simp
     field_simp
     linear_combination e
-  · exact finrank_liftSpaceTilde_smul (c := fun v => (b v 3)⁻¹)
+  · exact finrank_baseLiftSpaceTilde_smul (c := fun v => (b v 3)⁻¹)
       (fun v hv => inv_ne_zero (hb3 v hv)) hpt
 
 /-! ## Without a planar-rigid set -/
@@ -478,11 +478,12 @@ polynomial and the planes polynomial nonzero (`MvPolynomial.exists_mem_eval_ne_z
 configuration `(q, z⁰)` is then nondegenerate (`isNondeg_pencilConfig_of_planeDiff`), and its lift
 by the other columns is the configuration `(q, z)` (`mem_liftMaps_pencilConfigPoint_iff`,
 `liftNormal_pencilConfigPoint`), of the deficiency rank. `dim L̃` is least there: a general
-nondegenerate realization has `dim L̃` least (`exists_holdsGenerally_finrank_liftSpaceTilde_le`),
-points of nonzero last coordinate, normals of nonzero third coordinate and three independent points
-in every closed neighbourhood, so it is a configuration over an admissible picture `q'`
-(`exists_pencilConfigPoint_of_dotProduct`), and `dim L(q) ≤ dim L(q')` as `q` is a main picture
-(`finrank_liftSpaceTilde_pencilConfigPoint`). `liftAttains_of_least` concludes. -/
+nondegenerate realization has `dim L̃` least
+(`exists_holdsGenerally_finrank_baseLiftSpaceTilde_le`), points of nonzero last coordinate, normals
+of nonzero third coordinate and three independent points in every closed neighbourhood, so it is a
+configuration over an admissible picture `q'` (`exists_pencilConfigPoint_of_dotProduct`), and
+`dim L(q) ≤ dim L(q')` as `q` is a main picture (`finrank_baseLiftSpaceTilde_pencilConfigPoint`).
+`liftAttains_of_least` concludes. -/
 theorem liftAttains_of_forall_deficiency_two_ne_zero [Infinite K] [Finite α] [Finite β] (r : ℕ)
     {G : Graph α β} (hG : G.IsX0Graph) (hfeas : PencilNondegFeasible K G)
     (hrig : ∀ Y ⊆ V(G), 2 ≤ Y.ncard → (G.induce Y).deficiency 2 ≠ 0)
@@ -607,7 +608,7 @@ theorem liftAttains_of_forall_deficiency_two_ne_zero [Infinite K] [Finite α] [F
     exact hrank z hz hXR
   -- `dim L̃` is least at `b`
   obtain ⟨hubSel, nbrSel, hHubSel, hNbrSel⟩ := exists_steer_selectors hfeas
-  obtain ⟨N, hN, hgen⟩ := exists_holdsGenerally_finrank_liftSpaceTilde_le hHubSel hNbrSel hfeas
+  obtain ⟨N, hN, hgen⟩ := exists_holdsGenerally_finrank_baseLiftSpaceTilde_le hHubSel hNbrSel hfeas
   obtain ⟨s₀, hs₀, hs₀pt, hs₀pl⟩ := exists_mem_steerSet_of_isNondeg hHubSel hNbrSel hnd
   choose! c hc hceq using hs₀pt
   have hs₀U := (mem_steerSet_iff hHubSel hNbrSel).1 hs₀
@@ -665,12 +666,12 @@ theorem liftAttains_of_forall_deficiency_two_ne_zero [Infinite K] [Finite α] [F
     hadj (sel := sel) fun v hv => ⟨(hsel v hv).1, (hs2 v hv).2.2⟩
   have hleast : ∀ (F' : BodyHingeFramework K 2 α β) (b' : α → Fin 4 → K)
       (P' : α → Submodule K (Fin 4 → K)), IsNondegPencilPlaneRealization G F' b' P' →
-      Module.finrank K (liftSpaceTilde G b) ≤ Module.finrank K (liftSpaceTilde G b') := by
+      Module.finrank K (baseLiftSpaceTilde G b) ≤ Module.finrank K (baseLiftSpaceTilde G b') := by
     intro F' b' P' hnd'
     refine le_trans ?_ (hN F' b' P' hnd')
     refine le_trans ?_ hsN
-    rw [← hfr', hbdef, finrank_liftSpaceTilde_pencilConfigPoint hadm hz0,
-      finrank_liftSpaceTilde_pencilConfigPoint hadm' hz']
+    rw [← hfr', hbdef, finrank_baseLiftSpaceTilde_pencilConfigPoint hadm hz0,
+      finrank_baseLiftSpaceTilde_pencilConfigPoint hadm' hz']
     exact Nat.add_le_add_right (hmain.2 q' hadm') _
   exact liftAttains_of_least hnd hleast hlam hends hrk
 

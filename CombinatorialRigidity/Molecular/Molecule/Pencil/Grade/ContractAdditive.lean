@@ -35,8 +35,8 @@ section in `t`, and read the rank at a generic `t` off the core and the survivin
   curve, as polynomials in `t`, for `m` heights (`thm:pencil-d-contract-additive`).
 * `Graph.X0AttainsGrade.of_additiveContract`: `thm:pencil-d-contract-additive`.
 * `Graph.x0AttainsGrade_of_deficiency_two_eq`: `cor:pencil-d-jj-flat`, the corollary of the flat
-  rank in every dimension (`Grade/Flat.lean`) that needs Jackson and Jordán's equality
-  (`MainComponent/Bridge.lean`), here as `Grade/Flat.lean` sits before `Bridge`.
+  rank in every dimension (`Grade/Flat.lean`) that needs the theorem on the dimension of the lifting
+  space (`MainComponent/Bridge.lean`), here as `Grade/Flat.lean` sits before `Bridge`.
 * `Graph.X0AttainsGrade.of_rigidContract`: `cor:pencil-d-contract-rigid`.
 -/
 
@@ -404,9 +404,10 @@ theorem _root_.Graph.X0AttainsGrade.of_additiveContract [Infinite K] [Finite α]
 
 /-- **The general configuration attains in dimension `m + 2` when `def₂(G) = def_(m+2)(G)`**
 (`cor:pencil-d-jj-flat`): over an infinite field, if `G` is connected and simple, with at least
-three members in every closed neighbourhood. Jackson and Jordán's equality gives a main picture with
-`dim L(q) = 3 + def₂(G) = 3 + def_(m+2)(G)` (`Graph.exists_isMainPicture_finrank_liftingSpace_eq`),
-and `Graph.x0AttainsGrade_of_finrank_liftingSpace_le` (`cor:pencil-d-flat-attains`) applies. -/
+three members in every closed neighbourhood. The theorem on the dimension of the lifting space gives
+a main picture with `dim L(q) = 3 + def₂(G) = 3 + def_(m+2)(G)`
+(`Graph.exists_isMainPicture_finrank_liftingSpace_eq`), and
+`Graph.x0AttainsGrade_of_finrank_liftingSpace_le` (`cor:pencil-d-flat-attains`) applies. -/
 theorem _root_.Graph.x0AttainsGrade_of_deficiency_two_eq [Infinite K] [Finite α] [Finite β]
     {G : Graph α β} (hG : G.Connected) (hSimple : G.Simple)
     (h3 : ∀ v ∈ V(G), 3 ≤ (G.closedNbhd v).ncard)

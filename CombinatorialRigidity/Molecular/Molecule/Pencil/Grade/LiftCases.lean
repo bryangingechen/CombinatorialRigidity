@@ -670,7 +670,7 @@ end Pendant
 consequence). -/
 def EarLiftCondition (G : Graph α β) (hubSel nbrSel : α → Fin 3 → Option α) (x a b : α) : Prop :=
   HoldsGenerally (K := K) G hubSel nbrSel fun b0 P0 =>
-    ∀ lam ∈ liftSpace (G.induce (V(G) \ {x})) b0 P0, ∀ (ha : b0 x ∈ P0 a) (hb : b0 x ∈ P0 b),
+    ∀ lam ∈ baseLiftSpace (G.induce (V(G) \ {x})) b0 P0, ∀ (ha : b0 x ∈ P0 a) (hb : b0 x ∈ P0 b),
       lam.2 a ⟨b0 x, ha⟩ = lam.2 b ⟨b0 x, hb⟩
 
 section Ear

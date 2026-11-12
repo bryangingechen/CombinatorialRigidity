@@ -24,7 +24,7 @@ screws `ρ = joinRelScrews` of `a`, `b` at every configuration `(q, z)`, with an
 The proof is the chapter's (SHORT-CORE workbook, S28–S30). `Z⁰(q)` (`Graph.liftingPlanesZero`) is
 the kernel of `h ↦ h_b − h_a` on `F(q)`, so `dim F(q) = dim Z⁰(q) + r`. Gluing `b` onto `a` gives
 `G'` (`G.rigidContract (G.induce {a, b}) a`), simple with every closed neighbourhood of at least
-three members; Jackson and Jordán's equality at `G'` and the matrix of `Z⁰`
+three members; the theorem on the dimension of the lifting space at `G'` and the matrix of `Z⁰`
 (`Graph.liftingPlanesZeroMatrix`), whose kernel dimension is upper semicontinuous, bound
 `dim Z⁰(q) ≤ 3|V(G)ᶜ| + 3 + def₂(G')` off a nonzero polynomial. A partition of `G'` of the largest
 value pulls back to one of `G` with `a`, `b` in one part `X`; the lifting planes constant on its
@@ -356,10 +356,10 @@ theorem _root_.Graph.finrank_liftingPlanesZero_eq [Fintype α] (G : Graph α β)
 /-! ## The ends glued: the contraction of `{a, b}` -/
 
 /-- **`dim Z⁰(q₀) ≤ 3|V(G)ᶜ| + 3 + def₂(G')` at one picture** (the chapter's *The polynomial*, at
-its special picture). Jackson and Jordán's equality at the ends glued `G'` gives a main picture
-`q'` with `dim L_{G'}(q') = 3 + def₂(G')`; at `q₀ = q' ∘ glue`, which puts `b` at `q'_a`, every
-`h ∈ Z⁰_G(q₀)` is a family of lifting planes of `G'` with `h_a = h_b`, a space of dimension
-`dim F_{G'}(q₀) − 3`, as `b` is no body of `G'`. -/
+its special picture). The theorem on the dimension of the lifting space at the ends glued `G'` gives
+a main picture `q'` with `dim L_{G'}(q') = 3 + def₂(G')`; at `q₀ = q' ∘ glue`, which puts `b` at
+`q'_a`, every `h ∈ Z⁰_G(q₀)` is a family of lifting planes of `G'` with `h_a = h_b`, a space of
+dimension `dim F_{G'}(q₀) − 3`, as `b` is no body of `G'`. -/
 theorem _root_.Graph.exists_finrank_liftingPlanesZero_le [Infinite K] [Finite α] [Finite β]
     {G : Graph α β} (hS : G.Simple) (h3 : ∀ v ∈ V(G), 3 ≤ (G.closedNbhd v).ncard) {a b : α}
     (ha : a ∈ V(G)) (hb : b ∈ V(G)) (hab : Disjoint (G.closedNbhd a) (G.closedNbhd b)) :
@@ -590,11 +590,11 @@ dimension of the differences `h_b − h_a` of the lifting planes, and for every 
 heights and every heights `z`, the relative screws `ρ` of `a`, `b` in `⋀²` have `dim ρ ≤ r`.
 
 The proof follows the chapter's (departures: `notes/Cleanup42.md` R-16). `g` is the product of
-Jackson and Jordán's polynomial for `G` (an admissible picture with `dim L(q) = 3 + def₂(G)`) and
-the polynomial of `Graph.exists_mvPolynomial_finrank_liftingPlanesZero_le`
-(`dim Z⁰(q) ≤ 3|V(G)ᶜ| + 3 + def₂(G')`, with `G'` the ends glued). A partition of `G'` of the
-largest value pulls back to a partition of `G` with `a`, `b` in one part `X` and value `def₂(G')`,
-on whose parts every `h ∈ Z⁰(q)` is constant
+the polynomial of the theorem on the dimension of the lifting space for `G` (an admissible picture
+with `dim L(q) = 3 + def₂(G)`) and the polynomial of
+`Graph.exists_mvPolynomial_finrank_liftingPlanesZero_le` (`dim Z⁰(q) ≤ 3|V(G)ᶜ| + 3 + def₂(G')`,
+with `G'` the ends glued). A partition of `G'` of the largest value pulls back to a partition of `G`
+with `a`, `b` in one part `X` and value `def₂(G')`, on whose parts every `h ∈ Z⁰(q)` is constant
 (`Graph.eq_of_mem_liftingPlanesZero_of_partitionDef`); `G[X]` joins `a` to `b`, else a split part
 would give `r ≥ 3` (`Graph.exists_partitionDef_eq_add_of_not_connBetween`). Then `⋀²π` maps `ρ`
 into the differences (`gradePi_comp_mem_liftingPlanes`), injectively: along the path in `G[X]` the

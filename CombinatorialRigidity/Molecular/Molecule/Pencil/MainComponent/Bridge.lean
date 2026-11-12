@@ -8,14 +8,14 @@ module
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.FlatRank
 
 /-!
-# Jackson and Jordán's equality
+# The dimension of the lifting space
 
 The lemmas of `sec:main-component-jj`. Let `G` be simple, with at least three
-members in every closed neighbourhood. Jackson and Jordán's equality (`thm:pencil-jj-equality`) says
-that at a general picture the bound `dim L(q) ≥ 3 + def₂(G)` of
-`lem:pencil-lifting-space-deficiency` is an equality; over the reals it is their theorem on
-pin-collinear body-and-pin frameworks, as the section explains. With the flat rank it settles the
-case of equal deficiencies (`cor:pencil-jj-flat`), and the contraction and ear steps use
+members in every closed neighbourhood. The theorem on the dimension of the lifting space
+(`thm:pencil-jj-equality`) says that at a general picture the bound `dim L(q) ≥ 3 + def₂(G)` of
+`lem:pencil-lifting-space-deficiency` is an equality; over the reals it is Jackson and Jordán's
+theorem on pin-collinear body-and-pin frameworks, as the section explains. With the flat rank it
+settles the case of equal deficiencies (`cor:pencil-jj-flat`), and the contraction and ear steps use
 it at the smaller graphs they compare with `G`.
 
 The proof draws the equality from the planar case of KT Theorem 5.6 (`thm:theorem-55-6-rows` at
@@ -290,11 +290,12 @@ theorem _root_.Graph.isMainPicture_embedEdges_iff {q : α × Fin 2 → K} :
 
 end embedEdges
 
-/-! ## Jackson and Jordán's equality (`thm:pencil-jj-equality`) -/
+/-! ## The dimension of the lifting space (`thm:pencil-jj-equality`) -/
 
-/-- **Jackson and Jordán's equality at a general picture** (`thm:pencil-jj-equality`; over the
-reals, their theorem on pin-collinear body-and-pin frameworks; drawn from the planar case of KT
-Theorem 5.6). Let `G` be simple, with at least one body and at least three members in every closed
+/-- **The dimension of the lifting space at a general picture** (`thm:pencil-jj-equality`; over the
+reals, Jackson and Jordán's theorem on pin-collinear body-and-pin frameworks; drawn from the planar
+case of KT Theorem 5.6). Let `G` be simple, with at least one body and at least three members in
+every closed
 neighbourhood, anywhere in `α` and `β`. There is a nonzero polynomial `P` in the picture coordinates
 such that every picture `q` with `P(q) ≠ 0` is a main picture with `dim L(q) = 3 + def₂(G)`. No
 supply of spare labels is assumed: the edges are first relabelled into `β ⊕ Fin (3|α| + 1)`
@@ -347,7 +348,7 @@ theorem _root_.Graph.exists_mvPolynomial_finrank_liftingSpace_eq [Infinite K] [F
   push_cast at hrk
   linarith
 
-/-- **Jackson and Jordán's equality at every main picture** (`thm:pencil-jj-equality`, its last
+/-- **The dimension of the lifting space at every main picture** (`thm:pencil-jj-equality`, its last
 claim, `ℓ₀ = 3 + def₂(G)`). Under the hypotheses of
 `Graph.exists_mvPolynomial_finrank_liftingSpace_eq`, every main picture has
 `dim L(q) = 3 + def₂(G)`: some main picture does, main pictures share the least dimension, and
@@ -365,7 +366,7 @@ theorem _root_.Graph.IsMainPicture.finrank_liftingSpace_eq [Infinite K] [Finite 
   have hlow := Graph.three_add_deficiency_le_finrank_liftingSpace hq.1 hV
   linarith
 
-/-- **Jackson and Jordán's equality at one picture** (`thm:pencil-jj-equality`, the existential
+/-- **The dimension of the lifting space at one picture** (`thm:pencil-jj-equality`, the existential
 form): some main picture has `dim L(q) = 3 + def₂(G)`. -/
 theorem _root_.Graph.exists_isMainPicture_finrank_liftingSpace_eq [Infinite K] [Finite α]
     [Finite β] {G : Graph α β} (hSimple : G.Simple) (hV : V(G).Nonempty)
@@ -378,9 +379,9 @@ theorem _root_.Graph.exists_isMainPicture_finrank_liftingSpace_eq [Infinite K] [
 
 /-- **The general configuration attains when the two deficiencies agree** (`cor:pencil-jj-flat`):
 over an infinite field, if `G` is connected and simple, with at least three members in every closed
-neighbourhood, and `def₂(G) = def₃(G)`, then the general configuration of `G` attains. Jackson and
-Jordán's equality gives a main picture with `dim L(q) = 3 + def₂(G) = 3 + def₃(G)`
-(`Graph.exists_isMainPicture_finrank_liftingSpace_eq`), and
+neighbourhood, and `def₂(G) = def₃(G)`, then the general configuration of `G` attains. The theorem
+on the dimension of the lifting space gives a main picture with
+`dim L(q) = 3 + def₂(G) = 3 + def₃(G)` (`Graph.exists_isMainPicture_finrank_liftingSpace_eq`), and
 `Graph.x0Attains_of_finrank_liftingSpace_le` (`cor:pencil-flat-attains`) applies. -/
 theorem _root_.Graph.x0Attains_of_deficiency_two_eq_three [Infinite K] [Finite α] [Finite β]
     {G : Graph α β} (hG : G.Connected) (hSimple : G.Simple)

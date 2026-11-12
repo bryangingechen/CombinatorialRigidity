@@ -139,7 +139,7 @@ Proof. `H` satisfies the standing hypotheses (`Graph.isX0Graph_induce_of_deficie
 `n = 3`), `G/H` is simple with at least three members in every closed neighbourhood
 (`Graph.rigidContract_induce_simple`, `Graph.three_le_ncard_closedNbhd_rigidContract`), and
 `def₃(G/H) = def₃(G)` (`Graph.rigidContract_deficiency_eq`). One picture `q` off the zero sets of
-the polynomials of the attainment and of Jackson and Jordán's equality
+the polynomials of the attainment and of the theorem on the dimension of the lifting space
 (`Graph.exists_mvPolynomial_finrank_liftingSpace_eq`) at `H` and at `G/H`, and of the main-picture
 polynomial of `G`; an attaining height `z'` of `G/H` with `z'_r = 0`, by an affine shift
 (`Graph.finrank_span_rigidityRows_ofNormals_smul_add_affineLifts`). The polynomial section through

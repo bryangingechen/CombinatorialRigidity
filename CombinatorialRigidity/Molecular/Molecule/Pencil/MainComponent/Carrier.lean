@@ -253,8 +253,9 @@ theorem _root_.Graph.affineLiftMap_apply (G : Graph α β) (q : α × Fin 2 → 
 /-- **The globally affine heights `Aff(q)`** (`def:pencil-lifting-space`): the heights
 `w ↦ h ⬝ᵥ (x_w, y_w, 1)` of a single triple of affine coefficients `h : Fin 3 → K`, the same at
 every body, on `V(G)`, and zero off `V(G)` as in `Graph.liftingSpace`: the range of
-`Graph.affineLiftMap`. They are the trivial liftings of scene analysis, which put all the faces in
-one plane. -/
+`Graph.affineLiftMap`. They are the trivial liftings of scene analysis, the heights of the trivial,
+or flat, scenes, which put all the faces in one plane (Whiteley 1984, Definition 2.3); they form a
+three-dimensional subspace of `L(q)`, as Whiteley notes (Whiteley 1989, p. 78). -/
 noncomputable def _root_.Graph.affineLifts (G : Graph α β) (q : α × Fin 2 → K) :
     Submodule K (α → K) :=
   LinearMap.range (G.affineLiftMap q)

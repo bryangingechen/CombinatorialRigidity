@@ -22,12 +22,13 @@ The four nodes of `blueprint/src/chapter/pencil-d.tex` that open `sec:pencil-d-l
   is nonempty exactly when `G` is nondegeneracy-feasible (`steerSet_nonempty_iff`);
   `HoldsGenerally` is the remark's "general".
 * `def:pencil-d-lift`: the lift of a dimension-three realization by maps on its bodies and forms on
-  its planes (`liftVec`, `liftSpace`, `IsTrivialLift`, `liftMaps`, `liftNormal`, `liftSubspace`).
+  its planes (`liftVec`, `baseLiftSpace`, `IsTrivialLift`, `liftMaps`, `liftNormal`,
+  `liftSubspace`).
 * `lem:pencil-d-lift-realization`: a lift is a nondegenerate realization
   (`IsNondegPencilPlaneRealization.lift`), `L(b⁰)` does not depend on `Π⁰` (`mem_liftMaps_iff`), and
-  scaling or transporting by an automorphism keeps `𝓛` and the rank (`liftSmul_mem_liftSpace_iff`,
-  `liftTransport_mem_liftSpace_iff`, `finrank_span_rigidityRows_ofNormals_smul`,
-  `finrank_liftNormal_transport`).
+  scaling or transporting by an automorphism keeps `𝓛` and the rank
+  (`liftSmul_mem_baseLiftSpace_iff`, `liftTransport_mem_baseLiftSpace_iff`,
+  `finrank_span_rigidityRows_ofNormals_smul`, `finrank_liftNormal_transport`).
 * `def:pencil-d-lift-attains`: `LiftAttains`.
 -/
 
@@ -281,8 +282,14 @@ theorem liftVecEquiv_apply {r : ℕ} (x : (Fin 4 → K) × (Fin r → K)) :
 
 /-- **The lift space** `𝓛(b⁰, Π⁰)` (`def:pencil-d-lift`): pairs `(ζ, φ)` of a map `ζ` on the bodies
 and a linear form `φ_v` on `Π⁰_v` at every body, with `ζ_w = φ_v(b⁰_w)` for every body `v` and
-every `w` in its closed neighbourhood (asked when `b⁰_w ∈ Π⁰_v`, which a realization gives). -/
-def liftSpace (G : Graph α β) (b0 : α → Fin 4 → K) (P0 : α → Submodule K (Fin 4 → K)) :
+every `w` in its closed neighbourhood (asked when `b⁰_w ∈ Π⁰_v`, which a realization gives). The
+lifts are scenes, in Whiteley's scene analysis in higher dimensions (Whiteley 1984, §7.2,
+Definition 7.2): a picture in `k`-space places the points of an incidence structure, and a scene
+over it lifts each point by a height and gives each face a hyperplane of `(k + 1)`-space, not
+vertical, through the lifted points on the face. At `k = 2` these are the scenes whose heights form
+`Graph.liftingSpace`; at `k = 3`, in homogeneous coordinates, the scenes of `S_G` over `b⁰` are the
+pairs `(ζ, ψ)`, and a lift keeps of `ψ_v` only its restriction `φ_v` to `Π⁰_v`. -/
+def baseLiftSpace (G : Graph α β) (b0 : α → Fin 4 → K) (P0 : α → Submodule K (Fin 4 → K)) :
     Submodule K ((α → K) × ((v : α) → Module.Dual K (P0 v))) where
   carrier := {lam | ∀ v ∈ V(G), ∀ w ∈ G.closedNbhd v, ∀ h : b0 w ∈ P0 v,
     lam.1 w = lam.2 v ⟨b0 w, h⟩}
@@ -291,13 +298,14 @@ def liftSpace (G : Graph α β) (b0 : α → Fin 4 → K) (P0 : α → Submodule
   zero_mem' v _ w _ h := by simp
   smul_mem' c x hx v hv w hw h := by simp [hx v hv w hw h]
 
-theorem mem_liftSpace {G : Graph α β} {b0 : α → Fin 4 → K} {P0 : α → Submodule K (Fin 4 → K)}
+theorem mem_baseLiftSpace {G : Graph α β} {b0 : α → Fin 4 → K} {P0 : α → Submodule K (Fin 4 → K)}
     {lam : (α → K) × ((v : α) → Module.Dual K (P0 v))} :
-    lam ∈ liftSpace G b0 P0 ↔ ∀ v ∈ V(G), ∀ w ∈ G.closedNbhd v, ∀ h : b0 w ∈ P0 v,
+    lam ∈ baseLiftSpace G b0 P0 ↔ ∀ v ∈ V(G), ∀ w ∈ G.closedNbhd v, ∀ h : b0 w ∈ P0 v,
       lam.1 w = lam.2 v ⟨b0 w, h⟩ := Iff.rfl
 
 /-- **A trivial lift** (`def:pencil-d-lift`): one form `ψ` on `K⁴` with `ζ_v = ψ(b⁰_v)` and
-`φ_v = ψ|Π⁰_v` at every body. -/
+`φ_v = ψ|Π⁰_v` at every body. The trivial lifts are the restrictions of Whiteley's flat scenes,
+which give all faces one hyperplane (Whiteley 1984, p. 292). -/
 def IsTrivialLift (G : Graph α β) (b0 : α → Fin 4 → K) (P0 : α → Submodule K (Fin 4 → K))
     (lam : (α → K) × ((v : α) → Module.Dual K (P0 v))) : Prop :=
   ∃ ψ : Module.Dual K (Fin 4 → K), ∀ v ∈ V(G), lam.1 v = ψ (b0 v) ∧ lam.2 v = ψ.domRestrict (P0 v)
@@ -305,7 +313,7 @@ def IsTrivialLift (G : Graph α β) (b0 : α → Fin 4 → K) (P0 : α → Submo
 /-- **The maps of the lifts** `L(b⁰)` (`def:pencil-d-lift`). -/
 def liftMaps (G : Graph α β) (b0 : α → Fin 4 → K) (P0 : α → Submodule K (Fin 4 → K)) :
     Submodule K (α → K) :=
-  (liftSpace G b0 P0).map (LinearMap.fst K _ _)
+  (baseLiftSpace G b0 P0).map (LinearMap.fst K _ _)
 
 /-- **The normals of a lift** (`def:pencil-d-lift`), from the maps `ζ^i` of its `r` parameters. -/
 def liftNormal {r : ℕ} (b0 : α → Fin 4 → K) (ζ : Fin r → α → K) (v : α) :
@@ -355,7 +363,7 @@ theorem IsNondegPencilPlaneRealization.lift {r : ℕ} {G : Graph α β}
     {F : BodyHingeFramework K 2 α β} {b0 : α → Fin 4 → K} {P0 : α → Submodule K (Fin 4 → K)}
     (hnd : IsNondegPencilPlaneRealization G F b0 P0)
     {lam : Fin r → (α → K) × ((v : α) → Module.Dual K (P0 v))}
-    (hlam : ∀ i, lam i ∈ liftSpace G b0 P0) {ends : β → α × α}
+    (hlam : ∀ i, lam i ∈ baseLiftSpace G b0 P0) {ends : β → α × α}
     (hlinks : Graph.RecordsLinks G ends) :
     IsNondegPencilPlaneRealization G
       (PanelHingeFramework.ofNormals (k := r + 1 + 1) G ends
@@ -431,11 +439,11 @@ def liftSmul {P0 : α → Submodule K (Fin 4 → K)} (c : α → K)
 /-- **Scaling the normals** (`lem:pencil-d-lift-realization`, part (3), first map): with `c_v ≠ 0`,
 `(ζ, φ) ↦ ((c_v ζ_v), φ)` maps `𝓛(b⁰, Π⁰)` onto `𝓛(cb⁰, Π⁰)` (it is a bijection of the ambient
 space, with inverse at `c⁻¹`). -/
-theorem liftSmul_mem_liftSpace_iff {G : Graph α β} {b0 : α → Fin 4 → K}
+theorem liftSmul_mem_baseLiftSpace_iff {G : Graph α β} {b0 : α → Fin 4 → K}
     {P0 : α → Submodule K (Fin 4 → K)} {c : α → K} (hc : ∀ v ∈ V(G), c v ≠ 0)
     {lam : (α → K) × ((v : α) → Module.Dual K (P0 v))} :
-    liftSmul c lam ∈ liftSpace G (fun v => c v • b0 v) P0 ↔ lam ∈ liftSpace G b0 P0 := by
-  simp only [mem_liftSpace, liftSmul]
+    liftSmul c lam ∈ baseLiftSpace G (fun v => c v • b0 v) P0 ↔ lam ∈ baseLiftSpace G b0 P0 := by
+  simp only [mem_baseLiftSpace, liftSmul]
   refine forall₂_congr fun v hv => forall₂_congr fun w hw => ?_
   have hcw : c w ≠ 0 := hc w (Graph.closedNbhd_subset_vertexSet hv hw)
   constructor
@@ -487,13 +495,13 @@ def liftTransport {P0 : α → Submodule K (Fin 4 → K)} (g : (Fin 4 → K) ≃
 /-- **Transporting by an automorphism** (`lem:pencil-d-lift-realization`, part (3), second map):
 `(ζ, φ) ↦ (ζ, φ ∘ g⁻¹)` maps `𝓛(b⁰, Π⁰)` onto `𝓛(gb⁰, gΠ⁰)` (it is a bijection, with inverse at
 `g⁻¹`). -/
-theorem liftTransport_mem_liftSpace_iff {G : Graph α β} {b0 : α → Fin 4 → K}
+theorem liftTransport_mem_baseLiftSpace_iff {G : Graph α β} {b0 : α → Fin 4 → K}
     {P0 : α → Submodule K (Fin 4 → K)} (g : (Fin 4 → K) ≃ₗ[K] (Fin 4 → K))
     {lam : (α → K) × ((v : α) → Module.Dual K (P0 v))} :
-    liftTransport g lam ∈ liftSpace G (fun v => g (b0 v))
+    liftTransport g lam ∈ baseLiftSpace G (fun v => g (b0 v))
         (fun v => (P0 v).map (g : (Fin 4 → K) →ₗ[K] (Fin 4 → K))) ↔
-      lam ∈ liftSpace G b0 P0 := by
-  simp only [mem_liftSpace, liftTransport]
+      lam ∈ baseLiftSpace G b0 P0 := by
+  simp only [mem_baseLiftSpace, liftTransport]
   refine forall₂_congr fun v hv => forall₂_congr fun w hw => ?_
   have key : ∀ hb : b0 w ∈ P0 v, ((g.submoduleMap (P0 v)).symm
       ⟨g (b0 w), Submodule.mem_map_of_mem hb⟩) = ⟨b0 w, hb⟩ := by
@@ -554,7 +562,7 @@ def LiftAttains (K : Type*) [Field K] (r : ℕ) (G : Graph α β) : Prop :=
     ∀ (F : BodyHingeFramework K 2 α β) (b0 : α → Fin 4 → K) (P0 : α → Submodule K (Fin 4 → K)),
       IsNondegPencilPlaneRealization G F b0 P0 → MvPolynomial.eval (fun p => b0 p.1 p.2) Q ≠ 0 →
       ∃ lam : Fin r → (α → K) × ((v : α) → Module.Dual K (P0 v)),
-        (∀ i, lam i ∈ liftSpace G b0 P0) ∧
+        (∀ i, lam i ∈ baseLiftSpace G b0 P0) ∧
         (Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := r + 1 + 1) G ends
           (fun p => liftNormal b0 (fun i => (lam i).1) p.1 p.2)).toBodyHinge.rigidityRows) : ℤ)
           = screwDim (r + 1 + 1) * ((V(G).ncard : ℤ) - 1) - G.deficiency (r + 1 + 2)

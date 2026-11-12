@@ -31,8 +31,8 @@ The hypothesis on the merged deficiency places the planes of the two ends. Suppr
 one-body ear `a − x 0 − b` on `V₁` leaves `G[V₁]` with the edge `ab` added
 (`Graph.splitOff_oneEar`), whose planar deficiency is at least two below that of `G[V₁]`
 (`Graph.splitOff_deficiency_add_le_of_deficiencyMerged`, `lem:splitoff-deficiency-merged`). So at a
-general picture its lifting space is at least two smaller than that of `G[V₁]`, by Jackson and
-Jordán's equality at `G[V₁] + ab` (`thm:pencil-jj-equality`) and
+general picture its lifting space is at least two smaller than that of `G[V₁]`, by the theorem on
+the dimension of the lifting space at `G[V₁] + ab` (`thm:pencil-jj-equality`) and
 `lem:pencil-lifting-space-deficiency` at `G[V₁]`, and the two incidence functionals
 `(z, h) ↦ (h_a − h_b) · (q_a, 1)` and `(z, h) ↦ (h_a − h_b) · (q_b, 1)` are independent on the
 solutions of the lifting system of `G[V₁]` (`Graph.two_le_finrank_map_planeDiff`,
@@ -307,7 +307,7 @@ Proof. `H` with `x 0` suppressed is `G′ + ab`, `G′` with the edge `ab` added
 (`Graph.splitOff_oneEar`), simple as `a` and `b` are not adjacent, with
 `def₂(G′ + ab) + 2 ≤ def₂(G′)` (`Graph.splitOff_deficiency_add_le_of_deficiencyMerged`,
 `lem:splitoff-deficiency-merged`). At a picture `q′` off `B`, off the polynomial of the attainment
-at `G′` and off that of Jackson and Jordán's equality at `G′ + ab`
+at `G′` and off that of the theorem on the dimension of the lifting space at `G′ + ab`
 (`Graph.exists_mvPolynomial_finrank_liftingSpace_eq`, `thm:pencil-jj-equality`), the lifting space
 of `G′ + ab` is at least two smaller than that of `G′`
 (`Graph.three_add_deficiency_le_finrank_liftingSpace`, `lem:pencil-lifting-space-deficiency`), so
