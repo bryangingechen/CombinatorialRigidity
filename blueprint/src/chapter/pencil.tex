@@ -145,9 +145,13 @@ $\operatorname{def}_2(G) = \operatorname{def}_d(G)$, the general
 configuration has the deficiency rank (\cref{cor:pencil-d-jj-flat}).
 Indeed the flat configuration, with every height zero, already has it
 over a main picture, one at which $\dim L(q)$ is least
-(\cref{def:pencil-main-picture}). This rests on Jackson and Jord\'an's
-equality for $\dim L(q)$~\cite{jacksonJordan2008pin}. We derive it from
-the case $d = 2$ of KT Theorem~5.6 (\cref{thm:pencil-jj-equality}).
+(\cref{def:pencil-main-picture}). This rests on the dimension of the
+lifting space at a general picture, $3 + \operatorname{def}_2(G)$
+(\cref{thm:pencil-jj-equality}). Over the reals it follows from a
+theorem of Jackson and Jord\'an~\cite[Theorem~7.1]{jacksonJordan2006pin},
+through Whiteley's correspondence between scenes and the motions of
+frameworks~\cite{whiteley1984}. We derive it instead from the case
+$d = 2$ of KT Theorem~5.6, so that it holds over every infinite field.
 
 Katoh and Tanigawa's Case~(I), the contraction of a proper rigid
 subgraph, corresponds to the contractions of B. The contraction at an
@@ -212,7 +216,7 @@ two-edge-connected multigraph, through its adjacent-distinct realization
 in dimension $d$ (\cref{lem:pencil-d-distinct-statement}). C
 uses the conclusion of B only at a graph without a planar-rigid set, in
 the proof of \cref{thm:pencil-d-generic}. C also uses lemmas proved
-alongside B that are not steps of B: Jackson and Jord\'an's equality,
+alongside B that are not steps of B: the dimension of the lifting space,
 the estimates on partitions, and several lemmas of
 \cref{sec:main-component-statements}. Neither B nor C uses the induction
 of A or its cases, and B uses nothing of C. The theorem in every
@@ -314,10 +318,17 @@ no nonzero point.
 \label{sec:pencil-realization}
 
 A pencil realization asks that, at every body, the incident hinges lie
-in the body's panel and pass through one point of that panel. This is
-the classical picture of a pencil of lines through a point in a plane.
-In the molecular reading (\cref{sec:molecule-modelling-defs}) the panel
-is the plane of an atom's bonds and the point is the atom's centre.
+in the body's panel and pass through one point of that panel. In
+dimension three, the hinges at a body then lie in a flat pencil of
+lines, Crapo and Whiteley's name for the lines through a point in a
+plane. The extensors of a flat pencil form a vector space of dimension
+two, spanned by those of any two of its
+lines~\cite[\S3.5, p.~67]{crapoWhiteley1982}. So the hinges at a body
+span at most two dimensions of the screw space. Conversely, three lines
+have rank two only if they lie in a flat pencil (p.~56). In the
+molecular reading
+(\cref{sec:molecule-modelling-defs}) the panel is the plane of an atom's
+bonds and the point is the atom's centre.
 
 \begin{definition}[Pencil realization]
   \label{def:pencil-panel-realization}
@@ -348,15 +359,33 @@ three or more hinges.
 \subsection{The polarity and self-duality}
 \label{sec:pencil-duality}
 
+The hinges at a body of a pencil realization are both coplanar and
+concurrent. Tay and Whiteley note that concurrent hinges, as in models
+of molecules, are ``the natural projective dual'' of coplanar ones, as
+in flat architectural panels~\cite[p.~33]{tayWhiteley1984}. The
+polarity $x \mapsto x^{\perp}$ of projective three-space takes a
+molecular framework to a panel-hinge framework
+(\cref{lem:panel-hinge-dual-molecular}). This subsection shows that it
+takes a pencil realization to a pencil realization, with the panels and
+the points exchanged.
+
 Work at grade $k = 2$ ($d = 3$) for the rest of this subsection, the
-setting of \cref{lem:polarity-join}. There the polarity
-sends the extensor of two homogeneous points $v_0, v_1 \in K^4$ to the
-panel-support extensor $C(v_0,v_1)$ (\cref{def:panel-support-extensor}),
-over every field $K$: the join-of-two-points $\leftrightarrow$
-meet-of-two-panels identity. The two transport lemmas below also hold
-over every field $K$. They show that the polarity
-turns passing through the point $q$ into lying in the panel with normal
-$q$, and lying in that panel into passing through $q$.
+setting of \cref{lem:polarity-join}. Only in three-space does projective
+duality take a hinge structure to a hinge structure, as Tay and Whiteley
+observe (p.~34). Indeed, a nonzero hinge in dimension $d$ is the
+extensor of $d - 1$ independent points of $K^{d+1}$. The orthogonal
+complement of their span has dimension two, so the polarity takes the
+hinge to a line, which is a hinge only when $d = 3$. In dimension three
+the polarity sends the extensor of two homogeneous points
+$v_0, v_1 \in K^4$ to the panel-support extensor $C(v_0,v_1)$
+(\cref{def:panel-support-extensor}), over every field $K$: the
+join-of-two-points $\leftrightarrow$ meet-of-two-panels identity. It is
+a correlation, and correlations preserve the motions of a body-hinge
+framework~\cite[\S3.6, p.~68]{crapoWhiteley1982}, as collineations do
+(\cref{thm:projective-invariance}). The two transport lemmas below also
+hold over every field $K$. They show that the polarity turns passing
+through the point $q$ into lying in the panel with normal $q$, and lying
+in that panel into passing through $q$.
 
 \begin{lemma}[Passing through a point transports to lying in a panel]
   \label{lem:pencil-transport-through-to-in}
@@ -446,6 +475,26 @@ We record this symmetry for its own sake: the proof of
 endpoints to coincide: requiring them to be projectively distinct would
 break the symmetry. \cref{sec:pencil-nondegenerate} gives a second
 reason, and imposes distinctness as a separate condition.
+
+We have not found this self-duality stated. It follows a pattern of
+Whiteley's: plane sheets joined at points, the jointed sheetworks, form
+``a self-polar class of structures''~\cite[p.~344]{whiteley1987}. A
+jointed sheetwork gives each sheet a plane and each joint a point, with
+every joint on the sheets attached to it (Definition~4.1). Its polar
+exchanges the sheets and the joints (Definition~4.3, p.~345). The panels
+and the points of a pencil realization form a jointed sheetwork, in
+which the panel of each body carries the points of its closed
+neighbourhood (\cref{lem:two-pencil-extension-iff}). In the polar
+sheetwork, the panel with normal $q_w$ carries the point $n_v$ when $w$
+lies in the closed neighbourhood of $v$, that is, when $v$ lies in the
+closed neighbourhood of $w$. So the polar sheetwork is the one formed by
+the panels and the points of the polar realization $(\Lambda F, q, n)$.
+Whiteley proves that a jointed sheetwork and each of its polars have
+identical static properties (Theorem~4.1, p.~345). His theorem concerns the statics of
+sheetworks, not of body-hinge frameworks. For pencil realizations the
+corresponding fact is projective invariance
+(\cref{thm:projective-invariance}): a pencil realization and its polar
+have the same rank.
 
 \subsection{Pencil cycles: degree-two concurrency is automatic}
 \label{sec:pencil-cycle}
@@ -975,7 +1024,10 @@ is a pencil realization when every closed neighbourhood is coplanar.
 Over a fixed picture $q$ this is a linear condition on the heights
 (\cref{lem:pencil-condition-linear}), and the heights that satisfy it
 form a linear space $L(q)$, the lifting space
-(\cref{def:pencil-lifting-space}).
+(\cref{def:pencil-lifting-space}). This is the setting of scene
+analysis. The heights in $L(q)$ are those of the scenes over $q$ of the
+incidence structure whose faces are the closed neighbourhoods of $G$
+(\cref{sec:main-component-carrier}).
 
 Over the admissible pictures at which $\dim L(q)$ is least, these
 configurations form a vector bundle. Its closure is the main component

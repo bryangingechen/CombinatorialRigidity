@@ -189,7 +189,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (HOMES: Phase 42's deferred lemma homes and the friction log) | the friction log's docs and tooling fixes, then the lemmas Phase 42 left outside their home files and the mirror lemmas that now meet their bar (Lean and notes, no statement) | ✓ Complete — the lemmas in their home files, the friction log's actionable entries 62 to 18, no statement changed (see `notes/Phase42-homes.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (ARREARS: what HOMES left) | the blueprint's dependency-graph debt, the friction log's archive sweep, the splits of four molecular files past the size cap, and `RecordsLinks` moved to `Graph` with its link hypotheses restated (Lean, blueprint edges and notes; no main result's statement) | ✓ Complete — the blueprint's missing dependency edges 16 to 0, the four files split, the link hypotheses in `RecordsLinks` terms (three weakened at the PI's word), no main result's statement changed (see `notes/Phase42-arrears.md`; round manual: `CLEANUP.md`) |
 | 43. A simpler pencil proof (post-program) — PENCIL-NATURAL | the pencil proof's route in `Molecular/Molecule/Pencil/` and its three chapters, no main result's statement (sub-lettered, 43a–43d) | ✓ Complete — one shape of proof in every dimension, the reduction on structural cases and a road map of the proof, no main result's statement changed (see `notes/Phase43d.md`; plan `notes/Phase43-design.md`) |
-| 44. The pencil proof against its sources (post-program) — PENCIL-SCENES | the exposition and citations of the three pencil chapters; in `Molecular/Molecule/Pencil/`, one rename, docstrings and the flat split in every dimension; no main result's statement | In progress — opened 2026-11-12; the carrier section cites its sources, the flat split is proved in every dimension, the old three-dimensional count is retired, the flat rank and the dimension of the lifting space are credited to their sources, and the every-dimension chapter cites its sources; the pencil chapter's sources are next (see `notes/Phase44.md`; plan `notes/PencilScenes.md`) |
+| 44. The pencil proof against its sources (post-program) — PENCIL-SCENES | the exposition and citations of the three pencil chapters; in `Molecular/Molecule/Pencil/`, one rename, docstrings and the flat split in every dimension; no main result's statement | In progress — opened 2026-11-12; the carrier section cites its sources, the flat split is proved in every dimension, the old three-dimensional count is retired, the flat rank and the dimension of the lifting space are credited to their sources, the every-dimension chapter cites its sources, and so does the pencil chapter; the rename and the docstrings are next (see `notes/Phase44.md`; plan `notes/PencilScenes.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1392,7 +1392,10 @@ motions normal to the plane at `d = 3` (2026-11-12). The `d = 3` motion count is
 called the dimension of the lifting space: Jackson and Jordán's 2006 report over the reals,
 through Whiteley's correspondence (2026-11-12). The every-dimension chapter cites its sources,
 and Part C's lifts are read as Whiteley 1984's scenes in 4-space, the correspondence with
-frameworks not extending to them (2026-11-12). Next: the pencil chapter's sources.
+frameworks not extending to them (2026-11-12). The pencil chapter cites the flat pencil
+(Crapo and Whiteley 1982) and the polarity (Tay and Whiteley 1984); the self-duality of pencil
+realizations, not found stated, is set beside Whiteley's self-polar sheetworks (1987), whose
+theorem concerns other statics (2026-11-12). Next: the rename and the docstrings.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 
