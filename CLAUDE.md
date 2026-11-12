@@ -119,8 +119,9 @@ session*, which also carries the Lean-specific working rules).
   and do **not** substitute an email from session context (the
   harness-injected one may differ). The `Co-Authored-By:` trailer names the
   model *actually generating the commit*, in display form
-  (`Claude Sonnet 5 <noreply@anthropic.com>`, not `claude-sonnet-5`) and with
-  the *current* display name for the rung: check your own identity rather
+  (`Claude Sonnet 5.5 <noreply@anthropic.com>`, not `claude-sonnet-5-5`), with
+  the full version (the part after the dot included: not `Claude Sonnet 5`)
+  and the *current* display name for the rung: check your own identity rather
   than copying recent `git log` (a stale example here once propagated into a
   landed trailer). Under `/coordinate-phase`, the step-3 prompt names the
   dispatched model. **A message body with backticks** (Lean identifiers, in

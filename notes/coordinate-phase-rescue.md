@@ -34,7 +34,8 @@ Pre-authorizable at session start. Apply, then note the final sha.
 - **Wrong co-author trailer** — a subagent naming a model it didn't run
   on (rows 21/26, both times the dominant trailer from recent `git log`
   instead of the dispatched model), or the model-id form
-  (`claude-sonnet-5`) instead of display form (`Claude Sonnet 5`;
+  (`claude-sonnet-5-5`) instead of display form (`Claude Sonnet 5.5`,
+  the part after the dot included;
   sonnet does this persistently even with the CLAUDE.md rule), or the
   *coordinator's own prompt* dictating a stale display name (2026-07-02:
   a `Sonnet 4.6` prompt example landed a wrong trailer that needed a

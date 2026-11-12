@@ -9,9 +9,10 @@ Don't ask it. For every item in the queue:
 
 - **Run cap: lifted.** The loop runs until a stop below; no dispatch count ends the session.
 - **Mechanical fixups (rescue §1): pre-authorised.** Apply them, and carry on.
-- **Rungs: Sonnet and Opus.** Dispatch `phase-builder-sonnet`, `phase-builder-opus` and
-  `recon-opus`. No `*-fable` variant is available, not even as a second reader. Haiku stays off
-  the map.
+- **Rungs: Sonnet, Opus and Mythos** (Mythos added by the PI, 2026-11-12; it is the top rung).
+  Dispatch `phase-builder-sonnet`, `phase-builder-opus`, `phase-builder-mythos`, `recon-opus` and
+  `recon-mythos`, as the command's rung map says. No `*-fable` variant is available, not even as a
+  second reader. Haiku stays off the map.
 - **"As few interruptions as possible"** (the PI's words). Where the loop has an in-workflow
   resolution, use it. Stop only in the cases below.
 
@@ -68,7 +69,7 @@ Don't ask it. For every item in the queue:
   or a blueprint statement's strength is recorded in the round log's `## Candidates for …`
   section (`CLEANUP.md`, the hygiene rule). It is not acted on, and it is not a stop.
 - **A red gate.** A step-5 gate that is red or has warnings gets one repair dispatch, one rung up
-  (Opus), naming the gate output. If it's still red after that, report `ANOMALY`.
+  (Opus after Sonnet, Mythos after Opus), naming the gate output. If it's still red after that, report `ANOMALY`.
 
 ### Closing an item
 

@@ -20,7 +20,8 @@ scoping, bailouts); this file is only the outer contract.
 
 Your model rung is pinned by this definition: **Claude Sonnet** — name
 the exact version from your **environment block**, in display form
-(`Claude Sonnet <version>`), with no context-window suffix — and do
+(`Claude Sonnet <N.M>`: the full version, the part after the dot
+included), with no context-window suffix — and do
 *not* copy a version from this file, from another agent definition, or
 from `git log` (this file pinned "Claude Sonnet 5" until a Sonnet 5.5
 dispatch overrode it, Phase 41a item 5b). Your commit trailer names that

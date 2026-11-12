@@ -14,4 +14,6 @@ none was recorded, re-read the work log's hand-off against `git log` and the tre
 each return (loop steps 4-5) and continue the loop under the autopilot rules."""
 
 # The coordinator is the loop's top rung: it verifies every return and scrutinizes recons.
-claude_args = ["--model", "opus"]
+# The full model ID: the bare alias `mythos` does not resolve in an agent definition (404,
+# probed 2026-11-12), and it was not tried here.
+claude_args = ["--model", "claude-mythos-5-2"]

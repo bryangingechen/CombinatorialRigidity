@@ -41,7 +41,8 @@ Before the first dispatch, ask the user once whether this run modifies
 these instructions — in practice users customize at session start,
 typically lifting the 10-run cap and pre-authorizing the mechanical
 fixups (rescue §1). Fold the **rung-availability confirmation** into
-this same check-in: ask which model rungs (haiku / sonnet / opus) are
+this same check-in: ask which model rungs (haiku / sonnet / opus /
+mythos) are
 dispatchable this session (default: all reachable) and fix
 each unavailable rung's substitute up front per the playbook — do NOT
 spend dispatches probing rungs. **This check BLOCKS the loop:** wait
@@ -160,7 +161,7 @@ first). Three calibrations that repeatedly bit:
 | P=3 with S=1 and B≤2 (exact pinned signatures + named route) | sonnet |
 | P=3 (with S≥2) or B=3 | opus |
 | **Fragility-zone producer build** (see the repo-local list below) | opus minimum, regardless of profile |
-| S=3; phase-open / phase-close / design-settle; any recon settling **new mirror definitions with no upstream precedent** | top rung (opus) |
+| S=3; phase-open / phase-close / design-settle; any recon settling **new mirror definitions with no upstream precedent** | top rung (mythos) |
 
 - **Fragility zone (repo-local input to the floor above).**
   `Molecular/AlgebraicInduction/` (esp. `CaseIII/` + `Theorem55.lean`),
@@ -178,8 +179,8 @@ first). Three calibrations that repeatedly bit:
   gate re-run by the coordinator.
 - **Read-only recon / research dispatches fall outside the axes**
   (they measure question stakes, not commit risk): default opus;
-  the same rung when the verdict re-routes a phase, adjudicates a carried-
-  hypothesis / motive change, or settles new mirror math. This bullet
+  the top rung (mythos) when the verdict re-routes a phase, adjudicates a
+  carried-hypothesis / motive change, or settles new mirror math. This bullet
   stays because THIS command still dispatches recons inside a Lean
   phase; a phase with **no Lean at all** runs as an attack track
   (`HARNESS.md`), where the rung is fixed in the agent definition and
@@ -190,8 +191,24 @@ first). Three calibrations that repeatedly bit:
   transcription. A recon that returned the **whole build** as a
   complete compiler-checked spike is not sliced at all: step 3's
   *Resume and land*.
-- **Fable is off the map (harness review 2026-09-26).** Opus 5.5 is the
-  top rung. The `-fable` variants stay defined for one use: a parallel
+- **Mythos is the top rung (PI, 2026-11-12).** It takes the table's last
+  row and the high-stakes recons; Opus keeps the P=3 / B=3 and
+  fragility-zone rows, and Sonnet is unchanged. The map has **no dispatch
+  data on Mythos yet**: the placement confines it to where the experiment
+  put the risk (recons that settle new mirror math), and its rows in the
+  dispatch log are the evidence that will move it. Mechanics, probed
+  2026-11-12 from a Mythos session: a definition pins it only by full
+  model ID (`model: claude-mythos-5-2`; the bare alias `mythos` is sent
+  to the API verbatim and 404s), the Agent tool's `model` parameter has
+  no Mythos value, an unpinned base type (or `model: inherit`) runs at
+  the session model, and `model: opus` still pins Opus under a Mythos
+  session. So Mythos is reached through `phase-builder-mythos` /
+  `recon-mythos`, and their pin is bumped by hand when the version
+  changes. **Where Mythos is not dispatchable** (the check-in's answer),
+  Opus is the top rung, as it was before. Autopilot's project rules name
+  all three rungs, and its driver runs the coordinator on Mythos.
+- **Fable is off the map (harness review 2026-09-26).** Opus 5.5 was the
+  top rung at that review. The `-fable` variants stay defined for one use: a parallel
   second reader on a design recon, at the user's request. Three
   opus ∥ fable A/Bs (dispatch-log, Phases 40a–40c) gave a tie, a
   convergence (against Opus 4.8) and a clear Opus lead at lower cost.
@@ -201,10 +218,12 @@ first). Three calibrations that repeatedly bit:
   verification gate bounds the damage — but honor the fragility-zone
   floor.
 - **Unavailable rung → nearest available rung at or above the mapped
-  one**; never substitute a weaker rung for a stronger mapped target.
-  Fix substitutions once, at the session-start check-in.
+  one**; never substitute a weaker rung for a stronger mapped target
+  (the one exception is the top rung itself: with Mythos unavailable,
+  Opus stands in, above). Fix substitutions once, at the session-start
+  check-in.
 - **Rungs dispatch as typed variants** (`phase-builder-{sonnet,opus,
-  fable}`, `recon-{opus,fable}`), thin shells over
+  mythos,fable}`, `recon-{opus,mythos,fable}`), thin shells over
   `.claude/agents-core/` whose `model` frontmatter makes resumes
   rung-stable (dispatch-log F5). The definition registry snapshots
   per session (new/edited definitions register between turns, with
@@ -284,10 +303,13 @@ cache reads, at the same wall time (dispatch-log F53).
 
 The step-4/5 checks below always run. On top of them, by rung:
 
-- **top rung (opus recons):** reasoning scrutiny per step 4 —
-  the failure mode at these rungs is upstream plan/pin error, which
-  gates can't catch.
-- **below top rung (sonnet builds):** read the **full diff** (not
+- **top rung (mythos and opus dispatches):** reasoning scrutiny per
+  step 4 — the failure mode at these rungs is upstream plan/pin error,
+  which gates can't catch. Opus keeps this tier though Mythos now sits
+  above it: its record was built here. Mythos has no record, so until the
+  dispatch log carries one, a Mythos **commit** also gets the tier below.
+- **below top rung (sonnet builds; "below top rung" means Sonnet
+  throughout this file and the rescue file):** read the **full diff** (not
   `--stat`) before the next dispatch; re-run `lake lint`, and
   `blueprint/lint.sh` when the commit touches the blueprint or a
   docstring's blueprint label (`verify.sh` green says nothing of it,
@@ -451,12 +473,14 @@ CLAUDE.md at phase close.
 2. **Rate S/P/B and pick the rung per the Dispatch playbook** (above);
    the rung is carried by the **agent type**, not the `model`
    parameter — dispatch the matching rung-pinned variant
-   (`phase-builder-{sonnet,opus,fable}` / `recon-{opus,fable}`), whose
+   (`phase-builder-{sonnet,opus,mythos,fable}` /
+   `recon-{opus,mythos,fable}`), whose
    `model` frontmatter survives a SendMessage resume (dispatch-log
    F5). Do NOT pass the Agent tool's `model` parameter for these; the
    unpinned base types (`phase-builder`, `recon`) + `model` param
    remain only for off-map dispatches (e.g. a haiku probe), and those
-   resume at the SESSION model. Honor any standing rung override from
+   resume at the SESSION model (with no `model` param they also *start*
+   there: Mythos under a Mythos session, which the param cannot name). Honor any standing rung override from
    the session-start check-in.
    **Pre-dispatch derivation guard:** when the next leaf builds on a
    prior phase's mirror definition with no upstream precedent, spend
