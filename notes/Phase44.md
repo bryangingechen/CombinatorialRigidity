@@ -3,24 +3,17 @@
 **Status:** in progress, opened 2026-11-12 with the PI. Exposition of the three pencil chapters
 against their classical sources; in the Lean, one rename, docstrings and the flat split in every
 dimension. No main result's statement changes. Slices 1 and 2 of 10 done: the spike says yes;
-the carrier section names `S_G` and cites its sources. Next: slice 5 or 6; slice 3 waits on two
-calls of the PI's, and slice 4 on slice 3. Plan, the PI's words and the recon record:
+the carrier section names `S_G` and cites its sources. Next: slice 3, in two commits, the PI's
+two calls on it answered. Plan, the PI's words and the recon record:
 `notes/PencilScenes.md`.
 
 ## Current state
 
-**Next concrete step: slice 5, `pencil-d.tex`, or slice 6, `pencil.tex`** (items 5 and 6, either
-order). Slice 3 waits on the PI's two calls under *Blockers*, and slice 4 on slice 3, whose node
-its flat-split sentences credit; slices 5–8 do not wait. Slice 2 has landed (item 2): the
-carrier section of `main-component.tex` and three new bibliography entries (`whiteley1984`,
-`whiteley1989`, `sugihara1984`). No Lean file has changed, and every dep-graph node is green.
-
-The phase has one work log and no sub-phases. Its inputs are all in `notes/PencilScenes.md`:
-what each source says (§2), each node against its source (§3's table), the observations O1–O7 and
-the worked examples (§4), the recons (§5–§5c, §7a), the scope (§6), the plan and the nine calls
-(§7) and the PI's answers at the open (§8). The per-row citation changes are the tables that end
-`notes/pencil-scenes/merging-lemma-provenance.md`, `refs-liftings.md` and `refs-polarity.md`,
-with the two ledgers (`ledger-main.md`, `ledger-d.md`): the worklist of slices 2 and 4–6.
+**Next concrete step: slice 3a, the every-dimension flat split and its node** (item 3). The PI
+answered the two calls on 2026-11-12 (*Decisions*): the node moves to `pencil-d.tex`, and
+`thm:pencil-flat-rank`'s proof refers forward. Slice 3b, the retirement, follows; then slice 4.
+Slices 5–8 wait on nothing. Slices 1 and 2 have landed; no Lean file has changed, and every
+dep-graph node is green.
 
 ## Architectural choices made up front
 
@@ -91,9 +84,19 @@ follows all of 2–8.
   move to `lem:pencil-join-flat`, which uses them; the paragraph near `main-component.tex` 842
   and `fmlnote:pencil-lifting-planes` are reworded; `thm:pencil-d-flat-rank`'s second paragraph
   (`pencil-d.tex` near 1373) points at the restated node; `lem:pencil-d-glued-ends` is not
-  contradicted. Two commits if one is too large: the new lemmas with the node, then the
-  retirement with the deletion grep (the retired names also stand in
-  `notes/pencil-scenes/simplify-ii.md`, a banked report, which stays).
+  contradicted.
+  **Two commits.** **3a:** the spike's lemmas into `Grade/GluedEnds.lean`; `lem:pencil-flat-split`
+  keeps its label, moves to `sec:pencil-d-flat` of `pencil-d.tex`, restated (onto `F(q)`, kernel
+  constant on `V(G)` and killed by `⋀²π`) and pinned to them, crediting Whiteley 1984 §5.1 only
+  as far as the page re-read supports; `main-component.tex` keeps a sentence pointing at it;
+  the `flatScrewEquiv` pin and the splitting text go to `lem:pencil-join-flat`. The two count
+  pins (`Graph.finrank_linkConstants`, `Graph.finrank_infinitesimalMotions_pointJoinFramework_flat`)
+  need a home until 3b: `thm:pencil-flat-rank`, whose Lean still uses them. **3b:** the
+  retirement and the layout above; `thm:pencil-flat-rank`'s proof becomes the every-dimension
+  flat rank at one height, referring forward to `thm:pencil-d-flat-rank`, with a sentence on
+  what the flat split adds; the deletion grep, tree-wide (the retired names also stand in
+  `notes/pencil-scenes/simplify-ii.md`, a banked report, which stays, and in
+  `notes/FRICTION-archive.md` and `notes/Prose-findings.md`, archives).
 - [ ] **4. The flat rank and the equality** (`main-component.tex`): the flat split credits
   Whiteley 1984 §5.1, the three in-plane dimensions ours; `sec:main-component-jj` and
   `thm:pencil-jj-equality` attributed as in §5a, "Jackson and Jordán's equality" renamed in
@@ -126,14 +129,7 @@ follows all of 2–8.
 
 ## Blockers / open questions
 
-Slice 3 waits on two calls of the PI's, put to the PI on 2026-11-12; nothing else waits.
-
-- **How `thm:pencil-flat-rank`'s proof reads.** Its Lean will go through the padding proof,
-  whose nodes are in `pencil-d.tex`, a later chapter; its prose proof now counts motions through
-  `lem:pencil-flat-split`. Either the proof refers forward, or it keeps a count the Lean no
-  longer follows.
-- **Where the restated `lem:pencil-flat-split` lives.** Its statement is in `joinMotions` and
-  `gradePi`, objects of `pencil-d.tex`; the node is in `main-component.tex`.
+Nothing blocks slice 3: the PI's two calls are under *Decisions*.
 
 Unchecked derivations, each to be checked in the slice named or weakened:
 
@@ -148,11 +144,10 @@ duplications between `MainComponent/` and `Grade/` of `notes/pencil-scenes/simpl
 
 ## Hand-off / next phase
 
-The next commit is slice 5, `pencil-d.tex` (item 5), or slice 6, `pencil.tex` (item 6); their
-worklist is §3's rows and the citation tables named under *Current state*, and the bibliography
-now holds `whiteley1984`, `whiteley1989` and `sugihara1984`. Slice 3 is one or two commits, its
-Lean already written in the spike; it is dispatched once the PI's two calls under *Blockers* are
-recorded here, and slice 4 follows it.
+The next commit is slice 3a (item 3, *Two commits*): the spike's lemmas
+(`notes/pencil-scenes/flat-split-spike.lean`) into `Grade/GluedEnds.lean`, and the node moved
+to `pencil-d.tex` and restated. Then 3b, then slice 4; slices 5 and 6 may go in any order with
+them.
 After the phase: ORIGAMI's open, with the PI
 (`notes/Origami.md`).
 
@@ -172,3 +167,11 @@ After the phase: ORIGAMI's open, with the PI
   pin); every page cited was re-read in the PDF, and the three new entries checked against
   Crossref. `\cite` keys: `whiteley1989` is the hypergraph paper; Rigidity and polarity II,
   if cited, takes a suffix.
+- **PI, 2026-11-12:** asked how the prose proof of `thm:pencil-flat-rank` should read once its
+  Lean goes through the padding proof, the PI chose "Forward reference (Recommended)": the
+  proof says the rank is the every-dimension flat rank at one height and points forward to
+  `thm:pencil-d-flat-rank`, with a sentence on what the flat split adds.
+- **PI, 2026-11-12:** asked where the restated `lem:pencil-flat-split` should live, the PI
+  chose "Move to pencil-d.tex (Recommended)": the node keeps its label and moves to
+  `sec:pencil-d-flat`; `main-component.tex` keeps a sentence crediting Whiteley 1984 §5.1 and
+  pointing at it, and the `d = 3` splitting text moves into `lem:pencil-join-flat`.
