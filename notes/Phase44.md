@@ -2,17 +2,20 @@
 
 **Status:** in progress, opened 2026-11-12 with the PI. Exposition of the three pencil chapters
 against their classical sources; in the Lean, one rename, docstrings and the flat split in every
-dimension. No main result's statement changes. Slices 1–3 of 10 done: the spike says yes; the
+dimension. No main result's statement changes. Slices 1–4 of 10 done: the spike says yes; the
 carrier section cites its sources; the flat split holds in every dimension, and the `d = 3`
-motion count is retired. Next: slice 4, the flat rank and the equality attributed. Plan, the PI's
-words and the recon record: `notes/PencilScenes.md`.
+motion count is retired; the flat rank and the equality are credited. Next: slice 5,
+`pencil-d.tex` (or slice 6 first). Plan, the PI's words and the recon record:
+`notes/PencilScenes.md`.
 
 ## Current state
 
-**Next concrete step: slice 4, the flat rank and the equality** (item 4, `main-component.tex`).
-Slices 5–8 wait on nothing. Slices 1–3 have landed: the flat split in every dimension is in
+**Next concrete step: slice 5, `pencil-d.tex`** (item 5); slice 6 (`pencil.tex`) may go first.
+Slices 5–8 wait on nothing. Slices 1–4 have landed: the flat split in every dimension is in
 `Grade/GluedEnds.lean`, the `d = 3` flat rank (`MainComponent/FlatRank.lean`) follows from the
-every-dimension one and its proof refers forward, and every dep-graph node is green.
+every-dimension one, `main-component.tex` credits the flat rank and the equality to their
+sources and calls the equality the dimension of the lifting space, and every dep-graph node is
+green.
 
 ## Architectural choices made up front
 
@@ -34,41 +37,18 @@ every-dimension one and its proof refers forward, and every dep-graph node is gr
 One commit each, in this order. The chapter's order of slices 4–6 is free; 3 follows 1, and 9
 follows all of 2–8.
 
-- [x] **1. The flat-split spike** (2026-11-12, read-only recon): **yes to both.** The three
-  spike files are banked in `notes/pencil-scenes/` (`flat-split-spike.lean`,
-  `flat-rank-spike.lean`, `flat-deps-spike.lean`), re-run by the coordinator with `lake lean`.
-  (a) Onto is by an explicit section of `gradePi`, with no dimension count and no use of
-  connectedness; the kernel is the assignments constant **on `V(G)`** and killed by `⋀²π`, at
-  every heights `z`. (b) No cycle: the every-dimension flat rank uses none of the `d = 3` chain,
-  and the `d = 3` flat rank follows from it at `m = 1`. Both landed in slice 3.
-- [x] **2. The carrier section** (`main-component.tex`, `sec:main-component-carrier`, with its
-  bibliography entries): `S_G` named, `L(q)` introduced once as its scene space (Whiteley 1984,
-  Sugihara 1984; call 4); `lem:pencil-lifting-planes-dim` as two eliminations of one system
-  (§5a); `lem:pencil-lifting-planes-motions` as Whiteley 1984's reduced plate framework of
-  `S_G`, which is pin-collinear. (2026-11-12: the carrier's introduction, a sentence each at
-  `def:pencil-lifting-system` and `def:pencil-main-picture` (W84 Def. 2.4), a paragraph before
-  `lem:pencil-lifting-planes-dim` and one after `lem:pencil-lifting-planes-motions`; no node's
-  statement or proof route changed. Ledger rows M3–M9, M11, M14, M15 and M17 done; M2, the
-  notation list, points at the new introduction; M10 is O6's, slice 8; M12 joins slice 5.)
-- [x] **3. The flat split in every dimension** (2026-11-12, two commits). **3a:** the spike's
-  lemmas in `Grade/GluedEnds.lean`; `lem:pencil-flat-split` restated in every dimension and moved
-  to `sec:pencil-d-flat`, crediting Whiteley 1984 §5.1 for the image half at `d = 3` only; the
-  `flatScrewEquiv` pin and the `W'`, `W_Π` splitting text in `lem:pencil-join-flat`. **3b:**
-  `mem_span_extensor_flat_iff`, `Graph.linkConstants`, `Graph.finrank_linkConstants` and
-  `Graph.finrank_infinitesimalMotions_pointJoinFramework_flat` deleted; the `d = 3` rank block in
-  the new `MainComponent/FlatRank.lean` (it imports `Grade/Flat.lean`, and
-  `MainComponent/Bridge.lean` imports it), `Graph.finrank_span_rigidityRows_ofNormals_flat` now
-  the every-dimension rank at `m = 1`; `Grade/Flat.lean` imports `MainComponent/Flat.lean` in
-  place of `Bridge`, and `Graph.x0AttainsGrade_of_deficiency_two_eq` moved to
-  `Grade/ContractAdditive.lean`.
-  `thm:pencil-flat-rank` keeps three pins, and its proof refers forward with one sentence on the
-  flat split (the PI); `thm:pencil-d-flat-rank`'s `d = 3` sentence, no longer circular;
-  `fmlnote:pencil-lifting-planes` counts the plane framework's motions.
-- [ ] **4. The flat rank and the equality** (`main-component.tex`): the flat split credits
-  Whiteley 1984 §5.1, the three in-plane dimensions ours; `sec:main-component-jj` and
-  `thm:pencil-jj-equality` attributed as in §5a, "Jackson and Jordán's equality" renamed in
-  prose to the dimension of the lifting space (call 5), with the second bibliography entry for
-  the 2006 EGRES report (call 6).
+- [x] **1. The flat-split spike** (2026-11-12, read-only recon): yes to both; the spike files
+  are banked in `notes/pencil-scenes/` (`flat-*-spike.lean`) and landed in slice 3.
+- [x] **2. The carrier section** (2026-11-12, `sec:main-component-carrier`): `S_G` and its
+  scenes (call 4), the two eliminations, `P_q` as W84's reduced plate framework, pin-collinear.
+  Ledger rows M3–M9, M11, M14, M15, M17 done; M2 points at it; M10 is slice 8's, M12 slice 5's.
+- [x] **3. The flat split in every dimension** (2026-11-12, two commits): `lem:pencil-flat-split`
+  in every dimension (`Grade/GluedEnds.lean`, node in `sec:pencil-d-flat`); the `d = 3` motion
+  count deleted, the `d = 3` flat rank (`MainComponent/FlatRank.lean`) the every-dimension one at
+  `m = 1`, its proof referring forward.
+- [x] **4. The flat rank and the equality** (2026-11-12, `main-component.tex`): the credits, the
+  equality renamed in prose (call 5), the EGRES report's entry (call 6). Ledger rows M1, M13, M16
+  and M19–M21 done.
 - [ ] **5. `pencil-d.tex`**: the sources of §3's rows; `def:pencil-d-lift` no longer presented
   as new; recon (i)'s two sentences at `def:pencil-d-lift` and `lem:pencil-d-ear-free`, and
   recon (ii)'s paragraph in Part C's introduction (the PI, §8), each derivation checked first;
@@ -96,7 +76,11 @@ follows all of 2–8.
 
 ## Blockers / open questions
 
-Nothing blocks slice 4.
+Nothing blocks slices 5 and 6.
+
+Unassigned: `ledger-main.md` rows M18 (JJ TR Lemma 4.1 beside the partition bound) and M22–M24
+(W84 Cor. 4.2(i), pp. 273–274, W89 Def. 3.2), minor citations in `main-component.tex` that no
+item names. The coordinator gives them a slice or drops them.
 
 Unchecked derivations, each to be checked in the slice named or weakened:
 
@@ -111,15 +95,12 @@ duplications between `MainComponent/` and `Grade/` of `notes/pencil-scenes/simpl
 
 ## Hand-off / next phase
 
-The next commit is slice 4 (item 4), in `main-component.tex`: the flat split's credit to
-Whiteley 1984 §5.1, the three in-plane dimensions ours; `sec:main-component-jj` and
-`thm:pencil-jj-equality` attributed as in the planning note §5a; "Jackson and Jordán's equality"
-renamed in prose to the dimension of the lifting space (call 5); the second bibliography entry,
-for the 2006 EGRES report (call 6). `sec:main-component-flat`'s introduction now ends on the
-forward route of `thm:pencil-flat-rank`'s proof (slice 3b); the rewording keeps it. Slices 5 and
-6 may go in any order with it.
-After the phase: ORIGAMI's open, with the PI
-(`notes/Origami.md`).
+The next commit is slice 5 (item 5), in `pencil-d.tex`: the sources of §3's rows,
+`def:pencil-d-lift` no longer presented as new, recon (i)'s and (ii)'s text each checked first,
+O4 at `def:pencil-d-configuration`, and call 5's prose. Its six "Jackson and Jordán's equality"
+now point at a theorem titled "The dimension of the lifting space", the prose slice 4 settled in
+`main-component.tex` (cite JJ TR Thm 7.1 as `jacksonJordan2006pin`). Slice 6 (`pencil.tex`, two
+uses) may go first. After the phase: ORIGAMI's open, with the PI (`notes/Origami.md`).
 
 ## Decisions made during this phase
 
@@ -127,22 +108,13 @@ After the phase: ORIGAMI's open, with the PI
   the name `baseLiftSpace`; both of the simplification recon's additions to `pencil-d.tex`; the
   flat motion count retired for the flat split in every dimension, a spike first; docstrings
   change with the rename. The nine calls of §7 stand.
-- **Slice 1 (2026-11-12).** The spike says yes to both questions (item 1), with three
-  corrections to the question as posed: constant on `V(G)` only, onto without connectedness,
-  the kernel at every heights. The coordinator chose the layout that keeps `MainComponent/`
-  from importing the every-dimension rank into its own flat file (item 3).
-- **Slice 2 (2026-11-12).** The carrier is cited, not restated: the nodes keep their statements
-  and proofs, and the classical reading sits in prose beside them. `P_q` is W84's reduced plate
-  framework with each body's own face first in the reduction (its two bars per edge act as one
-  pin); every page cited was re-read in the PDF, and the three new entries checked against
-  Crossref. `\cite` keys: `whiteley1989` is the hypergraph paper; Rigidity and polarity II,
-  if cited, takes a suffix.
-- **Slice 3a (2026-11-12).** The spike's lemmas landed with one shortening: `gradeEmbed` (`ι`,
-  `def:pencil-d-embedding`) in place of the spike's `gradePlanarIncl`, so no new definition
-  duplicates it, and the spike's kernel lemma folded into its iff. Whiteley 1984 §5.1 (pp. 287–288,
-  re-read) is credited with the image half at `d = 3` only: plates in a plane, each rotating about
-  a line, `(u, v, w)` an affine velocity, a joint equating two of them. The kernel and `d > 3` are
-  not in W84. The node's statement is in `⋀²` (`joinMotions`), as `lem:pencil-d-glued-ends` is.
+- **Slice 1 (2026-11-12).** The spike says yes, with three corrections to the question as posed:
+  constant on `V(G)` only, onto without connectedness, the kernel at every heights.
+- **Slice 2 (2026-11-12).** The carrier is cited, not restated: nodes keep their statements and
+  proofs. `\cite` keys: `whiteley1989` is the hypergraph paper; Rigidity and polarity II, if
+  cited, takes a suffix.
+- **Slice 3a (2026-11-12).** `gradeEmbed` (`ι`) in place of the spike's `gradePlanarIncl`. W84
+  §5.1 credited with the image half at `d = 3` only; the kernel and `d > 3` are not in W84.
 - **PI, 2026-11-12:** asked how the prose proof of `thm:pencil-flat-rank` should read once its
   Lean goes through the padding proof, the PI chose "Forward reference (Recommended)": the
   proof says the rank is the every-dimension flat rank at one height and points forward to
@@ -151,10 +123,12 @@ After the phase: ORIGAMI's open, with the PI
   chose "Move to pencil-d.tex (Recommended)": the node keeps its label and moves to
   `sec:pencil-d-flat`; `main-component.tex` keeps a sentence crediting Whiteley 1984 §5.1 and
   pointing at it, and the `d = 3` splitting text moves into `lem:pencil-join-flat`.
-- **Slice 3b (2026-11-12).** Item 3's layout built in place, with no fallback: `Grade/ZeroHeights`
-  and `MainComponent/Flat` reach neither `Bridge` nor `GluedEnds`. `Bridge` now sees
-  `Grade/ZeroHeights` through `FlatRank`, and so does every file after it;
-  `pencilConfigPointGrade_flat` stays (FRICTION, the `gradeEmbed` idiom). The forward `\uses`
-  from `thm:pencil-flat-rank` to `thm:pencil-d-flat-rank` makes no cycle: the latter's `\uses`
-  closure (36 nodes) does not reach the former. The proof's `\uses` are what its Lean uses:
-  `thm:pencil-d-flat-rank`, `def:pencil-d-configuration`, `lem:pencil-lifting-space-deficiency`.
+- **Slice 3b (2026-11-12).** Layout built in place: `Bridge` sees `Grade/ZeroHeights` through
+  `FlatRank`; `pencilConfigPointGrade_flat` stays (FRICTION, the `gradeEmbed` idiom); the
+  forward `\uses` to `thm:pencil-d-flat-rank` makes no cycle.
+- **Slice 4 (2026-11-12).** The equality is the dimension of the lifting space in titles and
+  prose (labels kept). Credited to JJ TR Thm 7.1 (`jacksonJordan2006pin`, checked against the
+  EGRES series record), the published version through its bar-and-joint model; W84 Remark 2
+  (p. 287) for the gap; W89 Thms 3.1 and 5.4 for the independent cases. "The three in-plane
+  dimensions ours" is written as "not in his account" (W84 p. 288), what was checked; W84 §5.3
+  beside CW82's tetrahedron. Every cited page re-read in the PDF.

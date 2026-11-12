@@ -102,11 +102,14 @@ general configuration of $G$ attains (\cref{lem:pencil-x0-one-witness}).
 Two nonempty Zariski-open subsets of a linear space meet
 (\cref{lem:pencil-x0-fibre-intersection}). \Cref{sec:main-component-flat}
 computes the rank of a flat configuration. \Cref{sec:main-component-jj}
-derives Jackson and Jord\'an's equality~\cite{jacksonJordan2008pin} for
-the dimension of the lifting space from the case $d = 2$ of KT
-Theorem~5.6 (\cref{thm:theorem-55-6-rows}). The equality then holds over
-every infinite field. With the flat rank, it settles the graphs whose two
-deficiencies agree (\cref{cor:pencil-jj-flat}).
+computes the dimension of the lifting space at a general picture. Over
+the reals, this dimension follows from a theorem of Jackson and
+Jord\'an~\cite[Theorem~7.1]{jacksonJordan2006pin}, through Whiteley's
+correspondence between scenes and the motions of
+frameworks~\cite{whiteley1984}. We derive it instead from the case
+$d = 2$ of KT Theorem~5.6 (\cref{thm:theorem-55-6-rows}), so that it
+holds over every infinite field. With the flat rank, it settles the
+graphs whose two deficiencies agree (\cref{cor:pencil-jj-flat}).
 
 The general configuration of every graph satisfying the standing
 hypotheses attains. We prove this by strong induction on the number of
@@ -865,9 +868,10 @@ Later subsections cite the lemmas themselves.
 This subsection computes the rank of a \emph{flat} configuration
 $(q, 0)$, with all heights zero, over an admissible picture $q$. The rank
 is exactly $6|V(G)| - 3 - \dim L(q)$ (\cref{thm:pencil-flat-rank}). With
-Jackson and Jord\'an's equality, the next subsection derives from it
-that, under the standing hypotheses, the general configuration attains
-whenever the two deficiencies agree (\cref{cor:pencil-jj-flat}). This
+the dimension of the lifting space at a general picture, the next
+subsection derives from it that, under the standing hypotheses, the
+general configuration attains whenever the two deficiencies agree
+(\cref{cor:pencil-jj-flat}). This
 settles one case of the induction with no appeal to smaller graphs
 (\cref{sec:main-component-coverage}).
 Throughout, $\operatorname{def}_2$ and $\operatorname{def}_3$ are the
@@ -888,9 +892,11 @@ edge $uv$. These families are the lifting planes
 (\cref{def:pencil-lifting-planes}). This is the flat split, which
 \cref{lem:pencil-flat-split} proves in every dimension. Its description of
 the motions normal to the plane by affine functions is Whiteley's, for
-plates in the plane joined at points~\cite[\S 5.1]{whiteley1984}.
-Evaluating each $h_v$ at $q_v$
-identifies them with the lifting space $L(q)$
+plates in the plane joined at points~\cite[\S 5.1]{whiteley1984}. He
+keeps only the motions normal to the plane (p.~288). The three
+dimensions of motions within the plane, from the complement, are not in
+his account. Evaluating each $h_v$ at $q_v$ identifies the lifting
+planes with the lifting space $L(q)$
 (\cref{lem:pencil-lifting-planes-dim}), and rank--nullity gives the flat
 rank. The proof of \cref{thm:pencil-flat-rank} takes the same count from
 the flat rank in every dimension (\cref{thm:pencil-d-flat-rank}), which
@@ -898,10 +904,15 @@ reads it off a framework in the plane.
 
 Over the reals, $h_v$ gives the velocities normal to the plane $z = 0$ of
 the points of that plane moving with the body $v$. The planes
-$\zeta = h_v(\xi, \eta)$ are then the faces of a polyhedron over the
-picture, a lifting as in \cref{sec:main-component-carrier}. Crapo and
-Whiteley~\cite{crapoWhiteley1982} describe this correspondence between
-the motions of a flat panel structure and the polyhedra over it for the
+$\zeta = h_v(\xi, \eta)$ are then the planes of a scene of $S_G$ over the
+picture (\cref{sec:main-component-carrier}). Its height at a body $w$ is
+$h_w(q_w)$, the normal velocity of the point $q_w$ moving with $w$.
+Whiteley reads the scenes over a picture of any incidence structure in
+this way~\cite[\S 5.3]{whiteley1984}. The faces become plates in the
+plane and the points become joints. The scenes are then the motions of
+the plates normal to the plane, and their heights are the velocities of
+the joints (pp.~288--289). Crapo and
+Whiteley~\cite{crapoWhiteley1982} work out this correspondence for the
 tetrahedron, and note that it holds in great generality (Example~4.4).
 We prove what we need directly.
 
@@ -911,10 +922,10 @@ $P_q$ in the plane, with panel normal $(x_v, y_v, 1)$ at each body $v$
 bounds $\dim L(q)$ below by $3 + \operatorname{def}_2(G)$
 (\cref{lem:pencil-lifting-space-deficiency}). So the flat rank is at most
 $6(|V(G)| - 1) - \operatorname{def}_2(G)$, with equality where the bound
-on $\dim L(q)$ is attained. Jackson and Jord\'an's equality says that,
-under the standing hypotheses, it is attained at a general picture
-(\cref{thm:pencil-jj-equality}). Since $\operatorname{def}_3(G) \le
-\operatorname{def}_2(G)$ (\cref{lem:deficiency-antitone}), the flat
+on $\dim L(q)$ is attained. Under the standing hypotheses, it is
+attained at a general picture (\cref{thm:pencil-jj-equality}). Since
+$\operatorname{def}_3(G) \le \operatorname{def}_2(G)$
+(\cref{lem:deficiency-antitone}), the flat
 configuration has the deficiency rank
 $6(|V(G)| - 1) - \operatorname{def}_3(G)$ only if the two deficiencies
 agree. When it has, it is a witness for \cref{lem:pencil-x0-one-witness}
@@ -1168,10 +1179,11 @@ frameworks whose rank \cref{sec:main-component-jj} uses.
   \cref{cor:pencil-flat-attains} applies.
 \end{proof}
 
-\subsection{Jackson and Jord\'an's equality}
+\subsection{The dimension of the lifting space}
 \label{sec:main-component-jj}
 
-In this subsection we prove the equality of Jackson and Jord\'an
+In this subsection we prove that the lifting space has dimension
+$3 + \operatorname{def}_2(G)$ at a general picture
 (\cref{thm:pencil-jj-equality}). Let $G$ be simple, with at least three
 members in every closed neighbourhood. At a general picture the lower
 bound $\dim L(q) \ge 3 + \operatorname{def}_2(G)$ of
@@ -1180,28 +1192,59 @@ flat rank, the equality settles the case of equal deficiencies
 (\cref{cor:pencil-jj-flat}). The contraction and ear steps use
 it at the smaller graphs they compare with $G$.
 
-The equality is Jackson and Jord\'an's theorem on pin-collinear
-body-and-pin frameworks~\cite{jacksonJordan2008pin}. Such a framework
-consists of rigid bodies in the real plane, with each pair of adjacent
-bodies joined by a pin and the pins of each body on one line. In the
-plane a panel is a line and a hinge is a point, so these are Katoh and
-Tanigawa's panel-hinge frameworks at
-$d = 2$~\cite[pp.~648--649]{katohTanigawa2011}. Jackson and Jord\'an
-prove the following for a simple graph $G$ without isolated vertices.
+In the language of scene analysis, $\dim L(q)$ is the dimension of the
+space of scenes of $S_G$ over $q$ (\cref{sec:main-component-carrier}),
+and we compute it at a general picture. Over the reals this dimension
+follows from a theorem of Jackson and Jord\'an on pin-collinear
+body-and-pin frameworks. Such a framework consists of rigid bodies in
+the real plane, with each pair of adjacent bodies joined by a pin and
+the pins of each body on one line. In the plane a panel is a line and a
+hinge is a point, so these are Katoh and Tanigawa's panel-hinge
+frameworks at $d = 2$~\cite[pp.~648--649]{katohTanigawa2011}. Jackson
+and Jord\'an prove the following for a simple graph $G$ without isolated vertices.
 Choose the line of each body generically, and pin adjacent bodies where
 their lines meet. Then the infinitesimal motions form a space of
-dimension $3 + \operatorname{def}_2(G)$. The plane framework $P_q$ of
-\cref{lem:pencil-lifting-planes-motions} is a framework of this kind, in
-which the body $v$ lies on the line with normal $(x_v, y_v, 1)$. Its
-motions are the lifting planes, and these form a space of dimension
+dimension $3 + \operatorname{def}_2(G)$. This is Theorem~7.1 of their
+report~\cite{jacksonJordan2006pin}, where these frameworks are the
+rod-and-pin frameworks (p.~12). The published
+version~\cite{jacksonJordan2008pin} gives it through a bar-and-joint
+model of the frameworks (Lemma~4.1 and Theorem~5.1). The plane
+framework $P_q$ of \cref{lem:pencil-lifting-planes-motions} is a
+framework of this kind, in which the body $v$ lies on the line with
+normal $(x_v, y_v, 1)$. Its motions are the lifting planes, and these
+form a space of dimension
 $\dim L(q)$ (\cref{lem:pencil-lifting-planes-dim}). So over the reals,
 their theorem at a generic picture is our equality.
 
+Jackson and Jord\'an do not speak of scenes. The link is Whiteley's
+correspondence, by which $P_q$ is the reduced plate framework of $S_G$
+(\cref{lem:pencil-lifting-planes-motions} and the paragraph after it).
+The correspondence alone does not give the dimension. As Whiteley notes,
+the generic counts for plate and bar frameworks assume that any two bars
+can, generically, take different
+directions~\cite[p.~287, Remark~2]{whiteley1984}. The bars that the
+reduction puts at a body of $S_G$ all lie on one line, so these counts
+do not apply.
+
+Whiteley had settled the independent case, in which no condition is
+redundant. His picture matroid decides when the incidences of $S_G$ are
+independent at a general picture~\cite[Theorem~3.1]{whiteley1989}. When
+they are, the scenes form a space of dimension $4|V(G)|$ less the number
+of incidences (p.~84).
+This is $3|V(G)| - 2|E(G)|$, three more than the value of the partition
+of $V(G)$ into singletons. For frameworks, Whiteley characterized the
+structures of bodies and joints in the plane that have an independent
+realization with the joints of each body
+collinear~\cite[Theorem~5.4]{whiteley1989}. Jackson and Jord\'an
+re-derive this for multigraphs from the multigraph form of their
+theorem~\cite[Theorem~7.4]{jacksonJordan2006pin}.
+
 Jackson and Jord\'an's argument is specific to the reals. Their
 genericity is algebraic independence over $\Q$, and their proof moves
-points within small Euclidean neighbourhoods. We need the equality over
-every infinite field, and KT Theorem~5.6 holds over every infinite field
-(\cref{thm:theorem-55-6-rows}). So we derive the equality from its case
+points within small Euclidean
+neighbourhoods~\cite[pp.~9, 12]{jacksonJordan2006pin}. We need the
+equality over every infinite field, and KT Theorem~5.6 holds over every
+infinite field (\cref{thm:theorem-55-6-rows}). So we derive the equality from its case
 $d = 2$. That case gives a panel-hinge framework on $G$ in the plane of
 rank $3(|V(G)| - 1) - \operatorname{def}_2(G)$. The rank does not drop
 when the normals move to a general point. It does not change when each
@@ -1311,7 +1354,7 @@ $\dim L(q) \le 3 + \operatorname{def}_2(G)$.
   admissible pictures and the main pictures.
 \end{fmlnote}
 
-\begin{theorem}[Jackson and Jord\'an's equality]
+\begin{theorem}[The dimension of the lifting space]
   \label{thm:pencil-jj-equality}
   \lean{Graph.exists_mvPolynomial_finrank_liftingSpace_eq,
         Graph.IsMainPicture.finrank_liftingSpace_eq,
@@ -1718,9 +1761,10 @@ as large as the lifting space of $G$ at a general point of the curve,
 whose dimension is at least $3 + \operatorname{def}_2(G)$. Above,
 $\ker M(0)$ is bounded through $L_{G/H}(q)$ and through the core heights
 of its solutions, which lie in $L_H(q)$
-(\cref{lem:pencil-contract-kernel-bound}). Jackson and Jord\'an's
-equality gives the dimensions of $L_H(q)$ and $L_{G/H}(q)$
-(\cref{thm:pencil-jj-equality}). With additivity, the upper bound is
+(\cref{lem:pencil-contract-kernel-bound}). At a general picture,
+$L_H(q)$ and $L_{G/H}(q)$ have dimension three more than the planar
+deficiencies of their graphs (\cref{thm:pencil-jj-equality}). With
+additivity, the upper bound is
 then at most $3 + \operatorname{def}_2(G)$ too. So the kernel does not
 jump. As the bounds meet, the core heights of the solutions of $M(0)$
 are all of $L_H(q)$.
@@ -2029,7 +2073,7 @@ of the rank, so the step works over every infinite field.
   (\cref{lem:pencil-contraction-deficiency}, at $d = 3$).
 
   \emph{The picture.} As $H$ and $G/H$ satisfy the standing hypotheses,
-  Jackson and Jord\'an's equality applies to both
+  the theorem on the dimension of the lifting space holds for both
   (\cref{thm:pencil-jj-equality}). Take a picture $q$ off
   the zero sets of five nonzero polynomials: those of the attainment and
   of the equality at $H$ and at $G/H$, and the main-picture polynomial of
@@ -2056,8 +2100,8 @@ of the rank, so the step works over every infinite field.
   \]
   (\cref{lem:pencil-lifting-space-deficiency},
   \cref{lem:pencil-contract-lifting-kernel}). By
-  \cref{lem:pencil-contract-kernel-bound}, Jackson and Jord\'an's
-  equality at $H$ and $G/H$, and additivity,
+  \cref{lem:pencil-contract-kernel-bound}, the dimensions of $L_H(q)$ and
+  $L_{G/H}(q)$, and additivity,
   \[
     \dim \ker M(0) + 3 \le \dim \rho(\ker M(0)) + \dim L_{G/H}(q)
     \le \dim L_H(q) + \dim L_{G/H}(q) \le 6 + \operatorname{def}_2(G).
@@ -3360,8 +3404,8 @@ interior bodies can apply it to $G_1$
 
   \emph{The incidence.} Take a picture $q'$ off the zero sets of three
   nonzero polynomials: $B$, the polynomial of the attainment at $G'$, and
-  the polynomial of Jackson and Jord\'an's equality at $H'$
-  (\cref{thm:pencil-jj-equality}). The equality applies to $H'$, as its
+  the polynomial of \cref{thm:pencil-jj-equality} at $H'$. That theorem
+  applies to $H'$, as its
   closed neighbourhoods contain those of $G'$, which have three members at
   a picture admissible for $G'$. Then
   $\dim L_{H'}(q') = 3 + \operatorname{def}_2(H') \le \dim L_{G'}(q') - 2$
@@ -4525,8 +4569,8 @@ $b$ meet.
   picture as in the proof of \cref{lem:pencil-x0-one-witness}. The graph
   $G[W]$ satisfies the standing hypotheses
   (\cref{lem:pencil-contract-standing-rigid}, at $d = 2$). Let $P_W$ be
-  the polynomial of Jackson and Jord\'an's equality for $G[W]$
-  (\cref{thm:pencil-jj-equality}). Let $s$ be a picture that is
+  the polynomial of \cref{thm:pencil-jj-equality} for $G[W]$. Let $s$ be
+  a picture that is
   admissible for $G$ with $P_W(s) \neq 0$, and let $(\bar z, \bar h)$
   solve the lifting system $M(s)$ of $G$
   (\cref{def:pencil-lifting-system}). Then $s$ is a main picture of
@@ -4646,7 +4690,7 @@ neighbourhood (\cref{lem:pencil-condition-linear}). So over a picture in
 general position, the conditions of nondegeneracy on the normals reduce
 to conditions that certain planes differ
 (\cref{lem:pencil-x0-conjunct-three}). The planes of two bodies $u$ and
-$w$ differ at a general configuration by Jackson and Jord\'an's equality,
+$w$ differ at a general configuration by \cref{thm:pencil-jj-equality},
 applied to $G$ and to the graph $G_{uw}$ of the next definition. Without
 a planar-rigid set, $G_{uw}$ has the smaller planar deficiency, so at a
 general picture its lifting space has the smaller dimension. The heights
@@ -4710,11 +4754,11 @@ of $G_{uw}$. So they form a proper subspace of $L(q)$
   $s(V(G)) - s(X) \le \operatorname{def}_2(G) - 1$
   (\cref{lem:deficiency-singleton-bound}).
 
-  \emph{The equality.} At a picture general for both graphs, Jackson and
-  Jord\'an's equality (\cref{thm:pencil-jj-equality}) gives
+  \emph{The equality.} At a picture general for both graphs,
   $\dim L_G(q) = 3 + \operatorname{def}_2(G)$, and the lifting space of
   $G_{uw}$ has dimension
-  $3 + \operatorname{def}_2(G_{uw}) \le 2 + \operatorname{def}_2(G)$. So
+  $3 + \operatorname{def}_2(G_{uw}) \le 2 + \operatorname{def}_2(G)$
+  (\cref{thm:pencil-jj-equality}). So
   the heights of $G$ with equal planes at $u$ and $w$ form a proper
   subspace of $L_G(q)$. The polynomial of the equality at $G_{uw}$
   involves the picture point of $x$. Fixing that point at one non-root
