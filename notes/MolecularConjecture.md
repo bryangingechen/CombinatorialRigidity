@@ -821,10 +821,10 @@ removed two unnecessary `d = 3` steps by Theorem S′; EXPO (43d, `notes/Phase43
 map of the proof and the flatness remark, and at the PI's word removed the two `d = 3`
 main-component statements and folded a duplicate theorem. Summary: ROADMAP §43. **Phase 44**
 (PENCIL-SCENES, `notes/Phase44.md`; plan `notes/PencilScenes.md`) opened 2026-11-12 with the PI,
-after read-only recons: the exposition of the pencil proof against its sources in scene analysis
-(Whiteley 1982, 1984, 1989; Sugihara 1984), no main result's statement changed. Summary: ROADMAP
-§44. Still queued, codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
-conjecture, `notes/Origami.md`, the next phase to open after Phase 44, with the PI), **PIN** (a second,
+after read-only recons, and closed 2026-11-13: the exposition of the pencil proof against its
+sources in scene analysis (Whiteley 1982, 1984, 1989; Sugihara 1984), no main result's statement
+changed. Summary: ROADMAP §44. Still queued, codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
+conjecture, `notes/Origami.md`, the next phase to open, with the PI), **PIN** (a second,
 independent proof of the 2-d molecular conjecture by Jackson–Jordán 2008's
 pin-collinear route, re-scoped at 40a's close; unplanned), **UPSTREAM** (mathlib upstreaming) and
 **VERSO** (the paused verso-blueprint port).

@@ -2037,6 +2037,28 @@ slice 2).
 name retired nodes, as at 43c (the Phase-39 entry retired at 43b now names its definition node
 retired too), one more a retired part and pin, and the closed one a deleted node.
 
+### Phase 44 (PENCIL-SCENES: the pencil proof against its sources, structural edit — no new chapter)
+
+**No new entries — judged at the close (2026-11-13).** The phase is exposition from end to end:
+it set the three pencil chapters against their classical sources (the recon record is
+`notes/PencilScenes.md`, the attribution ledgers `notes/pencil-scenes/ledger-main.md` and
+`ledger-d.md`), and the pages cited were re-read in the slice that cites them. One node changed
+its statement, `lem:pencil-flat-split`, now in every dimension and in `pencil-d.tex`: slice 1's
+spike said it would hold and it landed as scoped, in two commits at the PI's word, with its proof
+written in full and its image half at `d = 3` credited to Whiteley 1984 §5.1. Nothing rerouted or
+decomposed. The three additions to `main-component.tex` are unpinned and written in full in their
+bodies: the second derivation of the dimension of the lifting space over the reals
+(`rem:pencil-jj-count`, by Whiteley 1989's count, the identity not found stated and Berg and
+Jordán's face merge credited), the Maxwell–Cremona remark (`rem:pencil-maxwell-cremona`) and the
+example `ex:pencil-theta`. The entries above that name "Jackson and Jordán's equality" name
+`thm:pencil-jj-equality`, whose label stays; the chapters now call it the dimension of the
+lifting space. The close's re-read covered `pencil.tex` whole and, in `main-component.tex` and
+`pencil-d.tex`, every passage the phase wrote or changed, in context, with the introductions;
+it checked the road map's citations against those at the nodes, split the road map's paragraph
+on what is classical in four with no word changed, and renamed the flat split's section, whose
+letter was the chapter's map of affine heights. It found no formalization aside.
+**Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
+
 ## Retroactive coverage
 
 - **Molecular program (Phases 17–22a): scanned 2026-06-04** — candidates folded

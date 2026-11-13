@@ -319,11 +319,13 @@ status:
     by no proof once the theorem came from every dimension. Last, it wrote a road map of the proof
     in the blueprint, in the manner of Katoh-Tanigawa's own (KT section 1.1), with a remark, not
     formalized, on why the nondegenerate claim is not proved through the main component. The main
-    results' statements and axioms are unchanged. Phase 44 (in progress) rewrites the blueprint's
+    results' statements and axioms are unchanged. Phase 44 (closed 2026-11-13) rewrote the blueprint's
     exposition of the pencil proof against its sources in scene analysis (Whiteley 1982, 1984 and
-    1989; Sugihara 1984), with no main result's statement to change; in the Lean so far, the flat
-    split is proved in every dimension and the three-dimensional flat rank follows from the
-    every-dimension one.
+    1989; Sugihara 1984; Jackson-Jordan 2006), and its road map now says which parts of the proof
+    are classical and which, as far as we have found, are new. In the Lean, the flat split is
+    proved in every dimension, the three-dimensional flat rank follows from the every-dimension
+    one, one definition is renamed and the docstrings cite their sources. The main results'
+    statements and axioms are unchanged.
   sorry_count: 0
   sorry_in_definitions: 0
   axioms: ["propext", "Classical.choice", "Quot.sound"]          # only Lean/mathlib standard axioms; no project-specific axioms

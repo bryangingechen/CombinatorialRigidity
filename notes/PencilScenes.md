@@ -1,6 +1,6 @@
 # PENCIL-SCENES — the pencil proof against its sources (planning note)
 
-**Status:** opened on 2026-11-12 as **Phase 44**, with the PI (§8); the work log is
+**Status:** opened on 2026-11-12 as **Phase 44**, with the PI (§8), and closed 2026-11-13; the work log is
 `notes/Phase44.md`, and this note is the phase's plan and recon record. It was queued by the
 PI on 2026-11-09, ahead of ORIGAMI. Same editing discipline as phase notes (≤ 8-line entries,
 lift cross-cutting lessons).
@@ -12,8 +12,8 @@ On 2026-11-11 the PI also settled the plan at the open (§7): the nine calls, a 
 Lean, and one more read-only recon, for simplifications of the route, which no recon had asked.
 The simplification recon ran the same day (§7a): no to (i), and to (ii) one definition, not one
 theorem. The route and the Lean stand; the exposition gains two paragraphs.
-**Next concrete step:** `notes/Phase44.md` *Hand-off* (slice 10, the close; slices 1–9 have
-landed, slice 9 on the framing the PI approved on 2026-11-13).
+**Closed:** all ten slices landed, slice 9 on the framing the PI approved on 2026-11-13; the
+summary is ROADMAP §44. What the phase left for later is `notes/Phase44.md` *Hand-off*.
 
 ## 1. The PI's words (verbatim)
 

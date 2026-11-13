@@ -193,10 +193,10 @@ old route; the reduction runs on structural cases; the two unnecessary
 cases are gone; and so are the two statements of Phase 39, as special
 cases of the theorem's claims that no proof used any more. The
 blueprint's pencil chapter now opens with a road map of the proof.
-Phase 44, in progress, rewrites the blueprint's account of the proof
-against its sources in scene analysis (Whiteley, Sugihara), with no
-change to what it proves: the blueprint will say which parts of the proof
-are classical and which are new.
+Phase 44 rewrote the blueprint's account of the proof against its
+sources in scene analysis (Whiteley, Sugihara), with no change to what it
+proves: the road map now says which parts of the proof are classical and
+which, as far as we have found, are new.
 
 ### How the pencil realization theorem is proved
 
@@ -275,7 +275,7 @@ The table below and `ROADMAP.md` carry the fine-grained status.
 |    41 | each hinge at the ends of its own edge, built into the panel-hinge framework; the generic rank theorems at every graph; a Lean declaration for each claim the blueprint made without one | `Molecular/` | ✓ |
 |    42 | the pencil realization theorem in every dimension: a proof on paper, then its formalization | `Molecular/` | ✓ |
 |    43 | a simpler proof of the pencil realization theorem | `Molecular/` | ✓ |
-|    44 | the proof of the pencil realization theorem set against its sources in scene analysis | blueprint, `Molecular/` | in progress |
+|    44 | the proof of the pencil realization theorem set against its sources in scene analysis | blueprint, `Molecular/` | ✓ |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
 for the full mathematical and engineering plan,

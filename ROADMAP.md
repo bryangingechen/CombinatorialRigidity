@@ -189,7 +189,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (HOMES: Phase 42's deferred lemma homes and the friction log) | the friction log's docs and tooling fixes, then the lemmas Phase 42 left outside their home files and the mirror lemmas that now meet their bar (Lean and notes, no statement) | ✓ Complete — the lemmas in their home files, the friction log's actionable entries 62 to 18, no statement changed (see `notes/Phase42-homes.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (ARREARS: what HOMES left) | the blueprint's dependency-graph debt, the friction log's archive sweep, the splits of four molecular files past the size cap, and `RecordsLinks` moved to `Graph` with its link hypotheses restated (Lean, blueprint edges and notes; no main result's statement) | ✓ Complete — the blueprint's missing dependency edges 16 to 0, the four files split, the link hypotheses in `RecordsLinks` terms (three weakened at the PI's word), no main result's statement changed (see `notes/Phase42-arrears.md`; round manual: `CLEANUP.md`) |
 | 43. A simpler pencil proof (post-program) — PENCIL-NATURAL | the pencil proof's route in `Molecular/Molecule/Pencil/` and its three chapters, no main result's statement (sub-lettered, 43a–43d) | ✓ Complete — one shape of proof in every dimension, the reduction on structural cases and a road map of the proof, no main result's statement changed (see `notes/Phase43d.md`; plan `notes/Phase43-design.md`) |
-| 44. The pencil proof against its sources (post-program) — PENCIL-SCENES | the exposition and citations of the three pencil chapters; in `Molecular/Molecule/Pencil/`, one rename, docstrings and the flat split in every dimension; no main result's statement | In progress — opened 2026-11-12; the carrier section cites its sources, the flat split is proved in every dimension, the old three-dimensional count is retired, the flat rank and the dimension of the lifting space are credited to their sources, the every-dimension chapter cites its sources, and so does the pencil chapter; the rename, the docstrings and the additions of two calls are done; the road map and the three introductions say what is classical and what is new; next the close (see `notes/Phase44.md`; plan `notes/PencilScenes.md`) |
+| 44. The pencil proof against its sources (post-program) — PENCIL-SCENES | the exposition and citations of the three pencil chapters; in `Molecular/Molecule/Pencil/`, one rename, docstrings and the flat split in every dimension; no main result's statement | ✓ Complete — each classical piece of the three pencil chapters cites its source, the road map says what is classical and what is new, and the flat split is proved in every dimension; no main result's statement changed (see `notes/Phase44.md`; plan `notes/PencilScenes.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1320,7 +1320,8 @@ same day, and CLEANUP-42 with it; then HOMES, a cleanup round of Phase 42's defe
 and the friction log (`notes/Phase42-homes.md`), closed the same day; then ARREARS, a cleanup round
 of what HOMES left (`notes/Phase42-arrears.md`), closed 2026-11-06; then PENCIL-NATURAL, a
 simpler pencil proof, opened with the PI on 2026-11-07 as Phase 43 and closed 2026-11-08 (§43); then
-PENCIL-SCENES, opened with the PI on 2026-11-12 as Phase 44 (§44); then ORIGAMI, with the PI
+PENCIL-SCENES, opened with the PI on 2026-11-12 as Phase 44 and closed 2026-11-13 (§44); then
+ORIGAMI, with the PI
 (*Queued post-program phases*). Detail →
 `notes/Phase42a.md` to `notes/Phase42m.md` + `notes/Phase42-design.md`.
 
@@ -1358,55 +1359,43 @@ declarations went and 2 came (59 Lean files, +728 / −7,657 lines, eight files 
 dep-graph nodes went (15, 13 and 4 by sub-phase) and none came. No main result's statement changed:
 the 21 `formalization.yaml` main results' statements read as at the open, and their axioms are the
 standard three, byte-identical to 43c's close run. Next: PENCIL-SCENES, opened 2026-11-12 as
-Phase 44 (§44), then ORIGAMI's open, with the PI. Detail → `notes/Phase43a.md` to `notes/Phase43d.md` +
+Phase 44 and closed 2026-11-13 (§44), then ORIGAMI's open, with the PI. Detail → `notes/Phase43a.md` to `notes/Phase43d.md` +
 `notes/Phase43-design.md`.
 
 ### Phase 44 — The pencil proof against its sources (PENCIL-SCENES, post-program)
 
-**In progress** (opened 2026-11-12 with the PI; work log `notes/Phase44.md`; plan, the PI's words
-and the recon record `notes/PencilScenes.md`, reports in `notes/pencil-scenes/`). The carrier of
-the pencil proof is classical. The lifting space is the space of scenes over a plane picture of an
-incidence structure, here the closed neighbourhoods of the graph (Whiteley 1984, Sugihara 1984),
-and the flat rank and the plane framework of Jackson and Jordán are Whiteley's correspondence
-between scenes and motions of frameworks (1982, 1984). The three pencil chapters cite these
-sources only in part. The read-only recons (2026-11-09 to 2026-11-11, nine reports) found Whiteley
-1982, 1984 and 1989 cited nowhere; Part C's lift space to be Whiteley 1984's scenes in 4-space; the
-dimension of the lifting space to follow also from Whiteley 1989's count, by a derivation not found
-stated, one step of it Berg and Jordán's (2003); no prior work on the pencil stratum itself; and
-that the sources do not shorten the route. The phase rewrites the exposition: each classical piece
-cites its source, the chapters use the general language (the incidence structure, scenes), and the
-road map and the three introductions say what is classical and what is new. No main result's
-statement changes. Its Lean, at the PI's word: Part C's `liftSpace` renamed `baseLiftSpace`, one
-syllable from `liftingSpace` as it is; docstring citations; and the flat split (Whiteley 1984,
-§5.1) stated in every dimension in place of its `d = 3` motion count, after a read-only spike, the
-count staying if the spike fails. A general scene space is left to ORIGAMI's opening recon. Ten
-slices, the road map attended and last before the close. The spike (2026-11-12) holds: the flat
-split is proved in every dimension and the `d = 3` flat rank follows from the every-dimension one.
-The carrier section now names the incidence structure and cites Whiteley 1984, 1989 and Sugihara
-1984 (2026-11-12). The PI's two calls on the flat split (2026-11-12): its node moves to the
-every-dimension chapter, and the `d = 3` flat rank's proof refers forward. The flat split is now
-proved in every dimension, and its node states it there, crediting Whiteley 1984 §5.1 for the
-motions normal to the plane at `d = 3` (2026-11-12). The `d = 3` motion count is retired: the
-`d = 3` flat rank now follows from the every-dimension one, and its proof refers forward
-(2026-11-12). The flat rank and the equality are credited to their sources, the equality now
-called the dimension of the lifting space: Jackson and Jordán's 2006 report over the reals,
-through Whiteley's correspondence (2026-11-12). The every-dimension chapter cites its sources,
-and Part C's lifts are read as Whiteley 1984's scenes in 4-space, the correspondence with
-frameworks not extending to them (2026-11-12). The pencil chapter cites the flat pencil
-(Crapo and Whiteley 1982) and the polarity (Tay and Whiteley 1984); the self-duality of pencil
-realizations, not found stated, is set beside Whiteley's self-polar sheetworks (1987), whose
-theorem concerns other statics (2026-11-12). `liftSpace` is renamed `baseLiftSpace`, and the
-docstrings cite their sources (2026-11-12). The additions of calls 2 and 3 are in: the dimension
-of the lifting space also follows, over the reals, from Whiteley 1989's count, Berg and Jordán's
-face merge credited and the identity not found stated; a remark sets the scenes of the closed
-neighbourhoods beside Maxwell–Cremona (a motion of the bar framework on the graph, not a stress); a worked
-example at a theta graph; the polar reading's section by `z = 0` (2026-11-12). The road map now
-says what is classical (scenes, Whiteley's correspondence and its origin in Maxwell's reciprocal
-figures, the dimension of the space of scenes, Crapo and Ryan's lift, the flat pencil, the
-polarity) and what is new as far as we have found (the class of pencil realizations, the theorem,
-the three parts' inductions, several heights read as a hinge framework with a rank), on a
-framing the PI approved; two observations are added, and the three introductions point at it
-(2026-11-13). Next: the close.
+**✓ Complete** (opened 2026-11-12 with the PI, closed 2026-11-13; work log `notes/Phase44.md`;
+plan, the PI's words and the recon record `notes/PencilScenes.md`, reports in
+`notes/pencil-scenes/`). The carrier of the pencil proof is classical, and the three pencil
+chapters cited its sources only in part: the read-only recons (2026-11-09 to 2026-11-11) found
+Whiteley 1982, 1984 and 1989 cited nowhere. The phase rewrote the exposition, in ten slices, with
+no main result's statement changed. The lifting space is now presented as the space of scenes
+over a plane picture of an incidence structure, here the closed neighbourhoods of the graph
+(Whiteley 1984, Sugihara 1984); the plane framework as Whiteley's reduced plate framework, by his
+correspondence between scenes and the motions of frameworks; the dimension of the lifting space
+at a general picture (formerly "Jackson and Jordán's equality") as following, over the reals,
+from Jackson and Jordán's 2006 report through that correspondence, and also from Whiteley 1989's
+count, by a derivation not found stated (one step is Berg and Jordán's, 2003); and Part C's lifts
+as Whiteley 1984's scenes in 4-space, to which the correspondence does not extend. `pencil.tex`
+cites the flat pencil (Crapo and Whiteley 1982) and the polarity (Tay and Whiteley 1984), and
+sets the self-duality of pencil realizations, not found stated, beside Whiteley's self-polar
+sheetworks (1987). Added: a remark setting the scenes of the closed neighbourhoods beside the
+Maxwell–Cremona correspondence (they give a motion of the bar framework on the graph, not a
+stress), a worked example at a theta graph, and the polar reading's section by `z = 0`. The road
+map says what is classical and what is new as far as we have found (the class of pencil
+realizations, the theorem, the three parts' inductions, several heights read as a hinge framework
+with a rank), on a framing the PI approved, and the three introductions point at it. In the Lean,
+at the PI's word: the flat split (Whiteley 1984 §5.1 at `d = 3`, for the motions normal to the
+plane) is proved in every dimension and the `d = 3` flat rank follows from the every-dimension
+one, its `d = 3` motion count retired; Part C's `liftSpace` is `baseLiftSpace`; and the
+docstrings cite their sources. Fourteen bibliography entries came; two remarks and an example
+joined `main-component.tex`, and no node went. The 21 `formalization.yaml` main results'
+statements read as at the open, and their axioms are the standard three, byte-identical to Phase
+43's close run. The recons also found no prior work on the class of pencil realizations and that
+the sources do not shorten the route. Left for a later round: the `x0` in names and labels, the
+six duplications between `MainComponent/` and `Grade/` (`notes/pencil-scenes/simplify-ii.md`),
+and a general scene space, which is ORIGAMI's opening recon's to decide. Next: ORIGAMI's open,
+with the PI. Detail → `notes/Phase44.md` + `notes/PencilScenes.md`.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 
@@ -1439,7 +1428,7 @@ lemmas Phase 42 left outside their home files and of the friction log; it closed
 the PI opened **ARREARS**, a cleanup round of what HOMES left; it closed 2026-11-06. On 2026-11-07
 the PI queued **PENCIL-NATURAL** ahead of ORIGAMI, and opened it the same day as Phase 43, closed 2026-11-08, §43
 above. On 2026-11-09 the PI queued **PENCIL-SCENES** ahead of ORIGAMI, and opened it on 2026-11-12
-as Phase 44, §44 above.)
+as Phase 44, closed 2026-11-13, §44 above.)
 A longer **unqueued**
 idea backlog from the same survey (KT-template subvariety questions,
 e.g. Tanigawa's identified-panel-hinge Problem 1, plus known-math
@@ -1520,8 +1509,8 @@ research note of its own, `notes/Strata.md`, which holds PENCIL-D's evidence.
   at `K₂` and `K_{2,3}`, fixed the stale Lean docstrings, and gave the folded `d = 3` nodes their
   dependency edges and formalization notes, with no statement changed. Plan, the PI's words and
   the ledger: `notes/Cleanup42.md`. HOMES followed (below). **Next:** PENCIL-NATURAL, opened
-  as Phase 43 and closed 2026-11-08, then PENCIL-SCENES, opened as Phase 44, then ORIGAMI's
-  open, with the PI.
+  as Phase 43 and closed 2026-11-08, then PENCIL-SCENES, opened as Phase 44 and closed
+  2026-11-13, then ORIGAMI's open, with the PI.
 - **HOMES** — a cleanup round after CLEANUP-42, opened 2026-11-05 at the PI's word after a review
   of the open friction entries, and closed the same day: the friction log's docs and tooling fixes
   and an archive sweep, then the lemmas Phase 42 left outside their home files (deferred because a
@@ -1543,15 +1532,15 @@ research note of its own, `notes/Strata.md`, which holds PENCIL-D's evidence.
   and one blueprint node was repinned. Four lemmas left without a caller were deleted, one by the
   open's scope and three at the PI's word. No main result's statement changed. **Next:**
   PENCIL-NATURAL, opened as Phase 43 and closed 2026-11-08 (below), then PENCIL-SCENES, opened
-  as Phase 44, then ORIGAMI's open, with the PI.
+  as Phase 44 and closed 2026-11-13, then ORIGAMI's open, with the PI.
 - **PENCIL-NATURAL** — a simpler or more natural pencil proof: queued by the PI on 2026-11-07,
   ahead of ORIGAMI, opened with the PI the same day as Phase 43, after a read-only recon, and
   closed 2026-11-08 (§43 above; plan `notes/Phase43-design.md`, recon record
   `notes/PencilNatural.md`). **Next:** PENCIL-SCENES (below).
 - **PENCIL-SCENES** — the pencil proof explained against its sources in scene analysis: queued
   by the PI on 2026-11-09, ahead of ORIGAMI, and opened with the PI on 2026-11-12 as Phase 44,
-  after its read-only recons (§44 above; work log `notes/Phase44.md`, plan and recon record
-  `notes/PencilScenes.md`). **Next:** ORIGAMI's open (below), with the PI, after Phase 44.
+  after its read-only recons, and closed 2026-11-13 (§44 above; work log `notes/Phase44.md`, plan
+  and recon record `notes/PencilScenes.md`). **Next:** ORIGAMI's open (below), with the PI.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

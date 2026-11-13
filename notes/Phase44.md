@@ -1,25 +1,24 @@
 # Phase 44 — PENCIL-SCENES: the pencil proof against its sources (work log)
 
-**Status:** in progress, opened 2026-11-12 with the PI. Exposition of the three pencil chapters
-against their classical sources; in the Lean, one rename, docstrings and the flat split in every
-dimension. No main result's statement changes. Slices 1–9 of 10 done: the flat split holds in
-every dimension, the three chapters cite their classical pieces, `liftSpace` is `baseLiftSpace`,
-the docstrings cite, calls 2 and 3 are added, and the road map and the three introductions say
-what is classical and what is new. Next: slice 10, the close. Plan, the PI's words and the
-recon record: `notes/PencilScenes.md`.
+**Status:** ✓ complete, opened 2026-11-12 with the PI and closed 2026-11-13. Exposition of the
+three pencil chapters against their classical sources; in the Lean, one rename, docstrings and
+the flat split in every dimension. No main result's statement changed. All ten slices landed.
+Next: ORIGAMI's open, with the PI (`notes/Origami.md`). Plan, the PI's words and the recon
+record: `notes/PencilScenes.md`; summary: ROADMAP §44.
 
 ## Current state
 
-**Next concrete step: slice 10, the close** (item 10; `PHASE-BOUNDARIES.md` *When this commit
-closes a phase*). Slices 1–9 have
-landed: the flat split in every dimension is in `Grade/GluedEnds.lean`, the three chapters cite
-their sources, every dep-graph node is green, the Lean's `liftSpace` is `baseLiftSpace`, and
-`main-component.tex` has the second derivation (`rem:pencil-jj-count`), the Maxwell–Cremona remark
-(`rem:pencil-maxwell-cremona`), the worked example `ex:pencil-theta` with the `C₇` sentence, O6
-at the polar reading, and ledger rows M10, M18, M22–M24; O2 is a sentence in `pencil-d.tex`.
-The road map (`sec:pencil-roadmap`) has a paragraph on what is classical and one on what is new,
-and six observations, O7 and O1 after *The heights recover a gap*; each of the three
-introductions names its classical share and points at the road map.
+**Closed. Next concrete step: ORIGAMI's open, with the PI** (`notes/Origami.md`;
+`PHASE-BOUNDARIES.md` *When this commit opens a phase*). The phase's ten slices have landed. The
+flat split in every dimension is in `Grade/GluedEnds.lean`, the three chapters cite their
+sources, every dep-graph node is green, and the Lean's `liftSpace` is `baseLiftSpace`.
+`main-component.tex` has the second derivation (`rem:pencil-jj-count`), the Maxwell–Cremona
+remark (`rem:pencil-maxwell-cremona`), the worked example `ex:pencil-theta`, and ledger rows M10,
+M18, M22–M24. The road map (`sec:pencil-roadmap`) says what is classical, in four paragraphs,
+and what is new, in one, and has six observations; each of the three introductions names its
+classical share and points at the road map. At the close the 21 main results' axioms are the
+standard three, byte-identical to Phase 43's close run (`lake lean` on the harness of
+`PHASE-BOUNDARIES.md`), and their statements were not touched.
 
 ## Architectural choices made up front
 
@@ -53,28 +52,28 @@ follows all of 2–8.
   a lineage paragraph and what is classical and what is new (planning note §3, last paragraph;
   `ledger-main.md` rows P1–P5; P6 and P7 are cited at their nodes since slices 2 and 4);
   O7 and O1 among the road map's observations (call 3); the history of call 7.
-- [ ] **10. The close** (`PHASE-BOUNDARIES.md` *When this commit closes a phase*).
+- [x] **10. The close** (2026-11-13): the re-read, two small fixes, the status surfaces.
 
 ## Blockers / open questions
 
 None. No derivation is left unchecked (O2 and O6 settled in slice 8, O7 and O1 re-derived in
-slice 9, *Decisions*). For the close's chapter re-read: the road map's paragraph on what is
-classical runs to some forty source lines, kept as one paragraph of the approved pair; the
-re-read may split it.
+slice 9, *Decisions*).
 
 Left for a later round, not this phase's: the `x0` in names and labels, and the six
 duplications between `MainComponent/` and `Grade/` of `notes/pencil-scenes/simplify-ii.md`.
+A general scene space is ORIGAMI's opening recon's to decide (`notes/PencilScenes.md` §6).
+
+Left for the coordinator at this close: the grooming of `notes/dispatch-log.md`, which a
+builder does not edit (`PHASE-BOUNDARIES.md` *When this commit closes a phase*).
 
 ## Hand-off / next phase
 
-The next commit is slice 10 (item 10), the close: `PHASE-BOUNDARIES.md` *When this commit closes
-a phase*, in full. It flips and re-thins the ROADMAP row, compresses §44, syncs the user-facing
-status surfaces (`README.md` and `formalization.yaml` both say "Phase 44, in progress"), re-reads
-the three pencil chapters end to end, and writes any exposition-ledger entry. No Lean change is
-expected, and no main result's statement or axioms changed in the phase. Whether the chapter
-re-read fits the same commit as the status flips is not known: if it turns up more than small
-fixes, land the re-read's fixes first and the close after. After the phase: ORIGAMI's open, with
-the PI (`notes/Origami.md`).
+The phase is closed. The next commit is ORIGAMI's open, with the PI: it mints the phase's number,
+with `notes/Origami.md` as its planning note (`PHASE-BOUNDARIES.md` *When this commit opens a
+phase*; ROADMAP *Queued post-program phases*). That note records a candidate first layer from
+this phase, unchecked: a placement with each block's boundary coplanar is a picture with a scene
+over it, so a general scene space may serve both. The opening recon decides it. The two items
+under *Blockers* wait for a cleanup round of their own, at the PI's word.
 
 ## Decisions made during this phase
 
@@ -103,3 +102,8 @@ the PI (`notes/Origami.md`).
 - **Slice 9.** Keys `whiteley1982`, `maxwell1864reciprocal`, `maxwell1870`. "The classical
   statements are over the reals" became "the sources work over the real numbers", which is what
   the pages show. O7 is stated at `d = 3`; O1's linear algebra (`ledger-d.md` §4) re-derived.
+- **Slice 10, the close.** The re-read covered `pencil.tex` whole and, in the two long chapters,
+  every passage the phase wrote or changed, in context, with their introductions; the passages
+  the phase left alone were last re-read at Phase 43's close. Two fixes: the road map's
+  paragraph on what is classical split in four, no word changed; the flat split's section
+  renamed `τ`, as `σ` is the chapter's map of affine heights. No exposition-ledger entry.

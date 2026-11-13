@@ -263,13 +263,14 @@ claim is not proved through the main component: over a general picture,
 the points of a set of bodies that is rigid in the plane all lie in one
 plane.
 
-Phase 44, in progress, rewrites the blueprint's account of that proof
-against its sources, with no change to what it proves. The space of
-heights the proof works in is the space of scenes over a plane picture,
-from scene analysis (Whiteley, Sugihara), and two of its steps are
-Whiteley's correspondence between scenes and the motions of a framework.
-The blueprint will cite these sources and say which parts of the proof
-are classical and which are new.
+Phase 44 rewrote the blueprint's account of that proof against its
+sources, with no change to what it proves. The space of heights the proof
+works in is the space of scenes over a plane picture, from scene analysis
+(Whiteley, Sugihara), and two of its steps are Whiteley's correspondence
+between scenes and the motions of a framework. The blueprint now cites
+these sources, and its road map says which parts of the proof are
+classical and which, as far as we have found, are new: the class of
+pencil realizations, the theorem and its three inductions.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries

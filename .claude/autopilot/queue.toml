@@ -184,7 +184,7 @@ id = "PENCIL-SCENES"
 title = "PENCIL-SCENES: the pencil proof against its sources (Phase 44)"
 note = "notes/Phase44.md"
 attended = true
-done = false
+done = true
 
 # Attended, so the driver stops before it. ORIGAMI opens with the PI, and takes its phase number
 # then; afterwards the PI may replace this row with the opened phase's id and set attended = false.
