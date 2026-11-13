@@ -35,7 +35,9 @@ conditioned pair. Katoh and Tanigawa's induction statement likewise asks
 for nonparallel realizations (KT Theorem~5.5).
 \Cref{sec:pencil-main-component-route} sketches how
 \cref{sec:main-component} builds pencil realizations by lifting pictures
-of $G$ in the plane, and proves the theorem.
+of $G$ in the plane, as in scene analysis, and proves the theorem. The
+road map names the classical sources of this lifting, and the parts of
+the proof that are new.
 
 Two parts of the chapter are not used in the proof of
 \cref{thm:pencil-realization-theorem}. \Cref{sec:pencil-duality} shows that the
@@ -71,6 +73,61 @@ from a picture in the plane has the deficiency rank
 induction over the lifts of nondegenerate realizations in dimension
 three, and gives the third claim (\cref{thm:pencil-d-generic}). Both A
 and C use B.
+
+The setting of Part~B is classical. A picture of $G$ in the plane, with
+heights at which the points of every closed neighbourhood are coplanar,
+is a scene over a plane picture of an incidence structure, in the sense
+of scene analysis~\cite[\S\S 2.1--2.2]{whiteley1984},
+\cite[\S 2.2]{sugihara1984}. The points of the structure are the bodies
+of $G$, and its faces are the closed neighbourhoods
+(\cref{sec:main-component-carrier}). The lifting space $L(q)$ of a
+picture $q$ is the space of the heights of these scenes. Lifting a plane
+figure to a polyhedron goes back to Maxwell: a plane figure has a
+reciprocal figure when it is the projection of a polyhedron with plane
+faces~\cite[p.~258]{maxwell1864reciprocal},
+\cite[pp.~7--8]{maxwell1870}. Whiteley's correspondence identifies the
+scenes over a picture with the motions of a framework of plates and bars
+in the plane~\cite[Proposition~4.1]{whiteley1984}. For our incidence
+structure this framework is pin-collinear in the sense of Jackson and
+Jord\'an~\cite[p.~9]{jacksonJordan2006pin}
+(\cref{lem:pencil-lifting-planes-motions}). The correspondence grew out
+of Whiteley's kinematic proof of Maxwell's theorem on projected
+polyhedra~\cite{whiteley1982}, which uses the projective theory of Crapo
+and Whiteley~\cite{crapoWhiteley1982}. That proof concerns oriented
+polyhedra. It begins by observing that lifting a plane picture to a
+polyhedral scene is an infinitesimal motion of the panel structure on
+the flat projection (p.~14). For any incidence structure, the scenes
+over a picture are likewise the motions, normal to the plane, of plates
+lying in it and joined at points~\cite[\S\S 5.1, 5.3]{whiteley1984}. So
+the motions of a flat configuration normal to its plane are the scenes
+over its picture (\cref{lem:pencil-flat-split}). At a general picture,
+Whiteley's picture matroid gives the dimension of the space of scenes
+when the incidences are independent~\cite[Theorem~3.1, p.~84]{whiteley1989}. In
+general it follows, over the reals, from the rank theorem of Jackson and
+Jord\'an~\cite[Theorem~7.1]{jacksonJordan2006pin}
+(\cref{sec:main-component-jj}). Crapo and Ryan lift a picture by all of
+its locally linear functions at
+once~\cite[\S 8, pp.~52--53]{crapoRyan1986}. With the closed
+neighbourhoods as their nodes these functions are the heights in $L(q)$,
+and a configuration in dimension $d$ is a linear image of their lift
+(\cref{sec:pencil-d-carrier}). The lifts of Part~C are scenes in
+$4$-space over points of $3$-space, in Whiteley's extension of scene
+analysis to higher dimensions~\cite[Definition~7.2]{whiteley1984}
+(\cref{sec:pencil-d-lift}). The name pencil is taken from Crapo and
+Whiteley's flat pencil, the lines through a point in a
+plane~\cite[\S3.5, p.~67]{crapoWhiteley1982}. The polarity that
+exchanges coplanar and concurrent hinges is classical, and Tay and
+Whiteley note it for hinge structures~\cite[p.~33]{tayWhiteley1984}.
+
+As far as we have found, the following are new. No source that we have
+read asks that the hinges at a body be both coplanar and concurrent, so
+the class of pencil realizations itself is new. So are the pencil realization theorem, the
+reduction of Part~A, the steps and the coverage of Part~B, and the
+induction of Part~C. So is the reading of a picture lifted by several
+heights as a hinge framework with a rank. The self-duality of the class
+(\cref{lem:pencil-self-dual}) we have not found stated. The sources
+above work over the real numbers. The statements of this proof hold
+over every infinite field.
 
 \emph{The reduction.} Katoh and Tanigawa realize a multigraph that is
 not minimal by realizing a minimal spanning subgraph with the same
@@ -232,7 +289,7 @@ chosen together. In the contraction step, for instance, the picture
 moves along a curve, and every height moves with it
 (\cref{sec:pencil-d-contract}).
 
-Four observations explain the shape of B and C.
+Six observations explain the shape of B and C.
 
 \emph{The heights recover a gap.} Let $G$ satisfy the standing
 hypotheses. At a main picture $q$, the flat configuration has rank
@@ -242,6 +299,38 @@ a picture $\dim L(q) = 3 + \operatorname{def}_2(G)$
 of the deficiency rank by exactly $\operatorname{def}_2(G) -
 \operatorname{def}_d(G)$, and the heights must recover this gap. When
 the two deficiencies agree, there is no gap.
+
+\emph{A configuration displaces the flat configuration along a motion.}
+Let $d = 3$, let $q$ be an admissible picture, and let $z \in L(q)$. In
+the configuration $(q, z)$ the points of the closed neighbourhood of
+each body $v$ lie in a plane $\zeta = h_v(\xi, \eta)$, the panel of
+$v$, where $h_v$ is an affine function
+(\cref{lem:pencil-condition-linear}). In the flat configuration every
+panel is the plane $\zeta = 0$. At an edge $uv$ the functions $h_u$ and
+$h_v$ agree at $q_u$ and at $q_v$. So by the flat split the family
+$(h_v)$ comes from a motion of the flat configuration
+(\cref{lem:pencil-flat-split}). Over the reals, the points of the plane
+that move with $v$ have the velocities $h_v$ normal to the plane in
+this motion (\cref{sec:main-component-flat}). So for a scalar $t$ the
+configuration $(q, tz)$ is the flat configuration with every panel
+displaced by $t$ times its velocity. The panels of adjacent bodies
+still meet in their hinge, the line through the points of the two
+bodies. Every $t \neq 0$ gives the same rank
+(\cref{lem:pencil-d-rank-scale-shift}), and $t = 0$ gives the flat
+rank. In dimension $d$ each of the $d - 2$ heights comes from such a
+motion, and displaces the panels in its own coordinate.
+
+\emph{The rank depends on a space of heights.} Let $q$ be an admissible
+picture, and let $\mathrm{Aff}(q) \subseteq L(q)$ be the space of the
+globally affine heights, of dimension three
+(\cref{lem:pencil-lifting-space-affine}). Let $z^1, \dots, z^{d-2}$ be
+heights in $L(q)$, and let $W$ be the span of their classes in
+$L(q)/\mathrm{Aff}(q)$. The rank of the configuration $(q, z)$ depends
+only on $q$ and $W$. Indeed, two families of heights with the same $W$
+differ by an invertible matrix and by globally affine heights, and
+neither changes the rank (\cref{lem:pencil-d-rank-scale-shift}). At a
+main picture of a graph satisfying the standing hypotheses, $W$ has
+dimension at most $\min(d - 2, \operatorname{def}_2(G))$.
 
 \emph{Bodies of degree two.} A body of degree two, whose closed
 neighbourhood has three members, imposes no condition on the heights

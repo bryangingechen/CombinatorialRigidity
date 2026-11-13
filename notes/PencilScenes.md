@@ -12,8 +12,8 @@ On 2026-11-11 the PI also settled the plan at the open (§7): the nine calls, a 
 Lean, and one more read-only recon, for simplifications of the route, which no recon had asked.
 The simplification recon ran the same day (§7a): no to (i), and to (ii) one definition, not one
 theorem. The route and the Lean stand; the exposition gains two paragraphs.
-**Next concrete step:** `notes/Phase44.md` *Hand-off* (slice 9, attended: it waits for the PI;
-slices 1–8 have landed).
+**Next concrete step:** `notes/Phase44.md` *Hand-off* (slice 10, the close; slices 1–9 have
+landed, slice 9 on the framing the PI approved on 2026-11-13).
 
 ## 1. The PI's words (verbatim)
 
@@ -52,7 +52,7 @@ numbers are the printed ones. Bib keys are given where `blueprint/src/bibliograp
   The "sequel" of Example 4.4 is, in their bibliography, "Motions of Trusses and Bipartite
   Frameworks" (`notes/pencil-scenes/ledger-main.md`), so Whiteley 1982 is not to be cited as it.
 - **Whiteley 1982**, "Motions and stresses of projected polyhedra" (*Structural Topology* 7,
-  13–38; no bib entry). The kinematic proof of Maxwell's theorem. P. 14: lifting a plane picture to
+  13–38; `whiteley1982`). The kinematic proof of Maxwell's theorem. P. 14: lifting a plane picture to
   a polyhedral scene "is an infinitesimal motion of the panel structure". Theorems 3.1 and 3.3
   (pp. 18–21), for abstract **oriented polyhedra** only. That class does not contain S_G (§3), so
   cite it as the origin of the correspondence, not as its general statement. §3.4 (p. 23): the path
